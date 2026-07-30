@@ -3,7 +3,9 @@
 Campaign **sources** for [Delvewright](https://github.com/stellarfeline/delvewright)
 delves — the staged DSL documents from which every delve is deterministically
 rebuilt, byte for byte. This repo is content; the pipeline that compiles it lives
-in the main repo (GPL). Everything here is **CC BY-SA 4.0** (see LICENSE).
+in the main repo (GPL). Licensing is directory-scoped: `campaigns/` is
+**CC BY-SA 4.0** (see LICENSE); `prefabs/` items carry per-item licenses
+(CC0 / CC BY / original) recorded in their metadata.
 
 ## Layout
 
