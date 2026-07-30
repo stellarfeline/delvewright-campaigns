@@ -11,7 +11,13 @@ in the main repo (GPL). Everything here is **CC BY-SA 4.0** (see LICENSE).
 campaigns/<campaign-id>/
   world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
   GENERATION.md        # prompt, date, dsl_version, notable decisions
+prefabs/               # the shared building-block library (.nbt + metadata, git-lfs)
 ```
+
+Clone this repo and you have the complete authoring environment: every existing
+prefab is reusable by any campaign, and a **new prefab ships in the same PR as
+the campaign that needs it**. (The prefab library migrates here from the main
+repo as M3 opens.)
 
 Build any campaign with the main repo's `delvec`:
 
@@ -27,7 +33,10 @@ delvec build campaigns/<id> -o out/
   sources (determinism makes the build reproducible by anyone).
 - Campaigns must pass the full validation ladder (`delvec validate` + `analyze`,
   PackTest, bot playthrough) in CI before merge.
-- Only distributable-class prefabs (the main repo's library) may be referenced.
-  Campaigns using user-local assets are for private play and don't belong here.
+- Only distributable-class prefabs (this repo's `prefabs/`, per-item CC0/CC BY/
+  original with recorded provenance) may be referenced. Prefab additions pass a
+  mechanical NBT audit in CI (block-palette allowlist; no command/structure
+  blocks, no NBT-bearing spawners). Campaigns using user-local assets are for
+  private play and don't belong here.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
