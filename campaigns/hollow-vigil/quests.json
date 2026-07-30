@@ -1,0 +1,92 @@
+{
+  "dsl_version": "0.3.0",
+  "campaign_id": "hollow-vigil",
+  "stage": "quests",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/the-watch",
+        "trigger": { "type": "campaign-start" },
+        "objectives": [
+          { "type": "talk-to", "id": "obj/gate-watch", "npc": "npc/hedric" },
+          { "type": "talk-to", "id": "obj/swear", "npc": "npc/maren", "after": ["obj/gate-watch"] }
+        ],
+        "on_objective_complete": {
+          "obj/gate-watch": [
+            { "type": "give-item", "item": "minecraft:shield", "count": 1 },
+            { "type": "set-flag", "flag": "flag/warned" }
+          ],
+          "obj/swear": [
+            { "type": "spawn-wave", "wave": "wave/hollow-garrison" },
+            { "type": "set-flag", "flag": "flag/vigil-sworn" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/quiet-the-halls",
+        "trigger": { "type": "quest-complete", "quest": "quest/the-watch" },
+        "objectives": [
+          { "type": "kill", "id": "obj/purge", "wave": "wave/hollow-garrison", "requires_flags": ["flag/vigil-sworn"] }
+        ],
+        "on_objective_complete": {
+          "obj/purge": [
+            { "type": "set-flag", "flag": "flag/halls-quiet" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/the-barrow-key",
+        "trigger": { "type": "quest-complete", "quest": "quest/quiet-the-halls" },
+        "objectives": [
+          { "type": "collect", "id": "obj/key", "item": "minecraft:trial_key", "count": 1, "anchor": "anchor/chest", "requires_flags": ["flag/halls-quiet"] },
+          { "type": "interact", "id": "obj/unbar", "anchor": "anchor/door", "requires_item": "minecraft:trial_key", "after": ["obj/key"] }
+        ],
+        "on_objective_complete": {
+          "obj/unbar": [
+            { "type": "open-gate", "anchor": "anchor/gate" },
+            { "type": "set-flag", "flag": "flag/gate-open" }
+          ]
+        },
+        "on_complete": [
+          { "type": "spawn-wave", "wave": "wave/first-warden" },
+          { "type": "set-flag", "flag": "flag/warden-risen" }
+        ]
+      },
+      {
+        "id": "quest/break-the-vigil",
+        "trigger": { "type": "quest-complete", "quest": "quest/the-barrow-key" },
+        "objectives": [
+          { "type": "kill", "id": "obj/warden", "wave": "wave/first-warden", "requires_flags": ["flag/warden-risen"] },
+          { "type": "reach-anchor", "id": "obj/altar", "anchor": "anchor/objective", "radius": 2, "after": ["obj/warden"], "requires_flags": ["flag/vigil-broken"] }
+        ],
+        "on_objective_complete": {
+          "obj/warden": [
+            { "type": "set-flag", "flag": "flag/vigil-broken" }
+          ]
+        },
+        "on_complete": [
+          { "type": "campaign-complete" }
+        ]
+      }
+    ],
+    "waves": [
+      {
+        "id": "wave/hollow-garrison",
+        "anchor": "anchor/wave",
+        "mobs": [
+          { "entity": "minecraft:zombie", "count": 3, "name": "Hollow Footman" }
+        ]
+      },
+      {
+        "id": "wave/first-warden",
+        "anchor": "anchor/boss",
+        "mobs": [
+          { "entity": "minecraft:wither_skeleton", "count": 1, "name": "The First Warden" },
+          { "entity": "minecraft:zombie", "count": 1, "name": "Hollow Footman" }
+        ]
+      }
+    ]
+  }
+}

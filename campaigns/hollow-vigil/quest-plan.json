@@ -1,0 +1,46 @@
+{
+  "dsl_version": "0.3.0",
+  "campaign_id": "hollow-vigil",
+  "stage": "quest-plan",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/the-watch",
+        "goal": "Pass Hedric at the gate, take his shield, and swear the night's work to Warden Maren.",
+        "area": "area/keep",
+        "npcs": ["npc/hedric", "npc/maren"],
+        "depends_on": [],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/quiet-the-halls",
+        "goal": "Put down the hollow garrison Maren's summons has drawn out of the barrow-earth.",
+        "area": "area/keep",
+        "npcs": ["npc/maren"],
+        "depends_on": ["quest/the-watch"],
+        "mandatory": true,
+        "act": 2
+      },
+      {
+        "id": "quest/the-barrow-key",
+        "goal": "Recover the barrow key from the garrison's strongbox and unbar the deep gate.",
+        "area": "area/keep",
+        "npcs": ["npc/maren"],
+        "depends_on": ["quest/quiet-the-halls"],
+        "mandatory": true,
+        "act": 2
+      },
+      {
+        "id": "quest/break-the-vigil",
+        "goal": "Face the First Warden at his post and end the vigil at the barrow altar.",
+        "area": "area/keep",
+        "npcs": ["npc/maren"],
+        "depends_on": ["quest/the-barrow-key"],
+        "mandatory": true,
+        "act": 3
+      }
+    ],
+    "finale": "quest/break-the-vigil"
+  }
+}
