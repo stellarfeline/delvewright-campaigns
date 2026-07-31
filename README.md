@@ -18,8 +18,11 @@ prefabs/               # the shared building-block library (.nbt + metadata, git
 
 Clone this repo and you have the complete authoring environment: every existing
 prefab is reusable by any campaign, and a **new prefab ships in the same PR as
-the campaign that needs it**. (The prefab library migrates here from the main
-repo as M3 opens.)
+the campaign that needs it**. The prefab library now lives in `prefabs/`
+(migrated from the main repo in M3); the deterministic generators that produce
+those pieces stay in the main repo (GPL code), and their outputs are committed
+here. `.nbt` files are tracked with git-lfs (see `.gitattributes`) — clone with
+git-lfs installed.
 
 Build any campaign with the main repo's `delvec`:
 
