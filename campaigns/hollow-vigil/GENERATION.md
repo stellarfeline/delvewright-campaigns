@@ -38,3 +38,16 @@
   wave is 3 zombies. Iron-kit classes keep both fights winnable alone.
 - **Flag chain**: warned → vigil-sworn → halls-quiet → gate-open → warden-risen
   → vigil-broken; every dynamic is authored, nothing spawns uncued.
+
+## v2 — rehearsal round 2 (2026-07-31)
+
+Regenerated after the owner's round-1 playtest findings, on post-fix tooling
+(PRs #28–#36): `pool/vertical-keep` (13 pieces, 5 elevation levels y64→y80,
+four stair climbs; solver backtracking made the shape solvable on the first
+seed tried), `title`/`hint` on every non-talk objective, gate opens at the
+oath so DW0306 gate-aware reachability passes with a sealing gate, boss now
+spawns armed (default-equipment emission), Barrow Friar gains wind charges so
+the mace has terrain to slam from, `languages: ["zh-cn"]` with a full
+hand-written Simplified-Chinese sidecar (owner plays the zh-cn build).
+Round-1 findings that drove tooling fixes are recorded in the repo specs;
+round-1's seed-38 flat layout is superseded by this version.
