@@ -6,10 +6,28 @@ zones.
 
 ## In-repo prefab assets
 
-Prefab assets committed to this repository (`prefabs/**`) must be **original,
-CC0, or CC BY only**. **CC BY-NC or unknown-license material is never
-ingested.** The source and license of every asset are recorded in that asset's
-prefab metadata, so provenance is auditable at all times.
+Prefab assets committed to this repository (`prefabs/**`) must carry an
+**ADR-0013 allowlist** license: **original, CC0, CC BY, MIT, Apache-2.0, or a
+GPL-3.0-compatible license (incl. LGPL-3.0)**. **CC BY-NC / ND / ShareAlike or
+unknown-license material is never ingested** — the `delve-admit` catalog-card
+license check enforces this. The source and license of every asset are recorded
+in that asset's prefab metadata (`prefabs/<id>.json` `license` block) and its
+catalog card (`catalog/<id>.json`), so provenance is auditable at all times.
+
+### Third-party attribution
+
+External prefabs ingested through the `delve-admit` pipeline (spec-0007), with
+the license verified via the source's API **and** project page:
+
+| Prefab(s) | Source | Author | License |
+| --- | --- | --- | --- |
+| `hero-galleon-oak` | [Ships](https://modrinth.com/datapack/ships) (Modrinth) | EMD123 | Apache-2.0 |
+| `hero-temple-ruin-hall`, `hero-temple-ruin-arch` | [Moss Ruins](https://modrinth.com/datapack/moss-ruins) (Modrinth) | LordGacie | MIT |
+| `hero-standing-monolith` | [Little Structures](https://modrinth.com/datapack/little-structures) (Modrinth) | MatBayern | LGPL-3.0-only |
+
+Full provenance (download URL, retrieval date, sha256 of the original download,
+source path within the datapack) lives in each prefab's metadata and catalog
+card.
 
 ## Generated delve content
 
