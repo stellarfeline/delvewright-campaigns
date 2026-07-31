@@ -154,6 +154,7 @@ are worked around in the DSL but still latent for the next campaign.
 | 3 | DSL + emitter | P2 | NPCs have no lifecycle (no despawn / move) |
 | 4 | DSL + validation | P2 | Endings cannot branch |
 | 6 | DSL | P2 | No verbs for player state (sneak/sprint) or environment response |
+| 13 | compiler / emitter | **P1 — latent stall** | `collect` chests / `interact` markers placed at setup, ungated; early pickup can leave the objective stuck |
 | 11 | DSL + emitter | P3 | `give-item` cannot carry a display name |
 | 12 | `prefabs/` | P3 | `anchor/npc-stand` collides with another anchor in every piece |
 | — | `prefabs/` | P3 — worst aesthetic gap | Library is one grey stone keep; no cave, shore or outdoor tileset (see *Visual review*) |
@@ -398,6 +399,122 @@ put an NPC inside a chest, on a wave spawn point, or on top of an interact marke
 and its hitbox. The anchor is unusable as declared.
 
 **Proposed.** Give `anchor/npc-stand` a distinct position in each piece, or drop it.
+
+### 13. `collect` chests and `interact` markers are placed at setup, ungated — **and one can stall an objective**
+
+**Component**: compiler / emitter · **Found by owner playtest, 2026-07-31**
+
+Both surfaced from a single playtest note: *"这里没跟巨人对话就能拿东西？"* — the
+player could loot the olive beam out of the pens before ever meeting Polyphemus.
+
+`setup_finish` places **every** `collect` chest (`setblock … chest` +
+`item replace … container.0`) and summons **every** `interact` hitbox and its glowing
+`item_display` marker, for all objectives, at world setup. None of it is gated on the
+objective being active. So the whole puzzle chain is physically present, lootable and
+readable from minute one — a marker named "Grind the Point" glows beside the entrance
+before the player has any idea what a point is, and the beam can be pocketed three
+beats early.
+
+**The worse half is a latent stall.** A `collect` objective completes via an
+`inventory_changed` advancement whose reward function re-checks the guards and then
+revokes itself to re-arm:
+
+```
+execute if score @s dw.qa_the_stake matches 1 if score @s dw.f_named matches 1
+        unless score @s dw.o_olive_beam matches 1 run function …:complete_o_olive_beam
+advancement revoke @s only nobodys-cave:c_olive_beam
+```
+
+If the item is taken while the guards are unsatisfied, the advancement fires, does
+nothing, and re-arms — but `inventory_changed` will not fire again merely because the
+player is *still holding* the item. Once the objective does activate, it stays
+incomplete until some unrelated inventory change happens to re-trigger it. In a delve
+with little else to pick up, a player can be left holding the quest item with the
+objective stuck open and no indication why. **This affects every `collect` objective
+in every campaign, not just this one.**
+
+**Fix.** Gate placement on activation: place the chest / summon the marker when the
+objective activates rather than at `setup_finish` (the tick loop already computes
+activation for the announce). Failing that, re-check `collect` guards on a tick for
+players already holding the item, so a re-armed advancement is not the only path to
+completion.
+
+**Mitigated here, not fixed**: see the guidance change below — the campaign now keeps
+an explicit active instruction on screen at all times so the player is steered to
+Polyphemus first. That reduces the odds of tripping it; it does not close it.
+
+### 14. Interaction props are hardcoded, and objectives cannot target entities — **why nothing looks like what it is**
+
+**Component**: DSL + emitter · **Raised by owner at playtest, 2026-07-31**:
+*"藏到羊肚子下面为什么不用羊，磨尖为什么不用砂轮，烤硬为什么不用篝火？"*
+
+Fair question, and the answer is the same for all three. The marker entity is a
+literal in the emitter:
+
+```rust
+// interact
+… item_display … item:{id:"minecraft:lantern",count:1}   // emit.rs
+// reach-anchor
+… item_display … item:{id:"minecraft:end_rod",count:1}
+```
+
+So a grindstone, a hearth fire and a ram all render as **two floating lanterns and an
+end rod**. There is no author-facing field for the prop, and no way to put a real
+block at an anchor: the emitter writes exactly three kinds of block anywhere in its
+output — solver socket seals (`fill`, `emit.rs:543`), the `collect` chest
+(`setblock … minecraft:chest`, `emit.rs:613`), and the `open-gate` air fill
+(`emit.rs:1178`). Nothing else. A campfire cannot be placed by any means available to
+a campaign.
+
+Separately, **objectives address anchors, never entities.** `interact` summons its own
+`minecraft:interaction` hitbox at a fixed position, so "get under a ram" cannot refer
+to the rams — even though `wave/the-flock` puts six live sheep on that exact anchor.
+The sheep are decoration standing next to the thing the player actually activates.
+
+**The precedent for the fix already exists.** `collect` places a *real chest* and uses
+it as its own affordance — no hologram needed, and it reads correctly in game. Doing
+the same for `interact` is a small, symmetrical change:
+
+- `Objective::Interact.prop: { block: "minecraft:grindstone" }` — `setblock` the prop
+  at the anchor and let it be the visual, exactly as `collect` does with its chest.
+  Falls back to the current lantern when omitted, so existing campaigns are unchanged.
+- `QuestEffect::SetBlock { anchor, block }` as the general form (also closes the
+  "boulder that answers when struck" half of gap 6, and gives `open-gate` a partner).
+- `Objective::InteractEntity { wave, … }` for fictions that are inherently about a
+  creature — riding, hiding under, leading, calming. Nothing in v0.3 can express any
+  of them.
+
+**Impact.** Together with the single-tileset problem in *Visual review*, this is the
+larger half of why the delve reads correctly and does not yet *look* correct. The
+writing carries the Odyssey; the props are three glowing hologram icons in a castle.
+Of everything on this list, gap 14 plus a cave tileset would do the most for how the
+demo actually feels, and neither requires new gameplay semantics — only the ability
+to say what a thing looks like.
+
+## Owner playtest round 1 (2026-07-31)
+
+Two notes, both about wayfinding, both valid.
+
+1. *"这里是入口附近，对完话缺乏引导… 磨出尖来应该是后面才会用到的，不应该放在这里或者应该在到那一步之前隐藏"* —
+   after the Perimedes conversation the player had **no active objective text at all**,
+   while a marker for a much later step glowed next to them.
+2. *"这里没跟巨人对话就能拿东西？引导做的不够好"* — see gap 13.
+
+**Root cause of both, on the campaign's side:** no `talk-to` objective carried a
+`title`/`hint`. The skill guidance says `talk-to` *may* omit them because "the NPC
+dialog is self-explanatory" — that holds when the NPC is in front of you, and fails
+completely when the next NPC is 60 blocks away through an unfamiliar cave. The
+player was left with a silent objective and an unrelated glowing marker, and did the
+reasonable thing: wandered off and looted the pens.
+
+**Fixed in the DSL**: all six `talk-to` objectives now carry a `title` and a
+landmark-relative `hint`. The one for `obj/the-name` also does sequencing work the
+DSL cannot do structurally — *"Go and talk to him before you help yourself to
+anything of his."*
+
+**Lesson for the skill**: treat `title`/`hint` on `talk-to` as required whenever the
+target NPC is not already visible from where the previous objective completed. The
+"may omit" allowance should be read narrowly.
 
 ## Things that worked, and are worth keeping
 
