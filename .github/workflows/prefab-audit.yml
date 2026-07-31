@@ -1,0 +1,92 @@
+name: prefab palette audit
+
+# spec-0007 community contract: a new prefab ships in the same PR as the campaign
+# that needs it, and "the NBT palette audit gates the prefab half in CI". This is
+# that gate for the content repo.
+#
+# The audit tool (`delve-admit`) is GPL pipeline code and lives in the *main*
+# repo (delvewright), which stays private for now. We build it from a PINNED main
+# SHA so the allowlist the audit enforces is reproducible: a309f61 is the first
+# main commit whose broadened allowlist (PR #56) admits every prefab merged into
+# this repo (content PR #6). Bumping the pin is a deliberate, reviewed change.
+#
+# Interim credential note: `delvewright` is private and this repo is public, so
+# the cross-repo checkout needs a token (`secrets.MAIN_REPO_TOKEN`, read-only
+# `contents` on stellarfeline/delvewright). GitHub withholds secrets from
+# fork-based PRs, so this gate covers same-repo (owner-authored) PRs today; once
+# the main repo is public the token can be dropped and the default GITHUB_TOKEN
+# will suffice, which also unlocks community fork PRs.
+
+on:
+  pull_request:
+    paths:
+      - "prefabs/**"
+      - "catalog/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned main-repo SHA the audit tool is built from (see header).
+  ADMIT_REF: a309f61e2ab75d0f8cd2759e02eb7703e048e072
+
+jobs:
+  audit:
+    name: NBT palette audit (allowlist + code-injection forbid)
+    runs-on: ubuntu-latest
+    steps:
+      # This repo — with git-lfs so the .nbt prefabs materialize (they are LFS
+      # pointers otherwise and the audit would fail to parse them).
+      - name: check out content repo (with LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # The audit tool's source, pinned. Private repo -> needs a cross-repo token.
+      - name: check out delve-admit source (main repo, pinned)
+        uses: actions/checkout@v4
+        with:
+          repository: stellarfeline/delvewright
+          ref: ${{ env.ADMIT_REF }}
+          token: ${{ secrets.MAIN_REPO_TOKEN }}
+          path: admit-src
+
+      # Cache cargo + build artifacts, keyed on the pinned SHA and the admit
+      # crate's lockfile so a pin bump busts the cache cleanly.
+      - name: cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: admit-src
+          key: admit-${{ env.ADMIT_REF }}
+
+      # Build only the admit crate (+ its path deps schem/orchestrator), not the
+      # whole workspace — keeps the gate cheap.
+      - name: build delve-admit
+        working-directory: admit-src
+        run: cargo build -p delvewright-admit --bin delve-admit --release
+
+      - name: audit every prefab .nbt
+        run: |
+          BIN="admit-src/target/release/delve-admit"
+          shopt -s nullglob
+          nbts=(prefabs/*.nbt)
+          if [ ${#nbts[@]} -eq 0 ]; then
+            echo "::error::no prefab .nbt found under prefabs/ — is git-lfs materialized?"
+            exit 1
+          fi
+          fail=0
+          for f in "${nbts[@]}"; do
+            echo "--- auditing $f ---"
+            # Report to stdout as the machine-readable record; diagnostics go to
+            # stderr. Non-zero exit = a forbidden or not-allowlisted block.
+            if ! "$BIN" audit "$f" -o "/tmp/$(basename "$f").report.json"; then
+              echo "::error file=$f::palette audit failed (forbidden or not-allowlisted block)"
+              fail=1
+            fi
+          done
+          echo "audited ${#nbts[@]} prefab piece(s)"
+          exit $fail
