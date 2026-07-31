@@ -1,5 +1,5 @@
 {
-  "dsl_version": "0.3.0",
+  "dsl_version": "0.4.0",
   "campaign_id": "nobodys-cave",
   "stage": "quests",
   "content": {
@@ -40,7 +40,26 @@
           "obj/the-stone": [
             { "type": "open-gate", "anchor": "anchor/gate" },
             { "type": "spawn-wave", "wave": "wave/the-flock" },
-            { "type": "set-flag", "flag": "flag/sealed" }
+            { "type": "set-flag", "flag": "flag/sealed" },
+            {
+              "type": "narrate",
+              "style": "title",
+              "text": "Sealed In",
+              "sound": "minecraft:entity.wither.break_block"
+            },
+            {
+              "type": "narrate",
+              "style": "subtitle",
+              "text": "Stone grinds across the mouth, and the daylight narrows to a line, and then to nothing."
+            },
+            {
+              "type": "cutscene",
+              "seconds": 5,
+              "path": [
+                { "anchor": "anchor/exit", "offset": [0, 1, 4] },
+                { "anchor": "anchor/exit", "offset": [0, 1, 1] }
+              ]
+            }
           ]
         },
         "on_complete": []
@@ -60,7 +79,13 @@
         ],
         "on_objective_complete": {
           "obj/the-name": [
-            { "type": "set-flag", "flag": "flag/named" }
+            { "type": "set-flag", "flag": "flag/named" },
+            { "type": "set-block", "anchor": "anchor/objective", "block": "minecraft:decorated_pot" },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The wine does its work. The giant's chin sinks to his chest, and the whole cave fills with the sound of him sleeping."
+            }
           ]
         },
         "on_complete": []
@@ -83,19 +108,21 @@
             "type": "interact",
             "id": "obj/sharpen",
             "anchor": "anchor/door",
+            "prop": { "block": "minecraft:grindstone" },
             "requires_item": "minecraft:stripped_oak_log",
             "after": ["obj/olive-beam"],
             "title": "Grind the Point",
-            "hint": "Carry the beam back toward the mouth, near where Perimedes is waiting — the giant keeps a grinding stone there for his own tools, and a glowing lantern marks it."
+            "hint": "Carry the beam back toward the mouth, near where Perimedes is waiting — the giant keeps a grinding stone there for his own tools."
           },
           {
             "type": "interact",
             "id": "obj/harden",
             "anchor": "anchor/boss",
+            "prop": { "block": "minecraft:campfire" },
             "after": ["obj/sharpen"],
             "requires_flags": ["flag/sharpened"],
             "title": "Harden it in the Fire",
-            "hint": "His hearth burns deeper in than the pens. Turn the point in the coals until it blackens."
+            "hint": "His hearth burns deeper in, beside where he sleeps. Turn the point in the coals until it blackens."
           },
           {
             "type": "talk-to",
@@ -115,7 +142,21 @@
             { "type": "set-flag", "flag": "flag/hardened" }
           ],
           "obj/blind": [
-            { "type": "set-flag", "flag": "flag/blinded" }
+            { "type": "despawn-npc", "npc": "npc/polyphemus" },
+            { "type": "set-block", "anchor": "anchor/objective", "block": "minecraft:air" },
+            { "type": "spawn-wave", "wave": "wave/blinded-polyphemus" },
+            { "type": "set-flag", "flag": "flag/blinded" },
+            {
+              "type": "narrate",
+              "style": "title",
+              "text": "He Rises Blind",
+              "sound": "minecraft:entity.warden.roar"
+            },
+            {
+              "type": "narrate",
+              "style": "subtitle",
+              "text": "Get out of the cave. Make no sound he can follow."
+            }
           ]
         },
         "on_complete": []
@@ -130,8 +171,9 @@
             "anchor": "anchor/wave",
             "radius": 3,
             "requires_flags": ["flag/blinded"],
+            "stealth": true,
             "title": "Get Under a Ram",
-            "hint": "Leave him standing there and go back to the flock in the pens — get underneath a ram and take hold of the fleece, and let it carry you out past his hands."
+            "hint": "Leave him roaring and go back to the flock in the pens — get underneath a ram and take hold of the fleece, and let it carry you out past his hands. Do not run and do not jump; he hunts by sound now."
           },
           {
             "type": "talk-to",
@@ -145,7 +187,12 @@
         ],
         "on_objective_complete": {
           "obj/the-ram": [
-            { "type": "set-flag", "flag": "flag/aboard" }
+            { "type": "set-flag", "flag": "flag/aboard" },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Two fistfuls of wool, close in at the belly where it is thickest. The ram walks, and you walk out under it."
+            }
           ]
         },
         "on_complete": []
@@ -175,6 +222,42 @@
         "anchor": "anchor/wave",
         "mobs": [
           { "entity": "minecraft:sheep", "count": 6, "name": "Ram of the Cave" }
+        ]
+      },
+      {
+        "id": "wave/blinded-polyphemus",
+        "anchor": "anchor/objective",
+        "mobs": [
+          {
+            "entity": "minecraft:warden",
+            "count": 1,
+            "name": "Polyphemus, Blinded",
+            "attributes": {
+              "max_health": 30.0,
+              "movement_speed": 0.05,
+              "follow_range": 1.0,
+              "attack_damage": 2.0
+            },
+            "effects": [
+              { "effect": "minecraft:slowness", "amplifier": 4 }
+            ]
+          }
+        ]
+      }
+    ],
+    "triggers": [
+      {
+        "id": "trigger/the-stone",
+        "at": "anchor/gate",
+        "on": { "on": "strike" },
+        "once": false,
+        "effects": [
+          {
+            "type": "narrate",
+            "style": "subtitle",
+            "text": "You set your shoulder to the great stone. It does not so much as grind. No blade you carry will bite it — whatever opens this cave, it will not be you.",
+            "sound": "minecraft:block.stone.hit"
+          }
         ]
       }
     ]
