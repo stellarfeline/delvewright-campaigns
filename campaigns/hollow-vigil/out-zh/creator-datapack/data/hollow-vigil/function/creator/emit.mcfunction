@@ -1,1 +1,0 @@
-$say [DelveNote] pos=[$(x),$(y),$(z)] area=$(area) quests=obj/gate-watch:$(o_gate_watch),obj/swear:$(o_swear),obj/purge:$(o_purge),obj/key:$(o_key),obj/unbar:$(o_unbar),obj/warden:$(o_warden),obj/altar:$(o_altar) nearest_npc=$(npc)
