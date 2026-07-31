@@ -17,6 +17,7 @@
             { "type": "set-flag", "flag": "flag/warned" }
           ],
           "obj/swear": [
+            { "type": "open-gate", "anchor": "anchor/gate" },
             { "type": "spawn-wave", "wave": "wave/hollow-garrison" },
             { "type": "set-flag", "flag": "flag/vigil-sworn" }
           ]
@@ -27,7 +28,14 @@
         "id": "quest/quiet-the-halls",
         "trigger": { "type": "quest-complete", "quest": "quest/the-watch" },
         "objectives": [
-          { "type": "kill", "id": "obj/purge", "wave": "wave/hollow-garrison", "requires_flags": ["flag/vigil-sworn"] }
+          {
+            "type": "kill",
+            "id": "obj/purge",
+            "wave": "wave/hollow-garrison",
+            "requires_flags": ["flag/vigil-sworn"],
+            "title": "Quiet the Halls",
+            "hint": "Maren's summons has drawn the hollow garrison out of the barrow-earth — hunt down every risen footman in the halls beyond the gate."
+          }
         ],
         "on_objective_complete": {
           "obj/purge": [
@@ -40,13 +48,29 @@
         "id": "quest/the-barrow-key",
         "trigger": { "type": "quest-complete", "quest": "quest/quiet-the-halls" },
         "objectives": [
-          { "type": "collect", "id": "obj/key", "item": "minecraft:trial_key", "count": 1, "anchor": "anchor/chest", "requires_flags": ["flag/halls-quiet"] },
-          { "type": "interact", "id": "obj/unbar", "anchor": "anchor/door", "requires_item": "minecraft:trial_key", "after": ["obj/key"] }
+          {
+            "type": "collect",
+            "id": "obj/key",
+            "item": "minecraft:trial_key",
+            "count": 1,
+            "anchor": "anchor/chest",
+            "requires_flags": ["flag/halls-quiet"],
+            "title": "Take the Barrow Key",
+            "hint": "The garrison's strongbox holds the barrow key — look for the chest in a small side room."
+          },
+          {
+            "type": "interact",
+            "id": "obj/unbar",
+            "anchor": "anchor/door",
+            "requires_item": "minecraft:trial_key",
+            "after": ["obj/key"],
+            "title": "Unlock the Deep Door",
+            "hint": "The deep door waits in the corner room — the glowing lantern marks it. Hold the barrow key and open it."
+          }
         ],
         "on_objective_complete": {
           "obj/unbar": [
-            { "type": "open-gate", "anchor": "anchor/gate" },
-            { "type": "set-flag", "flag": "flag/gate-open" }
+            { "type": "set-flag", "flag": "flag/deep-open" }
           ]
         },
         "on_complete": [
@@ -58,8 +82,24 @@
         "id": "quest/break-the-vigil",
         "trigger": { "type": "quest-complete", "quest": "quest/the-barrow-key" },
         "objectives": [
-          { "type": "kill", "id": "obj/warden", "wave": "wave/first-warden", "requires_flags": ["flag/warden-risen"] },
-          { "type": "reach-anchor", "id": "obj/altar", "anchor": "anchor/objective", "radius": 2, "after": ["obj/warden"], "requires_flags": ["flag/vigil-broken"] }
+          {
+            "type": "kill",
+            "id": "obj/warden",
+            "wave": "wave/first-warden",
+            "requires_flags": ["flag/warden-risen"],
+            "title": "Break the First Warden",
+            "hint": "He stands his post in the great hall with a footman at his side. He still carries his blade — bring your shield up."
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/altar",
+            "anchor": "anchor/objective",
+            "radius": 2,
+            "after": ["obj/warden"],
+            "requires_flags": ["flag/vigil-broken"],
+            "title": "Speak the Ending",
+            "hint": "Step up to the altar at the head of the great hall, past where the First Warden fell."
+          }
         ],
         "on_objective_complete": {
           "obj/warden": [
