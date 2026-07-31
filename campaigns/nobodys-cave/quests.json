@@ -1,0 +1,166 @@
+{
+  "dsl_version": "0.3.0",
+  "campaign_id": "nobodys-cave",
+  "stage": "quests",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/the-cave-invites",
+        "trigger": { "type": "campaign-start" },
+        "objectives": [
+          { "type": "talk-to", "id": "obj/the-argument", "npc": "npc/eurylochus" }
+        ],
+        "on_objective_complete": {
+          "obj/the-argument": [
+            { "type": "set-flag", "flag": "flag/overruled" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/the-boulder-falls",
+        "trigger": { "type": "quest-complete", "quest": "quest/the-cave-invites" },
+        "objectives": [
+          {
+            "type": "talk-to",
+            "id": "obj/the-stone",
+            "npc": "npc/perimedes",
+            "requires_flags": ["flag/overruled"]
+          }
+        ],
+        "on_objective_complete": {
+          "obj/the-stone": [
+            { "type": "open-gate", "anchor": "anchor/gate" },
+            { "type": "spawn-wave", "wave": "wave/the-flock" },
+            { "type": "set-flag", "flag": "flag/sealed" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/nobody",
+        "trigger": { "type": "quest-complete", "quest": "quest/the-boulder-falls" },
+        "objectives": [
+          {
+            "type": "talk-to",
+            "id": "obj/the-name",
+            "npc": "npc/polyphemus",
+            "requires_flags": ["flag/sealed"]
+          }
+        ],
+        "on_objective_complete": {
+          "obj/the-name": [
+            { "type": "set-flag", "flag": "flag/named" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/the-stake",
+        "trigger": { "type": "quest-complete", "quest": "quest/nobody" },
+        "objectives": [
+          {
+            "type": "collect",
+            "id": "obj/olive-beam",
+            "item": "minecraft:stripped_oak_log",
+            "count": 1,
+            "anchor": "anchor/chest",
+            "requires_flags": ["flag/named"],
+            "title": "Cut the Olive Beam",
+            "hint": "Past the stone Polyphemus rolled aside, the sheep pens are stacked with his cut timber — the olive beam is in the chest among them."
+          },
+          {
+            "type": "interact",
+            "id": "obj/sharpen",
+            "anchor": "anchor/door",
+            "requires_item": "minecraft:stripped_oak_log",
+            "after": ["obj/olive-beam"],
+            "title": "Grind the Point",
+            "hint": "Carry the beam back toward the mouth, near where Perimedes is waiting — the giant keeps a grinding stone there for his own tools, and a glowing lantern marks it."
+          },
+          {
+            "type": "interact",
+            "id": "obj/harden",
+            "anchor": "anchor/boss",
+            "after": ["obj/sharpen"],
+            "requires_flags": ["flag/sharpened"],
+            "title": "Harden it in the Fire",
+            "hint": "His hearth burns deeper in than the pens. Turn the point in the coals until it blackens."
+          },
+          {
+            "type": "talk-to",
+            "id": "obj/blind",
+            "npc": "npc/polyphemus",
+            "after": ["obj/harden"],
+            "requires_flags": ["flag/hardened"]
+          }
+        ],
+        "on_objective_complete": {
+          "obj/sharpen": [
+            { "type": "set-flag", "flag": "flag/sharpened" }
+          ],
+          "obj/harden": [
+            { "type": "set-flag", "flag": "flag/hardened" }
+          ],
+          "obj/blind": [
+            { "type": "set-flag", "flag": "flag/blinded" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/under-the-rams",
+        "trigger": { "type": "quest-complete", "quest": "quest/the-stake" },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/the-ram",
+            "anchor": "anchor/wave",
+            "radius": 3,
+            "requires_flags": ["flag/blinded"],
+            "title": "Get Under a Ram",
+            "hint": "Leave him standing there and go back to the flock in the pens — get underneath a ram and take hold of the fleece, and let it carry you out past his hands."
+          },
+          {
+            "type": "talk-to",
+            "id": "obj/hold-fast",
+            "npc": "npc/perimedes",
+            "after": ["obj/the-ram"],
+            "requires_flags": ["flag/aboard"]
+          }
+        ],
+        "on_objective_complete": {
+          "obj/the-ram": [
+            { "type": "set-flag", "flag": "flag/aboard" }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/the-name-you-shout",
+        "trigger": { "type": "quest-complete", "quest": "quest/under-the-rams" },
+        "objectives": [
+          {
+            "type": "talk-to",
+            "id": "obj/the-shout",
+            "npc": "npc/eurylochus",
+            "requires_flags": ["flag/aboard"]
+          }
+        ],
+        "on_objective_complete": {},
+        "on_complete": [
+          { "type": "campaign-complete" }
+        ]
+      }
+    ],
+    "waves": [
+      {
+        "id": "wave/the-flock",
+        "anchor": "anchor/wave",
+        "mobs": [
+          { "entity": "minecraft:sheep", "count": 6, "name": "Ram of the Cave" }
+        ]
+      }
+    ]
+  }
+}

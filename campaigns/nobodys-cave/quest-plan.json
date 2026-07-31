@@ -1,0 +1,64 @@
+{
+  "dsl_version": "0.3.0",
+  "campaign_id": "nobodys-cave",
+  "stage": "quest-plan",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/the-cave-invites",
+        "goal": "On the beach below the cave, hear Eurylochus out — then decide whether to take the cheese and run, or wait for the owner of the flock.",
+        "area": "area/shore",
+        "npcs": ["npc/eurylochus"],
+        "depends_on": [],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/the-boulder-falls",
+        "goal": "The stone is across the mouth and Antiphus is gone. Find Perimedes at the cave entrance and learn what walked in behind you.",
+        "area": "area/cave",
+        "npcs": ["npc/perimedes"],
+        "depends_on": ["quest/the-cave-invites"],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/nobody",
+        "goal": "Offer Polyphemus the wine, earn the right to be asked, and give him a name to remember you by.",
+        "area": "area/cave",
+        "npcs": ["npc/polyphemus"],
+        "depends_on": ["quest/the-boulder-falls"],
+        "mandatory": true,
+        "act": 2
+      },
+      {
+        "id": "quest/the-stake",
+        "goal": "Cut the olive beam out of the pens, grind it to a point, harden the point in the fire, and put out the eye while it sleeps.",
+        "area": "area/cave",
+        "npcs": [],
+        "depends_on": ["quest/nobody"],
+        "mandatory": true,
+        "act": 2
+      },
+      {
+        "id": "quest/under-the-rams",
+        "goal": "He is blind, awake, and listening. Get down among the flock without giving him a sound to follow.",
+        "area": "area/cave",
+        "npcs": [],
+        "depends_on": ["quest/the-stake"],
+        "mandatory": true,
+        "act": 3
+      },
+      {
+        "id": "quest/the-name-you-shout",
+        "goal": "Back on the sand with the ship afloat: leave in silence, or let him know whose hand it was.",
+        "area": "area/shore",
+        "npcs": ["npc/eurylochus"],
+        "depends_on": ["quest/under-the-rams"],
+        "mandatory": true,
+        "act": 3
+      }
+    ],
+    "finale": "quest/the-name-you-shout"
+  }
+}
