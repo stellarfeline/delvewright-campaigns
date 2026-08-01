@@ -1,0 +1,197 @@
+{
+  "dsl_version": "0.6.0",
+  "campaign_id": "nobodys-cave-island",
+  "stage": "dialogue",
+  "content": {
+    "dialogues": [
+      {
+        "npc": "npc/eurylochus",
+        "root": "dlg/root",
+        "nodes": [
+          {
+            "id": "dlg/root",
+            "text": "Captain. Twelve of us on this beach, and I'll say it before you tell me not to: I don't like the look of that smoke. Cheese racked to the roof up there, lambs penned and sorted, pails still wet — and nobody home. That isn't an empty house. That's a house someone is coming back to.",
+            "options": [
+              { "label": "Who are we? Say it plainly.", "next": "dlg/who" },
+              { "label": "Whose island is this?", "next": "dlg/where" },
+              { "label": "What did the scouts see inside?", "next": "dlg/inside" },
+              { "label": "Enough talk. We climb the mountain.", "effects": [ { "type": "complete-objective", "objective": "obj/muster" } ] },
+              { "label": "Lead on, then. Up to the smoke.", "effects": [ { "type": "complete-objective", "objective": "obj/climb-out" } ] },
+              { "label": "You're right. Take the cheese and run for the ship.", "effects": [ { "type": "set-flag", "flag": "flag/flee" }, { "type": "complete-objective", "objective": "obj/the-argument" } ], "next": "dlg/heed" },
+              { "label": "We wait. I would meet the man who milks them.", "effects": [ { "type": "set-flag", "flag": "flag/wait" }, { "type": "complete-objective", "objective": "obj/the-argument" } ], "next": "dlg/overrule" }
+            ]
+          },
+          {
+            "id": "dlg/who",
+            "text": "You're Odysseus, son of Laertes, king of Ithaca — and I'm your wife's brother, which is the only reason I'm let to talk to you like this. Troy fell; ten years of it, and the wooden horse at the end was your idea. We've been trying to sail home ever since, and the sea keeps handing us islands instead of Ithaca. That's who we are, Captain. Men who should have been home nine years ago.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/where",
+            "text": "No idea, and that is precisely my objection. We came in through fog — no harbour, no ploughed field, no boundary stone. Nobody has ever cut a furrow here. Whatever keeps these flocks doesn't trade, doesn't sow, and has no neighbours it needs to stay on good terms with.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/inside",
+            "text": "Cheese, more than a village eats in a winter. Pens sorted properly, lambs from yearlings from full-grown; whoever does it knows the work. And at the back, a bed made of green branches. ... It isn't the bed I mind, Captain. It's the size of it.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/heed",
+            "text": "Thank every god at once. Grab, carry, go, and no arguing about the lambs. — And that is how it should go. Cheese in the hold, oars in the water before dark, Ithaca inside the month. You'll have a long quiet old age and not one soul will make a song of it. Down to the ship, Captain, while the light lasts.",
+            "options": [ { "label": "(Down to the ship.)" } ]
+          },
+          {
+            "id": "dlg/overrule",
+            "text": "Of course we wait. You want to see it. You always want to see the thing. — Fine. Whatever comes through that mouth does not owe you a guest's welcome just because you're standing in its house. Keep Perimedes close, and Captain — for once in your life, be ready to be quiet.",
+            "options": [ { "label": "(Then we wait.)" } ]
+          }
+        ]
+      },
+      {
+        "npc": "npc/perimedes",
+        "root": "dlg/root",
+        "nodes": [
+          {
+            "id": "dlg/root",
+            "text": "Captain. The stone is down — he rolled it in behind the last ewe the way a man shuts a door, without looking. Twenty-two waggons wouldn't shift it. We're in here with him. And he took Antiphos, picked him up by the ankle. Nine years on the same oar and Antiphos didn't get one word out.",
+            "options": [
+              { "label": "Tell me what he is.", "next": "dlg/giant" },
+              { "label": "Is there another way out?", "next": "dlg/out" },
+              { "label": "Then we don't fight him. We think.", "effects": [ { "type": "complete-objective", "objective": "obj/the-stone" } ] },
+              { "label": "(Take two fistfuls of fleece. Hold on, and go out with the flock.)", "effects": [ { "type": "complete-objective", "objective": "obj/hold-fast" } ] }
+            ]
+          },
+          {
+            "id": "dlg/giant",
+            "text": "One eye, middle of the forehead, and it's the only one he has — I made myself look. His head brushes the roof when he stands. And he talks, Captain, that's the part I wasn't ready for. He talks like a man. He asked us who we were, and he asked politely.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/out",
+            "text": "I've walked every wall twice. Pens at the back, his hearth deeper in, and one crack too narrow for a cat. One mouth, one stone. But it opens twice a day, Captain — the flock has to go out to graze and come back. That's all I have for you. That, and he goes down heavy after he's milked. He always sleeps after.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          }
+        ]
+      },
+      {
+        "npc": "npc/polyphemus",
+        "root": "dlg/guest",
+        "nodes": [
+          {
+            "id": "dlg/guest",
+            "text": "You are still awake, little one. Good. There is no savour in a thing that sleeps; it is like bread with no salt. Sit. Talk, if talking is a thing you do. The others did not talk much. Not for long.",
+            "options": [
+              { "label": "Who are you?", "next": "dlg/self" },
+              { "label": "Whose flock is this?", "next": "dlg/flock" },
+              { "label": "Is there no law here at all?", "next": "dlg/law" },
+              { "label": "I bring wine off my ship. Take it, and be a host to me.", "next": "dlg/wine" }
+            ]
+          },
+          {
+            "id": "dlg/self",
+            "text": "Polyphemus. My father is Poseidon, who moves under the floor of the sea and shakes it when he is displeased. There is no one on this island but me and the flock — no neighbour I speak to, no one who comes, no one who asks. That is how it has been since before your people thought of boats.",
+            "options": [ { "label": "Back.", "next": "dlg/guest" } ]
+          },
+          {
+            "id": "dlg/flock",
+            "text": "Mine. Every ewe, every ram, every lamb dropped in the spring. I know them by the feel of them, not by counting; I could tell you in the dark which is which, and I do, most nights. You came into my house and ate my cheese. I am not angry about the cheese.",
+            "options": [ { "label": "Back.", "next": "dlg/guest" } ]
+          },
+          {
+            "id": "dlg/law",
+            "text": "Law. I know the word — men carry it in like a smell on their clothes. Zeus is a stranger's god, you'll tell me; a guest is to be fed and gifted and sent on unharmed. But we were here before Zeus, and we are stronger, and I do what I like in my own house. That is the entire law of this island, and I am all of it.",
+            "options": [
+              { "label": "Then take a gift from me instead. Wine, off my ship.", "next": "dlg/wine" },
+              { "label": "Back.", "next": "dlg/guest" }
+            ]
+          },
+          {
+            "id": "dlg/wine",
+            "text": "... What is that. What IS that. We press a wine here from the vine by the pens; it is thin and sour and honest, and I have drunk it every year of my life. This is not that. This is the wine one dreams about. Give me it again. Again. — Ahh. ... Little one. I will do you a kindness in return, for you have done me one, and that is your law, is it not. Tell me your name, and I will give you a guest-gift.",
+            "options": [
+              { "label": "Nobody. My mother calls me Nobody, my father, my friends — all of them.", "effects": [ { "type": "set-flag", "flag": "flag/name-nobody" }, { "type": "complete-objective", "objective": "obj/the-name" } ], "next": "dlg/name-nobody" },
+              { "label": "Odysseus, son of Laertes. Sacker of cities.", "effects": [ { "type": "set-flag", "flag": "flag/name-boast" }, { "type": "complete-objective", "objective": "obj/the-name" } ], "next": "dlg/name-boast" },
+              { "label": "Aithon. A trader, out of Crete.", "effects": [ { "type": "set-flag", "flag": "flag/name-lie" }, { "type": "complete-objective", "objective": "obj/the-name" } ], "next": "dlg/name-lie" }
+            ]
+          },
+          {
+            "id": "dlg/name-nobody",
+            "text": "Nobody. — Nobody. A poor thin name; your parents cannot have loved you much. Then here is your guest-gift, and it is a good one: of all of them, I will eat Nobody last. Last of all. — Ohh. The cup is in the roof, the roof is turning... Stay till morning, Nobody. It has been a long age since anything in here talked back.",
+            "options": [ { "label": "(He is asleep.)" } ]
+          },
+          {
+            "id": "dlg/name-boast",
+            "text": "Odysseus. — Odysseus, sacker of cities. You set it down like a coin you are proud of, and wait to see my face. I have made no face. But I remember everything I am told in my own house; there is little else put in here to remember. Your gift is that I will eat you last. — Ohh. The roof is turning... Stay till morning, sacker of cities.",
+            "options": [ { "label": "(He is asleep.)" } ]
+          },
+          {
+            "id": "dlg/name-lie",
+            "text": "Aithon. Out of Crete. — Cretans lie; even here that much is known. But you have given me a name, and a name is what I asked, so I will not quarrel with it. My gift: I will eat Aithon last. — Ohh. The cup, the roof, the... Stay till morning, Cretan.",
+            "options": [ { "label": "(He is asleep.)" } ]
+          }
+        ]
+      },
+      {
+        "npc": "npc/antiphos",
+        "root": "dlg/root",
+        "nodes": [
+          {
+            "id": "dlg/root",
+            "text": "Sit by the fire while it lasts, Captain. It won't last. I've buried better men than me on worse beaches than this, and I've learned to tell the difference between quiet and empty. This island is empty the way a trap is empty before it's sprung.",
+            "options": [
+              { "label": "You've seen islands like this before.", "next": "dlg/seen" },
+              { "label": "Keep an eye on the boy for me.", "next": "dlg/boy" },
+              { "label": "Rest while you can, old man.", "next": "dlg/rest" }
+            ]
+          },
+          {
+            "id": "dlg/seen",
+            "text": "Seen enough of them. The good ones have smoke and a dog barking and someone who comes down to the water to see who you are. This one has smoke and no dog and no one. Whatever's up that mountain, it doesn't worry about strangers. That's what worries me.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/boy",
+            "text": "Elpenor. Aye. He'll do something brave and stupid before this is done — his kind always does. I'll keep him off the wine and off the high rocks as long as I can. After that he's in the gods' hands, same as the rest of us.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/rest",
+            "text": "Rest. There's a word. — I'll rest when we're off this rock, Captain, and not one hour before. You do what you do best up there: think us out of it. I'll do what I do best down here: be ready to row.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          }
+        ]
+      },
+      {
+        "npc": "npc/elpenor",
+        "root": "dlg/root",
+        "nodes": [
+          {
+            "id": "dlg/root",
+            "text": "Is it true what they saw in the cave, Captain? Tell me it isn't. — No, don't, I can see your face. It's fine. It's fine! I'm fine. I signed on to see the world, and this is the world, so. Ha. So this is it. ... You'll not leave me behind up there, will you?",
+            "options": [
+              { "label": "Stay by the fire and you'll be all right.", "next": "dlg/stay" },
+              { "label": "Why did you come to sea, lad?", "next": "dlg/why" },
+              { "label": "Nobody gets left behind. You have my word.", "next": "dlg/word" }
+            ]
+          },
+          {
+            "id": "dlg/stay",
+            "text": "By the fire. Right. I'm good by the fire — I can keep a fire, I'm not useless. It's the dark past the light I don't like, and that cave is all dark. ... I'll keep the fire, Captain. You come back and it'll still be burning. That's my part. I can do that part.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/why",
+            "text": "To be more than the youngest son of a small farm, Captain. My mother told me not to sail — she said the sea takes the greenest ones first. I laughed at her. ... I've stopped laughing about it, if that's what you're asking. But I'd still rather be here and afraid than home and nothing.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          },
+          {
+            "id": "dlg/word",
+            "text": "Your word. — All right. All right, then. If Odysseus of Ithaca says nobody gets left behind, that's as good as a rope in my hand. I'll hold you to it, Captain, and I'll hold myself together till you do. Go on. Go be clever at it. We'll be here.",
+            "options": [ { "label": "Back.", "next": "dlg/root" } ]
+          }
+        ]
+      }
+    ]
+  }
+}

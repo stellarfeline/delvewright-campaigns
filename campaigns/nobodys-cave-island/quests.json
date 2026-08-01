@@ -1,0 +1,1344 @@
+{
+ "dsl_version": "0.6.0",
+ "campaign_id": "nobodys-cave-island",
+ "stage": "quests",
+ "content": {
+  "actors": [
+   {
+    "id": "actor/polyphemus-walker",
+    "entity": "minecraft:warden",
+    "name": "Polyphemus",
+    "anchor": "anchor/fire-pit",
+    "vulnerable": false
+   },
+   {
+    "id": "actor/sheep-1",
+    "entity": "minecraft:sheep",
+    "name": "Ram of the Cave",
+    "anchor": "anchor/pen"
+   },
+   {
+    "id": "actor/sheep-2",
+    "entity": "minecraft:sheep",
+    "name": "Ram of the Cave",
+    "anchor": "anchor/pen"
+   },
+   {
+    "id": "actor/sheep-3",
+    "entity": "minecraft:sheep",
+    "name": "Ewe of the Cave",
+    "anchor": "anchor/pen"
+   },
+   {
+    "id": "actor/sheep-4",
+    "entity": "minecraft:sheep",
+    "name": "Ewe of the Cave",
+    "anchor": "anchor/pen"
+   },
+   {
+    "id": "actor/sheep-5",
+    "entity": "minecraft:sheep",
+    "name": "Ram of the Cave",
+    "anchor": "anchor/ramp-top"
+   },
+   {
+    "id": "actor/sheep-6",
+    "entity": "minecraft:sheep",
+    "name": "Ram of the Cave",
+    "anchor": "anchor/ramp-top"
+   },
+   {
+    "id": "actor/sheep-7",
+    "entity": "minecraft:sheep",
+    "name": "Ewe of the Cave",
+    "anchor": "anchor/ramp-top"
+   },
+   {
+    "id": "actor/sheep-8",
+    "entity": "minecraft:sheep",
+    "name": "Lamb of the Cave",
+    "anchor": "anchor/ramp-top"
+   }
+  ],
+  "waves": [
+   {
+    "id": "wave/surf",
+    "anchor": "anchor/surf-wave",
+    "mobs": [
+     {
+      "entity": "minecraft:drowned",
+      "count": 3,
+      "name": "Drowned of the Wreck",
+      "attributes": {
+       "max_health": 6.0,
+       "movement_speed": 0.16,
+       "follow_range": 48.0,
+       "attack_damage": 1.0
+      }
+     }
+    ]
+   }
+  ],
+  "quests": [
+   {
+    "id": "quest/shipwrecked",
+    "trigger": {
+     "type": "campaign-start"
+    },
+    "objectives": [
+     {
+      "type": "talk-to",
+      "id": "obj/muster",
+      "npc": "npc/eurylochus",
+      "title": "Hear Eurylochus Out",
+      "hint": "He stands at the class-post by the driftwood fire, a few steps up the sand from where you woke."
+     },
+     {
+      "type": "kill",
+      "id": "obj/surf",
+      "wave": "wave/surf",
+      "after": [
+       "obj/muster"
+      ],
+      "title": "Drive Off the Drowned",
+      "hint": "Three drowned haul themselves out of the surf at the waterline, west of the fire. Cut them down before they reach the crew."
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/climb-out",
+      "npc": "npc/eurylochus",
+      "after": [
+       "obj/surf"
+      ],
+      "title": "Tell Eurylochus You Will Climb",
+      "hint": "He is still at the fire, watching the smoke on the mountain. Give him the word to lead on."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/muster": [
+      {
+       "type": "set-time",
+       "time": "night"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The sun drops fast behind the world's rim, the way it does at sea. In the last red light, the surf begins to move."
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/surf"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "The surf gives up its dead: three drowned wade out of the shallows toward the fire."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.hostile.splash",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/surf-wave"
+       }
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.drowned.ambient",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/surf-wave"
+       }
+      }
+     ],
+     "obj/surf": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The last of them slides back under the foam. The beach is yours for as long as the light lasts."
+      }
+     ],
+     "obj/climb-out": [
+      {
+       "type": "move-npc",
+       "npc": "npc/eurylochus",
+       "to_anchor": "anchor/mouth"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "Eurylochus shoulders a coil of rope and starts up the worn path. Follow the smoke."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:block.campfire.crackle",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/camp-fire"
+       }
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/follow-the-smoke",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/shipwrecked"
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/reach-mouth",
+      "anchor": "anchor/mouth",
+      "radius": 3,
+      "title": "Follow Eurylochus to the Cave",
+      "hint": "Climb up off the sand behind him: through the grazing meadow, past the low stone sheep-fold standing walled and empty, and up the switchbacks of the mountain's face to the smoking cave mouth where the great boulder rests."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/reach-mouth": [
+      {
+       "type": "move-npc",
+       "npc": "npc/eurylochus",
+       "to_anchor": "anchor/cheese-store"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "The mouth breathes cool air and old smoke. Eurylochus steps inside ahead of you."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.sheep.ambient",
+       "at": {
+        "at": "players"
+       }
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:ambient.cave",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/mouth"
+       }
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/cave-of-plenty",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/follow-the-smoke"
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/checkpoint",
+      "anchor": "anchor/checkpoint-1",
+      "radius": 2,
+      "title": "Step Into the Cave",
+      "hint": "Move in past the mouth to the first broad shelf of the hall, where the racks begin."
+     },
+     {
+      "type": "interact",
+      "id": "obj/cheese",
+      "anchor": "anchor/cheese-store",
+      "after": [
+       "obj/checkpoint"
+      ],
+      "title": "Take a Wheel of Cheese",
+      "hint": "The cheese is racked to the roof on the shelves by the entry. Help yourself to one wheel."
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/the-argument",
+      "npc": "npc/eurylochus",
+      "after": [
+       "obj/cheese"
+      ],
+      "title": "Decide With Eurylochus",
+      "hint": "He is at your shoulder by the cheese racks. Tell him whether you run for the ship or wait for the owner of this cave."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/checkpoint": [
+      {
+       "type": "set-checkpoint",
+       "anchor": "anchor/checkpoint-1",
+       "on_respawn": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "You come to against the cold shelf inside the mouth, cheese-smell and old smoke in your throat."
+        }
+       ]
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Cheese racked to the roof. Lambs penned and sorted by age. Pails still wet, and nobody home. This is not an empty house. It is a house someone is coming back to."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:ambient.cave",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/checkpoint-1"
+       }
+      }
+     ],
+     "obj/cheese": [
+      {
+       "type": "give-item",
+       "item": "minecraft:sponge",
+       "count": 1,
+       "name": "Kefalotyri Cheese"
+      },
+      {
+       "type": "give-item",
+       "item": "minecraft:honey_bottle",
+       "count": 1,
+       "name": "Skin of Maron's Wine"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "A wheel of hard yellow cheese, heavy as a shield. Perimedes presses the wine-skin from the ship into your other hand: \"Carried it up myself, Captain. In case a stranger needs making a guest.\""
+      }
+     ],
+     "obj/the-argument": [
+      {
+       "type": "set-flag",
+       "flag": "flag/wait",
+       "requires_flags": [
+        "flag/wait"
+       ]
+      },
+      {
+       "type": "set-flag",
+       "flag": "flag/flee",
+       "requires_flags": [
+        "flag/flee"
+       ]
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/take-the-cheese",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/cave-of-plenty"
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/flee-back",
+      "anchor": "anchor/gangplank",
+      "radius": 3,
+      "requires_flags": [
+       "flag/flee"
+      ],
+      "title": "Run for the Ship",
+      "hint": "Back down the mountain the way you climbed, past the fold and the fire, to the gangplank where the galley waits."
+     },
+     {
+      "type": "interact",
+      "id": "obj/board-flee",
+      "anchor": "anchor/deck",
+      "after": [
+       "obj/flee-back"
+      ],
+      "requires_flags": [
+       "flag/flee"
+      ],
+      "title": "Board the Galley",
+      "hint": "Cross the gangplank and take your place at the oars while the cave is still empty behind you."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/flee-back": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Cheese in the crook of your arm, the lambs left complaining in their pens. No song will ever be made of this. You will simply get home."
+      }
+     ],
+     "obj/board-flee": [
+      {
+       "type": "narrate",
+       "style": "art",
+       "text": "THE QUIET SAIL"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "Ithaca inside the month. Safe, and fed, and a little smaller for it — and every man you came in with still at his oar."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.villager.celebrate",
+       "at": {
+        "at": "players"
+       }
+      },
+      {
+       "type": "campaign-complete"
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/hide",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/cave-of-plenty"
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/take-cover",
+      "anchor": "anchor/alcove-1",
+      "radius": 2,
+      "requires_flags": [
+       "flag/wait"
+      ],
+      "stealth": true,
+      "title": "Get Into the Shadows",
+      "hint": "The light is going and something is coming up the slope. Press into one of the dark recesses along the hall wall and keep still."
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/the-stone",
+      "npc": "npc/perimedes",
+      "after": [
+       "obj/take-cover"
+      ],
+      "requires_flags": [
+       "flag/sealed"
+      ],
+      "title": "Find Perimedes in the Dark",
+      "hint": "When the stone is down and the giant sits to his milking, find Perimedes crouched by the racks and learn what walked in."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/take-cover": [
+      {
+       "type": "set-time",
+       "time": "night"
+      },
+      {
+       "type": "set-flag",
+       "flag": "flag/sealed"
+      },
+      {
+       "type": "narrate",
+       "style": "title",
+       "text": "Hide"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "Stay in the shadows. Stay down. Make no sound he can follow."
+      },
+      {
+       "type": "begin-stealth",
+       "grace_ticks": 60,
+       "zones": [
+        {
+         "anchor": "anchor/alcove-1",
+         "extent": [
+          2,
+          2,
+          2
+         ]
+        },
+        {
+         "anchor": "anchor/alcove-2",
+         "extent": [
+          2,
+          2,
+          2
+         ]
+        },
+        {
+         "anchor": "anchor/alcove-3",
+         "extent": [
+          2,
+          2,
+          2
+         ]
+        },
+        {
+         "anchor": "anchor/alcove-4",
+         "extent": [
+          2,
+          2,
+          2
+         ]
+        }
+       ],
+       "on_caught": [
+        {
+         "type": "narrate",
+         "style": "subtitle",
+         "text": "A great head turns toward the sound. Get back into the dark — now."
+        },
+        {
+         "type": "play-sound",
+         "sound": "minecraft:entity.warden.nearby_close",
+         "at": {
+          "at": "players"
+         }
+        },
+        {
+         "type": "damage-players",
+         "amount": 40
+        }
+       ]
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-1"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-2"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-3"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-4"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-5"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-6"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-7"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/sheep-8"
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.sheep.step",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/mouth"
+       }
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/polyphemus-walker"
+      },
+      {
+       "type": "sequence",
+       "steps": [
+        {
+         "at_ticks": 0,
+         "effects": [
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.warden.emerge",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/mouth"
+           }
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/polyphemus-walker",
+           "to_anchor": "anchor/mouth",
+           "on_arrive": [
+            {
+             "type": "play-sound",
+             "sound": "minecraft:entity.warden.roar",
+             "at": {
+              "at": "anchor",
+              "anchor": "anchor/mouth"
+             }
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "at_ticks": 100,
+         "effects": [
+          {
+           "type": "narrate",
+           "style": "title",
+           "text": "Sealed In"
+          },
+          {
+           "type": "narrate",
+           "style": "subtitle",
+           "text": "Stone grinds across the mouth. The daylight narrows to a line, then to nothing."
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.wither.break_block",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/boulder"
+           }
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:block.deepslate.fall",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/boulder"
+           }
+          },
+          {
+           "type": "cutscene",
+           "seconds": 5,
+           "path": [
+            {
+             "anchor": "anchor/mouth",
+             "offset": [
+              0,
+              3,
+              6
+             ]
+            },
+            {
+             "anchor": "anchor/mouth",
+             "offset": [
+              0,
+              2,
+              2
+             ]
+            }
+           ]
+          },
+          {
+           "type": "close-gate",
+           "anchor": "anchor/boulder"
+          }
+         ]
+        },
+        {
+         "at_ticks": 220,
+         "effects": [
+          {
+           "type": "narrate",
+           "style": "subtitle",
+           "text": "He picks a man up by the ankle without looking. Nine years on the same oar, and Antiphos does not get one word out."
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.warden.attack_impact",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/mouth"
+           }
+          },
+          {
+           "type": "despawn-npc",
+           "npc": "npc/antiphos"
+          }
+         ]
+        },
+        {
+         "at_ticks": 260,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/polyphemus-walker",
+           "to_anchor": "anchor/fire-pit",
+           "on_arrive": [
+            {
+             "type": "play-sound",
+             "sound": "minecraft:entity.warden.step",
+             "at": {
+              "at": "anchor",
+              "anchor": "anchor/fire-pit"
+             }
+            }
+           ]
+          },
+          {
+           "type": "end-stealth"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "set-checkpoint",
+       "anchor": "anchor/checkpoint-2",
+       "on_respawn": [
+        {
+         "type": "set-time",
+         "time": "night"
+        },
+        {
+         "type": "despawn-actor",
+         "actor": "actor/polyphemus-walker",
+         "style": "vanish"
+        },
+        {
+         "type": "spawn-actor",
+         "actor": "actor/polyphemus-walker"
+        },
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "You come to in the dark by the racks. The giant is a shape at his own fire, milking, unhurried."
+        }
+       ]
+      }
+     ],
+     "obj/the-stone": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "\"One eye, middle of the forehead, and he talks like a man — asked us who we were, polite as you like. The stone took twenty-two waggons to set and he rolled it one-handed. We do not fight him, Captain. We think.\""
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/nobody",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/hide"
+    },
+    "objectives": [
+     {
+      "type": "talk-to",
+      "id": "obj/the-name",
+      "npc": "npc/polyphemus",
+      "requires_flags": [
+       "flag/sealed"
+      ],
+      "title": "Meet the Owner of the Cave",
+      "hint": "Polyphemus sits at the great fire at the heart of the hall. Go to him before you touch anything else of his, and mind your manners about the wine."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/the-name": [
+      {
+       "type": "set-flag",
+       "flag": "flag/asleep"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The wine of Maron does its work. His chin sinks to his chest, and the whole cave fills with the long tide of his breathing."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.generic.drink",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/fire-pit"
+       }
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.warden.ambient",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/fire-pit"
+       }
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "give-item",
+      "item": "minecraft:stripped_oak_log",
+      "count": 1,
+      "name": "Green Olive Stake"
+     },
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "Perimedes drags a beam of green olive-wood from the giant's stacked timber and puts it in your hands. \"Big as a mast, Captain. We cut it down to a point.\""
+     }
+    ]
+   },
+   {
+    "id": "quest/the-stake",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/nobody"
+    },
+    "objectives": [
+     {
+      "type": "interact",
+      "id": "obj/grind",
+      "anchor": "anchor/shaft-1",
+      "prop": {
+       "block": "minecraft:grindstone[face=floor]"
+      },
+      "requires_item": "minecraft:stripped_oak_log",
+      "requires_flags": [
+       "flag/asleep"
+      ],
+      "title": "Grind the Point",
+      "hint": "The giant keeps a grinding stone under the light-shaft on the west floor. Turn the olive beam against it until it takes an edge."
+     },
+     {
+      "type": "interact",
+      "id": "obj/harden",
+      "anchor": "anchor/fire-pit",
+      "prop": {
+       "block": "minecraft:campfire[lit=true]"
+      },
+      "after": [
+       "obj/grind"
+      ],
+      "requires_flags": [
+       "flag/sharpened"
+      ],
+      "title": "Char It in the Fire",
+      "hint": "Take the sharpened stake to the great fire where he sleeps and turn the point in the coals until it blackens hard."
+     },
+     {
+      "type": "interact",
+      "id": "obj/blind",
+      "anchor": "anchor/fire-pit",
+      "requires_item": "minecraft:stripped_oak_log",
+      "after": [
+       "obj/harden"
+      ],
+      "requires_flags": [
+       "flag/hardened"
+      ],
+      "title": "Put Out the Eye",
+      "hint": "He is down where the wine took him, at his own fire. Set the hardened point to the single eye and lean your whole weight on it."
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/climb-to-pen",
+      "anchor": "anchor/ramp-top",
+      "radius": 2,
+      "after": [
+       "obj/blind"
+      ],
+      "requires_flags": [
+       "flag/blinded"
+      ],
+      "stealth": true,
+      "title": "Climb Toward the Pen",
+      "hint": "Leave him roaring at the floor and slip from shadow to shadow up the rock ramp toward the upper sheep-pen. Do not run and do not jump; he hunts by sound now."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/grind": [
+      {
+       "type": "set-flag",
+       "flag": "flag/sharpened"
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:block.deepslate.hit",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/shaft-1"
+       }
+      }
+     ],
+     "obj/harden": [
+      {
+       "type": "set-flag",
+       "flag": "flag/hardened"
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:block.campfire.crackle",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/fire-pit"
+       }
+      }
+     ],
+     "obj/blind": [
+      {
+       "type": "set-flag",
+       "flag": "flag/blinded"
+      },
+      {
+       "type": "despawn-npc",
+       "npc": "npc/polyphemus"
+      },
+      {
+       "type": "set-weather",
+       "weather": "thunder"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "requires_flags": [
+        "flag/name-nobody"
+       ],
+       "text": "The hills answer him. His own kind call in at the stone: \"Polyphemus! Who is killing you?\" And he roars his ruined face against the rock: \"NOBODY! Nobody is killing me!\" A pause. Then, going away up the mountain: \"If nobody hurts you, it is a sickness from Zeus. Pray to your father.\" And the footsteps do not come back. He hears them go."
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "requires_flags": [
+        "flag/name-boast"
+       ],
+       "text": "The hills answer him. His own kind call in: \"Polyphemus! Who has done this?\" And he roars back the name you laid down over the wine, whole and proud: \"ODYSSEUS! Sacker of cities, son of Laertes, of Ithaca — he was under my roof!\" And they believe him. \"Hold, cousin — we cannot shift your stone from without. Wait for the light; at dawn every hand on the mountain opens it together.\" Perimedes has your sleeve: \"They come back at dawn, Captain. We leave before they do.\""
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "requires_flags": [
+        "flag/name-lie"
+       ],
+       "text": "The hills answer him. His own kind call in: \"Polyphemus! Who has done this?\" And he roars back the name you gave him over the wine: \"AITHON! A Cretan, out of Crete — at my own fire!\" A silence. Then, cool and turning away: \"A Cretan. Cousin, the Cretans lie; it is the one thing known of them. Sleep it off.\" And the footsteps go, half-convinced of nothing, and do not come back tonight."
+      },
+      {
+       "type": "narrate",
+       "style": "title",
+       "text": "He Rises Blind"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "Get up the ramp. Make no sound he can follow."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.warden.roar",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/fire-pit"
+       }
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.warden.hurt",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/fire-pit"
+       }
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.lightning_bolt.thunder",
+       "at": {
+        "at": "players"
+       }
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/polyphemus-walker"
+      },
+      {
+       "type": "move-actor",
+       "actor": "actor/polyphemus-walker",
+       "to_anchor": "anchor/ramp-top",
+       "on_arrive": [
+        {
+         "type": "play-sound",
+         "sound": "minecraft:entity.warden.agitated",
+         "at": {
+          "at": "anchor",
+          "anchor": "anchor/ramp-top"
+         }
+        }
+       ]
+      },
+      {
+       "type": "set-checkpoint",
+       "anchor": "anchor/checkpoint-3",
+       "on_respawn": [
+        {
+         "type": "set-weather",
+         "weather": "thunder"
+        },
+        {
+         "type": "despawn-actor",
+         "actor": "actor/polyphemus-walker",
+         "style": "vanish"
+        },
+        {
+         "type": "spawn-actor",
+         "actor": "actor/polyphemus-walker"
+        },
+        {
+         "type": "move-actor",
+         "actor": "actor/polyphemus-walker",
+         "to_anchor": "anchor/ramp-top"
+        },
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "You come to below the ramp. The blind giant is still pacing the cavern floor, hands out, listening."
+        }
+       ]
+      },
+      {
+       "type": "begin-stealth",
+       "grace_ticks": 50,
+       "zones": [
+        {
+         "anchor": "anchor/alcove-3",
+         "extent": [
+          2,
+          2,
+          2
+         ]
+        },
+        {
+         "anchor": "anchor/alcove-4",
+         "extent": [
+          2,
+          2,
+          2
+         ]
+        },
+        {
+         "anchor": "anchor/ramp-top",
+         "extent": [
+          3,
+          2,
+          3
+         ]
+        }
+       ],
+       "on_caught": [
+        {
+         "type": "narrate",
+         "style": "subtitle",
+         "text": "His head snaps toward you. Freeze — get back into a shadow."
+        },
+        {
+         "type": "play-sound",
+         "sound": "minecraft:entity.warden.nearby_close",
+         "at": {
+          "at": "players"
+         }
+        },
+        {
+         "type": "damage-players",
+         "amount": 40
+        }
+       ]
+      }
+     ],
+     "obj/climb-to-pen": [
+      {
+       "type": "set-flag",
+       "flag": "flag/at-pen"
+      },
+      {
+       "type": "end-stealth"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The rams crowd the upper pen, warm and stupid and enormous. Below you the giant paces the floor he can no longer see."
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/under-the-rams",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-stake"
+    },
+    "objectives": [
+     {
+      "type": "interact",
+      "id": "obj/under-ram",
+      "anchor": "anchor/pen",
+      "requires_flags": [
+       "flag/at-pen"
+      ],
+      "title": "Get Under a Ram",
+      "hint": "Take two fistfuls of fleece at the belly of the biggest ram and let it carry you, close and quiet, when the flock goes out."
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/hold-fast",
+      "npc": "npc/perimedes",
+      "after": [
+       "obj/under-ram"
+      ],
+      "requires_flags": [
+       "flag/aboard"
+      ],
+      "title": "Go Out With the Flock",
+      "hint": "Perimedes is under a ram of his own down by the mouth. Reach him before the last of the flock is through the gap."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/under-ram": [
+      {
+       "type": "set-flag",
+       "flag": "flag/aboard"
+      },
+      {
+       "type": "sequence",
+       "steps": [
+        {
+         "at_ticks": 0,
+         "effects": [
+          {
+           "type": "set-time",
+           "time": "day"
+          },
+          {
+           "type": "open-gate",
+           "anchor": "anchor/boulder"
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:block.deepslate.break",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/boulder"
+           }
+          },
+          {
+           "type": "narrate",
+           "style": "subtitle",
+           "text": "He heaves the stone aside for the flock and sits in the gap, running his hands over every back that passes — only the backs. He never thinks to feel underneath."
+          }
+         ]
+        },
+        {
+         "at_ticks": 20,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/polyphemus-walker",
+           "to_anchor": "anchor/mouth",
+           "on_arrive": [
+            {
+             "type": "play-sound",
+             "sound": "minecraft:entity.warden.roar",
+             "at": {
+              "at": "anchor",
+              "anchor": "anchor/mouth"
+             }
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "at_ticks": 40,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-1",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-2",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-3",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-4",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-5",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-6",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-7",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-8",
+           "to_anchor": "anchor/mouth"
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.sheep.step",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/mouth"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 80,
+         "effects": [
+          {
+           "type": "set-weather",
+           "weather": "clear"
+          },
+          {
+           "type": "narrate",
+           "style": "subtitle",
+           "text": "Daylight, and salt air. The ram carries you out under the giant's very hands and down the mountain toward the sea."
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/the-sail",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/under-the-rams"
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/last-sand",
+      "anchor": "anchor/gangplank",
+      "radius": 3,
+      "title": "Down to the Ship",
+      "hint": "Come down off the mountain to the strand where the galley rides at her gangplank, oars manned and waiting."
+     },
+     {
+      "type": "interact",
+      "id": "obj/board-nobody",
+      "anchor": "anchor/deck",
+      "after": [
+       "obj/last-sand"
+      ],
+      "title": "Board and Give Way",
+      "hint": "Cross the gangplank to the deck and take your place. However you leave him, the water is listening."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/last-sand": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Behind you, high on the mountain, the blind giant sits in the mouth of his cave with his hands out, waiting for a sound to hate."
+      }
+     ],
+     "obj/board-nobody": [
+      {
+       "type": "narrate",
+       "style": "art",
+       "text": "NOBODY"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "You won the cave. He will tell the story to the end of his days and never once get the name right. You will live on that. You will have to."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:ui.toast.challenge_complete",
+       "at": {
+        "at": "players"
+       }
+      },
+      {
+       "type": "campaign-complete"
+      }
+     ]
+    },
+    "on_complete": []
+   }
+  ],
+  "triggers": [
+   {
+    "id": "trigger/boulder-wont-move",
+    "at": "anchor/boulder",
+    "on": {
+     "on": "strike"
+    },
+    "once": false,
+    "requires_flags": [
+     "flag/sealed"
+    ],
+    "effects": [
+     {
+      "type": "narrate",
+      "style": "subtitle",
+      "text": "You set your shoulder to the great stone. It does not so much as grind. No blade you carry will bite it — whatever opens this cave, it will not be you."
+     },
+     {
+      "type": "play-sound",
+      "sound": "minecraft:block.deepslate.hit",
+      "at": {
+       "at": "anchor",
+       "anchor": "anchor/boulder"
+      }
+     }
+    ]
+   },
+   {
+    "id": "trigger/wake-the-giant",
+    "at": "anchor/fire-pit",
+    "on": {
+     "on": "strike"
+    },
+    "once": false,
+    "requires_flags": [
+     "flag/asleep"
+    ],
+    "effects": [
+     {
+      "type": "narrate",
+      "style": "title",
+      "text": "He Wakes"
+     },
+     {
+      "type": "narrate",
+      "style": "subtitle",
+      "text": "Never strike a sleeping god's son. He comes up off the floor with his whole strength, and there is nothing in this cave that can stand against that."
+     },
+     {
+      "type": "play-sound",
+      "sound": "minecraft:entity.warden.roar",
+      "at": {
+       "at": "anchor",
+       "anchor": "anchor/fire-pit"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/polyphemus-walker"
+     }
+    ]
+   }
+  ]
+ }
+}
