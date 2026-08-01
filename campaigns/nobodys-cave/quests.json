@@ -1,5 +1,5 @@
 {
-  "dsl_version": "0.4.0",
+  "dsl_version": "0.6.0",
   "campaign_id": "nobodys-cave",
   "stage": "quests",
   "content": {
@@ -108,7 +108,7 @@
             "type": "interact",
             "id": "obj/sharpen",
             "anchor": "anchor/door",
-            "prop": { "block": "minecraft:grindstone" },
+            "prop": { "block": "minecraft:grindstone[face=floor]" },
             "requires_item": "minecraft:stripped_oak_log",
             "after": ["obj/olive-beam"],
             "title": "Grind the Point",
@@ -146,6 +146,24 @@
             { "type": "set-block", "anchor": "anchor/objective", "block": "minecraft:air" },
             { "type": "spawn-wave", "wave": "wave/blinded-polyphemus" },
             { "type": "set-flag", "flag": "flag/blinded" },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "requires_flags": ["flag/name-nobody"],
+              "text": "And the hills answer him. Voices all round the mountain, his own kind, calling in at the stone: 'Polyphemus! What ails you? Is someone killing you? Who is hurting you?' — And he puts his ruined face to the stone and roars back at them with everything he has: 'NOBODY! Nobody is killing me! Nobody is hurting me!' ... A pause. Then, from outside, already moving away: 'If nobody is hurting you, then it is a sickness sent from Zeus, and there is no help for that. Pray to your father.' — And the footsteps go off up the mountain, all of them, and they do not come back. He hears them go."
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "requires_flags": ["flag/name-boast"],
+              "text": "And the hills answer him. Voices all round the mountain, his own kind, calling in at the stone: 'Polyphemus! Who has done this to you?' — And he sets his ruined face to the stone and roars back a name, whole and proud, the one you laid down over the wine: 'ODYSSEUS! Odysseus, sacker of cities, son of Laertes, of Ithaca — he was under my roof!' — And they take it as true. You hear them come down to the mouth and set their shoulders to the great stone from the outside — and it does not so much as grind, because it is his stone, and only his to move. 'Hold, cousin — we cannot shift it from here. Wait for the light: we come back at dawn, every hand on the mountain, and we open it together.' — And the footsteps go off quick and certain. Perimedes has your sleeve, low and fast: 'They come back at dawn, Captain. We leave with the flock before they do.'"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "requires_flags": ["flag/name-lie"],
+              "text": "And the hills answer him. Voices all round the mountain, his own kind, calling in at the stone: 'Polyphemus! Who has done this to you?' — And he sets his ruined face to the stone and roars back the name you gave him over the wine: 'AITHON! A Cretan, Aithon, out of Crete — he was under my roof, at my own fire!' — A silence. Then, from outside, cool and already turning away: 'A Cretan. — Cousin, the Cretans lie; it is the one thing every man knows of them. And now the liars are indoors with you, are they, and the stone still shut from the inside. ... Sleep it off.' — And the footsteps go, unhurried, half-convinced of nothing, and they do not come back tonight. He stands in the dark with a false name ringing off his walls and no one at all coming to his hurt."
+            },
             {
               "type": "narrate",
               "style": "title",

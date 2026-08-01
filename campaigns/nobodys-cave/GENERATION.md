@@ -104,6 +104,91 @@ the toolchain rather than the content.
   translation of any copyrighted edition was ingested (ADR-0007).
 - **Content licence**: CC BY-SA 4.0 (the `delvewright-campaigns` repo default).
 
+## Owner playtest round 2 (2026-08-01)
+
+The owner's second human playtest found three defects. Two are fixed here (one
+engine change + this content pass); the third is a live-AI limitation, documented
+below as a known issue and resolved structurally by the island remake, **not**
+worked around in content (debug doctrine).
+
+1. **Floating grindstone.** The `obj/sharpen` prop placed `minecraft:grindstone`
+   in its default `face=wall` state — a wall-mounted grindstone hanging in open
+   air. Fixed via the new v0.6 blockstate surface (engine PR #95):
+   `minecraft:grindstone[face=floor]`. Audited the other props — `campfire`
+   (`obj/harden`) and the `decorated_pot` set-block — for state-dependent
+   placement; both sit correctly on the floor in their default state, so no
+   change was needed.
+
+2. **Name-branch echo was hardcoded.** The post-blinding mountain-echo — the kin
+   calling in at the sealed stone and Polyphemus roaring a name back at them —
+   lived once, inside `dlg/strike`, always the *Nobody* version, regardless of
+   the name the player gave the giant over the wine (`flag/name-nobody` /
+   `-boast` / `-lie`, set in `dlg/wine`). Split into **three flag-gated `narrate`
+   variants** on `obj/blind`'s completion, using the new v0.6 per-effect
+   `requires_flags` (engine PR #95). `dlg/strike` now ends at the scream going up
+   into the hills; the echo is the narrate. The three variants (EN):
+   - **nobody** — the original beat, unchanged: he roars "NOBODY", the kin take
+     it as a Zeus-sent sickness, tell him to pray to his father, and leave for
+     good.
+   - **boast (gave "Odysseus")** — he roars the true name whole and proud; the
+     kin believe it, come down to the mouth and set their shoulders to the
+     boulder *from outside* — and cannot shift it, because it is his stone and
+     only his to move — and call that they will return at dawn with every hand on
+     the mountain. Perimedes lands the new urgency: *"They come back at dawn,
+     Captain. We leave with the flock before they do."* Same mechanical escape, a
+     clock added.
+   - **lie (gave "Aithon")** — he roars the false Cretan name; the kin dismiss it
+     — *"the Cretans lie… now the liars are indoors with you, are they, and the
+     stone still shut from the inside"* — and leave half-convinced of nothing.
+     Colder and more dismissive than the nobody variant.
+
+3. **Missing lie ending line.** Eurylochus's ship node (`dlg/ship`) had
+   flag-gated closing lines for name-nobody (`dlg/shout-reveal`) and name-boast
+   (`dlg/shout-known`) but none for name-lie. Added `dlg/shout-false`: the crew
+   heard him bellow a false trader's name at the empty hills; Eurylochus lands
+   the irony — the giant will curse a man who was never born, and the captain got
+   away *unnamed*, the same cold coin "Nobody" would have paid, only spent from a
+   mouth that held a true name.
+
+Campaign `dsl_version` raised to **0.6.0** across all six stages (per-effect
+`requires_flags` is a v0.6 quests-stage surface). Full `zh-cn` l10n coverage for
+every new/changed string. Note on the l10n index scheme: inserting the three echo
+narrates shifted the `He Rises Blind` title/subtitle down the effect list, so
+`fx.the-stake.oc.blind.4/.5` now key the nobody/boast echoes and the title/
+subtitle moved to `.7/.8`. The coverage check (`DW0180/0181`) is exact on *keys*
+but does not detect a stale translation whose English **source** changed, so the
+reused keys were re-authored by hand rather than trusted.
+
+### KNOWN ISSUE — live Warden self-digs in the stealth finale (current version)
+
+The blinded-Polyphemus stealth escape spawns a **live** `minecraft:warden` with
+reduced attributes (`wave/blinded-polyphemus`). Confirmed by the actor-anim
+spike: **a Warden with no anger target burrows (`digDown`) within ~5 s of
+spawning** and disappears under the floor, so the stealth beat's antagonist can
+simply leave the arena. This is an engine / entity-AI limitation, not a content
+bug, and is deliberately **not** patched around in content (debug doctrine). The
+island remake replaces live-AI stealth staging with **NoAI puppet actors**
+(spec-0014 scripted actors), which removes the self-dig entirely; until that
+lands, the current version ships with this known limitation. (The critical-path
+bot still traverses the sneak leg — it does not depend on the Warden pursuing.)
+
+### Validation ladder (round 2 — GREEN, 2026-08-01)
+
+| Tier | Result |
+|---|---|
+| `delvec validate` + `analyze` (en + zh-cn) | **0 diagnostics** |
+| Determinism (ADR-0006) | **byte-identical** double-build |
+| `delvec build` (en and `zh-cn`) | exit 0 |
+| PackTest | **12/12 required tests passed** |
+| mineflayer critical-path bot | **`critical path PASSED` (12 steps)** — leg-by-leg over compiler-proven waypoints |
+
+Toolchain: `delvec` + harness at main after PR #95 (per-effect `requires_flags` +
+blockstate) and PR #97 (harness critical-path v0.5/v0.6 allowlist — the tier-3 bot
+rejected the campaign's new `0.6.0` critical-path `version` until its allowlist was
+brought up to the DSL; a stale gate, root-caused and fixed, never worked around).
+Docker runs serialized on the `mkdir`-lock validation mutex; teardown guarded by
+`validation/fresh-volumes.sh`.
+
 ## Prompt (constraint set, verbatim)
 
 > Full brief — "Nobody's Cave" (demo delve #1)
