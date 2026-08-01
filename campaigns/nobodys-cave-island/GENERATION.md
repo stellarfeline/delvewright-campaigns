@@ -83,3 +83,19 @@ Three ladder rounds to full green, every red fixed at root, none in content-dodg
    canOpenDoors for adventure-legal gate use). Residual compiler-model
    soundness gap (fence-top false proofs with no adjacent opening) filed as an
    engine follow-up task.
+
+### 2026-08-01 player-POV visual review (first live Chunky run)
+
+221/221 POV scenes rendered (draft 960×540, spp 32) after two toolchain fixes
+the first run flushed out: delve-render's Chunky camera mapping used a naive
+to_radians (every POV camera aimed at the ground — root-caused against the
+Chunky core's bytecode basis, fixed + regression-tested, #111), and emitted
+scene world.path is relative (patched locally; delve-render fix pending).
+Planner review of the corrected set: surface legs read correctly at eye level
+(beach approach, terraced climb with the cave mouth ahead, gangplank/deck
+arrival with lantern glow). Declared-dark cavern shots render faithfully dark —
+Chunky cannot emulate the night-vision mitigation and the render plan carries
+no per-shot darkness flag; dark-interior review stays in-game for now
+(engine follow-up filed). No blocking content defects found; backlog noted:
+mountain exterior silhouette polish, unflattering framing on rising-step
+waypoints.
