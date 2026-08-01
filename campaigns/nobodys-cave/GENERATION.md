@@ -52,65 +52,53 @@ Every stage doc is now `0.4.0`. Changes, by area:
 - **Localization**: every new player-facing string is covered in `l10n/zh-cn.json`
   (118 keys, 0 `DW0180`/`DW0181`).
 
-### Validation ladder (v0.4 polish)
+### Validation ladder (final — GREEN, 2026-08-01)
 
 | Tier | Result |
 |---|---|
-| `delvec validate` + `analyze` (en + zh-cn) | **0 diagnostics** |
+| `delvec validate` + `analyze` (en + zh-cn) | **0 diagnostics** — DW0311/0312/0313/0314 all clean |
 | Determinism (ADR-0006) | **byte-identical** double-build |
 | `delvec build` (en and `zh-cn`) | exit 0 |
-| PackTest | **10/10** (incl. `v04_despawn`, `v04_prop`, `verb_flag_gate`) |
-| mineflayer critical-path bot | **RED — blocked by a harness/transport limitation, NOT campaign content (see below)** |
+| PackTest | **11/11** (incl. `v04_despawn`, `v04_prop`, `verb_flag_gate`, marker-death assertion) |
+| mineflayer critical-path bot | **`critical path PASSED (12 steps)`** — leg-by-leg over compiler-proven waypoints; sneak leg past the **live** weakened Warden included; **zero sheep falls** |
 
-Toolchain: `delvec` 0.4.1 (main `6f3943c`); prefabs from content main `962836a`
-(round-2 tileset). Ladder run via `validation/compose.yaml`.
+Toolchain: `delvec` at main `0ee6d20`; prefabs from content main `f5766f7`. Teardown
+guarded by `validation/fresh-volumes.sh` (it asserts the world volume is actually gone
+— a stale volume persists scoreboard state and masquerades as a harness bug). The live
+Warden and the sheep flock now summon with attributes; the flock seats in the cavern,
+off the critical corridor.
 
-### Bot blocker (harness/transport — not campaign content)
+### Blockers found and resolved (all fixed upstream — campaign data was correct throughout)
 
-The critical-path bot fails at the **shore→cave transition** (step 2): after it
-`/trigger`s Eurylochus's dialogue, the compiler's cross-area `teleport @s 262 66 8`
-(in `complete_o_the_argument`) never relocates the mineflayer bot, which is then
-stranded on the beach with no walkable path to the cave 256 blocks across the void:
+Reworking the demo with v0.4 verbs + rebinding to the cave tileset surfaced a chain of
+toolchain defects. Each was root-caused from this campaign's ladder and fixed in the
+compiler / harness / generator — never worked around in content (debug doctrine):
 
-```
-[transport] did not observe the jump to [262, 66, 8] within 15000ms; bot at [6.5, 66.0, 4.3]
-FAILED: step 2 (talk-to) failed: failed npc npc/perimedes ... : No path to the goal!
-```
+- ~~`spawn-wave` without a `kill` objective never spawned (dangling `spawn_<wave>`; the live Warden and flock were inert)~~ — **fixed**, compiler #57 (spawn position resolves from the wave's spawn site + `Wave.anchor`; `DW0310` guard).
+- ~~Cross-area transport race stranded the bot on the beach~~ — **fixed**, harness #59 (deterministic transport boundary). The earlier "teleport never registers" and roof-spawn void-fall were **stale-Docker-volume artifacts**, now guarded by `fresh-volumes.sh`.
+- ~~Entry→cavern A\* budget: "No path to the goal" on the long deep-cave leg~~ — **fixed**, #66 (leg-by-leg navigation over compiler-proven waypoints exported to `validation/critical-path-waypoints.json`).
+- ~~Gravity floors / model-fidelity: sheep fell into the void; the compiler's occupancy model said solid where the game had a hole~~ — **fixed**, #75/#77/#79 (gravity-settled assembled model, `DW0313`, stone substrate under all gravity cells).
+- ~~Sheep flock spawned on the critical corridor and blocked the bot~~ — **fixed**, content #10 (`anchor/wave` relocated cave-den → cave-cavern, ≥3 Chebyshev off the door→boss centreline). **Flock count unchanged** — a count reduction would have been a workaround, not a fix.
+- ~~Completed interact objectives left their `interaction` marker clickable, cluttering the endgame return corridor~~ — **fixed**, compiler #81 (objective-scoped tag + `kill` in the completion function; PackTest now asserts markers die).
+- ~~Non-colliding entities treated as pathfinding obstacles; terminal talk-to leg aimed at the mannequin's own cell; fluid endpoints~~ — **fixed**, #82/#84 (entity passability; fluid-flood model + endpoint snap; `DW0314`; corridor commit cells).
+- ~~Terminal talk-to leg stalled amid entity congestion at an NPC~~ — **fixed**, harness #85 (stall-recovery to the last proven cell + adaptive physics-unstick; terminal legs close on interaction range).
 
-**Reproduced on the pristine stone-keep original** (`git show
-origin/campaign/nobodys-cave` build) at the *same* step and, with the enclosed
-`hello-room` beach, as a fatal void-fall (MC spawns the joining bot on the room's
-roof heightmap; PR #50 death-fast-fail then reports it). The datapack logic is
-provably correct — the campaign PackTest drives the full `complete_o_*` chain and
-asserts `dw.campaign matches 1`, passing. Root cause appears to be mineflayer 4.37
-not driving the vanilla `dialog show`-based interaction / not honouring the
-cross-area teleport; the gap-8 transport race is already on record. It is flaky, not
-0%: one early run did reach the cave. Not re-rolled for a lucky green (owner
-direction). A harness/transport fix is being dispatched; the campaign data is
-correct for when it lands.
+Model observation that drove several of these: the compiler's assembled-occupancy world
+(which feeds DW0311/0312/0314, relight and the waypoint export) must match the game's
+assembled world — a solid-in-model / hole-in-game cell, or a gravity block with no
+substrate, passes the static check yet drops mobs and strands the bot. Reconstructing
+the assembled world offline (structure NBTs + `place_all` transforms + socket/gate
+fills) and BFS'ing the critical path pinpointed each seam/gap and localized every fix to
+the toolchain rather than the content.
 
-### Compiler bugs found (NOT patched — per instructions)
+### Known notes (runtime-correct; follow-ups, not blockers)
 
-1. **`spawn-wave` without a `kill` objective never spawns (P1, content-visible).**
-   `wave_spawn_pos` (`crates/compiler/src/emit.rs:1314`) only resolves a wave's
-   spawn position from a `Kill` objective referencing it. A wave spawned by a
-   `spawn-wave` effect but never killed emits a dangling `function ns:spawn_<wave>`
-   call (`emit.rs:1366`) with no function body — no mobs are summoned, and the call
-   errors at runtime (benign, non-fatal; the server still loads and the reach/sneak
-   objective still completes). **Consequence for this campaign:** the weakened live
-   **Warden (`wave/blinded-polyphemus`)** and the pre-existing **sheep flock
-   (`wave/the-flock`)** do **not** materialise, so the stealth finale is currently
-   *inert* — the player sneaks past nothing. The wave definitions in `quests.json`
-   are authored correctly and are expected to work as-is once the compiler resolves
-   spawn position from the `spawn-wave` effect's quest area (not only from a `Kill`
-   objective). Expected on the fix: a single Warden at `anchor/objective`
-   (max_health 30, movement_speed 0.05, follow_range 1.0, attack_damage 2, slowness
-   IV) and six sheep at `anchor/wave`.
-2. **Mannequin NPCs serialize pose `DYING` on world save (cosmetic).** PackTest logs
-   `Failed to encode value 'DYING' to field 'pose'` for the skinned mannequins
-   during gametest teardown (the harness kills entities between tests). Non-fatal;
-   PackTest still 10/10. Compiler emits no explicit `pose`, so this is a
-   mannequin/emitter interaction to confirm against the play profile.
+1. The cross-area transport anchors (`[6,66,8]` shore, `[262,66,8]` cave entry) currently
+   resolve into flooded shore-pool cells of the `cave-shore` piece. It works at runtime —
+   the teleport lands, the bot proceeds, the ladder is green — and the planned
+   island/shore remake will relocate them to dry ground.
+2. Follow-up: extend the `DW0314` self-check to cover transport **destinations** (not only
+   walked legs), so a flooded or unsupported teleport target would fail the build.
 - **Source**: Homer, *Odyssey* Book 9 (the Polyphemus episode). Public domain;
   original names used. All text in this campaign is original prose — no
   translation of any copyrighted edition was ingested (ADR-0007).
