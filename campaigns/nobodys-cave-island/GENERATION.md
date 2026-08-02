@@ -228,7 +228,7 @@ ticks of sprinting away**. Against a 50-tick grace window, every player, machine
 or human, dies there at a fixed moment. Per spec-0016 that is not 初见杀: an
 unavoidable death is a broken beat, not a lesson.
 
-The engine now proves this at compile time (`DW0352`, stealth onset
+The engine now proves this at compile time (`DW0355`, stealth onset
 survivability). It fired red on this content and named the deficit exactly:
 56 t of flee + 10 t of standing-start reaction = 66 t against `grace_ticks` 50,
 short by 16.
@@ -244,6 +244,6 @@ caught in the open still kills you; that is the beat.
 
 Checkpoint-3 verdict (the death-loop question): its respawn anchor measures
 **28 t** of flee time from the same zone, so the retry was survivable even at
-grace 50 — but only just, and nothing before `DW0352` could say so. At grace 90
+grace 50 — but only just, and nothing before `DW0355` could say so. At grace 90
 the retry carries ~52 ticks of slack: you come to below the ramp with real time
 to choose your moment. The anchor stays where the narration puts it.
