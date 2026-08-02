@@ -247,3 +247,120 @@ Checkpoint-3 verdict (the death-loop question): its respawn anchor measures
 grace 50 — but only just, and nothing before `DW0355` could say so. At grace 90
 the retry carries ~52 ticks of slack: you come to below the ramp with real time
 to choose your moment. The anchor stays where the narration puts it.
+
+## Round 8 — the map editor's first workload: the island's landscape (spec-0017)
+
+The first real use of the stage-7 edit script (`world-edits.json`). Everything
+below is edit verbs replayed over the assembled world: no generator code
+changed, no prefab was touched, no block was hand-authored. Eight batches, each
+snapshot-reviewed before the next was written.
+
+### The finding
+
+Two landscape defects, both inherited from the box-garden's void-safety habit:
+
+1. **The greenfield corridor read as wall-enclosed.** The greenfield prefab
+   carries a 3-high berm at its piece edges. Placed twice in series, that put
+   continuous walls (top y=65, three above the meadow) down both flanks *and*
+   four full-width cross-berms at world z = -1, -15, -16 and -30, each pierced
+   only by the 3-wide path notch. The corridor was three walled rooms with
+   doorways, not one meadow.
+2. **The massif read as a rectangular slab** — vertical faces from the water to
+   a flat top, cut off square at the waterline.
+
+### The batches
+
+1. `batch/open-seam-walls` — drop the four cross-berms to the meadow datum, so
+   the meadow runs unbroken from the beach to the mountain foot.
+2. `batch/west-bank-falls` — invert the west berm from an outward rise into an
+   outward fall: rim below the waterline, bank at meadow height, two smoothing
+   passes.
+3. `batch/east-bank-falls` — the same, mirrored.
+4. `batch/bank-outcrops` — seeded stone/andesite/tuff/mossy-cobble speckle down
+   both banks, so the fall reads as eroded rock rather than earthworks.
+5. `batch/meadow-treeline` — sparse oak clusters on the outboard band where the
+   meadow breaks into the bank.
+6. `batch/massif-stepped-skirt` — four concentric rings around the west, north
+   and east cliff feet and under the two south flanking walls, cresting at
+   world y=71/66/63/61, so the cliff steps back on its way down.
+7. `batch/massif-crown-crags` — an undulating crest grown above the plateau to
+   break the flat skyline; the two daylight shafts are subtracted from the
+   region with a one-block pad so the cavern's light wells are never capped.
+8. `batch/shore-transition` — sand and gravel tongues with occasional rock
+   across the 61-64 band on both greenfield flanks and the mountain's south
+   shore.
+
+The path spine is protected structurally rather than by enumeration: each seam
+region's y-floor is the walk plane, so the spine columns (top solid 62) have no
+cell in the region at all and cannot be touched. `scatter` and `plant`
+additionally declare the spine as a keep-clear envelope.
+
+### What the loop rejected
+
+Four designs were tried and thrown away on the evidence of their own snapshots,
+which is the point of the loop:
+
+- **A treeline at count 10 / spacing 4** closed the canopy into a leaf tunnel
+  over the path — the grass wall traded for a green ceiling. Thinned to
+  count 5 / spacing 6 and moved outboard.
+- **Crown crags in a five-block band** left detached slabs hanging over the
+  crest: the value noise decorrelates across that much vertical distance. The
+  band is now two blocks, where a crag cell and the cell beneath it sample
+  nearly the same noise.
+- **Thin cantilevered ledges on the cliff faces** read as fins stuck to the
+  rock, not as weathering — a shelf needs rock under it. Replaced by the
+  stepped skirt, which is benching with a foot.
+- **A crest running one block proud of the rim**, intended to ragged the
+  plateau's plan-view outline, produced overhanging fins for the same reason.
+  Reverted: raggeding that outline needs material *removed* at the rim, and the
+  plateau is a thin crust over interior voids in places, so removal there is
+  unsafe and there is no thickness-aware region selector to make it safe. The
+  outline stays straight; recorded as an editor gap.
+
+`DW0313` refused gravel in the skirt recipes and was right to: a cell at the
+island's base sits in the ambient water column with no substrate, so a falling
+block would have sunk to the seabed and silently deformed the apron. Scree is
+rock here.
+
+### The boundary-safety story (engine PRs #159, #161)
+
+The first attempt at any batch at all failed `DW0322` on a cell no edit had
+written to — the mountain's south shoreline. The check derived fall-arrest
+support solely from the placed-piece occupancy model, but an `ocean`-horizon
+world ships a superflat with bedrock, stone and water under every column: there
+is no void to fall out of, and stepping off the island is swimming.
+Reconstructing the assembled model showed the false positive covered the whole
+coast — 182 columns — and that filling a shelf under one exposed cell simply
+moved the error to that shelf's own new edge, so no content-side fix could
+terminate. Authoring the ocean into the datapack as thousands of water cells
+would have been a downstream workaround for a missing world model, so the
+finding was escalated instead of coded around.
+
+`DW0322` is now stated against the world-generator ambient: under `ocean` the
+rule is the stranding invariant — every body of water a player can enter must
+have a climb-out back into the reachable walk region — and violations aggregate
+with a total instead of aborting on the first. The de-walled banks satisfy it by
+design: the rim sits one block below the waterline, so the bank *is* the
+climb-out. Under `void` the original bottomless-column rule is unchanged. A
+second engine change lists the placed pieces in the scene manifest, so a batch's
+piece-local frames no longer have to be back-solved from anchor positions.
+
+### Proofs
+
+- All eight batches replay green under `delvec edit apply`: trap-hardware
+  integrity, gravity settling, relight, critical-path and checkpoint
+  walkability, boundary safety and block-support validity re-proved after every
+  batch, plus the full build-tier proof set.
+- English double build **byte-identical** (ADR-0006).
+- Bot playthrough **PASSED, 20/20 critical-path steps**; PackTest **31/31
+  required tests passed**. Both under the validation compose profiles with fresh
+  named volumes.
+- The six seal-cutscene poses were extracted from the built `cs_tick` keyframes
+  and re-rendered. All six frame the cavern interior only — no edited cell lies
+  in any of them — and the build's own cutscene-clipping check stays green.
+
+Review cameras (spec-0015 shot grammar; reproduce with `delvec snapshot
+--camera=`): corridor `10,64.6,-2,180,2` and `10,64.6,-16,180,2`; flanks
+`10,64.6,-16,90,5` and `...,270,5`; beach approach `10,64.6,11,180,0`;
+exterior `-55,74,-8,225,6`, `10,72,-135,0,4`, `88,72,-51,90,4`, `78,78,8,135,7`;
+shoreline `-26,70,-14,250,10`; crown `-30,92,-40,250,14`.
