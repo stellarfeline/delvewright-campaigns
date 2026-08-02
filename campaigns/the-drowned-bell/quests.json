@@ -226,6 +226,16 @@
       ],
       "title": "Hold the Wall Breach",
       "hint": "The second column takes the wall breach. Two breaches, one courtyard \u2014 split it or run it."
+     },
+     {
+      "type": "kill",
+      "id": "obj/the-echoes",
+      "wave": "wave/grave-echoes",
+      "after": [
+       "obj/sound-it"
+      ],
+      "title": "Lay the Grave Echoes",
+      "hint": "Not everything that answers comes through a breach. Some of it simply arrives, at the edge of what it can sense."
      }
     ],
     "on_objective_complete": {
@@ -258,6 +268,10 @@
        "type": "narrate",
        "style": "subtitle",
        "text": "The keep answers."
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/grave-echoes"
       }
      ]
     },
@@ -579,7 +593,14 @@
       }
      }
     ],
-    "respawns_on_rest": true
+    "respawns_on_rest": true,
+    "lane": {
+     "waypoints": [
+      "anchor/l2-lane-gate-2",
+      "anchor/l2-lane-gate-3"
+     ],
+     "aggro_radius": 16
+    }
    },
    {
     "id": "wave/wall-assault",
@@ -597,7 +618,14 @@
       }
      }
     ],
-    "respawns_on_rest": true
+    "respawns_on_rest": true,
+    "lane": {
+     "waypoints": [
+      "anchor/l2-lane-wall-2",
+      "anchor/l2-lane-wall-3"
+     ],
+     "aggro_radius": 16
+    }
    },
    {
     "id": "wave/bellkeeper",
@@ -618,6 +646,23 @@
       }
      }
     ]
+   },
+   {
+    "id": "wave/grave-echoes",
+    "anchor": "anchor/l2-muster",
+    "summon": "aggro-edge",
+    "mobs": [
+     {
+      "entity": "minecraft:husk",
+      "count": 3,
+      "name": "Grave Echo",
+      "attributes": {
+       "max_health": 14.0,
+       "follow_range": 12.0
+      }
+     }
+    ],
+    "respawns_on_rest": true
    }
   ],
   "triggers": [
