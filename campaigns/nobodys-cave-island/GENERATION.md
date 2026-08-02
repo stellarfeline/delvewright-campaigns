@@ -364,3 +364,57 @@ Review cameras (spec-0015 shot grammar; reproduce with `delvec snapshot
 `10,64.6,-16,90,5` and `...,270,5`; beach approach `10,64.6,11,180,0`;
 exterior `-55,74,-8,225,6`, `10,72,-135,0,4`, `88,72,-51,90,4`, `78,78,8,135,7`;
 shoreline `-26,70,-14,250,10`; crown `-30,92,-40,250,14`.
+
+## Round 9 — the beach seam (owner playtest finding)
+
+Owner playtest of the round-8 landscape: the corridor itself is much improved,
+but the **beach-greenfield junction still reads as a wall layer**. Standing on
+the strand looking north, a continuous grass-topped band sat at eye level across
+the full width, pierced only by the 3-wide path notch — the exact defect
+round 8 set out to remove, surviving at the one seam that matters most, because
+it is the first thing the player walks into.
+
+### Why round 8 missed it
+
+The greenfield prefab edges its pieces in **two rows, not one**. Round 8 cut the
+four 65-high cross-berms at world z = -1, -15, -16 and -30. Behind each of those
+sits a second, lower lip at prefab-local z=13 — top y=64, two blocks above both
+the sand and the meadow — which no cut reached. At the strand that lip covers
+ten of the fourteen non-spine columns: a wall with a doorway.
+
+Round 8 also made it slightly worse without noticing. The west/east bank
+smoothing passes relax each column toward its cardinal-neighbour mean, and the
+already-cut z=14 row had an *un-cut* 64 neighbour at z=13 — so smoothing pulled
+z=14 back up to 63-64 at the edges, rebuilding part of the very step that had
+just been removed. A lesson worth keeping: **`morph smooth` will restore a
+feature you deleted if you leave its neighbour standing.**
+
+### The change (`batch/beach-seam`)
+
+- Drop the local-z=13 lip row to the meadow datum on both greenfield pieces.
+- Re-flatten the local-z=14 south edge row that smoothing had raised.
+- Finger sand and gravel from the strand into the meadow so the material changes
+  over a few blocks instead of at a line.
+- **No smoothing pass**, deliberately: with the lip gone the junction is already
+  flat at the meadow datum, and smoothing is what re-raised it last time.
+
+The path spine is untouched structurally as before — every morph region's
+y-floor is the walk plane, so the spine columns hold no cell in range — and is
+declared keep-clear for the scatter on both sides of the seam.
+
+The same prefab row is levelled at the inner piece seam (world z=-17) in the
+same batch. It is literally the same lip; cutting only the one the owner stood
+in front of would have left its twin standing mid-corridor for the next round to
+find.
+
+### Proofs
+
+Nine batches replay green under `delvec edit apply` (full build-tier proof set
+after every batch, `DW0322` shoreline re-climbability included), full build
+green, English double build byte-identical. The bot ladder was deliberately not
+re-run: it is being run once against the combined state after the concurrent
+giant-restage and cinematic work lands.
+
+Review cameras (`delvec snapshot --camera=`), beach eye level looking up the
+corridor: `10,64.6,12,180,0`, `10,64.6,5,180,0`, `10,64.6,2,180,0`, plus an
+oblique `-9,72,9,215,22`.

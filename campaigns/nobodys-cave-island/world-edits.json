@@ -2388,6 +2388,226 @@
           }
         ],
         "note": "Where the de-walled banks and the mountain's south shelf meet the sea the land still ended on a clean grass edge. Lay sand and gravel tongues with occasional rock across the 61-64 band on both greenfield flanks and along the mountain's south shore, so the walk plane grades into the water instead of stopping at it. Scatter drops onto standable cells only, so every grain rests on real ground \u2014 the support check covers the falling blocks. The path spine is the keep-clear envelope."
+      },
+      {
+        "id": "batch/beach-seam",
+        "area": "area/island",
+        "edits": [
+          {
+            "verb": "select",
+            "name": "region/lip-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                3,
+                13
+              ],
+              "max": [
+                14,
+                9,
+                13
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/lip-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                3,
+                13
+              ],
+              "max": [
+                14,
+                9,
+                13
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/south-edge-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                1,
+                3,
+                14
+              ],
+              "max": [
+                15,
+                9,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "morph",
+            "region": "region/lip-1",
+            "op": {
+              "kind": "lower",
+              "by": 2
+            }
+          },
+          {
+            "verb": "morph",
+            "region": "region/lip-2",
+            "op": {
+              "kind": "lower",
+              "by": 2
+            }
+          },
+          {
+            "verb": "morph",
+            "region": "region/south-edge-1",
+            "op": {
+              "kind": "lower",
+              "by": 2
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/spine-beach",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 0,
+                "prefab": "prefab/island-beach-camp"
+              },
+              "min": [
+                8,
+                3,
+                0
+              ],
+              "max": [
+                12,
+                6,
+                4
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/spine-meadow",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                6,
+                3,
+                11
+              ],
+              "max": [
+                10,
+                6,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/junction-beach",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 0,
+                "prefab": "prefab/island-beach-camp"
+              },
+              "min": [
+                3,
+                2,
+                0
+              ],
+              "max": [
+                17,
+                5,
+                3
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/junction-meadow",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                1,
+                2,
+                11
+              ],
+              "max": [
+                15,
+                5,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/junction",
+            "shape": {
+              "kind": "union",
+              "of": [
+                "region/junction-beach",
+                "region/junction-meadow"
+              ]
+            }
+          },
+          {
+            "verb": "scatter",
+            "region": "region/junction",
+            "avoid": [
+              "region/spine-beach",
+              "region/spine-meadow"
+            ],
+            "density": 0.3,
+            "spacing": 1,
+            "items": [
+              {
+                "block": "minecraft:sand",
+                "weight": 6.0
+              },
+              {
+                "block": "minecraft:gravel",
+                "weight": 2.0
+              },
+              {
+                "block": "minecraft:coarse_dirt",
+                "weight": 1.0
+              }
+            ]
+          }
+        ],
+        "note": "Owner playtest finding: the beach-greenfield junction still read as a wall layer. Round 8 cut the four 65-high cross-berms (world z=-1,-15,-16,-30) but the greenfield prefab edges its pieces in TWO rows, not one: behind the 65 berm sits a 64 lip at prefab-local z=13, which no cut reached. At the strand that lip stands two blocks above both the sand and the meadow and spans ten of the thirteen non-spine columns \u2014 a wall with a doorway, exactly as reported. Worse, round 8's bank smoothing then pulled the already-cut z=14 row partly back up toward its un-cut neighbour, restoring a 63-64 step at world z=-1. Drop the lip row on both greenfield pieces and re-flatten the south edge row, then finger sand and gravel from the strand into the meadow so the material changes gradually instead of at a line. No smoothing pass here: the junction is flat at the meadow datum once the lip is gone, and smoothing is what re-raised it last time. The path spine is untouched structurally as before (every morph region's y-floor is the walk plane, so the spine columns hold no cell in range) and is declared keep-clear for the scatter on both sides of the seam. The same prefab row is levelled at the inner piece seam (world z=-17) in the same batch: it is literally the same lip, and cutting only the one the owner stood in front of would leave its twin mid-corridor."
       }
     ]
   }
