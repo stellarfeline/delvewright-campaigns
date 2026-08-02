@@ -8,7 +8,7 @@
     "id": "actor/polyphemus-walker",
     "entity": "minecraft:warden",
     "name": "Polyphemus",
-    "anchor": "anchor/fire-pit",
+    "anchor": "anchor/ramp-top",
     "vulnerable": false
    },
    {
@@ -188,7 +188,29 @@
       }
      ]
     },
-    "on_complete": []
+    "on_complete": [
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "Antiphos hoists the wine and the meal-sacks onto one shoulder. \"Somebody carries the man's dinner,\" he says, and falls in behind you. Elpenor stays with the fire — alone, and burning it high."
+     },
+     {
+      "type": "move-npc",
+      "npc": "npc/antiphos",
+      "to_anchor": "anchor/mouth",
+      "on_arrive": [
+       {
+        "type": "narrate",
+        "style": "chat",
+        "text": "Antiphos sets the sacks down in the light of the mouth and stays there, catching his wind and counting lambs."
+       },
+       {
+        "type": "set-flag",
+        "flag": "flag/antiphos-posted"
+       }
+      ]
+     }
+    ]
    },
    {
     "id": "quest/follow-the-smoke",
@@ -300,6 +322,20 @@
         "at": "anchor",
         "anchor": "anchor/checkpoint-1"
        }
+      },
+      {
+       "type": "spawn-npc",
+       "npc": "npc/perimedes"
+      },
+      {
+       "type": "move-npc",
+       "npc": "npc/perimedes",
+       "to_anchor": "anchor/alcove-2"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Perimedes slips in at your heel with the ship's wine-skin on his shoulder, reads the whole hall once, and puts his back to the recess beside the racks."
       }
      ],
      "obj/cheese": [
@@ -323,6 +359,40 @@
        "requires_flags": [
         "flag/flee"
        ]
+      },
+      {
+       "type": "move-npc",
+       "npc": "npc/perimedes",
+       "to_anchor": "anchor/mouth",
+       "requires_flags": [
+        "flag/flee"
+       ],
+       "on_arrive": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "Perimedes is through the mouth before you finish speaking — out first, counting heads onto the sand."
+        },
+        {
+         "type": "despawn-npc",
+         "npc": "npc/perimedes"
+        }
+       ]
+      },
+      {
+       "type": "move-npc",
+       "npc": "npc/antiphos",
+       "to_anchor": "anchor/crew-a",
+       "requires_flags": [
+        "flag/flee"
+       ],
+       "on_arrive": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "Antiphos shoulders the sacks without a word and starts down. Arithmetic, Captain: everything you came in with, and one wheel of cheese to the good."
+        }
+       ]
       }
      ]
     },
@@ -333,14 +403,17 @@
       "to_anchor": "anchor/alcove-1",
       "requires_flags": [
        "flag/wait"
-      ]
-     },
-     {
-      "type": "narrate",
-      "style": "chat",
-      "text": "Eurylochus presses himself into the recess beside you, sword drawn and pointless, breathing through his teeth.",
-      "requires_flags": [
-       "flag/wait"
+      ],
+      "on_arrive": [
+       {
+        "type": "set-flag",
+        "flag": "flag/eury-hidden"
+       },
+       {
+        "type": "narrate",
+        "style": "chat",
+        "text": "Eurylochus presses himself into the recess beside you, sword drawn and pointless, breathing through his teeth."
+       }
       ]
      }
     ]
@@ -423,11 +496,13 @@
       "anchor": "anchor/alcove-1",
       "radius": 2,
       "requires_flags": [
-       "flag/wait"
+       "flag/wait",
+       "flag/eury-hidden",
+       "flag/antiphos-posted"
       ],
       "stealth": true,
       "title": "Get Into the Shadows",
-      "hint": "The light is going and something is coming up the slope. Press into one of the dark recesses along the hall wall and keep still."
+      "hint": "The light is going and something is coming up the slope. Press into one of the dark recesses along the hall wall, and watch."
      },
      {
       "type": "talk-to",
@@ -440,7 +515,7 @@
        "flag/sealed"
       ],
       "title": "Find Perimedes in the Dark",
-      "hint": "When the stone is down and the giant sits to his milking, find Perimedes crouched by the racks and learn what walked in."
+      "hint": "When the stone is down and the giant sits to his milking, find Perimedes pressed into the recess beside the racks and learn what walked in."
      }
     ],
     "on_objective_complete": {
@@ -461,63 +536,7 @@
       {
        "type": "narrate",
        "style": "chat",
-       "text": "Stay in the shadows. Stay down. Make no sound he can follow."
-      },
-      {
-       "type": "begin-stealth",
-       "grace_ticks": 60,
-       "zones": [
-        {
-         "anchor": "anchor/alcove-1",
-         "extent": [
-          2,
-          2,
-          2
-         ]
-        },
-        {
-         "anchor": "anchor/alcove-2",
-         "extent": [
-          2,
-          2,
-          2
-         ]
-        },
-        {
-         "anchor": "anchor/alcove-3",
-         "extent": [
-          2,
-          2,
-          2
-         ]
-        },
-        {
-         "anchor": "anchor/alcove-4",
-         "extent": [
-          2,
-          2,
-          2
-         ]
-        }
-       ],
-       "on_caught": [
-        {
-         "type": "narrate",
-         "style": "chat",
-         "text": "A great head turns toward the sound. Get back into the dark — now."
-        },
-        {
-         "type": "play-sound",
-         "sound": "minecraft:entity.warden.nearby_close",
-         "at": {
-          "at": "players"
-         }
-        },
-        {
-         "type": "damage-players",
-         "amount": 40
-        }
-       ]
+       "text": "Stay in the shadows and watch. What comes home now was never yours to fight."
       },
       {
        "type": "spawn-actor",
@@ -552,16 +571,16 @@
        "actor": "actor/sheep-8"
       },
       {
+       "type": "spawn-actor",
+       "actor": "actor/polyphemus-walker"
+      },
+      {
        "type": "play-sound",
-       "sound": "minecraft:entity.sheep.step",
+       "sound": "minecraft:entity.sheep.ambient",
        "at": {
         "at": "anchor",
         "anchor": "anchor/mouth"
        }
-      },
-      {
-       "type": "spawn-actor",
-       "actor": "actor/polyphemus-walker"
       },
       {
        "type": "sequence",
@@ -576,56 +595,44 @@
             "at": "anchor",
             "anchor": "anchor/mouth"
            }
-          },
-          {
-           "type": "move-actor",
-           "actor": "actor/polyphemus-walker",
-           "to_anchor": "anchor/mouth",
-           "on_arrive": [
-            {
-             "type": "play-sound",
-             "sound": "minecraft:entity.warden.roar",
-             "at": {
-              "at": "anchor",
-              "anchor": "anchor/mouth"
-             }
-            }
-           ]
           }
          ]
         },
         {
-         "at_ticks": 100,
+         "at_ticks": 40,
          "effects": [
-          {
-           "type": "narrate",
-           "style": "title",
-           "text": "Sealed In"
-          },
-          {
-           "type": "narrate",
-           "style": "chat",
-           "text": "Stone grinds across the mouth. The daylight narrows to a line, then to nothing."
-          },
-          {
-           "type": "play-sound",
-           "sound": "minecraft:entity.wither.break_block",
-           "at": {
-            "at": "anchor",
-            "anchor": "anchor/boulder"
-           }
-          },
-          {
-           "type": "play-sound",
-           "sound": "minecraft:block.deepslate.fall",
-           "at": {
-            "at": "anchor",
-            "anchor": "anchor/boulder"
-           }
-          },
           {
            "type": "cutscene",
            "shots": [
+            {
+             "path": [
+              {
+               "anchor": "anchor/boulder",
+               "offset": [
+                -4,
+                1,
+                -4
+               ]
+              },
+              {
+               "anchor": "anchor/boulder",
+               "offset": [
+                -3,
+                1,
+                -2
+               ]
+              }
+             ],
+             "seconds": 8,
+             "look_at": {
+              "anchor": "anchor/mouth",
+              "offset": [
+               0,
+               1,
+               0
+              ]
+             }
+            },
             {
              "path": [
               {
@@ -640,12 +647,70 @@
                "anchor": "anchor/fire-pit",
                "offset": [
                 0,
+                5,
+                7
+               ]
+              }
+             ],
+             "seconds": 7,
+             "look_at": {
+              "anchor": "anchor/mouth",
+              "offset": [
+               0,
+               2,
+               0
+              ]
+             }
+            },
+            {
+             "path": [
+              {
+               "anchor": "anchor/boulder",
+               "offset": [
+                -3,
+                2,
+                -3
+               ]
+              },
+              {
+               "anchor": "anchor/boulder",
+               "offset": [
+                -2,
+                2,
+                -2
+               ]
+              }
+             ],
+             "seconds": 6,
+             "look_at": {
+              "anchor": "anchor/mouth",
+              "offset": [
+               0,
+               2,
+               0
+              ]
+             }
+            },
+            {
+             "path": [
+              {
+               "anchor": "anchor/fire-pit",
+               "offset": [
+                0,
+                5,
+                6
+               ]
+              },
+              {
+               "anchor": "anchor/fire-pit",
+               "offset": [
+                0,
                 4,
                 8
                ]
               }
              ],
-             "seconds": 4,
+             "seconds": 7,
              "look_at": {
               "anchor": "anchor/mouth",
               "offset": [
@@ -674,7 +739,7 @@
                ]
               }
              ],
-             "seconds": 3,
+             "seconds": 5,
              "look_at": {
               "anchor": "anchor/boulder",
               "offset": [
@@ -683,17 +748,105 @@
                0
               ]
              }
+            },
+            {
+             "path": [
+              {
+               "anchor": "anchor/fire-pit",
+               "offset": [
+                5,
+                3,
+                4
+               ]
+              },
+              {
+               "anchor": "anchor/fire-pit",
+               "offset": [
+                3,
+                2,
+                2
+               ]
+              }
+             ],
+             "seconds": 7,
+             "look_at": {
+              "anchor": "anchor/fire-pit",
+              "offset": [
+               0,
+               2,
+               0
+              ]
+             }
             }
            ]
           },
           {
-           "type": "close-gate",
-           "anchor": "anchor/boulder"
+           "type": "move-actor",
+           "actor": "actor/sheep-5",
+           "to_anchor": "anchor/pen"
           }
          ]
         },
         {
-         "at_ticks": 220,
+         "at_ticks": 60,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-6",
+           "to_anchor": "anchor/pen"
+          }
+         ]
+        },
+        {
+         "at_ticks": 80,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-7",
+           "to_anchor": "anchor/pen"
+          }
+         ]
+        },
+        {
+         "at_ticks": 100,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/sheep-8",
+           "to_anchor": "anchor/pen"
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.sheep.step",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/mouth"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 200,
+         "effects": [
+          {
+           "type": "move-actor",
+           "actor": "actor/polyphemus-walker",
+           "to_anchor": "anchor/mouth",
+           "on_arrive": [
+            {
+             "type": "play-sound",
+             "sound": "minecraft:entity.warden.roar",
+             "at": {
+              "at": "anchor",
+              "anchor": "anchor/mouth"
+             }
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "at_ticks": 380,
          "effects": [
           {
            "type": "narrate",
@@ -715,7 +868,55 @@
          ]
         },
         {
-         "at_ticks": 260,
+         "at_ticks": 460,
+         "effects": [
+          {
+           "type": "narrate",
+           "style": "title",
+           "text": "Sealed In"
+          },
+          {
+           "type": "narrate",
+           "style": "chat",
+           "text": "Stone grinds across the mouth. The daylight narrows to a line, then to nothing."
+          },
+          {
+           "type": "close-gate",
+           "anchor": "anchor/boulder"
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.wither.break_block",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/boulder"
+           }
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:block.deepslate.fall",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/boulder"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 600,
+         "effects": [
+          {
+           "type": "play-sound",
+           "sound": "minecraft:block.deepslate.fall",
+           "at": {
+            "at": "anchor",
+            "anchor": "anchor/boulder"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 700,
          "effects": [
           {
            "type": "move-actor",
@@ -738,15 +939,16 @@
             {
              "type": "spawn-npc",
              "npc": "npc/polyphemus"
+            },
+            {
+             "type": "play-sound",
+             "sound": "minecraft:entity.warden.ambient",
+             "at": {
+              "at": "anchor",
+              "anchor": "anchor/fire-pit"
+             }
             }
            ]
-          },
-          {
-           "type": "end-stealth"
-          },
-          {
-           "type": "spawn-npc",
-           "npc": "npc/perimedes"
           }
          ]
         }
@@ -1423,6 +1625,38 @@
      {
       "type": "unleash-actor",
       "actor": "actor/polyphemus-walker"
+     }
+    ]
+   },
+   {
+    "id": "trigger/his-house",
+    "at": "anchor/fire-pit",
+    "on": {
+     "on": "strike"
+    },
+    "once": false,
+    "requires_flags": [
+     "flag/sealed"
+    ],
+    "forbids_flags": [
+     "flag/asleep"
+    ],
+    "effects": [
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "Your blade turns on his hide like a stick on a ship's keel. He does not even set down the pail. One hand, without heat, the way a man swats at a midge—"
+     },
+     {
+      "type": "play-sound",
+      "sound": "minecraft:entity.warden.attack_impact",
+      "at": {
+       "at": "players"
+      }
+     },
+     {
+      "type": "damage-players",
+      "amount": 40
      }
     ]
    }

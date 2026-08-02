@@ -171,3 +171,42 @@ Content:
   ending banners are plain fullscreen titles (art font retired from this
   campaign; zh shows 无人 / 悄然扬帆); cheese is a collect-from-the-barrel
   objective; specs 0013/0014/0015 approved.
+
+### 2026-08-01 QA round 6 (owner findings → 4 engine PRs + the seal beat re-staged)
+
+Owner round-5 findings; engine first (#142–#144, plus #140 landed in parallel),
+then this content pass:
+- **Giant-dialogue soft-lock root-caused (#142)**: two co-located interaction
+  hitboxes at the fire-pit (the world-init strike-trigger box shadowing the
+  NPC's own); every right-click resolved to the wrong entity. Her left-click
+  was a red herring. One-cell-one-hitbox rule + DW0350.
+- **Stealth no longer wants a crouch (#143)**: zone presence = hidden,
+  engine-wide; the spectator camera no longer strobes if a player holds sneak
+  mid-cutscene (input-predicate gated re-attach).
+- **Staging primitives (#144)**: move-npc on_arrive, forbids_flags, DW0351
+  continuity lint, chained move origins (the giant now genuinely walks).
+- **The seal beat is a 40 s six-shot cinematic** (was 7 s of shots): the flock
+  streams in past the boulder-side camera; the giant fills the hall-wide
+  doorway and ducks through; Antiphos — who now climbs with the party,
+  carrying the provisions, while Elpenor holds the beach alone — is taken in
+  the light of the mouth, on camera; the stone comes across in hall-wide,
+  then close; the giant walks the hall (81-waypoint real walk) and settles at
+  the hearth, handing off to the dialogue statue on arrival. The beat's
+  begin-stealth is gone: it is pure observation now, and no fail state can
+  reach a frozen player.
+- **Cast continuity (DW0351 clean)**: Perimedes enters at the party's heel
+  (deferred spawn at the mouth, staged walk to the recess by the racks) and
+  witnesses the grab he later reports; both companions get staged flee-branch
+  exits. Antiphos's dialogue re-voiced to survive the move (fatalist
+  arithmetic, no beach-bound lines).
+- **Attacking the giant now answers (trigger/his-house)**: sealed-in but not
+  yet asleep, a strike draws one backhand — narrate + warden impact +
+  damage-players 40 → death → checkpoint. The unwinnable fight is marked by
+  being lost, quickly. forbids_flags hands the anchor to wake-the-giant once
+  he sleeps.
+- Beat gating: obj/take-cover now requires eury-hidden + antiphos-posted
+  (walk-arrival flags via on_arrive) — nobody's entrance can lag the camera
+  again.
+- l10n: 184 zh keys (5 carried moves, 1 dead, 6 new, 6 re-voiced); shot 3
+  repositioned once on DW0308 (camera-through-rock is a compile error, used
+  as the collision oracle); en double-build byte-identical.

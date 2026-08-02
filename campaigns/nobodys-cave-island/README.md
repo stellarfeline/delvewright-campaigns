@@ -51,9 +51,11 @@ then does exactly as he is told. Remember that last part. It matters.
 finished asking. Speaks in nouns and verbs, reports what he can see, and stops.
 
 **Antiphos and Elpenor** — the fire-watch. One has rowed through nine years and
-two shipwrecks and is impressed by exactly nothing anymore; the other is the
-youngest man aboard and has, so far, survived everything the world has thrown
-at him by accident. They will hold the beach. They are very clear about that.
+two shipwrecks and is impressed by exactly nothing anymore — when you climb, he
+climbs behind you with the provision sacks, because somebody carries the man's
+dinner. The other is the youngest man aboard and has, so far, survived
+everything the world has thrown at him by accident. The beach is his to hold,
+alone. He is very clear about being fine with that.
 
 **Polyphemus** — a shepherd, of a sort. Poseidon's son, alone with his flock
 since before anyone thought of building ships. Enormous, unhurried, plain-spoken
