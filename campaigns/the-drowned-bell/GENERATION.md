@@ -42,3 +42,17 @@ rulings recorded in spec-0016.
   + dart gallery disarmable, lane geometry, aggro-edge ring, ocean
   boundary re-climbability, lighting, gravity.
 - Determinism: double build byte-identical. zh-CN build green.
+
+## Round 3 (2026-08-02) — first honest-ladder findings
+
+- Ladder run 1: bot slain at step 3 by the live-wave Barrow Warden — the
+  DW0380 bypass proof guarantees a route exists, but the exported critical
+  path walks the desire line and vanilla wander drifts a live mob onto it.
+  Root fix is the design the dossier wanted all along: the elite is now a
+  DORMANT NoAI actor kneeling among the barrows, unleashed into its real
+  twin only by a player strike (Heide-Knight dormancy = the legibility
+  signal AND the determinism guarantee). Unprovoked, it never moves.
+- Ladder run 2: bot passes the barrow field, fails at the portcullis —
+  mineflayer aborts when the timed gate closes mid-approach. The runtime
+  rung lacks the "timing" verb; engine/harness fix dispatched (timed-gate
+  export + bounded window-wait on marked legs only). Content unchanged.

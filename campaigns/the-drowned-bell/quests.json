@@ -46,6 +46,10 @@
        "type": "narrate",
        "style": "chat",
        "text": "A fire is lit at the tide-line. Rest at a fire and it will hold your place \u2014 but the keep forgets nothing it has already sent against you."
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/barrow-warden"
       }
      ]
     },
@@ -451,6 +455,12 @@
     "id": "actor/rafter-4",
     "entity": "minecraft:husk",
     "anchor": "anchor/l4-perch-4"
+   },
+   {
+    "id": "actor/barrow-warden",
+    "entity": "minecraft:wither_skeleton",
+    "name": "The Barrow Warden",
+    "anchor": "anchor/l0-elite-dormant"
    }
   ],
   "ambushes": [
@@ -559,28 +569,6 @@
   ],
   "waves": [
    {
-    "id": "wave/barrow-warden",
-    "anchor": "anchor/l0-elite-stand",
-    "mobs": [
-     {
-      "entity": "minecraft:wither_skeleton",
-      "count": 1,
-      "name": "The Barrow Warden",
-      "attributes": {
-       "max_health": 60.0,
-       "movement_speed": 0.27,
-       "attack_damage": 9.0,
-       "follow_range": 8.0
-      },
-      "equipment": {
-       "head": "minecraft:golden_helmet",
-       "chest": "minecraft:golden_chestplate",
-       "main_hand": "minecraft:iron_axe"
-      }
-     }
-    ]
-   },
-   {
     "id": "wave/gate-assault",
     "anchor": "anchor/l2-lane-gate-1",
     "mobs": [
@@ -666,22 +654,21 @@
   ],
   "triggers": [
    {
-    "id": "trigger/warden-stirs",
-    "at": "anchor/l0-elite-stand",
+    "id": "trigger/warden-answers",
+    "at": "anchor/l0-elite-dormant",
     "on": {
-     "on": "approach",
-     "range": 10
+     "on": "strike"
     },
     "once": true,
     "effects": [
      {
-      "type": "spawn-wave",
-      "wave": "wave/barrow-warden"
+      "type": "unleash-actor",
+      "actor": "actor/barrow-warden"
      },
      {
       "type": "narrate",
       "style": "chat",
-      "text": "The kneeling shape among the barrows lifts its head. It does not rise. It is waiting to see what you do."
+      "text": "The Barrow Warden rises out of its kneel, unhurried, like a man standing up from a grave he dug himself. You asked. It answers."
      }
     ]
    }
