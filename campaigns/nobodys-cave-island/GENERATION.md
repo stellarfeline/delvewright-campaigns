@@ -211,3 +211,39 @@ then this content pass:
 - l10n: 184 zh keys (5 carried moves, 1 dead, 6 new, 6 re-voiced); shot 3
   repositioned once on DW0308 (camera-through-rock is a compile error, used
   as the collision oracle); en double-build byte-identical.
+
+## Round 7 — the blinding beat becomes a fair souls beat (engine PR #157)
+
+The first **honest** run of the validation ladder (after the harness became a
+real completion oracle) reached a beat the hollow ladder never could, and the
+delve failed it. On a live server the bot completed `obj/grind`, `obj/harden`
+and `obj/blind` — then died two seconds later, standing beside the fire-pit, of
+a no-attacker death: the `damage-players 40` in the blinding beat's
+`begin-stealth` `on_caught`.
+
+Root cause, now measured rather than guessed: `begin-stealth` arms the instant
+`obj/blind` completes, with the player standing at the fire-pit — the most
+exposed cell in the hall — and the nearest zone (`anchor/ramp-top`) is **56
+ticks of sprinting away**. Against a 50-tick grace window, every player, machine
+or human, dies there at a fixed moment. Per spec-0016 that is not 初见杀: an
+unavoidable death is a broken beat, not a lesson.
+
+The engine now proves this at compile time (`DW0352`, stealth onset
+survivability). It fired red on this content and named the deficit exactly:
+56 t of flee + 10 t of standing-start reaction = 66 t against `grace_ticks` 50,
+short by 16.
+
+**Change**: `grace_ticks` 50 → **90** on the blinding beat. Sized to the proven
+requirement, not guessed at: 66 t is the measured sprint-speed need, ~75 t
+covers the same route at plain walking pace, and the remainder is tension
+margin. 4.5 s to get out of the firelight after you put the stake in his eye —
+tense, and beatable by anyone who moves.
+
+**Not changed, deliberately**: the `damage-players 40` consequence. Getting
+caught in the open still kills you; that is the beat.
+
+Checkpoint-3 verdict (the death-loop question): its respawn anchor measures
+**28 t** of flee time from the same zone, so the retry was survivable even at
+grace 50 — but only just, and nothing before `DW0352` could say so. At grace 90
+the retry carries ~52 ticks of slack: you come to below the ramp with real time
+to choose your moment. The anchor stays where the narration puts it.
