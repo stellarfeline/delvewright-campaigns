@@ -74,6 +74,9 @@
        "movement_speed": 0.16,
        "follow_range": 48.0,
        "attack_damage": 1.0
+      },
+      "equipment": {
+       "head": "minecraft:leather_helmet"
       }
      }
     ]
@@ -131,7 +134,7 @@
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "The surf gives up its dead: three drowned wade out of the shallows toward the fire."
       },
       {
@@ -166,7 +169,7 @@
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "Eurylochus shoulders a coil of rope and starts up the worn path. Follow the smoke."
       },
       {
@@ -212,7 +215,7 @@
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "The mouth breathes cool air and old smoke. Eurylochus steps inside ahead of you."
       },
       {
@@ -250,14 +253,16 @@
       "hint": "Move in past the mouth to the first broad shelf of the hall, where the racks begin."
      },
      {
-      "type": "interact",
+      "type": "collect",
       "id": "obj/cheese",
       "anchor": "anchor/cheese-store",
       "after": [
        "obj/checkpoint"
       ],
       "title": "Take a Wheel of Cheese",
-      "hint": "The cheese is racked to the roof on the shelves by the entry. Help yourself to one wheel."
+      "hint": "The cheese is racked on the shelves by the entry. Take a wheel from the barrel among them.",
+      "item": "minecraft:sponge",
+      "count": 1
      },
      {
       "type": "talk-to",
@@ -299,12 +304,6 @@
      ],
      "obj/cheese": [
       {
-       "type": "give-item",
-       "item": "minecraft:sponge",
-       "count": 1,
-       "name": "Kefalotyri Cheese"
-      },
-      {
        "type": "narrate",
        "style": "chat",
        "text": "A wheel of hard yellow cheese, heavy as a shield. Perimedes presses the wine-skin from the ship into your other hand: \"Carried it up myself, Captain. In case a stranger needs making a guest.\""
@@ -327,7 +326,24 @@
       }
      ]
     },
-    "on_complete": []
+    "on_complete": [
+     {
+      "type": "move-npc",
+      "npc": "npc/eurylochus",
+      "to_anchor": "anchor/alcove-1",
+      "requires_flags": [
+       "flag/wait"
+      ]
+     },
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "Eurylochus presses himself into the recess beside you, sword drawn and pointless, breathing through his teeth.",
+      "requires_flags": [
+       "flag/wait"
+      ]
+     }
+    ]
    },
    {
     "id": "quest/take-the-cheese",
@@ -372,12 +388,12 @@
      "obj/board-flee": [
       {
        "type": "narrate",
-       "style": "art",
+       "style": "title",
        "text": "THE QUIET SAIL"
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "Ithaca inside the month. Safe, and fed, and a little smaller for it — and every man you came in with still at his oar."
       },
       {
@@ -444,7 +460,7 @@
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "Stay in the shadows. Stay down. Make no sound he can follow."
       },
       {
@@ -487,7 +503,7 @@
        "on_caught": [
         {
          "type": "narrate",
-         "style": "subtitle",
+         "style": "chat",
          "text": "A great head turns toward the sound. Get back into the dark — now."
         },
         {
@@ -588,7 +604,7 @@
           },
           {
            "type": "narrate",
-           "style": "subtitle",
+           "style": "chat",
            "text": "Stone grinds across the mouth. The daylight narrows to a line, then to nothing."
           },
           {
@@ -609,23 +625,64 @@
           },
           {
            "type": "cutscene",
-           "seconds": 5,
-           "path": [
+           "shots": [
             {
-             "anchor": "anchor/mouth",
-             "offset": [
-              0,
-              3,
-              6
-             ]
+             "path": [
+              {
+               "anchor": "anchor/fire-pit",
+               "offset": [
+                0,
+                6,
+                5
+               ]
+              },
+              {
+               "anchor": "anchor/fire-pit",
+               "offset": [
+                0,
+                4,
+                8
+               ]
+              }
+             ],
+             "seconds": 4,
+             "look_at": {
+              "anchor": "anchor/mouth",
+              "offset": [
+               0,
+               1,
+               0
+              ]
+             }
             },
             {
-             "anchor": "anchor/mouth",
-             "offset": [
-              0,
-              2,
-              2
-             ]
+             "path": [
+              {
+               "anchor": "anchor/boulder",
+               "offset": [
+                -4,
+                1,
+                -4
+               ]
+              },
+              {
+               "anchor": "anchor/boulder",
+               "offset": [
+                -2,
+                1,
+                -3
+               ]
+              }
+             ],
+             "seconds": 3,
+             "look_at": {
+              "anchor": "anchor/boulder",
+              "offset": [
+               0,
+               1,
+               0
+              ]
+             }
             }
            ]
           },
@@ -640,7 +697,7 @@
          "effects": [
           {
            "type": "narrate",
-           "style": "subtitle",
+           "style": "chat",
            "text": "He picks a man up by the ankle without looking. Nine years on the same oar, and Antiphos does not get one word out."
           },
           {
@@ -728,7 +785,12 @@
       }
      ]
     },
-    "on_complete": []
+    "on_complete": [
+     {
+      "type": "set-flag",
+      "flag": "flag/sealed-in"
+     }
+    ]
    },
    {
     "id": "quest/nobody",
@@ -931,7 +993,7 @@
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "Get up the ramp. Make no sound he can follow."
       },
       {
@@ -1041,7 +1103,7 @@
        "on_caught": [
         {
          "type": "narrate",
-         "style": "subtitle",
+         "style": "chat",
          "text": "His head snaps toward you. Freeze — get back into a shadow."
         },
         {
@@ -1136,7 +1198,7 @@
           },
           {
            "type": "narrate",
-           "style": "subtitle",
+           "style": "chat",
            "text": "He heaves the stone aside for the flock and sits in the gap, running his hands over every back that passes — only the backs. He never thinks to feel underneath."
           }
          ]
@@ -1223,7 +1285,7 @@
           },
           {
            "type": "narrate",
-           "style": "subtitle",
+           "style": "chat",
            "text": "Daylight, and salt air. The ram carries you out under the giant's very hands and down the mountain toward the sea."
           }
          ]
@@ -1271,12 +1333,12 @@
      "obj/board-nobody": [
       {
        "type": "narrate",
-       "style": "art",
+       "style": "title",
        "text": "NOBODY"
       },
       {
        "type": "narrate",
-       "style": "subtitle",
+       "style": "chat",
        "text": "You won the cave. He will tell the story to the end of his days and never once get the name right. You will live on that. You will have to."
       },
       {
@@ -1308,7 +1370,7 @@
     "effects": [
      {
       "type": "narrate",
-      "style": "subtitle",
+      "style": "chat",
       "text": "You set your shoulder to the great stone. It does not so much as grind. No blade you carry will bite it — whatever opens this cave, it will not be you."
      },
      {
@@ -1339,7 +1401,7 @@
      },
      {
       "type": "narrate",
-      "style": "subtitle",
+      "style": "chat",
       "text": "Never strike a sleeping god's son. He comes up off the floor with his whole strength, and there is nothing in this cave that can stand against that."
      },
      {

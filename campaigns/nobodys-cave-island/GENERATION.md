@@ -126,3 +126,48 @@ root, none patched over:
   is datapack-owned + respawn_radius pinned; dialogue triggers re-arm in the
   handler (immune to the singleplayer pause tick-freeze); resource-pack
   pack.mcmeta gains 1.21.11 min/max_format (skins actually load client-side).
+
+### 2026-08-01 QA round 4 (owner findings → 9 engine PRs + content rework)
+
+Owner round-4 playtest + design session. Engine (#121–#129):
+- Cutscenes: look_at aim + multi-shot cinematic sequences (#124); "a cutscene
+  is pure observation" invariant — stealth clock and damage-players frozen for
+  players in cinematic state (#125); strike triggers fire on Invulnerable
+  NPCs via shared hitbox tagging — root cause was overlapping interaction
+  entities racing the attack raycast (#128).
+- Greenfield trees regrown structurally (lean-or-grow rule, canopy ≥3 above
+  the walk plane, corridor-clearance generator invariant) — no more sheared
+  half-trees (#121).
+- DW0330 on-screen text-width lint (measured font metrics: Han 9px, Latin
+  6px, em-dash trap) (#127); art font fixed to source scale (#129).
+- Pluggable external-LLM l10n (delvewright.toml + tools/i18n-translate.py +
+  l10n-inventory subcommand) (#122).
+Content:
+- Cheese is a collect objective (take a wheel from the barrel), not an
+  interact marker; wine-offer dialogue gated on flag/sealed-in (the empty
+  wine-node soft-lock); Eurylochus hides in the alcove with the player on
+  the wait branch; seal cutscene re-authored as two shots (hall-wide toward
+  the dying light, then close on the stone).
+- Subtitle discipline: 15 prose narrates demoted subtitle→chat (subtitles
+  are one-line punches, chat carries prose); ending banners now plain
+  fullscreen titles — en NOBODY / THE QUIET SAIL, zh 无人 / 悄然扬帆
+  (owner: no pixel-art banner needed; the art font remains an engine
+  capability, unused here).
+- Owner rulings recorded: old corridor campaign PR closed (superseded);
+  helmet-not-set-time is the proper daylight-undead fix (wave equipment
+  field queued); routed-then-feral TD movement queued as an M4 primitive.
+
+### 2026-08-01 round-5 delivery addenda
+
+- Surf drowned now wear leather caps via the new wave `equipment` field
+  (#130) — the owner's ruling: helmets, not clock changes, are the correct
+  daylight-undead protection (dusk kept purely for drama).
+- Two PackTest reds root-caused to the BATCH MODEL (#135): the generated
+  suite runs as one batch on one shared server — one dummy per test, all
+  coexisting — so `@p` in a template can retarget to a neighbor's dummy and
+  `@a`-wide flag writes pollute sibling tests. Templates now pin their own
+  dummy. Island 27/27, hollow-vigil 11/11.
+- Owner rulings this round: old corridor campaign PR closed permanently;
+  ending banners are plain fullscreen titles (art font retired from this
+  campaign; zh shows 无人 / 悄然扬帆); cheese is a collect-from-the-barrel
+  objective; specs 0013/0014/0015 approved.
