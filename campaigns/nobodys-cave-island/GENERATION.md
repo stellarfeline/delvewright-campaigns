@@ -2,8 +2,9 @@
 
 - **Date**: 2026-08-01
 - **dsl_version**: 0.6.0 (delvec 0.1.0, MC 1.21.11)
-- **Author**: planning agent (planner-personal authoring; owner production order
-  2026-07-31: "设计要炫技,我没有指定的地方你就把我们支持的特性能加的都加上去")
+- **Author**: planning agent (planner-personal authoring; owner production
+  order 2026-07-31: showcase the toolchain — wherever the brief leaves a
+  choice open, use every feature the current DSL supports)
 - **Prompt (constraint set)**: the owner's island staging vision (beach camp /
   offshore galley / greenfield / mountain-interior cavern; pseudo-open-world,
   no filler corridors, zero inter-area transports) + the full dramaturgy in
