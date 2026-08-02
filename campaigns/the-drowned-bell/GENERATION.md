@@ -56,3 +56,21 @@ rulings recorded in spec-0016.
   mineflayer aborts when the timed gate closes mid-approach. The runtime
   rung lacks the "timing" verb; engine/harness fix dispatched (timed-gate
   export + bounded window-wait on marked legs only). Content unchanged.
+
+## Round 4 (2026-08-02) — siege tuning by ladder evidence
+
+- Runs 3–5 all died at the courtyard siege; the ladder narrowed the cause
+  in three steps: 9 concurrent hostiles + crossbows (run 3) → 4 melee
+  still fatal (run 4) → run 5's log showed the third assailant was the
+  WALL-WALK AMBUSH HUSK, legitimately bypassed earlier and stalking the
+  bot ever since. Souls-correct behavior (the world is persistent), but
+  it exposed the bot's last capability gap: it only fights the tracked
+  wave and never defends itself against untracked attackers, and never
+  eats its kit food. Harness fix dispatched (retaliation + fight-or-
+  flight + eating — generic capabilities, no campaign knowledge).
+- Content retuned meanwhile: siege is now three sequential phases
+  (gate 2 vindicators → wall 2 → grave echoes 2, melee-only, hp 10,
+  dmg 4) — peak simultaneous pressure 2 plus at most one stalker. The
+  division-of-labor proof for parties lives in spec-0018's n-dummy
+  PackTests, not this beat; min_players 1 makes the solo floor the
+  binding constraint, and the bot is that floor's oracle.

@@ -226,20 +226,20 @@
       "id": "obj/hold-the-wall",
       "wave": "wave/wall-assault",
       "after": [
-       "obj/sound-it"
+       "obj/hold-the-gate"
       ],
       "title": "Hold the Wall Breach",
-      "hint": "The second column takes the wall breach. Two breaches, one courtyard \u2014 split it or run it."
+      "hint": "The gate column is down, and the wall breach answers with the second \u2014 the keep sends its wardens the way it always drilled them: in waves."
      },
      {
       "type": "kill",
       "id": "obj/the-echoes",
       "wave": "wave/grave-echoes",
       "after": [
-       "obj/sound-it"
+       "obj/hold-the-wall"
       ],
       "title": "Lay the Grave Echoes",
-      "hint": "Not everything that answers comes through a breach. Some of it simply arrives, at the edge of what it can sense."
+      "hint": "The breaches are quiet, and still something arrives \u2014 straight out of the grave-soil, at the edge of what it can sense."
      }
     ],
     "on_objective_complete": {
@@ -265,17 +265,21 @@
        "wave": "wave/gate-assault"
       },
       {
-       "type": "spawn-wave",
-       "wave": "wave/wall-assault"
-      },
-      {
        "type": "narrate",
        "style": "subtitle",
        "text": "The keep answers."
-      },
+      }
+     ],
+     "obj/hold-the-wall": [
       {
        "type": "spawn-wave",
        "wave": "wave/grave-echoes"
+      }
+     ],
+     "obj/hold-the-gate": [
+      {
+       "type": "spawn-wave",
+       "wave": "wave/wall-assault"
       }
      ]
     },
@@ -573,11 +577,15 @@
     "anchor": "anchor/l2-lane-gate-1",
     "mobs": [
      {
-      "entity": "minecraft:pillager",
-      "count": 3,
+      "entity": "minecraft:vindicator",
+      "count": 2,
       "name": "Hollow Gate-Warder",
       "attributes": {
-       "max_health": 16.0
+       "max_health": 10.0,
+       "attack_damage": 4.0
+      },
+      "equipment": {
+       "main_hand": "minecraft:iron_axe"
       }
      }
     ],
@@ -596,10 +604,11 @@
     "mobs": [
      {
       "entity": "minecraft:vindicator",
-      "count": 3,
+      "count": 2,
       "name": "Hollow Wall-Warder",
       "attributes": {
-       "max_health": 16.0
+       "max_health": 10.0,
+       "attack_damage": 4.0
       },
       "equipment": {
        "main_hand": "minecraft:iron_axe"
@@ -641,10 +650,10 @@
     "mobs": [
      {
       "entity": "minecraft:husk",
-      "count": 3,
+      "count": 2,
       "name": "Grave Echo",
       "attributes": {
-       "max_health": 14.0,
+       "max_health": 10.0,
        "follow_range": 12.0
       }
      }
