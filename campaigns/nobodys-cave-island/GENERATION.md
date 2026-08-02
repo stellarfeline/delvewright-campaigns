@@ -179,8 +179,8 @@ Owner round-5 findings; engine first (#142–#144, plus #140 landed in parallel)
 then this content pass:
 - **Giant-dialogue soft-lock root-caused (#142)**: two co-located interaction
   hitboxes at the fire-pit (the world-init strike-trigger box shadowing the
-  NPC's own); every right-click resolved to the wrong entity. Her left-click
-  was a red herring. One-cell-one-hitbox rule + DW0350.
+  NPC's own); every right-click resolved to the wrong entity. The reported
+  left-click was a red herring. One-cell-one-hitbox rule + DW0350.
 - **Stealth no longer wants a crouch (#143)**: zone presence = hidden,
   engine-wide; the spectator camera no longer strobes if a player holds sneak
   mid-cutscene (input-predicate gated re-attach).

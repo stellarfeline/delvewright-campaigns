@@ -119,5 +119,5 @@ metadata, DW07xx-clean admission.
 ## 6. Delivery
 
 New campaign id `nobodys-cave-island`, **separate PR** in the content repo
-(current `campaign/nobodys-cave` PR #1 ships as-is once the owner clears her
+(current `campaign/nobodys-cave` PR #1 ships as-is once it clears owner
 playtest). Full ladder green before the PR opens; this DESIGN.md included.
