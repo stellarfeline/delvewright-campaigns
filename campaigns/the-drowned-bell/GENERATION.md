@@ -74,3 +74,33 @@ rulings recorded in spec-0016.
   division-of-labor proof for parties lives in spec-0018's n-dummy
   PackTests, not this beat; min_players 1 makes the solo floor the
   binding constraint, and the bot is that floor's oracle.
+
+## Rounds 5–13 (2026-08-02) — the convergence ladder
+
+Thirteen full-server bot runs, each red a distinct lesson, none wasted:
+
+- Run 5–7: siege sequenced into three phases; the stalking wall-walk
+  ambusher became a ZOMBIE (the open-sky parapet's daylight scours a
+  bypassed ambusher — vanilla-native persistence discipline).
+- Run 6–8: class kits gained armor (a warden without a cuirass was the
+  actual defect — vindicator axe item-modifiers add +8 on top of authored
+  attack_damage); siege squads retuned hollow-frail (the wardens are 空壳
+  in the fiction and in the arithmetic).
+- Run 8–9, 11–12: Bellkeeper walked down to the bot floor (30 hp / dmg 1 /
+  speed .23); rafters twist trimmed to two perched husks (visibility is
+  the design, not quantity).
+- Run 10/12/13 vs 11: the aggro-edge coin flip — mobs seated exactly AT
+  follow_range acquire a defender only marginally. Engine fix #174 moved
+  the summon band one block inside perception.
+- Run 13: the last deadlock — self-defense kills of WAVE mobs were
+  deliberately uncounted by #173's guard; harness fix #175 credits
+  proximity-confirmed kills during the whole kill step and adds a
+  live-mob terminal condition.
+
+## FINAL (2026-08-02): honest ladder GREEN
+
+- Bot: 21/21 steps, exit 0, both on this campaign and the island
+  regression (20/20). Every combat number in this file currently sits at
+  the BOT FLOOR — the intended human difficulty pass is the owner's
+  domain-expert call, one line per wave, and harness task #85 (shield/
+  strafe/kite) raises the floor for every future campaign.
