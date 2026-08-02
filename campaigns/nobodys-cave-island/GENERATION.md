@@ -99,3 +99,30 @@ no per-shot darkness flag; dark-interior review stays in-game for now
 (engine follow-up filed). No blocking content defects found; backlog noted:
 mountain exterior silhouette polish, unflattering framing on rising-step
 waypoints.
+
+### 2026-08-01 QA round 3 (owner live findings → 8 engine PRs + content rework)
+
+Owner LAN + singleplayer playtest yielded six findings; every one fixed at
+root, none patched over:
+- zh l10n rewritten in full by the planner (per-persona voice, 182 keys).
+- Wine now issued to the whole party before the climb (Q1 end) — no class
+  soft-lock, narrative-consistent with the class blurbs.
+- Cheese-store crowding: Perimedes re-anchored to alcove-2; Eurylochus's
+  guided walk ends at the checkpoint shelf, off the interact marker.
+- Polyphemus + Perimedes are deferred NPCs (#113): the giant does not exist
+  until the herd enters — walker puppet swaps to the dialogue statue at
+  arrival via on_arrive, statue exits for the blind-patrol era, wake-trigger
+  summons the unleashed warden on demand (also fixes a latent two-giants
+  overlap post-blinding).
+- Night vision is now an area declaration (#114) emitting a persistent effect
+  clock; the renamed-water-bottle "potion" is deleted; the compiler invariant
+  "semantics never key on player-facing free text" is documented.
+- NPC block-clipping root-caused (#115): entities were emitted at cell
+  CORNERS (~70% inside walls); all summons/tps now cell-centred.
+- Sea level (#116): ocean areas place at the waterline datum (walk plane 63,
+  sea 62 — vanilla-normal shoreline); new DW0344 proves waterline==sea level.
+- Singleplayer parity (#117–#120): the island had NO entry point (anchor
+  `entry` vs compiler's `spawn` — DW0345 now catches it); first-join placement
+  is datapack-owned + respawn_radius pinned; dialogue triggers re-arm in the
+  handler (immune to the singleplayer pause tick-freeze); resource-pack
+  pack.mcmeta gains 1.21.11 min/max_format (skins actually load client-side).
