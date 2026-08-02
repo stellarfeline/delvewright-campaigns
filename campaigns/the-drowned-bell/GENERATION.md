@@ -24,3 +24,21 @@ rulings recorded in spec-0016.
   (wave) rather than a posed actor — revisit if the campaign needs the
   Heide-Knight hunch visual; finite bonfire-refilled heals await the
   spec-0016 amendment batch (kits carry fixed stews meanwhile).
+
+## Round 2 (2026-08-02, same session)
+
+- Engine #169 merged: siege upgraded to real TD lanes (gate + wall columns)
+  plus `summon: aggro-edge` grave echoes — three-arm AND-join.
+- Engine #170/#171 merged: the light-model fix landed (nav-passable blocks
+  now transparent per vanilla filterLight) and shortcut gates are proven
+  exempt from the DW0306 piece-split by construction.
+- DW0386 caught a real lane defect: the wall lane's last leg measured
+  exactly 10.0 blocks — inside vanilla's patrol-target re-roll radius, the
+  "working-but-drunk" failure. Dropped the final waypoint rather than
+  nudging thresholds.
+- `delvec build` GREEN end-to-end: critical path across all six pieces,
+  bonfires standable + no stranding, shortcut long-route/leak/permanence,
+  timed-gate window, three ambush counterplay proofs, both traps avoidable
+  + dart gallery disarmable, lane geometry, aggro-edge ring, ocean
+  boundary re-climbability, lighting, gravity.
+- Determinism: double build byte-identical. zh-CN build green.
