@@ -1,0 +1,131 @@
+{
+ "dsl_version": "0.6.0",
+ "campaign_id": "the-drowned-bell",
+ "stage": "dialogue",
+ "content": {
+  "dialogues": [
+   {
+    "npc": "npc/ferrywoman",
+    "root": "dlg/fw-root",
+    "nodes": [
+     {
+      "id": "dlg/fw-root",
+      "text": "Low water. That's all the favor I can do you — the rest of the climb is yours. The keep keeps what it keeps.",
+      "options": [
+       {
+        "label": "What happened to the bell?",
+        "next": "dlg/fw-bell"
+       },
+       {
+        "label": "What is the thing kneeling in the graves?",
+        "next": "dlg/fw-warden"
+       },
+       {
+        "label": "I'm ready. Hold the crossing for me.",
+        "effects": [
+         {
+          "type": "complete-objective",
+          "objective": "obj/ashore"
+         }
+        ]
+       },
+       {
+        "label": "It's done. The bell is home.",
+        "effects": [
+         {
+          "type": "complete-objective",
+          "objective": "obj/tell-the-water"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "dlg/fw-bell",
+      "text": "Cut down and drowned in the keep's own water, by men with better coin than sense. The tide's been deaf since. I still row by the old bell-times — somebody has to remember them for it.",
+      "options": [
+       {
+        "label": "Ask something else.",
+        "next": "dlg/fw-root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/fw-warden",
+      "text": "That one buried the others, last of all its watch, and knelt down where it finished. It has no quarrel with anyone walking past. Walking up to it is another kind of question — and it answers.",
+      "options": [
+       {
+        "label": "Ask something else.",
+        "next": "dlg/fw-root"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "npc": "npc/sexton",
+    "root": "dlg/sx-root",
+    "nodes": [
+     {
+      "id": "dlg/sx-root",
+      "text": "Mind the floor, it's just swept. You'll be for the bell, then. They always were, the ones who came up the hard way.",
+      "options": [
+       {
+        "label": "What's behind the barred side door?",
+        "next": "dlg/sx-door"
+       },
+       {
+        "label": "Who cracked the bell in your chapel?",
+        "next": "dlg/sx-bell"
+       },
+       {
+        "label": "I'll find the way down.",
+        "effects": [
+         {
+          "type": "complete-objective",
+          "objective": "obj/the-hearth"
+         }
+        ]
+       },
+       {
+        "label": "The side door is open. For good.",
+        "next": "dlg/sx-open",
+        "effects": [
+         {
+          "type": "complete-objective",
+          "objective": "obj/regroup"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "dlg/sx-door",
+      "text": "The cistern-way. Barred from the far side the night the bell went down — you'd have to go through the water to lift it, and the water is where they put everything they wanted forgotten. Weather's poor down there. Darts, mostly.",
+      "options": [
+       {
+        "label": "Ask something else.",
+        "next": "dlg/sx-root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/sx-bell",
+      "text": "I did — rang it till it split, the night they came for the true bell. Alarm's the one note a bell can play badly and still play. The wardens remember that note. If you ever strike it, be standing somewhere you'd be glad to defend.",
+      "options": [
+       {
+        "label": "Ask something else.",
+        "next": "dlg/sx-root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/sx-open",
+      "text": "So it is. Then there is one thing left in my keeping worth saying: the keeper still keeps. Ring what you must, climb where you must — but watch its round before you interrupt it.",
+      "options": []
+     }
+    ]
+   }
+  ]
+ }
+}

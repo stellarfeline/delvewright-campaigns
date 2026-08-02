@@ -1,0 +1,646 @@
+{
+ "dsl_version": "0.6.0",
+ "campaign_id": "the-drowned-bell",
+ "stage": "quests",
+ "content": {
+  "quests": [
+   {
+    "id": "quest/the-landing",
+    "trigger": {
+     "type": "campaign-start"
+    },
+    "objectives": [
+     {
+      "type": "talk-to",
+      "id": "obj/ashore",
+      "npc": "npc/ferrywoman",
+      "title": "Speak With the Ferrywoman",
+      "hint": "She is beaching her boat by the fire at the tide-line, below the barrow field."
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-field",
+      "anchor": "anchor/l0-gate-approach",
+      "after": [
+       "obj/ashore"
+      ],
+      "title": "Cross the Barrow Field",
+      "hint": "The gatehouse stands north across the graves. The armored shape kneeling among the barrows is no part of your errand \u2014 the ground is wide on either side of it.",
+      "radius": 3
+     }
+    ],
+    "on_objective_complete": {
+     "obj/ashore": [
+      {
+       "type": "bonfire",
+       "anchor": "anchor/l0-bonfire",
+       "on_rest": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "The driftwood fire settles. The tide holds its breath, and the graves keep theirs."
+        }
+       ]
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "A fire is lit at the tide-line. Rest at a fire and it will hold your place \u2014 but the keep forgets nothing it has already sent against you."
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "The portcullis ahead rises and falls to a rhythm nothing living is keeping."
+     }
+    ]
+   },
+   {
+    "id": "quest/the-gate-tax",
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/past-the-gate",
+      "anchor": "anchor/l1a-ward",
+      "title": "Pass the Portcullis",
+      "hint": "Stand in the watch arch and count the gate's rhythm before you step. It does not slow down for anyone.",
+      "radius": 3
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-stair",
+      "anchor": "anchor/l1a-stair-head",
+      "after": [
+       "obj/past-the-gate"
+      ],
+      "title": "Climb the Worn Stair",
+      "hint": "The treads are worn smooth down the middle \u2014 by what, exactly? The alcove halfway up is deeper than it looks.",
+      "radius": 3
+     }
+    ],
+    "on_objective_complete": {
+     "obj/the-stair": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "From the stair-head you can see the spill-shaft ladder dropping back to the barrow fire. The stair kept its toll; the keep pays out its change in shortcuts."
+      }
+     ]
+    },
+    "on_complete": [],
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-landing"
+    }
+   },
+   {
+    "id": "quest/the-hollow-watch",
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-parapet",
+      "anchor": "anchor/l1b-parapet-north",
+      "title": "Walk the Wall",
+      "hint": "The wall walk runs open to the sky. The keep's wardens stood their posts here; some of them have not stopped.",
+      "radius": 3
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/the-hearth",
+      "npc": "npc/sexton",
+      "after": [
+       "obj/the-parapet"
+      ],
+      "title": "Find the Sexton",
+      "hint": "An old man sweeps a cold hearth in the chapel across the courtyard."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/the-hearth": [
+      {
+       "type": "bonfire",
+       "anchor": "anchor/l2-bonfire",
+       "on_rest": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "The Chapel Hearth takes the flame as if it had only been waiting for someone to ask."
+        }
+       ]
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The chapel's side door is barred \u2014 the bar is on the other side."
+      }
+     ]
+    },
+    "on_complete": [],
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-gate-tax"
+    }
+   },
+   {
+    "id": "quest/the-drowned-way",
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-drop",
+      "anchor": "anchor/l3-shallows",
+      "title": "Go Down the Drowned Way",
+      "hint": "Through the undercroft door, a ledge overhangs the flooded cistern. The drop is the only way down, and it is not a door you can close behind you \u2014 it is a door that closes itself.",
+      "radius": 3
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-bar",
+      "anchor": "anchor/l3-unlock",
+      "after": [
+       "obj/the-drop"
+      ],
+      "title": "Reach the Barred Door's Far Side",
+      "hint": "Past the pillars, past the shallows, up the far climb. The dart gallery over the exit stair has a lever behind a grate \u2014 on the far side, of course.",
+      "radius": 3
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/regroup",
+      "npc": "npc/sexton",
+      "after": [
+       "obj/the-bar"
+      ],
+      "title": "Return to the Hearth",
+      "hint": "The bar lifts from this side. It will never fall again."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/the-drop": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Cold to the waist. The water remembers the bell better than the keep does \u2014 something in it still keeps time."
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "The Sexton looks at the open side door for a long moment, and sets his broom against the wall."
+     }
+    ],
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-hollow-watch"
+    }
+   },
+   {
+    "id": "quest/the-bell-toll",
+    "objectives": [
+     {
+      "type": "interact",
+      "id": "obj/sound-it",
+      "anchor": "anchor/l2-cracked-bell",
+      "title": "Strike the Cracked Bell",
+      "hint": "The old alarm bell hangs cracked in the chapel. The Sexton says the wardens remember it. He does not say it as encouragement."
+     },
+     {
+      "type": "kill",
+      "id": "obj/hold-the-gate",
+      "wave": "wave/gate-assault",
+      "after": [
+       "obj/sound-it"
+      ],
+      "title": "Hold the Gate Breach",
+      "hint": "They come through the gate breach in marching order, armed, remembering the drill."
+     },
+     {
+      "type": "kill",
+      "id": "obj/hold-the-wall",
+      "wave": "wave/wall-assault",
+      "after": [
+       "obj/sound-it"
+      ],
+      "title": "Hold the Wall Breach",
+      "hint": "The second column takes the wall breach. Two breaches, one courtyard \u2014 split it or run it."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/sound-it": [
+      {
+       "type": "play-sound",
+       "sound": "minecraft:block.bell.use",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/l2-cracked-bell"
+       }
+      },
+      {
+       "type": "open-gate",
+       "anchor": "anchor/l2-breach-gate"
+      },
+      {
+       "type": "open-gate",
+       "anchor": "anchor/l2-breach-wall"
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/gate-assault"
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/wall-assault"
+      },
+      {
+       "type": "narrate",
+       "style": "subtitle",
+       "text": "The keep answers."
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "Quiet again \u2014 a different quiet. Above you, in the tower, something heavy resumes its round."
+     }
+    ],
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-drowned-way"
+    }
+   },
+   {
+    "id": "quest/the-keeper",
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/rope-room",
+      "anchor": "anchor/l4-rope-room",
+      "title": "Climb to the Rope Room",
+      "hint": "The tower stair rises from the cistern's far landing. The rope room above holds a cold fire-bowl.",
+      "radius": 3
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-loft",
+      "anchor": "anchor/l4-loft",
+      "after": [
+       "obj/rope-room"
+      ],
+      "title": "Enter the Bell Loft",
+      "hint": "Stop at the loft door before you walk in. Look up. Count the rafters, and what the rafters hold.",
+      "radius": 3
+     },
+     {
+      "type": "kill",
+      "id": "obj/the-keeper",
+      "wave": "wave/bellkeeper",
+      "after": [
+       "obj/the-loft"
+      ],
+      "title": "End the Keeper's Watch",
+      "hint": "It walks the ring around the bell pit and has never once broken step. Watch a full round from the door \u2014 then choose where the round is thinnest."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/rope-room": [
+      {
+       "type": "bonfire",
+       "anchor": "anchor/l4-bonfire",
+       "on_rest": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "The rope room fire burns small and steady, the way a fire burns before work."
+        }
+       ]
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/bellkeeper"
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "narrate",
+      "style": "subtitle",
+      "text": "The keeper's round is ended."
+     }
+    ],
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-bell-toll"
+    }
+   },
+   {
+    "id": "quest/ring-it-home",
+    "objectives": [
+     {
+      "type": "interact",
+      "id": "obj/raise-it",
+      "anchor": "anchor/l4-bell-hang",
+      "title": "Raise the Drowned Bell",
+      "hint": "The yoke over the pit is empty. Haul the drowned bell home to it."
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/the-fold",
+      "anchor": "anchor/l2-muster",
+      "after": [
+       "obj/raise-it"
+      ],
+      "title": "Take the Bell Rope Down",
+      "hint": "The rope drops from the loft straight through the keep's heart into the chapel. The long way is over; every level of this place hangs on one rope now.",
+      "radius": 3
+     },
+     {
+      "type": "talk-to",
+      "id": "obj/tell-the-water",
+      "npc": "npc/ferrywoman",
+      "after": [
+       "obj/the-fold"
+      ],
+      "title": "Tell the Ferrywoman",
+      "hint": "She is where you left her, at the tide-line. She will already have heard \u2014 bells carry over water. Go anyway."
+     }
+    ],
+    "on_objective_complete": {
+     "obj/raise-it": [
+      {
+       "type": "play-sound",
+       "sound": "minecraft:block.bell.resonate",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/l4-bell-hang"
+       }
+      },
+      {
+       "type": "narrate",
+       "style": "art",
+       "text": "THE BELL IS HOME"
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "narrate",
+      "style": "art",
+      "text": "THE TIDE OBEYS"
+     },
+     {
+      "type": "campaign-complete"
+     }
+    ],
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-keeper"
+    }
+   }
+  ],
+  "actors": [
+   {
+    "id": "actor/wall-sentinel",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l1b-ambush-door"
+   },
+   {
+    "id": "actor/pillar-warden-a",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l3-ambush-a"
+   },
+   {
+    "id": "actor/pillar-warden-b",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l3-ambush-b"
+   },
+   {
+    "id": "actor/rafter-1",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l4-perch-1"
+   },
+   {
+    "id": "actor/rafter-2",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l4-perch-2"
+   },
+   {
+    "id": "actor/rafter-3",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l4-perch-3"
+   },
+   {
+    "id": "actor/rafter-4",
+    "entity": "minecraft:husk",
+    "anchor": "anchor/l4-perch-4"
+   }
+  ],
+  "ambushes": [
+   {
+    "id": "ambush/wall-watch",
+    "at": "anchor/l1b-parapet-mid",
+    "actors": [
+     "actor/wall-sentinel"
+    ],
+    "trigger": {
+     "on": "approach",
+     "range": 4
+    }
+   },
+   {
+    "id": "ambush/cistern-pillars",
+    "at": "anchor/l3-item-alcove",
+    "actors": [
+     "actor/pillar-warden-a",
+     "actor/pillar-warden-b"
+    ],
+    "trigger": {
+     "on": "approach",
+     "range": 3
+    }
+   },
+   {
+    "id": "ambush/the-rafters",
+    "at": "anchor/l4-loft",
+    "actors": [
+     "actor/rafter-1",
+     "actor/rafter-2",
+     "actor/rafter-3",
+     "actor/rafter-4"
+    ],
+    "trigger": {
+     "on": "approach",
+     "range": 4
+    }
+   }
+  ],
+  "shortcuts": [
+   {
+    "id": "shortcut/chapel-door",
+    "gate": "anchor/l3-shortcut-a",
+    "unlock": "anchor/l3-unlock",
+    "on_unlock": [
+     {
+      "type": "narrate",
+      "style": "subtitle",
+      "text": "The bar lifts. This door does not close again."
+     },
+     {
+      "type": "play-sound",
+      "sound": "minecraft:block.iron_door.open",
+      "at": {
+       "at": "anchor",
+       "anchor": "anchor/l3-shortcut-a"
+      }
+     }
+    ]
+   }
+  ],
+  "timed_gates": [
+   {
+    "id": "timed-gate/portcullis",
+    "gate": "anchor/l1a-gate-timed",
+    "open_ticks": 100,
+    "closed_ticks": 100
+   }
+  ],
+  "traps": [
+   {
+    "id": "trap/stair-volley",
+    "at": "anchor/l1a-trap-boulder",
+    "trigger": "pressure-plate",
+    "effect": {
+     "dispense": {
+      "item": "minecraft:arrow",
+      "count": 8
+     }
+    },
+    "lethality": "harmful",
+    "reset": "rearm"
+   },
+   {
+    "id": "trap/dart-gallery",
+    "at": "anchor/l3-trap-darts",
+    "trigger": "tripwire",
+    "effect": {
+     "dispense": {
+      "item": "minecraft:arrow",
+      "count": 8
+     }
+    },
+    "lethality": "harmful",
+    "disarm": {
+     "via": "anchor/l3-dart-lever",
+     "sets_flag": "flag/darts-stilled"
+    },
+    "forbids_flags": [
+     "flag/darts-stilled"
+    ],
+    "reset": "rearm"
+   }
+  ],
+  "waves": [
+   {
+    "id": "wave/barrow-warden",
+    "anchor": "anchor/l0-elite-stand",
+    "mobs": [
+     {
+      "entity": "minecraft:wither_skeleton",
+      "count": 1,
+      "name": "The Barrow Warden",
+      "attributes": {
+       "max_health": 60.0,
+       "movement_speed": 0.27,
+       "attack_damage": 9.0,
+       "follow_range": 8.0
+      },
+      "equipment": {
+       "head": "minecraft:golden_helmet",
+       "chest": "minecraft:golden_chestplate",
+       "main_hand": "minecraft:iron_axe"
+      }
+     }
+    ]
+   },
+   {
+    "id": "wave/gate-assault",
+    "anchor": "anchor/l2-lane-gate-1",
+    "mobs": [
+     {
+      "entity": "minecraft:pillager",
+      "count": 3,
+      "name": "Hollow Gate-Warder",
+      "attributes": {
+       "max_health": 16.0
+      }
+     }
+    ],
+    "respawns_on_rest": true
+   },
+   {
+    "id": "wave/wall-assault",
+    "anchor": "anchor/l2-lane-wall-1",
+    "mobs": [
+     {
+      "entity": "minecraft:vindicator",
+      "count": 3,
+      "name": "Hollow Wall-Warder",
+      "attributes": {
+       "max_health": 16.0
+      },
+      "equipment": {
+       "main_hand": "minecraft:iron_axe"
+      }
+     }
+    ],
+    "respawns_on_rest": true
+   },
+   {
+    "id": "wave/bellkeeper",
+    "anchor": "anchor/l4-boss",
+    "mobs": [
+     {
+      "entity": "minecraft:wither_skeleton",
+      "count": 1,
+      "name": "The Bellkeeper",
+      "attributes": {
+       "max_health": 100.0,
+       "movement_speed": 0.3,
+       "attack_damage": 11.0
+      },
+      "equipment": {
+       "head": "minecraft:iron_helmet",
+       "main_hand": "minecraft:iron_sword"
+      }
+     }
+    ]
+   }
+  ],
+  "triggers": [
+   {
+    "id": "trigger/warden-stirs",
+    "at": "anchor/l0-elite-stand",
+    "on": {
+     "on": "approach",
+     "range": 10
+    },
+    "once": true,
+    "effects": [
+     {
+      "type": "spawn-wave",
+      "wave": "wave/barrow-warden"
+     },
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "The kneeling shape among the barrows lifts its head. It does not rise. It is waiting to see what you do."
+     }
+    ]
+   }
+  ]
+ }
+}
