@@ -1102,10 +1102,7 @@
      {
       "type": "interact",
       "id": "obj/harden",
-      "anchor": "anchor/fire-pit",
-      "prop": {
-       "block": "minecraft:campfire[lit=true]"
-      },
+      "anchor": "anchor/hearth",
       "after": [
        "obj/grind"
       ],
@@ -1113,12 +1110,12 @@
        "flag/sharpened"
       ],
       "title": "Char It in the Fire",
-      "hint": "Take the sharpened stake to the great fire where he sleeps and turn the point in the coals until it blackens hard."
+      "hint": "Take the sharpened stake to the great walled hearth at the heart of the hall and turn the point in the coals until it blackens hard."
      },
      {
       "type": "interact",
       "id": "obj/blind",
-      "anchor": "anchor/fire-pit",
+      "anchor": "anchor/eye",
       "requires_item": "minecraft:stripped_oak_log",
       "after": [
        "obj/harden"
@@ -1170,7 +1167,7 @@
        "sound": "minecraft:block.campfire.crackle",
        "at": {
         "at": "anchor",
-        "anchor": "anchor/fire-pit"
+        "anchor": "anchor/hearth"
        }
       }
      ],
@@ -1668,18 +1665,27 @@
      {
       "type": "narrate",
       "style": "chat",
-      "text": "Your blade turns on his hide like a stick on a ship's keel. He does not even set down the pail. One hand, without heat, the way a man swats at a midge—"
+      "text": "Your blade turns on his hide like a stick on a ship's keel. He sets down the pail. Slowly. In his own house, under his own stone, you have raised a hand to him — and he rises to answer it in full."
      },
      {
       "type": "play-sound",
-      "sound": "minecraft:entity.warden.attack_impact",
+      "sound": "minecraft:entity.warden.roar",
       "at": {
-       "at": "players"
+       "at": "anchor",
+       "anchor": "anchor/fire-side"
       }
      },
      {
-      "type": "damage-players",
-      "amount": 40
+      "type": "despawn-npc",
+      "npc": "npc/polyphemus"
+     },
+     {
+      "type": "spawn-actor",
+      "actor": "actor/polyphemus-roused"
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/polyphemus-roused"
      }
     ]
    }
