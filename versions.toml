@@ -1,0 +1,31 @@
+# Content-repo version manifest — which pipeline builds this content.
+#
+# The main repo (`delvewright`, GPL pipeline code) pins THIS repo in its own
+# `versions.toml` `[content].sha`, so a main-repo CI run is reproducible. This
+# file is the other direction: which main-repo commit a *release* of this
+# content is built and validated with. Both pins together make a released delve
+# reproducible from two commit ids and nothing else (ADR-0006).
+#
+# RE-PIN CONVENTION: bump `[engine].ref` in a normal reviewed PR when a release
+# needs newer compiler behaviour. A release tag always builds with whatever this
+# file names at the tagged commit — never with "latest".
+#
+# NOTE: `.github/workflows/prefab-audit.yml` carries its own, deliberately
+# different pin (`ADMIT_REF`): it names the first main-repo commit whose palette
+# allowlist admits every prefab merged here, which is a property of the
+# allowlist, not of the compiler. Do not collapse the two.
+
+[engine]
+# The main repo and the commit `release.yml` checks out to build + validate a
+# release. Private repo -> the checkout uses `secrets.MAIN_REPO_TOKEN`
+# (read-only `contents` on stellarfeline/delvewright), same as prefab-audit.yml.
+repo = "stellarfeline/delvewright"
+# main tip carrying spec-0024's release-tier ladder inputs: the shipped
+# Dockerfile.delve, the validate/packtest compose profiles, and `delvec build`
+# with `--lang`/`--prefabs`.
+ref = "91d40ca9817bedba1286ef661fcf0b61aa187b1a"
+
+[registry]
+# Where a released delve image is published. `delve-<campaign>` per campaign,
+# tagged `v<semver>` (immutable) plus `latest`.
+image_prefix = "ghcr.io/stellarfeline/delve-"
