@@ -351,3 +351,25 @@ Two wiring observations from the first live die-retry exercise:
 
 `validation/fresh-volumes.sh --project dw-worker-bellr3` again reported
 `verified clean (containers + volumes)` and exited 0.
+
+### Queued for round 4 — DW0331 dialogue-label overflow
+
+Engine main (post 2026-08-03 09:44Z) makes a dialogue option label wider than
+**146 font px** a build ERROR: the dialog buttons are a fixed 150 px and longer
+labels scroll (owner directive). The bell has **five violating ENGLISH labels**;
+the `zh-cn` sidecar is entirely clean, and its translations are the target
+register — captions, not sentences.
+
+| key | px |
+| --- | --- |
+| `dlg.ferrywoman.fw-root.opt.1` | 204 |
+| `dlg.ferrywoman.fw-root.opt.2` | 180 |
+| `dlg.sexton.sx-root.opt.0` | 184 |
+| `dlg.sexton.sx-root.opt.1` | 188 |
+| `dlg.sexton.sx-root.opt.3` | 164 |
+
+Budget is roughly **≤20 Latin characters**. Keep the meaning, cut to a label —
+these are buttons, not lines of dialogue. Do this when round 4 updates its engine
+tree, and fold it into round 4's commit. Note it interacts with round 2's
+de-AI prose pass: these five strings were hand-edited then, so shorten them
+without re-introducing the fragment/verdict rhythm that pass removed.
