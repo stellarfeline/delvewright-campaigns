@@ -29,10 +29,16 @@ Full provenance (download URL, retrieval date, sha256 of the original download,
 source path within the datapack) lives in each prefab's metadata and catalog
 card.
 
-## Generated delve content
+## Campaign content and the license boundary
 
-Generated campaigns and worlds are **not** stored in this repository. They ship
-separately — via GitHub Releases / the OCI registry — and are distributed under
-**CC BY-SA 4.0** (ADR-0007). The pipeline code in this repo is licensed under
-GPL-3.0-or-later (see root `LICENSE`); the license boundary is a directory
-boundary.
+This repository holds the campaign sources, generated worlds, and the prefab
+library. Campaign content is distributed under **CC BY-SA 4.0** (root
+`LICENSE`, ADR-0007). Prefab assets under `prefabs/**` keep their own
+per-asset licenses as recorded above — the allowlist plus per-file
+provenance governs them, not the root license.
+
+The pipeline code (compiler, validation, tooling) lives in the engine
+repository ([stellarfeline/delvewright](https://github.com/stellarfeline/delvewright)),
+licensed GPL-3.0-or-later. Since the split, the license boundary is the
+repository boundary (owner correction, 2026-08-03 — this section previously
+carried stale monorepo-era wording claiming pipeline code lived here).
