@@ -1,123 +1,210 @@
-# Nobody's Cave — Island Remake (design brief)
+# Nobody's Cave — Island Remake (authoritative design record)
 
-Planner-authored, 2026-08-01. Owner's staging vision + dramaturgy are fixed
-inputs; everywhere the owner left unspecified, this design deliberately uses
-**every feature the toolchain supports** (owner directive: showcase). This file
-ships as DESIGN.md in the content-repo remake PR. Engine dependencies:
-spec-0012 (checkpoints), spec-0013 (ocean horizon + boundary), spec-0014
-(actors/staging verbs).
+**v2 — 2026-08-03** (v1: 2026-08-01). This file is the single authoritative
+design document for the `nobodys-cave-island` campaign. Where it and the stage
+JSONs disagree, one of the two is a defect.
+
+## 0. Iteration protocol (owner ruling, 2026-08-03)
+
+1. **This file is the design.** Every iteration round updates it in the same
+   commit that moves the campaign; `GENERATION.md` stays the round-by-round
+   history, this file stays the current state.
+2. **Only what was asked changes.** A mechanics fix must not incidentally
+   rewrite story, staging, dialogue or balance. Owner-unrequested changes are
+   forbidden.
+3. **Every round ends with a conformance review**: the current
+   `quests/dialogue/npcs/world-edits` JSON is diffed against this file beat by
+   beat. A deviation traceable to an owner request is folded in here; a
+   deviation with no owner request is reported to the owner, never silently
+   kept and never silently restored.
+4. Open, unresolved deviations live in §7 until the owner rules on them.
 
 ## 1. The island (layout — ONE contiguous area, zero transports)
 
 No inter-area teleports, no filler corridors: every space serves a story beat
-or a sightline. Walk-through order (west → east, rising):
+or a sightline. Walk-through order (south → north, rising):
 
-1. **Beach camp** (entry piece, sea level y≈64): sand shore; campfire ring
-   with log benches (campfire doubles as relight fixture); two tents; supply
-   crates (barrels); class-selection NPC spot. **Greek galley** anchored just
-   offshore with a gangplank to the beach — the escape-promise seen from
-   minute one.
-2. **Greenfield** (connector pieces, gentle rise): grass, scattered oaks,
-   poppies/daisies, a worn dirt path; a grazing meadow with a low stone-wall
-   sheep fold (foreshadowing; empty — the sheep are *his*).
-3. **Mountain** (large terminal piece): grass-to-stone slope path switchbacks
-   up the face to a cave-mouth ledge; the **boulder** sits beside the mouth
-   (visible on approach — Chekhov's rock).
-4. **Cavern** (mountain interior): one TALL WIDE hall (target ≥ 30×14×24
-   interior), NOT rooms-and-corridors. Zones within the hall: cheese store
-   (shelves near entry), central fire pit, rock-shelf **ramp** (owner: no
-   ladders) to an upper sheep pen, 3–4 **shadow alcoves** (stealth zones,
-   visually dark recesses), dripstone + moss dressing, two ceiling light
-   shafts (beam accents; hall still reads dark, relight lanterns minimal).
+1. **Beach camp** (entry piece, walk plane y=63, sea 62): sand shore; campfire
+   ring with log benches; two tents; supply crates; class-selection post.
+   **Greek galley** merged into the same prefab, anchored just offshore with a
+   gangplank — the escape-promise seen from minute one (DESIGN v1 §5 reserved
+   this merge: the DSL has no scenery-offset mechanism and areas sit 256 blocks
+   apart, so "just offshore" is only achievable inside one piece).
+2. **Greenfield** (two connector pieces, gentle rise): grass, oaks, flowers, a
+   worn dirt path; a grazing meadow with a low mossy-cobble **sheep fold**
+   (5×5, one gate gap; 3×3 interior) — foreshadowing, empty until the end.
+3. **Mountain** (large terminal piece): grass-to-stone switchbacks up the face
+   to the cave-mouth ledge; the boulder gate at the mouth, a decorative
+   Chekhov boulder on the ledge beside it.
+4. **Cavern** (mountain interior): one tall wide hall. Cheese racks near the
+   entry, the walled **hearth** and the central fire pit, a rock-shelf **ramp**
+   (no ladders) to the upper **sheep pen** (9×6 oak fence, gate on the south
+   side, 7×4 interior), four shadow alcoves, two ceiling light shafts.
 
-World: `horizon: "ocean"` (sea level 62 — the map IS an island), `boundary`
-margin 16 (out-of-bounds → last checkpoint + message), start `time: noon`,
-`weather: clear`.
+World: `horizon: "ocean"` (sea 62), `boundary` margin 16, start `time: noon`,
+`weather: clear`, area `mitigation: "night-vision"` — the hall stays physically
+dark and the party is given the sight to move in it (engine #114; the darkness
+is never relit away).
 
-## 2. Dramaturgy (beats → mechanics; owner's script, feature-maxed)
+**Landscape script** (`world-edits.json`, 9 batches, rounds 8–9): the box-garden
+void-safety berms are cut back to the meadow datum and inverted into banks that
+fall below the waterline; both banks get rock outcrops and a sparse outboard
+treeline; the massif gets a four-ring stepped skirt and an undulating crown; the
+shoreline grades into the sea in sand and gravel; the beach-greenfield seam and
+its twin at the inner piece seam are levelled. The path spine is protected
+structurally (every morph region's y-floor is the walk plane) and declared
+keep-clear for every scatter.
 
-- **B0 Beach**: crew mannequins (skins) around the campfire; class selection +
-  named kit; Eurylochus dialogue sets premise (l10n en+zh). *Planner addition,
-  owner may veto*: a dusk-tinted 3-drowned wave stumbling out of the surf as a
-  30-second gear tutorial (kill objective, tuned weak) — the only real combat
-  before the cave, classes get to matter.
-- **B1 Follow**: Eurylochus `move-actor`-walks the path (beach → meadow →
-  slope → mouth), player follows (reach-anchor chain along scenic beats, no
-  filler). Positional sheep/ambient `play-sound` cues at the meadow.
-- **B2 Cavern entry — CHECKPOINT 1** (`set-checkpoint`, narrate line). Cheese
-  store `interact` + `give-item` (named "Kefalotyri Cheese"). **Choice
-  dialogue** (dialogue flags): *take the cheese and slip away* → Ending B
-  route (walk back down, gangplank `interact`, art title) vs *wait for the
-  owner of this cave*.
-- **B3 The giant returns** (waited): `sequence` cutscene — `set-time night`;
-  player told to hide (`begin-stealth`, shadow alcoves); sheep flock (8 sheep
-  actors) herded in by **Polyphemus** (warden actor) via synchronized
-  `move-actor`s + hoof/roar sounds; boulder seals the mouth (`set-block`
-  basalt fill + deepslate slam sounds); Polyphemus one-punches Eurylochus
-  (rhythm-synced: attack-swing `actor-anim` if the spike proves it, else
-  camera-cut + sound; Eurylochus `despawn-actor style: kill`); giant walks
-  the ramp down to the fire pit; `end-stealth`. Caught during any of it →
-  death → CP1. **CHECKPOINT 2** at the fire-pit aftermath.
-- **B4 Trapped**: boulder `interact` → "it will not move" hint. Striking the
-  giant (strike trigger) → `unleash-actor`: real warden, unwinnable; death →
-  respawn CP2, `on_respawn` re-cages him to the idle puppet. Dialogue with
-  Polyphemus: the **"Nobody"** exchange (flag `told-nobody`), wine offer
-  (`interact` with wine-skin prop + requires_item), he sleeps (sleep
-  pose/anim per spike; snore loop `play-sound`).
-- **B5 The eye — CHECKPOINT 3**: eye-stab `interact` (requires the
-  fire-hardened stake — grindstone prop sharpening beat retained from v0.4);
-  `sequence`: roar + `set-weather thunder` + hurt sounds; blinded Polyphemus
-  becomes a **weakened pacing puppet** (attack-weakened, HP unchanged)
-  `move-actor`-patrolling toward the upper pen. Sneak-follow beat:
-  `begin-stealth` with alcove-to-alcove zones up the ramp; caught → death →
-  CP3 (`on_respawn` resets his patrol).
-- **B6 Escape**: right-click a pen sheep (`interact`) → finale `sequence`:
-  boulder opens (`open-gate`), Polyphemus roar-pose at the mouth, sheep
-  procession + Perimedes + player walk out (`move-actor` convoy), `set-time
-  day` + `set-weather clear` on the shore, gangplank boarding, **Ending A**.
-- **Endings** (dialogue branches only, no achievements): A "escaped as
-  Nobody" / B "took the cheese and sailed". Each fires its own big **art
-  title** (`narrate style: art`, custom font) + distinct sound sting +
-  `campaign-complete`.
+## 2. Dramaturgy (beats → mechanics)
 
-## 3. Cast & actors
+- **B0 Beach**: crew mannequins around the campfire; class selection + named
+  kit; Eurylochus sets the premise. A 3-drowned wave stumbles out of the surf
+  as a gear tutorial (leather caps, not a clock change, keep them alive —
+  owner ruling round 5; the cut to night is drama only). **The wine of Maron
+  is issued to the whole party at the end of the quest**, never as a class kit
+  item — no class can soft-lock the wine beat (owner finding, round 3).
+  Antiphos shoulders the provisions and **climbs with the party**; Elpenor
+  holds the beach alone (round 6).
+- **B1 Follow**: Eurylochus `move-npc`-walks beach → mouth; the player follows.
+- **B2 Cavern entry — CHECKPOINT 1**. Perimedes enters at the party's heel and
+  posts up in the recess by the racks. The cheese is a **collect** objective —
+  take a wheel from the barrel among the racks (owner ruling, round 4/5), not
+  an interact marker. **Choice dialogue**: *take the cheese and run* →
+  Ending B route (walk back down, board at the gangplank) vs *wait for the
+  owner of this cave*, which hides Eurylochus in the alcove beside the player.
+- **B3 The giant comes home** — a **40-second, six-shot cinematic**, pure
+  observation: no stealth clock, no fail state, no frozen player (owner
+  ruling, round 6 — "a cutscene is pure observation"). Order is **cross, then
+  seal** (round 11): every gate-crossing walk is provably arrived long before
+  the stone comes down. The herdsman walks meadow → mouth (t80, arrives t368),
+  roars in the doorway, **takes Antiphos on camera** (t380), walks the hall and
+  settles at the fire (t521), handing off to the dialogue statue on arrival.
+  The flock crosses the mouth inside shot 4 (t490–564) and is **in the upper
+  pen** by t815. The stone comes across at **t880**. Shots: high meadow
+  establish over the fold and ocean; dolly to the mouth; the mouth close-up for
+  the Antiphos beat; the reverse angle — interior, looking out through the gap
+  at daylight, sea and the galley's mast, flock silhouetted coming in; the
+  giant settling at his fire; the stone, close. **CHECKPOINT 2** at the
+  aftermath; its `on_respawn` clears every giant stand-in and re-seats the
+  dialogue statue at his fire.
+- **B4 Trapped**: the boulder answers a strike with "it will not move".
+  Dialogue with Polyphemus: the wine gift (gated on being sealed in), the
+  **name** — Nobody / Odysseus / Aithon — and he sleeps. **Striking the giant,
+  awake or asleep, enters combat in earnest** (owner ruling, rounds 10–11):
+  the statue despawns and a **vanilla-stat warden** is unleashed on the
+  striker. The starting kits do not beat a warden; the player dies, and
+  checkpoint 2 restores the scene exactly as it was. Losing quickly is how the
+  unwinnable fight is marked.
+- **B5 The eye — CHECKPOINT 3**: grind the olive stake under the west light
+  shaft, char it at the **walled hearth** (the hall's one true fire — round
+  11), and put it in the eye at `anchor/eye` beside the sleeping body. Then
+  the neighbours answer from the hills, in **three variants keyed to the name
+  the player gave** (nobody / boast / lie) — the campaign's real branch.
+  The blinded giant is a **real unleashed vanilla warden** with ancient-city
+  behaviour, not a scripted patrol (owner design, round 11): no attribute
+  overrides, no waypoints, and he roams. The stealth beat is
+  alcove-3 / alcove-4 / ramp-top with `grace_ticks: 260` — sized to the
+  measured sneak time of the route, not guessed (rounds 7 and 10). Being
+  caught no longer damages: the warden is the killer, the narrate and the
+  heartbeat are the warning.
+- **B6 Escape**: right-click the ram at the pen → finale sequence. The stone
+  opens; the giant appears **beside** the gap he holds open (`anchor/mouth-side`)
+  and never in it (round 11); the whole flock streams out past him, staggered,
+  and settles **in the meadow fold** (round 12); Perimedes goes out in two hops
+  — a stand just inside the mouth that is the talk window, then down to the
+  beach; Eurylochus goes to the gangplank; day returns and the weather clears
+  on the shore. Board, and **Ending A**.
+- **Endings** (dialogue branches only): A "escaped as Nobody" / B "took the
+  cheese and sailed". Plain fullscreen titles — en NOBODY / THE QUIET SAIL,
+  zh 无人 / 悄然扬帆 — each with its own sound sting and `campaign-complete`
+  (owner ruling, round 4/5: no pixel-art banner; the art font stays an unused
+  engine capability).
 
-NPCs (dialogue): Eurylochus (guide; dies), Perimedes (survivor companion),
-2 flavor crew at camp. All mannequin-skinned (reuse existing cast skins).
-Actors (spec-0014): Polyphemus (warden; `vulnerable: false`), 8 sheep,
-Eurylochus-walker (actor twin for scripted walks; the dialogue NPC despawns
-during walk beats — same pattern v0.4 used for MoveNpc).
+## 3. Cast
 
-## 4. Feature-showcase checklist (everything supported, used on purpose)
+NPCs: **Eurylochus** (guide; survives to the gangplank), **Perimedes**
+(deferred; enters at the party's heel, witnesses the grab, escapes with the
+party), **Polyphemus** (deferred dialogue statue at `anchor/fire-side`),
+**Antiphos** (climbs with the party and is taken on camera — the death beat),
+**Elpenor** (holds the beach). All mannequin-skinned except the giant.
 
-classes+named kits · mannequin skins · dialogue flags + gated options ·
-two endings · narrate (chat/title/subtitle/**art**) · give-item named ·
-collect/interact/reach/kill objectives · props (grindstone, campfire, pot,
-wine-skin) · triggers strike/use/approach · waves w/ attributes+effects
-(tutorial wave; unwinnable fight via unleash) · move-actor flocks · sequence
-cutscenes · spectator-dolly cutscene (one: the boulder-seal wide shot) ·
-set-time/set-weather cuts (noon→night→thunder→dawn) · lighting fixtures
-(campfire/lanterns) · checkpoints ×3 + on_respawn resets · ocean horizon +
-boundary · positional sounds throughout · full en+zh-cn l10n · stealth zones.
+Actors: `polyphemus-herdsman` (the entrance walk only), `polyphemus-walker`
+(the mouth-side stand at the escape), `polyphemus-roused` (unleashed by either
+strike), `polyphemus-blinded` (unleashed after the eye) — four spawn sites, one
+character; one actor with two spawn sites was the round-6 inside-out bug's
+enabling condition. Eight **sheep**: four already penned, four herded home.
 
-## 5. Prefab piece list (contract for the prefab workers)
+**Flock staging (round 12, owner finding)**: every sheep position, at every
+moment of the campaign, is a distinct cell **inside the upper pen** or
+**inside the meadow fold** — never the open cavern floor, never the open
+meadow. The pen carries one anchor per sheep (`anchor/pen`, `pen-d`…`pen-j`)
+plus two crew stands (`pen-b`, `pen-c`, kept 2+ blocks off the ram so they
+never shadow its affordance); the fold carries one anchor per sheep
+(`anchor/fold`, `fold-b`…`fold-h`), leaving the hay tuft clear. The herd walks
+in from the fold **straight to the pen** in one leg — it never parks on the
+hall floor — and walks out to the fold in one leg at the escape.
 
-| Piece | Kind | Must provide anchors |
-|-------|------|----------------------|
-| `island-beach-camp` | entry | `entry`, `anchor/camp-fire`, `anchor/class-post`, `anchor/crew-a`, `anchor/crew-b`, `anchor/surf-wave` (tutorial wave, on sand, wet-cell-free), `anchor/gangplank` |
-| `island-galley` | attached set piece (or merged into beach piece) | `anchor/deck` |
-| `island-greenfield` | connector (1–2 variants) | `anchor/meadow`, `anchor/fold` |
-| `island-mountain` | large terminal (shell + cavern interior, slope on the face) | `anchor/mouth`, `anchor/boulder` (gate region), `anchor/cheese-store`, `anchor/fire-pit`, `anchor/ramp-top`, `anchor/pen`, `anchor/alcove-1..4` (stealth), `anchor/checkpoint-1..3`, `anchor/shaft-1..2` (light beams) |
+## 4. Feature surface actually used
 
-Rules: sockets per existing tileset conventions; gravity floors get substrate
-(generator invariant); interiors relight-friendly; palette from the admitted
-allowlist; NO long corridors — traversal is scenery. Galley: planks hull,
-single mast + white wool sail, oar rows (spruce trapdoors/buttons), Greek eye
-motif on the prow if palette allows. Deterministic generators, provenance
-metadata, DW07xx-clean admission.
+classes + named kits · mannequin skins · dialogue flags + gated options · two
+endings · narrate chat/title/subtitle · give-item named · collect / interact /
+reach / talk-to / kill objectives · props (grindstone) · triggers strike and
+strike-npc · a tutorial wave with attributes + equipment · unwinnable combat by
+`unleash-actor` · `move-actor` / `move-npc` with `on_arrive` · `sequence`
+timelines · a six-shot spectator cinematic with `look_at` · set-time /
+set-weather cuts · `close-gate` / `open-gate` · checkpoints ×3 with distinct
+`on_respawn` resets · ocean horizon + boundary · area `night-vision`
+mitigation · positional sounds · stealth zones · full en + zh-cn l10n (184
+keys) · the stage-7 world-edit script.
+
+## 5. Prefab contract
+
+| Piece | Kind | Anchors |
+|-------|------|---------|
+| `island-beach-camp` | entry (galley merged) | `entry`, `camp-fire`, `class-post`, `crew-a`, `crew-b`, `surf-wave`, `gangplank`, `deck`, `prow` |
+| `island-greenfield` / `-bend` | connector ×2 | `meadow`, `fold`, `fold-b`…`fold-h` |
+| `island-mountain` | large terminal (shell + cavern) | `mouth`, `mouth-side`, `boulder` (gate region), `cheese-store`, `fire-pit`, `fire-side`, `hearth`, `eye`, `ramp-top`, `pen`, `pen-b`…`pen-j`, `alcove-1..4`, `checkpoint-1..3`, `shaft-1..2` |
+
+Rules: sockets per the island tileset conventions; gravity floors get
+substrate; palette from the admitted allowlist; no long corridors — traversal
+is scenery. Deterministic generators, provenance metadata, DW07xx-clean
+admission. **Outdoor NPC destinations must be piece-unique** — the greenfield
+is placed twice, so `meadow`/`fold` names resolve to one arbitrary carrier and
+a top-level `move-npc` to either is a hard `DW0305`; only actor spawns and
+`move-actor` targets may use them.
 
 ## 6. Delivery
 
-New campaign id `nobodys-cave-island`, **separate PR** in the content repo
-(current `campaign/nobodys-cave` PR #1 ships as-is once it clears owner
-playtest). Full ladder green before the PR opens; this DESIGN.md included.
+Campaign id `nobodys-cave-island`, content repo, branch
+`campaign/nobodys-cave-island`. Full ladder green (build + PackTest + bot)
+before any round is handed to the owner. The v0.4 corridor original was
+retired permanently (owner ruling, round 5).
+
+## 7. Open deviations (pending owner ruling)
+
+Recorded by the round-12 conformance review; not changed either way.
+
+1. **B1 is one leg, not a scenic chain.** v1 designed a reach-anchor chain
+   along the beach → meadow → slope → mouth walk; the campaign has a single
+   `reach-anchor` to the mouth, because `anchor/meadow` and `anchor/fold` are
+   defined by both placed greenfield pieces and any *required* reference to
+   them is `DW0305`. Restoring the chain needs piece-unique outdoor anchors.
+2. **The cheese has no name.** v1 specified a named "Kefalotyri Cheese"; the
+   collect objective (owner-requested form) carries no item-name field, so the
+   player picks up an unnamed sponge. Restoring the name needs the new
+   container-loot surface.
+3. **Four sheep are herded in, four were already penned.** v1 said the flock
+   of eight is herded in; the pre-penned four match the fiction the dialogue
+   established ("lambs penned and sorted by age") and have shipped since
+   round 1.
+4. **The boulder hint is a strike trigger, not an interact.** v1 said
+   right-click; the campaign answers a hit on the stone.
+5. **B0's night is a full night cut**, not the designed dusk tint — `set-time`
+   takes vanilla keywords only.
+6. **No Eurylochus walker twin.** v1 designed an actor twin for scripted
+   walks; `move-npc` became a first-class primitive and the twin is
+   unnecessary.
+7. **Antiphos dies, not Eurylochus.** v1 had the giant kill Eurylochus; the
+   round-6 restage moved the death to Antiphos so the victim is a man who
+   climbed with the party on camera. Logged in an owner round, but the swap
+   itself is not separately attributed to an owner request.

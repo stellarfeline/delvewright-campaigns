@@ -594,3 +594,84 @@ Full build green (exit 0) with only the two long-standing fire-side/eye
 byte-identical. Every gate-crossing walk verified arrived before `t880` from
 the emitted keyframe tables; all 18 cutscene dolly frames reviewed. The bot +
 PackTest ladder ran once the Docker slot freed: bot playthrough GREEN, PackTest GREEN (planner-run, post-delivery).
+
+## Round 12 — the flock stays in its pen, and DESIGN.md becomes authoritative
+
+Owner round-11 verdict: the delve plays well; two items. Owner-requested
+changes only this round — nothing else in the campaign was touched.
+
+### The sheep dispersal was an overcorrection (owner finding)
+
+Round 11 read "spread the sheep" as "spread them across the space". It is
+"spread them **within the pen**". Two places broke that:
+
+- the herd's entrance walk parked the four incoming sheep on the open cavern
+  floor (`checkpoint-3`, `shaft-2`, `checkpoint-2`, `alcove-4` — one of them in
+  a stealth alcove) from t≈635 to t1100, then walked them up to the pen in a
+  second leg;
+- the escape convoy sent four sheep to the fold and four to `anchor/meadow`,
+  the middle of the open meadow.
+
+Both are gone. The entrance is now **one leg, fold → pen**, and the escape is
+**one leg, pen → fold**. Every sheep, at every moment, stands on a distinct
+cell inside one of the two footprints:
+
+- `island-mountain` gains `anchor/pen-e`…`pen-j`, and `anchor/pen-d` moves
+  from `(26,13,4)` to `(24,13,7)`. `(26,13,4)` was **on the pen's north fence
+  line** — a round-11 slip the block model permits (scripted walks may use
+  fence and gate cells) and the eye does not. All eight sheep cells are now
+  verified interior air against the prefab NBT (fence rectangle x22–30, z4–9,
+  gate at x26; hay at 23,13,5 left clear).
+- `island-greenfield` and `-bend` gain `anchor/fold-b`…`fold-h`: the fold's
+  3×3 interior (walls x2–6, z5–9, gate gap at x4), minus the hay tuft. The
+  four sheep that come home now also **spawn** spread across the fold, so
+  cinematic shot 1 establishes a fold with a flock in it rather than a stack.
+
+**Arrival math re-read from the emitted keyframe tables, not estimated**
+(round-11 rule: never leave a gate-crossing walk unfinished across a
+`close-gate`). fold → pen is 528–575 ticks; starting t180–240 the four cross
+the boulder plane at **t490 / t504 / t517 / t564** — still inside shot 4's
+t480–620 window, so the reverse-angle "flock streaming in" beat is unchanged —
+and are parked in the pen at **t728–815**, all clear of the t880 seal by 65+
+ticks. The escape legs are 541–581 ticks from a gate that stays open.
+
+The mouth-side giant stand (`anchor/mouth-side`) was **not** touched: the new
+routes cross the mouth exactly where the old ones did, so the wall-clip
+question an engine worker is root-causing is untouched by this round.
+
+### DESIGN.md is now the authoritative design record (owner ruling, 2026-08-03)
+
+`DESIGN.md` was written 2026-08-01 and never updated across rounds 3–11. It is
+now **v2**, with an iteration protocol at the top: the file is the design,
+every round updates it, every round ends with a conformance review, and
+owner-unrequested changes are forbidden.
+
+A beat-by-beat conformance audit of the current `quests/dialogue/npcs/
+world-edits` JSON against v1 was run to produce it. Deviations traceable to a
+numbered owner round were folded into v2 as the new authoritative state:
+checkpoints and their `on_respawn` resets, wine issued to the whole party,
+cheese as a collect objective, the six-shot cross-then-seal cinematic, both
+strikes unleashing a vanilla-stat warden, the walled hearth and `anchor/eye`,
+the blind giant as a real roaming warden with `grace_ticks: 260` and no
+`damage-players`, the three name-branch neighbour scenes, the mouth-side
+stand and the escape choreography, the nine world-edit batches, plain-title
+endings, and the deferred-NPC cast.
+
+Seven deviations with **no traceable owner request** were found and left
+untouched, recorded in DESIGN.md §7 for the owner to rule on: the collapsed
+B1 follow chain (blocked by `DW0305` on the twice-placed greenfield), the
+unnamed cheese (the collect verb has no item-name field), the four
+already-penned sheep, the boulder hint as a strike rather than an interact,
+the full-night cut where the design said dusk, the absent Eurylochus walker
+twin, and Antiphos dying in Eurylochus's place.
+
+### Proofs
+
+Full build green (exit 0) with only the two long-standing fire-side/eye
+`DW0359` advisories; zh-cn build green; English double build byte-identical;
+`DW0410` clean. Every new anchor cell is proven walkable by construction (a
+`move-actor` destination that is not routable is `DW0325`) and proven interior
+to its fence rectangle by direct inspection of the prefab NBT. The bot +
+PackTest ladder runs under the isolated worker compose project once the
+validation mutex frees (held by an owner play session at delivery time) and is
+recorded in its own commit.
