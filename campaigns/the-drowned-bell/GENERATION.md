@@ -247,3 +247,63 @@ guessed at by a worker.
   quest and raise to 0.7.0.
 - A build-tier check that a `loot` stack's `count` fits the item's max stack size.
 - Boss-fight survivability after the round-2 damage rise.
+
+## Round 3 (2026-08-03) — real difficulty, and the first live spec-0023 ladder
+
+Engine merges consumed: #204 (gate flanking pair), #206 (`world.difficulty`,
+actor `attributes`), #208 (spec-0023 combat verification).
+
+1. **`difficulty: "normal"` declared.** The retune it forced was one encounter,
+   not a sweep — attacker-less `/damage` does not scale with difficulty, so every
+   trap/gate/scripted number was already true; only mob melee changes. The
+   cistern wardens' Sharpness XIX existed purely to buy back the Easy halving and
+   would have become a 20.6-damage one-shot at `normal`; dropped, the plain
+   netherite axe restores exactly the intended 11.04 two-hit kill. Full arithmetic
+   in DESIGN.md. `DW0470`–`DW0475` all pass. The optional Barrow Warden was NOT
+   softened (~18.25/hit, one short of a one-shot).
+2. **Wave tiers — DEFERRED with the cast ledger, because they are the same task.**
+   `waves[].tier` is DSL v0.7 (`DW0141` below it), and v0.7 makes the cast ledger
+   mandatory: bumping the campaign fired **21 × `DW0460`** (3 NPCs × 7 quests).
+   The whole benefit here is a single label — only `wave/bellkeeper` is non-
+   ordinary; the campaign's other elite is the Barrow Warden, which is an
+   `actor`, not a wave, and cannot carry a tier at all. See item 5.
+3. **`crush: true` gate fix verified.** Both crossing legs now emit only the
+   flanking pair `[24, 63, -9]` / `[24, 63, -11]` and nothing inside the region.
+   Statically confirmed against the round-2 artifact, which had `[24, 63, -10]`.
+4. **Ladder — PackTest 32/32 green** (up one: the new `declared_difficulty` test
+   asserts the live world really is `normal`). **The bot tier could not run**: see
+   below. No `run-report.json` was produced.
+5. **Cast ledger — deferred to round 4, as more than a mechanical migration.**
+   21 entries each needing an authored `doing` (the spec's own forcing function —
+   free prose stating each character's business in that beat) and a per-quest
+   `dialogue` root decision; plus `npc/barrow-warden` is branch-divergent (the
+   strike trigger despawns it) so `DW0462` wants per-branch casts, and the trigger
+   currently sets no flag to gate them on — a new flag and a lifecycle model, not
+   a migration. It also lands on prose the owner hand-corrected last round, so it
+   deserves its own pass.
+
+### Blocker: the opped-bot wiring cannot start the server
+
+`validation/compose.yaml` sets `OPS: ${DELVEWRIGHT_BOT_USERNAME:-delve-bot}` so
+the harness can run its assist and scripted-death commands. The itzg image
+resolves `OPS` names through Mojang's PlayerDB, and `delve-bot` is not a real
+account, so the server aborts at init:
+
+```
+ERROR : Invalid parameter provided for 'manage-users' command:
+        Could not resolve user from Playerdb: delve-bot
+dependency failed to start: container dw-worker-bellr3-server-1 exited (2)
+```
+
+`ONLINE_MODE: FALSE` is already set; the lookup happens anyway. This blocks the
+whole bot tier — die-retry, assist windows and the floor gate are all unexercised,
+so none of round 3's runtime questions are answered yet. There is no env-only
+workaround from a caller: `DELVEWRIGHT_BOT_USERNAME` feeds both `OPS` and the
+bot's login name, so setting it to a resolvable value renames the bot. The fix
+belongs in the compose file — give `OPS` the offline UUID (deterministic:
+UUID v3 of `MD5("OfflinePlayer:<name>")`), or seed an `ops.json` directly, so an
+offline-mode name never goes to PlayerDB.
+
+`validation/fresh-volumes.sh --project dw-worker-bellr3` was exercised and is
+correct: with the project already torn down it reported
+`project 'dw-worker-bellr3' verified clean (containers + volumes)` and exited 0.

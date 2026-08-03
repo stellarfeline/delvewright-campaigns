@@ -1,6 +1,6 @@
 # The Drowned Bell — design of record
 
-- **Status**: authoritative. Stamped **round 2, 2026-08-03**.
+- **Status**: authoritative. Stamped **round 3, 2026-08-03**.
 - **Scope**: what this delve currently IS. Not history — `GENERATION.md` keeps
   the history, this file keeps the present tense.
 
@@ -32,6 +32,7 @@ Souls delve: death teaches, shortcuts are earned, nothing is explained twice.
 | --- | --- |
 | Tileset | `pool/tidal-keep`, six pieces, fixed 6/6 |
 | Horizon | `ocean` (the keep rises out of a sea backdrop) |
+| Difficulty | **`normal`** (round 3) — declared, not derived. The compiler's historical derivation was `easy`, which halves incoming player damage; the souls delve runs at real difficulty |
 | Time / weather | **`night` + `thunder`** — the drowned-bell fiction, and the owner's ruling that broad daylight killed the mood (round 2) |
 | Lighting | area relight `lantern`, `min_light: 4` — the open-air pieces need it once the sky goes; the gloom stays, the floor stays readable (`DW0210`) |
 | Boundary | 16-block margin, tide shoves the party back |
@@ -110,10 +111,10 @@ closing tick is killed by command. `DW0378` proves the admitting window is a
 readable fraction of the cycle, which is what earns the right to make the
 penalty absolute.
 
-**Known blocker (engine, round 2):** the bot cannot pass a crushing gate. The
-compiler's waypoint artifact plants a stop INSIDE the gate region
-(`gate_mouth_cells`), so the bot parks under the portcullis and dies. Content
-keeps `crush: true`; the fix is in the exporter. See `GENERATION.md` round 2.
+Round 2's blocker is **fixed** (engine #204): both gate-crossing legs now emit
+only the flanking pair `[24, 63, -9]` / `[24, 63, -11]` and nothing inside the
+region, so the crossing is one hop between footings and nothing parks under the
+portcullis.
 
 ### The boulder stair (初见杀 #1, L1a)
 
@@ -189,27 +190,32 @@ binding case for every damage number below.
 
 ## Difficulty
 
-**Open engine constraint, round 2.** Two limits sit above content here and both
-are recorded so the next round does not re-derive them:
+Declared **`normal`** (round 3). Two round-2 constraints are now gone: the
+`difficulty` field exists, and `actors[]` takes `attributes`.
 
-1. The compiler hardcodes `difficulty=easy` for any campaign with waves. Vanilla
-   halves player damage taken on Easy, so every combat number this campaign has
-   ever been tuned against was measured through that halving. This is the
-   dominant lever on "the enemies are too weak" and it is not a DSL surface.
-2. `actors[]` has no `attributes` field (waves do). The cistern ambush is built
-   from actors, so its enemies cannot be attribute-tuned at all — only their
-   `equipment` can carry damage.
+The retune this forced is smaller than it looks, because attacker-less `/damage`
+— which is how every `damage-players` emission lands — does **not** scale with
+difficulty. Eight of the nine DSL damage types ignore the Easy halving, so the
+trap, gate and scripted numbers were already being measured at their true value.
+What changes at `normal` is **mob melee**, and exactly one encounter was tuned
+around the halving:
 
-Round 2 therefore tunes the cistern wardens through equipment. Arithmetic, with
-its assumptions stated:
+- **Cistern wardens.** Round 2 gave them Sharpness XIX to buy back the halving:
+  husk 3 + netherite axe 9 + 10 = 22 raw, halved to 12, landing 11.04 on the
+  8-armour Warden kit — two hits. At `normal` that same axe lands
+  `22 × (1 − max(1.6, 8 − 11)/25)` = **20.6, a one-shot from full health**. The
+  enchantment is dropped: a plain netherite axe is husk 3 + 9 = **12 raw**, which
+  is `12 × (1 − 2/25)` = **11.04** again — the same two-hit kill, now stated
+  honestly instead of through the halving. Against the 4-armour Archer kit it is
+  11.6. The 初见杀 character is unchanged; only the arithmetic moved.
 
-- Husk base `attack_damage` = 3. A netherite axe adds +9 → 12.
-- Sharpness N adds `1 + 0.5 × (N − 1)`; at N = 19 that is +10 → **22 raw**.
-- Easy difficulty: `min(raw / 2 + 1, raw)` → **12**.
-- Warden kit, 8 armour, 0 toughness: reduction points
-  `max(8/5, 8 − 12/2) = 2.0`, so final = `12 × (1 − 2/25)` = **11.04**.
-- Two hits = 22.08 ≥ 20 → **two-hit kill**; one hit is 11.04, so never a
-  one-shot. Against the 4-armour Archer kit it is 11.6 per hit, also two.
+Everything else roughly doubles at `normal` and was left alone, because the
+compiler's winnability proofs accept it: the gate vindicators land 7.74/hit
+(was 4.35), the wall vindicator 8.8, the grave echoes 1.44, the Bellkeeper 4.8
+plus its Wither. `DW0470`–`DW0475` all pass — nothing is unkillable, unfightable,
+absurdly tanky or an unavoidable ≥20 hit, and the kits carry food.
 
-The vanilla formulas above are recalled, not measured in this repo — the ladder
-and the owner's playtest are the arbiters, and the numbers move if they disagree.
+**The optional Barrow Warden was deliberately not softened** (owner rule): full
+netherite, Protection IV, Sharpness XII axe. At `normal` it lands ~18.25 on the
+Warden kit — one hit short of a one-shot, which is what an optional elite you
+chose to wake should feel like.
