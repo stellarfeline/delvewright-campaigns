@@ -445,3 +445,42 @@ Everything else this run:
   stage, and bumping that stage would drag it through 0.7.0's 21 mandatory cast
   entries, so it was left alone per instruction. DW0477 did not fire.
 - Not the #214 lucky-red signature — `re_engaged` was true both times.
+
+### Run five (engine #223/#224/#225) — unchanged red, and the signature is a contradiction
+
+PackTest **33/33 green**. Bot red with the SAME signature as r4-prep; #223 did not
+move it.
+
+Correcting my r4-prep speculation: the checkpoint is NOT the Sexton's cell. The
+report's new `rests` ledger shows bonfire 1 = `anchor/l2-bonfire` at
+`[34, 71, -113]`, armed at **step 8**; the gate siege is **step 13**. So #223's
+`fire_step < i` rule is satisfied and the stage agrees — both deaths record
+`respawn_pos: [34, 71, -113]`, `at_checkpoint: true`.
+
+**The contradiction is between that record and where the bot actually is.** Both
+trials then report `returned: false` — *"the route from the respawn back to the
+encounter is not walkable"* — and the critical path fails with:
+
+> `step 13 (kill) failed: reaching wave/gate-assault: timed out after 60000ms;
+> bot at [4.5, 63.0, 30.5]`
+
+`[4.5, 63.0, 30.5]` is the **barrow shore**, ~150 blocks and 8 levels below the
+chapel the report says it respawned at. So the recorded respawn and the bot's
+real position disagree: either the record is what the stage *expects* rather than
+what vanilla did, or something returns the bot to world spawn after it. A route
+from the chapel bonfire to the gate lane — both in the courtyard, a few blocks
+apart — being "not walkable" is only explicable if the bot never started there.
+
+Reported and stopped, per instruction; not iterated on.
+
+Other answers from this run:
+
+- **Bellkeeper + wither: still unreached** (`phase_reached: "not-reached"`), a
+  fifth round without an answer. `wall-assault` and `grave-echoes` likewise.
+- **Assist**: one window, `obj/hold-the-gate`, amplifier 2, **1200 ticks**,
+  `reason: "policy: ordinary encounter"`.
+- **Floor-gate ledger now prints but is empty**: `floor_gate: {present: true,
+  covered: [], not_covered: []}` and `actors: []`. The Barrow Warden does **not**
+  appear as `not_covered` with a reason, which is what #225 was expected to show.
+- Both trials still `re_engaged: true, completed: true` — the gate siege remains
+  winnable at `normal`. Not the #214 lucky-red signature.
