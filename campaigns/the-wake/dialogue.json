@@ -1,0 +1,243 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "the-wake",
+  "stage": "dialogue",
+  "content": {
+    "dialogues": [
+      {
+        "npc": "npc/sedge",
+        "root": "dlg/sedge-arrival",
+        "nodes": [
+          {
+            "id": "dlg/sedge-arrival",
+            "text": "You came up on the low water. Good. The ground is open, and open ground does not wait on weather.",
+            "options": [
+              {
+                "label": "Who was she?",
+                "next": "dlg/sedge-wren"
+              },
+              {
+                "label": "Why the cut?",
+                "next": "dlg/sedge-field"
+              },
+              {
+                "label": "Say it, then.",
+                "requires_flags": [
+                  "flag/came-up"
+                ],
+                "next": "dlg/sedge-rite"
+              }
+            ]
+          },
+          {
+            "id": "dlg/sedge-wren",
+            "text": "Ashlaw. She read the tide for the keep. The sand is soft out where she went in; I would not walk it at dusk.",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/sedge-arrival"
+              }
+            ]
+          },
+          {
+            "id": "dlg/sedge-field",
+            "text": "I opened it at first light. Clay under two spades of sand, and it holds. Whether it gets used is not my part.",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/sedge-arrival"
+              }
+            ]
+          },
+          {
+            "id": "dlg/sedge-rite",
+            "text": "Stand where you are and keep your hands still. It is not long, and it is not written down anywhere but here.",
+            "options": [
+              {
+                "label": "Say it.",
+                "effects": [
+                  {
+                    "type": "complete-objective",
+                    "objective": "obj/hear-the-rite"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "dlg/sedge-word",
+            "text": "The rite is said. What is left is a word, and the word is not mine. Go down to the fire and come back with it.",
+            "options": [
+              {
+                "label": "Nothing yet.",
+                "next": null
+              }
+            ]
+          },
+          {
+            "id": "dlg/sedge-ground",
+            "text": "Ground, then. Take the head of the plank; the cut is six paces west of where I stand. I will close it at first light and it will be level by noon.",
+            "options": [
+              {
+                "label": "We will carry her.",
+                "next": null
+              }
+            ]
+          },
+          {
+            "id": "dlg/sedge-tide",
+            "text": "Water, then. I do not walk to the water. The cut stays open tonight and I will fill it in the morning, empty.",
+            "options": [
+              {
+                "label": "It is done.",
+                "next": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "npc": "npc/hallis",
+        "root": "dlg/hallis-arrival",
+        "nodes": [
+          {
+            "id": "dlg/hallis-arrival",
+            "text": "You are the ones who carried her up. I should have gone down to meet you, I know that, I have been at this fire since they brought her and I have not turned north once.",
+            "options": [
+              {
+                "label": "Who died?",
+                "next": "dlg/hallis-wren"
+              },
+              {
+                "label": "We carried her up.",
+                "effects": [
+                  {
+                    "type": "complete-objective",
+                    "objective": "obj/greet"
+                  }
+                ]
+              },
+              {
+                "label": "The word, then.",
+                "requires_flags": [
+                  "flag/rite-said"
+                ],
+                "next": "dlg/hallis-word"
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-wren",
+            "text": "My sister. Wren. She read the water for the keep and she was better at it than anybody on this coast, which is the part I cannot get past, because if she was better at it then how did it.",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hallis-arrival"
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-waiting",
+            "text": "Sedge is saying it now. I can hear enough of it from down here. That is close enough for me, I think. Go on up; somebody of ours should be standing at the plank.",
+            "options": [
+              {
+                "label": "We are listening.",
+                "next": null
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-word",
+            "text": "They are waiting on a word, and by the custom the word is yours, because you carried her up the road. Ground or tide. I have had all afternoon at this fire and I cannot.",
+            "options": [
+              {
+                "label": "What does Sedge say?",
+                "next": "dlg/hallis-sedge"
+              },
+              {
+                "label": "Why not you?",
+                "next": "dlg/hallis-cannot"
+              },
+              {
+                "label": "The ground.",
+                "effects": [
+                  {
+                    "type": "set-flag",
+                    "flag": "flag/to-the-ground"
+                  },
+                  {
+                    "type": "complete-objective",
+                    "objective": "obj/bring-the-word"
+                  }
+                ],
+                "happening": {
+                  "verb": "believes",
+                  "text": "The party gives the field its word and names the ground; the ground branch opens.",
+                  "subject": "npc/hallis"
+                }
+              },
+              {
+                "label": "The tide.",
+                "effects": [
+                  {
+                    "type": "set-flag",
+                    "flag": "flag/to-the-tide"
+                  },
+                  {
+                    "type": "complete-objective",
+                    "objective": "obj/bring-the-word"
+                  }
+                ],
+                "happening": {
+                  "verb": "believes",
+                  "text": "The party gives the field its word and names the water; the tide branch opens.",
+                  "subject": "npc/hallis"
+                }
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-sedge",
+            "text": "Sedge says the field takes everyone. She says it the way you would say the tide comes in. She had the ground open before anybody thought to ask her for it.",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hallis-word"
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-cannot",
+            "text": "Because if I say the ground then I am the one who put her under it, and if I say the water then I am the one who gave her back to the thing that. Sorry. Sorry.",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hallis-word"
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-ground",
+            "text": "You said the ground. Thank you. I could not have, and you did, and I am not going to pretend that is a small thing. I will come to the edge of the fire and watch you carry her west.",
+            "options": [
+              {
+                "label": "Keep the fire.",
+                "next": null
+              }
+            ]
+          },
+          {
+            "id": "dlg/hallis-tide",
+            "text": "You said the water. She would have said the water. I am banking the fire and I will watch from it until the ebb has her. That is as far down as I get. She knew that about me.",
+            "options": [
+              {
+                "label": "We will bring her.",
+                "next": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
