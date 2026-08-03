@@ -484,3 +484,39 @@ Other answers from this run:
   appear as `not_covered` with a reason, which is what #225 was expected to show.
 - Both trials still `re_engaged: true, completed: true` — the gate siege remains
   winnable at `normal`. Not the #214 lucky-red signature.
+
+### Run six (engine #227) — the warp is gone; the bot now loses the fight where it stands
+
+PackTest **33/33**. Bot red, but with a **genuinely new** signature — the first
+one in four runs that is about the delve rather than the harness:
+
+> `step 13 (kill) failed: bot died at [13, 71, -89] — likely cause: delve-bot was
+> slain by Hollow Gate-Warder`
+
+`[13, 71, -89]` is the **gate lane in the courtyard**, three blocks from the wave
+anchor `[12, 71, -85]`. Every previous run failed with the bot stranded on the
+barrow shore at y=63. So `#227` closed it: the return leg from `anchor/l2-bonfire`
+IS walkable, the bot gets back to the siege, and it fights there. My chapel
+respawn measurements were truthful, as diagnosed.
+
+**What is now unproven, and why.** `phase_reached: "die-retry"` for the gate
+assault — further than any previous run — but:
+
+> `wave/gate-assault: the die-retry stage ENGAGED this encounter but proved only
+> 0/2 scripted death(s) (0 recorded). "Dying is always safe" is unproven here.`
+
+The bot lost the real fight before the stage could script its deaths, so
+`die_retry: []`, `assist_windows: []`, and the remaining three encounters are
+`not-reached` again. The Bellkeeper and its wither are unanswered for a **sixth**
+round, and `kit_kept` never got a value because no trial ran.
+
+This is the first evidence that the gate assault is hard for the bot floor **in
+its own right** at `normal`, with no harness artifact in the way — note it is
+also the first run with **no assist window at all**, where runs four and five
+each opened one (amplifier 2, 1200 t). Not tuned, per instruction; the numbers
+and the decision are in DESIGN.md and belong to the owner.
+
+Unchanged and still worth a look: `floor_gate: {present: true, covered: [],
+not_covered: []}` with `actors: []` — the Barrow Warden still does not appear.
+`rests` confirms both bonfires armed (BF1 step 2, BF2 step 8) before the step-13
+siege.
