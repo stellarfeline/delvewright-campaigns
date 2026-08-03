@@ -77,6 +77,39 @@
     "entity": "minecraft:sheep",
     "name": "Lamb of the Cave",
     "anchor": "anchor/fold-d"
+   },
+   {
+    "id": "actor/voyage-eurylochus",
+    "entity": "minecraft:mannequin",
+    "name": "Eurylochus",
+    "skin": {
+     "texture_id": "eurylochus",
+     "model": "wide"
+    },
+    "anchor": "anchor/deck-fore",
+    "vulnerable": false
+   },
+   {
+    "id": "actor/voyage-perimedes",
+    "entity": "minecraft:mannequin",
+    "name": "Perimedes",
+    "skin": {
+     "texture_id": "perimedes",
+     "model": "wide"
+    },
+    "anchor": "anchor/deck-port",
+    "vulnerable": false
+   },
+   {
+    "id": "actor/voyage-elpenor",
+    "entity": "minecraft:mannequin",
+    "name": "Elpenor",
+    "skin": {
+     "texture_id": "elpenor",
+     "model": "wide"
+    },
+    "anchor": "anchor/deck-star",
+    "vulnerable": false
    }
   ],
   "waves": [
@@ -219,15 +252,6 @@
        "text": "The sun drops fast behind the world's rim, the way it does at sea. In the last red light, the surf begins to move."
       },
       {
-       "type": "spawn-wave",
-       "wave": "wave/surf"
-      },
-      {
-       "type": "narrate",
-       "style": "chat",
-       "text": "The surf gives up its dead: three drowned wade out of the shallows toward the fire."
-      },
-      {
        "type": "play-sound",
        "sound": "minecraft:entity.hostile.splash",
        "at": {
@@ -236,12 +260,35 @@
        }
       },
       {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The surf gives up its dead: three drowned wade out of the shallows toward the fire, and the last of the light goes out of the water behind them."
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/surf"
+      },
+      {
        "type": "play-sound",
        "sound": "minecraft:entity.drowned.ambient",
        "at": {
         "at": "anchor",
         "anchor": "anchor/surf-wave"
        }
+      },
+      {
+       "type": "sequence",
+       "steps": [
+        {
+         "at_ticks": 40,
+         "effects": [
+          {
+           "type": "set-time",
+           "time": "night"
+          }
+         ]
+        }
+       ]
       }
      ],
      "obj/surf": [
@@ -476,13 +523,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -505,8 +552,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -522,14 +569,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -545,7 +587,9 @@
        ]
       },
       {
-       "at": "offstage",
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
        "requires_flags": [
         "flag/flee"
        ]
@@ -636,7 +680,7 @@
       {
        "type": "move-npc",
        "npc": "npc/perimedes",
-       "to_anchor": "anchor/mouth",
+       "to_anchor": "anchor/class-post",
        "requires_flags": [
         "flag/flee"
        ],
@@ -644,11 +688,7 @@
         {
          "type": "narrate",
          "style": "chat",
-         "text": "Perimedes is through the mouth before you finish speaking — out first, counting heads onto the sand."
-        },
-        {
-         "type": "despawn-npc",
-         "npc": "npc/perimedes"
+         "text": "Perimedes is through the mouth before you finish speaking and down the path ahead of all of you, counting heads onto the sand as they arrive."
         }
        ]
       },
@@ -664,6 +704,21 @@
          "type": "narrate",
          "style": "chat",
          "text": "Antiphos shoulders the sacks without a word and starts down. Arithmetic, Captain: everything you came in with, and one wheel of cheese to the good."
+        }
+       ]
+      },
+      {
+       "type": "move-npc",
+       "npc": "npc/eurylochus",
+       "to_anchor": "anchor/gangplank",
+       "requires_flags": [
+        "flag/flee"
+       ],
+       "on_arrive": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "Eurylochus comes down last with the rope still on his shoulder, stands at the gangplank and counts the party aboard one at a time, out loud, twice."
         }
        ]
       }
@@ -735,13 +790,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -764,8 +819,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -781,14 +836,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -804,7 +854,9 @@
        ]
       },
       {
-       "at": "offstage",
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
        "requires_flags": [
         "flag/flee"
        ]
@@ -905,13 +957,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -934,8 +986,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -957,14 +1009,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -980,7 +1027,9 @@
        ]
       },
       {
-       "at": "offstage",
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1530,13 +1579,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1559,8 +1608,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1582,14 +1631,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1605,7 +1649,9 @@
        ]
       },
       {
-       "at": "offstage",
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1756,13 +1802,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1785,8 +1831,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1808,14 +1854,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -1836,6 +1877,14 @@
        "dialogue": "dlg/after-the-eye",
        "requires_flags": [
         "flag/blinded"
+       ]
+      },
+      {
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
+       "requires_flags": [
+        "flag/flee"
        ]
       }
      ],
@@ -2101,19 +2150,6 @@
       ],
       "title": "Get Under a Ram",
       "hint": "Take two fistfuls of fleece at the belly of the biggest ram and let it carry you, close and quiet, when the flock goes out."
-     },
-     {
-      "type": "talk-to",
-      "id": "obj/hold-fast",
-      "npc": "npc/perimedes",
-      "after": [
-       "obj/under-ram"
-      ],
-      "requires_flags": [
-       "flag/aboard"
-      ],
-      "title": "Go Out With the Flock",
-      "hint": "Perimedes is under a ram of his own down by the mouth. Reach him before the last of the flock is through the gap."
      }
     ],
     "cast": {
@@ -2126,13 +2162,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2155,8 +2191,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2178,14 +2214,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2201,7 +2232,9 @@
        ]
       },
       {
-       "at": "offstage",
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2336,7 +2369,7 @@
           {
            "type": "move-npc",
            "npc": "npc/perimedes",
-           "to_anchor": "anchor/checkpoint-1"
+           "to_anchor": "anchor/crew-a"
           }
          ]
         },
@@ -2391,13 +2424,6 @@
         }
        ]
       }
-     ],
-     "obj/hold-fast": [
-      {
-       "type": "move-npc",
-       "npc": "npc/perimedes",
-       "to_anchor": "anchor/crew-a"
-      }
      ]
     },
     "on_complete": []
@@ -2438,13 +2464,13 @@
       },
       {
        "at": "anchor/crew-a",
+       "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
        "dialogue": {
         "barks": [
          "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
          "Say the word and I will shove her off. I would like very much to be rowing."
         ]
        },
-       "doing": "Back at the strand with the sacks aboard, doing the arithmetic of a crew that came out whole.",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2461,8 +2487,8 @@
       },
       {
        "at": "anchor/crew-b",
-       "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2478,14 +2504,9 @@
        ]
       },
       {
-       "at": "anchor/checkpoint-1",
-       "dialogue": {
-        "barks": [
-         "Go, Captain. Down the path, and do not set that wheel down for anything.",
-         "I am behind you. I am always behind you. Go."
-        ]
-       },
-       "doing": "Holding the racks while the captain runs the cheese down the path, waving the party on and meaning to follow last.",
+       "at": "anchor/gangplank",
+       "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+       "dialogue": "dlg/quiet-sail",
        "requires_flags": [
         "flag/flee"
        ]
@@ -2496,6 +2517,114 @@
        "at": "anchor/crew-a",
        "dialogue": "dlg/on-the-sand",
        "doing": "On the sand with two fists of ram's wool still in them, laughing wrong and asking to be told the count is four.",
+       "forbids_flags": [
+        "flag/flee"
+       ]
+      },
+      {
+       "at": "anchor/class-post",
+       "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+       "dialogue": "dlg/all-hands",
+       "requires_flags": [
+        "flag/flee"
+       ]
+      }
+     ],
+     "npc/polyphemus": [
+      {
+       "at": "offstage",
+       "forbids_flags": [
+        "flag/flee"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/flee"
+       ]
+      }
+     ]
+    },
+    "on_objective_complete": {
+     "obj/last-sand": [
+      {
+       "type": "set-flag",
+       "flag": "flag/escaped"
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Behind you, high on the mountain, the blind giant has not gone back inside. He has set himself across the mouth of his own cave with his hands out and his head turned, waiting for a sound to hate. Whatever is still in there is his now."
+      }
+     ],
+     "obj/board-nobody": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "Oars out, and the strand slides away astern. Nobody looks back at the mountain; there is a great deal of open water to be got between you and it before anyone feels like talking."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:ui.toast.challenge_complete",
+       "at": {
+        "at": "players"
+       }
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/the-voyage",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-sail"
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/aboard",
+      "anchor": "anchor/sea-deck",
+      "radius": 3,
+      "title": "Take Your Place at the Oar",
+      "hint": "The island is astern and going. Find your bench and let the water do the rest."
+     }
+    ],
+    "cast": {
+     "npc/antiphos": [
+      {
+       "at": "offstage",
+       "forbids_flags": [
+        "flag/flee"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/flee"
+       ]
+      }
+     ],
+     "npc/elpenor": {
+      "at": "offstage"
+     },
+     "npc/eurylochus": [
+      {
+       "at": "offstage",
+       "forbids_flags": [
+        "flag/flee"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/flee"
+       ]
+      }
+     ],
+     "npc/perimedes": [
+      {
+       "at": "offstage",
        "forbids_flags": [
         "flag/flee"
        ]
@@ -2523,52 +2652,151 @@
      ]
     },
     "on_objective_complete": {
-     "obj/last-sand": [
+     "obj/aboard": [
       {
-       "type": "narrate",
-       "style": "chat",
-       "text": "Behind you, high on the mountain, the blind giant sits in the mouth of his cave with his hands out, waiting for a sound to hate."
-      }
-     ],
-     "obj/board-nobody": [
+       "type": "spawn-actor",
+       "actor": "actor/voyage-eurylochus"
+      },
       {
-       "type": "narrate",
-       "style": "title",
-       "text": "NOBODY"
+       "type": "spawn-actor",
+       "actor": "actor/voyage-perimedes"
+      },
+      {
+       "type": "spawn-actor",
+       "actor": "actor/voyage-elpenor"
       },
       {
        "type": "narrate",
        "style": "chat",
-       "requires_flags": [
-        "flag/name-nobody"
-       ],
-       "text": "You won the cave. He will tell the story to the end of his days and never once get the name right, and the neighbours who came as far as the stone have gone back to their own fires believing a sickness took him. No song, no herald, no one ashore who will ever hear it. You will live on that. You will have to."
+       "text": "Open water on every side, and the oars finding their stroke. Somewhere behind the dark the island is still there, and it is already somebody else's problem."
       },
       {
-       "type": "narrate",
-       "style": "chat",
-       "requires_flags": [
-        "flag/name-boast"
-       ],
-       "text": "You won the cave, and then you signed it. Behind you the mountain is awake — hands on the slope, cousin calling to cousin, every one of them coming at first light to lift the stone off a man who can now give the sea your name and your father's. Eurylochus has the oars going before you are seated. Whatever you bought back there, the water will send you the bill."
+       "type": "cutscene",
+       "shots": [
+        {
+         "path": [
+          {
+           "anchor": "anchor/sea-deck",
+           "offset": [
+            -6,
+            3,
+            0
+           ]
+          },
+          {
+           "anchor": "anchor/sea-deck",
+           "offset": [
+            -20,
+            5,
+            0
+           ]
+          }
+         ],
+         "seconds": 7,
+         "look_at": {
+          "anchor": "anchor/sea-deck",
+          "offset": [
+           0,
+           1,
+           0
+          ]
+         }
+        },
+        {
+         "path": [
+          {
+           "anchor": "anchor/sea-deck",
+           "offset": [
+            -20,
+            5,
+            0
+           ]
+          },
+          {
+           "anchor": "anchor/sea-deck",
+           "offset": [
+            -44,
+            10,
+            0
+           ]
+          }
+         ],
+         "seconds": 8,
+         "look_at": {
+          "anchor": "anchor/sea-deck",
+          "offset": [
+           0,
+           1,
+           0
+          ]
+         }
+        }
+       ]
       },
       {
-       "type": "narrate",
-       "style": "chat",
-       "requires_flags": [
-        "flag/name-lie"
-       ],
-       "text": "You won the cave, and a Cretan took the credit. The hills heard the name, weighed it and went back to sleep — a trader out of Crete, and Cretans lie, so nothing worth waking for was said at all. No one is coming for Aithon; there was never an Aithon to come for. You have your crew, your water and a clean horizon, and the best hour of your life belongs to a man who does not exist."
-      },
-      {
-       "type": "play-sound",
-       "sound": "minecraft:ui.toast.challenge_complete",
-       "at": {
-        "at": "players"
-       }
-      },
-      {
-       "type": "campaign-complete"
+       "type": "sequence",
+       "steps": [
+        {
+         "at_ticks": 120,
+         "effects": [
+          {
+           "type": "set-time",
+           "time": "night"
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:ambient.underwater.enter",
+           "at": {
+            "at": "players"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 340,
+         "effects": [
+          {
+           "type": "narrate",
+           "style": "art",
+           "text": "NOBODY"
+          },
+          {
+           "type": "narrate",
+           "style": "chat",
+           "requires_flags": [
+            "flag/name-nobody"
+           ],
+           "text": "You won the cave. He will tell the story to the end of his days and never once get the name right, and the neighbours who came as far as the stone have gone back to their own fires believing a sickness took him. No song, no herald, no one ashore who will ever hear it. You will live on that. You will have to."
+          },
+          {
+           "type": "narrate",
+           "style": "chat",
+           "requires_flags": [
+            "flag/name-boast"
+           ],
+           "text": "You won the cave, and then you signed it. Somewhere astern the mountain is awake — hands on the slope, cousin calling to cousin, every one of them coming at first light to lift the stone off a man who can now give the sea your name and your father's. Eurylochus has the stroke going and will not look back. Whatever you bought in there, the water will send you the bill."
+          },
+          {
+           "type": "narrate",
+           "style": "chat",
+           "requires_flags": [
+            "flag/name-lie"
+           ],
+           "text": "You won the cave, and a Cretan took the credit. The hills heard the name, weighed it and went back to sleep — a trader out of Crete, and Cretans lie, so nothing worth waking for was said at all. No one is coming for Aithon; there was never an Aithon to come for. You have your crew, your water and a clean horizon, and the best hour of your life belongs to a man who does not exist."
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:ui.toast.challenge_complete",
+           "at": {
+            "at": "players"
+           }
+          },
+          {
+           "type": "campaign-complete"
+          }
+         ]
+        }
+       ]
       }
      ]
     },
@@ -2683,6 +2911,42 @@
      {
       "type": "unleash-actor",
       "actor": "actor/polyphemus-roused"
+     }
+    ]
+   },
+   {
+    "id": "trigger/he-holds-the-mouth",
+    "at": "anchor/mouth",
+    "on": {
+     "on": "approach",
+     "range": 5
+    },
+    "once": true,
+    "requires_flags": [
+     "flag/escaped"
+    ],
+    "effects": [
+     {
+      "type": "narrate",
+      "style": "title",
+      "text": "He Is Still There"
+     },
+     {
+      "type": "narrate",
+      "style": "chat",
+      "text": "Your foot turns a pebble in the mouth of the cave and his head comes round on the sound like a door slamming. He told the hills he would eat you last. He did not say he had stopped."
+     },
+     {
+      "type": "play-sound",
+      "sound": "minecraft:entity.warden.roar",
+      "at": {
+       "at": "anchor",
+       "anchor": "anchor/mouth"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/polyphemus-walker"
      }
     ]
    }

@@ -892,3 +892,83 @@ dw-worker-island13` only; mutex taken as `worker-island13` and released by name
 through `dw_mutex_release_named`): **PackTest all 34 required tests passed**
 (31 → 34: the generated `cast_root_swap` and `cast_bark_cycle` templates now
 exist and run on a live server), **bot critical path PASSED, 20 steps**.
+
+## Round 14 — the branch that was never finished, and a way to leave
+
+Eight owner-ruled items after the round-13 playtest. All eight land.
+
+### The big one: the flee branch was half-built (item 2)
+
+Taking the cheese and leaving is a whole ending, and round 13's ledger described
+it correctly for Antiphos while the *staging* still belonged to the other branch.
+Three separate desyncs, one cause — the fork moved the ledger but never moved the
+bodies:
+
+- Perimedes walked to the mouth and `despawn-npc`'d himself. Now he goes down the
+  path ahead of everyone to `anchor/class-post` and stays, with `dlg/all-hands`.
+- Eurylochus had no flee leg at all, so he held the racks in a cave the party had
+  left — the "idle NPC at the cave mouth with no scene". He now walks to
+  `anchor/gangplank` and counts the party aboard twice, with `dlg/quiet-sail`.
+- Elpenor asked "Where is Antiphos, Captain." on a branch where Antiphos is
+  standing next to him. `dlg/the-fire-held` is now wait-branch only; the flee
+  branch gets `dlg/all-of-you`, whose joke is that he prepared a eulogy he does
+  not get to use.
+
+The audit that matters is which quests *begin* on the flee branch:
+`take-the-cheese` and `hide` open together off `cave-of-plenty`, and the later
+declaration wins the `dw.cast` selector — so the flee line has to be right in
+**hide** too, and in every quest after it, none of which a flee player can ever
+finish. `cast_elpenor.mcfunction` now reads flee→3 in every quest from
+cave-of-plenty on, and wait→4 only at `the-sail`: the mourning scene is
+structurally unreachable on the branch with no death in it.
+
+### The rest
+
+- **One class** (item 1). `class/polites` and `class/eurybates` are gone; the
+  Odysseus blurb absorbs what the pick used to say. No combat proof moved —
+  neither removed kit held the best hit or the only food.
+- **Stair debris** (item 3). Found by diffing the emitted `world_edits`
+  setblocks against the mountain prefab's own stair cells: eleven scatter blocks
+  standing on the bottom tread row (world y=64, z=−33). `batch/shore-transition`
+  now declares the whole switchback face keep-clear. Verified 11 → 0 by the same
+  diff.
+- **The drowned** (item 4). Two findings. The clock is the root cause and is
+  fixed with a `sequence` step to `night` **after** the wave exists. The routed
+  lane the round asked for is **not available for this species**: `lane` is
+  raider-family only (`DW0382`), and the non-patrol substitute `summon:
+  aggro-edge` seats mobs on the standable arc of the perception ring — which,
+  for a fire on a beach, is the meadow behind the party. Tried, inspected in the
+  emitted summons (`9.5 63 −9.5`, i.e. 18 blocks inland), reverted.
+- **Belly-wool step deleted** (item 5): `obj/hold-fast`, its dialogue option and
+  the round-13 bridge that existed only to prove it reachable all go; Perimedes
+  now leaves with the flock in the same stagger and keeps going to the strand.
+- **The giant holds the mouth** (item 6): `flag/escaped` +
+  `trigger/he-holds-the-mouth` (approach 5 at `anchor/mouth`, once) unleashes the
+  walker actor. Optional combat, so spec-0023's mandatory-encounter proofs do not
+  bind it.
+- **The voyage** (item 7). A second area, `area/open-sea`, bound to the existing
+  `prefab/island-galley`. Four things had to be learned to make it work, all of
+  them the compiler telling me:
+  1. the plan must **converge on the finale**, so the voyage becomes the finale
+     and depends on `quest/the-sail` (`DW0132`);
+  2. an inter-area transport is only emitted when consecutive critical
+     objectives name **different anchors in different areas** — both galleys had
+     `anchor/deck`, so the proof demanded a 250-block walk (`DW0311`);
+  3. the transport target is the destination area's `spawn`, and the entry-anchor
+     names are **unprefixed** metadata keys (`spawn`, not `anchor/spawn`) —
+     `campaign_spawn` scans areas in order, so area 0's `entry` still wins the
+     world spawn and this one only ever serves the ending;
+  4. the `delve:art` font is ASCII-only (`DW0328`), so the banner is `NOBODY` in
+     both languages and the Chinese closing line carries the meaning.
+
+  Framing is proven by construction rather than by distance: the island spans
+  x −8…27 and the ending area sits at x=256, so the dolly recedes along −x and
+  looks back along +x — the island is 180° off the view axis, behind the camera
+  for the whole shot, whatever the client's FOV.
+
+### Proofs
+
+`delvec` built from engine `main` at #208. English and zh-cn both exit 0;
+English double build **byte-identical**. Advisories 19 `DW0451` (down from 20 —
+Perimedes no longer walks the pen gate twice) and the 2 long-standing `DW0359`.
+No `DW047x`: the only mandatory wave is the tutorial, and the giant is optional.

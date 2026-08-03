@@ -1,6 +1,6 @@
 # Nobody's Cave — Island Remake (authoritative design record)
 
-**v3 — 2026-08-03** (v2: 2026-08-03; v1: 2026-08-01). This file is the single
+**v4 — 2026-08-03** (v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
 authoritative design document for the `nobodys-cave-island` campaign. Where it
 and the stage JSONs disagree, one of the two is a defect.
 
@@ -19,9 +19,11 @@ and the stage JSONs disagree, one of the two is a defect.
    kept and never silently restored.
 4. Open, unresolved deviations live in §7 until the owner rules on them.
 
-## 1. The island (layout — ONE contiguous area, zero transports)
+## 1. The island (layout — one contiguous play area, one ending set piece)
 
-No inter-area teleports, no filler corridors: every space serves a story beat
+The island is ONE contiguous walk with no inter-area teleports inside it. Round 14
+adds a second area, `area/open-sea` (`prefab/island-galley`), used only by the
+ending: boarding at the strand transports the party to its deck. No filler corridors: every space serves a story beat
 or a sightline. Walk-through order (south → north, rising):
 
 1. **Beach camp** (entry piece, walk plane y=63, sea 62): sand shore; campfire
@@ -201,7 +203,7 @@ and walks out to the fold in one leg at the escape.
 
 ## 4. Feature surface actually used
 
-classes + named kits · mannequin skins · dialogue flags + gated options · two
+one class (Odysseus — round 14: this is his story, and there is no one else to be) + named kit · mannequin skins · dialogue flags + gated options · two
 endings, the first of them branching three ways on the name · **the stage-5
 `cast` scene ledger with per-branch placements and bark pools (DSL 0.7)** ·
 **`interact.missing_item_hint` over held-item `requires_item`** ·
@@ -316,3 +318,50 @@ stand inside the walls).
    fold's nine interior cells, of which only the centre is clear of every wall.
    Round 13 took the one cheap nudge that existed (`actor/sheep-7` moved to the
    freed west column), 21 → 20.
+
+## 8. Round-14 amendments
+
+1. **One class.** `class/odysseus` only (owner ruling). The blurb absorbs the
+   premise the pick used to carry: there is no one else to be on this island.
+2. **The flee branch is a real branch, not a truncated one.** Taking the cheese
+   and leaving used to strand the fork's own participants: Perimedes despawned
+   at the mouth, Eurylochus held a cave nobody was in, and Elpenor mourned
+   Antiphos — who never died on that branch. Now the whole party comes down
+   (Perimedes to the fire, Eurylochus to the gangplank, Antiphos to the strand
+   with the sacks), and three new scenes carry it: `dlg/quiet-sail`,
+   `dlg/all-hands`, `dlg/all-of-you`. Mourning is gated to the branch that has a
+   death in it. The ledger's flee line is now correct in **every** quest that
+   begins on that branch, including the ones only the wait branch can finish.
+3. **No dressing on a staircase.** `batch/shore-transition` was dropping eleven
+   sand/gravel/stone blocks onto the bottom tread row of the mountain's
+   switchback face. The whole stepped face (piece-local x 3–32, z 30–39) is a
+   keep-clear envelope; the other three shore rows still grade into the water.
+4. **The drowned come for the fire.** The cut is `dusk` at muster for the sunset
+   sky, and a `sequence` step advances to `night` 40 ticks later — after the
+   wave already exists, because drowned read 12000 as daylight and go back to
+   the water, and delaying the *spawn* instead lets a bot clear the beat before
+   it happens (round-13 lesson). **Routed lanes are not available here**: `lane`
+   is raider-family only (`DW0382`) and drowned are not raiders; `summon:
+   aggro-edge` seats them on the standable arc of the ring, which for a fire on
+   a beach is *inland*, behind the party. The species-correct fix is the clock.
+5. **No belly-wool doubling back.** `obj/hold-fast` and its dialogue option are
+   deleted; Perimedes walks out of the pen with the flock and keeps going to the
+   strand, instead of leaving and running back in to be talked to.
+6. **The giant holds the mouth.** `flag/escaped` arms
+   `trigger/he-holds-the-mouth` (approach, range 5, at `anchor/mouth`, once):
+   walking back into the cave after the escape unleashes `actor/polyphemus-
+   walker`. Telegraphed twice — the `obj/last-sand` narration says he has set
+   himself across the mouth and that whatever is still in there is his, and the
+   trigger's own title fires before the roar. Optional combat, so the spec-0023
+   winnability proofs do not bind it.
+7. **The ending is a voyage.** `quest/the-voyage` (finale, `area/open-sea`):
+   boarding at the strand transports the party to the galley's deck, three
+   mannequin crew actors spawn on it, a two-shot dolly recedes from the ship,
+   the sky cuts to night mid-shot, and only then does the `NOBODY` art banner
+   land with the branch's closing paragraph and `campaign-complete`.
+   **Framing is proven by construction, not by distance**: `area/open-sea` sits
+   at x=256 while the island spans x −8…27, so the dolly recedes along −x and
+   looks back along +x — the island is a full 180° off the view axis, behind the
+   camera at every point of both shots. The ship never moves; the drift is the
+   camera. The art font is ASCII-only (`DW0328`), so the banner reads `NOBODY`
+   in both languages and the Chinese lands in the line beneath it.
