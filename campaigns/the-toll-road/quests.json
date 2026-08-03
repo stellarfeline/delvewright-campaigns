@@ -1,0 +1,489 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "the-toll-road",
+  "stage": "quests",
+  "content": {
+    "traps": [
+      {
+        "id": "trap/stair-volley",
+        "at": "anchor/l1a-trap-boulder",
+        "trigger": "pressure-plate",
+        "lethality": "harmful",
+        "reset": "rearm",
+        "disarm": {
+          "via": "anchor/l1a-mural-door",
+          "sets_flag": "flag/stair-stilled"
+        },
+        "forbids_flags": [
+          "flag/stair-stilled"
+        ],
+        "payload": [
+          {
+            "type": "play-sound",
+            "sound": "minecraft:block.dispenser.launch",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/l1a-volley-slot"
+            }
+          },
+          {
+            "type": "volley",
+            "projectile": "minecraft:arrow",
+            "from_anchor": "anchor/l1a-volley-slot",
+            "kill_zone": {
+              "anchor": "anchor/l1a-stair-run",
+              "extent": [
+                2,
+                1,
+                2
+              ]
+            },
+            "salvos": 2,
+            "interval": 20
+          }
+        ]
+      },
+      {
+        "id": "trap/dart-gallery",
+        "at": "anchor/l3-trap-darts",
+        "trigger": "pressure-plate",
+        "lethality": "harmful",
+        "reset": "rearm",
+        "disarm": {
+          "via": "anchor/l3-dart-lever",
+          "sets_flag": "flag/darts-stilled"
+        },
+        "forbids_flags": [
+          "flag/darts-stilled"
+        ],
+        "payload": [
+          {
+            "type": "play-sound",
+            "sound": "minecraft:block.dispenser.launch",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/l3-gallery-slot"
+            }
+          },
+          {
+            "type": "volley",
+            "projectile": "minecraft:arrow",
+            "from_anchor": "anchor/l3-gallery-slot",
+            "kill_zone": {
+              "anchor": "anchor/l3-trap-darts",
+              "extent": [
+                1,
+                2,
+                2
+              ]
+            },
+            "salvos": 2,
+            "interval": 20
+          }
+        ]
+      },
+      {
+        "id": "trap/toll-box",
+        "at": "anchor/l3-alcove-cache",
+        "trigger": "trapped-chest",
+        "lethality": "harmful",
+        "reset": "rearm",
+        "payload": [
+          {
+            "type": "narrate",
+            "text": "The toll-box bites. It is the keep's box, and it knows a hand from a boot.",
+            "style": "chat"
+          },
+          {
+            "type": "play-sound",
+            "sound": "minecraft:block.piston.extend",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/l3-item-alcove"
+            }
+          },
+          {
+            "type": "damage-players",
+            "amount": 6,
+            "damage_type": "generic",
+            "in": {
+              "anchor": "anchor/l3-item-alcove",
+              "extent": [
+                2,
+                1,
+                2
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "loot": [
+      {
+        "id": "loot/lesson-cache",
+        "anchor": "anchor/l0-reward-cache",
+        "items": [
+          {
+            "item": "minecraft:paper",
+            "count": 1,
+            "name": "The Road's Terms"
+          },
+          {
+            "item": "minecraft:lantern",
+            "count": 1,
+            "name": "Tollwright's Lamp"
+          },
+          {
+            "item": "minecraft:bread",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "id": "loot/toll-writ",
+        "anchor": "anchor/l3-secret-cache",
+        "items": [
+          {
+            "item": "minecraft:book",
+            "count": 1,
+            "name": "The Keep's Toll-Writ"
+          },
+          {
+            "item": "minecraft:gold_nugget",
+            "count": 12
+          },
+          {
+            "item": "minecraft:golden_apple",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "id": "quest/the-toll",
+        "trigger": {
+          "type": "campaign-start"
+        },
+        "happening": {
+          "verb": "learns",
+          "text": "The party learns the road's terms from Ordwin at the barrow shore and turns inland toward Vesper Gate.",
+          "subject": "npc/ordwin"
+        },
+        "cast": {
+          "npc/ordwin": {
+            "at": "anchor/l0-tide-line",
+            "doing": "Standing where the tide leaves travellers, unhurried, waiting to be asked; his demonstration cache lies open at the cairn up the shore.",
+            "dialogue": "dlg/ordwin-root"
+          }
+        },
+        "objectives": [
+          {
+            "type": "talk-to",
+            "id": "obj/meet-ordwin",
+            "npc": "npc/ordwin",
+            "happening": {
+              "verb": "learns",
+              "text": "Ordwin explains the arrangement: the road takes payment in attention, and each toll shows its hardware first.",
+              "subject": "npc/ordwin"
+            }
+          },
+          {
+            "type": "collect",
+            "id": "obj/take-terms",
+            "item": "minecraft:paper",
+            "count": 1,
+            "anchor": "anchor/l0-reward",
+            "after": [
+              "obj/meet-ordwin"
+            ],
+            "title": "Take the Road's Terms",
+            "hint": "West along the shore from the tide line, at the cairn — the cache Ordwin left standing open.",
+            "happening": {
+              "verb": "gains",
+              "text": "The party takes the written terms of the road out of Ordwin's demonstration cache.",
+              "subject": "item/roads-terms"
+            }
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/walk-to-gate",
+            "anchor": "anchor/l0-gate-approach",
+            "radius": 3,
+            "after": [
+              "obj/take-terms"
+            ],
+            "title": "Walk up to the gate",
+            "hint": "North end of the barrow field, under the banner.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party crosses the barrow field and stands at the foot of Vesper Gate.",
+              "subject": "anchor/l0-gate-approach"
+            }
+          }
+        ],
+        "on_objective_complete": {
+          "obj/meet-ordwin": [
+            {
+              "type": "set-checkpoint",
+              "anchor": "spawn"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Ordwin points west along the shore, at a cache left standing open by the cairn, and turns back toward the water. \"I keep the road,\" he says. \"I do not walk it.\""
+            },
+            {
+              "type": "despawn-npc",
+              "npc": "npc/ordwin",
+              "happening": {
+                "verb": "departs",
+                "text": "Ordwin turns back to the tide line and leaves the party to the road.",
+                "subject": "npc/ordwin"
+              }
+            }
+          ]
+        },
+        "on_complete": []
+      },
+      {
+        "id": "quest/first-toll",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/the-toll"
+        },
+        "happening": {
+          "verb": "opens",
+          "text": "The party pays the first toll — the stair volley — and comes out on the gatehouse roof.",
+          "subject": "anchor/l1a-stair-head"
+        },
+        "cast": {
+          "npc/ordwin": "offstage"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/stair-foot",
+            "anchor": "anchor/l1a-stair-foot",
+            "radius": 3,
+            "title": "Enter Vesper Gate",
+            "hint": "Through the gate arch, straight ahead to the bottom step of the long stair.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party stands at the foot of the gatehouse stair with the toll above them.",
+              "subject": "anchor/l1a-stair-foot"
+            }
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/stair-run",
+            "anchor": "anchor/l1a-stair-run",
+            "radius": 2,
+            "after": [
+              "obj/stair-foot"
+            ],
+            "title": "Climb to the mural",
+            "hint": "Up the stair until the painted landing on the east wall is level with you.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party climbs into the stretch of stair the gallery slot covers.",
+              "subject": "anchor/l1a-stair-run"
+            }
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/stair-head",
+            "anchor": "anchor/l1a-stair-head",
+            "radius": 3,
+            "after": [
+              "obj/stair-run"
+            ],
+            "title": "Reach the stair head",
+            "hint": "Keep climbing past the third tread to the top of the stair, below the roof door.",
+            "happening": {
+              "verb": "opens",
+              "text": "The party clears the stair and the first toll is paid.",
+              "subject": "anchor/l1a-stair-head"
+            }
+          }
+        ],
+        "on_objective_complete": {
+          "obj/stair-foot": [
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/l1a-approach"
+            },
+            {
+              "type": "narrate",
+              "text": "A stone plate sits in the third tread, in plain sight, and it does not care whose boot finds it. On the painted landing to the east there is a lever: throw it and the plate comes out of the floor.",
+              "style": "chat"
+            }
+          ]
+        },
+        "on_complete": [
+          {
+            "type": "set-checkpoint",
+            "anchor": "anchor/l1a-stair-head"
+          },
+          {
+            "type": "narrate",
+            "text": "The stair is behind you. The first toll is paid, in attention or in blood — the road did not mind which.",
+            "style": "chat"
+          }
+        ]
+      },
+      {
+        "id": "quest/last-toll",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/first-toll"
+        },
+        "happening": {
+          "verb": "gains",
+          "text": "The party pays the last tolls and carries the keep's toll-writ out of the undercroft.",
+          "subject": "item/toll-writ"
+        },
+        "cast": {
+          "npc/ordwin": "offstage"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/wall-walk",
+            "anchor": "anchor/l1b-parapet-mid",
+            "radius": 3,
+            "title": "Take the wall head",
+            "hint": "Out of the roof door at the top of the gate stair and north along the wall walk.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party leaves the gatehouse roof and walks the wall head above the keep.",
+              "subject": "anchor/l1b-parapet-mid"
+            }
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/muster-yard",
+            "anchor": "anchor/l2-muster",
+            "radius": 3,
+            "after": [
+              "obj/wall-walk"
+            ],
+            "title": "Cross the mustering yard",
+            "hint": "Down off the wall at its far end into the open yard, and out to the middle of it.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party comes down off the wall into the mustering yard, the midpoint of the road.",
+              "subject": "anchor/l2-muster"
+            }
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/undercroft-landing",
+            "anchor": "anchor/l3-landing",
+            "radius": 3,
+            "title": "Enter the Toll Vault",
+            "hint": "East out of the mustering yard through the undercroft door, onto the ledge above the flooded shaft.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party arrives on the vault landing, beside the lever that stills the dart gallery.",
+              "subject": "anchor/l3-landing"
+            },
+            "after": [
+              "obj/muster-yard"
+            ]
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/toll-box-alcove",
+            "anchor": "anchor/l3-item-alcove",
+            "radius": 2,
+            "after": [
+              "obj/undercroft-landing"
+            ],
+            "title": "Go down to the alcove",
+            "hint": "Down the shaft from the landing and along the flooded floor to the lit alcove in the north wall.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party descends the dart shaft and reaches the alcove where the keep's toll-box stands.",
+              "subject": "anchor/l3-item-alcove"
+            }
+          },
+          {
+            "type": "collect",
+            "id": "obj/take-writ",
+            "item": "minecraft:book",
+            "count": 1,
+            "anchor": "anchor/l3-secret",
+            "after": [
+              "obj/toll-box-alcove"
+            ],
+            "title": "Take the Toll-Writ",
+            "hint": "In the small cell behind the alcove, past the toll-box, at the back wall.",
+            "happening": {
+              "verb": "gains",
+              "text": "The party takes the keep's toll-writ from the cell behind the toll-box.",
+              "subject": "item/toll-writ"
+            }
+          }
+        ],
+        "on_objective_complete": {
+          "obj/wall-walk": [
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The road runs along the wall head from here, and from up here you can see the next tollgate. The keep's bell tower is not on this road; the toll does not buy you that."
+            },
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/l1b-parapet-mid"
+            }
+          ],
+          "obj/muster-yard": [
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The mustering yard is the middle of the road. Half the toll is behind you; the vault door is in the east wall."
+            },
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/l2-muster"
+            }
+          ],
+          "obj/undercroft-landing": [
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/l3-landing"
+            },
+            {
+              "type": "narrate",
+              "text": "There is a slot cut in the shaft wall below you, and two paces from your boots a lever with a light on it. The lever pulls the plate at the bottom of the shaft out of the floor. Decide here, not down there.",
+              "style": "chat"
+            }
+          ],
+          "obj/toll-box-alcove": [
+            {
+              "type": "narrate",
+              "text": "The box in the alcove belongs to the keep, and it is empty. A plate does not care who steps on it; a box only bites a person, and only one who opens it.",
+              "style": "chat"
+            }
+          ]
+        },
+        "on_complete": [
+          {
+            "type": "narrate",
+            "text": "The writ is yours, the road is behind you, and every toll on it showed you its hardware first. Ordwin will be pleased not to have to scrape you off the flagstones.",
+            "style": "chat"
+          },
+          {
+            "type": "campaign-complete",
+            "happening": {
+              "verb": "gains",
+              "text": "The delve ends: the party walks out of the Toll Vault with the keep's writ.",
+              "subject": "item/toll-writ"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

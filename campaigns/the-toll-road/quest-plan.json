@@ -1,0 +1,43 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "the-toll-road",
+  "stage": "quest-plan",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/the-toll",
+        "goal": "Hear the road's terms from Ordwin, take his written copy, and walk up to Vesper Gate.",
+        "area": "area/keep",
+        "npcs": [
+          "npc/ordwin"
+        ],
+        "depends_on": [],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/first-toll",
+        "goal": "Pay the first toll: climb the gatehouse stair past the plate in the third tread.",
+        "area": "area/keep",
+        "npcs": [],
+        "depends_on": [
+          "quest/the-toll"
+        ],
+        "mandatory": true,
+        "act": 2
+      },
+      {
+        "id": "quest/last-toll",
+        "goal": "Descend the shaft past the dart gallery, leave the toll-box shut, and take the keep's writ from the cell behind it.",
+        "area": "area/keep",
+        "npcs": [],
+        "depends_on": [
+          "quest/first-toll"
+        ],
+        "mandatory": true,
+        "act": 3
+      }
+    ],
+    "finale": "quest/last-toll"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "the-toll-road",
+  "stage": "dialogue",
+  "content": {
+    "dialogues": [
+      {
+        "npc": "npc/ordwin",
+        "root": "dlg/ordwin-root",
+        "nodes": [
+          {
+            "id": "dlg/ordwin-root",
+            "text": "You came up the tide road, so you already owe the keep. It takes payment in attention. Ask what you like — I would rather be understood than paid.",
+            "options": [
+              { "label": "What is the toll?", "next": "dlg/toll" },
+              { "label": "Who collects it?", "next": "dlg/who" },
+              {
+                "label": "I'll read it myself.",
+                "effects": [
+                  { "type": "complete-objective", "objective": "obj/meet-ordwin" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "dlg/toll",
+            "text": "Three tolls between here and the vault. A plate in a stair. A slot in a shaft. A box in an alcove. Each one shows you its hardware before it uses it. Nothing on this road hides.",
+            "options": [
+              { "label": "What is a plate?", "next": "dlg/plate" },
+              { "label": "And the box?", "next": "dlg/box" },
+              { "label": "Back.", "next": "dlg/ordwin-root" }
+            ]
+          },
+          {
+            "id": "dlg/plate",
+            "text": "A stone plate set in the floor, in plain sight. Step on it and it does its work. It does not ask whose boot. Then the slot in the wall fills the whole stretch of stair with arrows — not the spot you were standing in, the whole stretch.",
+            "options": [
+              { "label": "Can I stop it?", "next": "dlg/lever" },
+              { "label": "Then I run.", "next": "dlg/run" },
+              { "label": "Back.", "next": "dlg/toll" }
+            ]
+          },
+          {
+            "id": "dlg/lever",
+            "text": "There is a lever on the mural landing, lit and plain. Throw it and the plate comes out of the floor. Not a note in a ledger — the stone leaves.",
+            "options": [
+              { "label": "Is that cheating?", "next": "dlg/cheating" },
+              { "label": "Back.", "next": "dlg/plate" }
+            ]
+          },
+          {
+            "id": "dlg/cheating",
+            "text": "The keep put the lever there. Using what the keep put there is the toll, paid in attention. That is the whole arrangement.",
+            "options": [
+              { "label": "Back.", "next": "dlg/toll" }
+            ]
+          },
+          {
+            "id": "dlg/run",
+            "text": "Running along the stair keeps you inside the fire. Leaving the stair takes you out of it. That is a decision, not a reflex, and it is cheaper made early.",
+            "options": [
+              { "label": "Back.", "next": "dlg/plate" }
+            ]
+          },
+          {
+            "id": "dlg/box",
+            "text": "The box in the alcove is the keep's toll-box, and it is empty. It is the one piece of hardware that knows a person from a boot: a plate fires for anything that steps, a box only bites the hand that opens it.",
+            "options": [
+              { "label": "So leave it shut.", "next": "dlg/shut" },
+              { "label": "Back.", "next": "dlg/toll" }
+            ]
+          },
+          {
+            "id": "dlg/shut",
+            "text": "That is the answer, and it costs nothing. Nothing in it is yours. What is worth carrying is in the cell behind it.",
+            "options": [
+              { "label": "Back.", "next": "dlg/ordwin-root" }
+            ]
+          },
+          {
+            "id": "dlg/who",
+            "text": "The keep collects. I only keep it working — true plates, clear slots, oiled levers. The traps are honest employees. They do one job, they do it well, and they never ask who you are.",
+            "options": [
+              { "label": "Do you walk it?", "next": "dlg/walk" },
+              { "label": "Back.", "next": "dlg/ordwin-root" }
+            ]
+          },
+          {
+            "id": "dlg/walk",
+            "text": "I keep the road. I do not walk it.",
+            "options": [
+              {
+                "label": "Then I will.",
+                "effects": [
+                  { "type": "complete-objective", "objective": "obj/meet-ordwin" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
