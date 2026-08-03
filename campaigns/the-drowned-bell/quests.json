@@ -48,8 +48,8 @@
        "text": "A fire is lit at the tide-line. Rest at a fire and it will hold your place \u2014 but the keep forgets nothing it has already sent against you."
       },
       {
-       "type": "spawn-actor",
-       "actor": "actor/barrow-warden"
+       "type": "spawn-npc",
+       "npc": "npc/barrow-warden"
       }
      ]
     },
@@ -647,12 +647,20 @@
   "triggers": [
    {
     "id": "trigger/warden-answers",
-    "at": "anchor/l0-elite-dormant",
     "on": {
-     "on": "strike"
+     "on": "strike-npc",
+     "npc": "npc/barrow-warden"
     },
     "once": true,
     "effects": [
+     {
+      "type": "despawn-npc",
+      "npc": "npc/barrow-warden"
+     },
+     {
+      "type": "spawn-actor",
+      "actor": "actor/barrow-warden"
+     },
      {
       "type": "unleash-actor",
       "actor": "actor/barrow-warden"
