@@ -480,3 +480,117 @@ check weakened.
 Build green (DW0359 silent at 2+ blocks), zh-cn build green, double build
 byte-identical, PackTest 31/31 (now includes the generated `strike-npc`
 separability tests), full bot ladder green after the grace fix.
+
+## Round 11 — the giant enters before the stone, and the blind hunt is real
+
+Owner round-8 findings, in two stages against engine #188–#190 (`DW0410`
+timeline gate proof, terrain-shaped path cost, shared-hitbox trigger fix,
+burrowing-unleashed-warden fix, sanctioned validation mutex).
+
+### Stage 1 — one hearth, and both strikes answer in kind (findings 1–2)
+
+The hall's one true fire: `obj/harden` moved to the prefab's walled hearth
+(new `anchor/hearth`) and dropped its prop campfire — the loose ground fire is
+gone; `obj/blind` moved to `anchor/eye` beside the sleeping giant's body.
+`trigger/his-house` stopped swatting for 40: striking the **awake** giant now
+despawns the NPC and unleashes the vanilla-stat roused warden exactly like the
+wake path (owner ruling: both strikes enter combat), the aggro-lock landing on
+the striker via #189.
+
+### Stage 2 — seal cinematic v4 (the giant enters BEFORE the stone)
+
+Round 10's cinematic shipped green and was wrong on the live server: the
+sequence closed the boulder at `at_ticks: 460` and walked the herdsman across
+that region at `700`, so he stepped through solid basalt. `DW0410` now makes
+that a build error, and this campaign's own pre-fix DSL is its red proof — the
+first build of this round failed on exactly that leg.
+
+The order is now **cross, then seal**. Every gate-crossing walk is provably
+arrived long before the stone comes down at `t880`; the flock's second leg is
+interior-only and starts at `t1100`. This is deliberate over-provision:
+`DW0410` proves walks that *start* after a seal, but a walk still **in flight**
+when a later seal crosses its path is a known model gap the compiler cannot
+see. The authoring rule that falls out: never leave a gate-crossing walk
+unfinished across a `close-gate` — prove the arrival, do not estimate it.
+
+**Arrival math is readable, so read it.** The emitted `ma_tick_<actor>_<dest>`
+/ `mv_tick_<npc>_<dest>` functions are per-tick keyframe tables; the terminal
+`matches N.. run scoreboard` line is the walk's exact tick count, and the
+keyframe coordinates say exactly when a walker crosses the boulder plane.
+Three storyboard timings were authored from guesswork and corrected against
+those numbers:
+
+- meadow → mouth is **288 ticks**, not the assumed handful. At the planned
+  `t200` start the herdsman reached the mouth at `t488` — *after* his own
+  `t420` departure for the fire (two walks driving one body at once) and
+  *after* the `t380` Antiphos beat that needs him standing there. Start moved
+  to `t80`: arrives `t368`, roars inside shot 3, takes Antiphos at `t380`,
+  leaves at `t420`, settles at the fire `t521` as shot 5 opens.
+- the flock crosses the gap **324 ticks** after setting out. Starting at
+  `t0–60` they were through the mouth by `t391` — during shots 2–3, with shot
+  4 ("the flock streaming in, daylight behind") playing to an empty gap.
+  Starts moved to `t180–240`: crossings land `t504–571`, inside shot 4's
+  `t480–620`, and all four are parked by `t775`.
+
+Six shots, all render-verified frame-by-frame (`delvec snapshot --camera` at
+start/mid/end of every dolly segment, 18 frames reviewed). New shot 4 is the
+reverse angle the sequence never had: interior, near the mouth, looking **out**
+through the gap at daylight, sea and the galley's mast, with the flock
+silhouetted coming in.
+
+### Stage 2 — the blind giant is a real warden
+
+Owner design: vanilla ancient-city behaviour, not a scripted patrol. `obj/blind`
+no longer spawns a walker and marches it to the ramp; it spawns and **unleashes**
+`actor/polyphemus-blinded` (vanilla-stat warden, no overrides). Unleashing from
+an objective bundle carries no striker, so there is no aggro seed and he starts
+calm; #189 seeds `dig_cooldown` so he roams instead of burrowing on sight. If
+he does sink into the floor after a long silence, that is the character, not a
+defect. `begin-stealth`'s `on_caught` accordingly dropped its `damage-players 40`
+— the warden is the killer now; the narrate and the heartbeat stay as the
+warning. Checkpoint-3's `on_respawn` restores the roaming threat (despawn,
+respawn, re-unleash); checkpoint-2's cleanup list gained him too.
+
+### Stage 2 — the way out
+
+The giant no longer stands *in* the gap he is holding open: `actor/polyphemus-walker`
+re-anchors to new `anchor/mouth-side`, beside it, and simply appears there on
+the emerge beat (he is never walked again). The flock streams out past him,
+four to the fold and four to the meadow, staggered 20 ticks apart. The crew go
+out with them — Eurylochus to the gangplank, Perimedes in two hops: a stand
+just inside the mouth that *is* the talk window for `obj/hold-fast`, then on
+down to the beach once the party reaches him. Both are staged to the pen
+(new `anchor/pen-b` / `-c`) when the party climbs there, kept 2+ blocks off
+`anchor/pen` so they never shadow `obj/under-ram`'s affordance.
+
+### Two ambiguity findings worth keeping
+
+**`anchor/fold` and `anchor/meadow` are not addressable by `move-npc`.** The
+4-piece island layout draws **two** greenfield connectors, and every greenfield
+piece defines both anchors — so they resolve to one arbitrary carrier. The
+campaign has always lived with that (the sheep spawn there, shot 1 aims there)
+because `required_anchors` is built from top-level effects only: actor spawn
+anchors and `move-actor` targets never enter it, and `collect_effect_anchors`
+does not recurse into `sequence`. A single **top-level** `move-npc` to
+`anchor/fold` makes it required and turns the latent ambiguity into a hard
+`DW0305`. The rule for this campaign: outdoor destinations for NPCs must be
+piece-unique, which on this island means the beach-camp (entry) or the mountain
+(terminal) — never a greenfield anchor. Routing around the check by burying the
+move inside a `sequence` would have built green and is exactly the wrong fix.
+
+**An unleashed actor is still checked where it spawns.** `DW0359` skips any
+body the campaign ever *moves*, but spawn-and-unleash is not a move, so a
+roamer is measured standing on its declared anchor forever. Anchoring the blind
+warden at `anchor/fire-side` therefore raised a third fire-side/eye advisory
+even though he leaves that cell within a tick and `obj/blind` is already
+complete when he appears. Followed the diagnostic's own prescription and moved
+the spawn mark 2 blocks to `anchor/fire-pit` — same beat (he rises at his own
+fire), advisory gone.
+
+### Proofs
+
+Full build green (exit 0) with only the two long-standing fire-side/eye
+`DW0359` advisories, `DW0410` clean, zh-cn build green, English double build
+byte-identical. Every gate-crossing walk verified arrived before `t880` from
+the emitted keyframe tables; all 18 cutscene dolly frames reviewed. The bot +
+PackTest ladder was **not** run this round and remains pending a slot.
