@@ -109,7 +109,10 @@ keep-clear for every scatter.
   heartbeat are the warning.
 - **B6 Escape**: right-click the ram at the pen → finale sequence. The stone
   opens; the giant appears **beside** the gap he holds open (`anchor/mouth-side`)
-  and never in it (round 11); the whole flock streams out past him, staggered,
+  and never in it (round 11) — standing inside the hall, west of the gap's
+  throat, clear of the rock and **2 blocks off the flock's lane**, so every
+  back passes under his hands (round 12: the anchor was inside the mouth wall
+  until `DW0450` proved it); the whole flock streams out past him, staggered,
   and settles **in the meadow fold** (round 12); Perimedes goes out in two hops
   — a stand just inside the mouth that is the talk window, then down to the
   beach; Eurylochus goes to the gangplank; day returns and the weather clears
@@ -135,14 +138,15 @@ character; one actor with two spawn sites was the round-6 inside-out bug's
 enabling condition. Eight **sheep**: four already penned, four herded home.
 
 **Flock staging (round 12, owner finding)**: every sheep position, at every
-moment of the campaign, is a distinct cell **inside the upper pen** or
-**inside the meadow fold** — never the open cavern floor, never the open
-meadow. The pen carries one anchor per sheep (`anchor/pen`, `pen-d`…`pen-j`)
-plus two crew stands (`pen-b`, `pen-c`, kept 2+ blocks off the ram so they
-never shadow its affordance); the fold carries one anchor per sheep
-(`anchor/fold`, `fold-b`…`fold-h`), leaving the hay tuft clear. The herd walks
-in from the fold **straight to the pen** in one leg — it never parks on the
-hall floor — and walks out to the fold in one leg at the escape.
+moment of the campaign, is a distinct cell **inside the upper pen** or **at the
+meadow fold** — never the open cavern floor, never the open meadow. The pen
+carries one anchor per sheep (`anchor/pen`, `pen-d`…`pen-j`) plus two crew
+stands (`pen-b`, `pen-c`, kept 2+ blocks off the ram so they never shadow its
+affordance); the fold carries one anchor per sheep (`anchor/fold`,
+`fold-b`…`fold-h`) — six inside it, two in and just outside its gate, because
+the fold's west interior column is buried (see §7). The herd walks in from the
+fold **straight to the pen** in one leg — it never parks on the hall floor —
+and walks out to the fold in one leg at the escape.
 
 ## 4. Feature surface actually used
 
@@ -208,3 +212,13 @@ Recorded by the round-12 conformance review; not changed either way.
    round-6 restage moved the death to Antiphos so the victim is a man who
    climbed with the party on camera. Logged in an owner round, but the swap
    itself is not separately attributed to an owner request.
+8. **The sheep fold's west interior column is buried** (round-12 finding). The
+   round-8/9 landscape batches take piece-local x 0–3 as "the west bank" —
+   `west-roll` smooths it, `bank-outcrops` and `shore-transition` scatter rock
+   and sand over it, `meadow-treeline` plants oaks in it — but the fold sits at
+   piece-local x 2–6, so x=3 is its **west interior column**. All three of its
+   cells are solid in the assembled world. The fold that reads as 3×3 from
+   outside holds six bodies, not nine; the flock's last two stand in and just
+   outside its gate. Proposed restore: exclude the fold rectangle from those
+   four batches' west regions (or add a `batch/fold-clear`), which would let
+   the whole flock stand inside the walls.

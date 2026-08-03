@@ -665,13 +665,70 @@ already-penned sheep, the boulder hint as a strike rather than an interact,
 the full-night cut where the design said dusk, the absent Eurylochus walker
 twin, and Antiphos dying in Eurylochus's place.
 
+### The giant was standing inside the mountain (engine PR #196)
+
+Root cause of the owner's "giant in the wall" finding, found by the engine's
+new body-clearance proof: `anchor/mouth-side` was prefab-local `[14,9,27]`,
+which is **inside the mouth wall**. The mouth is a 3x3 hole (local x16-18)
+punched through a solid 3-deep wall spanning z27-29; every cell of that wall
+other than the hole is rock, so the round-11 "beside the gap" anchor put a
+2.9-block warden inside cobblestone. `DW0450` (body hitbox vs block collision
+volumes, at every anchor and every walked waypoint) is an error, so the
+campaign at round 11 no longer builds on current main — its own DSL is the
+red proof.
+
+The anchor moves to local `[15,9,25]` (world `[7,69,-47]`): inside the hall,
+one bay west of the gap's throat, two cells clear of the mouth wall. Chosen by
+measurement, not by taste:
+
+- `DW0450` and `DW0451` both silent there — no rock in the hitbox and none
+  within the 0.2-block model-overhang margin, so nothing about him reads as
+  embedded. The two cells nearer the wall are clear of the hitbox rule but
+  trip the overhang advisory, which is what "in the wall" looks like on a
+  client.
+- `DW0359` silent — the cells beside the gap's inner mouth sit within a block
+  of `trigger/boulder-wont-move`'s affordance on the stone and would eat its
+  clicks.
+- The staging survives: **every one of the twelve sheep walks passes within
+  exactly 2.00 blocks of him**, measured from the emitted keyframe tables, so
+  the flock still files out under his hands — and he stands beside the 3-wide
+  gap, never in it.
+
+The pen and fold work above was re-verified against the same proof: `DW0450`
+clean everywhere, and one fold cell had to move because of it (below).
+
+### The sheep fold's west third is buried (finding, not fixed)
+
+`DW0450` refused a sheep spawn inside the fold and named the cell. Probing all
+nine interior cells against the assembled world: the fold's **entire west
+interior column is solid**. Four round-8/9 landscape batches take piece-local
+x 0-3 as "the west bank" — `west-roll` smooths it, `bank-outcrops` and
+`shore-transition` scatter rock and sand across it, `meadow-treeline` plants
+oaks in it — but the fold rectangle is x 2-6, so local x=3 is inside the
+walls. The fold has looked 3x3 and been 2x3 since round 8.
+
+This round does not touch it: it is drift with no owner request behind it, and
+the protocol says report rather than restore. The flock is staged in the six
+cells that are real, plus the gate cell and the cell at its mouth — eight
+distinct positions, all at the fold. Recorded in DESIGN.md section 7 with the
+proposed restore.
+
+### Advisories
+
+22 `DW0451` and 2 `DW0359`, and **no class of them is new this round**: three
+warden bodies flush at the hearth cells, three sheep flush against fold walls,
+and sixteen bodies passing through the upper pen's 1.5-block fence gate — the
+gate the flock and the crew have always walked through, which the compiler
+counts once per walk. The two `DW0359` are the long-standing fire-side/eye
+pair. Not chased, per the round's scope.
+
 ### Proofs
 
-Full build green (exit 0) with only the two long-standing fire-side/eye
-`DW0359` advisories; zh-cn build green; English double build byte-identical;
+Full build green (exit 0) against `delvec` built from engine main at #196;
+`DW0450` clean; zh-cn build green; English double build byte-identical;
 `DW0410` clean. Every new anchor cell is proven walkable by construction (a
-`move-actor` destination that is not routable is `DW0325`) and proven interior
-to its fence rectangle by direct inspection of the prefab NBT. The bot +
-PackTest ladder runs under the isolated worker compose project once the
-validation mutex frees (held by an owner play session at delivery time) and is
-recorded in its own commit.
+`move-actor` destination that is not routable is `DW0325`), proven body-clear
+by `DW0450`, and proven interior to its fence rectangle by direct inspection
+of the prefab NBT. The bot + PackTest ladder runs under the isolated worker
+compose project once the validation mutex frees (held by an owner play session
+at delivery time) and is recorded in its own commit.
