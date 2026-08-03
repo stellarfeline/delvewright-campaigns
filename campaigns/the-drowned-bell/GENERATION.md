@@ -520,3 +520,50 @@ Unchanged and still worth a look: `floor_gate: {present: true, covered: [],
 not_covered: []}` with `actors: []` — the Barrow Warden still does not appear.
 `rests` confirms both bonfires armed (BF1 step 2, BF2 step 8) before the step-13
 siege.
+
+### Run seven (engine #228) — three encounters cleared, and a real wave defect surfaces
+
+PackTest **33/33**. The die-retry stage finally ran end to end on three of four
+encounters, and every mechanic it exercises reported clean:
+
+| wave | trials | at_checkpoint | returned | re_engaged | kit_kept | completed |
+| --- | --- | --- | --- | --- | --- | --- |
+| gate-assault | 2/2 | true | **true** | true | **true** | true |
+| wall-assault | 2/2 | true | **true** | true | **true** | true |
+| grave-echoes | 2/2 | true | **true** | true | **true** | true |
+
+All six respawns at `[34, 71, -113]` (BF2). `phase_reached: "cleared"` on all
+three, 5 assist windows each. **`returned` and `kit_kept` are true for the first
+time** — #227 and #228 between them closed the walk-back and the bare-approach
+death. Assist ledger, 15 windows, all named as designed: 6 × *walk back and
+re-engage probe*, 3 × *approach into melee range*, 3 × *trading blows before the
+scripted death*, 3 × *policy: ordinary encounter*.
+
+**The new red is a content/engine defect the stage caught, not a tuning problem.**
+Four separate findings, one class:
+
+> `wave/gate-assault death 1 (first-contact): 2 of the 4 wave mob(s) standing
+> after the re-seat are entities the bot already fought in a previous life. A
+> `respawns_on_rest` wave must be REMOVED and re-summoned whole, never topped up
+> around its survivors — otherwise the party grinds it down one swing per death.`
+
+Both `respawns_on_rest` waves are affected — gate-assault (declares 2, **4**
+standing) and wall-assault (declares 1, **4** then **6** standing). The wave
+accumulates across deaths instead of being re-summoned whole.
+
+That also explains the run's terminal failure, which is downstream of it:
+
+> `step 16 (reach) failed: bot died at [34, 71, -102] — likely cause: delve-bot
+> was slain by Hollow Gate-Warder`
+
+`[34, 71, -102]` is beside the chapel, on a **reach** step — the bot was walking,
+not fighting, and was killed by accumulated Gate-Warders that should never have
+been standing. **The Bellkeeper remains unreached for a seventh round**, and it
+will stay unreachable until the re-seat defect is fixed: the siege leaves
+survivors that follow the party.
+
+No `ASSIST_SECONDS` lapse signature seen — the deaths were not late in a return
+leg; all six returns succeeded.
+
+`floor_gate: {present: true, covered: [], not_covered: []}`, `actors: []` — the
+Barrow Warden still absent, seventh run running.
