@@ -10,7 +10,7 @@
     "nodes": [
      {
       "id": "dlg/root",
-      "text": "Captain. Twelve of us on this beach, and I'll say it before you tell me not to: I don't like the look of that smoke. Cheese racked to the roof up there, lambs penned and sorted, pails still wet — and nobody home. That isn't an empty house. That's a house someone is coming back to.",
+      "text": "Captain. Twelve of us on this beach, and I'll say it before you tell me not to: I don't like the look of that smoke. Cheese racked to the roof up there, lambs penned and sorted, the milk pails still warm — and nobody home. Somebody is coming back to that house tonight, and he will not have to hurry.",
       "options": [
        {
         "label": "Who are we? Say it plainly.",
@@ -43,6 +43,75 @@
         ]
        },
        {
+        "label": "About that cheese in your arms.",
+        "requires_flags": [
+         "flag/cheese-taken"
+        ],
+        "next": "dlg/at-the-racks"
+       }
+      ]
+     },
+     {
+      "id": "dlg/who",
+      "text": "You're Odysseus, son of Laertes, king of Ithaca — and I'm your wife's brother, which is the only reason I'm let to talk to you like this. Troy fell; ten years of it, and the wooden horse at the end was your idea. We've been trying to sail home ever since, and the sea keeps handing us islands instead of Ithaca. That's who we are, Captain. Men who should have been home nine years ago.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/where",
+      "text": "No idea, and that is precisely my objection. We came in through fog — no harbour, no ploughed field, no boundary stone. Nobody has ever cut a furrow here. Whatever keeps these flocks doesn't trade, doesn't sow, and has no neighbours it needs to stay on good terms with.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/inside",
+      "text": "Cheese, more than a village eats in a winter. Pens sorted properly, lambs from yearlings from full-grown; whoever does it knows the work. And at the back, a bed made of green branches. ... It is the length of that bed I keep coming back to, Captain.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/heed",
+      "text": "Thank every god at once. Grab, carry, go, and no arguing about the lambs. — And that is how it should go. Cheese in the hold, oars in the water before dark, Ithaca inside the month. You'll have a long quiet old age and not one soul will make a song of it. Down to the ship, Captain, while the light lasts.",
+      "options": [
+       {
+        "label": "(Down to the ship.)"
+       }
+      ]
+     },
+     {
+      "id": "dlg/overrule",
+      "text": "Of course we wait. You want to see it. You always want to see the thing. — Fine. Whatever comes through that mouth does not owe you a guest's welcome just because you're standing in its house. Keep Perimedes close, and Captain — for once in your life, be ready to be quiet.",
+      "options": [
+       {
+        "label": "(Then we wait.)"
+       }
+      ]
+     },
+     {
+      "id": "dlg/at-the-racks",
+      "text": "Look at the size of the wheels, Captain. A village could not eat this in a winter and it is stacked to the roof. The lambs are watered. The pails are warm. — Say the word and we are down the path with our arms full before he is off the mountain.",
+      "options": [
+       {
+        "label": "How long have we got?",
+        "next": "dlg/how-long"
+       },
+       {
+        "label": "You saw the bed at the back.",
+        "next": "dlg/the-bed"
+       },
+       {
         "label": "You're right. Take the cheese and run for the ship.",
         "effects": [
          {
@@ -73,50 +142,59 @@
       ]
      },
      {
-      "id": "dlg/who",
-      "text": "You're Odysseus, son of Laertes, king of Ithaca — and I'm your wife's brother, which is the only reason I'm let to talk to you like this. Troy fell; ten years of it, and the wooden horse at the end was your idea. We've been trying to sail home ever since, and the sea keeps handing us islands instead of Ithaca. That's who we are, Captain. Men who should have been home nine years ago.",
+      "id": "dlg/how-long",
+      "text": "The fire is banked, not dead — he set it to keep, which means he means to come back to it. And the flock is out, so he is out with the flock. Call it dusk, and I would not call it later. Every shepherd who ever lived brings them in at dusk.",
       "options": [
        {
         "label": "Back.",
-        "next": "dlg/root"
+        "next": "dlg/at-the-racks"
        }
       ]
      },
      {
-      "id": "dlg/where",
-      "text": "No idea, and that is precisely my objection. We came in through fog — no harbour, no ploughed field, no boundary stone. Nobody has ever cut a furrow here. Whatever keeps these flocks doesn't trade, doesn't sow, and has no neighbours it needs to stay on good terms with.",
+      "id": "dlg/the-bed",
+      "text": "Green branches, laid the way a man lays them for himself. Somebody sleeps in here, Captain, and sleeps easy, on an island with no wall and no dog. Work out what that tells you about him, and then tell me you want to shake his hand.",
       "options": [
        {
         "label": "Back.",
-        "next": "dlg/root"
+        "next": "dlg/at-the-racks"
        }
       ]
      },
      {
-      "id": "dlg/inside",
-      "text": "Cheese, more than a village eats in a winter. Pens sorted properly, lambs from yearlings from full-grown; whoever does it knows the work. And at the back, a bed made of green branches. ... It isn't the bed I mind, Captain. It's the size of it.",
+      "id": "dlg/at-the-gangplank",
+      "text": "Captain. — Captain. Count with me. You, me, Perimedes, and the lad at the fire who never had to see any of it. Four came down off that mountain. I have counted it three times on the path and it keeps coming out four. — Get on the plank. Get on the plank, and I will do my grieving at the oar, like a sailor.",
+      "options": [
+       {
+        "label": "Antiphos.",
+        "next": "dlg/antiphos-gone"
+       },
+       {
+        "label": "You were right about the smoke.",
+        "next": "dlg/right-about-it"
+       },
+       {
+        "label": "(Aboard.)"
+       }
+      ]
+     },
+     {
+      "id": "dlg/antiphos-gone",
+      "text": "Aye. Antiphos. — Nine years on the bench behind mine, and I have nothing to bury and nothing to burn. When we are clear of the headland I will say the words over the water, and that will have to serve for a funeral. Do not stand here doing it. He would have thumped you for standing here doing it.",
       "options": [
        {
         "label": "Back.",
-        "next": "dlg/root"
+        "next": "dlg/at-the-gangplank"
        }
       ]
      },
      {
-      "id": "dlg/heed",
-      "text": "Thank every god at once. Grab, carry, go, and no arguing about the lambs. — And that is how it should go. Cheese in the hold, oars in the water before dark, Ithaca inside the month. You'll have a long quiet old age and not one soul will make a song of it. Down to the ship, Captain, while the light lasts.",
+      "id": "dlg/right-about-it",
+      "text": "I was right and it cost a man, so let us neither of us make a song of it. — Here is what I will take instead, Captain. Next island, when I say the smoke is wrong, you give me a count of ten before you decide. Ten. That is my whole price.",
       "options": [
        {
-        "label": "(Down to the ship.)"
-       }
-      ]
-     },
-     {
-      "id": "dlg/overrule",
-      "text": "Of course we wait. You want to see it. You always want to see the thing. — Fine. Whatever comes through that mouth does not owe you a guest's welcome just because you're standing in its house. Keep Perimedes close, and Captain — for once in your life, be ready to be quiet.",
-      "options": [
-       {
-        "label": "(Then we wait.)"
+        "label": "Back.",
+        "next": "dlg/at-the-gangplank"
        }
       ]
      }
@@ -148,13 +226,11 @@
         ]
        },
        {
-        "label": "(Take two fistfuls of fleece. Hold on, and go out with the flock.)",
-        "effects": [
-         {
-          "type": "complete-objective",
-          "objective": "obj/hold-fast"
-         }
-        ]
+        "label": "You have hold of a ram. So have I.",
+        "requires_flags": [
+         "flag/aboard"
+        ],
+        "next": "dlg/under-the-ram"
        }
       ]
      },
@@ -175,6 +251,126 @@
        {
         "label": "Back.",
         "next": "dlg/root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/just-arrived",
+      "text": "I am here, Captain, I am here — wine-skin and all, I carried it up myself. — Gods, the smell of it. Milk and smoke and wet wool. Somebody keeps house in here.",
+      "options": [
+       {
+        "label": "Stay at my shoulder.",
+        "next": "dlg/stay-close"
+       },
+       {
+        "label": "Watch the mouth for me.",
+        "next": "dlg/watch-mouth"
+       }
+      ]
+     },
+     {
+      "id": "dlg/stay-close",
+      "text": "At your shoulder. Right. — I will not talk. I know I talk. Antiphos says my mouth will get us all killed one day, and he says it like a joke, and I have started to think he means it.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/just-arrived"
+       }
+      ]
+     },
+     {
+      "id": "dlg/watch-mouth",
+      "text": "The mouth. Aye. — It is a big light out there, Captain, and it is getting smaller. I will tell you the moment anything crosses it. I would dearly like to be wrong about that.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/just-arrived"
+       }
+      ]
+     },
+     {
+      "id": "dlg/after-the-eye",
+      "text": "It is done. You did it, it is done, do not look at me like that — quiet, quiet — he is up. He is up and he has his hands on the walls. He will find the pens, Captain; he knows this floor blind better than we know it lit. Get high. Get behind the rams and get high.",
+      "options": [
+       {
+        "label": "Can he hear us from here?",
+        "next": "dlg/he-hears"
+       },
+       {
+        "label": "(Get high.)"
+       }
+      ]
+     },
+     {
+      "id": "dlg/he-hears",
+      "text": "Everything. He turned on a pebble I kicked. Walk flat-footed, breathe through your mouth, and when he stops moving, you stop moving. That is the whole trick, and I have been practising it for an hour.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/after-the-eye"
+       }
+      ]
+     },
+     {
+      "id": "dlg/under-the-ram",
+      "text": "Under. Get under. — Two fists in the wool at the belly, ankles crossed over its back, and let it walk you out; they are the size of yearling bulls, it will bear you. — Captain. When the light hits your face, do not let go and do not look up at him. Whatever you hear him say, he is saying it to the backs.",
+      "options": [
+       {
+        "label": "(Take two fistfuls of fleece. Hold on, and go out with the flock.)",
+        "effects": [
+         {
+          "type": "complete-objective",
+          "objective": "obj/hold-fast"
+         }
+        ]
+       },
+       {
+        "label": "Where will you be?",
+        "next": "dlg/where-be"
+       }
+      ]
+     },
+     {
+      "id": "dlg/where-be",
+      "text": "Third ram from the gate, same as you. If it goes wrong for me you keep going — that is an order from me to you, and I will never get another chance to give you one, so let me have it.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/under-the-ram"
+       }
+      ]
+     },
+     {
+      "id": "dlg/on-the-sand",
+      "text": "We are out. Captain, we are out, we are standing on sand — I had two fists of wool and I have still got the wool, look, it came away in my hands. — Four. I have counted four. Tell me four is right.",
+      "options": [
+       {
+        "label": "Four is right.",
+        "next": "dlg/four-right"
+       },
+       {
+        "label": "Get to the oars, lad.",
+        "next": "dlg/to-the-oars"
+       }
+      ]
+     },
+     {
+      "id": "dlg/four-right",
+      "text": "Four. Then I will stop counting. — I froze when the stone came down, Captain. Eurylochus had me by the collar and my legs would not work, and I have been waiting all night for you to say something about it. You did not. I will remember that longer than I will remember the giant.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/on-the-sand"
+       }
+      ]
+     },
+     {
+      "id": "dlg/to-the-oars",
+      "text": "Oars. Aye. Something to hold that is not a sheep. — I will pull till my hands come apart, Captain, only let us be past the headland before he thinks to start throwing.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/on-the-sand"
        }
       ]
      }
@@ -347,7 +543,7 @@
      },
      {
       "id": "dlg/seen",
-      "text": "Seen enough of them. The good ones have smoke and a dog barking and someone who comes down to the water to see who you are. This one has smoke and no dog and no one. Whatever's up that mountain, it doesn't worry about strangers. That's what worries me.",
+      "text": "Seen enough of them. The good ones have smoke and a dog barking and someone who comes down to the water to see who you are. This one has smoke and no dog and no one. Whatever is up that mountain has never once had to wonder who was coming, and I would dearly like to know why.",
       "options": [
        {
         "label": "Back.",
@@ -372,6 +568,40 @@
        {
         "label": "Back.",
         "next": "dlg/root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/at-the-mouth",
+      "text": "Set them down here, Captain, if it is all the same — my knees are done for the day. (he counts the pens off on one finger) Lambs, yearlings, full-grown. Three pens, sorted right. Whoever keeps this flock is a proper herdsman, and I would feel better about that if he were a proper size.",
+      "options": [
+       {
+        "label": "Rest here. Hold the light for us.",
+        "next": "dlg/hold-light"
+       },
+       {
+        "label": "The bed at the back — you saw it.",
+        "next": "dlg/the-size"
+       }
+      ]
+     },
+     {
+      "id": "dlg/hold-light",
+      "text": "Hold the light. That I can do. — Go careful in there, Captain. And send the boy Perimedes back out to me if he gets loud; he is better use where he can breathe.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/at-the-mouth"
+       }
+      ]
+     },
+     {
+      "id": "dlg/the-size",
+      "text": "I saw it. I have been working at un-seeing it ever since. — Captain, I have buried eleven men out of this crew and I have never once been the man who says turn back. I am not saying it now either. I am telling you I have noticed I want to.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/at-the-mouth"
        }
       ]
      }
@@ -426,6 +656,40 @@
        {
         "label": "Back.",
         "next": "dlg/root"
+       }
+      ]
+     },
+     {
+      "id": "dlg/the-fire-held",
+      "text": "CAPTAIN! — Captain, you are — look at it, look, it never went out, not once, not all night. — Where is Antiphos. ... Where is Antiphos, Captain.",
+      "options": [
+       {
+        "label": "He didn't come down.",
+        "next": "dlg/didnt-come-down"
+       },
+       {
+        "label": "Get aboard, lad.",
+        "next": "dlg/get-aboard"
+       }
+      ]
+     },
+     {
+      "id": "dlg/didnt-come-down",
+      "text": "Oh. — Oh. All right. All right. — He carried my sacks the whole first year, because I could not, and I never once said thank you for it. I just let him. — Give me an oar, Captain. I need a thing to be doing with my hands.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/the-fire-held"
+       }
+      ]
+     },
+     {
+      "id": "dlg/get-aboard",
+      "text": "Aboard. Aye. — You came back. You said nobody gets left behind, and you came back, and I had stopped believing it about four hours ago, so I want that on the record and I want to be sorry for it out loud.",
+      "options": [
+       {
+        "label": "Back.",
+        "next": "dlg/the-fire-held"
        }
       ]
      }

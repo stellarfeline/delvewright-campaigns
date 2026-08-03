@@ -1,8 +1,8 @@
 # Nobody's Cave — Island Remake (authoritative design record)
 
-**v2 — 2026-08-03** (v1: 2026-08-01). This file is the single authoritative
-design document for the `nobodys-cave-island` campaign. Where it and the stage
-JSONs disagree, one of the two is a defect.
+**v3 — 2026-08-03** (v2: 2026-08-03; v1: 2026-08-01). This file is the single
+authoritative design document for the `nobodys-cave-island` campaign. Where it
+and the stage JSONs disagree, one of the two is a defect.
 
 ## 0. Iteration protocol (owner ruling, 2026-08-03)
 
@@ -60,7 +60,8 @@ keep-clear for every scatter.
 - **B0 Beach**: crew mannequins around the campfire; class selection + named
   kit; Eurylochus sets the premise. A 3-drowned wave stumbles out of the surf
   as a gear tutorial (leather caps, not a clock change, keep them alive —
-  owner ruling round 5; the cut to night is drama only). **The wine of Maron
+  owner ruling round 5; **the cut is to `dusk`**, not night — round 13, engine
+  #204 — and is drama only). **The wine of Maron
   is issued to the whole party at the end of the quest**, never as a class kit
   item — no class can soft-lock the wine beat (owner finding, round 3).
   Antiphos shoulders the provisions and **climbs with the party**; Elpenor
@@ -97,7 +98,13 @@ keep-clear for every scatter.
   unwinnable fight is marked.
 - **B5 The eye — CHECKPOINT 3**: grind the olive stake under the west light
   shaft, char it at the **walled hearth** (the hall's one true fire — round
-  11), and put it in the eye at `anchor/eye` beside the sleeping body. Then
+  11), and put it in the eye at `anchor/eye` beside the sleeping body.
+  **The stake must be IN HAND** (owner ruling, round 13; engine #205 made
+  `interact.requires_item` mean mainhand-held): a stake in the pack is not a
+  stake in the eye, so the backpack-blinding path is impossible by
+  construction. A click that arrives without it narrates a
+  `missing_item_hint` — a sleep-murmur in the giant's own register, never a
+  UI line; `obj/grind` carries one too. Then
   the neighbours answer from the hills, in **three variants keyed to the name
   the player gave** (nobody / boast / lie) — the campaign's real branch.
   The blinded giant is a **real unleashed vanilla warden** with ancient-city
@@ -106,7 +113,12 @@ keep-clear for every scatter.
   alcove-3 / alcove-4 / ramp-top with `grace_ticks: 260` — sized to the
   measured sneak time of the route, not guessed (rounds 7 and 10). Being
   caught no longer damages: the warden is the killer, the narrate and the
-  heartbeat are the warning.
+  heartbeat are the warning. **Reading grace** (round 13): the blinded body
+  is spawned inert at t0 and the neighbours answer over it; only at t400 does
+  the title land, the roar go up and `unleash-actor` fire, and the stealth
+  session arms at t460. The hunt starts after the scene can be read, not
+  under the player's feet. (`DW0355` is unmoved by this — the proof measures
+  from the objective anchor whatever the sequence does, and it stays green.)
 - **B6 Escape**: right-click the ram at the pen → finale sequence. The stone
   opens; the giant appears **beside** the gap he holds open (`anchor/mouth-side`)
   and never in it (round 11) — standing inside the hall, west of the gap's
@@ -117,11 +129,25 @@ keep-clear for every scatter.
   — a stand just inside the mouth that is the talk window, then down to the
   beach; Eurylochus goes to the gangplank; day returns and the weather clears
   on the shore. Board, and **Ending A**.
-- **Endings** (dialogue branches only): A "escaped as Nobody" / B "took the
-  cheese and sailed". Plain fullscreen titles — en NOBODY / THE QUIET SAIL,
-  zh 无人 / 悄然扬帆 — each with its own sound sting and `campaign-complete`
-  (owner ruling, round 4/5: no pixel-art banner; the art font stays an unused
-  engine capability).
+  **Reading grace** (round 13, the owner's playtest complaint — the flock left
+  before she had finished reading): the stone and its narration land at t0, the
+  giant takes his place beside the gap at t100 with the second half of the
+  narration, the roar at t160, and the flock only begins to stream at t200,
+  staggered 200/230/260/290. Ten seconds of reading before anything moves.
+- **Endings**: A "escaped as Nobody" / B "took the cheese and sailed". Plain
+  fullscreen titles — en NOBODY / THE QUIET SAIL, zh 无人 / 悄然扬帆 — each with
+  its own sound sting and `campaign-complete` (owner ruling, round 4/5: no
+  pixel-art banner; the art font stays an unused engine capability).
+  **Ending A's closing paragraph branches three ways on the name given over
+  the wine** (owner ruling, round 13), each paying off its own neighbour
+  scene: `flag/name-nobody` — the trick's quiet satisfaction, the neighbours
+  gone back to their fires believing a sickness took him, and nobody ashore
+  who will ever hear it; `flag/name-boast` — the mountain awake and every
+  cousin coming at first light, so you leave before the help you summoned
+  arrives, and the water will send the bill; `flag/name-lie` — the hills
+  weighed "a Cretan" and went back to sleep, so the best hour of your life
+  belongs to a man who does not exist. The title stays NOBODY: it names the
+  ending, not the answer.
 
 ## 3. Cast
 
@@ -137,28 +163,56 @@ strike), `polyphemus-blinded` (unleashed after the eye) — four spawn sites, on
 character; one actor with two spawn sites was the round-6 inside-out bug's
 enabling condition. Eight **sheep**: four already penned, four herded home.
 
-**Flock staging (round 12, owner finding)**: every sheep position, at every
+**The scene ledger (round 13, spec-0020, `dsl_version` 0.7.0)**. Every quest
+carries a `cast` block naming, for all five NPCs, where they stand, what their
+business is in that beat, and what a right-click offers: 9 quests × 5 NPCs = 45
+entries, 43 of them per-branch lists (`DW0462` is campaign-global, and the
+flee/wait fork moves four of the five, so every quest declares both branches —
+the wait/pre-fork line gated `forbids flag/flee`, the flee line `requires
+flag/flee`). 27 bark pools, 69 bark lines. Zero `DW0467`.
+
+**The dialogue follows the story.** Each NPC's right-click advances instead of
+looping one tree:
+
+| NPC | scenes, in order |
+|-----|------------------|
+| Eurylochus | `dlg/root` (beach premise) → `dlg/at-the-racks` (the cheese argument, moved off the beach root) → hushed alcove barks → pen barks → `dlg/at-the-gangplank` (survivor: counting heads, Antiphos, "I'll do my grieving at the oar") |
+| Perimedes | `dlg/just-arrived` (in at the heel with the wine-skin) → `dlg/root` (the premise: "Tell me what he is") → `dlg/after-the-eye` (gated on `flag/blinded` — the premise questions are gone the moment the eye is out) → `dlg/under-the-ram` (carries the escape option) → `dlg/on-the-sand` (survivor: two fists of wool, "tell me four is right") |
+| Polyphemus | `dlg/guest` → sleep-murmur barks the instant `flag/asleep` is set (the awake tree is unreachable because the ledger says so, not because a flag was remembered) → `dead` |
+| Antiphos | `dlg/root` (beach) → `dlg/at-the-mouth` (the pens, the bed, the last scene before he is taken) → `dead` |
+| Elpenor | `dlg/root` → alone-at-the-fire barks for the whole cave act → `dlg/the-fire-held` on the return ("Where is Antiphos, Captain.") |
+
+Barks print as `<Name>: <line>` in italics, so every pool is **speech**, never
+narration — which is also why the sleeping giant's pool is sleep-talk and sets
+up B5's `missing_item_hint` in the same register.
+
+**Flock staging (round 12, owner finding; round-13 restore)**: every sheep position, at every
 moment of the campaign, is a distinct cell **inside the upper pen** or **at the
 meadow fold** — never the open cavern floor, never the open meadow. The pen
 carries one anchor per sheep (`anchor/pen`, `pen-d`…`pen-j`) plus two crew
 stands (`pen-b`, `pen-c`, kept 2+ blocks off the ram so they never shadow its
 affordance); the fold carries one anchor per sheep (`anchor/fold`,
-`fold-b`…`fold-h`) — six inside it, two in and just outside its gate, because
-the fold's west interior column is buried (see §7). The herd walks in from the
+`fold-b`…`fold-h`) — **all eight now inside the walls**, on eight of the nine
+interior cells, since round 13 un-buried the fold's west interior column
+(`batch/fold-clear` + fold keep-clear envelopes; `fold-g`/`fold-h` moved from
+the gate row to piece-local x=3). The herd walks in from the
 fold **straight to the pen** in one leg — it never parks on the hall floor —
 and walks out to the fold in one leg at the escape.
 
 ## 4. Feature surface actually used
 
 classes + named kits · mannequin skins · dialogue flags + gated options · two
-endings · narrate chat/title/subtitle · give-item named · collect / interact /
+endings, the first of them branching three ways on the name · **the stage-5
+`cast` scene ledger with per-branch placements and bark pools (DSL 0.7)** ·
+**`interact.missing_item_hint` over held-item `requires_item`** ·
+narrate chat/title/subtitle · give-item named · collect / interact /
 reach / talk-to / kill objectives · props (grindstone) · triggers strike and
 strike-npc · a tutorial wave with attributes + equipment · unwinnable combat by
 `unleash-actor` · `move-actor` / `move-npc` with `on_arrive` · `sequence`
 timelines · a six-shot spectator cinematic with `look_at` · set-time /
 set-weather cuts · `close-gate` / `open-gate` · checkpoints ×3 with distinct
 `on_respawn` resets · ocean horizon + boundary · area `night-vision`
-mitigation · positional sounds · stealth zones · full en + zh-cn l10n (184
+mitigation · positional sounds · stealth zones · full en + zh-cn l10n (312
 keys) · the stage-7 world-edit script.
 
 ## 5. Prefab contract
@@ -186,39 +240,79 @@ retired permanently (owner ruling, round 5).
 
 ## 7. Open deviations (pending owner ruling)
 
-Recorded by the round-12 conformance review; not changed either way.
+Round 12's list, carried forward with round-13 dispositions.
+
+**Closed in round 13** (owner-ruled, folded into the body above): the dusk cut
+(old #5, engine #204), the buried fold column (old #8 — `batch/fold-clear`
+plus fold keep-clear envelopes on the three seeded batches; all eight sheep now
+stand inside the walls).
+
+**Still open, not changed either way:**
 
 1. **B1 is one leg, not a scenic chain.** v1 designed a reach-anchor chain
    along the beach → meadow → slope → mouth walk; the campaign has a single
    `reach-anchor` to the mouth, because `anchor/meadow` and `anchor/fold` are
    defined by both placed greenfield pieces and any *required* reference to
-   them is `DW0305`. Restoring the chain needs piece-unique outdoor anchors.
-2. **The cheese has no name.** v1 specified a named "Kefalotyri Cheese"; the
-   collect objective (owner-requested form) carries no item-name field, so the
-   player picks up an unnamed sponge. Restoring the name needs the new
-   container-loot surface.
+   them is `DW0305`. **Owner ruling, round 13: this stays as it is** (洞穴外部
+   到达就行) — the scenic chain is not to be built.
+2. **The cheese has no name, and is not the barrel** (round-13 STOP). The
+   owner asked for the collect target to become the cave's existing empty
+   barrel, filled 27 × 64 with a named "Kefalotyri Cheese". It cannot be
+   expressed: `collect` **places its own container** — at objective activation
+   it emits `setblock <anchor> minecraft:chest` followed by `item replace block
+   … container.0 with <item> <count>`. Pointed at the barrel's cell that
+   overwrites the barrel and destroys the `loot[]` fill that `setup_finish`
+   already put in it; pointed anywhere else it stands a spurious chest beside
+   the barrel. `Objective::Collect` also has no `name` field. The *counting*
+   half would work unchanged (the completion guards match on item **id**, so a
+   renamed stack still counts). Needs engine work: a way for `collect` to adopt
+   a container the prefab already placed instead of stamping one, and a
+   `cheese-store`-adjacent anchor on an actual barrel cell (the current
+   `anchor/cheese-store` is the walk cell in front of the shelf, not a barrel).
 3. **Four sheep are herded in, four were already penned.** v1 said the flock
    of eight is herded in; the pre-penned four match the fiction the dialogue
    established ("lambs penned and sorted by age") and have shipped since
    round 1.
-4. **The boulder hint is a strike trigger, not an interact.** v1 said
-   right-click; the campaign answers a hit on the stone.
-5. **B0's night is a full night cut**, not the designed dusk tint — `set-time`
-   takes vanilla keywords only.
-6. **No Eurylochus walker twin.** v1 designed an actor twin for scripted
+4. **The boulder hint is still strike-only** (round-13 STOP). The owner asked
+   for right-click to produce the same hint. The compiler **accepts** a
+   co-located `use` trigger on `anchor/boulder` and builds green — and that is
+   the problem: `env_trigger_setup` then summons a *second* `minecraft:
+   interaction` at the identical cell (verified: two summons at `8.5 69.0
+   -44.5`). The compiler's own source documents the consequence (`emit.rs`,
+   "one cell, one hitbox"): an exact ray-pick tie resolves to whichever entity
+   the client iterates first, so one of the two triggers receives every click
+   and the other never fires. Whichever ordering is chosen, either the existing
+   left-click hint or the new right-click hint silently dies. Reverted rather
+   than shipped. Needs engine work: merge co-located non-NPC click triggers
+   onto ONE hitbox carrying both tags (exactly what `npc_hitbox_trigger_tags`
+   already does for `strike-npc`), plus a diagnostic so the silent version can
+   never ship again.
+5. **No Eurylochus walker twin.** v1 designed an actor twin for scripted
    walks; `move-npc` became a first-class primitive and the twin is
    unnecessary.
-7. **Antiphos dies, not Eurylochus.** v1 had the giant kill Eurylochus; the
+6. **Antiphos dies, not Eurylochus.** v1 had the giant kill Eurylochus; the
    round-6 restage moved the death to Antiphos so the victim is a man who
    climbed with the party on camera. Logged in an owner round, but the swap
    itself is not separately attributed to an owner request.
-8. **The sheep fold's west interior column is buried** (round-12 finding). The
-   round-8/9 landscape batches take piece-local x 0–3 as "the west bank" —
-   `west-roll` smooths it, `bank-outcrops` and `shore-transition` scatter rock
-   and sand over it, `meadow-treeline` plants oaks in it — but the fold sits at
-   piece-local x 2–6, so x=3 is its **west interior column**. All three of its
-   cells are solid in the assembled world. The fold that reads as 3×3 from
-   outside holds six bodies, not nine; the flock's last two stand in and just
-   outside its gate. Proposed restore: exclude the fold rectangle from those
-   four batches' west regions (or add a `batch/fold-clear`), which would let
-   the whole flock stand inside the walls.
+7. **Two bridge options exist for a proof, not for a player** (round-13, new).
+   `dsl::validate` seeds dialogue reachability from the tree root **plus every
+   cast-ledger root** (spec-0020, so retiring a premise root cannot orphan its
+   successor), but `compiler::flow` — which powers `DW0203` — still seeds from
+   the tree root alone. Moving `obj/the-argument`'s and `obj/hold-fast`'s
+   completing options onto the later scenes therefore reads as "no reachable
+   option completes this objective". Each retired root keeps one in-fiction
+   option through to its successor ("About that cheese in your arms.",
+   requires `flag/cheese-taken`; "You have hold of a ram. So have I.", requires
+   `flag/aboard`), gated so it can never be offered in the wrong beat. They are
+   real lines and do no harm, but they exist because of the drift and should be
+   deleted when `flow.rs` learns about cast roots.
+8. **Four DW0451 at-rest advisories remain, and sixteen walked ones.** The
+   sixteen are all one cell — the upper pen's fence gate, which every body that
+   enters or leaves the pen must pass through. Of the at-rest four, three are
+   warden bodies at `anchor/fire-side` / `anchor/fire-pit` (moving them
+   restages the blind beat and the `anchor/eye` relationship, which also
+   carries the two long-standing `DW0359`), and one is a sheep flush against
+   the fold's north wall — unavoidable now that eight sheep occupy eight of the
+   fold's nine interior cells, of which only the centre is clear of every wall.
+   Round 13 took the one cheap nudge that existed (`actor/sheep-7` moved to the
+   freed west column), 21 → 20.

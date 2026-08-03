@@ -736,3 +736,159 @@ project (no host binding on 25565, torn down with `-p dw-worker-island12` only,
 mutex taken and released through `validation/mutex.sh` after waiting out an
 owner play session): **PackTest all 31 required tests passed**, **bot critical
 path PASSED, 20 steps**.
+
+## Round 13 — the scene ledger, and the last polish before friends see it
+
+Ten owner-ruled items (2026-08-03). Eight landed; two are STOPs with the engine
+work they need written down in DESIGN.md §7.
+
+### The headline: every quest now says where its cast is (spec-0020)
+
+`quests.json` moves to `dsl_version` 0.7.0 and carries a `cast` block on all
+nine quests: 45 NPC entries, 43 of them per-branch lists. `DW0462` is
+campaign-global — the flee/wait fork drives four of the five NPCs through a
+flag-gated effect, so *every* quest has to declare both branches, including the
+ones before the fork and the ones only one branch can reach. The pattern is
+uniform: the wait/pre-fork placement carries `forbids_flags: [flag/flee]` (so it
+is also what a pre-fork player lands on) and the flee placement carries
+`requires_flags: [flag/flee]`; later clauses override earlier ones, which is
+what makes "the latest-begun beat wins" tell the truth on both branches.
+
+The ledger is what retires a tree. `cast_perimedes.mcfunction` is the proof:
+
+```
+… qa_cave_of_plenty … unless … f_flee … set @s dw.cast 1   # dlg/just-arrived
+… qa_hide          … unless … f_flee … set @s dw.cast 2   # dlg/root (the premise)
+… qa_the_stake … if score #party dw.f_blinded matches 1 … set @s dw.cast 3   # dlg/after-the-eye
+… qa_under_the_rams … unless … f_flee … set @s dw.cast 4   # dlg/under-the-ram
+… qa_the_sail      … unless … f_flee … set @s dw.cast 5   # dlg/on-the-sand
+```
+
+"Tell me what he is." stops being offered the instant `flag/blinded` is set —
+because the ledger says so, not because an author remembered a flag. Eleven new
+dialogue nodes were written for the scenes the ledger points at, including the
+two the owner asked for by name: post-escape survivor roots for Perimedes (two
+fists of wool, "tell me four is right") and Eurylochus (counting heads, "I will
+do my grieving at the oar, like a sailor").
+
+27 bark pools / 69 bark lines cover the beats where a conversation would be
+absurd. **Barks print as `<Name>: <line>`**, so a pool is speech, never
+narration — which is why the sleeping giant's pool is sleep-talk rather than
+observation, and why it sits in the same register as the `missing_item_hint`
+item 10 later added. Zero `DW0467`.
+
+### Reading grace (owner ruling: a beat that can fail you must arm after its prompt can be read)
+
+Two beats restaged, both in `sequence` steps:
+
+- **The blinding.** The blinded body spawns inert at t0 and the neighbours
+  answer over it; the title, the roar and `unleash-actor` land at t400, and
+  `begin-stealth` arms at t460. `DW0355` is deliberately unmoved by this —
+  engine #204 states the rule outright ("delaying the arm does not discharge
+  it") — and it stays green either way, so the drama is free.
+- **The escape.** The owner's complaint was that the flock left before she had
+  finished reading. Stone and first narration at t0, the giant taking his place
+  beside the gap at t100 with the second half, roar at t160, and the flock only
+  begins at t200 (staggered 200/230/260/290).
+
+A third change — delaying the drowned tutorial's `spawn-wave` by 160 ticks —
+was made, caught by the bot, and **reverted**: the bot cleared the wave step
+before the wave existed, `obj/surf` never completed, and the whole quest chain
+stalled at `obj/reach-mouth`. It was also outside the owner's list. The lesson
+is the general one: reading grace must never be bought by delaying a hazard past
+the point the party can walk away from it.
+
+### Three endings, one per name
+
+`obj/board-nobody` keeps the NOBODY title (it names the ending, not the answer)
+and branches its closing paragraph on `flag/name-nobody` / `-boast` / `-lie`,
+each paying off its own neighbour scene. zh for all three.
+
+### The fold is a real pen again
+
+Round 12 found the fold's west interior column (piece-local x=3) solid, so a
+5×5 pen with a 3×3 interior held six bodies. Four west-region batches were
+burying it. The fix splits by verb: the three **seeded** batches
+(`bank-outcrops`, `meadow-treeline`, `shore-transition`) gained the fold
+rectangle as a keep-clear `avoid` envelope — no rock, sand or oak lands inside
+the walls — while `west-bank-falls` reshapes terrain with a `morph`, which
+carries no keep-clear, so a new `batch/fold-clear` re-cuts exactly what the
+smoothing filled: grass on the fold's west floor row, air in the three cells
+above it, nine columns per piece and nothing else. `anchor/fold-g`/`fold-h`
+moved from the gate row into the freed column. **All eight sheep now stand on
+eight of the fold's nine interior cells** — proven by construction, since a
+`move-actor` destination that is not routable is `DW0325` and a body in rock is
+`DW0450`.
+
+### Prose
+
+Five English strings rewritten to kill the four negation-pivot constructions
+("That isn't an empty house. That's a house someone is coming back to.") and one
+observation+verdict fragment pair; in-character speech rhythm was left alone,
+because deleting a terrified boy's "It's fine." is not a de-AI pass. Six zh
+strings re-perceived rather than transliterated, including the owner's canonical
+bad example — "pails still wet" is now "奶桶还带着奶的温度", and the calqued
+"这不是那种东西。这是……" in the wine scene became "跟这个不沾边。这是人做梦才梦得着的酒。"
+
+### Two STOPs (see DESIGN.md §7 for the engine asks)
+
+- **The cheese barrel.** `collect` *places its own container* at objective
+  activation (`setblock … minecraft:chest` + `item replace … container.0`), so
+  aiming it at the prefab's barrel destroys the barrel and the `loot[]` fill,
+  and aiming it anywhere else stands a spurious chest next to it. Counting would
+  have worked (the guards match on item id, so a renamed stack still counts).
+- **The boulder's right-click.** The compiler *accepts* a co-located `use`
+  trigger and builds green, then summons a second `minecraft:interaction` at the
+  identical cell — the exact ray-pick ambiguity `emit.rs` documents under "one
+  cell, one hitbox". One of the two triggers would silently never fire. Reverted
+  rather than shipped.
+
+### Two engine defects found by this round's ladder
+
+1. **The bot never held what `requires_item` requires.** Engine #205 made
+   `interact.requires_item` mean mainhand-held, but the harness's `interact`
+   step only walks and chats the trigger — it never equips the item, though
+   `critical-path.json` has carried `requires_item` per step all along and the
+   `InteractStep` doc comment already said "must be held". Every campaign with
+   an `interact.requires_item` therefore fails its own bot ladder: here
+   `obj/grind` timed out with the stake in the pack. Reproduced, fixed in
+   `harness/src/executor.ts` (equip `requiresItem` to `hand` before the chat,
+   with a diagnostic line), and the ladder went green. **The fix is an engine
+   change and is NOT part of this commit** — it is handed to the engine side as
+   its own PR.
+2. **A stale worker world volume silently poisons a run.** `docker compose -p
+   <proj> … down -v` leaves the named `*_server-data` volume behind when an
+   exited container of the project still holds it, and the world volume carries
+   the scoreboard: `dw.o_muster` already 1 means `dlg_eurylochus_4` runs
+   `unless score … o_muster matches 1` and completes nothing, so the bot waits
+   30 s for a marker that will never come and reports a content failure. Cost
+   three misattributed red runs before an A/B against the untouched round-12
+   campaign showed the *baseline* failing identically. `validation/fresh-
+   volumes.sh` exists for exactly this but matches `server-data$` daemon-wide
+   and force-removes the owner's container names, so a worker must not run it; a
+   project-scoped equivalent (down → force-rm the project's containers → rm the
+   project's volumes → assert clean) was used instead and should probably be
+   what the script offers workers.
+
+### Deferred / not done
+
+Nothing is deferred. Items 6 (dusk) and 10 (held-item + `missing_item_hint`)
+were engine-blocked at the start of the round and both landed mid-round (#204,
+#205); both are in.
+
+### Advisories
+
+20 `DW0451` (down from 22) and the 2 long-standing `DW0359`. Sixteen of the 20
+are one cell — the upper pen's fence gate, which every body entering or leaving
+the pen walks through. The rest are documented in DESIGN.md §7.
+
+### Proofs
+
+`delvec` built from engine `main` at #205/#206/#202. English and zh-cn builds
+both exit 0; English double build **byte-identical**. Ladder GREEN under the
+isolated `dw-worker-island13` compose project with `worker-override.yaml` (no
+`container_name`, no host binding on 25565, torn down with `-p
+dw-worker-island13` only; mutex taken as `worker-island13` and released by name
+through `dw_mutex_release_named`): **PackTest all 34 required tests passed**
+(31 → 34: the generated `cast_root_swap` and `cast_bark_cycle` templates now
+exist and run on a live server), **bot critical path PASSED, 20 steps**.

@@ -724,11 +724,57 @@
             }
           },
           {
+            "verb": "select",
+            "name": "region/fold-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                1,
+                5
+              ],
+              "max": [
+                6,
+                9,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                1,
+                5
+              ],
+              "max": [
+                6,
+                9,
+                9
+              ]
+            }
+          },
+          {
             "verb": "scatter",
             "region": "region/banks",
             "avoid": [
               "region/spine-1",
-              "region/spine-2"
+              "region/spine-2",
+              "region/fold-1",
+              "region/fold-2"
             ],
             "density": 0.14,
             "spacing": 2,
@@ -904,11 +950,57 @@
             }
           },
           {
+            "verb": "select",
+            "name": "region/fold-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                1,
+                5
+              ],
+              "max": [
+                6,
+                9,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                1,
+                5
+              ],
+              "max": [
+                6,
+                9,
+                9
+              ]
+            }
+          },
+          {
             "verb": "plant",
             "region": "region/treeline",
             "avoid": [
               "region/spine-1",
-              "region/spine-2"
+              "region/spine-2",
+              "region/fold-1",
+              "region/fold-2"
             ],
             "tree": "oak",
             "count": 5,
@@ -2359,11 +2451,57 @@
             }
           },
           {
+            "verb": "select",
+            "name": "region/fold-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                1,
+                5
+              ],
+              "max": [
+                6,
+                9,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                2,
+                1,
+                5
+              ],
+              "max": [
+                6,
+                9,
+                9
+              ]
+            }
+          },
+          {
             "verb": "scatter",
             "region": "region/shoreline",
             "avoid": [
               "region/spine-1",
-              "region/spine-2"
+              "region/spine-2",
+              "region/fold-1",
+              "region/fold-2"
             ],
             "density": 0.34,
             "spacing": 1,
@@ -2608,6 +2746,135 @@
           }
         ],
         "note": "Owner playtest finding: the beach-greenfield junction still read as a wall layer. Round 8 cut the four 65-high cross-berms (world z=-1,-15,-16,-30) but the greenfield prefab edges its pieces in TWO rows, not one: behind the 65 berm sits a 64 lip at prefab-local z=13, which no cut reached. At the strand that lip stands two blocks above both the sand and the meadow and spans ten of the thirteen non-spine columns \u2014 a wall with a doorway, exactly as reported. Worse, round 8's bank smoothing then pulled the already-cut z=14 row partly back up toward its un-cut neighbour, restoring a 63-64 step at world z=-1. Drop the lip row on both greenfield pieces and re-flatten the south edge row, then finger sand and gravel from the strand into the meadow so the material changes gradually instead of at a line. No smoothing pass here: the junction is flat at the meadow datum once the lip is gone, and smoothing is what re-raised it last time. The path spine is untouched structurally as before (every morph region's y-floor is the walk plane, so the spine columns hold no cell in range) and is declared keep-clear for the scatter on both sides of the seam. The same prefab row is levelled at the inner piece seam (world z=-17) in the same batch: it is literally the same lip, and cutting only the one the owner stood in front of would leave its twin mid-corridor."
+      },
+      {
+        "id": "batch/fold-clear",
+        "area": "area/island",
+        "note": "Round-12 finding, round-13 restore: the sheep fold reads 5x5 with a 3x3 interior, but its WEST interior column (piece-local x=3) was solid in the assembled world, so the pen held six bodies instead of nine. Four west-region batches take piece-local x 0..3 as 'the west bank' while the fold rectangle is x 2..6. The three seeded batches (bank-outcrops, meadow-treeline, shore-transition) now declare the fold rectangle as a keep-clear envelope, which stops rock, sand and oaks landing inside the walls. The fourth, west-bank-falls, reshapes terrain with a morph, which carries no keep-clear, so this batch re-cuts what the smoothing pass filled: grass at the fold's west floor row and air in the three interior cells above it. Scoped to exactly nine columns per piece - it never touches the bank silhouette the morph exists to make.",
+        "edits": [
+          {
+            "verb": "select",
+            "name": "region/fold-floor-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                2,
+                6
+              ],
+              "max": [
+                3,
+                2,
+                8
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-air-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                3,
+                6
+              ],
+              "max": [
+                3,
+                9,
+                8
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-floor-1",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:grass_block",
+                  "weight": 1.0
+                }
+              ],
+              "scale": 0.3
+            }
+          },
+          {
+            "verb": "carve",
+            "region": "region/fold-air-1"
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-floor-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                2,
+                6
+              ],
+              "max": [
+                3,
+                2,
+                8
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-air-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                3,
+                6
+              ],
+              "max": [
+                3,
+                9,
+                8
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-floor-2",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:grass_block",
+                  "weight": 1.0
+                }
+              ],
+              "scale": 0.3
+            }
+          },
+          {
+            "verb": "carve",
+            "region": "region/fold-air-2"
+          }
+        ]
       }
     ]
   }
