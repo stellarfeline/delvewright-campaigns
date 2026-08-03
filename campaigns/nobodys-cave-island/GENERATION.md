@@ -418,3 +418,65 @@ giant-restage and cinematic work lands.
 Review cameras (`delvec snapshot --camera=`), beach eye level looking up the
 corridor: `10,64.6,12,180,0`, `10,64.6,5,180,0`, `10,64.6,2,180,0`, plus an
 oblique `-9,72,9,215,22`.
+
+## Round 10 — the giant answers to being struck (owner round-7 findings 1–3)
+
+Owner round-7 findings, engine first (#179 `DW0359` body-eclipse diagnostic,
+#180 `strike-npc` trigger), then this content pass. All three findings shared
+one root: **four interaction surfaces and the giant's body stacked on
+`anchor/fire-pit`** — the NPC's hitbox (carrying both strike triggers), the
+`obj/harden` and `obj/blind` interaction entities, and a 0.9 × 2.9 warden body
+in front of all of them. Every click resolved by ray-pick lottery.
+
+### The restage
+
+- **`anchor/fire-side`** (new, island-mountain metadata): the giant's stand,
+  3 blocks west of the fire. `npc/polyphemus` moves there; the fire-pit keeps
+  the two interact affordances and nothing else. The pre-fix DSL now fails the
+  build with `DW0359` — the compiler-level check the owner asked for exists
+  and this campaign was its red proof.
+- **Strike triggers become `strike-npc`** (v0.6, #180): `trigger/wake-the-giant`
+  and `trigger/his-house` name the character, not a cell — no summoned
+  interaction entity left to eclipse, and the click rides the giant's own
+  hitbox wherever he stands.
+- **The wake consequence is a real warden** (owner ruling): striking the
+  sleeping giant despawns the NPC and unleashes `actor/polyphemus-roused` — a
+  **vanilla-stat** warden, no attribute overrides. The starting kits do not
+  beat a warden; the player dies and checkpoint-2's `on_respawn` restores the
+  scene (both stand-ins despawned, NPC re-seated, flags untouched — he is
+  asleep at his fire again, exactly the pre-strike checkpoint state). The
+  first-strike kill is repeatable by construction.
+- **Actor roles split**: `polyphemus-walker` (interior duties: blind pacing,
+  finale) keeps `anchor/ramp-top`; new `polyphemus-herdsman` (`anchor/meadow`)
+  exists only for the seal cinematic's exterior entrance. One actor with two
+  spawn sites was the round-6 inside-out bug's enabling condition.
+
+### Cinematic v3 — the herd comes home (finding 3)
+
+Sheep 5–8 spawn at the greenfield **fold**, the herdsman in the meadow; the
+flock is walked meadow → mouth → pen through the open boulder while six shots
+track them from **outside**: high meadow establish over the fold and ocean,
+a dolly along the walkway to the mouth (fire glow visible through it), the
+mouth close-up for the Antiphos beat, the seal watched from outside the
+boulder (+z is exterior — the round-6 shots' negative offsets were the
+"inside-out" the owner saw), then interior: the daylight line dying at the
+mouth, and the giant settling at his fire. Every shot was **render-verified
+frame-by-frame** this time (`delvec snapshot --camera` at start/mid/end of
+each dolly segment, 20 frames reviewed; shot 1 recomposed once — the first
+framing was a steep look-down into oak canopy).
+
+### The stealth grace was human-unfair (ladder catch)
+
+Run 1: bot died 4.5 s into the blind-giant stealth leg — `grace_ticks: 90`
+covers the fire-to-ramp-top distance at **walking** pace only; the fiction
+("do not run") demands sneaking, which needs ~11 s, and no hidden zone lies
+on the route. The bot had previously passed this leg walking; a sneaking
+human never could have. `grace_ticks` 90 → 260: sneak-completable with
+margin, still a death sentence to linger. Content design corrected, no
+check weakened.
+
+### Proofs
+
+Build green (DW0359 silent at 2+ blocks), zh-cn build green, double build
+byte-identical, PackTest 31/31 (now includes the generated `strike-npc`
+separability tests), full bot ladder green after the grace fix.
