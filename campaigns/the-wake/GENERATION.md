@@ -68,30 +68,31 @@ that were *choices between authorable alternatives*:
 
 Read per branch, end to end, in one pass, against `DESIGN.md` and against the
 dialogue reachable under that branch's flags. Line numbers cite
-`out/validation/branch-chronicle-<branch>.md`. The chronicles are byte-identical
-before and after every fix below (only dialogue prose, camera and pacing moved,
-never a `happening`), so the citations hold against the shipped build.
-Every finding was fixed in the DSL and the review re-run against the rebuilt
-chronicles; the rows below are the state after the fix, with the original defect
-named.
+`out/validation/branch-chronicle-<branch>.md` **of the shipped build**. The
+review was re-run against the rebuilt chronicles after every round of fixes; the
+rows below are the state after the last one, each naming the original defect. The
+chronicle line NUMBERS never moved across the rounds — only two subjects did,
+when the ground branch's destination anchor changed (`anchor/l0-barrow-1` →
+`anchor/l0-reward`, friction item 11).
 
 | branch | claim reviewed (dialogue / design beat) | chronicle line(s) | verdict |
 |---|---|---|---|
 | `branch/ground` | design: the wake assembles behind the party as the bell tolls | 3–7 `arrives` ×5 | cleared |
 | `branch/ground` | design: three concurrent walkers converge during the rite | 11, 12, 13 `arrives` | cleared |
 | `branch/ground` | Hallis: "You said the ground. Thank you." | 15 `learns`, entry option #8 | cleared |
-| `branch/ground` | Sedge: "Ground, then. Take the head of the plank; the cut is six paces west of where I stand." | 13 `arrives` (her last move), 17 `arrives` | cleared |
+| `branch/ground` | Sedge: "Ground, then. … the cut is at the west end of the row, where I was standing when you came up." | 13 `arrives` (her move off the cut), 17 `arrives` `anchor/l0-reward` | cleared |
 | `branch/ground` | Sedge: "I will close it at first light and it will be level by noon." | 19 `departs`, 20 `seals` | cleared — off-screen, after the last dated beat |
 | `branch/ground` | Sedge (as first written): "I will come down behind you with the spade" | — | **FINDING (fixed)** — no chronicle line moves `npc/sedge` after 13; the ledger promised a walk the staging never performs |
 | `branch/ground` | narration (as first written): "Sedge takes the first spadeful" | — | **FINDING (fixed)** — same defect, in narration rather than dialogue |
 | `branch/ground` | Hallis (as first written): "watch the lamp go west" | 11 only | **FINDING (fixed)** — the lamp-bearer's only move is pre-fork and ends beside the bier; it is the bier that goes west |
 | `branch/ground` | Hallis: "I will come to the edge of the fire and watch you carry her west." | 17, 18 `arrives` | cleared |
 | `branch/ground` | cast: Sedge "at the head of the row … watching the plank go west to the cut she opened" | 13, 18 | cleared |
-| `branch/ground` | ending: art title **THE GROUND**, "the field will be level again, and it will keep her" | 20 `seals` `anchor/l0-barrow-1` | cleared |
+| `branch/ground` | cast (`quest/the-tide`, ground placement, as first written): Sedge "filling the cut back in behind the party" | — | **FINDING (fixed)** — she is at the row's head, seven blocks from the cut, and never moves again |
+| `branch/ground` | ending: art title **THE GROUND**, "the field will be level again, and it will keep her" | 20 `seals` `anchor/l0-reward` | cleared |
 | `branch/tide` | design: identical opening through the fork (shared prologue) | 1–15 | cleared — byte-identical to the ground chronicle, as the design intends |
 | `branch/tide` | Hallis: "You said the water. She would have said the water." | 15 `learns`, entry option #9 | cleared |
 | `branch/tide` | Sedge: "Water, then. I do not walk to the water." | 16–20 contain no beat naming `npc/sedge` | cleared — the *absence* is what licenses the line |
-| `branch/tide` | Sedge: "The cut stays open tonight and I will fill it in the morning, empty." | 16–20 contain no `seals` on `anchor/l0-barrow-1` | cleared |
+| `branch/tide` | Sedge: "The cut stays open tonight and I will fill it in the morning, empty." | 16–20 contain no `seals` on `anchor/l0-reward` | cleared |
 | `branch/tide` | cast: Sedge "watching the plank go south with the spade still planted where she left it" | 13, 17 | cleared |
 | `branch/tide` | Hallis (as first written): "banking the fire and coming down with you … not stopping at the edge of it" | — | **FINDING (fixed)** — no chronicle line on any branch moves `npc/hallis`; his cast pins him at the shore fire |
 | `branch/tide` | Hallis: "I am banking the fire and I will watch from it until the ebb has her. That is as far down as I get." | 18, 19 | cleared |
@@ -104,6 +105,34 @@ not** — which is exactly the defect spec-0025 exists to surface, and none of
 them was visible to any compiler check. Each was fixed by making the text match
 the staging (nobody follows the bier; the field watches it go), not by adding
 staging the design did not ask for.
+
+## Visual review (spec-0003 visual tier)
+
+`delve-render fidelity-gate` PASSED (no missing-texture placeholder), and the
+per-piece Nucleation set for `tk-barrow-field` was rendered with the pinned
+1.21.11 client jar; the two storybook images in `media/` come from it. Every
+dolly segment of all three cutscenes was rendered start / mid / end with
+`delvec snapshot --camera` against the camera keyframes the build actually
+emits, plus the `spawn`, `npc/*` and POV shots of `render-plan.json`.
+
+Outcomes:
+
+- **establishing crane** — start frames the whole field from above the water,
+  lands centred on the banner with the barrows left and right. Good.
+- **`insert` on the bier** — originally framed a solid barrow face; fixed with
+  `bearing: 90` (friction item 6) and now frames the bier at the foot of the
+  black banner.
+- **`side-track` on the lamp-bearer** and **`locked-off` / `side-track` on the
+  bier** — subjects framed, cameras in open air, no clipping.
+- **north socket** — the `minecraft:jigsaw` marker and the hole to the ocean
+  (friction item 3) were found here and are gone in the shipped binding.
+- **Accepted deviation:** `pov/leg0/wp7` (arriving at `anchor/l0-banner`) fails
+  its generic third expectation, "the way ahead is open — no wall or block
+  clipping the near camera": the banner post stands one cell east of the
+  objective anchor and fills that frame. This is deliberate staging — the bier
+  lies *under* the black banner, which is the level's central image — and the
+  objective completes at `radius: 3`, so a player never has to stand in the
+  post. Recorded rather than fixed; moving the anchor would move the picture.
 
 ## Toolchain friction
 
@@ -130,17 +159,15 @@ Ordered by severity.
    campaign document order. `actor/bier` is redirected by the fork, so its two
    legs are treated as consecutive rather than exclusive. Emitted evidence from
    this build:
-   - `ma_tick_bier_l0_barrow_1` (ground) frame 0 → `22.5 63.0 14.5` — the banner,
+   - `ma_tick_bier_l0_reward` (ground) frame 0 → `22.5 63.0 14.5` — the banner,
      correct.
-   - `ma_tick_bier_l0_tide_line` (tide) frame 0 → `14.5 63.0 15.5` — that is
-     `anchor/l0-barrow-1`, **the ground branch's grave**.
+   - `ma_tick_bier_l0_tide_line` (tide) frame 0 → `12.5 63.0 20.5` — that is
+     `anchor/l0-reward`, **the ground branch's grave**.
    On `branch/tide` the bier is standing at the banner when the driver starts, so
-   its first tick teleports it 8.06 blocks sideways and it then walks to the
-   water from the wrong place. No diagnostic fires — every proof is green,
+   its first tick teleports it ~11.7 blocks across the field and it then walks to
+   the water from the wrong place. No diagnostic fires — every proof is green,
    because a path exists from there too. The design was deliberately NOT bent
-   around this (debug doctrine); the ground destination was already chosen close
-   to the banner for staging reasons, which is the only reason the visible jump
-   is 8 blocks rather than 19. Prescription: plan each leg from the origin its
+   around this (debug doctrine). Prescription: plan each leg from the origin its
    own branch leaves the body at.
 3. **A single-`prefab` area does not seal its unmated connectors.** With
    `areas[].prefab: "prefab/tk-barrow-field"` the piece's north socket shipped
@@ -199,7 +226,53 @@ Ordered by severity.
    gitignored too, so i18n config does not follow a worktree either. One line in
    the skill (or a bootstrap check in `delvec`) would save the next session the
    same detour.
-10. **Minor**: the queued brief named an `i18n --reflect` flow;
+10. **The generated `campaign` PackTest cannot express a scheduled ending —
+   ESCALATED, not patched around.** The compiler emits
+   `packtest-datapack/data/the-wake/test/campaign.mcfunction`, which drives every
+   `complete_o_*` and then asserts, **in the same tick**:
+
+   ```
+   execute as @a[tag=dw_t_camp,limit=1] run function the-wake:complete_o_to_the_water
+   assert score #party dw.campaign matches 1
+   ```
+
+   The Wake's `campaign-complete` is nested in the closing `sequence` at
+   `at_ticks: 240` (ground) / `250` (tide), so the assert at tick 0 is
+   **structurally unreachable** and the test fails
+   `Expected #party dw.campaign to match 1, but got 0 on tick 0`. The compiler
+   emitted both halves: it scheduled the ending and then generated a test that
+   assumes the ending is synchronous. spec-0025 explicitly blesses
+   `campaign-complete` "at any nesting depth" (`DW0481`), and both shipped
+   campaigns — `hollow-vigil` and `the-drowned-bell` — fire it directly from
+   `on_complete`, which is why no build has ever exercised this. The template
+   knows the offset (it is in the same emission pass), and PackTest supports
+   multi-tick templates, so the fix is to await the deepest scheduled offset
+   before asserting. A second, smaller defect in the same template: it drives
+   BOTH branches' terminal objectives (`to_the_cut` **and** `to_the_water`) in
+   one tick, a state no playthrough can reach — the template does not model
+   branches at all. **Not worked around here**: moving `campaign-complete` out of
+   the sequence would fire the completion fanfare while the body is still being
+   carried, which is worse content and would move the chronicle's last line off
+   the beat the design puts it on.
+11. **A branch's route is flow-proven, not nav-proven — and it cost a red.**
+   `branch/ground` failed the branch run with
+   `step 5 (reach) failed: reach anchor/l0-barrow-1: objective obj/to-the-cut did not complete within 30000ms … bot at [14.4, 63.0, 17.6]`.
+   Root cause is content, found by rendering the approach:
+   `anchor/l0-barrow-1` is a **recessed grave niche cut into the side of a barrow
+   mound**, not open ground — the bot reached the right column and stopped one
+   cell outside the objective's fixed 3×3×3 completion box. Two things made it
+   expensive to find: (a) `reach-anchor`'s `radius` is documented as ignored
+   (completion is a fixed 3×3×3 box), so authoring `radius: 3` bought no
+   tolerance; (b) `DW0311` only walks the **exported** critical path, which for
+   this campaign is the tide branch, so the ground branch's route was never
+   geometry-checked at compile time — exactly the "known gap" in
+   `docs/reference/compiler.md` §DW048x. The branch-run report says so out loud
+   (`branch branch/ground walked without the compiler's waypoint artifact … per-branch waypoints are a compiler follow-up`),
+   which is the two-layer split working, but the static layer should own it.
+   Fixed in content by moving both the objective and the bier's destination to
+   `anchor/l0-reward`, open flat ground with a wide approach from the south and
+   east (verified by render before changing anything).
+12. **Minor**: the queued brief named an `i18n --reflect` flow;
    `tools/i18n-translate.py` has no `--reflect` flag, and
    `DELVEWRIGHT_I18N_API_KEY` was unset in this environment, so the documented
    fallback applied and the `zh-cn` sidecar was translated in-agent from the

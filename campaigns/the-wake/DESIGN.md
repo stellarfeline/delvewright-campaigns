@@ -57,10 +57,10 @@ Anchor allocation (prefab-local coordinates):
 | `anchor/l0-elite-stand` | 24,3,18 | `actor/mourner-widow` (never moves) |
 | `anchor/l0-flank-west` | 7,3,18 | `actor/mourner-elder` (never moves) |
 | `anchor/l0-flank-east` | 40,3,18 | `actor/mourner-child` start |
-| `anchor/l0-barrow-3` | 19,3,19 | Sedge's rite position (after her walk) |
-| `anchor/l0-reward` | 12,3,20 | `npc/sedge` start — the warden's post |
+| `anchor/l0-barrow-3` | 19,3,19 | Sedge's rite position (after her walk) — the row's head |
+| `anchor/l0-reward` | 12,3,20 | `npc/sedge` start — the warden's post, **and the open cut**: ground-branch destination |
 | `anchor/l0-reward-cache` | 12,4,21 | the warden's barrel (`loot[]`) |
-| `anchor/l0-barrow-1` | 14,3,15 | **the open cut** — ground-branch destination |
+| `anchor/l0-barrow-1` | 14,3,15 | unused — a recessed grave niche, not walkable-into (see `GENERATION.md` item 11) |
 | `anchor/l0-bonfire` | 19,3,29 | `npc/hallis` — the shore fire (never moves) |
 | `spawn` | 24,3,31 | party landing |
 | `anchor/l0-tide-line` | 24,3,33 | **the water** — tide-branch destination |
@@ -121,15 +121,15 @@ and `flag/to-the-tide`, each with a `happening`. Non-committal options (ask
 about Wren, ask what Sedge says) walk the tree without setting anything.
 
 **Q4 `quest/the-ground`** (branch `branch/ground`) — `obj/to-the-cut`
-(reach `anchor/l0-barrow-1`, gated on `flag/to-the-ground`) → a `sequence`:
-`move-actor` the bier from the banner to the cut under **cutscene C**
-(`low-follow`), then `despawn-actor … vanish` (she goes down), the art title
+(reach `anchor/l0-reward`, gated on `flag/to-the-ground`) → a `sequence`:
+`move-actor` the bier from the banner west to the cut under **cutscene C**
+(`locked-off`), then `despawn-actor … vanish` (she goes down), the art title
 **THE GROUND**, `campaign-complete ending/the-ground`.
 
 **Q5 `quest/the-tide`** (branch `branch/tide`, and the plan's `finale`) —
 `obj/to-the-water` (reach `anchor/l0-tide-line`, gated on `flag/to-the-tide`) →
 the same shape: the long 19-block carry south past the fire to the tide line,
-`low-follow`, the body given to the water, art title **THE TIDE**,
+`side-track`, the body given to the water, art title **THE TIDE**,
 `campaign-complete ending/the-tide`.
 
 `quest/the-tide` declares `depends_on: [quest/the-word, quest/the-ground]` so
@@ -141,7 +141,7 @@ trigger off `quest/the-word` — the shape the compiler's own
 
 | branch | flags set | flags pinned unset | destination | ending |
 |---|---|---|---|---|
-| `branch/ground` | `flag/to-the-ground` | `flag/to-the-tide` | `anchor/l0-barrow-1` (the cut) | `ending/the-ground` |
+| `branch/ground` | `flag/to-the-ground` | `flag/to-the-tide` | `anchor/l0-reward` (the cut) | `ending/the-ground` |
 | `branch/tide` | `flag/to-the-tide` | `flag/to-the-ground` | `anchor/l0-tide-line` (the water) | `ending/the-tide` |
 
 Branch point `branch-point/the-word`, `opens_at: quest/the-word`,
@@ -162,7 +162,7 @@ branch; on the tide branch he banks the fire for the walk down.
 ## Endings
 
 - `ending/the-ground` — the field closes over her. The last chronicle line is a
-  `seals` on `anchor/l0-barrow-1`; nothing acts on her afterwards.
+  `seals` on `anchor/l0-reward`; nothing acts on her afterwards.
 - `ending/the-tide` — she goes to the water she read. The last chronicle line is
   a `departs` on `actor/bier`.
 
@@ -180,6 +180,15 @@ row of `docs/demo-levels.md`.
 `compiler::nav::plan_actor_moves` chains each actor's move origins in **campaign
 document order**, blind to branch exclusivity. `actor/bier` is redirected by the
 fork, so exactly one of its two legs is planned from the *sibling branch's*
-destination. Recorded with measurements in `GENERATION.md`; the design is not
-bent around it (debug doctrine — a workaround that turns a toolchain bug green
-ships the bug to every future campaign).
+destination: the tide leg starts at `anchor/l0-reward`, the ground branch's
+grave, and the bier snaps ~11 blocks before it walks to the water. Recorded with
+emitted-command evidence in `GENERATION.md`; the design is not bent around it
+(debug doctrine — a workaround that turns a toolchain bug green ships the bug to
+every future campaign).
+
+A second engine finding is open and **unfixed in this campaign by choice**: the
+generated `campaign` PackTest asserts `dw.campaign` in the same tick it drives
+the objectives, so it cannot pass for a campaign whose `campaign-complete` is
+scheduled inside a `sequence` — which this one's is, deliberately, so the
+completion fanfare lands after the burial rather than during it. See
+`GENERATION.md` item 10.
