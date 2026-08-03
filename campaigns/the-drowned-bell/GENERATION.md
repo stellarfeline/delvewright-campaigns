@@ -271,8 +271,8 @@ actor `attributes`), #208 (spec-0023 combat verification).
    flanking pair `[24, 63, -9]` / `[24, 63, -11]` and nothing inside the region.
    Statically confirmed against the round-2 artifact, which had `[24, 63, -10]`.
 4. **Ladder — PackTest 32/32 green** (up one: the new `declared_difficulty` test
-   asserts the live world really is `normal`). **The bot tier could not run**: see
-   below. No `run-report.json` was produced.
+   asserts the live world really is `normal`). Bot tier re-run after engine #209
+   fixed the ops seeding; see "Runtime leg" below.
 5. **Cast ledger — deferred to round 4, as more than a mechanical migration.**
    21 entries each needing an authored `doing` (the spec's own forcing function —
    free prose stating each character's business in that beat) and a per-quest
@@ -307,3 +307,47 @@ offline-mode name never goes to PlayerDB.
 `validation/fresh-volumes.sh --project dw-worker-bellr3` was exercised and is
 correct: with the project already torn down it reported
 `project 'dw-worker-bellr3' verified clean (containers + volumes)` and exited 0.
+
+
+### Runtime leg (after engine #209)
+
+The ops fix works: the entrypoint seeds `/data/ops.json` locally —
+`Seeded offline op delve-bot (b159a31e-861c-3453-b687-97f9ddb13d37)` — with no
+PlayerDB call, and the server boots.
+
+`run-report.json` (v1, difficulty `normal`, 4 mandatory encounters, die-retry ON):
+
+| stage | ran | passed |
+| --- | --- | --- |
+| critical-path | yes | **no** — `step 11 (kill) failed: bot died at [13, 71, -85], delve-bot died because of Hollow Gate-Warder` |
+| die-retry | yes | yes |
+
+`assist_windows: []`, `die_retry: []`, `floor_findings: []`.
+
+**The finding: at `normal` the bot floor cannot clear the first siege phase.**
+`wave/gate-assault` is two vindicators landing 7.74 per hit on the 8-armour
+Warden kit, against 4.35 at `easy` — the doubling the difficulty declaration
+buys. The bot reached step 11, took its scripted die-retry death, respawned, and
+then lost the real fight. Nothing past step 11 was exercised, so the Bellkeeper,
+the assist windows and the floor gate remain unexercised.
+
+**Not retuned this round** — that call goes through the coordinator. Worth noting
+the shape of the choice: the gate squad is `max_health 6`, `attack_damage 1.0`
+plus a stone axe's +8, and it is the axe rather than the authored attribute that
+carries almost all of that damage.
+
+Two wiring observations from the first live die-retry exercise:
+
+- `DELVEWRIGHT_RUN_TIMEOUT_MS` is **not** in the bot service's `environment:`
+  block in `validation/compose.yaml`, so a caller cannot raise the run budget
+  from outside; the run took the 20-minute default despite being asked for more.
+  Die-retry adds two scripted deaths per encounter, so the knob the stage most
+  needs is the one that is not plumbed.
+- The die-retry stage reported `passed: true` with an **empty** `die_retry`
+  array, although the log shows
+  `[die-retry] wave/gate-assault death 1/2 (first-contact)`. A stage that
+  recorded nothing reading as passed is worth a look before the artifact is
+  trusted as evidence.
+
+`validation/fresh-volumes.sh --project dw-worker-bellr3` again reported
+`verified clean (containers + volumes)` and exited 0.
