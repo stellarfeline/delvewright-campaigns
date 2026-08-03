@@ -729,6 +729,10 @@ Full build green (exit 0) against `delvec` built from engine main at #196;
 `DW0410` clean. Every new anchor cell is proven walkable by construction (a
 `move-actor` destination that is not routable is `DW0325`), proven body-clear
 by `DW0450`, and proven interior to its fence rectangle by direct inspection
-of the prefab NBT. The bot + PackTest ladder runs under the isolated worker
-compose project once the validation mutex frees (held by an owner play session
-at delivery time) and is recorded in its own commit.
+of the prefab NBT.
+
+Bot + PackTest ladder GREEN under the isolated `dw-worker-island12` compose
+project (no host binding on 25565, torn down with `-p dw-worker-island12` only,
+mutex taken and released through `validation/mutex.sh` after waiting out an
+owner play session): **PackTest all 31 required tests passed**, **bot critical
+path PASSED, 20 steps**.
