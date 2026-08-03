@@ -4,7 +4,8 @@
 - **Generator**: `/new-delve` (Claude Code skill, ADR-0012), followed end to end
 - **DSL version**: 0.8.0 (all six stages)
 - **Engine**: `delvec` at Delvewright `main` d2d51d9
-- **Content base**: `delvewright-campaigns` `main` c7a66be
+- **Content base**: `delvewright-campaigns` `campaign/the-drowned-bell` 7bfc0b5
+  (stacked — see "PR base" below; `main` does not carry the tidal-keep tileset)
 - **Prefab library**: `prefab/tk-barrow-field` (tidal-keep tileset, original asset,
   GPL-3.0-or-later, provenance in the prefab's own metadata)
 
@@ -35,11 +36,15 @@ extra (SKILL "Showcase mode").
 Full design record: `DESIGN.md`. The decisions worth stating here are the ones
 that were *choices between authorable alternatives*:
 
-1. **Single prefab, not a pool.** `areas[].prefab: "prefab/tk-barrow-field"`
-   rather than `prefab_pool: "pool/tidal-keep"`. A staging demo hangs objectives,
-   walks and camera subjects on a dozen anchors; a pool draw can place a piece
-   twice and make its anchors `DW0305`-ambiguous. One 48×40 open-air piece makes
-   every anchor unique by construction and gives the level one readable stage.
+1. **One piece, drawn from a one-member pool.** `prefab_pool: "pool/tidal-keep"`
+   with `pieces {min: 1, max: 1}`, which draws the pool's `entry`,
+   `prefab/tk-barrow-field`, and nothing else. A staging demo hangs objectives,
+   walks and camera subjects on a dozen anchors, so it needs each anchor to be
+   unique — a multi-piece draw can place a piece twice and make its anchors
+   `DW0305`-ambiguous, and one 48×40 open-air piece gives the level one readable
+   stage. The level was authored against the direct `areas[].prefab` binding and
+   moved to the pool form only after that binding was found to skip socket
+   sealing (friction item 3).
 2. **The party are the pallbearers.** The class names (`Pallbearer`,
    `Reed-Piper`, `Grave-Child`) put the players inside the rite rather than
    beside it, which is what motivates a *stranger* holding the family's word —
@@ -63,7 +68,9 @@ that were *choices between authorable alternatives*:
 
 Read per branch, end to end, in one pass, against `DESIGN.md` and against the
 dialogue reachable under that branch's flags. Line numbers cite
-`out/validation/branch-chronicle-<branch>.md` of the build recorded above.
+`out/validation/branch-chronicle-<branch>.md`. The chronicles are byte-identical
+before and after every fix below (only dialogue prose, camera and pacing moved,
+never a `happening`), so the citations hold against the shipped build.
 Every finding was fixed in the DSL and the review re-run against the rebuilt
 chronicles; the rows below are the state after the fix, with the original defect
 named.
@@ -170,14 +177,29 @@ Ordered by severity.
    the campaign quietly stopped being bilingual. Both halves are legitimate, but
    the second silently discards a product requirement; worth wording so that
    removing a declared language reads as the deliberate act it is.
-8. **Worktree bootstrap is undocumented.** `delvec` defaults `--prefabs` to
+8. **The harness gives an ending 15 s, and an authored ending cinematic can be
+   longer.** `branch/tide` came back red on the first full ladder pass with
+   `step 6 (assert-complete) failed: campaign not complete after 15000ms … objectives completed: obj/greet, obj/come-up, obj/hear-the-rite, obj/bring-the-word, obj/to-the-water`
+   — every objective done, the delve simply had not *finished* yet, because the
+   tide ending's `campaign-complete` sits at `at_ticks: 340` (17 s) of the
+   closing `sequence`. `branch/ground` passed only because its ending sat at 300
+   ticks (15.0 s), i.e. on the boundary. The harness already models
+   `cutscene_seconds` from the critical path, but it has no notion of a
+   `sequence` tail after the last objective, so a staging-heavy delve — exactly
+   the kind this demo exists to showcase — fails for pacing rather than for
+   correctness. Fixed here by tightening both endings (ground 240 ticks / 12 s,
+   tide 250 ticks / 12.5 s), which is a real pacing improvement on a 15-minute
+   level and not a check being weakened. Prescription: derive the
+   assert-complete window from the authored tail of the final objective's
+   effects, the way cutscene seconds are already derived.
+9. **Worktree bootstrap is undocumented.** `delvec` defaults `--prefabs` to
    `campaigns/prefabs`, but `campaigns/` is an untracked symlink to the content
    repo root — so a fresh engine worktree has none, and the campaign path is the
    easily-missed `campaigns/campaigns/<id>`. `delvewright.local.toml` is
    gitignored too, so i18n config does not follow a worktree either. One line in
    the skill (or a bootstrap check in `delvec`) would save the next session the
    same detour.
-9. **Minor**: the queued brief named an `i18n --reflect` flow;
+10. **Minor**: the queued brief named an `i18n --reflect` flow;
    `tools/i18n-translate.py` has no `--reflect` flag, and
    `DELVEWRIGHT_I18N_API_KEY` was unset in this environment, so the documented
    fallback applied and the `zh-cn` sidecar was translated in-agent from the
