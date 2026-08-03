@@ -373,3 +373,37 @@ these are buttons, not lines of dialogue. Do this when round 4 updates its engin
 tree, and fold it into round 4's commit. Note it interacts with round 2's
 de-AI prose pass: these five strings were hand-edited then, so shorten them
 without re-introducing the fragment/verdict rhythm that pass removed.
+
+### Round-3 bot re-run (engine #209/#212/#213) — the fight is fine, the respawn is not
+
+Previous verdict withdrawn: #213 confirmed the "died to a Hollow Gate-Warder"
+failure was the harness misreporting its own scripted `/damage`. With that fixed:
+
+**The gate siege IS winnable at `normal`.** Both die-retry trials record
+`re_engaged: true`, `objectives_intact: true`, `completed: true`. The retuned
+numbers are not the problem.
+
+**The problem is where dying puts you.** Both trials report
+`at_checkpoint: false`, respawning at `[24, 63, 31]` — the campaign's world
+spawn on the barrow shore — when the encounter's governing checkpoint is
+`[34, 71, -113]` at the chapel. The stage's own words: *"Dying must always be
+safe — an unpredictable respawn point is the one thing a souls delve cannot
+ship."* The critical path then failed downstream for exactly that reason:
+`reaching wave/gate-assault: timed out after 60000ms; bot at [5.4, 63.0, 29.5]`
+— five levels away, with a 60 s leg budget.
+
+Likely cause, for whoever picks this up: this campaign's checkpoints are
+**bonfires**, and a bonfire only sets the spawn point when a player *rests* at it
+(`bonfire_rest_<i>`, a right-click). The bot log shows no rest at any of BF1–BF3,
+so no checkpoint was ever armed and the spawn point stayed at world spawn. That
+makes it a question about the harness's obligations, not obviously a content
+defect — but it is a real "souls delve cannot ship this" finding either way.
+
+Also from the report: one assist window fired (gate assault, amplifier 2,
+**1200 ticks**, `reason: "policy: ordinary encounter"`, `phase_reached:
+"assisted"`); the other three encounters are `not-reached`, so the Bellkeeper and
+its wither remain unproven for a third round. `floor_findings: []` — and note the
+inverted floor gate structurally *cannot* see this campaign's elite: the Barrow
+Warden is an `actor`, and only waves carry a `tier`.
+
+No #214 lucky-red signature — `re_engaged` was true both times.
