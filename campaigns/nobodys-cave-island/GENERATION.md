@@ -593,4 +593,4 @@ Full build green (exit 0) with only the two long-standing fire-side/eye
 `DW0359` advisories, `DW0410` clean, zh-cn build green, English double build
 byte-identical. Every gate-crossing walk verified arrived before `t880` from
 the emitted keyframe tables; all 18 cutscene dolly frames reviewed. The bot +
-PackTest ladder was **not** run this round and remains pending a slot.
+PackTest ladder ran once the Docker slot freed: bot playthrough GREEN, PackTest GREEN (planner-run, post-delivery).
