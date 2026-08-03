@@ -1,0 +1,100 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "the-wake",
+  "stage": "quest-plan",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/low-water",
+        "goal": "Come ashore at low water, find the brother at the shore fire, and go up the field to the bier.",
+        "area": "area/barrow-field",
+        "npcs": [
+          "npc/hallis"
+        ],
+        "depends_on": [],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/the-eulogy",
+        "goal": "Stand for the rite the warden speaks over Wren Ashlaw, and let the field hear who she was.",
+        "area": "area/barrow-field",
+        "npcs": [
+          "npc/sedge"
+        ],
+        "depends_on": [
+          "quest/low-water"
+        ],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/the-word",
+        "goal": "Carry the word back down to the fire: the field wants the ground or the water, and the choice is yours.",
+        "area": "area/barrow-field",
+        "npcs": [
+          "npc/hallis"
+        ],
+        "depends_on": [
+          "quest/the-eulogy"
+        ],
+        "mandatory": true,
+        "act": 2
+      },
+      {
+        "id": "quest/the-ground",
+        "goal": "Give her to the cut the warden opened at first light, and let the field close over her.",
+        "area": "area/barrow-field",
+        "npcs": [
+          "npc/sedge"
+        ],
+        "depends_on": [
+          "quest/the-word"
+        ],
+        "mandatory": true,
+        "act": 3
+      },
+      {
+        "id": "quest/the-tide",
+        "goal": "Carry her south past the fire to the line the tide leaves, and give her back to the water she read.",
+        "area": "area/barrow-field",
+        "npcs": [
+          "npc/hallis"
+        ],
+        "depends_on": [
+          "quest/the-word",
+          "quest/the-ground"
+        ],
+        "mandatory": true,
+        "act": 3
+      }
+    ],
+    "finale": "quest/the-tide",
+    "branch_points": [
+      {
+        "id": "branch-point/the-word",
+        "opens_at": "quest/the-word",
+        "forks_on": [
+          "flag/to-the-ground",
+          "flag/to-the-tide"
+        ],
+        "branches": [
+          {
+            "id": "branch/ground",
+            "flags": [
+              "flag/to-the-ground"
+            ],
+            "leads_to": "ending/the-ground"
+          },
+          {
+            "id": "branch/tide",
+            "flags": [
+              "flag/to-the-tide"
+            ],
+            "leads_to": "ending/the-tide"
+          }
+        ]
+      }
+    ]
+  }
+}
