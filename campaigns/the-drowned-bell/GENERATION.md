@@ -212,3 +212,38 @@ hide the defect.
 **Also observed (harness, minor):** on the return leg the bot ate rotten flesh at
 7.3 health and poisoned itself down to 3.4. It finished anyway, but the eat
 heuristic has no notion of a food that hurts.
+
+### Run 4 — final ladder on merged main (engine #198 merged as a2e23c9)
+
+Rebuilt with `delvec 0.1.0, dsl 0.7.0` from main and re-run.
+
+- **PackTest 31/31 green**, including `souls_timed_gate_crush`, `v06_loot`,
+  `v06_volley` and `v06_actor_equipment`.
+- **Bot red at step 16** (`kill` the Bellkeeper): it reached the boss, killed it,
+  and then **withered away** at `[102, 94, -101]` — the vanilla Wither the boss
+  applies on hit finished a player that arrived already worn down.
+- The crushing portcullis was **passed** on this run, having killed the bot on
+  run 2 at the same cell. So `crush` + the in-region waypoint is *flaky*, not
+  deterministic: the bot sometimes clears the gate before the clock shuts it.
+  That makes the engine defect worse rather than better — an intermittent
+  scripted death is harder to attribute than a reliable one. The exporter fix
+  (drop the in-region cells from `gate_mouth_cells`) still stands.
+
+**Reading of the boss death.** This is a genuine round-2 difficulty regression,
+not a flake: the bot is the solo-player floor, and it now arrives at the tower
+with far less health than it used to. Round 2 raised damage everywhere at once —
+the Sharpness XIX cistern ambushers, the volleys, a lethal gate — and the
+Bellkeeper's Wither is what collects the debt. Deliberately NOT tuned down in
+this round: the owner asked for lethality and the correct next move is one
+evidence-led adjustment (most likely the cistern axes, which are the largest
+single jump), taken with the owner's difficulty intent in hand rather than
+guessed at by a worker.
+
+### Carried into round 3
+
+- The `gate_mouth_cells` waypoint fix (engine), which unblocks `crush`.
+- `DW0465`: the campaign is `dsl_version 0.6.0` with no `cast` ledger and is now
+  inside the one-version deprecation window for spec-0020. Add a `cast` block per
+  quest and raise to 0.7.0.
+- A build-tier check that a `loot` stack's `count` fits the item's max stack size.
+- Boss-fight survivability after the round-2 damage rise.
