@@ -1,6 +1,6 @@
 # Nobody's Cave — Island Remake (authoritative design record)
 
-**v4 — 2026-08-03** (v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
+**v5 — 2026-08-03** (v4/v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
 authoritative design document for the `nobodys-cave-island` campaign. Where it
 and the stage JSONs disagree, one of the two is a defect.
 
@@ -365,3 +365,34 @@ stand inside the walls).
    camera at every point of both shots. The ship never moves; the drift is the
    camera. The art font is ASCII-only (`DW0328`), so the banner reads `NOBODY`
    in both languages and the Chinese lands in the line beneath it.
+
+## 9. Round-15 amendment — the button captions, the hover box speaks
+
+`DW0331` (engine #217) makes a dialogue option label wider than 146 font px a
+build error: the dialog buttons are a fixed 150 px and anything longer scrolls.
+Twenty-five English labels and the two Chinese ones that mirrored them were over
+— this campaign's whole option register was written as full sentences.
+
+Owner ruling (2026-08-03): **the caption goes in the button, the full line rides
+a `tooltip`** (engine #233, `dialogue` stage at `dsl_version` 0.8.0 — the
+narrowest bump that unlocks the field, and it cascades into nothing else).
+The rule that governs the rewrite is the one SKILL.md states: **the button must
+read on its own**, because fast and controller players never hover. So a caption
+is a speech act, not an abbreviation — "We climb.", "Take it and run.",
+"You have my word." — and the sentence it replaces survives verbatim in the
+hover box.
+
+Two sets are handled as sets rather than per-label, because they are choices the
+player compares side by side:
+
+- **The name at the wine** — `Nobody.` / `Odysseus.` / `Aithon.` The campaign's
+  one real branch now reads as three parallel answers of the same shape, with
+  the Odyssey lines ("My mother calls me Nobody, my father, my friends — all of
+  them.") intact on hover.
+- **The two ways to offer the wine** — `Wine, off my ship.` from `dlg/guest`
+  and `A gift instead: wine.` from `dlg/law`, so the two routes to the same
+  node stay distinguishable at a glance.
+
+The Chinese side needed 25 new captions and **no new tooltip translations**: a
+tooltip's English is the label's own former text, so the sidecar already carried
+that sentence.
