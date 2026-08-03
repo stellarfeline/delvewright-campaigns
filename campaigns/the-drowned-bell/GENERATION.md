@@ -407,3 +407,41 @@ inverted floor gate structurally *cannot* see this campaign's elite: the Barrow
 Warden is an `actor`, and only waves carry a `tier`.
 
 No #214 lucky-red signature — `re_engaged` was true both times.
+
+### r4-prep bot run (engine #220/#221/#222) — checkpoints fixed, return leg is not
+
+**Round 3's respawn finding is RESOLVED.** The bot now rests (`[rest] bonfire 0`,
+`bonfire 1`, two `Triggered [dw.rest]` on the server) and both die-retry deaths
+report `respawn_pos: [34, 71, -113]`, **`at_checkpoint: true`** — the chapel,
+the checkpoint governing that encounter. Dying is safe now.
+
+**The new blocker is the way back.** Both trials:
+
+> `wave/gate-assault death 1 (first-contact): the route from the respawn back to
+> the encounter is not walkable. The retry loop is broken: the party can die but
+> not try again.`
+
+`returned: false` on both, and the critical path failed the same way —
+`step 13 (kill) failed: reaching wave/gate-assault: timed out after 60000ms;
+bot at [2.5, 63.0, 33.5]`. That position is the **barrow shore**, five levels
+below the chapel it respawned at, so between respawning correctly and the return
+timing out the bot ended up back at the start. Both trials still recorded
+`re_engaged: true, completed: true`, so the fight itself remains winnable at
+`normal` — this is a navigation/return failure, not a tuning one.
+
+Worth a look from whoever picks it up: the governing checkpoint resolves to
+`[34, 71, -113]`, which is the **Sexton's cell by the altar**, not
+`anchor/l2-bonfire` itself. A checkpoint inside the chapel may be what makes the
+route back to the gate lane unwalkable to the stage's model.
+
+Everything else this run:
+
+- Assist: one window, `obj/hold-the-gate`, amplifier 2, **1200 ticks**,
+  `reason: "policy: ordinary encounter"`, `phase_reached: "assisted"`.
+- `wall-assault`, `grave-echoes`, `bellkeeper` — all `not-reached`. **The
+  Bellkeeper and its wither are unproven for a fourth round.**
+- `floor_findings: []`, and no floor-gate coverage ledger key in the report. The
+  Barrow Warden still carries no tier: `actors[].tier` is 0.8.0 on the quests
+  stage, and bumping that stage would drag it through 0.7.0's 21 mandatory cast
+  entries, so it was left alone per instruction. DW0477 did not fire.
+- Not the #214 lucky-red signature — `re_engaged` was true both times.
