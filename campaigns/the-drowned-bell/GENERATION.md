@@ -104,3 +104,111 @@ Thirteen full-server bot runs, each red a distinct lesson, none wasted:
   the BOT FLOOR — the intended human difficulty pass is the owner's
   domain-expert call, one line per wave, and harness task #85 (shield/
   strafe/kite) raises the floor for every future campaign.
+
+## Round 2 — the owner's playtest batch (2026-08-03)
+
+Live playtest findings, worked as one batch. `DESIGN.md` is new this round and
+is now the authoritative design of record (owner standing rule, 2026-08-03);
+this log stays the history.
+
+### Engine work this round paired with the content
+
+- Engine PR: tidal-keep stair fix + traps-v2/loot anchors. `DW0430` had reported
+  132 reversed stair blocks on proven routes ("场景里的楼梯都是反的"). Two
+  distinct defects: six wrong `facing` literals (every flight in this tileset
+  climbs toward -Z, so every tread is `facing=north`), and one cell that was no
+  literal at all — the bell-tower flights rise through open room air, so the loft
+  floor sat flush one block under a mid-flight tread and the router side-stepped
+  onto it. 177 stair blocks turned, 6 newels added, two pieces byte-identical.
+- The same PR wired the first CI coverage the prefab generators have ever had:
+  they are separate workspaces outside `crates/`, so nothing in CI compiled or
+  ran them, which is exactly how a tileset with 132 backwards stairs shipped
+  through a green pipeline.
+
+### Content changes
+
+1. **Portcullis** — 100/100 → **70/30** and `crush: true`. The cycle halves
+   and the shut phase drops to a third, which is what "sluggish" meant; being
+   caught by the closing edge is now lethal by command. Landed at 70/30 by
+   ladder evidence, not by taste — see the ladder log below.
+2. **Container loot** — all three reachable barrels filled via stage-5 `loot[]`
+   (barrow reward cache, undercroft alcove, drowned side-cell). The compiler
+   fills and never places, so the prefabs gained container anchors naming the
+   barrel CELL rather than the footing beside it.
+3. **Barrow elite** — full netherite, Protection IV throughout, netherite axe
+   with Sharpness XII + Knockback I, through actor `equipment`. It reads as the
+   armoured thing it always should have been, and the costume survives the
+   unleash because equipment is emitted into both puppet and twin.
+4. **Cistern enemies** — see `DESIGN.md` *Difficulty* for the full arithmetic.
+   Blocked twice at the engine layer and worked around at the content layer:
+   `actors[]` has no `attributes`, so the ambush husks can only be tuned through
+   `equipment`; and the compiler hardcodes `difficulty=easy`, which halves all
+   player damage taken. Netherite axe + Sharpness XIX lands 11.04 on the
+   heaviest class kit — two hits, never one. Both engine limits are escalated
+   rather than papered over.
+5. **Wall zombie** — iron helmet via `equipment`, the sanctioned daylight-undead
+   fix. Never `set-time`.
+6. **Atmosphere** — `time: night` + `weather: thunder`. `DW0210` immediately
+   caught the open-air pieces going dark (the tileset doc had predicted exactly
+   this: "braziers and lanterns supplement after dusk"), and it was answered with
+   the first mitigation in spec-0010's hierarchy — an area relight fixture
+   (`lantern`, `min_light: 4`) — rather than by brightening the scene back, which
+   would have undone the request.
+7. **Traps v2** — both payloads are command `volley`s now. Placing the two
+   firing slots was the round's real geometry work and `DW0442` rejected three
+   candidates before accepting: a slot level with the arch rib sees two z of a
+   stair before the next riser eats the ray; a slot directly above the rib cannot
+   shoot down through its own arch; and the dart dispenser kept as scenery is
+   still a solid block that shadowed the whole east column of its kill zone. Each
+   rejection is recorded in the generator beside the coordinate it produced.
+8. **Prose de-AI pass** — line edit of the English source (owner-diagnosed):
+   the negation-pivot tic ("That isn't X. That's Y.") rewritten as direct
+   assertion, observation+verdict fragment pairs collapsed into built sentences,
+   sensory detail kept but re-phrased as something a person notices. No new story
+   content. `zh-cn` re-perceived rather than transliterated for every changed key.
+9. **`DESIGN.md`** — created, stamped, and carrying the iteration protocol.
+
+### Ladder (round 2)
+
+Three runs, each red a distinct lesson.
+
+- **Run 1** — PackTest 1/31 failed: `v06_loot` found `container.1` empty at the
+  barrow cache. `minecraft:rabbit_stew` has a **max stack size of 1**, so
+  `item replace block … container.1 with … 2` is rejected outright and the slot
+  stays empty. Two stews are two STACKS, not a count of two. Fixed in the
+  content. Worth noting that the build tier passed this: `loot[]` validates item
+  ids (`DW0143`) and slot count (`DW0432`) but not `count` against the item's own
+  stack limit, and the runtime failure is silent — the same hazard class
+  `DW0431` exists for. A build-tier check would move this one tier earlier.
+  Bot also red: crushed at the portcullis.
+- **Run 2** — PackTest **31/31 green** (incl. `v06_loot`, `v06_volley`,
+  `v06_actor_equipment`, `souls_timed_gate_crush`). Bot still died at exactly
+  the same cell, `[24, 63, -10]`, despite the window widening from 50 to 70
+  ticks — which is what ruled out "the window is too tight" and pointed at the
+  gate itself.
+- **Run 3 (isolation, `crush` off)** — PackTest 30/30 green, **bot 21/21,
+  exit 0**, campaign completed end to end. Everything else in round 2 is
+  ladder-green: the night/thunder relight, both command volleys, the loot fills,
+  the elite's and ambushers' equipment, and the 70/30 gate.
+
+**Open blocker (engine, escalated).** `crush: true` is currently unpassable by
+the bot, and it is not a content defect. `compiler::waypoints::gate_mouth_cells`
+deliberately force-keeps three cells for a clocked crossing — the cell before the
+gate, **the cell inside the gate region**, and the cell after — so that "the hop
+that actually crosses a clocked span is SHORT". The harness turns every waypoint
+into a pathfinder goal it navigates to and arrives at (`walkGoals`), so the bot
+parks under the portcullis and is killed on the next closing tick. The waypoint
+predates this round (round 1's artifact has the same cell) and was harmless while
+a shut gate merely blocked. Two legs are affected — the outbound crossing and the
+return to the Ferrywoman.
+
+The fix belongs in the exporter, not the content: keep the two MOUTH cells and
+drop the in-region ones, so the crossing is a single short hop between the
+footings either side. That is already the span `DW0378` charges the crossing
+over, so the proof and the artifact would finally agree. The campaign keeps
+`crush: true` — the owner asked for it, and weakening it to buy a green bot would
+hide the defect.
+
+**Also observed (harness, minor):** on the return leg the bot ate rotten flesh at
+7.3 health and poisoned itself down to 3.4. It finished anyway, but the eat
+heuristic has no notion of a food that hurts.
