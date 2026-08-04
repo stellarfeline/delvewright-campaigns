@@ -1192,3 +1192,49 @@ Advisory set unchanged from round 14 (19 `DW0451`, 2 long-standing `DW0359`) —
 no class of advisory is new. Emitted timings verified in the datapack:
 the blinding sequence schedules moved `400t/460t` → `80t/140t` and the escape
 sequence's second step `100t` → `80t`, with every other schedule byte-unchanged.
+
+## Round 17 — the prose pass (planner-personal, PR #215 method applied unmerged)
+
+The comparison round: the owner judges the prose-craft method (engine PR #215)
+on this campaign's before/after. Method applied from the PR branch verbatim —
+§A seven-tell sweep over every player-facing line, §B posture declaration, §C
+budgets respected, zh three-step (translate → criticise → revise) by hand.
+
+**Posture note (§B, declared here; the campaign has held it since round 3):**
+morality — the antagonist-of-the-plan is right (Eurylochus's caution is
+vindicated at the cost of Antiphos); emotion named outright over somatic ("我
+发觉我想说了" / "I froze" / "rather be here and afraid"); resolutions close on
+a cost, never on acceptance — all three name-endings sting; one deliberately
+disproportionate beat (Antiphos taken in a single line, no buildup).
+
+**Coverage:** 60 dialogue texts + 63 narration/hint/goal strings audited in
+English; all 348 zh keys audited. English: **2 lines changed**, rest
+byte-identical. zh: **6 keys changed**, rest byte-identical. Anti-churn is the
+method's own rule: "no change" is an expected verdict, and this campaign had
+already absorbed two hand passes (rounds 3, 12) — the sweep mostly CONFIRMED.
+
+Changes, each with its driving rule:
+1. en `take-cover` seq 7 narration — de-duplicated the "nine years on the same
+   oar" clause that repeated verbatim in Perimedes's root dialogue (§A-4,
+   repetition across surfaces); the moment now gets a milking-world simile, the
+   dialogue keeps the grief line.
+2. en Odysseus-ending — "send you the bill" → "come to collect" (register:
+   invoice is post-Homeric; zh already said 收账 and needed no change).
+3. zh mirror of (1).
+4. zh wake-the-giant trigger — dropped the English "Never do X" skeleton
+   (永远不要去打…), now 熟睡的神之子,动他不得 (checklist: imported
+   construction).
+5. zh shipwrecked goal — un-stacked 冒烟的山下的沙滩上 modifiers (checklist:
+   front-loaded modifiers).
+6. zh under-ram daylight — replaced the awkward 直挺挺的梁 simile with the
+   concrete 直直的一长条,白得晃眼 (§A-2: simile must sharpen the thing).
+7. zh board-nobody hint — 水面听得见 → 海在听 (Poseidon is listening; terser
+   and truer).
+8. zh Elpenor `why` — unified his mother's saying with `told-you`'s rendering
+   (海先带走最嫩的那个); the callback only lands if the phrase repeats
+   (terminology axis).
+
+**Considered and KEPT, on the method's own "pattern warning, not ban" rule:**
+"sword drawn and pointless" (the verdict IS the image); "He did not say he had
+stopped" (one deliberate correction-beat); "the wine one dreams about"; all
+dialogue-voice repetitions (panic and grief registers, not narrator intensity).
