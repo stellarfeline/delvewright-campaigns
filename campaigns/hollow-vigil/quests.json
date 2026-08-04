@@ -1,5 +1,5 @@
 {
-  "dsl_version": "0.3.0",
+  "dsl_version": "0.9.0",
   "campaign_id": "hollow-vigil",
   "stage": "quests",
   "content": {
@@ -7,9 +7,44 @@
       {
         "id": "quest/the-watch",
         "trigger": { "type": "campaign-start" },
+        "happening": {
+          "verb": "arrives",
+          "text": "A delver comes up the moor road to Barrowmere and takes the watch the last warden can no longer stand alone."
+        },
+        "cast": {
+          "npc/hedric": {
+            "at": "anchor/exit",
+            "doing": "Keeping the gate yard with his weight off the bad knee, sizing up whoever it is Maren has sent for.",
+            "dialogue": "dlg/gate"
+          },
+          "npc/maren": {
+            "at": "anchor/keeper-stand",
+            "doing": "Standing her post at the inner gate, reciting the vigil's oaths under her breath while she waits to be relieved of them.",
+            "dialogue": "dlg/vigil"
+          }
+        },
         "objectives": [
-          { "type": "talk-to", "id": "obj/gate-watch", "npc": "npc/hedric" },
-          { "type": "talk-to", "id": "obj/swear", "npc": "npc/maren", "after": ["obj/gate-watch"] }
+          {
+            "type": "talk-to",
+            "id": "obj/gate-watch",
+            "npc": "npc/hedric",
+            "happening": {
+              "verb": "gains",
+              "text": "Hedric, who cannot walk the halls himself any more, gives up the shield he has polished every night for twenty years.",
+              "subject": "item/hedrics-shield"
+            }
+          },
+          {
+            "type": "talk-to",
+            "id": "obj/swear",
+            "npc": "npc/maren",
+            "after": ["obj/gate-watch"],
+            "happening": {
+              "verb": "learns",
+              "text": "Maren speaks the charge in full — quiet the halls, take back the barrow key, unbar the deep door, and end the vigil at the altar.",
+              "subject": "npc/maren"
+            }
+          }
         ],
         "on_objective_complete": {
           "obj/gate-watch": [
@@ -17,8 +52,24 @@
             { "type": "set-flag", "flag": "flag/warned" }
           ],
           "obj/swear": [
-            { "type": "open-gate", "anchor": "anchor/gate" },
-            { "type": "spawn-wave", "wave": "wave/hollow-garrison" },
+            {
+              "type": "open-gate",
+              "anchor": "anchor/gate",
+              "happening": {
+                "verb": "opens",
+                "text": "The inner gate's iron bars grind up for the first time in a decade, and the halls beyond stand open.",
+                "subject": "anchor/gate"
+              }
+            },
+            {
+              "type": "spawn-wave",
+              "wave": "wave/hollow-garrison",
+              "happening": {
+                "verb": "arrives",
+                "text": "Maren speaks the summons, and the hollow garrison answers it — climbing out of the barrow-earth into the halls it once held.",
+                "subject": "wave/hollow-garrison"
+              }
+            },
             { "type": "set-flag", "flag": "flag/vigil-sworn" }
           ]
         },
@@ -27,6 +78,34 @@
       {
         "id": "quest/quiet-the-halls",
         "trigger": { "type": "quest-complete", "quest": "quest/the-watch" },
+        "happening": {
+          "verb": "survives",
+          "text": "The keep is taken back one room at a time, against men who wore its colours before anyone now alive was born."
+        },
+        "cast": {
+          "npc/hedric": {
+            "at": "anchor/exit",
+            "doing": "Holding the gate yard, listening to the fighting inside and hating every step he cannot take.",
+            "dialogue": {
+              "barks": [
+                "That's the way — shield up, mind your left!",
+                "Twenty years I carried that shield. Don't you dare bleed on it.",
+                "I'd be down there beside you if the knee would have it."
+              ]
+            }
+          },
+          "npc/maren": {
+            "at": "anchor/keeper-stand",
+            "doing": "Watching the halls she called the dead into, naming each footman under her breath as he falls.",
+            "dialogue": {
+              "barks": [
+                "That one was Aldis. He kept the west stair for thirty years.",
+                "Do not apologise to them. They stopped being mine a long time ago.",
+                "Quiet them all. Then the key."
+              ]
+            }
+          }
+        },
         "objectives": [
           {
             "type": "kill",
@@ -34,7 +113,12 @@
             "wave": "wave/hollow-garrison",
             "requires_flags": ["flag/vigil-sworn"],
             "title": "Quiet the Halls",
-            "hint": "Maren's summons has drawn the hollow garrison out of the barrow-earth — hunt down every risen footman in the halls beyond the gate."
+            "hint": "Maren's summons has drawn the hollow garrison out of the barrow-earth — hunt down every risen footman in the halls beyond the gate.",
+            "happening": {
+              "verb": "dies",
+              "text": "The last hollow footman goes down, and Barrowmere is quiet for the first time since the summons.",
+              "subject": "wave/hollow-garrison"
+            }
           }
         ],
         "on_objective_complete": {
@@ -47,6 +131,34 @@
       {
         "id": "quest/the-barrow-key",
         "trigger": { "type": "quest-complete", "quest": "quest/quiet-the-halls" },
+        "happening": {
+          "verb": "opens",
+          "text": "What the garrison was set to guard stops being a rumour in the founding scrolls and becomes a door with a key that fits it."
+        },
+        "cast": {
+          "npc/hedric": {
+            "at": "anchor/exit",
+            "doing": "Talking the delver through a strongbox he has never seen, because talking is the only part of the work left to him.",
+            "dialogue": {
+              "barks": [
+                "A strongbox, she said. Garrison kept everything in strongboxes.",
+                "Deep door's the one under the lantern. You'll not miss it.",
+                "Key in your hand, mind — that door won't take a promise."
+              ]
+            }
+          },
+          "npc/maren": {
+            "at": "anchor/keeper-stand",
+            "doing": "Waiting at the gate for a door she was forbidden her whole life to open, and has now ordered opened.",
+            "dialogue": {
+              "barks": [
+                "The key was struck the same year the order was. It will fit.",
+                "The deep door has not opened in my lifetime. Be ready for what kept it shut.",
+                "The key. Then the door. Then the altar."
+              ]
+            }
+          }
+        },
         "objectives": [
           {
             "type": "collect",
@@ -56,7 +168,12 @@
             "anchor": "anchor/chest",
             "requires_flags": ["flag/halls-quiet"],
             "title": "Take the Barrow Key",
-            "hint": "The garrison's strongbox holds the barrow key — look for the chest in a small side room."
+            "hint": "The garrison's strongbox holds the barrow key — look for the chest in a small side room.",
+            "happening": {
+              "verb": "gains",
+              "text": "The garrison's strongbox gives up the barrow key, struck the same year the order was sworn.",
+              "subject": "item/barrow-key"
+            }
           },
           {
             "type": "interact",
@@ -65,7 +182,12 @@
             "requires_item": "minecraft:trial_key",
             "after": ["obj/key"],
             "title": "Unlock the Deep Door",
-            "hint": "The deep door waits in the corner room — the glowing lantern marks it. Hold the barrow key and open it."
+            "hint": "The deep door waits in the corner room — the glowing lantern marks it. Hold the barrow key and open it.",
+            "happening": {
+              "verb": "opens",
+              "text": "The deep door comes unbarred, and two hundred years of not knowing what stands behind it end.",
+              "subject": "anchor/door"
+            }
           }
         ],
         "on_objective_complete": {
@@ -74,13 +196,49 @@
           ]
         },
         "on_complete": [
-          { "type": "spawn-wave", "wave": "wave/first-warden" },
+          {
+            "type": "spawn-wave",
+            "wave": "wave/first-warden",
+            "happening": {
+              "verb": "arrives",
+              "text": "The First Warden takes notice of the open door and rises from his post to meet whoever opened it.",
+              "subject": "wave/first-warden"
+            }
+          },
           { "type": "set-flag", "flag": "flag/warden-risen" }
         ]
       },
       {
         "id": "quest/break-the-vigil",
         "trigger": { "type": "quest-complete", "quest": "quest/the-barrow-key" },
+        "happening": {
+          "verb": "departs",
+          "text": "The order gets the ending Maren wanted for it, rather than the abandonment it was drifting toward."
+        },
+        "cast": {
+          "npc/hedric": {
+            "at": "anchor/exit",
+            "doing": "Standing in the gate yard with nothing left to hand over, waiting to see who comes back out.",
+            "dialogue": {
+              "barks": [
+                "He's still down there. He was always still down there.",
+                "Shield up. Shield up.",
+                "Come back out of there. That's the whole of what I'm asking."
+              ]
+            }
+          },
+          "npc/maren": {
+            "at": "anchor/keeper-stand",
+            "doing": "Refusing to go down and watch it done, which is the last thing about the vigil she is ashamed of.",
+            "dialogue": {
+              "barks": [
+                "He is the First Warden. He is also my blood. Do it anyway.",
+                "The ending is two lines: the watch was kept, the watch is done.",
+                "I will not come down there. Forgive me that."
+              ]
+            }
+          }
+        },
         "objectives": [
           {
             "type": "kill",
@@ -88,7 +246,12 @@
             "wave": "wave/first-warden",
             "requires_flags": ["flag/warden-risen"],
             "title": "Break the First Warden",
-            "hint": "He stands his post in the great hall with a footman at his side. He still carries his blade — bring your shield up."
+            "hint": "He stands his post in the great hall with a footman at his side. He still carries his blade — bring your shield up.",
+            "happening": {
+              "verb": "dies",
+              "text": "The First Warden is put down at the post he took two hundred years ago and never once left.",
+              "subject": "wave/first-warden"
+            }
           },
           {
             "type": "reach-anchor",
@@ -98,7 +261,12 @@
             "after": ["obj/warden"],
             "requires_flags": ["flag/vigil-broken"],
             "title": "Speak the Ending",
-            "hint": "Step up to the altar at the head of the great hall, past where the First Warden fell."
+            "hint": "Step up to the altar at the head of the great hall, past where the First Warden fell.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The delver steps up to the barrow altar, onto flagstones the founder wore hollow standing on them.",
+              "subject": "anchor/objective"
+            }
           }
         ],
         "on_objective_complete": {
@@ -107,7 +275,14 @@
           ]
         },
         "on_complete": [
-          { "type": "campaign-complete" }
+          {
+            "type": "campaign-complete",
+            "happening": {
+              "verb": "seals",
+              "text": "The ending is spoken over the altar and the vigil closes — kept to the last, and finally released.",
+              "subject": "anchor/objective"
+            }
+          }
         ]
       }
     ],
