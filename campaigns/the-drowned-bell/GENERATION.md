@@ -784,3 +784,106 @@ One new log observation, harmless but new: on world save the server logs
 `Mannequin` entities backing the Sexton and the Ferrywoman. It is a `WARN` at
 serialization time, not a test failure — PackTest was 37/37 with it present —
 but a pose vanilla refuses to persist is worth an engine glance.
+
+## Round 5 (2026-08-04) — the road home leaves the courtyard for good
+
+One target: r4a's step-22/23 red. Owner rulings bound this round: (1) a rest
+re-arms everything except confirmed bosses and quest-objective mobs, and
+container loot never resets — so BF3 re-arming the courtyard siege is CORRECT
+and the re-seat machinery was not touched; (2) the road home after the finale
+must be short and safe, redesigned on the souls shortcut grammar (the boss-side
+mechanism permanently opens a way back toward a bonfire); (3) cross-level
+pursuit is by-design — no leashes, no follow-range nerfs, no Gate-Warder
+changes.
+
+### The redesign
+
+The old finale walked `obj/the-fold` to `anchor/l2-muster` — the exact yard a
+BF3 rest correctly re-arms — and then 200 blocks home through three gatehouse
+levels with re-seated Gate-Warders in tow. The muster yard is out of the finale
+entirely; the road home is now the bell tower's own interior:
+
+- **The rope drop is real now.** `anchor/l4-rope-drop` — the iron grate the
+  tileset always documented as "the campaign's hub-opener" — is finally opened
+  by the campaign: `obj/raise-it` (the mechanism interaction: hauling the bell
+  home to its yoke) fires `open-gate` on it, and the party can step off the
+  ring into the 22-block drop to the water basin beside BF3. The basin kerb
+  now opens toward `anchor/l4-rope-foot` (generator change) so the drop has a
+  human exit; the nav model never routed through the basin, so the machine
+  path is unchanged by the gap. `obj/the-fold` retargets `anchor/l2-muster` →
+  `anchor/l4-rope-foot`.
+- **The tide-gate.** The rope room's south wall now carries
+  `anchor/l4-tide-gate`: a sea-door sealed with iron bars from world-load,
+  visible from BF3 across the room, with no lever anywhere — the only thing
+  that opens it is the same `obj/raise-it` beat. "This door cannot be opened
+  from this side" is the precious part: the door was shut on the sea's side of
+  the ledger, and the bell settles the ledger. Behind it a parapet-walled
+  sea-stair descends the tower's south face to a stone ferry pier
+  (`anchor/l4-pier`) on an authored sea band at the shore datum.
+- **The ferrywoman meets the party at the pier.** Bells carry over water. On
+  `obj/raise-it` the tide-line body despawns (off-screen, 200 blocks away,
+  with narrative cover) and a deferred second body `npc/ferrywoman-pier` —
+  same character, same skin artwork under its own `texture_id` (`DW0190`
+  uniqueness) — spawns at the pier. `obj/tell-the-water` retargets it. Two
+  `DW0351` warnings (off-screen exit, materialization) are accepted with the
+  narrative cover the beat carries: the grate-and-gate narrate line, and her
+  own dialogue explaining the crossing.
+
+Post-finale the critical path is: bell-hang `[101,93,-107]` → rope-foot
+`[98,71,-103]` (tower interior, stairs for the machine, the drop for humans) →
+pier `[102,63,-82]`. **It crosses no re-armable territory at all**: the only
+hostiles in the tower are the Bellkeeper (dead, no `respawns_on_rest` — a
+confirmed boss stays down, per ruling 1 and the engine's opt-in re-seat set)
+and the rafter ambush actors (one-shot, already spent on the way up). If the
+party dies on the road home it respawns at BF3, thirty blocks from the ending.
+
+### Engine prefab change (branch `worker/bell-finale-tide-gate`, stacked on PR #253)
+
+`tk-bell-tower` grows 26×44×26 → 26×44×**36**: the tide-gate region, the
+sea-stair, the pier deck on an authored sea band (`waterline_y: 2`, the barrow
+shore's ocean datum, `DW0344`), the basin kerb gap, parapet/pier lanterns, and
+three new generation-time `assert_route_walkable` proofs (inner approach,
+sea-stair + pier, basin gap). Determinism proven exactly as r4a:
+
+- the **unmodified** generator on the base branch reproduces all six shipped
+  pieces **byte-for-byte**;
+- the **modified** generator is byte-identical across two runs (all six);
+- only `tk-bell-tower.{nbt,json}` differ from the shipped set.
+
+### Engine semantics verification (report-only, ruling 1 vs. the emission)
+
+Read against `crates/compiler/src/emit.rs` on engine main:
+
+- **Bosses:** excluded, by the opt-in shape — the re-seat set is exactly the
+  waves declaring `respawns_on_rest: true` that have been seated
+  (`bonfire_reseat_lines` / `#wseat_<wave>`); `wave/bellkeeper` declares no
+  flag and is never re-seated. There is **no structural boss guard**: nothing
+  stops a future campaign declaring `respawns_on_rest` on a boss-tier wave.
+- **Quest-objective mobs:** **not structurally excluded** — a `kill`-objective
+  wave may declare the flag (this campaign's siege waves do), and its re-seat
+  resets the `dw.wave` countdown to the full authored total. A **completed**
+  kill objective can never re-open (`pending_guard` guards every completion
+  with `unless score … obj matches 1`), but a rest taken mid-objective resets
+  chip progress on the wave. Flagged as a divergence-in-letter from ruling 1;
+  the owner's own rulings (the siege re-arm is correct; die-retry re-seats the
+  active encounter) treat the current behavior as intended, and this round's
+  route is green under either reading — nothing in the finale depends on it.
+- **Container/loot state:** rest touches none. Loot containers fill once in
+  `setup` (`loot_setup`); `bonfire_rest_<i>` is the three checkpoint lines +
+  wave re-seats + the authored `on_rest` bundle, and `bonfire_restore` touches
+  only player effects and the class flask (`clear`+`give` against the
+  player's own inventory). No emitted rest function addresses a container.
+
+### Compile proof
+
+- `delvec validate` / `analyze` / `build` — exit 0. Warnings: the two accepted
+  `DW0351` above and the pre-existing `DW0465` (owner-sequenced cast-ledger
+  work, untouched).
+- `--lang zh-cn` build exit 0; the sidecar covers the new inventory exactly
+  (seven new keys, one orphan removed, two hints retranslated to their new
+  English).
+- English double build byte-identical
+  (`53ee7b7fe73ef5693b3a557433a61bfafe619bb4`).
+- Diff surface: `quests.json` (finale bundle + two retargets), `npcs.json` +
+  `dialogue.json` + `skins/` (the pier body), `l10n/zh-cn.json`, the two
+  regenerated `tk-bell-tower` files.
