@@ -958,3 +958,184 @@ fight.
 
 `fresh-volumes` reported `verified clean (containers + volumes)` before each
 run and after final teardown; the mutex was released by name.
+
+## Round 6 (2026-08-04) — version-adoption 0.6→0.8: actors gain tiers (task #153)
+
+Explicit, proof-carrying version round, per CLAUDE.md's version-adoption
+discipline — no feature work mixed in. Motivation: the quests stage was still
+`dsl_version` `0.6.0` while engine main supports `0.8.0`; the Barrow Warden
+(the campaign's mid-delve optional elite, an `actor`, never a `wave`) has
+never been able to carry `waves[].tier`'s sibling `actors[].tier`, so the
+bot ladder's inverted floor gate has printed an empty, silently-passing
+`actors: []` for **ten** runs (r4a through r5) over a fight nobody could
+prove the harness had actually measured.
+
+### What was bumped, and why
+
+Only `campaigns/the-drowned-bell/quests.json` (stage 5) moved, `0.6.0` →
+`0.8.0`. Read against `docs/reference/compiler.md`'s `DW0141` row and the
+per-field "Since" column:
+
+- **`world.json`, `npcs.json`, `dialogue.json` (stages 1/2/6): untouched.**
+  Neither the v0.7 surface (stage-5 `cast`, wave `tier`) nor the v0.8 surface
+  (stage-4 `branch_points`, per-node `happening`, named `ending`, class-kit
+  `flask`/bonfire labels, actor `tier`, dialogue-option `tooltip`) touches
+  these stages. `dialogue.json` in particular has zero `set-flag` options
+  anywhere, so it owes no `happening` even at 0.8.0 (that obligation is
+  scoped to *story-weight* options only) — confirmed by grep before deciding
+  not to bump it.
+- **`classes.json` (stage 3): already `0.8.0`** from round 2's `flask` kit
+  entry. No change this round.
+- **`quest-plan.json` (stage 4): left at `0.6.0`.** This is the "branchless
+  campaign" question the task asked to settle: `branch_points[]` is
+  optional — absent means "no branches", which the compiler *verifies*
+  rather than assumes only once the relevant machinery is active. Bumping
+  `quests.json` to `0.8.0` alone did **not** activate `DW0480`'s
+  fork-verification (confirmed empirically — see below), and the bell has
+  no narrative branch to declare, so `quest-plan.json` has no 0.8 obligation
+  and stays put. Old versions keep compiling per-stage; this is exactly that.
+- **`quests.json` (stage 5): `0.7.0`'s cast ledger + wave `tier`, and
+  `0.8.0`'s actor `tier` + mandatory `happening`, ALL landed together**,
+  because they live on one file and `actors[].tier` — the whole point of
+  this round — is reserved until `0.8.0`. The pre-0.7 `DW0465` deprecation
+  warning that every round since round 2 has carried and deliberately not
+  fixed is now **gone**: bumping past 0.7.0 hardened it into `DW0460`
+  (cast completeness), which is now satisfied for real, not silenced.
+
+### Tier choice: Barrow Warden `elite`, Bellkeeper `boss`
+
+`actor/barrow-warden` → `tier: "elite"`. `DESIGN.md` names it explicitly:
+"The optional elite — the Barrow Warden" (its own section header), full
+netherite kit, Protection IV, Sharpness XII — deliberately **not** softened
+after `difficulty: normal` landed (round 3: "the optional Barrow Warden was
+NOT softened (~18.25/hit, one short of a one-shot)"). It is mid-delve,
+skippable (both flank lanes proven open by the generator), and never gates
+the critical path — exactly the shape `spec-0023` calls `elite`, not `boss`.
+
+`wave/bellkeeper` → `tier: "boss"`, per `DESIGN.md`'s own header ("The
+Bellkeeper (L4 boss)") and round 3's note that "only `wave/bellkeeper` is
+non-ordinary" among the four waves. The three siege waves (`gate-assault`,
+`wall-assault`, `grave-echoes`) stay default `ordinary` (tier omitted,
+byte-identical) — they are drilled squads, not billed set-piece fights.
+
+No other hostile actor needed a tier: `wall-sentinel`, `pillar-warden-a/b`
+and `rafter-1/2` are ordinary ambush husks/zombie (per `DESIGN.md`'s
+"Ambushes" table), not billed encounters.
+
+### The cast ledger, filled faithfully from the existing cast
+
+Three stage-2 NPCs, seven quests, 21 `DW0460` findings (matching round 3's
+own forecast exactly) — no new characters, no new dialogue text, only
+existing anchors/roots/prose restated as ledger entries:
+
+- **`npc/ferrywoman`** — one flat placement per quest at `anchor/l0-tide-line`
+  (she never moves until she's replaced). `dialogue: "dlg/fw-root"` on
+  first appearance, `"unchanged"` for quests 2–7 (she is still at the
+  tide-line, unvisited, when quest 7 opens — the despawn is one of her own
+  quest's *own* effects, firing after that quest's cast snapshot).
+- **`npc/sexton`** — one flat placement per quest at `anchor/l2-altar`
+  (never moved, never despawned). `dialogue: "dlg/sx-root"` through quest 4
+  (his tree's entry point is genuinely unchanged across those beats — the
+  in-tree "the door is open" transition is a player choice mid-quest, not a
+  ledger-level change), then `"dlg/sx-open"` from quest 5 on (he has already
+  said his last line — reusing his own existing leaf node as an alternate
+  entry point, no new prose).
+- **`npc/barrow-warden`** — the interesting one. `delvec validate` flagged
+  him as live in **all seven** quests, including `quest/the-landing` itself
+  (where his own `spawn-npc` fires mid-quest) — confirmed against
+  `crates/compiler/src/continuity.rs`'s `excluded_npcs` scan: any NPC ever
+  touched by an environment trigger is marked campaign-globally
+  `Indeterminate`, which counts as "live" at every quest-start snapshot,
+  before or after it has actually spawned. `trigger/warden-answers`
+  (`strike-npc`) makes him exactly that, so `DW0462` requires **per-branch**
+  casts everywhere he appears — a genuine, not cosmetic, per-quest
+  obligation. This needed one small, non-narrative addition: a new
+  `flag/warden-struck`, set by `trigger/warden-answers` itself (no new
+  story content, pure lifecycle bookkeeping — exactly what round 3 flagged
+  as "a new flag and a lifecycle model, not a migration"). Each quest's cast
+  now carries two branches: `forbids_flags: [flag/warden-struck]` → kneeling
+  dormant at `anchor/l0-elite-dormant`; `requires_flags: [flag/warden-struck]`
+  → `"offstage"`. Confirmed empirically: this does **not** trip `DW0480`
+  ("undeclared story fork") — the fork-verification machinery stayed
+  dormant with `quest-plan.json` below `0.8.0`, so a lifecycle flag that
+  merely toggles one NPC's cast entry is not conflated with a real
+  narrative branch.
+  - `npc/ferrywoman-pier` needed **no** cast entry anywhere, for a
+    structurally different reason (also confirmed against `continuity.rs`):
+    her `spawn-npc` is a plain, untriggered effect inside `ring-it-home`'s
+    own `on_objective_complete`, and `ring-it-home` is DAG-terminal (nothing
+    depends on it), so no later quest's "at quest start" snapshot ever
+    exists to observe her as live. This is a real structural gap — a
+    mid-quest deferred spawn on the terminal quest is unprovable by
+    `DW0460`'s construction, not a designed exemption — noted here rather
+    than worked around, since nothing is actually wrong: she has no cast
+    obligation to fail.
+
+Two `DW0467` staleness warnings remain, both accepted: `npc/ferrywoman` and
+`npc/barrow-warden` (pre-struck) genuinely offer the same root in every
+quest they're live in, by design — a boat-woman standing at one fire and
+a set-piece dormant elite are exactly the "background character" case the
+diagnostic exempts from being an error. Not weakened, not silenced with an
+unwarranted rewrite.
+
+### `happening`, node by node
+
+`DW0481` (required at `0.8.0`) landed on all seven quests, all 19
+objectives, and every one of the eleven story-node effect instances in the
+quests stage (`spawn-npc`/`despawn-npc`, `spawn-actor`/`unleash-actor`,
+`spawn-wave`, `open-gate`, `campaign-complete` — this campaign has no
+`move-npc`/`move-actor`/`close-gate` story beats) — 38 findings, each filled
+with one of the ten structured verbs plus a line of prose restating what the
+node *already* narrates or accomplishes; no new plot.
+
+**One genuine engine gap surfaced and was worked around, not hacked
+around.** `DW0481` also fired on 13 effects the compiler itself synthesizes
+by desugaring the three `ambushes[]` entries (`wall-watch`,
+`cistern-pillars`, `the-rafters`) into `spawn-actor`/`unleash-actor` pairs —
+but `Ambush::to_trigger` (`crates/dsl/src/stages.rs:1475-1501`) hardcodes
+`happening: None` on every synthesized effect, and the `Ambush` schema
+(`id`/`at`/`actors`/`trigger`/`telegraph`) has no field to carry one in.
+This is a real schema gap, not a content mistake — worth an engine follow-up
+(a `happening`-bearing field on `Ambush`, threaded per-actor). It was **not**
+a blocker here because the compiler's own documentation guarantees the sugar
+"cannot diverge from a hand-written equivalent": the three ambushes were
+rewritten as their canonical desugared form directly in `triggers[]`
+(same `trigger/<id>` naming, same `once: true`, same declared-order
+spawn-then-unleash effect list, `ambushes: []` left empty), which uses the
+**general** `QuestEffect::SpawnActor`/`UnleashActor` schema — confirmed to
+carry an ordinary, author-settable `happening` field — so `happening` could
+be filled faithfully with no engine change and no divergence from what the
+sugar would have produced anyway.
+
+### Compile proof
+
+- `delvec validate` / `analyze` / `build` (`delvec 0.1.0, dsl 0.8.0, mc
+  1.21.11`, engine main `4a93cb7`) — **exit 0**. Remaining findings, all
+  warnings, all pre-existing or explicitly accepted above: the two `DW0351`
+  off-screen-exit/materialization warnings (accepted since round 5, unique
+  key), and the two `DW0467` staleness warnings (ferrywoman, barrow-warden —
+  accepted this round, both background characters by design).
+- `--lang zh-cn` build — exit 0. One sidecar fix: the new `set-flag` effect
+  inserted before `trigger/warden-answers`'s `spawn-actor` shifted the
+  trailing `narrate`'s inventory key from `fx.trig.warden-answers.3.narrate`
+  to `.4.narrate`; the sidecar key was renamed to match (`DW0180`/`DW0181`
+  caught the drift immediately — sidecar coverage really is exact).
+- English double build — byte-identical (sorted per-file SHA-256 manifest:
+  `0dedc3753eaa710c60247c29720d0edd396809e8f1e4acad4978591722b9ae7a`).
+- **Floor-gate ledger now covers the elite it was blind to for ten runs.**
+  `validation/combat-plan.json`'s `floor_gate`: `covered: [{wave/bellkeeper,
+  boss}, {actor/barrow-warden, elite}]`, `not_covered: []` — the empty
+  `actors: []` that every round since r4a has carried is gone; the ledger
+  now names both billed encounters and proves both are structurally
+  measurable (spawned by `trigger/warden-answers`, unleashed by the same,
+  `vulnerable: false` pre-unleash as expected).
+- **No live bot ladder run this round** — this is a version-adoption round,
+  not a design round; the staging re-run (owner's batch playtest gate)
+  covers runtime verification. Nothing in this round changes emitted
+  commands, geometry, or combat numbers — only validation-tier metadata
+  (`happening`, `cast`, `tier`) and one bookkeeping flag, so no new runtime
+  behavior exists to exercise.
+- Diff surface: `campaigns/the-drowned-bell/quests.json` (dsl_version,
+  2 tiers, cast ledger ×7, `happening` ×51, one flag, 3 ambushes→triggers)
+  and `campaigns/the-drowned-bell/l10n/zh-cn.json` (one key rename). No
+  prefab, geometry, or combat-number change.

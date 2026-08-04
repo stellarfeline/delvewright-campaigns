@@ -1,5 +1,5 @@
 {
- "dsl_version": "0.6.0",
+ "dsl_version": "0.8.0",
  "campaign_id": "the-drowned-bell",
  "stage": "quests",
  "content": {
@@ -15,7 +15,12 @@
       "id": "obj/ashore",
       "npc": "npc/ferrywoman",
       "title": "Speak With the Ferrywoman",
-      "hint": "She is beaching her boat by the fire at the tide-line, below the barrow field."
+      "hint": "She is beaching her boat by the fire at the tide-line, below the barrow field.",
+      "happening": {
+       "verb": "learns",
+       "text": "The party meets the Ferrywoman at her tide-line fire and learns why she still keeps the old crossing schedule.",
+       "subject": "npc/ferrywoman"
+      }
      },
      {
       "type": "reach-anchor",
@@ -26,7 +31,12 @@
       ],
       "title": "Cross the Barrow Field",
       "hint": "The gatehouse stands north across the graves. You can leave the armored shape kneeling among the barrows where it is — the ground is wide on either side of it.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party crosses the barrow field, past the kneeling armored shape, to the gatehouse approach.",
+       "subject": "anchor/l0-gate-approach"
+      }
      }
     ],
     "on_objective_complete": {
@@ -49,7 +59,12 @@
       },
       {
        "type": "spawn-npc",
-       "npc": "npc/barrow-warden"
+       "npc": "npc/barrow-warden",
+       "happening": {
+        "verb": "arrives",
+        "text": "The Barrow Warden takes its kneeling place among the barrows, athwart the path to the gate.",
+        "subject": "npc/barrow-warden"
+       }
       }
      ]
     },
@@ -59,7 +74,39 @@
       "style": "chat",
       "text": "The portcullis ahead rises and falls to a rhythm nothing living is keeping."
      }
-    ]
+    ],
+    "happening": {
+     "verb": "arrives",
+     "text": "The party lands on the barrow shore, takes up class and kit at the tide-line fire, and crosses the graves to the gate."
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "beaching her boat by the driftwood fire, waiting to send the newest crossing up the barrow field",
+      "dialogue": "dlg/fw-root"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "sweeping the cold chapel hearth, keeping the vigil he's kept for years, waiting on visitors he no longer expects",
+      "dialogue": "dlg/sx-root"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "dlg/bw-root",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
+    }
    },
    {
     "id": "quest/the-gate-tax",
@@ -70,7 +117,12 @@
       "anchor": "anchor/l1a-ward",
       "title": "Pass the Portcullis",
       "hint": "Stand in the watch arch and count the gate's rhythm before you step. It does not slow down for anyone.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party reads the portcullis's rhythm and crosses on an open beat.",
+       "subject": "anchor/l1a-ward"
+      }
      },
      {
       "type": "reach-anchor",
@@ -81,7 +133,12 @@
       ],
       "title": "Climb the Worn Stair",
       "hint": "The treads are worn smooth down the middle — by what, exactly? The alcove halfway up is deeper than it looks.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party climbs the boulder stair's polished centre lane and reaches the stair-head, the spill-shaft shortcut visible below.",
+       "subject": "anchor/l1a-stair-head"
+      }
      }
     ],
     "on_objective_complete": {
@@ -97,6 +154,38 @@
     "trigger": {
      "type": "quest-complete",
      "quest": "quest/the-landing"
+    },
+    "happening": {
+     "verb": "arrives",
+     "text": "The party reads the portcullis's rhythm, crosses on an open beat, and climbs the boulder stair to the wall."
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "still minding the tide-line fire, watching the graves for a party she already sent up them",
+      "dialogue": "unchanged"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "still sweeping the chapel hearth, unseen by a party crossing the barrow field and climbing the worn stair",
+      "dialogue": "unchanged"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "unchanged",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
     }
    },
    {
@@ -108,7 +197,12 @@
       "anchor": "anchor/l1b-parapet-north",
       "title": "Walk the Wall",
       "hint": "The wall walk runs open to the sky. The keep's wardens stood their posts here; some of them have not stopped.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "survives",
+       "text": "The party walks the open wall-walk and survives the sentinel posted there since the wardens hollowed.",
+       "subject": "actor/wall-sentinel"
+      }
      },
      {
       "type": "talk-to",
@@ -118,7 +212,12 @@
        "obj/the-parapet"
       ],
       "title": "Find the Sexton",
-      "hint": "An old man sweeps a cold hearth in the chapel across the courtyard."
+      "hint": "An old man sweeps a cold hearth in the chapel across the courtyard.",
+      "happening": {
+       "verb": "learns",
+       "text": "The party finds the Sexton sweeping his cold hearth in the chapel and learns the keep still has a caretaker.",
+       "subject": "npc/sexton"
+      }
      }
     ],
     "on_objective_complete": {
@@ -145,6 +244,38 @@
     "trigger": {
      "type": "quest-complete",
      "quest": "quest/the-gate-tax"
+    },
+    "happening": {
+     "verb": "arrives",
+     "text": "The party walks the open wall-walk and finds the Sexton keeping his cold hearth in the chapel."
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "keeping the tide-line fire lit, listening for a bell she has not yet heard",
+      "dialogue": "unchanged"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "sweeping the hearth, about to watch the door open at last on the party crossing his threshold",
+      "dialogue": "unchanged"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "unchanged",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
     }
    },
    {
@@ -156,7 +287,12 @@
       "anchor": "anchor/l3-shallows",
       "title": "Go Down the Drowned Way",
       "hint": "Through the undercroft door, a ledge overhangs the flooded cistern. The drop is the only way down, and it is a door that closes itself behind you.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party drops through the undercroft door into the flooded cistern, the only way down.",
+       "subject": "anchor/l3-shallows"
+      }
      },
      {
       "type": "reach-anchor",
@@ -167,7 +303,12 @@
       ],
       "title": "Reach the Barred Door's Far Side",
       "hint": "Past the pillars, past the shallows, up the far climb. The dart gallery over the exit stair has a lever behind a grate on the far side of it.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "opens",
+       "text": "The party survives the cistern pillars' ambush and lifts the bar sealing the far door, from the inside.",
+       "subject": "anchor/l3-unlock"
+      }
      },
      {
       "type": "talk-to",
@@ -177,7 +318,12 @@
        "obj/the-bar"
       ],
       "title": "Return to the Hearth",
-      "hint": "The bar lifts from this side. It will never fall again."
+      "hint": "The bar lifts from this side. It will never fall again.",
+      "happening": {
+       "verb": "arrives",
+       "text": "The party returns to the Sexton through the door they just opened, and he sets his broom aside.",
+       "subject": "npc/sexton"
+      }
      }
     ],
     "on_objective_complete": {
@@ -199,6 +345,39 @@
     "trigger": {
      "type": "quest-complete",
      "quest": "quest/the-hollow-watch"
+    },
+    "happening": {
+     "verb": "opens",
+     "text": "The party descends into the flooded cistern and lifts the chapel's barred side door from the inside, for good.",
+     "subject": "anchor/l3-shortcut-a"
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "minding the fire and the empty boat, the crossing schedule unchanged by what is happening under the keep",
+      "dialogue": "unchanged"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "waiting by the newly-lit chapel hearth for the party to come back up from the drowned way",
+      "dialogue": "unchanged"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "unchanged",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
     }
    },
    {
@@ -209,7 +388,12 @@
       "id": "obj/sound-it",
       "anchor": "anchor/l2-cracked-bell",
       "title": "Strike the Cracked Bell",
-      "hint": "The old alarm bell hangs cracked in the chapel. The Sexton says the wardens remember it. He does not say it as encouragement."
+      "hint": "The old alarm bell hangs cracked in the chapel. The Sexton says the wardens remember it. He does not say it as encouragement.",
+      "happening": {
+       "verb": "opens",
+       "text": "The party strikes the cracked alarm bell, and the keep's gate and wall breaches answer by falling open.",
+       "subject": "anchor/l2-cracked-bell"
+      }
      },
      {
       "type": "kill",
@@ -219,7 +403,12 @@
        "obj/sound-it"
       ],
       "title": "Hold the Gate Breach",
-      "hint": "They come through the gate breach in marching order, armed, remembering the drill."
+      "hint": "They come through the gate breach in marching order, armed, remembering the drill.",
+      "happening": {
+       "verb": "survives",
+       "text": "The party holds the gate breach against two Hollow Gate-Warders marching in remembered drill order.",
+       "subject": "wave/gate-assault"
+      }
      },
      {
       "type": "kill",
@@ -229,7 +418,12 @@
        "obj/hold-the-gate"
       ],
       "title": "Hold the Wall Breach",
-      "hint": "The gate column is down, and the wall breach answers with the second — the keep sends its wardens the way it always drilled them: in waves."
+      "hint": "The gate column is down, and the wall breach answers with the second — the keep sends its wardens the way it always drilled them: in waves.",
+      "happening": {
+       "verb": "survives",
+       "text": "The party holds the wall breach against the second wave the keep sends the way it always drilled.",
+       "subject": "wave/wall-assault"
+      }
      },
      {
       "type": "kill",
@@ -239,7 +433,12 @@
        "obj/hold-the-wall"
       ],
       "title": "Lay the Grave Echoes",
-      "hint": "The breaches are quiet, and still something arrives — straight out of the grave-soil, at the edge of what it can sense."
+      "hint": "The breaches are quiet, and still something arrives — straight out of the grave-soil, at the edge of what it can sense.",
+      "happening": {
+       "verb": "survives",
+       "text": "The party lays the grave echoes that rise at the edge of what the keep can still sense.",
+       "subject": "wave/grave-echoes"
+      }
      }
     ],
     "on_objective_complete": {
@@ -254,15 +453,30 @@
       },
       {
        "type": "open-gate",
-       "anchor": "anchor/l2-breach-gate"
+       "anchor": "anchor/l2-breach-gate",
+       "happening": {
+        "verb": "opens",
+        "text": "The gate breach falls open at the bell's alarm.",
+        "subject": "anchor/l2-breach-gate"
+       }
       },
       {
        "type": "open-gate",
-       "anchor": "anchor/l2-breach-wall"
+       "anchor": "anchor/l2-breach-wall",
+       "happening": {
+        "verb": "opens",
+        "text": "The wall breach falls open at the same stroke.",
+        "subject": "anchor/l2-breach-wall"
+       }
       },
       {
        "type": "spawn-wave",
-       "wave": "wave/gate-assault"
+       "wave": "wave/gate-assault",
+       "happening": {
+        "verb": "arrives",
+        "text": "The Hollow Gate-Warders arrive through the open breach, marching in remembered drill order.",
+        "subject": "wave/gate-assault"
+       }
       },
       {
        "type": "narrate",
@@ -273,13 +487,23 @@
      "obj/hold-the-wall": [
       {
        "type": "spawn-wave",
-       "wave": "wave/grave-echoes"
+       "wave": "wave/grave-echoes",
+       "happening": {
+        "verb": "arrives",
+        "text": "The Grave Echoes rise out of the grave-soil at the muster yard's edge.",
+        "subject": "wave/grave-echoes"
+       }
       }
      ],
      "obj/hold-the-gate": [
       {
        "type": "spawn-wave",
-       "wave": "wave/wall-assault"
+       "wave": "wave/wall-assault",
+       "happening": {
+        "verb": "arrives",
+        "text": "The Hollow Wall-Warder arrives through the wall breach, the keep's second answer.",
+        "subject": "wave/wall-assault"
+       }
       }
      ]
     },
@@ -293,6 +517,38 @@
     "trigger": {
      "type": "quest-complete",
      "quest": "quest/the-drowned-way"
+    },
+    "happening": {
+     "verb": "survives",
+     "text": "The party strikes the cracked alarm bell and holds the courtyard through three waves of the keep's remembered drill."
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "still at her fire on the shore, too far below to hear the alarm bell but not the courtyard answering it",
+      "dialogue": "unchanged"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "standing by after saying his piece — the door is open, the alarm about to sound, the fight not his to fight",
+      "dialogue": "dlg/sx-open"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "unchanged",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
     }
    },
    {
@@ -304,7 +560,12 @@
       "anchor": "anchor/l4-rope-room",
       "title": "Climb to the Rope Room",
       "hint": "The tower stair rises from the cistern's far landing. The rope room above holds a cold fire-bowl.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party climbs the tower stair to the rope room and lights its small, steady fire.",
+       "subject": "anchor/l4-rope-room"
+      }
      },
      {
       "type": "reach-anchor",
@@ -315,7 +576,12 @@
       ],
       "title": "Enter the Bell Loft",
       "hint": "Stop at the loft door before you walk in. Look up. Count the rafters, and what the rafters hold.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party reaches the bell loft door and counts the rafters, and what waits on them.",
+       "subject": "anchor/l4-loft"
+      }
      },
      {
       "type": "kill",
@@ -325,7 +591,12 @@
        "obj/the-loft"
       ],
       "title": "End the Keeper's Watch",
-      "hint": "It walks the ring around the bell pit and has never once broken step. Watch a full round from the door — then choose where the round is thinnest."
+      "hint": "It walks the ring around the bell pit and has never once broken step. Watch a full round from the door — then choose where the round is thinnest.",
+      "happening": {
+       "verb": "dies",
+       "text": "The Bellkeeper falls, its endless round around the bell pit finally broken.",
+       "subject": "wave/bellkeeper"
+      }
      }
     ],
     "on_objective_complete": {
@@ -343,7 +614,12 @@
       },
       {
        "type": "spawn-wave",
-       "wave": "wave/bellkeeper"
+       "wave": "wave/bellkeeper",
+       "happening": {
+        "verb": "arrives",
+        "text": "The Bellkeeper's round resumes overhead, heavy and unbroken, the moment the rope-room fire catches.",
+        "subject": "wave/bellkeeper"
+       }
       }
      ]
     },
@@ -357,6 +633,39 @@
     "trigger": {
      "type": "quest-complete",
      "quest": "quest/the-bell-toll"
+    },
+    "happening": {
+     "verb": "dies",
+     "text": "The Bellkeeper falls on its own ring, and its endless round around the bell pit finally ends.",
+     "subject": "wave/bellkeeper"
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "minding the tide-line fire, counting a longer wait than she has counted in years",
+      "dialogue": "unchanged"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "keeping his hearth while the tower above answers the alarm he warned would come",
+      "dialogue": "unchanged"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "unchanged",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
     }
    },
    {
@@ -367,7 +676,12 @@
       "id": "obj/raise-it",
       "anchor": "anchor/l4-bell-hang",
       "title": "Raise the Drowned Bell",
-      "hint": "The yoke over the pit is empty. Haul the drowned bell home to it."
+      "hint": "The yoke over the pit is empty. Haul the drowned bell home to it.",
+      "happening": {
+       "verb": "gains",
+       "text": "The party hauls the drowned bell home to its empty yoke, and the keep gains back the one thing it lost.",
+       "subject": "item/drowned-bell"
+      }
      },
      {
       "type": "reach-anchor",
@@ -378,7 +692,12 @@
       ],
       "title": "Take the Bell Rope Down",
       "hint": "The grate over the pit stands open. The rope falls twenty-two blocks into the well it was hauled from — step off, or take the stairs if your knees object. The climb is over either way.",
-      "radius": 3
+      "radius": 3,
+      "happening": {
+       "verb": "arrives",
+       "text": "The party takes the bell rope down, off the ring and through the drop, to the rope room below.",
+       "subject": "anchor/l4-rope-foot"
+      }
      },
      {
       "type": "talk-to",
@@ -388,7 +707,12 @@
        "obj/the-fold"
       ],
       "title": "Tell the Ferrywoman",
-      "hint": "Bells carry over water, and she rows by the old bell-times. The tide-gate by the rope room stands open; her boat is at the pier below."
+      "hint": "Bells carry over water, and she rows by the old bell-times. The tide-gate by the rope room stands open; her boat is at the pier below.",
+      "happening": {
+       "verb": "arrives",
+       "text": "The party finds the Ferrywoman waiting at the pier, already rowed around on the first true stroke, and tells her the bell is home.",
+       "subject": "npc/ferrywoman-pier"
+      }
      }
     ],
     "on_objective_complete": {
@@ -408,11 +732,21 @@
       },
       {
        "type": "open-gate",
-       "anchor": "anchor/l4-rope-drop"
+       "anchor": "anchor/l4-rope-drop",
+       "happening": {
+        "verb": "opens",
+        "text": "The grate over the bell pit falls open, the rope drop finally a way down instead of a warning.",
+        "subject": "anchor/l4-rope-drop"
+       }
       },
       {
        "type": "open-gate",
-       "anchor": "anchor/l4-tide-gate"
+       "anchor": "anchor/l4-tide-gate",
+       "happening": {
+        "verb": "opens",
+        "text": "Far below, iron grinds off the tide-gate — the sea is told to open the door shut on its side of the ledger.",
+        "subject": "anchor/l4-tide-gate"
+       }
       },
       {
        "type": "narrate",
@@ -421,11 +755,21 @@
       },
       {
        "type": "despawn-npc",
-       "npc": "npc/ferrywoman"
+       "npc": "npc/ferrywoman",
+       "happening": {
+        "verb": "departs",
+        "text": "The Ferrywoman leaves her tide-line fire, off toward the pier, called by the first true stroke.",
+        "subject": "npc/ferrywoman"
+       }
       },
       {
        "type": "spawn-npc",
-       "npc": "npc/ferrywoman-pier"
+       "npc": "npc/ferrywoman-pier",
+       "happening": {
+        "verb": "arrives",
+        "text": "The Ferrywoman is waiting at the pier, having rowed around the headland the moment the bell carried.",
+        "subject": "npc/ferrywoman-pier"
+       }
       }
      ]
     },
@@ -436,12 +780,48 @@
       "text": "THE TIDE OBEYS"
      },
      {
-      "type": "campaign-complete"
+      "type": "campaign-complete",
+      "happening": {
+       "verb": "seals",
+       "text": "The tide obeys the raised bell, and the party's crossing is done."
+      }
      }
     ],
     "trigger": {
      "type": "quest-complete",
      "quest": "quest/the-keeper"
+    },
+    "happening": {
+     "verb": "seals",
+     "text": "The bell's return seals the tide's old debt to the keep, and the crossing the Ferrywoman kept open for years is finally answered."
+    },
+    "cast": {
+     "npc/ferrywoman": {
+      "at": "anchor/l0-tide-line",
+      "doing": "minding the tide-line fire one more time, listening for the stroke she has waited years to hear",
+      "dialogue": "unchanged"
+     },
+     "npc/sexton": {
+      "at": "anchor/l2-altar",
+      "doing": "keeping the chapel hearth, the bell's business finally out of his hands",
+      "dialogue": "unchanged"
+     },
+     "npc/barrow-warden": [
+      {
+       "at": "anchor/l0-elite-dormant",
+       "doing": "kneeling among the barrows, sword point-down, unmoved since the graves were filled",
+       "dialogue": "unchanged",
+       "forbids_flags": [
+        "flag/warden-struck"
+       ]
+      },
+      {
+       "at": "offstage",
+       "requires_flags": [
+        "flag/warden-struck"
+       ]
+      }
+     ]
     }
    }
   ],
@@ -517,46 +897,11 @@
        "minecraft:knockback": 1
       }
      }
-    }
+    },
+    "tier": "elite"
    }
   ],
-  "ambushes": [
-   {
-    "id": "ambush/wall-watch",
-    "at": "anchor/l1b-parapet-mid",
-    "actors": [
-     "actor/wall-sentinel"
-    ],
-    "trigger": {
-     "on": "approach",
-     "range": 4
-    }
-   },
-   {
-    "id": "ambush/cistern-pillars",
-    "at": "anchor/l3-item-alcove",
-    "actors": [
-     "actor/pillar-warden-a",
-     "actor/pillar-warden-b"
-    ],
-    "trigger": {
-     "on": "approach",
-     "range": 3
-    }
-   },
-   {
-    "id": "ambush/the-rafters",
-    "at": "anchor/l4-loft",
-    "actors": [
-     "actor/rafter-1",
-     "actor/rafter-2"
-    ],
-    "trigger": {
-     "on": "approach",
-     "range": 4
-    }
-   }
-  ],
+  "ambushes": [],
   "shortcuts": [
    {
     "id": "shortcut/chapel-door",
@@ -717,7 +1062,8 @@
        "main_hand": "minecraft:iron_sword"
       }
      }
-    ]
+    ],
+    "tier": "boss"
    },
    {
     "id": "wave/grave-echoes",
@@ -749,20 +1095,162 @@
     "effects": [
      {
       "type": "despawn-npc",
-      "npc": "npc/barrow-warden"
+      "npc": "npc/barrow-warden",
+      "happening": {
+       "verb": "departs",
+       "text": "The kneeling Barrow Warden is gone from the barrows the instant it is struck.",
+       "subject": "npc/barrow-warden"
+      }
+     },
+     {
+      "type": "set-flag",
+      "flag": "flag/warden-struck"
      },
      {
       "type": "spawn-actor",
-      "actor": "actor/barrow-warden"
+      "actor": "actor/barrow-warden",
+      "happening": {
+       "verb": "arrives",
+       "text": "The Barrow Warden's real twin stands up where the puppet knelt, armored and answering.",
+       "subject": "actor/barrow-warden"
+      }
      },
      {
       "type": "unleash-actor",
-      "actor": "actor/barrow-warden"
+      "actor": "actor/barrow-warden",
+      "happening": {
+       "verb": "gains",
+       "text": "It gains a target — whoever struck it — and gives chase for the first time in years.",
+       "subject": "actor/barrow-warden"
+      }
      },
      {
       "type": "narrate",
       "style": "chat",
       "text": "The Barrow Warden rises out of its kneel, unhurried, like a man standing up from a grave he dug himself, and answers the question you asked."
+     }
+    ]
+   },
+   {
+    "id": "trigger/wall-watch",
+    "at": "anchor/l1b-parapet-mid",
+    "on": {
+     "on": "approach",
+     "range": 4
+    },
+    "once": true,
+    "effects": [
+     {
+      "type": "spawn-actor",
+      "actor": "actor/wall-sentinel",
+      "happening": {
+       "verb": "arrives",
+       "text": "The Wall-Sentinel is standing the parapet mid-walk, exactly where the wardens posted it, as the party steps into range.",
+       "subject": "actor/wall-sentinel"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/wall-sentinel",
+      "happening": {
+       "verb": "gains",
+       "text": "It gains its post's old orders back and turns on whoever just walked the open wall.",
+       "subject": "actor/wall-sentinel"
+      }
+     }
+    ]
+   },
+   {
+    "id": "trigger/cistern-pillars",
+    "at": "anchor/l3-item-alcove",
+    "on": {
+     "on": "approach",
+     "range": 3
+    },
+    "once": true,
+    "effects": [
+     {
+      "type": "spawn-actor",
+      "actor": "actor/pillar-warden-a",
+      "happening": {
+       "verb": "arrives",
+       "text": "A Pillar-Warden is posted among the cistern pillars, axe in hand, as the party nears the item alcove.",
+       "subject": "actor/pillar-warden-a"
+      }
+     },
+     {
+      "type": "spawn-actor",
+      "actor": "actor/pillar-warden-b",
+      "happening": {
+       "verb": "arrives",
+       "text": "A second Pillar-Warden stands its own pillar beside the first.",
+       "subject": "actor/pillar-warden-b"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/pillar-warden-a",
+      "happening": {
+       "verb": "gains",
+       "text": "It gains motion and swings for whoever reached the alcove.",
+       "subject": "actor/pillar-warden-a"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/pillar-warden-b",
+      "happening": {
+       "verb": "gains",
+       "text": "It gains motion at the same instant, closing the pincer.",
+       "subject": "actor/pillar-warden-b"
+      }
+     }
+    ]
+   },
+   {
+    "id": "trigger/the-rafters",
+    "at": "anchor/l4-loft",
+    "on": {
+     "on": "approach",
+     "range": 4
+    },
+    "once": true,
+    "effects": [
+     {
+      "type": "spawn-actor",
+      "actor": "actor/rafter-1",
+      "happening": {
+       "verb": "arrives",
+       "text": "A husk is perched on the loft rafters as the party reaches the doorway.",
+       "subject": "actor/rafter-1"
+      }
+     },
+     {
+      "type": "spawn-actor",
+      "actor": "actor/rafter-2",
+      "happening": {
+       "verb": "arrives",
+       "text": "A second husk perches the rafter opposite it.",
+       "subject": "actor/rafter-2"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/rafter-1",
+      "happening": {
+       "verb": "gains",
+       "text": "It gains its footing and drops from the rafter into the fight.",
+       "subject": "actor/rafter-1"
+      }
+     },
+     {
+      "type": "unleash-actor",
+      "actor": "actor/rafter-2",
+      "happening": {
+       "verb": "gains",
+       "text": "It drops with it, off the opposite rafter.",
+       "subject": "actor/rafter-2"
+      }
      }
     ]
    }
