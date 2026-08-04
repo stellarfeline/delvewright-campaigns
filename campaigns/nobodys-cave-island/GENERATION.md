@@ -1409,3 +1409,90 @@ unchanged (20 `DW0451`, 2 `DW0359`). Chronicles emitted: `flee` (20 beats),
 `wait-nobody`/`wait-lie`/`wait-boast` (49 beats each). PackTest/bot deferred
 (#144). READMEs now carry the player-facing version marker (engine ≥ 0.1.0 ·
 campaign format 0.8) per the owner directive; machine check is task #147.
+
+## Round 20 — version-adoption: the giant gains a tier (task #158)
+
+Explicit, proof-carrying version round, per CLAUDE.md's version-adoption
+discipline — no feature work mixed in. Motivation: `actor/polyphemus-walker`
+has never carried `actors[].tier`, so the bot ladder's inverted floor gate
+has printed it as an unclassified hostile — invisible to floor coverage
+exactly the way the bell's Barrow Warden was before task #153.
+
+### What was bumped, and why
+
+Nothing moved. `quests.json` and `classes.json` reached `dsl_version 0.8.0`
+in round 18 (the `happening`/cast pass and the kit-potion `contents` item,
+respectively); `quest-plan.json` reached it in round 19 (`branch_points`).
+`actors[].tier` (reserved `DW0141` pre-0.8) was therefore already unlocked —
+confirmed against `docs/reference/compiler.md`'s `DW0141` row before writing
+anything. `world.json` and `npcs.json` stay `0.6.0`: neither the v0.7 surface
+(stage-5 `cast`, wave `tier`) nor the v0.8 surface touches stage 1 or 2 at
+all — checked field by field against the "Since" column, not assumed. This
+round's entire diff is one field on one actor.
+
+### Tier choice: `polyphemus-walker` elite, no other actor tiered
+
+`actor/polyphemus-walker` → `tier: "elite"`. Four stage-5 actors puppet the
+one character (`DESIGN.md` §3: "four spawn sites, one character"), and only
+one of them is a fight the floor gate can measure:
+
+- `polyphemus-herdsman` (the entrance walk, B3) is never `unleash-actor`ed —
+  a scripted puppet handed off to the dialogue statue, not a hostile.
+- `polyphemus-roused` (either strike, B4) is unleashed but deliberately
+  **unwinnable**: "the starting kits do not beat a warden; the player dies,
+  and checkpoint 2 restores the scene exactly as it was. Losing quickly is
+  how the unwinnable fight is marked" (`DESIGN.md` §2 B4). Not a billed
+  difficulty statement — a scripted-loss story beat.
+- `polyphemus-blinded` (after the eye, B5) is unleashed to roam for the
+  stealth beat — evaded, not fought to a kill (`DESIGN.md` §2 B5: "he
+  roams," paired with `begin-stealth`, not a `kill` objective).
+- `polyphemus-walker` (the mouth-side stand at the escape, B6) is the one
+  case `DESIGN.md` §8 item 6 calls **optional combat**: "Telegraphed
+  twice... Optional combat, so the spec-0023 winnability proofs do not bind
+  it." Skippable, never gates the critical path, and the party may choose to
+  fight it — the exact shape spec-0023 calls `elite`, not `boss`: the
+  bell's precedent (task #153) drew the same line at "mid-delve, skippable,
+  never gates the critical path" for the Barrow Warden. The campaign's real
+  climax — the blinding — is narratively an evasion the giant is never
+  actually killed in, on any branch (`DESIGN.md` §2's own frame: he is
+  blinded and evaded, not killed), so no single beat reads as "the boss
+  fight" in the spec-0023 sense of a billed, winnable set-piece; tiering
+  `walker` boss would overstate what is in fact the campaign's one optional
+  side-fight. Not ambiguous enough to stop on.
+
+No other hostile actor needed a tier: the tutorial `wave/surf` (the B0
+drowned-wave gear check) stays default `ordinary` — a gear tutorial, not a
+billed encounter, per `DESIGN.md` §2 B0.
+
+### Proof
+
+`delvec validate`/`analyze`/`build` (en + `--lang zh-cn`) exit 0 on engine
+main (`f90a872`, pulled fresh this round); English double build byte-identical.
+`validation/combat-plan.json`'s `floor_gate.covered` now carries
+`actor/polyphemus-walker` (`tier: elite`) with `not_covered: []` — before the
+tier field, `floor_gate.covered`/`.not_covered` and the plan's `actors[]` were
+all empty, confirmed by an isolated before/after diff on this exact round's
+sandbox build. Diagnostic set is unchanged at 19 `DW0451` + 2 `DW0359`
+advisories (measured identical with and without the tier field — the addition
+introduces no new finding of any kind). No live bot ladder this round
+(tier-only diff, no runtime behavior change) — the staging re-run covers it,
+per the owner's batch-playtest gate.
+
+**Two pre-existing, unrelated schema gaps block a from-source `delvec
+analyze` on this branch as checked out** (both predate this round, both
+already named in `DESIGN.md` §11 as owed to unmerged engine work, neither
+touched by this round's diff): the kit potion `contents` field
+(`classes.json`, engine branch `worker/kit-potion-contents`, "the flask
+pours something") and the collect objective's `container`/`item_name`/
+`fill_count` fields (`quests.json` `obj/cheese`, engine task #95, branch
+`worker/collect-adopt-container`) are both round-18 content authored against
+engine work that has not landed on `main`. The proof above was taken with those two fields (and their one dependent
+`zh-cn` l10n key) temporarily removed in the working tree to isolate this
+round's actual diff, verified with and without the `tier` field for the A/B
+comparison above, then reverted with `git checkout --` before this commit —
+`git diff` against `origin/worker/island-r14` is exactly the one-field
+addition described above.
+Fixing the two gaps is a separate, engine-dependent round: either the two
+engine branches merge to `main` first, or the two objects fall back to their
+pre-0.8 plain shape as a deliberate content decision — outside this task's
+scope and not decided here.
