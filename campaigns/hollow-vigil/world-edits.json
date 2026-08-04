@@ -1,0 +1,34 @@
+{
+  "dsl_version": "0.9.0",
+  "campaign_id": "hollow-vigil",
+  "stage": "world-edits",
+  "content": {
+    "batches": [
+      {
+        "id": "batch/open-the-gate-yard",
+        "area": "area/keep",
+        "note": "Open-air opening beat (owner directive 2026-08-04, /new-delve open-air rule), as far as the valley horizon currently allows. The roof comes off the entry hall: Barrowmere's gate yard stands open to the sky, so the delve opens under cherry-grove daylight and biome tint instead of glowstone in a sealed box, and every later beat stays interior on purpose. The fuller staging the directive asks for — walls down on the two faces that front the gap floor, so the party spawns looking at the cherry rim — is authored and proven correct in geometry (the keep walk plane and the valley gap floor are the same plane by the spec-0026 datum equation, both top y=63, and the gap floor begins one column out at x=-1 / z=-5) but is blocked upstream: letting the party onto the gap floor makes the whole surround reachable, and the annulus perimeter is an unfenced drop into void (DW0322, ~346 columns). It lands as soon as the surround gains outer-edge containment.",
+        "edits": [
+          {
+            "verb": "select",
+            "name": "region/yard-roof",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 0,
+                "prefab": "prefab/keep-spawn-hall"
+              },
+              "min": [0, 4, 0],
+              "max": [8, 4, 8]
+            }
+          },
+          {
+            "verb": "carve",
+            "region": "region/yard-roof"
+          }
+        ]
+      }
+    ]
+  }
+}

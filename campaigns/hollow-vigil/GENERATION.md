@@ -51,3 +51,52 @@ the mace has terrain to slam from, `languages: ["zh-cn"]` with a full
 hand-written Simplified-Chinese sidecar (owner plays the zh-cn build).
 Round-1 findings that drove tooling fixes are recorded in the repo specs;
 round-1's seed-38 flat layout is superseded by this version.
+
+## v3 — version-adoption round 0.3.0 → 0.9.0 + cherry-valley horizon (2026-08-04)
+
+Upgrade-on-touch round (CLAUDE.md version-adoption discipline). All six stages
+raised 0.3.0 → 0.9.0 in one pass; the layout, seed, quest DAG, flag chain and
+combat tuning are unchanged, so this is an adoption and restaging round, not a
+redesign. No souls surface (checkpoints, bonfires, rest, flasks) was retrofitted
+— that is a separate conversion, deliberately out of scope here.
+
+What the fences required, stage by stage:
+
+- **Stage 1 `world`** — `horizon: "cherry-valley"` (the spec-0026 string
+  shorthand for `{base: "valley", flora: "cherry", palette: "stone-petal"}`) plus
+  the `boundary: {}` every non-void base now owes (`DW0320`, generalized by
+  spec-0026 §5; default margin 16). The keep tileset declares `walk_y: 1`, so the
+  per-area datum equation puts the area base at `64 − 1 = 63` and the keep walk
+  plane at **y=64** — flush with the valley gap floor's top block at y=63, dry
+  and level with no author action. `DW0364`/`DW0367` green.
+- **Stage 5 `quests`** — the v0.7 `cast` ledger on every quest for both NPCs
+  (`DW0460`/`DW0463`), and the v0.8 `happening` on every quest, every objective
+  and every story-node effect (`DW0481`). Hedric and Maren keep their premise
+  trees for the opening quest and move to per-quest **bark pools** afterwards, so
+  neither of them is still offering premise questions after the summons is
+  spoken — the defect class the ledger exists to surface.
+- **Stage 4 `quest-plan`** — no `branch_points`. The Hollow Vigil is a single
+  spine with no story fork, and at 0.9.0 that claim is *verified* rather than
+  assumed (`DW0480` finds no undeclared fork).
+- **Stage 6 `dialogue`** — two option labels were over the dialog-button budget
+  (`DW0331`, engine task #111): "I'm ready to swear the night's work." (179 px)
+  and "Speak the summons. I am ready." (157 px), against 146 px usable. Shortened
+  to "I'm ready to swear." and "Speak the summons."; the meaning they carried is
+  already in Maren's own reply, which wraps. Both zh-cn translations were
+  re-derived rather than left pointing at the retired English, and both now sit
+  inside the ~12-Han button budget.
+- **l10n** — 18 new bark keys translated in-agent (the sanctioned default when
+  `[i18n]` has no key configured), against the existing glossary
+  (冢泽 / 守夜 / 初代守望者 / 深处之门 / 冢钥 / 卫戍). Coverage exact, `DW0180` green.
+
+**Open-air restaging** (owner directive 2026-08-04, `/new-delve` open-air rule).
+The entry hall's roof is carved off in a new stage-7 `world-edits` batch, so the
+delve opens in a roofless gate yard under cherry-grove daylight rather than
+glowstone in a sealed box; every later beat stays interior on purpose. The fuller
+staging the directive asks for — the party spawning on the gap floor looking at
+the cherry rim — is geometrically ready but blocked upstream (see below).
+
+**Not shipped this round:** the barrow-altar finale stays interior. Restaging it
+outdoors needs an open-air keep-tileset piece, and the keep tileset is twelve
+enclosed pieces by construction — new tileset work, which the round's brief
+excluded.
