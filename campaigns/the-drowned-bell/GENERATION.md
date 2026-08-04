@@ -653,3 +653,134 @@ names and voice are taken from the campaign's own `l10n/zh-cn.json` (沉钟,
 晚钟堡, 摆渡妇, 司事, 坟场戍卫, and the four class names) so the page and the
 game agree. Both pages are player/host-facing only: no pipeline machinery, no
 diagnostics, no round history.
+
+### Round-4a ladder (engine main `fac18f8`: #235 + #238 + #239 + #249)
+
+Isolated project `dw-worker-bell4a`, mutex holder `bell4a`, `worker-override.yaml`
+(config verified: no `container_name`, no published port), fresh volumes before
+each stage and after teardown, `DELVEWRIGHT_RUN_TIMEOUT_MS=2700000` (the knob is
+plumbed now; the 20-minute default is what stopped run four).
+
+#### PackTest — GREEN
+
+> `========= 37 GAME TESTS COMPLETE IN 959.4 ms ======================`
+> `All 37 required tests passed :)`
+
+Exit 0. 33 templates in run seven, **37** now.
+
+#### Bot ladder — `die-retry` GREEN, `critical-path` RED at step 22 of 23
+
+Exit 3. Both stages ran.
+
+| stage | ran | passed | failures |
+| --- | --- | --- | --- |
+| `critical-path` | true | **false** | `step 22 (talk-to) failed: bot died at [24, 63, -15] — likely cause: delve-bot was slain by Hollow Gate-Warder` |
+| `die-retry` | true | **true** | — |
+
+**All four encounters `phase_reached: "cleared"`, 5 assist windows each, 20 in
+total.** The Bellkeeper was reached, fought and killed — the first time in
+**eight** runs.
+
+| encounter | wave | trials | at_checkpoint | respawn | kit_kept | returned | re_engaged | outcome |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `obj/hold-the-gate` | `wave/gate-assault` | 2/2 | true | `[42,71,-101]` | true | true | true | `re-engaged` ×2 |
+| `obj/hold-the-wall` | `wave/wall-assault` | 2/2 | true | `[42,71,-101]` | true | true | true | `re-engaged` ×2 |
+| `obj/the-echoes` | `wave/grave-echoes` | 2/2 | true | `[42,71,-101]` | true | true | true | `re-engaged` ×2 |
+| `obj/the-keeper` | `wave/bellkeeper` | 2/2 | true | `[97,71,-96]` | true | true | true / false | `re-engaged`, then `cleared-before-retry` |
+
+`rests[]` — all three fires armed at the new cells: BF1 `anchor/l0-bonfire`
+`[10,63,31]` step 2, BF2 `anchor/l2-bonfire` `[42,71,-101]` step 8, BF3
+`anchor/l4-bonfire` `[97,71,-96]` step 17.
+
+**Run seven's re-seat accumulation defect is GONE.** Every `respawns_on_rest`
+wave came back at its declared count, as all-new entities, at full health —
+`carried_over: 0` on all six of their trials, `declared == present` every time,
+`damaged: 0` every time:
+
+> `wave/gate-assault death 2: 2/2 wave mob(s) after 250ms, 4.5–4.6 blocks from the anchor, 0/2 damaged`
+> `wave/wall-assault death 1: 1/1 wave mob(s) after 251ms, 4.3–4.3 blocks from the anchor, 0/1 damaged`
+> `wave/grave-echoes death 1: 2/2 wave mob(s) after 250ms, 3.6–11.8 blocks from the anchor, 0/2 damaged`
+
+Run seven read 4 standing against 2 declared, and 6 against 1. This run reads
+exactly the declared count, every time.
+
+The Bellkeeper's `carried_over: 1` on death 1 is **correct and not a defect**:
+`wave/bellkeeper` declares no `respawns_on_rest`, so the boss you already
+engaged is the boss still standing. Death 2 is `cleared-before-retry` — a
+documented PASS (`obj/the-keeper` was already complete, so the death cost no
+progress).
+
+#### The two old reds
+
+**(a) gate-assault bot-floor variance — CLEARED.** Run six had the bot lose the
+gate fight on its feet with `assist_windows: []`; run seven fought it but
+accumulated survivors. This run: `phase_reached: "cleared"`, 5 assist windows,
+2/2 trials, both `re-engaged`, no carry-over. The gate siege is winnable at
+`normal` and now measurable.
+
+**(b) portcullis phase-read — FIXED, and the evidence is explicit.** #239's
+observed gate-edge machinery is visible doing exactly what it was built to do:
+
+> `[timed-gate] anchor anchor/l1a-ward: proven route crosses timed-gate/portcullis (70t open / 30t closed, 100t cycle ≈ 5.0s)`
+> `[timed-gate] anchor anchor/l1a-ward waypoint 3/5: crush gate ahead — staging at the edge of timed-gate/portcullis for a fresh window`
+> `[timed-gate] anchor anchor/l1a-ward waypoint 3/5: staged crossing of timed-gate/portcullis (budget 25.0s, min 3 attempts)`
+> `[timed-gate] gate is shut; waiting for it to open`
+> `[timed-gate] window open — crossing now`
+
+The bot staged at the edge, read the phase, waited out the shut, crossed on the
+open, and was not crushed. Step 4 passed and never came back.
+
+#### The new red — the walk home crosses re-armed siege ground
+
+The remaining failure is a **content/pacing fact, not a harness artifact**, and
+it is the shape only a run that gets this far can see.
+
+The finale is step 21 `reach anchor/l2-muster` → step 22 `talk-to
+npc/ferrywoman` on the shore. Resting at **BF3** (step 17, the rope room, before
+the Bellkeeper) re-seats `wave/gate-assault` and `wave/wall-assault` back in the
+courtyard — correctly, at full strength. The rope drop then lands the party in
+that same courtyard, and the walk home goes straight through the muster yard
+with the siege already won and standing again.
+
+Once aggroed, the re-seated Gate-Warders **pursued across the map**. The bodies
+say how far:
+
+> `Named entity 'Hollow Gate-Warder'/256 … x=24.50, y=69.64, z=-28.80 died: … was shot by Arrow`
+> `Named entity 'Hollow Gate-Warder'/257 … x=24.50, y=64.00, z=-16.24 died: … was killed`
+
+Their lane is in the courtyard at `[12,71,-85]`. They died at `z=-28.8` and
+`z=-16.2` — down the whole gatehouse descent, ~70 and ~85 blocks from the lane,
+three levels below it. The bot was walking a `talk-to` step, not fighting, and
+ate two stews on the way down without recovering (`health 4.5 → 0.6 → 0.0`):
+`rabbit_stew` fills hunger, and hunger regen cannot outrun a vindicator with a
+stone axe.
+
+Three separable questions, none of them touched this round, all of them the
+owner's:
+
+1. Should a rest at BF3 — past the siege, inside the tower — re-arm the courtyard
+   at all? `respawns_on_rest` is per-wave and global to every fire.
+2. Should the finale route cross the muster yard, or should the rope drop feed a
+   way out that does not?
+3. Is being chased three levels down by the siege you already beat the delve
+   working, or the delve leaking?
+
+Not tuned, not rerolled, and the bot's fencing is telemetry rather than the gate:
+the die-retry stage proved the same wave winnable eight times over on the way up.
+
+#### Unchanged, and still worth an engine look
+
+`floor_gate: {present: true, covered: [], not_covered: []}` and `actors: []` —
+the Barrow Warden has not appeared in the ledger for **eight** runs. It is an
+`actor` and only waves carry a `tier`; `actors[].tier` is 0.8.0 on the quests
+stage, which this campaign has not been raised to.
+
+`validation/fresh-volumes.sh --project dw-worker-bell4a` reported
+`verified clean (containers + volumes)` before the run and after teardown; the
+mutex was released by name.
+
+One new log observation, harmless but new: on world save the server logs
+`Failed to encode value 'DYING' to field 'pose': Invalid pose: dying` for the
+`Mannequin` entities backing the Sexton and the Ferrywoman. It is a `WARN` at
+serialization time, not a test failure — PackTest was 37/37 with it present —
+but a pose vanilla refuses to persist is worth an engine glance.
