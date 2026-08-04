@@ -887,3 +887,74 @@ Read against `crates/compiler/src/emit.rs` on engine main:
 - Diff surface: `quests.json` (finale bundle + two retargets), `npcs.json` +
   `dialogue.json` + `skins/` (the pier body), `l10n/zh-cn.json`, the two
   regenerated `tk-bell-tower` files.
+
+### Round-5 ladder (engine main `4a93cb7`)
+
+Isolated project `dw-worker-bell5`, mutex holder `bell5`, `worker-override.yaml`
+(config verified: no `container_name`, no published port),
+`validation/fresh-volumes.sh --project dw-worker-bell5` before every live run
+and after teardown, `DELVEWRIGHT_RUN_TIMEOUT_MS=2700000`.
+
+#### PackTest — GREEN
+
+> `========= 37 GAME TESTS COMPLETE IN 1.064 s ======================`
+> `All 37 required tests passed :)`
+
+Exit 0. Same 37 as r4a — the r5 surface (two `open-gate`s, a deferred NPC swap)
+adds no new template class.
+
+#### Bot ladder — run 1 RED (pre-finale variance), run 2 GREEN 24/24
+
+**Run 1, exit 3** — red at harness step 15 (export step 16, `obj/the-echoes`),
+before any r5-touched ground: `bot died at [7, 71, -108] — slain by Hollow
+Gate-Warder`. The server log makes the mechanism legible: each die-retry
+scripted death re-seats every met `respawns_on_rest` wave, the gate lane's last
+waypoint `[17,71,-107]` stands ~10 blocks from the wall-breach anchor
+`[5,71,-109]`, and the aggro-edge echoes converge on the same ground — so the
+walk back to the echoes met a pile of re-seated Gate-Warders + Wall-Warder +
+Grave Echoes at the breach. The bot killed three of them (`Hollow
+Wall-Warder/175`, `Hollow Gate-Warder/173`, `Grave Echo/182`, all at
+`x≈8, z≈-108`) and died to the fourth **after its approach assist window had
+already closed** (1200-tick bound). r4a walked the identical chain green — this
+is the documented bot-floor variance on an encounter this round did not touch,
+plus one harness observation worth an engine look: a bounded approach window
+can expire mid-pile, so the death that reds the step lands unassisted in
+exactly the segment task #121 exists to keep survivable. Not tuned, not
+weakened; both runs reported.
+
+**Run 2 (fresh volumes), exit 0** —
+
+> `critical path 'the-drowned-bell' PASSED (24 steps, 8 scripted death(s) survived)`
+
+| stage | ran | passed |
+| --- | --- | --- |
+| `critical-path` | true | **true** |
+| `die-retry` | true | **true** |
+
+All four encounters `phase_reached: "cleared"`, 5 assist windows each, 8/8
+trials completed. Re-seat fidelity clean on every `respawns_on_rest` wave:
+`declared == present`, `carried_over: 0`, `damaged: 0`, every trial. The
+Bellkeeper's `carried_over: 1` (and `damaged: 1` on trial 2) is the boss
+persisting across a death **with its wounds** — the correct non-re-seat
+behavior, unchanged from r4a. `rests[]`: all three fires, same cells as r4a.
+
+**The motivating red is green, and it is 21 seconds wide.** r4a died on a
+multi-minute walk home through three pursued levels; run 2's server log:
+
+> `[06:27:58] The Bellkeeper … died: slain by delve-bot`
+> `[06:28:08] [delve-bot: Triggered [dw.i_raise_it] (set value to 1)]`
+> `[06:28:29] [delve-bot: Triggered [dw.dlg_ferrywoman_pier] (set value to 2)]`
+
+Bell raised to campaign complete in **21 seconds**: ring → tower stairs →
+rope-foot (step 22) → tide-gate → sea-stair → pier (step 23). Zero deaths
+after the boss, zero hostile contact on the road home, no pursuit lines in the
+log. The two old greens held: the portcullis staged-edge crossing (staged,
+waited out the shut, crossed) and the Bellkeeper reached/fought/slain.
+
+Unchanged carry-overs, still worth their engine looks: `actors: []` (the
+Barrow Warden's tier gap, ten runs now), the mannequin `Invalid pose: dying`
+save WARN, and two routine `delve-bot moved wrongly!` lines during the boss
+fight.
+
+`fresh-volumes` reported `verified clean (containers + volumes)` before each
+run and after final teardown; the mutex was released by name.
