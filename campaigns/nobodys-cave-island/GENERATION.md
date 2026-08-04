@@ -1265,3 +1265,106 @@ target.
 `grace_ticks: 260` untouched; `DW0355` and `DW0410` silent with the arm at t0 —
 engine #204's rule (delaying an arm does not discharge the proof) holds in the
 other direction too, so removing the delay cannot make the beat less survivable.
+
+## Round 18 — the cheese is the barrel, and every beat says what it does
+
+The repeat finding closes. `obj/cheese` has been a `collect` since round 4, but
+the compiler *stamped its own chest* next to the racks, so the objective and the
+`hint` ("take a wheel from the barrel among them") disagreed with the room for
+four rounds and two playtests. Engine task #95 landed the three fields that fix
+it, and this round applies them.
+
+### The cheese (finding #33, open since round 12)
+
+```json
+"container": "anchor/cheese-barrel", "item_name": "Kefalotyri Cheese", "fill_count": 26
+```
+
+Proof, read out of the datapack: `activate_o_cheese.mcfunction` contains **no
+`setblock` at all** and 27 `item replace block 15 69 -47 container.<n>` lines —
+slot 0 the wheel the objective wants, slots 1–26 the padding that makes the
+barrel read full (vanilla fullness is occupied slots, not stack size). The zh
+build carries `custom_name={"text":"克法罗提里干酪"}` in the same position, so
+the name translates and the adjudication — which matches on item **id** — does
+not notice.
+
+### The anchor route: hand-added, NOT re-exported
+
+`anchor/cheese-barrel` is piece-local `[23,9,25]` in `island-mountain` — one of
+four `minecraft:barrel` cells the prefab has carried all along (`[21,9,24]`,
+`[21,9,25]`, `[23,9,24]`, `[23,9,25]`), the one diagonally adjacent to the
+`anchor/cheese-store` walk cell at `[22,9,26]`.
+
+**Provenance was checked first, and it decided the route.** `island-mountain` is
+nominally generator-owned (`island-terrain-generator`), but the generator emits
+**17** anchors while the metadata carries **28**. The other eleven — `eye`,
+`fire-side`, `hearth`, `mouth-side`, `pen-b`…`pen-j` — are hand-authored, added
+across rounds 10–13, and a re-export drops precisely those. That already happened
+once and had to be repaired (`830ce14`, "restore the hand-authored mountain
+anchors the re-export dropped"). So the anchor was added to the metadata by hand,
+the way its eleven neighbours live there, and the edit is proven **add-only** by a
+semantic diff rather than by a line diff (the re-serialization reorders keys, so
+the line diff is noise):
+
+```
+added  : ['anchor/cheese-barrel']
+LOST   : []
+changed: []
+non-anchor sections identical: True
+```
+
+The `.nbt` is untouched — no block moved, so no re-export was needed at all.
+
+### 102 happenings (spec-0025)
+
+`quests` and `dialogue` go to `dsl_version` 0.8.0. `DW0481` named all 102 sites
+and the round wrote all 102: 97 in `quests.json` (10 quests, 20 objectives, 67
+staging/gate/ending effects) and 5 on the story-weight dialogue options — the
+flee/wait fork and the three name answers at the wine.
+
+They are authored from the B0–B6 beats in `DESIGN.md` §2, which is what makes
+them worth reading; the diagnostic's own warning against placeholders is the
+point of the exercise. **Reading the chain back caught four real errors**: `departs`
+has to be true *of its subject*, and the party leaving the beach had been written
+as `departs(npc/elpenor)` — the one man who stays — while boarding the ship was
+`departs(npc/eurylochus)`. Those four now carry no subject at all, because the
+beat is about the party and the party is not an NPC. That is the forcing function
+working exactly as advertised: the declaration was wrong in a way the prose never
+would have shown.
+
+### Athena's gift actually pours now
+
+`classes` to 0.8.0; the Odysseus kit gains `minecraft:potion` with `contents:
+{potion: minecraft:long_night_vision}` as **Athena's Gift of Night Vision** /
+**雅典娜赐下的夜视之礼**. Round 3 deleted a renamed water bottle that granted
+nothing and moved the mitigation to the area declaration (#114) — that
+declaration is still the guarantee, together with round 16's camera lease. This
+is the fiction's half of it, and unlike its ancestor it is a real potion.
+
+### The chronicle is NOT emitted yet — a declaration gap, stated not hidden
+
+The per-branch chronicle is emitted only for a campaign that declares stage-4
+`branch_points`. This campaign's `quest-plan` is still `0.6.0` and declares none,
+so the happenings validate and feed nothing yet. Turning it on means bumping
+stage 4 and admitting `DW0480`–`DW0485` — including exclusive-content leakage and
+event contradiction — on a campaign whose one real fork has a death on only one
+side. Those will have findings, and findings there need owner rulings, so it is
+queued as its own round rather than rushed in behind the cheese. The wait branch
+was instead read end to end by hand against `DESIGN.md` §2 before pushing; it
+tracks B0–B6 with no beat missing and no beat out of order.
+
+### Also
+
+`DESIGN.md` §2 B6 was still describing Perimedes leaving "in two hops — a stand
+just inside the mouth that is the talk window", which round 14 deleted with
+`obj/hold-fast`. Folded in; the file is v7.
+
+### Proofs
+
+`delvec` built from `integration/island-r18` (`origin/main` + #243 + #245 + #244
++ #246). All via the CLI, since in-process build tests do not run the
+`compiler::branch` checks: `validate` and `analyze` exit 0; English and zh-cn
+builds both exit 0; English **double build byte-identical**; **`DW0331` zero**;
+advisories unchanged at 20 `DW0451` + 2 `DW0359`. PackTest run under the isolated
+`dw-worker-island18` project. The bot tier is deliberately **not** run: it is red
+for harness reasons under task #144, and the final green ladder waits on that.

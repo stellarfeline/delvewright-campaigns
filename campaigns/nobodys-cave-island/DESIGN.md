@@ -1,6 +1,6 @@
 # Nobody's Cave — Island Remake (authoritative design record)
 
-**v6 — 2026-08-04** (v5/v4/v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
+**v7 — 2026-08-04** (v6: 2026-08-04; v5/v4/v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
 authoritative design document for the `nobodys-cave-island` campaign. Where it
 and the stage JSONs disagree, one of the two is a defect.
 
@@ -130,10 +130,11 @@ keep-clear for every scatter.
   throat, clear of the rock and **2 blocks off the flock's lane**, so every
   back passes under his hands (round 12: the anchor was inside the mouth wall
   until `DW0450` proved it); the whole flock streams out past him, staggered,
-  and settles **in the meadow fold** (round 12); Perimedes goes out in two hops
-  — a stand just inside the mouth that is the talk window, then down to the
-  beach; Eurylochus goes to the gangplank; day returns and the weather clears
-  on the shore. Board, and **Ending A**.
+  and settles **in the meadow fold** (round 12); Perimedes goes out with the
+  flock in the same stagger and keeps going down to the strand — the belly-wool
+  talk window and its doubling-back were deleted in round 14 (§8 item 5), so he
+  leaves once and does not come back in; Eurylochus goes to the gangplank; day
+  returns and the weather clears on the shore. Board, and **Ending A**.
   **Pacing** (round 13's grace, trimmed in round 16): the stone and its
   narration land at t0, the giant takes his place beside the gap at **t80**
   (was t100) with the second half of the narration, the roar at t160, and the
@@ -455,3 +456,56 @@ that sentence.
    Eurylochus and Perimedes both teleport to the beach and walk back), and a
    night-vision lease shorter than the ending camera it has to survive. Both are
    root-caused in GENERATION round 16 and carry engine PRs.
+
+## 11. Round-18 amendment — the cheese is the barrel, and every beat says what it does
+
+1. **The cheese is the prefab's own barrel** (owner finding, open since round 12;
+   engine task #95). `obj/cheese` adopts `anchor/cheese-barrel` — a **new
+   anchor on a real barrel cell** in `island-mountain` (piece-local `[23,9,25]`,
+   one of the four barrels the prefab has always had among the racks) — names the
+   item **Kefalotyri Cheese** / **克法罗提里干酪**, and pads the barrel with
+   `fill_count: 26` so all 27 slots are occupied and it reads full. The compiler
+   now places **no chest at all**: the emitted `activate_o_cheese` is 27
+   `item replace block` lines into the barrel where it stands, and not one
+   `setblock`. The `hint` that has promised "a wheel from the barrel among them"
+   since round 4 is finally true.
+
+   **The anchor was added by hand, not by re-export.** `island-mountain`'s
+   metadata is mixed-authorship: the generator emits 17 anchors, the file carries
+   29. The other 12 — `eye`, `fire-side`, `hearth`, `mouth-side`, `pen-b`…`pen-j`
+   and now `cheese-barrel` — were authored across rounds 10–13, and a re-export
+   drops exactly those (it did once already, repaired in `830ce14`). The change
+   is proven add-only by a semantic diff of the metadata: one anchor added, none
+   lost, none moved, every non-anchor section byte-identical.
+
+2. **Every beat declares what it does to the story** (spec-0025). `quests` and
+   `dialogue` go to `dsl_version` 0.8.0 and carry **102 `happening`
+   declarations** — 97 in `quests.json` (10 quests, 20 objectives, 67 staging /
+   gate / ending effects) and 5 on the story-weight dialogue options (the
+   flee/wait fork and the three name answers). Written against the B0–B6 beats in
+   §2, not generated: the verbs are the closed vocabulary, and the subject names
+   the character the beat is *about*.
+
+   Four subjects were wrong on the first pass and were caught by reading the
+   chronicle back: `departs` has to be true **of its subject**, so the party
+   leaving the beach is not `departs(npc/elpenor)` (he stays), and boarding the
+   ship is not `departs(npc/eurylochus)`. Those four now carry no subject,
+   because the beat is about the party and the party is not an NPC.
+
+3. **Athena's gift is a real potion.** `classes` goes to 0.8.0 and the Odysseus
+   kit gains `minecraft:potion` with `contents: {potion:
+   minecraft:long_night_vision}`. Round 3 deleted a *renamed water bottle* that
+   granted nothing (#114) and moved the mitigation to the area declaration, where
+   it stays and remains the guarantee — together with the round-16 camera lease,
+   which is what stops it expiring under the ending. This item is the fiction's
+   half of that, and it now actually pours.
+
+4. **No chronicle artifact is emitted yet, and that is a declaration gap, not a
+   defect.** The per-branch chronicle is emitted only for a campaign that
+   declares stage-4 `branch_points`; this campaign's `quest-plan` is still
+   `0.6.0` and declares none. The happenings are written and validated, so the
+   input is ready — but turning the chronicle on means bumping stage 4 and
+   admitting `DW0480`–`DW0485`, including the exclusive-content-leakage and
+   event-contradiction proofs. On a campaign whose one real fork has a death on
+   only one side, those will have findings, and findings there need owner
+   rulings. Queued as its own round.
