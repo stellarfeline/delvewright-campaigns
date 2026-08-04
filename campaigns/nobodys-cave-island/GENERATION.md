@@ -1238,3 +1238,30 @@ Changes, each with its driving rule:
 "sword drawn and pointless" (the verdict IS the image); "He did not say he had
 stopped" (one deliberate correction-beat); "the wine one dreams about"; all
 dialogue-voice repetitions (panic and grief registers, not narrator intensity).
+
+### Round 16 follow-up — the blind beat gets no pause at all
+
+Owner correction on item 1, same day: the round-16 commit read her ruling as a
+uniform 3–4 second ceiling and set the blinding beat to 4 s. That was still one
+tier too coarse. For this beat she ruled **no pause whatsoever** — 这个地方不要
+空场 — because the giant visibly standing up blind *is* the signal. The 3–4 s cap
+governs places where a reading pause exists at all; it is a ceiling, never a
+target.
+
+- **The blinding beat → zero.** Both sequence steps move to `at_ticks: 0`: the
+  title, the roar, `unleash-actor` and `begin-stealth` now fire in the **same
+  tick** as the `spawn-actor` that stands him up. There is no engine floor to
+  work around — `at_ticks: 0` is a legal step and the compiler *inlines* a
+  zero-offset step into the completion function rather than scheduling it, so
+  the emitted `complete_o_blind.mcfunction` calls the sequence body directly and
+  the whole beat carries **no `schedule` at all**. Verified in the datapack: the
+  blinding sequence contributes zero `schedule function … seq_…` lines, where it
+  previously contributed two.
+- **The escape beat stays at 4 s**, deliberately. Judged by the owner's own rule:
+  that gap is a *guidance-reading* pause, not dead air after obvious staging —
+  she asked for it by name in round 13 ("the flock left before I had finished
+  reading"). It is trimmed to the ceiling (100 t → 80 t) and not below it.
+
+`grace_ticks: 260` untouched; `DW0355` and `DW0410` silent with the arm at t0 —
+engine #204's rule (delaying an arm does not discharge the proof) holds in the
+other direction too, so removing the delay cannot make the beat less survivable.

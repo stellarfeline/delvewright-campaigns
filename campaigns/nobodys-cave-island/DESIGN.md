@@ -117,11 +117,11 @@ keep-clear for every scatter.
   caught no longer damages: the warden is the killer, the narrate and the
   heartbeat are the warning. **Pacing** (round 16, superseding round 13's
   reading grace): the blinded body is spawned inert at t0 and the neighbours
-  answer over it; the title lands, the roar goes up and `unleash-actor` fires
-  at **t80**, and the stealth session arms at **t140**. Round 13 held those at
-  t400/t460 so the scene could be read first; the owner's round-15 verdict is
-  that twenty seconds of dead air is worse than the problem it solved — the
-  giant visibly standing up blind *is* the signal (§10 item 1). (`DW0355` is
+  answer over it; the title lands, the roar goes up, `unleash-actor` fires and
+  the stealth session arms **in that same tick — t0, no gap at all**. Round 13 held those at
+  t400/t460 so the scene could be read first; the owner's ruling is that this
+  beat gets **no pause whatsoever** — 这个地方不要空场 — because the giant
+  visibly standing up blind *is* the signal (§10 item 1). (`DW0355` is
   unmoved by this — the proof measures from the objective anchor whatever the
   sequence does, and it stays green either way.)
 - **B6 Escape**: right-click the ram at the pen → finale sequence. The stone
@@ -414,9 +414,15 @@ that sentence.
    timer, and holding the party still afterwards only means they finish the beat
    before the game admits it started.
 
-   Applied: the blinding beat's rise fires at **t80** (was t400 — twenty
-   seconds) and its `begin-stealth` arms at **t140** (was t460); the escape
-   beat's second half fires at **t80** (was t100). `grace_ticks: 260` is
+   **Two tiers, not one** (owner correction, 2026-08-04). Where the staging
+   itself is the signal, the gap is **zero** — the 3–4 s ceiling is for places
+   where a reading pause exists at all, and was never a target to aim at. The
+   blinding beat is the zero case: its rise, roar, `unleash-actor` and
+   `begin-stealth` all fire in the **same tick as the stand-up** (t0/t0, was
+   t400/t460 — twenty seconds). The escape beat keeps a real reading pause,
+   because the owner asked for one in round 13 by name (the flock left before
+   she had finished reading), trimmed from 5 s to **4 s** — at the ceiling, not
+   above it. `grace_ticks: 260` is
    untouched — engine #204 guarantees that delaying the arm does not discharge
    `DW0355`, so the escape budget is unchanged and only the standing-still is
    gone.
