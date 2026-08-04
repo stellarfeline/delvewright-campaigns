@@ -7,7 +7,7 @@
       {
         "id": "batch/open-the-gate-yard",
         "area": "area/keep",
-        "note": "Open-air opening beat (owner directive 2026-08-04, /new-delve open-air rule), as far as the valley horizon currently allows. The roof comes off the entry hall: Barrowmere's gate yard stands open to the sky, so the delve opens under cherry-grove daylight and biome tint instead of glowstone in a sealed box, and every later beat stays interior on purpose. The fuller staging the directive asks for — walls down on the two faces that front the gap floor, so the party spawns looking at the cherry rim — is authored and proven correct in geometry (the keep walk plane and the valley gap floor are the same plane by the spec-0026 datum equation, both top y=63, and the gap floor begins one column out at x=-1 / z=-5) but is blocked upstream: letting the party onto the gap floor makes the whole surround reachable, and the annulus perimeter is an unfenced drop into void (DW0322, ~346 columns). It lands as soon as the surround gains outer-edge containment.",
+        "note": "Open-air opening beat (owner directive 2026-08-04, /new-delve open-air rule). The entry hall is the only beat staged outside the keep proper, so its roof and its two valley-facing walls come off: Barrowmere's gate yard, its outer wall long collapsed. The keep walk plane and the cherry-valley gap floor are the same plane by the spec-0026 datum equation (both top y=63) and the valley moat grounds the scene footprint, so the carve opens onto continuous walkable ground: the party spawns in the open looking at the cherry rim, not down a corridor, and can walk out under the keep's own elevated corridors. The surviving +X and +Z walls keep the socket doorway and hold the keep interior enclosed; every later beat stays indoors on purpose, and the spec-0013 boundary clock owns anyone who wanders far out across the gap floor.",
         "edits": [
           {
             "verb": "select",
@@ -24,9 +24,36 @@
             }
           },
           {
-            "verb": "carve",
-            "region": "region/yard-roof"
-          }
+            "verb": "select",
+            "name": "region/yard-west-wall",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 0,
+                "prefab": "prefab/keep-spawn-hall"
+              },
+              "min": [0, 1, 0],
+              "max": [0, 3, 8]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/yard-north-wall",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 0,
+                "prefab": "prefab/keep-spawn-hall"
+              },
+              "min": [0, 1, 0],
+              "max": [8, 3, 0]
+            }
+          },
+          { "verb": "carve", "region": "region/yard-roof" },
+          { "verb": "carve", "region": "region/yard-west-wall" },
+          { "verb": "carve", "region": "region/yard-north-wall" }
         ]
       }
     ]
