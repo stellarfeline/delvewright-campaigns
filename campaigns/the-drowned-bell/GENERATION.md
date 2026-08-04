@@ -567,3 +567,89 @@ leg; all six returns succeeded.
 
 `floor_gate: {present: true, covered: [], not_covered: []}`, `actors: []` — the
 Barrow Warden still absent, seventh run running.
+
+## Round 4a (2026-08-03) — the two bonfires leave the aggro
+
+Deliberately small round: one defect class (`DW0478`, task #132) and a full
+ladder re-run on merged engine main. No cast ledger, no wave tiers, no version
+bump — those are owner-sequenced. The two owner-deferred tuning beats were not
+touched.
+
+### What moved, and why it had to
+
+`DW0478` (engine #238's lane term included) rejected **both** rest points. Under
+the owner's 2026-08-04 drift ruling a marching squad is a corridor around its
+polyline, not the polyline, so a lane's reach is `aggro_radius + 7.9`.
+
+| fire | anchor before | nearest hostile cell | dist before | required reach | anchor after | dist after | margin |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| BF1 barrow fire | `[19, 63, 29]` | `actor/barrow-warden` staging anchor `[23, 63, 16]` | **13.6** | 16.0 (`follow_range` default, stationary cell) | `[10, 63, 31]` | **19.85** | +3.85 |
+| BF2 chapel hearth | `[34, 71, -113]` | `wave/gate-assault` lane, last waypoint `[17, 71, -107]` | **18.0** | 23.9 (`aggro_radius` 16 + 7.9 measured march drift) | `[42, 71, -101]` | **25.71** | +1.81 |
+
+Neither was moved by editing the prefab metadata: `tk-barrow-field` and
+`tk-courtyard-chapel` are deterministic output of the engine's
+`prefabs/tidal-keep-generator`, so a hand-edited anchor is a silent drift the
+next regeneration reverts. The generator was changed, re-run, and its output
+copied in. Proved before and after: the unmodified generator reproduces the
+prefabs as they stood on this branch **byte for byte** (all six pieces), and the
+modified generator is byte-identical across two runs (all six). Only the two
+intended pieces differ; the other four are unchanged bytes.
+
+Both fires are physical fixtures, not bare anchors, so the hearths moved with
+them.
+
+- **BF1** — the campfire, its cobble ring and the driftwood spar now sit far down
+  the western strand at `(10,_,30)`, rest cell south of the flame at `(10,_,31)`,
+  facing the field. Still on the landing beach, still visible from spawn across
+  open sand, still the first thing the shore offers — and 19.8 blocks from the
+  kneeling warden. It could not simply move south: the tide bounds the piece at
+  local z=33, so no cell on the centre line is more than 17.0 blocks from the
+  kneel and clearing 16 needs the lateral run. The west driftwood spar moved from
+  local x=11 to x=15 so it no longer lies on the new rest cell.
+- **BF2** — the hearth left the north wall of the nave for the **south wall at
+  the east end**, beside the undercroft door: the last fire before the drowned
+  way down. This is the "defensibly safe interior cell" case. The chapel simply
+  cannot do better — its interior is x 30..42 local and its two east corners are
+  the farthest cells from the lane end at ~26.9 blocks, so 25.7 with a 1.8-block
+  margin is near the room's ceiling, not a choice. It is also the better fire:
+  the party regroups at the head of the stair it is about to descend rather than
+  in the corner the gate breach opens onto.
+
+Every field referencing either anchor still resolves — `anchor/l0-bonfire` and
+`anchor/l2-bonfire` each have exactly one campaign reference (the `bonfire`
+effect in `quest/the-landing` and `quest/the-hollow-watch`); the re-seat /
+checkpoint machinery reaches them through those beats, and the compiler's own
+`rest` steps 2 and 8 on the exported critical path now name the new cells.
+
+### Compile proof
+
+- `delvec validate` / `analyze` / `build` — **exit 0**, and **zero `DW0478`
+  findings**. The only diagnostic left is the pre-existing `DW0465` *warning*
+  (no `cast` ledger at `dsl_version` 0.6.0), which is the owner-sequenced work
+  this round deliberately does not do.
+- `--lang zh-cn` build — exit 0.
+- English double build — byte-identical
+  (`054bb5777d668c0233db997370256793cc6b9cd3`).
+- No campaign JSON was edited this round. The diff is four prefab files.
+
+### Storybook + version marker (owner directive, this round)
+
+The bell had **no** player-facing storybook — every other delivered campaign
+(tide-mill, the-wake, nobodys-cave-island) ships `README.md` +
+`README.zh-cn.md` and the bell was the gap. Both were written this round, to the
+tide-mill shape, and both open with the version marker the owner asked for:
+
+> **Requires delve engine `delvec` ≥ 0.1.0 · Minecraft 1.21.11 · campaign format 0.8**
+
+The numbers are read off the campaign and the toolchain, not chosen:
+**campaign format 0.8** is the **maximum** declared per-stage `dsl_version`
+(`classes.json` is `0.8.0` for the `flask` kit entry; the other five stages are
+`0.6.0`), and the engine line is verbatim `delvec --version` for the binary this
+round validates green with (`delvec 0.1.0, dsl 0.8.0, mc 1.21.11`). A machine
+check on that consistency is task #147.
+
+The zh-cn storybook is written in Chinese, not translated from the English —
+names and voice are taken from the campaign's own `l10n/zh-cn.json` (沉钟,
+晚钟堡, 摆渡妇, 司事, 坟场戍卫, and the four class names) so the page and the
+game agree. Both pages are player/host-facing only: no pipeline machinery, no
+diagnostics, no round history.
