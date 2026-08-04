@@ -100,3 +100,43 @@ the cherry rim — is geometrically ready but blocked upstream (see below).
 outdoors needs an open-air keep-tileset piece, and the keep tileset is twelve
 enclosed pieces by construction — new tileset work, which the round's brief
 excluded.
+
+## v4 — walls down: the gate yard opens onto the valley floor (2026-08-04)
+
+Completes the open-air opening beat. The entry hall's two valley-facing walls
+come off alongside the roof, so the party spawns in Barrowmere's collapsed gate
+yard looking at the cherry rim and can walk straight out onto the valley gap
+floor. The keep walk plane and the gap floor are the same plane by the spec-0026
+datum equation (both top y=63), so the threshold has no step.
+
+The staging was authored in v3 and held back three times by `DW0322`, which is a
+**physical** proof and admits no boundary clock — a 1 s return tick does not stop
+a fall. Each round closed one exposure and revealed the next, all engine-side,
+none fixable in content:
+
+| Exposure | Cells | Closed by |
+|---|---|---|
+| Annulus outer perimeter was an unfenced drop | 351 | annulus band floor (per-axis band ≥ 30) |
+| Scene-rect moat: the surround did not carpet the scene bounding box | 236 | scene-rect moat fill |
+| Columns under the keep's elevated corridors | 165 | the moat floors a column only when a piece authors a block at or below the gap-floor top |
+
+Two upstream defects were found from this campaign along the way and fixed at the
+class level: vanilla **no-collision vegetation** modelled as full cubes (a
+`short_grass` tuft on a valley terrace became a phantom standable cell that split
+the generator's deliberate 2-block risers into two climbable 1-block steps, so
+`DW0369` fired on a world that is not climbable in vanilla), and the **snapshot
+palette** having no cherry entry (2044 blossom cells rendered oak-green, so no
+shot could show the horizon's identity).
+
+**New player-visible terrain.** The moat lays valley grass at y=63 under the
+keep's elevated corridors, which run up to y=79–83 on the stair chain. With the
+walls down that ground is reachable from the gap floor, so the keep now reads as
+a structure standing *on* the valley rather than a sealed box: the party can walk
+out and look up at its underside. Framed for review as the `keep-underbelly`
+shot.
+
+Ladder at this version: `validate`/`analyze`/`build` green in both languages,
+double-build byte-identical, PackTest 19/19, bot `critical-path` and `die-retry`
+both green. The two die-retry advisories ("no governing checkpoint") are correct
+and expected — this campaign still declares no checkpoints or bonfires, which is
+the souls conversion deliberately left out of scope.
