@@ -1368,3 +1368,44 @@ builds both exit 0; English **double build byte-identical**; **`DW0331` zero**;
 advisories unchanged at 20 `DW0451` + 2 `DW0359`. PackTest run under the isolated
 `dw-worker-island18` project. The bot tier is deliberately **not** run: it is red
 for harness reasons under task #144, and the final green ladder waits on that.
+
+## Round 19 — the island declares its branches (planner-personal)
+
+Stage 4 to `dsl_version 0.8.0`; `branch_points` declared; both `campaign-complete`
+effects now carry their ending ids (`ending/nobody`, `ending/the-quiet-sail`).
+The chronicle and the six branch proofs are live for the first time.
+
+**Declaration shape — one point, four branches.** The naive two-point form
+(argument fork × name fork) fails `DW0482` on the product: the name fork exists
+only on the wait side, so flee×name combinations are unreachable by
+construction. The correct expression is a single `branch-point/the-argument`
+whose `forks_on` carries both flag families and whose branches enumerate the
+four real playthroughs: `branch/flee`, `branch/wait-nobody`, `branch/wait-lie`,
+`branch/wait-boast`. Nested forks are expressible today — as the flattened
+product — with no engine change.
+
+**The wait-path progress flags belong in the declaration.** `DW0480` reads any
+flag set on some completed playthroughs and not others as a story fork — which
+the eight wait-path progress latches (`sharpened`, `asleep`, `at-pen`,
+`blinded`, `escaped`, `eury-hidden`, `hardened`, `sealed`) are, exactly: their
+variation IS the argument fork. Declared as consequences on the three wait
+branches (set) and flee (unset); the reachability proof verified all four
+assignments against real playthroughs. (A first attempt wrongly included
+`flag/antiphos-posted`, which is set pre-fork on every line — `DW0484` caught
+the mistake by name, citing the producer. The proof works.)
+
+**`DW0485` caught three double-declared events from round 18's happening pass**
+(the machine reasons "a gate seals once, an eye is lost once"): the seal
+declared at both `quest/hide` and its effect; the blinding at both
+`quest/the-stake` and `obj/blind`; the flee departure at both the dialogue
+option and the walk effect. Fixed by the rule the errors teach: **one event,
+one strong verb, at exactly one node** — an enclosing node's happening states
+its own contribution (`survives` for the hiding, `gains item/olive-stake` for
+the stake-making, `believes` for the decision), never its child's event.
+Candidate skill amendment.
+
+Proofs: `analyze` 0 errors; en ×2 byte-identical, zh-cn exit 0; advisory set
+unchanged (20 `DW0451`, 2 `DW0359`). Chronicles emitted: `flee` (20 beats),
+`wait-nobody`/`wait-lie`/`wait-boast` (49 beats each). PackTest/bot deferred
+(#144). READMEs now carry the player-facing version marker (engine ≥ 0.1.0 ·
+campaign format 0.8) per the owner directive; machine check is task #147.

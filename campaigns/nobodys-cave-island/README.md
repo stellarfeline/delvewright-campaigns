@@ -1,5 +1,7 @@
 # Nobody's Isle
 
+**Requires delve engine ≥ 0.1.0 · campaign format 0.8**
+
 > *"Guests, is it. Guests come by the door, little ones. The door was shut."*
 
 A co-op delve for one sitting — an island small enough to walk, a ship you can
