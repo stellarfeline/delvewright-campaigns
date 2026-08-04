@@ -1,6 +1,6 @@
 # Nobody's Cave — Island Remake (authoritative design record)
 
-**v5 — 2026-08-03** (v4/v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
+**v6 — 2026-08-04** (v5/v4/v3/v2: 2026-08-03; v1: 2026-08-01). This file is the single
 authoritative design document for the `nobodys-cave-island` campaign. Where it
 and the stage JSONs disagree, one of the two is a defect.
 
@@ -115,12 +115,15 @@ keep-clear for every scatter.
   alcove-3 / alcove-4 / ramp-top with `grace_ticks: 260` — sized to the
   measured sneak time of the route, not guessed (rounds 7 and 10). Being
   caught no longer damages: the warden is the killer, the narrate and the
-  heartbeat are the warning. **Reading grace** (round 13): the blinded body
-  is spawned inert at t0 and the neighbours answer over it; only at t400 does
-  the title land, the roar go up and `unleash-actor` fire, and the stealth
-  session arms at t460. The hunt starts after the scene can be read, not
-  under the player's feet. (`DW0355` is unmoved by this — the proof measures
-  from the objective anchor whatever the sequence does, and it stays green.)
+  heartbeat are the warning. **Pacing** (round 16, superseding round 13's
+  reading grace): the blinded body is spawned inert at t0 and the neighbours
+  answer over it; the title lands, the roar goes up and `unleash-actor` fires
+  at **t80**, and the stealth session arms at **t140**. Round 13 held those at
+  t400/t460 so the scene could be read first; the owner's round-15 verdict is
+  that twenty seconds of dead air is worse than the problem it solved — the
+  giant visibly standing up blind *is* the signal (§10 item 1). (`DW0355` is
+  unmoved by this — the proof measures from the objective anchor whatever the
+  sequence does, and it stays green either way.)
 - **B6 Escape**: right-click the ram at the pen → finale sequence. The stone
   opens; the giant appears **beside** the gap he holds open (`anchor/mouth-side`)
   and never in it (round 11) — standing inside the hall, west of the gap's
@@ -131,11 +134,12 @@ keep-clear for every scatter.
   — a stand just inside the mouth that is the talk window, then down to the
   beach; Eurylochus goes to the gangplank; day returns and the weather clears
   on the shore. Board, and **Ending A**.
-  **Reading grace** (round 13, the owner's playtest complaint — the flock left
-  before she had finished reading): the stone and its narration land at t0, the
-  giant takes his place beside the gap at t100 with the second half of the
-  narration, the roar at t160, and the flock only begins to stream at t200,
-  staggered 200/230/260/290. Ten seconds of reading before anything moves.
+  **Pacing** (round 13's grace, trimmed in round 16): the stone and its
+  narration land at t0, the giant takes his place beside the gap at **t80**
+  (was t100) with the second half of the narration, the roar at t160, and the
+  flock begins to stream at t200, staggered 200/230/260/290. The flock still
+  does not leave before the party can read — but no single gap now exceeds the
+  four-second ceiling (§10 item 1).
 - **Endings**: A "escaped as Nobody" / B "took the cheese and sailed". Plain
   fullscreen titles — en NOBODY / THE QUIET SAIL, zh 无人 / 悄然扬帆 — each with
   its own sound sting and `campaign-complete` (owner ruling, round 4/5: no
@@ -308,6 +312,10 @@ stand inside the walls).
    `flag/aboard`), gated so it can never be offered in the wrong beat. They are
    real lines and do no harm, but they exist because of the drift and should be
    deleted when `flow.rs` learns about cast roots.
+   **Round-16 correction**: only one of the two still exists. The ram option
+   went out with `obj/hold-fast` in round 14 (§8 item 5), and since round 15 the
+   cheese option's sentence is its `tooltip` rather than its label — so the
+   deletion this item anticipates is now a single option, not a pair.
 8. **Four DW0451 at-rest advisories remain, and sixteen walked ones.** The
    sixteen are all one cell — the upper pen's fence gate, which every body that
    enters or leaves the pen must pass through. Of the at-rest four, three are
@@ -396,3 +404,48 @@ player compares side by side:
 The Chinese side needed 25 new captions and **no new tooltip translations**: a
 tooltip's English is the label's own former text, so the sidecar already carried
 that sentence.
+
+## 10. Round-16 amendment — pacing, and the standing findings audit
+
+1. **A pause is never a punishment** (owner ruling, 2026-08-04, campaign-wide).
+   A pause inserted so players can read guidance must be **optional**, and where
+   a pause exists at all it is **3–4 seconds maximum**. The staging is the
+   signal — a giant visibly standing up blind says "go" more clearly than any
+   timer, and holding the party still afterwards only means they finish the beat
+   before the game admits it started.
+
+   Applied: the blinding beat's rise fires at **t80** (was t400 — twenty
+   seconds) and its `begin-stealth` arms at **t140** (was t460); the escape
+   beat's second half fires at **t80** (was t100). `grace_ticks: 260` is
+   untouched — engine #204 guarantees that delaying the arm does not discharge
+   `DW0355`, so the escape budget is unchanged and only the standing-still is
+   gone.
+
+   Not applied, and why: gaps that run under a cutscene are the cinematic, not a
+   pause (the seal beat's t40–t880 sits inside an 860-tick camera); and the seal
+   beat's t900→t1000 settling echo carries no text to read, so it is sound
+   design rather than reading grace.
+
+   **The optional half has no vanilla primitive.** There is no dismissible
+   prompt, so it is stated here as the authoring rule — *never author a timed
+   gap whose only purpose is reading time* — rather than faked with a timer that
+   pretends to be a choice. If a beat genuinely needs the party to have read
+   something before it can fail them, gate it on an action they take, not on a
+   clock.
+
+   This supersedes the round-13 reading-grace rule (§7 history, GENERATION
+   finding #36), which sized its gaps by feel and over-corrected.
+
+2. **The findings audit is a standing gate.** No build is staged for the owner
+   until every prior finding — from round 1, not from the last round — is
+   fixed or explicitly deferred by her. The ledger lives in `GENERATION.md`
+   under round 16 and is re-run in full every round. It exists because two
+   findings (the named cheese and the boulder's right-click, both round 12)
+   survived two playtests inside "STOP, needs engine work" notes that nobody
+   converted into engine tasks.
+
+3. **Two engine defects are open against this campaign's own staging** and are
+   not content bugs: branch-blind walk-origin chaining (the wait branch's
+   Eurylochus and Perimedes both teleport to the beach and walk back), and a
+   night-vision lease shorter than the ending camera it has to survive. Both are
+   root-caused in GENERATION round 16 and carry engine PRs.

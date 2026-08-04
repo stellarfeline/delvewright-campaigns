@@ -972,3 +972,223 @@ structurally unreachable on the branch with no death in it.
 English double build **byte-identical**. Advisories 19 `DW0451` (down from 20 —
 Perimedes no longer walks the pen gate twice) and the 2 long-standing `DW0359`.
 No `DW047x`: the only mandatory wave is the tutorial, and the giant is optional.
+
+## Round 15 — the button captions, the hover box speaks (DW0331)
+
+Recorded late: round 15 shipped as commit `43e8807` and updated `DESIGN.md` §9
+but never wrote its GENERATION entry. The gap is itself a round-16 finding —
+the process rule is that every round appends here, and a round that skips it
+leaves the next session reconstructing intent from a commit message.
+
+`DW0331` (engine #217) makes a dialogue option label wider than 146 font px a
+build error: dialog buttons are a fixed 150 px and anything longer scrolls. This
+campaign had 27 over the limit (25 English, plus the 2 Chinese labels that
+mirrored the worst two) — the whole option register had been written as full
+sentences.
+
+Owner ruling: **the caption goes in the button, the full line rides a `tooltip`**
+(engine #233; the `dialogue` stage alone goes to `dsl_version` 0.8.0 — the
+narrowest bump that unlocks the field, probed first with a single tooltip to
+confirm no `DW048x` cascade). The governing rule is SKILL.md's: the button must
+read on its own, because fast and controller players never hover — so a caption
+is a speech act, not an abbreviation ("We climb.", "Take it and run.", "You have
+my word."), and the sentence it replaces survives verbatim on hover.
+
+Two label sets were treated as sets rather than per-label, because the player
+compares them side by side: the three name answers at the wine
+(`Nobody.` / `Odysseus.` / `Aithon.`) and the two routes that offer the wine.
+
+The Chinese side needed 25 new captions and **zero** new tooltip translations —
+a tooltip's English is its label's own former text, so the sidecar already
+carried that sentence. Both languages exit 0; English double build
+byte-identical.
+
+## Round 16 — the findings ledger, and pauses stop being punishment
+
+Owner playtest 2026-08-04, four items. Opened with a rebuke that reframes the
+whole round: **findings from her first playtest survived into her second** (the
+cheese items, open since round 13). The standing rule that falls out, and which
+this section exists to serve:
+
+> **No build is staged for the owner until every prior finding is either fixed
+> or explicitly deferred by her.** The audit below runs every round, in full,
+> from round 1 — not from the last round.
+
+### The findings ledger (audit, all rounds)
+
+Status key: **fixed@N** = landed in round N and still holds on this branch;
+**open** = reported and not yet fixed; **engine** = blocked on engine work;
+**ruled** = owner closed it without a code change.
+
+| # | Finding | Reported | Status |
+|---|---|---|---|
+| 1 | zh l10n read as machine translation | r3 | fixed@r3 (rewritten per-persona; re-perceived again r13) |
+| 2 | Wine issued per-class → soft-lock | r3 | fixed@r3 (whole party, Q1 end) |
+| 3 | Cheese-store crowding (NPCs on the marker) | r3 | fixed@r3 |
+| 4 | Live-AI giant self-digs and despawns | r3 | fixed@r3 (#113 deferred NPCs) |
+| 5 | Night vision was a renamed water bottle | r3 | fixed@r3 (#114 area declaration) |
+| 6 | NPCs clipped into blocks (cell corners) | r3 | fixed@r3 (#115 cell-centred) |
+| 7 | Ocean sat below the shoreline | r3 | fixed@r3 (#116 waterline datum, DW0344) |
+| 8 | Singleplayer had no entry point at all | r3 | fixed@r3 (#117–#120, DW0345) |
+| 9 | Cutscenes could not aim or cut | r4 | fixed@r4 (#124 look_at + multi-shot) |
+| 10 | Stealth clock ran during a cutscene | r4 | fixed@r4 (#125 "a cutscene is pure observation") |
+| 11 | Strikes did not register on the giant | r4 | fixed@r4 (#128 shared hitbox tagging) |
+| 12 | Sheared half-trees in the greenfield | r4 | fixed@r4 (#121 structural regrow) |
+| 13 | On-screen text overran its box | r4 | fixed@r4 (#127 DW0330 measured metrics) |
+| 14 | Cheese should be taken, not clicked | r4 | fixed@r4 as a `collect` — **but see #33** |
+| 15 | Prose was narrated as subtitles | r4 | fixed@r4 (15 demoted subtitle→chat) |
+| 16 | Ending banner wanted no pixel art | r4 | fixed@r4 (plain fullscreen titles) |
+| 17 | Daylight killed the drowned | r4 | fixed@r5 (#130 wave `equipment`: helmets, not clock) |
+| 18 | Giant's dialogue soft-locked | r5 | fixed@r6 (#142 one-cell-one-hitbox, DW0350) |
+| 19 | Stealth demanded a crouch | r5 | fixed@r6 (#143 zone presence = hidden) |
+| 20 | The giant teleported instead of walking | r5 | fixed@r6 (#144 move-npc on_arrive, DW0351) |
+| 21 | The seal beat was over in 7 s | r5 | fixed@r6 (40 s six-shot cinematic) |
+| 22 | Clicks at the fire-pit hit the wrong entity | r7 | fixed@r10 (#179/#180 `anchor/fire-side` + `strike-npc`) |
+| 23 | Striking the giant did nothing | r7 | fixed@r10 (unleashes a vanilla-stat warden) |
+| 24 | The seal cinematic was inside-out | r7 | fixed@r10 (shots re-staged exterior, render-verified) |
+| 25 | Greenfield read as three walled rooms | r7 | fixed@r8 (eight world-edit batches) |
+| 26 | The massif read as a rectangular slab | r7 | fixed@r8 (stepped skirt + crown crags) |
+| 27 | The beach seam was still a wall | r8 | fixed@r9 (`batch/beach-seam`, both lip rows) |
+| 28 | Two hearths; strikes answered differently | r8 | fixed@r11 (one `anchor/hearth`, both strikes unleash) |
+| 29 | The giant walked through the sealed stone | r8 | fixed@r11 (#188 DW0410; cross-then-seal order) |
+| 30 | The blind giant was a scripted patrol | r8 | fixed@r11 (real unleashed warden) |
+| 31 | Sheep scattered across the whole cavern | r11 | fixed@r12 (one leg fold→pen; all 8 inside a footprint) |
+| 32 | The giant stood inside the mountain wall | r11 | fixed@r12 (#196 DW0450; `anchor/mouth-side` moved) |
+| 33 | **Cheese: name it, fill the EXISTING barrel** | **r12** | **engine — open 4 rounds.** `collect` stamps its own chest and has no `name` field. Engine task #95 in flight (`worker/collect-adopt-container`); applies the moment it merges. **This is the finding the round-16 rebuke is about.** |
+| 34 | **Boulder hint should answer right-click too** | **r12** | **engine — open 4 rounds.** A co-located `use` trigger builds green and then summons a second `minecraft:interaction` at the identical cell; one of the two triggers silently never fires. Needs the `strike-npc` treatment for non-NPC triggers (merge co-located click triggers onto ONE hitbox carrying both tags) **plus a diagnostic**. Reverted rather than shipped, r13. No engine task is open on it — filed this round. |
+| 35 | NPCs offered premise questions after the finale | r12 | fixed@r13 (spec-0020 cast ledger, 45 entries) |
+| 36 | Beats armed before their prompt could be read | r12 | fixed@r13 — **then over-corrected; superseded by #45** |
+| 37 | One ending for three names | r12 | fixed@r13 (branch closing paragraphs) |
+| 38 | The fold's west third was buried | r12 | fixed@r13 (`batch/fold-clear` + keep-clear envelopes) |
+| 39 | Prose had AI tells (negation pivots) | r12 | fixed@r13 (5 en rewritten, 6 zh re-perceived) |
+| 40 | Dusk read as daylight to the drowned | r12 | fixed@r13/@r14 (#204; `sequence` to night after the wave exists) |
+| 41 | `requires_item` did not mean held | r12 | fixed@r13 (#205 + `missing_item_hint`) |
+| 42 | Class picks that changed nothing | r13 | fixed@r14 (one class) |
+| 43 | The flee branch was half-built | r13 | fixed@r14 — **and introduced #46** |
+| 44 | Scatter debris on the switchback treads | r13 | fixed@r14 (keep-clear envelope) + engine #212 (prefab re-export) |
+| 45 | Belly-wool step made you double back | r13 | fixed@r14 (`obj/hold-fast` deleted) |
+| 46 | The giant should hold the mouth after the escape | r13 | fixed@r14 (`trigger/he-holds-the-mouth`) |
+| 47 | The ending should be a voyage, not a fade | r13 | fixed@r14 (`area/open-sea`, two-shot dolly) |
+| 48 | Routed lanes for the drowned | r13 | **ruled — not available for this species.** `lane` is raider-family only (`DW0382`); `summon: aggro-edge` seats them inland. Reported r14, no owner objection since. |
+| 49 | 27 option labels overran the button | r14 | fixed@r15 (captions in the button, sentences on hover) |
+| 50 | **Blind-stealth: ~10 s of forced dead air** | **r15** | **fixed@r16** — this round, below |
+| 51 | **Wait branch: Eurylochus vanishes and walks back** | **r15** | **engine — root-caused this round.** `nav.rs` chains walk origins branch-blind. Content cannot express the fix; engine PR open. |
+| 52 | **Ending night-vision expires and flickers** | **r15** | **engine — root-caused this round.** The 12 s lease trails the player out of the mitigated area and dies inside the 17 s ending camera. Engine PR open. |
+
+Non-finding deviations still awaiting an owner ruling live in `DESIGN.md` §7 and
+are unchanged this round: the single-leg B1 approach (owner-ruled r13: stays),
+the four already-penned sheep, Antiphos dying in Eurylochus's place, the
+`DW0451`/`DW0359` advisory set, and one surviving bridge option
+("About that cheese in your arms.", now a tooltip) that exists because
+`compiler::flow` does not seed `DW0203` from cast roots. Its twin
+("You have hold of a ram…") went out with `obj/hold-fast` in round 14, so §7's
+item 7 is now half-stale and is corrected there.
+
+### Item 1 — a pause is never a punishment (fixed)
+
+Owner ruling, applying **campaign-wide**: a pause inserted so players can read
+guidance must be **optional**, and where a pause exists at all it is **3–4
+seconds maximum**. The staging is the signal; the gap is not.
+
+The concrete complaint: after the giant visibly stands up blind, ~10 s of dead
+air before anything happens — by which time the party is already at the sheep.
+Round 13 built that gap deliberately (finding #36, "a beat that can fail you
+must arm after its prompt can be read") and sized it by feel at **400 ticks =
+20 seconds**. It was an over-correction, and it is now the opposite defect.
+
+Swept every timed gap in the campaign. Five `sequence` blocks, 26 steps. A gap
+counts as dead air only where the player holds the camera and nothing is
+staged — a gap under a running cutscene is the cinematic, not a pause:
+
+| Beat | Gap | Verdict |
+|---|---|---|
+| `obj/blind` — blinding → "He Rises Blind" | 400 t = **20 s** | **cut to 80 t (4 s)** |
+| `obj/blind` — rise → `begin-stealth` arms | 60 t = 3 s | kept (within the rule; this is the reaction window) |
+| `obj/under-ram` — stone opens → giant takes the gap | 100 t = **5 s** | **cut to 80 t (4 s)** |
+| `obj/take-cover` — every step t40→t880 | — | under the 860-tick cutscene; not dead air |
+| `obj/take-cover` — camera ends t900 → settling echo t1000 | 100 t = 5 s | kept: a deliberate sound beat with no text to read, not a reading pause |
+| `obj/aboard` — camera ends t300 → banner t340 | 40 t = 2 s | kept |
+| `obj/muster` — muster → `set-time night` | 40 t = 2 s | kept (the round-14 drowned clock, not a pause) |
+
+`grace_ticks: 260` on the blinding stealth is **unchanged** — engine #204 states
+that delaying the arm does not discharge `DW0355`, so shrinking the delay cannot
+make the beat less survivable, and `DW0355` stays green either way. What the
+player loses is 16 seconds of standing still; what the beat keeps is its whole
+escape budget.
+
+The **optional** half of the ruling has no vanilla primitive behind it (there is
+no dismissible prompt), so it is recorded as an authoring rule in `DESIGN.md`
+§10 rather than faked with a longer timer.
+
+### Item 2 — the wait branch (ENGINE, root-caused, not fixable in content)
+
+Reported: after choosing to wait, Eurylochus **disappears**, ~10 s of nothing,
+then reappears and walks to the niche. A true regression — this beat passed
+earlier rounds.
+
+Root cause, read out of the emitted datapack rather than guessed:
+`mv_tick_eurylochus_alcove_1.mcfunction` has **701 waypoints** and its
+waypoint[0] is `10.5 63.0 15.5` — **the beach gangplank**, 110 blocks and six
+y-levels from where the player is standing. The driver teleports him out of the
+cave down to the beach on tick 1, then walks him **35 seconds** back up the
+mountain; he re-enters visibility partway up. The owner's description is exact.
+
+`crates/compiler/src/nav.rs::plan_moves` chains each NPC's walk origin linearly
+through the flat campaign effect order and never reads the branch gates on the
+moves it is chaining:
+
+```
+obj/climb-out    → anchor/mouth                            chained := mouth
+obj/reach-mouth  → anchor/checkpoint-1   (21 t)            chained := checkpoint-1
+obj/the-argument → anchor/gangplank      requires flag/flee  (488 t)  chained := BEACH
+q/cave-of-plenty → anchor/alcove-1       requires flag/wait  (701 t)  ← starts at the BEACH
+```
+
+The flee-only leg overwrites the origin the wait-only leg inherits. The two can
+never both run.
+
+**Second victim, found by this audit and not reported by the owner**:
+`mv_tick_perimedes_pen_c` starts at `7.5 63.0 9.5` (`anchor/class-post`, the
+beach), poisoned by the flee-only `mv_perimedes_class_post`, and walks **648
+ticks = 32 seconds**. Same vanish-and-trudge on the same branch.
+
+**Why r14 caused it**: r14 finding #43 added the flee legs
+`eurylochus → gangplank` and `perimedes → class-post`. Before that neither NPC
+had a flee move and the linear chain was accidentally correct. Finishing the
+flee branch silently broke the wait branch. It is **not** the cast ledger —
+`cast.rs` is dialogue dispatch only and emits no `tp` at all ("Declaring an
+anchor does not teleport anybody").
+
+**Why content cannot fix it**: the only content lever is declaration order, and
+swapping the two legs just moves the teleport onto the flee branch. There is no
+DSL surface for "this walk starts where this branch left the body". Escalated
+rather than reordered, per the no-hack rule; engine PR carries the fix.
+
+### Item 3 — the ending night-vision flicker (ENGINE)
+
+`area/island` declares `mitigation: "night-vision"`; `area/open-sea` does not.
+The clock re-applies a **12-second** lease once a second to everyone inside the
+island's box. The ending transports the party to the deck at x=256 — outside
+that box — so they arrive holding **at most 12 s** of night vision, against a
+**17-second** ending camera (300-tick cutscene + a sequence closing at t340).
+Vanilla's `GameRenderer` starts ramping the brightness down at 200 ticks
+remaining, so the flicker begins ~1.5 s after arrival and the effect dies
+mid-shot. Fixed as an engine guarantee, not as a content timing tweak — see the
+engine PR for the chosen mechanism and why.
+
+### Item 4 — cheese (still blocked)
+
+Finding #33, open since round 12. Engine task #95
+(`worker/collect-adopt-container`) is in flight; nothing in this campaign can
+express it until that lands. Note the current `hint` already promises the barrel
+("Take a wheel from the barrel among them") while `collect` stamps its own
+chest — so the text is currently ahead of the mechanism, and both land together.
+
+### Proofs
+
+`delvec` built from engine `main` at `5e84c70`. English and zh-cn builds both
+exit 0; English **double build byte-identical**. `DW0355` and `DW0410` silent.
+Advisory set unchanged from round 14 (19 `DW0451`, 2 long-standing `DW0359`) —
+no class of advisory is new. Emitted timings verified in the datapack:
+the blinding sequence schedules moved `400t/460t` → `80t/140t` and the escape
+sequence's second step `100t` → `80t`, with every other schedule byte-unchanged.
