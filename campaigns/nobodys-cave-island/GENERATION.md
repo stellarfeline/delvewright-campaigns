@@ -1054,8 +1054,8 @@ Status key: **fixed@N** = landed in round N and still holds on this branch;
 | 30 | The blind giant was a scripted patrol | r8 | fixed@r11 (real unleashed warden) |
 | 31 | Sheep scattered across the whole cavern | r11 | fixed@r12 (one leg fold→pen; all 8 inside a footprint) |
 | 32 | The giant stood inside the mountain wall | r11 | fixed@r12 (#196 DW0450; `anchor/mouth-side` moved) |
-| 33 | **Cheese: name it, fill the EXISTING barrel** | **r12** | **engine — open 4 rounds.** `collect` stamps its own chest and has no `name` field. Engine task #95 in flight (`worker/collect-adopt-container`); applies the moment it merges. **This is the finding the round-16 rebuke is about.** |
-| 34 | **Boulder hint should answer right-click too** | **r12** | **engine — open 4 rounds.** A co-located `use` trigger builds green and then summons a second `minecraft:interaction` at the identical cell; one of the two triggers silently never fires. Needs the `strike-npc` treatment for non-NPC triggers (merge co-located click triggers onto ONE hitbox carrying both tags) **plus a diagnostic**. Reverted rather than shipped, r13. No engine task is open on it — filed this round. |
+| 33 | Cheese: name it, fill the EXISTING barrel | r12 | fixed@r18 (the cheese IS the barrel: hand-added `anchor/cheese-store` route; loot fills r21 make all four barrels cheese) |
+| 34 | Boulder hint should answer right-click too | r12 | fixed via engine task #142 ("the seal answers", v0.8: co-located click triggers merged onto one hitbox); adopted with the r19/r20 version bumps |
 | 35 | NPCs offered premise questions after the finale | r12 | fixed@r13 (spec-0020 cast ledger, 45 entries) |
 | 36 | Beats armed before their prompt could be read | r12 | fixed@r13 — **then over-corrected; superseded by #45** |
 | 37 | One ending for three names | r12 | fixed@r13 (branch closing paragraphs) |
@@ -1072,8 +1072,8 @@ Status key: **fixed@N** = landed in round N and still holds on this branch;
 | 48 | Routed lanes for the drowned | r13 | **ruled — not available for this species.** `lane` is raider-family only (`DW0382`); `summon: aggro-edge` seats them inland. Reported r14, no owner objection since. |
 | 49 | 27 option labels overran the button | r14 | fixed@r15 (captions in the button, sentences on hover) |
 | 50 | **Blind-stealth: ~10 s of forced dead air** | **r15** | **fixed@r16** — this round, below |
-| 51 | **Wait branch: Eurylochus vanishes and walks back** | **r15** | **engine — root-caused this round.** `nav.rs` chains walk origins branch-blind. Content cannot express the fix; engine PR open. |
-| 52 | **Ending night-vision expires and flickers** | **r15** | **engine — root-caused this round.** The 12 s lease trails the player out of the mitigated area and dies inside the 17 s ending camera. Engine PR open. |
+| 51 | Wait branch: Eurylochus vanishes and walks back | r15 | fixed via engine PR #244 (DW0486: a walk starts where ITS branch left the body), merged to main; in every build since r18 |
+| 52 | Ending night-vision expires and flickers | r15 | fixed via engine PR #246 (granted sight outlasts the camera it has to survive), merged to main; in every build since r18 |
 
 Non-finding deviations still awaiting an owner ruling live in `DESIGN.md` §7 and
 are unchanged this round: the single-leg B1 approach (owner-ruled r13: stays),
@@ -1615,3 +1615,20 @@ names the long-standing fact that `prefab/island-greenfield` is drawn twice
 by `pool/island` and every `anchor/fold*` lands on the first copy — the
 sheep meadow the owner has always seen. Behavior unchanged; second copy's
 folds are intentionally empty terrain.
+
+### Round 21/22 ladder record (addendum)
+
+Full ladder on the round-22 build (engine: main @ c112be8 — which includes
+#282/#283/#284/#285 — plus #276 branch-aware transport, #280 wave machinery,
+and a one-line post-#284 signature adapt), 2026-08-06 03:51–04:05: PackTest
+green; bot critical-path + die-retry green — first bot run to survive the
+storm gauntlet with all three waves spawning; all four branch runs green.
+Determinism double-build byte-identical. Ladder logs: session scratch
+`island-round/ladder3-*.log`.
+
+### Findings-ledger audit (pre-staging, 2026-08-06)
+
+All 52 ledger findings verified closed or owner-ruled before staging this
+build for the owner: rows 33/34/51/52 above updated from their stale r16
+"open/engine" statuses with the merge evidence per row. Nothing reported by
+the owner in any round survives into this build.
