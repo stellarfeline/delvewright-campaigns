@@ -1054,7 +1054,7 @@ Status key: **fixed@N** = landed in round N and still holds on this branch;
 | 30 | The blind giant was a scripted patrol | r8 | fixed@r11 (real unleashed warden) |
 | 31 | Sheep scattered across the whole cavern | r11 | fixed@r12 (one leg fold→pen; all 8 inside a footprint) |
 | 32 | The giant stood inside the mountain wall | r11 | fixed@r12 (#196 DW0450; `anchor/mouth-side` moved) |
-| 33 | **Cheese: name it, fill the EXISTING barrel** | **r12** | **engine — open 4 rounds.** `collect` stamps its own chest and has no `name` field. Engine task #95 in flight (`worker/collect-adopt-container`); applies the moment it merges. **This is the finding the round-16 rebuke is about.** |
+| 33 | **Cheese: name it, fill the EXISTING barrel** | **r12** | **fixed@r18** (engine task #95 `collect` container adoption merged; `anchor/cheese-barrel` named, `item_name`, `fill_count: 26`) — **extended@r21**: the other three barrels of the same rack now carry the identical wheel, so any barrel works (#53). |
 | 34 | **Boulder hint should answer right-click too** | **r12** | **engine — open 4 rounds.** A co-located `use` trigger builds green and then summons a second `minecraft:interaction` at the identical cell; one of the two triggers silently never fires. Needs the `strike-npc` treatment for non-NPC triggers (merge co-located click triggers onto ONE hitbox carrying both tags) **plus a diagnostic**. Reverted rather than shipped, r13. No engine task is open on it — filed this round. |
 | 35 | NPCs offered premise questions after the finale | r12 | fixed@r13 (spec-0020 cast ledger, 45 entries) |
 | 36 | Beats armed before their prompt could be read | r12 | fixed@r13 — **then over-corrected; superseded by #45** |
@@ -1074,6 +1074,12 @@ Status key: **fixed@N** = landed in round N and still holds on this branch;
 | 50 | **Blind-stealth: ~10 s of forced dead air** | **r15** | **fixed@r16** — this round, below |
 | 51 | **Wait branch: Eurylochus vanishes and walks back** | **r15** | **engine — root-caused this round.** `nav.rs` chains walk origins branch-blind. Content cannot express the fix; engine PR open. |
 | 52 | **Ending night-vision expires and flickers** | **r15** | **engine — root-caused this round.** The 12 s lease trails the player out of the mitigated area and dies inside the 17 s ending camera. Engine PR open. |
+| 51b | Walk-origin fix carried | — | `fix/branch-aware-move-origins` is in this round's engine build; the r21 branch runs exercise it (`DW0488` + gate-keyed drivers). Still pending on engine `main`. |
+| 52b | Camera night-vision lease carried | — | `fix/vision-covers-the-camera` is in this round's engine build (lease = `max(12, longest camera + 11)` s). Still pending on engine `main`. |
+| 53 | **All four barrels should carry cheese** | **r20** | **fixed@r21** — three `loot[]` fills on the three unnamed barrels; `collect` adjudicates on item id, so whichever barrel the player opens completes the objective (task #171). |
+| 54 | **The flee ending had no ship-at-sea cutscene** | **r20** | **fixed@r21** — the same 15 s two-shot pull-back, filmed on the flee branch's own galley (task #172). **Partly engine:** literally sharing the wait branch's cutscene needs branch-aware inter-area transport, which does not exist; escalated, `DESIGN.md` §12.4.1. |
+| 55 | **Skipping the pre-cave drowned soft-locked the mainline** | **r20** | **fixed@r21** — the beat is cut, not repaired: `obj/surf` and `wave/surf` deleted, `obj/climb-out` follows `obj/muster`, and the pressure moves to the storm-night escape gauntlet where nothing gates on killing it (task #175). |
+| 56 | **The crew stood on the beach while the party escaped** | **r20** | **fixed@r21** — on the wait branch they run the whole route at sprint pacing and take stations aboard; the flee branch's beach-camp staging is unchanged, per the owner's ruling. |
 
 Non-finding deviations still awaiting an owner ruling live in `DESIGN.md` §7 and
 are unchanged this round: the single-leg B1 approach (owner-ruled r13: stays),
@@ -1496,3 +1502,217 @@ Fixing the two gaps is a separate, engine-dependent round: either the two
 engine branches merge to `main` first, or the two objects fall back to their
 pre-0.8 plain shape as a deliberate content decision — outside this task's
 scope and not decided here.
+
+## Round 21 — every barrel is cheese, and the island does not let you leave
+
+Three owner findings from the 2026-08-05 playtest, one round: tasks #171
+(barrels), #172 (flee ending cutscene) and #175 (cut the summon-drowned side
+quest; storm-night escape gauntlet), plus a same-day directive folded into #175
+(branch-dependent ending staging). Design rationale is `DESIGN.md` §12; this is
+the record of what was done and what it cost.
+
+Engine: the round's combined worktree — `main` plus `worker/floor-ledger-untiered`,
+`worker/collect-adopt-container`, `fix/branch-aware-move-origins`,
+`worker/kit-potion-contents`, `fix/vision-covers-the-camera`, `worker/one-shot-class`,
+`worker/tm-crush-respawn`, `worker/close-gate-sealed-hint`,
+`worker/bell-bonfire-safe-zone`, `worker/bell-finale-tide-gate`.
+
+### 1. The barrels (task #171)
+
+**Mechanics established before writing anything.** A `collect` objective's
+completion is a vanilla `inventory_changed` advancement matched on the item **id**,
+with a per-tick held check as the fallback; `container` only names the furniture
+the compiler fills. Adjudication is therefore source-blind — any barrel works the
+moment it holds a `minecraft:sponge`. No engine change is needed and none was
+requested.
+
+Three anchors added to `island-mountain` on the remaining barrel cells
+(`anchor/cheese-barrel-{b,c,d}` at `[21,9,25]`, `[21,9,24]`, `[23,9,24]`), and a
+new stage-5 `loot[]` section fills each with 27 stacks of the same named wheel.
+`DW0435` (two positional fills on one anchor) is satisfied by construction: four
+barrels, four anchors, one fill each.
+
+**Reported limitation, not a hack.** A `loot` fill happens at `setup_finish`; the
+adopted collect fills at objective *activation*. The three loot barrels are
+therefore stocked from world init, a few blocks past the reach that activates
+`obj/cheese`. Nothing breaks — an early wheel completes the objective through the
+held check — but the two fills are not simultaneous, and the DSL has no way to say
+"fill this container when that objective activates" for a container the objective
+does not adopt. Noted for the engine; not worked around.
+
+### 2. The flee ending (task #172)
+
+`obj/board-flee` now narrates the oars going out, plays a **15-second two-shot
+pull-back** (7 s + 8 s, the wait ending's offsets and `look_at`), and lands the
+QUIET SAIL card on the same `at_ticks: 340` beat. Filmed on the flee branch's own
+galley (`anchor/deck`), with no actors on the deck — the owner's same-day ruling
+is that this branch's beach-camp staging is correct and stays, so the wide shot
+frames the ship, the strand and the crew standing on it.
+
+**It was first built as literally the wait branch's cutscene, and that is the
+interesting part.** A `quest/the-quiet-voyage` in `area/open-sea` off
+`quest/take-the-cheese`, reusing `anchor/sea-deck`: the compiler deduplicated it
+onto the *same* emitted `cs_sea_deck_…` function, so it genuinely was one cutscene
+in two branches. Two engine facts killed it, in order:
+
+1. `DW0302` — a cross-area camera anchor is legal at emission, but the layout
+   solver's required-anchor set is per **quest area**, so the beat has to live in
+   the area it films. Fixed by declaring the quest in `area/open-sea`.
+2. **The transport never fired.** `Plan::transport` is built from
+   `build_critical_path` over the **exported** playthrough only; the exported path
+   is a wait branch, so `complete_o_board_flee` carried no `teleport` — while
+   `branch-path-flee.json`, built by the same function under
+   `branch_critical_path`, *did* carry a `transport` marker. The branch run failed
+   exactly there: `[transport] did not observe the jump to [260, 65, 11] within
+   15000ms; bot at [11.5, 65.0, 21.5]`, then `branch branch/flee FAILED (exit 1)`.
+
+The DSL has no player-teleport verb — moving the party across areas is the
+compiler's job by design — so there is no content-level spelling of the sea leg.
+Escalated (§5.1); the beat ships in the form the engine can deliver and can be
+upgraded to the shared function the day transport is branch-aware. **The red
+branch run is the reason this is written down rather than shipped:** the campaign
+built green, the chronicle read correctly, and only the bot found it.
+
+### 3. The gauntlet (task #175)
+
+**The cut.** `obj/surf` (`kill wave/surf`) gated `obj/climb-out`, which carried the
+`move-npc` putting Eurylochus at the mouth; the quest's `on_complete` carried
+Antiphos and `flag/antiphos-posted`, which `obj/take-cover` requires. That is the
+soft-lock the owner hit. Objective and wave are deleted, `obj/climb-out` follows
+`obj/muster` directly, and the muster beat keeps the fall of the light without the
+drowned. Machine statement of the cut: `kill obj/surf` no longer appears in
+`critical-path.json`.
+
+**The beat.** `obj/under-ram` now opens the stone into `set-time: night` +
+`set-weather: thunder`, and `quest/the-sail` gains `obj/the-neck`
+(`anchor/mountain-foot`) so the escape is a three-surge run: two shore waves at the
+mountain's foot, two beach waves 200 ticks later, and `wave/tide-surf` plus a
+re-fire of both beach waves at the gangplank. Five waves, no `kill` objective on
+any of them — legal by construction (`DW0171` constrains only the converse), and
+`DW047x` correspondingly reports **0 mandatory encounters**: reaching the ship and
+triggering set-sail is the whole victory condition.
+
+**The crew run it.** `npc/perimedes` → `anchor/oar-star`, `npc/eurylochus` →
+`anchor/oar-port`, `npc/elpenor` → `anchor/helm` (three new anchors on the beached
+galley's deck planks), all at `speed: 0.28` against the `0.15` default. The flee
+branch's beach staging is untouched — correct for the peaceful ending — and
+branch-aware move origins keep the two apart.
+
+**Two checkpoints were added with it, and finding out why was the point of the
+round.** The escape's only prior checkpoint is `anchor/checkpoint-3`, inside the
+cave. `trigger/he-holds-the-mouth` requires `flag/escaped` (set at
+`obj/last-sand`) and unleashes the warden within 5 blocks of `anchor/mouth` — so a
+party dying at the plank would respawn in the cave, walk out into a real warden,
+and loop. Making the escape dangerous is what turned a harmless checkpoint
+distance into a soft-lock. `obj/the-neck` now checkpoints at
+`anchor/mountain-foot` and `obj/last-sand` at `anchor/gangplank`, each ordered
+**before** its own `spawn-wave`s so the respawn cell is set before anything stands
+up next to it.
+
+**Two spellings were tried and discarded, both for stated reasons.** `approach`
+environment triggers: a non-`once` one has no edge detection and fires every tick a
+player is in range, and a `once` one is an **ambient** beat the chronicle refuses to
+date, so `branch-chronicle-flee.md` reported drowned coming ashore on the calm
+branch. Hanging each surge on a `quest/the-sail` objective makes it branch-dated,
+ordered, and part of the bot's own path.
+
+**`flag/aboard` is now a declared fork.** It was set at `obj/under-ram` and never
+read; using it would have been `DW0480` (a flag that gates staging and belongs to
+no branch point). It is declared in `branch_points[0].forks_on` and in all three
+`branch/wait-*` flag lists rather than swapped for a flag that happened to be
+declared already.
+
+### 4. One diagnostic answered by declaration, and it is worth recording
+
+`DW0461` fired on `quest/the-sail`'s **flee-branch** cast entry for
+`npc/elpenor`: the new ungated `move-npc` to `anchor/helm` leaves him there in the
+replayed history, while the entry declared `anchor/crew-b`. `npc/elpenor` is not
+branch-divergent by `continuity`'s test (nothing flag-gated has ever moved him), so
+`DW0462` does not take over and the replay is not branch-aware here. Two options:
+gate the walk with `forbids_flags` — which makes him branch-divergent and forces
+per-branch casts in *every* quest, campaign-global, for no player-visible gain — or
+follow the diagnostic's own prescription and declare where the replay says he
+stands. Took the second. `quest/the-sail` is unreachable on the flee branch (its
+trigger is `quest/under-the-rams`), so nothing a player sees and nothing in any
+chronicle changes.
+
+### 5. Engine findings (reported, not worked around)
+
+1. **Inter-area transport is not branch-aware** — `Plan::transport` from the
+   exported path only, while every `branch-path-<b>.json` carries per-branch
+   `transport` markers from the same function. A branch that changes area off the
+   exported path ships a promise the datapack cannot keep, and its branch run hangs
+   on it. §2 above; blocks the literal shared-cutscene form of task #172.
+2. **`plan::wave_area` does not descend into `sequence` steps** — a shallow
+   `.any()` over each quest's effect list, unlike the nested traversal the
+   wave/flag producer scans use. A wave spawned only from inside a `sequence`, in a
+   multi-area campaign, resolves no area and fails `DW0310` ("its spawn anchor is
+   not placed in any assembled area") with the anchor in fact placed. Every wave
+   here also has a top-level spawn, so the campaign is unaffected.
+3. **`pool/island` draws `island-greenfield` twice**; `island-greenfield-bend` is
+   never placed. Every greenfield anchor is ambiguous (`DW0305`) and unusable as a
+   wave anchor or `reach-anchor` target. The gauntlet's mid-route beat sits on the
+   mountain piece for that reason. Two shore anchors added to `island-greenfield`
+   on the first attempt were **reverted** — the prefab diff carries none of them.
+4. **A `loot` container and an adopted `collect` container fill at different
+   times** (world init vs objective activation) with no way to say otherwise — §1.
+5. **`DW0461` replays effect history without branch awareness** — §4 above.
+
+### 6. l10n
+
+`l10n/zh-cn.json` regenerated **by English text, not by key** — the process lesson
+of this round. Inserting an effect shifts every positional key after it
+(`fx.<quest>.oc.<obj>.<i>.narrate`), so a key-preserving merge silently pairs an
+old translation with a *new* English line, and `DW0180`/`DW0181` coverage cannot
+see it: the key exists and is translated, it is simply translated as something
+else. The sidecar is therefore rebuilt from the fresh inventory with each key's
+Chinese looked up by its **English string** against the pre-round inventory, and
+the rebuild hard-fails on any English it cannot place. 433 keys, exact coverage;
+19 genuinely new strings written against the existing glossary (溺亡者, 波塞冬,
+跳板, 克法罗提里干酪, 埃尔佩诺尔, 欧律罗科斯).
+
+Two happenings and two quest goals still spoke of daylight (`quest.shipwrecked.goal`
+still promised the deleted drowned; `quest/under-the-rams`'s open-gate happening
+still said "to pasture" at "first light"). Caught by reading the chronicle back —
+the decompile-to-reviewer-medium check doing exactly its job — and rewritten.
+
+### Proof
+
+- `delvec validate` / `analyze` / `build` exit 0, English and `--lang zh-cn`.
+  Warnings are the pre-existing set only: 2 × `DW0359` (the warden beside the eye
+  affordance) and 20 × `DW0451` (model overhang / the pen's fence gate). The two
+  DW0451 rows that changed are the same pen-gate cell, now reported against the
+  new destinations — walk-origin advisories in kind, not in number.
+- **Determinism**: English double build byte-identical; `zh-cn` double build
+  byte-identical; the ladder's build reproduces from source.
+- **The cut, on the machine**: `kill obj/surf` is absent from
+  `critical-path.json`; the path now reads `… interact obj/under-ram → reach
+  obj/the-neck → reach obj/last-sand → interact obj/board-nobody → reach
+  obj/aboard`.
+- **The barrels, on the machine**: `setup_finish` writes 27 `item replace block`
+  lines into each of `[13,69,-47]`, `[13,69,-48]`, `[15,69,-48]`, and
+  `activate_o_cheese` writes 27 into `[15,69,-47]` — four barrels, 27 named
+  wheels each, one `custom_name` string across all 108 stacks in both languages.
+- **The prefab additions are player-inert**: the pre-round campaign built against
+  the post-round prefabs yields a byte-identical shipped `datapack/`; only the
+  creator overlay's `layout.json` gains the names.
+- **The flee ending, on the machine**: `complete_o_board_flee` →
+  `cs_deck_7_2_…` (15 s) → `seq_…_1` = `title @a title {"text":"THE QUIET SAIL"}`,
+  the Ithaca line, the fanfare, `campaign_complete`. `branch-path-flee.json`
+  carries `cutscene_seconds: 15` and **no** transport.
+- **Branch artifacts**: all four branches reachable, each reaching exactly its
+  declared ending; `flag/aboard` present in all three `branch/wait-*` assignments
+  and pinned unset on `branch/flee`. No `DW048x`.
+- **PackTest**: `All 41 required tests passed`, exit 0 (own compose project
+  `dw-worker-island-r17`, worker override, verified-clean volumes).
+- **Bot (exported critical path + die-retry)**: exit 0. `critical-path` ran and
+  passed; `die-retry` ran and passed. The combat plan reports **0 mandatory
+  encounters at difficulty `easy`** — which is the gauntlet's whole point, and
+  is also why the die-retry stage has no scripted deaths to script: nothing on
+  the path is a fight the party is required to win. `floor_findings: []`.
+- **Branch runs (fresh world per branch)**: exit 0 — `branch/flee`,
+  `branch/wait-nobody`, `branch/wait-lie`, `branch/wait-boast` all `ran: true,
+  passed: true`, each reaching its declared ending. This is the tier that
+  matters most this round: the first spelling of the flee ending built green,
+  read correctly in the chronicle, and **failed here** — `branch/flee FAILED
+  (exit 1)` on the transport that never fired. Only the bot found it.

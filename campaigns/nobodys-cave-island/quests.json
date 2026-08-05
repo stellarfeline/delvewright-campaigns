@@ -115,18 +115,98 @@
   ],
   "waves": [
    {
-    "id": "wave/surf",
+    "id": "wave/tide-shore-west",
+    "anchor": "anchor/mountain-shore-west",
+    "mobs": [
+     {
+      "entity": "minecraft:drowned",
+      "count": 3,
+      "name": "Drowned of Poseidon",
+      "attributes": {
+       "max_health": 8.0,
+       "movement_speed": 0.2,
+       "follow_range": 48.0,
+       "attack_damage": 2.0
+      },
+      "equipment": {
+       "head": "minecraft:leather_helmet"
+      }
+     }
+    ]
+   },
+   {
+    "id": "wave/tide-shore-east",
+    "anchor": "anchor/mountain-shore-east",
+    "mobs": [
+     {
+      "entity": "minecraft:drowned",
+      "count": 3,
+      "name": "Drowned of Poseidon",
+      "attributes": {
+       "max_health": 8.0,
+       "movement_speed": 0.2,
+       "follow_range": 48.0,
+       "attack_damage": 2.0
+      },
+      "equipment": {
+       "head": "minecraft:leather_helmet"
+      }
+     }
+    ]
+   },
+   {
+    "id": "wave/tide-west",
+    "anchor": "anchor/crew-a",
+    "mobs": [
+     {
+      "entity": "minecraft:drowned",
+      "count": 3,
+      "name": "Drowned of Poseidon",
+      "attributes": {
+       "max_health": 8.0,
+       "movement_speed": 0.2,
+       "follow_range": 48.0,
+       "attack_damage": 2.0
+      },
+      "equipment": {
+       "head": "minecraft:leather_helmet"
+      }
+     }
+    ]
+   },
+   {
+    "id": "wave/tide-east",
+    "anchor": "anchor/crew-b",
+    "mobs": [
+     {
+      "entity": "minecraft:drowned",
+      "count": 3,
+      "name": "Drowned of Poseidon",
+      "attributes": {
+       "max_health": 8.0,
+       "movement_speed": 0.2,
+       "follow_range": 48.0,
+       "attack_damage": 2.0
+      },
+      "equipment": {
+       "head": "minecraft:leather_helmet"
+      }
+     }
+    ]
+   },
+   {
+    "id": "wave/tide-surf",
     "anchor": "anchor/surf-wave",
     "mobs": [
      {
       "entity": "minecraft:drowned",
       "count": 3,
-      "name": "Drowned of the Wreck",
+      "name": "Drowned of Poseidon",
       "attributes": {
-       "max_health": 6.0,
-       "movement_speed": 0.16,
+       "max_health": 8.0,
+       "movement_speed": 0.2,
        "follow_range": 48.0,
-       "attack_damage": 1.0
+       "attack_damage": 2.0
       },
       "equipment": {
        "head": "minecraft:leather_helmet"
@@ -155,26 +235,11 @@
       }
      },
      {
-      "type": "kill",
-      "id": "obj/surf",
-      "wave": "wave/surf",
-      "after": [
-       "obj/muster"
-      ],
-      "title": "Drive Off the Drowned",
-      "hint": "Three drowned haul themselves out of the surf at the waterline, west of the fire. Cut them down before they reach the crew.",
-      "happening": {
-       "verb": "survives",
-       "text": "The crew beat off the drowned that come up out of the surf for the firelight.",
-       "subject": "wave/surf"
-      }
-     },
-     {
       "type": "talk-to",
       "id": "obj/climb-out",
       "npc": "npc/eurylochus",
       "after": [
-       "obj/surf"
+       "obj/muster"
       ],
       "title": "Tell Eurylochus You Will Climb",
       "hint": "He is still at the fire, watching the smoke on the mountain. Give him the word to lead on.",
@@ -264,37 +329,20 @@
       {
        "type": "narrate",
        "style": "chat",
-       "text": "The sun drops fast behind the world's rim, the way it does at sea. In the last red light, the surf begins to move."
+       "text": "The sun drops fast behind the world's rim, the way it does at sea. Eurylochus gives you the count twice and it comes out the same both times."
       },
       {
        "type": "play-sound",
-       "sound": "minecraft:entity.hostile.splash",
+       "sound": "minecraft:block.campfire.crackle",
        "at": {
         "at": "anchor",
-        "anchor": "anchor/surf-wave"
+        "anchor": "anchor/camp-fire"
        }
       },
       {
        "type": "narrate",
        "style": "chat",
-       "text": "The surf gives up its dead: three drowned wade out of the shallows toward the fire, and the last of the light goes out of the water behind them."
-      },
-      {
-       "type": "spawn-wave",
-       "wave": "wave/surf",
-       "happening": {
-        "verb": "arrives",
-        "text": "Drowned men come up out of the surf toward the fire.",
-        "subject": "wave/surf"
-       }
-      },
-      {
-       "type": "play-sound",
-       "sound": "minecraft:entity.drowned.ambient",
-       "at": {
-        "at": "anchor",
-        "anchor": "anchor/surf-wave"
-       }
+       "text": "The last of the light goes out of the water. Whatever is keeping that fire on the mountain has kept it all day, and will keep it all night."
       },
       {
        "type": "sequence",
@@ -309,13 +357,6 @@
          ]
         }
        ]
-      }
-     ],
-     "obj/surf": [
-      {
-       "type": "narrate",
-       "style": "chat",
-       "text": "The last of them slides back under the foam. The beach is yours for as long as the light lasts."
       }
      ],
      "obj/climb-out": [
@@ -998,28 +1039,125 @@
      "obj/board-flee": [
       {
        "type": "narrate",
-       "style": "title",
-       "text": "THE QUIET SAIL"
-      },
-      {
-       "type": "narrate",
        "style": "chat",
-       "text": "Ithaca inside the month. Safe, and fed, and a little smaller for it — and every man you came in with still at his oar."
+       "text": "Oars out, and the strand slides away astern with the lambs still complaining in it. Nobody looks back at the mountain, and nobody has to."
       },
       {
        "type": "play-sound",
-       "sound": "minecraft:entity.villager.celebrate",
+       "sound": "minecraft:entity.boat.paddle_water",
        "at": {
         "at": "players"
        }
       },
       {
-       "type": "campaign-complete",
-       "happening": {
-        "verb": "survives",
-        "text": "THE QUIET SAIL: every man who came ashore leaves it, and no story is made of any of them."
-       },
-       "ending": "ending/the-quiet-sail"
+       "type": "cutscene",
+       "shots": [
+        {
+         "path": [
+          {
+           "anchor": "anchor/deck",
+           "offset": [
+            -6,
+            3,
+            0
+           ]
+          },
+          {
+           "anchor": "anchor/deck",
+           "offset": [
+            -20,
+            5,
+            0
+           ]
+          }
+         ],
+         "seconds": 7,
+         "look_at": {
+          "anchor": "anchor/deck",
+          "offset": [
+           0,
+           1,
+           0
+          ]
+         }
+        },
+        {
+         "path": [
+          {
+           "anchor": "anchor/deck",
+           "offset": [
+            -20,
+            5,
+            0
+           ]
+          },
+          {
+           "anchor": "anchor/deck",
+           "offset": [
+            -44,
+            10,
+            0
+           ]
+          }
+         ],
+         "seconds": 8,
+         "look_at": {
+          "anchor": "anchor/deck",
+          "offset": [
+           0,
+           1,
+           0
+          ]
+         }
+        }
+       ]
+      },
+      {
+       "type": "sequence",
+       "steps": [
+        {
+         "at_ticks": 120,
+         "effects": [
+          {
+           "type": "play-sound",
+           "sound": "minecraft:ambient.underwater.enter",
+           "at": {
+            "at": "players"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 340,
+         "effects": [
+          {
+           "type": "narrate",
+           "style": "title",
+           "text": "THE QUIET SAIL"
+          },
+          {
+           "type": "narrate",
+           "style": "chat",
+           "text": "Ithaca inside the month. Safe, and fed, and a little smaller for it — and every man you came in with still at his oar."
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.villager.celebrate",
+           "at": {
+            "at": "players"
+           }
+          },
+          {
+           "type": "campaign-complete",
+           "happening": {
+            "verb": "survives",
+            "text": "THE QUIET SAIL: every man who came ashore leaves it, and no story is made of any of them."
+           },
+           "ending": "ending/the-quiet-sail"
+          }
+         ]
+        }
+       ]
       }
      ]
     },
@@ -2602,14 +2740,18 @@
          "effects": [
           {
            "type": "set-time",
-           "time": "day"
+           "time": "night"
+          },
+          {
+           "type": "set-weather",
+           "weather": "thunder"
           },
           {
            "type": "open-gate",
            "anchor": "anchor/boulder",
            "happening": {
             "verb": "opens",
-            "text": "Polyphemus rolls the stone back to let his flock out to pasture.",
+            "text": "Polyphemus rolls the stone back to put his flock out, with no way of knowing he is opening it on a black sky.",
             "subject": "anchor/boulder"
            }
           },
@@ -2622,9 +2764,16 @@
            }
           },
           {
+           "type": "play-sound",
+           "sound": "minecraft:entity.lightning_bolt.thunder",
+           "at": {
+            "at": "players"
+           }
+          },
+          {
            "type": "narrate",
            "style": "chat",
-           "text": "Stone grinds back off the mouth, and the first daylight in a day and a night comes down the hall in one white bar."
+           "text": "Stone grinds back off the mouth — and there is no daylight behind it. A blind man cannot tell noon from midnight, and he has opened his house onto a black sky with the sea standing on end under it."
           }
          ]
         },
@@ -2661,7 +2810,7 @@
           {
            "type": "narrate",
            "style": "chat",
-           "text": "He settles himself against the rock beside the gap and puts his hands out over it, running them along every back that passes. Only the backs. He never thinks to feel underneath."
+           "text": "He settles himself against the rock beside the gap and puts his hands out over it, running them along every back that passes. Only the backs. He never thinks to feel underneath. Out past his shoulder the rain comes down like thrown gravel."
           }
          ]
         },
@@ -2737,10 +2886,11 @@
           {
            "type": "move-npc",
            "npc": "npc/perimedes",
-           "to_anchor": "anchor/crew-a",
+           "to_anchor": "anchor/oar-star",
+           "speed": 0.28,
            "happening": {
             "verb": "departs",
-            "text": "Perimedes comes out with the flock and keeps going down the mountain to the strand.",
+            "text": "Perimedes goes out with the flock and runs the whole path to the ship without once looking behind him.",
             "subject": "npc/perimedes"
            }
           }
@@ -2772,10 +2922,11 @@
           {
            "type": "move-npc",
            "npc": "npc/eurylochus",
-           "to_anchor": "anchor/gangplank",
+           "to_anchor": "anchor/oar-port",
+           "speed": 0.28,
            "happening": {
             "verb": "departs",
-            "text": "Eurylochus comes out with the flock and goes down to hold the gangplank.",
+            "text": "Eurylochus comes out last of the party and runs the path down to the galley to get the oars manned.",
             "subject": "npc/eurylochus"
            }
           }
@@ -2803,6 +2954,17 @@
             "text": "A ram goes out past the giant's hands to the meadow fold.",
             "subject": "actor/sheep-8"
            }
+          },
+          {
+           "type": "move-npc",
+           "npc": "npc/elpenor",
+           "to_anchor": "anchor/helm",
+           "speed": 0.28,
+           "happening": {
+            "verb": "departs",
+            "text": "Elpenor abandons the fire he kept all night and gets himself aboard ahead of the water.",
+            "subject": "npc/elpenor"
+           }
           }
          ]
         },
@@ -2810,13 +2972,26 @@
          "at_ticks": 380,
          "effects": [
           {
-           "type": "set-weather",
-           "weather": "clear"
+           "type": "narrate",
+           "style": "chat",
+           "text": "Salt air, and no light in it at all. Somewhere under the noise a very old voice is being told what was done to its son, and the water starts to come in wrong."
           },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.lightning_bolt.thunder",
+           "at": {
+            "at": "players"
+           }
+          }
+         ]
+        },
+        {
+         "at_ticks": 520,
+         "effects": [
           {
            "type": "narrate",
            "style": "chat",
-           "text": "Daylight, and salt air. The ram carries you out under the giant's very hands and down the mountain toward the sea."
+           "text": "Do not stop to fight them. Nothing on this island is worth one more man. Get down the mountain and get to the oars."
           }
          ]
         }
@@ -2827,7 +3002,7 @@
     "on_complete": [],
     "happening": {
      "verb": "opens",
-     "text": "The flock is let out to graze at first light, and the crew go out under them.",
+     "text": "The flock is driven out into the storm-dark, and the crew go out under them.",
      "subject": "anchor/boulder"
     }
    },
@@ -2840,6 +3015,19 @@
     "objectives": [
      {
       "type": "reach-anchor",
+      "id": "obj/the-neck",
+      "anchor": "anchor/mountain-foot",
+      "radius": 4,
+      "title": "Off the Mountain",
+      "hint": "Down the switchbacks to the foot of the mountain, where the island narrows and the sea stands on both sides of you. Do not stop on it.",
+      "happening": {
+       "verb": "arrives",
+       "text": "The party comes off the mountain onto the narrow foot of the island.",
+       "subject": "anchor/mountain-foot"
+      }
+     },
+     {
+      "type": "reach-anchor",
       "id": "obj/last-sand",
       "anchor": "anchor/gangplank",
       "radius": 3,
@@ -2849,7 +3037,10 @@
        "verb": "arrives",
        "text": "The party crosses the last of the sand to the waiting galley.",
        "subject": "anchor/gangplank"
-      }
+      },
+      "after": [
+       "obj/the-neck"
+      ]
      },
      {
       "type": "interact",
@@ -2890,16 +3081,16 @@
      ],
      "npc/elpenor": [
       {
-       "at": "anchor/crew-b",
+       "at": "anchor/helm",
        "dialogue": "dlg/the-fire-held",
-       "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+       "doing": "Aft by the steering oar, soaked through, with the fire he kept all night drowned behind him on the sand.",
        "forbids_flags": [
         "flag/flee"
        ]
       },
       {
-       "at": "anchor/crew-b",
-       "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+       "at": "anchor/helm",
+       "doing": "Aft by the steering oar with a speech prepared for a loss that never happened.",
        "dialogue": "dlg/all-of-you",
        "requires_flags": [
         "flag/flee"
@@ -2908,9 +3099,9 @@
      ],
      "npc/eurylochus": [
       {
-       "at": "anchor/gangplank",
+       "at": "anchor/oar-port",
        "dialogue": "dlg/at-the-gangplank",
-       "doing": "At the gangplank counting heads out loud for the third time and refusing to grieve until the oars are moving.",
+       "doing": "At the port oar with the rope still on his shoulder, counting heads out loud for the third time and refusing to grieve until the ship is moving.",
        "forbids_flags": [
         "flag/flee"
        ]
@@ -2926,9 +3117,9 @@
      ],
      "npc/perimedes": [
       {
-       "at": "anchor/crew-a",
+       "at": "anchor/oar-star",
        "dialogue": "dlg/on-the-sand",
-       "doing": "On the sand with two fists of ram's wool still in them, laughing wrong and asking to be told the count is four.",
+       "doing": "At the starboard oar with two fists of ram's wool still in them, laughing wrong and asking to be told the count is four.",
        "forbids_flags": [
         "flag/flee"
        ]
@@ -2958,18 +3149,152 @@
      ]
     },
     "on_objective_complete": {
+     "obj/the-neck": [
+      {
+       "type": "set-checkpoint",
+       "anchor": "anchor/mountain-foot",
+       "on_respawn": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "You come to on the wet grass at the foot of the mountain, with the rain still coming and the sea still standing on both sides of you."
+        }
+       ]
+      },
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The sea comes over the low ground on both sides of the island's waist at once, and stands up out of it wearing the drowned of a hundred wrecks."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.drowned.ambient",
+       "at": {
+        "at": "players"
+       }
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/tide-shore-west",
+       "happening": {
+        "verb": "arrives",
+        "text": "The western shore at the mountain's foot gives up its dead into the party's path.",
+        "subject": "wave/tide-shore-west"
+       }
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/tide-shore-east",
+       "happening": {
+        "verb": "arrives",
+        "text": "The eastern shore at the mountain's foot gives up its dead into the party's path.",
+        "subject": "wave/tide-shore-east"
+       }
+      },
+      {
+       "type": "sequence",
+       "steps": [
+        {
+         "at_ticks": 200,
+         "effects": [
+          {
+           "type": "narrate",
+           "style": "chat",
+           "text": "Ahead of you Elpenor's fire is out and the strand is not empty. They are coming up the sand from either hand, and there is nothing behind them but water."
+          },
+          {
+           "type": "play-sound",
+           "sound": "minecraft:entity.hostile.splash",
+           "at": {
+            "at": "players"
+           }
+          },
+          {
+           "type": "spawn-wave",
+           "wave": "wave/tide-west",
+           "happening": {
+            "verb": "arrives",
+            "text": "Drowned wade ashore west of the dead fire.",
+            "subject": "wave/tide-west"
+           }
+          },
+          {
+           "type": "spawn-wave",
+           "wave": "wave/tide-east",
+           "happening": {
+            "verb": "arrives",
+            "text": "Drowned wade ashore east of the dead fire.",
+            "subject": "wave/tide-east"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ],
      "obj/last-sand": [
       {
        "type": "set-flag",
        "flag": "flag/escaped"
       },
       {
+       "type": "set-checkpoint",
+       "anchor": "anchor/gangplank",
+       "on_respawn": [
+        {
+         "type": "narrate",
+         "style": "chat",
+         "text": "You come to at the foot of the gangplank with salt in your mouth. The galley is still there, and so is the water."
+        }
+       ]
+      },
+      {
        "type": "narrate",
        "style": "chat",
-       "text": "Behind you, high on the mountain, the blind giant has not gone back inside. He has set himself across the mouth of his own cave with his hands out and his head turned, waiting for a sound to hate. Whatever is still in there is his now."
+       "text": "Behind you, high on the mountain, the blind giant has not gone back inside. He has set himself across the mouth of his own cave with his hands out and his head turned, waiting for a sound to hate. Ahead of you the surf is standing up in the dark and coming for the plank."
+      },
+      {
+       "type": "play-sound",
+       "sound": "minecraft:entity.drowned.ambient",
+       "at": {
+        "at": "anchor",
+        "anchor": "anchor/surf-wave"
+       }
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/tide-surf",
+       "happening": {
+        "verb": "arrives",
+        "text": "The last of them rises out of the shallows between the party and the gangplank.",
+        "subject": "wave/tide-surf"
+       }
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/tide-west",
+       "happening": {
+        "verb": "arrives",
+        "text": "More come ashore west of the plank as the party crosses it.",
+        "subject": "wave/tide-west"
+       }
+      },
+      {
+       "type": "spawn-wave",
+       "wave": "wave/tide-east",
+       "happening": {
+        "verb": "arrives",
+        "text": "More come ashore east of the plank as the party crosses it.",
+        "subject": "wave/tide-east"
+       }
       }
      ],
      "obj/board-nobody": [
+      {
+       "type": "narrate",
+       "style": "chat",
+       "text": "The oars go in together and the galley comes off the sand. Whatever is in the water behind you can have the beach."
+      },
       {
        "type": "narrate",
        "style": "chat",
@@ -3427,6 +3752,431 @@
        "text": "The blinded giant is still across his own mouth, and anything that comes back in is his.",
        "subject": "actor/polyphemus-walker"
       }
+     }
+    ]
+   }
+  ],
+  "loot": [
+   {
+    "id": "loot/cheese-barrel-b",
+    "anchor": "anchor/cheese-barrel-b",
+    "items": [
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     }
+    ]
+   },
+   {
+    "id": "loot/cheese-barrel-c",
+    "anchor": "anchor/cheese-barrel-c",
+    "items": [
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     }
+    ]
+   },
+   {
+    "id": "loot/cheese-barrel-d",
+    "anchor": "anchor/cheese-barrel-d",
+    "items": [
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
+     },
+     {
+      "item": "minecraft:sponge",
+      "count": 1,
+      "name": "Kefalotyri Cheese"
      }
     ]
    }

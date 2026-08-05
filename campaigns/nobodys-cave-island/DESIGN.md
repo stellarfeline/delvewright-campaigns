@@ -509,3 +509,211 @@ that sentence.
    event-contradiction proofs. On a campaign whose one real fork has a death on
    only one side, those will have findings, and findings there need owner
    rulings. Queued as its own round.
+
+## 12. Round-21 amendment — every barrel is cheese, and the island does not let you leave
+
+Three owner findings from the 2026-08-05 playtest plus a same-day staging
+directive, one round.
+
+### 12.1 All four barrels carry cheese (task #171)
+
+The cave-of-plenty racks have always held **four** barrels; round 18 named one of
+them (`anchor/cheese-barrel`) and filled it, so the other three were furniture the
+player opened, found empty, and walked away from. The owner's rule: whichever
+barrel you open, you find cheese and you progress.
+
+**The mechanic makes this free.** A `collect` objective adjudicates on **item id**,
+not on which container the item came out of — the completion advancement is
+vanilla's `inventory_changed` matched on `minecraft:sponge`, and the per-tick
+fallback is a held check on the same id. `container` only decides which piece of
+furniture the compiler *fills*. So the fix is not an engine change: the other three
+barrels get named (`anchor/cheese-barrel-{b,c,d}` on the real barrel cells
+`[21,9,25]`, `[21,9,24]`, `[23,9,24]`) and each gets a `loot` entry of 27 stacks of
+the same `minecraft:sponge` named **Kefalotyri Cheese** — identical contents,
+identical display, 27 occupied slots so each reads as full as the adopted one.
+`DW0435` keeps the two fills apart: one anchor, one positional fill, and no barrel
+is claimed twice.
+
+**One asymmetry, deliberate and harmless.** A `loot` barrel is filled at
+`setup_finish` (world init); the adopted barrel is filled at objective
+*activation*. So the three loot barrels are technically openable before
+`obj/cheese` activates. They sit two steps past `anchor/checkpoint-1`, whose reach
+is what activates the objective, and a wheel pocketed early still completes it via
+the held check — so the window is unreachable in practice and non-blocking if
+reached.
+
+**Anchors added by hand, add-only** — the same mixed-authorship rule §11 records
+for `island-mountain`. The round adds **six** there (three barrels here,
+`anchor/mountain-foot` and the two shore anchors in §12.3) and **three** to
+`island-beach-camp` (the deck stations in §12.3); none moved, none lost, every
+non-anchor section byte-identical. Proven inert for the player: the pre-round
+campaign built against the post-round prefabs produces a **byte-identical shipped
+`datapack/`** — only the creator overlay's `layout.json` gains the new names.
+
+### 12.2 The flee branch gets the ending cutscene (task #172)
+
+The take-and-run branch used to `campaign-complete` on the deck the instant the
+party boarded: no ending shot at all, just a title card. The wait branch has had
+a 15-second pull-back since round 4. Owner ruling: **the flee branch gets the
+ending cutscene too.**
+
+It now does — `obj/board-flee` narrates the oars going out, plays the same
+15-second two-shot pull-back (7 s + 8 s, same offsets, same `look_at`), and lands
+the QUIET SAIL card on the same `at_ticks: 340` beat the wait ending uses. The
+shot is filmed on the **flee branch's own galley** (`anchor/deck`) rather than the
+open-sea one, and it dresses no deck with actors, because on this branch the crew
+really are on the sand: the owner's same-day ruling is that the flee ending's
+beach-camp staging is correct and stays. The wide pull-back therefore frames the
+ship, the strand, the fire and the crew standing at it — which is the peaceful
+ending's actual picture.
+
+**Why not literally the wait branch's cutscene function.** It was built that way
+first: a `quest/the-quiet-voyage` in `area/open-sea`, triggered off
+`quest/take-the-cheese`, reusing `anchor/sea-deck` — and the compiler deduplicated
+it onto the *same* emitted `cs_sea_deck_…` function, so it really was one cutscene.
+It does not work, for a reason worth recording rather than working around:
+
+- A cross-area camera anchor is legal at emission (`anchor_point_any` scans every
+  area), but the layout solver's required-anchor set is per **quest area**, so
+  filming `anchor/sea-deck` from a quest declared in `area/island` is `DW0302`.
+  Putting the beat in `area/open-sea` fixes that.
+- But then the party has to physically be there, and **inter-area transport is
+  derived from the exported critical path only** (`plan::build_critical_path`
+  walks one playthrough and fills `Plan::transport` from *its* consecutive
+  objectives' areas). The exported path is a wait branch, so `complete_o_board_flee`
+  emitted no `teleport` while `branch-path-flee.json` — built by the same function
+  under `branch_critical_path` — *did* carry a `transport` marker. The datapack
+  promised a jump it never performed, and the branch run failed on it exactly
+  there: `[transport] did not observe the jump to [260, 65, 11]`.
+
+The DSL has no player-teleport verb, so there is no content-level spelling of "put
+the party on the other galley" — by design, since that transport is the
+compiler's. Escalated (§12.4); the beat is authored in the form the engine can
+actually deliver, and can be upgraded to the shared function the day transport
+becomes branch-aware.
+
+### 12.3 The storm-night escape gauntlet (task #175)
+
+The 2026-08-05 playtest proved the pre-cave drowned beat **soft-locked the
+mainline**: `obj/surf` was a `kill` gating `obj/climb-out`, which carried the
+`move-npc` that put Eurylochus at the mouth, and the quest's `on_complete` carried
+Antiphos and `flag/antiphos-posted` — the flag `obj/take-cover` requires. A player
+who did not finish the drowned finished nothing after it. **No mainline progression
+may depend on optional content**, so the beat is cut rather than repaired:
+`obj/surf` and `wave/surf` are gone, `obj/climb-out` now follows `obj/muster`
+directly, and the muster beat keeps only the fall of the light. `kill obj/surf` is
+gone from `critical-path.json`, which is the machine statement of the cut.
+
+The pressure moves to where it belongs — **the way out**.
+
+**The beat.** `obj/under-ram` opens the stone into `set-time: night` +
+`set-weather: thunder`. This is not a licence taken with Homer: a blind man cannot
+tell noon from midnight, and Polyphemus puts his flock out at what he takes for
+dawn. Poseidon has by now been told what was done to his son, and answers.
+
+**The route is the fight.** `quest/the-sail` gains `obj/the-neck` — reach
+`anchor/mountain-foot`, the waist of the island where the sea is genuinely on both
+hands — so the escape is a three-surge run rather than a wall at either end:
+
+| Beat | Waves | Where |
+|------|-------|-------|
+| `obj/the-neck` | `wave/tide-shore-west`, `wave/tide-shore-east` | `anchor/mountain-shore-{west,east}`, the two coasts at the mountain's foot |
+| `obj/the-neck` +200t | `wave/tide-west`, `wave/tide-east` | `anchor/crew-a` / `anchor/crew-b`, either side of Elpenor's dead fire |
+| `obj/last-sand` | `wave/tide-surf` + a re-fire of both beach waves | `anchor/surf-wave`, between the party and the plank |
+
+**`obj/the-neck` is a choke, not a hope.** A `reach-anchor` completes on a
+**3x3x3 box at the anchor cell** — `radius` is vestigial in v0.3+ — so an
+`after`-gating reach objective on open ground is a soft-lock waiting to happen,
+which is precisely the class of bug this round is fixing. `anchor/mountain-foot`
+is at `island-mountain` piece-local `[18,3,40]`, one block north of the jigsaw
+seam, and the emitted trigger is `@s[x=9,dx=2,y=62,dy=2,z=-33,dz=2]`. The
+greenfield's north face is walled at piece-local `x6` and `x10`, so the only gap
+out of the mountain is world `x in 9..11` at world `z=-30` — and a party cannot
+enter that cell without first being sampled in the cell behind it, `z=-31`, which
+the box covers. Every descent is therefore caught, by geometry rather than by
+hope. The mountain's own apron there is thirty blocks wide; putting the anchor
+anywhere else on it would have been exactly the trap this round is fixing.
+
+**No `kill` objective names any of them.** Reaching the ship and triggering the
+set-sail interaction is the victory; the drowned are pressure, not a checklist.
+This is legal by construction — `DW0171` only requires that a *killed* wave be
+spawned, never the converse — and it is what keeps the beat a run. Tuning follows
+the same rule: `max_health: 8.0`, `attack_damage: 2.0`, `movement_speed: 0.2` —
+quicker than the tutorial drowned they replace, still slower than a sprinting
+party. Twenty-one bodies over roughly sixty blocks in three surges — six, six,
+then nine at the plank — is pressure a 2–3 h delve can carry without becoming a
+wall.
+
+**The escape gets its own two checkpoints, and it needs them.** Before this round
+the whole descent was covered by `anchor/checkpoint-3`, deep inside the cave —
+acceptable when the way out was an empty daylight walk, a soft-lock now that it is
+not. The specific trap: `trigger/he-holds-the-mouth` requires `flag/escaped`, which
+`obj/last-sand` sets, and it **unleashes the warden** on anyone who comes back
+within 5 blocks of `anchor/mouth`. A party that dies during the last push at the
+plank would respawn in the cave, walk out through that trigger, meet a real warden
+with a starting kit, and die again — a loop, in the campaign's most lethal ninety
+seconds. So `obj/the-neck` moves the checkpoint to `anchor/mountain-foot` and
+`obj/last-sand` moves it to `anchor/gangplank`, each **before** its own
+`spawn-wave`s in the bundle, so a retry costs the beach run rather than the
+campaign.
+
+`spawn-wave` is deliberately **not** idempotent — each fire summons a fresh squad —
+which is what lets the beach waves re-fire at the plank without a second wave id.
+
+**The crew run it too** (owner directive, same day). Standing on the beach while
+Poseidon empties the sea onto it is the immersion break; so `npc/perimedes`,
+`npc/eurylochus` and `npc/elpenor` are walked at `speed: 0.28` (sprint pacing
+against the `0.15` default) from the cave to **stations aboard** —
+`anchor/oar-star`, `anchor/oar-port`, `anchor/helm`, three new anchors on the
+beached galley's own deck planks, clear of `anchor/deck` so no body eclipses the
+set-sail affordance. `quest/the-sail`'s wait-branch cast declares them there.
+Branch-aware move origins (`DW0488`) keep the flee branch's beach staging — which
+is correct for the peaceful ending and is unchanged — from bleeding into these
+walks.
+
+**Why the surges hang on objectives rather than environment triggers.** The first
+spelling used `approach` triggers. Two things were wrong with it. A non-`once`
+approach trigger has no edge detection — it fires *every tick* a player is in
+range — and a `once` one is still an **ambient beat** the chronicle refuses to
+date, so `branch-chronicle-flee.md` reported drowned coming ashore on the branch
+where the sea is calm. Hanging every surge on a `quest/the-sail` objective makes
+each one branch-dated, orders it in the chronicle, and puts it on the bot's own
+path.
+
+### 12.4 Engine findings (for the compiler, not this campaign)
+
+1. **Inter-area transport is not branch-aware.** `Plan::transport` is filled from
+   `build_critical_path` over the **exported** playthrough only, while
+   `Plan::branch_critical_path` runs the same function per branch and writes a
+   `transport` marker into every `branch-path-<b>.json`. A branch whose area
+   changes off the exported path therefore ships a path artifact that promises a
+   jump the datapack never performs, and its branch run hangs at the discontinuity.
+   Either the transport map should be the union over every enumerated branch, or a
+   branch path should not claim a transport the emission does not carry. §12.2 is
+   the campaign-side consequence.
+
+2. **`plan::wave_area` does not descend into `sequence` steps.** It resolves a
+   wave's area from the first quest whose effect list fires its `spawn-wave`, with a
+   shallow `.any()` — unlike the wave/flag producer scans elsewhere, which use the
+   shared nested traversal. A wave spawned *only* from inside a `sequence`, in a
+   multi-area campaign, resolves no area and fails `DW0310` with "its spawn anchor
+   is not placed in any assembled area" — while the anchor is in fact placed.
+   Every wave here also has a top-level spawn, so the campaign is unaffected.
+
+3. **`pool/island` draws `island-greenfield` twice**; `island-greenfield-bend` is
+   never placed. Every greenfield anchor is therefore ambiguous (`DW0305`) and
+   unusable as a wave anchor or `reach-anchor` target. The gauntlet's mid-route beat
+   sits on the mountain piece for that reason, not by preference. Two shore anchors
+   were added to `island-greenfield` on the first attempt and **reverted** when this
+   surfaced — the prefab diff carries none of them.
+
+4. **A `loot` container and an adopted `collect` container fill at different
+   times** — world init vs objective activation — with no way to say otherwise
+   (§12.1).
+
+5. **`DW0461` replays effect history without branch awareness.** An NPC whose walks
+   are all ungated is not "branch-divergent" by `continuity`'s test, so `DW0462`
+   does not take over; but a walk that only *runs* on one branch still moves them in
+   the replay, and the other branch's cast entry is then reported as contradicting a
+   position that branch never reaches. Answered here by declaring what the replay
+   says (the diagnostic's own prescription), on a quest the flee branch cannot enter.
