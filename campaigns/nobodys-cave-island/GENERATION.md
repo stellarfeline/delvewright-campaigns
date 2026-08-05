@@ -1496,3 +1496,84 @@ Fixing the two gaps is a separate, engine-dependent round: either the two
 engine branches merge to `main` first, or the two objects fall back to their
 pre-0.8 plain shape as a deliberate content decision — outside this task's
 scope and not decided here.
+
+## Round 21 — the final round (planner-personal, task #191)
+
+Terminal round under the owner's one-more-playtest terms. The worker round
+also numbered 21 (`ea7cf49`, worker/island-r17) was REJECTED wholesale and
+never merged; this round supersedes it, reusing only its sanctioned
+mechanisms (loot fills, storm exit staging, oar stations, departure lines)
+and none of its rejected extras (obj/the-neck, set-checkpoint, crew speed
+0.28, elpenor's helm move). Engine for every build: fix/branch-aware-transport
+(PR #276) — the flee sea beat is impossible without it, and this round is its
+owner-batch vehicle.
+
+Red frames, in the order the machine produced them (every fix admitted by a
+red first):
+
+1. **DW0205 ×3** on the unfixed base (the merged #273 proof biting the real
+   build — row 1 is the owner's muster/surf softlock verbatim). Cleared by:
+   (item 3) deleting dlg/root "We climb." + obj/muster + obj/surf + wave/surf
+   together, shipwrecked = [obj/climb-out]; (item 6) gating the WAY IN —
+   eurylochus' at-the-racks scene row requires flag/cheese-taken, perimedes'
+   hide root row requires flag/sealed (completing options stay ungated,
+   DW0191 coexistence).
+2. **DW0469** (machine-forced): cutting the only wave dropped derived
+   difficulty to peaceful, which would discard the three warden bodies.
+   world.difficulty = "easy" declared — the halved-damage world every
+   existing combat number was tuned in.
+3. **DW0483 ×3**: the item-6 gates left pre-beat states with no selectable
+   cast row. Appended presence rows with barks (the primitive eurylochus
+   already uses while hiding): eurylochus pre-cheese at the racks, perimedes
+   pre-seal in the recess. The eurylochus case was pre-fork and silent — the
+   body would simply have gone unplaced; the machine catching perimedes is
+   what surfaced both.
+4. **DW0489** (the #274 proof, separation 0.00 at the mouth — the owner's
+   cave-mouth click loss verbatim): antiphos' post moved to anchor/mouth-side
+   (3.61 blocks) at all six touchpoints (1 walk target + 5 cast rows); every
+   "light of the mouth" line stays true.
+5. **DW0132**: the new flee sea quest made the plan diverge from the finale.
+   the-sail's formal dependency moved take-the-cheese → the-quiet-voyage
+   (the #186-fixture convergence pattern).
+6. **DW0180/DW0181**: 95 missing / 3 orphan zh-cn keys, machine-enumerated;
+   plus ONE silent drift the machine cannot see — board-flee.0's key kept its
+   old value ("悄然扬帆") while its text became the departure line; corrected
+   by hand. Reused r21's proven translations wherever the text is r21's.
+7. **DW0310** (honest red, escalated as an engine task): a spawn-wave fired
+   from triggers[] has no owning quest and its placement dangles. The two
+   approach triggers were removed; storm waves fire from quest chains
+   (under-ram s7: storm-shore + storm-fire; last-sand completion:
+   storm-surf) — the r21-proven slots.
+8. **DW0450**: anchor/deck-aft [4,5,14] — a base-r16 anchor never used by
+   anything — sits inside solid geometry; voyage-antiphos was the first body
+   summoned there. Probed clear cells with the compiler; deck-aft moved to
+   [4,5,13].
+
+The seven owner items landed as: (1) loot fills make all four barrels cheese
+(27 wheels each, r21 verbatim); (2) quest/the-quiet-voyage — the flee branch
+sails: campaign-complete moved off the beach onto a real sea beat with the
+IDENTICAL two-shot pull-back declaration as the-voyage (emitter dedup), all
+four crew alive aboard including a new voyage-antiphos at the (relocated)
+deck-aft bench; (3) the summon side quest is gone; (4) the storm gauntlet:
+night + thunder replace daylight at the stone (r21's exit staging), three
+drowned waves along cave→ship, no kill objectives, no new checkpoints;
+(5) eurylochus and perimedes run to oar-port/oar-star at default speed and
+their the-sail rows station them aboard; elpenor keeps his fire; (6)/(7) as
+above.
+
+Prefab metadata, add-only, all mechanism-forced and coordinate-copied from
+r21 where it had proven them: mountain cheese-barrel-b/c/d (loot needs
+anchors) + mountain-foot (no exterior anchor existed for the shore wave);
+beach-camp oar-port/oar-star (the only existing ship anchors are the
+boarding affordance and the prow); galley deck-aft MOVED [4,5,14]→[4,5,13]
+(DW0450, see above) — the only non-add-only change, to an anchor nothing
+else references.
+
+Standing advisories, unchanged from the played r16 base: DW0451 ×20 (pen
+sheep walk the fold's fence line — r12 choreography, played twice without
+findings) and DW0359 ×2 (the giant's body 0.05 blocks from the eye
+affordance — the blinding is BY DESIGN at his face; proven interactively in
+every playtest since r10).
+
+Both language builds green; determinism double-build byte-identical.
+Ladder record follows in this round's addendum after the full run.
