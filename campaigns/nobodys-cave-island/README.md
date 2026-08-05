@@ -1,6 +1,8 @@
 # Nobody's Isle
 
-**v1.0.0 · built and proven with delvec v1.0.0 (exact engine pin: `versions.toml`)**
+**v1.0.0** (exact engine pin: `versions.toml`)
+
+> **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.0.0.
 
 > *"Guests, is it. Guests come by the door, little ones. The door was shut."*
 
