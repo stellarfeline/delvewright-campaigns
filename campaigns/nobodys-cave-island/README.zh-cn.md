@@ -1,6 +1,9 @@
 # 无人之岛
 
-**v1.0.0 · 由 delvec v1.0.0 构建并验证(精确引擎钉版见 `versions.toml`)**
+**v1.0.0**(精确引擎钉版见 `versions.toml`)
+
+> **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.0.0.
+> 需要 delve 引擎 0.8.0 或更高版本 — 最近一次通过验证的 delvec 版本为 1.0.0。
 
 > *"客人?客人是走门进来的,小东西们。而门,是关着的。"*
 
