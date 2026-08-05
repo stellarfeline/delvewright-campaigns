@@ -1577,3 +1577,41 @@ every playtest since r10).
 
 Both language builds green; determinism double-build byte-identical.
 Ladder record follows in this round's addendum after the full run.
+
+## Round 22 — storm-escape survivability (ladder3 bot red, machine-forced)
+
+First bot run ever with all three storm waves actually spawning (engine PR
+#280 closed the wave-machinery emission gap; before it, storm-shore and
+storm-fire silently never spawned — no human playtest has seen this fight
+either). The bot died at obj/last-sand: two 4-packs of drowned seated on the
+escape route (~3 HP/s measured against the armorless kit; passive solo dies
+in 6.5 s), and the "Do not stop to fight them" instruction arrived 7 s AFTER
+the waves. Triage report: session notes 2026-08-06.
+
+Changes (all content-layer; the DSL deliberately has no difficulty knob on
+waves — timing and counts are the author's):
+- `wave/storm-shore`, `wave/storm-fire`: drowned count 4 → 2 each. Two
+  staggered 2-packs keep the chase pressure without the deathwall;
+  `wave/storm-surf` (3, spawns behind the party at the gangplank) unchanged.
+- under-the-rams sequence: the warning narrate moves 520t → 380t (lands WITH
+  the first wave, so the player can make the run-don't-fight decision);
+  `spawn-wave storm-fire` moves 380t → 520t (second pulse, post-warning).
+- shipwrecked climb-out `move-npc` eurylochus gains `speed: 0.35` (default
+  0.15 b/t = 3.0 b/s loses to a 5.6 b/s sprint by 4-9 s; the party found his
+  mouth beat empty. 0.35 = 7 b/s arrives first, and the shorter walk also
+  closes the overlap window with the checkpoint-1 walk — engine-side class
+  fixes tracked separately: per-NPC walk-supersede guard, cast-arrival
+  timing diagnostic).
+- l10n: one key moved with its step (`…seq.8.0` → `…seq.7.3`), text
+  unchanged.
+
+Load-bearing coupling, now written down: the storm waves are ARMED by the
+campaign's own `time set night` + thunder (drowned only attack a land player
+when it is not day). Anything that touches the day/night script of the
+escape sequence re-tunes this fight implicitly.
+
+Also noted for the staging summary: DW0498 (pool double-draw, advisory) now
+names the long-standing fact that `prefab/island-greenfield` is drawn twice
+by `pool/island` and every `anchor/fold*` lands on the first copy — the
+sheep meadow the owner has always seen. Behavior unchanged; second copy's
+folds are intentionally empty terrain.
