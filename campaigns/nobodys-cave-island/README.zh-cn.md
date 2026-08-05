@@ -1,6 +1,6 @@
 # 无人之岛
 
-**需要 delve 引擎 ≥ 0.1.0 · 战役格式 0.8**
+**v1.0.0 · 由 delvec v1.0.0 构建并验证(精确引擎钉版见 `versions.toml`)**
 
 > *"客人?客人是走门进来的,小东西们。而门,是关着的。"*
 
@@ -89,21 +89,16 @@
 
 ## 开玩
 
-```sh
-# 游玩(英文)
-EULA=TRUE docker compose -f validation/compose.yaml --profile play up
-
-# 游玩并记录创作者笔记
-EULA=TRUE CREATOR_NAME=<你的 MC 名> \
-  docker compose -f validation/compose.yaml --profile playtest up
-```
-
-用主仓库的编译器从源码构建:
+一条命令,小岛就开起来了——然后在多人游戏里直连 `localhost:25565`:
 
 ```sh
-delvec build campaigns/nobodys-cave-island -o out/               # 英文
-delvec build campaigns/nobodys-cave-island --lang zh-cn -o out-zh/   # 简体中文
+docker run -d --name delve -p 25565:25565 -v delve-data:/data \
+  -e EULA=TRUE ghcr.io/stellarfeline/delve-nobodys-cave-island:v1.0.0
 ```
+
+每个版本的发布页附带资源包(人物皮肤——进服时客户端会提示启用)和完整
+更新日志。想重头再来:`docker rm -f delve && docker volume rm delve-data`,
+然后重跑同一条命令。
 
 ---
 

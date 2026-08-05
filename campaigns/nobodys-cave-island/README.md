@@ -1,6 +1,6 @@
 # Nobody's Isle
 
-**Requires delve engine ≥ 0.1.0 · campaign format 0.8**
+**v1.0.0 · built and proven with delvec v1.0.0 (exact engine pin: `versions.toml`)**
 
 > *"Guests, is it. Guests come by the door, little ones. The door was shut."*
 
@@ -102,21 +102,18 @@ mind when you are handed the option to try.
 
 ## Play it
 
-```sh
-# play (English)
-EULA=TRUE docker compose -f validation/compose.yaml --profile play up
-
-# play with creator notes captured
-EULA=TRUE CREATOR_NAME=<your mc name> \
-  docker compose -f validation/compose.yaml --profile playtest up
-```
-
-Build from source with the main repo's compiler:
+One command and the island is up — then Multiplayer → Direct Connect to
+`localhost:25565`:
 
 ```sh
-delvec build campaigns/nobodys-cave-island -o out/              # English
-delvec build campaigns/nobodys-cave-island --lang zh-cn -o out-zh/   # 简体中文
+docker run -d --name delve -p 25565:25565 -v delve-data:/data \
+  -e EULA=TRUE ghcr.io/stellarfeline/delve-nobodys-cave-island:v1.0.0
 ```
+
+The release page for each version carries the resource pack (character skins —
+your client will prompt for it on join) and the full changelog. To start the
+story over, `docker rm -f delve && docker volume rm delve-data`, then run the
+same command again.
 
 ---
 
