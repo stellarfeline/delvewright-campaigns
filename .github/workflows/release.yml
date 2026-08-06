@@ -1,0 +1,720 @@
+name: release
+
+# spec-0024 — from a green campaign branch to a joinable delve.
+#
+# A release is a TAG on this repo: `release/<campaign>/v<semver>`. The tag proves
+# nothing by itself; the FULL release-tier ladder run on the tag is the gate
+# (ADR-0008). Nothing is published unless it is green — a red ladder produces
+# zero artifacts.
+#
+# On green the job publishes exactly two things:
+#   * a GitHub Release for the tag, carrying `resourcepack.zip` (skins + art
+#     font) and auto-generated notes;
+#   * a multi-arch (linux/amd64 + linux/arm64 — workstation and Pi) delve image
+#     at `ghcr.io/stellarfeline/delve-<campaign>:v<semver>`, whose baked
+#     `RESOURCE_PACK` / `RESOURCE_PACK_SHA1` point at that Release asset, so a
+#     joining vanilla client is prompted for the pack with no hand-fed files.
+#
+# The Release is created BEFORE the image, so the asset URL the image bakes is
+# live and API-confirmed rather than predicted. If the image build then fails,
+# the Release is deleted again (see "roll back" below) — the invariant is that a
+# failed run leaves nothing behind.
+#
+# `workflow_dispatch` is a DRY RUN: it exercises the whole build + ladder + image
+# build path and skips every publishing step, so this workflow can be tested
+# without minting a release.
+
+on:
+  push:
+    tags: ["release/*/v*"]
+  workflow_dispatch:
+    inputs:
+      campaign:
+        description: "campaign id under campaigns/ (dry run)"
+        required: true
+        type: string
+      version:
+        description: "semver to simulate, no leading v (dry run)"
+        required: true
+        default: "0.0.0-dryrun"
+        type: string
+      engine_ref:
+        description: "override versions.toml [engine].ref (optional)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  # Per-tag, never cancelled: a half-published release is worse than a queued one.
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: release-tier ladder → GHCR image + GitHub Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write # create the GitHub Release + upload the resource pack
+      packages: write # push the delve image to GHCR
+    env:
+      # Accepting Mojang's EULA (https://aka.ms/MinecraftEULA) is the standing
+      # action of whoever operates this repository, for their own release
+      # pipeline (ADR-0010). The server jar is fetched at run time by the itzg
+      # base and is NEVER baked into or published from any image built here —
+      # only the datapack + config, bytes this pipeline authored.
+      EULA: "TRUE"
+      # Compose project for every rig this run boots. Derived from the run id so
+      # two runs (or a run and a local session) can never share volumes,
+      # networks or names.
+      COMPOSE_PROJECT: dw-rel-${{ github.run_id }}
+      # Whole-run wall clock for the bot playthrough. The release tier walks the
+      # complete critical path (with the spec-0023 die-retry stage), which is far
+      # longer than the harness's 20-minute default for a full campaign.
+      DELVEWRIGHT_RUN_TIMEOUT_MS: "2700000"
+
+    steps:
+      # ---- 1. coordinates --------------------------------------------------
+      - name: check out the content repo (with LFS — prefabs are LFS pointers)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: parse the release coordinates
+        id: rel
+        env:
+          IN_CAMPAIGN: ${{ inputs.campaign }}
+          IN_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            campaign="$IN_CAMPAIGN"
+            version="$IN_VERSION"
+            dry_run=true
+          else
+            tag="${GITHUB_REF_NAME}"
+            # release/<campaign>/v<semver> — anything else is not a release.
+            if [[ ! "$tag" =~ ^release/([^/]+)/v(.+)$ ]]; then
+              echo "::error::tag '$tag' is not release/<campaign>/v<semver>"; exit 1
+            fi
+            campaign="${BASH_REMATCH[1]}"
+            version="${BASH_REMATCH[2]}"
+            dry_run=false
+          fi
+          tag="release/${campaign}/v${version}"
+
+          # A campaign id becomes a GHCR repository path segment and an image
+          # tag, so constrain it to what both accept.
+          if [[ ! "$campaign" =~ ^[a-z0-9]([a-z0-9-]*[a-z0-9])?$ ]]; then
+            echo "::error::campaign id '$campaign' must be lowercase alphanumeric + hyphens"; exit 1
+          fi
+          # Semver, MINUS the build-metadata suffix: `v<version>` also becomes an
+          # OCI image tag, whose charset ([A-Za-z0-9_][A-Za-z0-9._-]*) has no `+`.
+          # Rejecting it here beats discovering it after a green ladder.
+          if [[ ! "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?$ ]]; then
+            echo "::error::'$version' is not a semver (build metadata '+...' is not allowed — it cannot be an image tag)"; exit 1
+          fi
+          if [ ! -f "campaigns/${campaign}/world.json" ]; then
+            echo "::error::campaigns/${campaign}/world.json does not exist"; exit 1
+          fi
+
+          {
+            echo "campaign=$campaign"
+            echo "version=$version"
+            echo "tag=$tag"
+            echo "dry_run=$dry_run"
+            echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/delve-${campaign}"
+            echo "asset_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/download/${tag}/resourcepack.zip"
+          } >> "$GITHUB_OUTPUT"
+          echo "campaign=$campaign version=$version dry_run=$dry_run"
+
+      - name: derive the shipped language
+        id: lang
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+        run: |
+          set -euo pipefail
+          # spec-0024 language delivery (v1): a release ships the campaign baked
+          # in its PRIMARY AUTHORED language — the one it was written and
+          # playtested in. The machine-readable statement of that is
+          # `world.json` `content.languages`, whose first entry is the campaign's
+          # own language; a campaign that declares none was authored in English.
+          # (i18n v2 ships every declared language inside one resource pack and
+          # retires this choice entirely; it does not gate any release.)
+          lang=$(python3 - "$CAMPAIGN" <<'PY'
+          import json, sys
+          w = json.load(open(f"campaigns/{sys.argv[1]}/world.json"))
+          langs = w.get("content", {}).get("languages") or []
+          print(langs[0] if langs else "en")
+          PY
+          )
+          echo "lang=$lang" >> "$GITHUB_OUTPUT"
+          echo "shipping language: $lang"
+
+      # ---- 2. the pinned engine -------------------------------------------
+      - name: read the pinned engine from versions.toml
+        id: engine
+        env:
+          OVERRIDE_REF: ${{ inputs.engine_ref }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, tomllib
+          e = tomllib.load(open("versions.toml", "rb"))["engine"]
+          print(f"repo={e['repo']}")
+          print(f"ref={os.environ.get('OVERRIDE_REF') or e['ref']}")
+          PY
+          cat "$GITHUB_OUTPUT"
+
+      # The pipeline that compiles this content is GPL code in the (currently
+      # private) main repo -> the cross-repo checkout needs a read-only token,
+      # exactly as prefab-audit.yml does. Once the main repo is public the
+      # default GITHUB_TOKEN suffices and `token:` can be dropped.
+      - name: check out the pinned engine
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.engine.outputs.repo }}
+          ref: ${{ steps.engine.outputs.ref }}
+          token: ${{ secrets.MAIN_REPO_TOKEN }}
+          path: engine
+
+      - name: record the engine commit + compiler version
+        id: engine_id
+        run: |
+          set -euo pipefail
+          echo "sha=$(git -C engine rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # The pin is the one input to a release that nothing else reads, so nothing
+      # else can notice it going stale. It sat 75 commits behind for the whole of
+      # the island's development — still naming the spec-0024 docs PR that first
+      # carried the ladder inputs — and a release tag pushed at any point would
+      # have built the campaign with an engine predating almost everything rounds
+      # 19-22 depend on. The ladder would have caught it as a wall of red with no
+      # hint that the PIN was the cause.
+      #
+      # Bind it to a fact the campaign already states about itself: its storybook
+      # marker records the delvec version it was last verified with
+      # (`tools/check-storybook-version.py` keeps that honest and CI-enforced in
+      # the engine repo). Building a release with an engine OLDER than that is
+      # shipping something nobody validated, so it is refused here rather than
+      # discovered downstream.
+      - name: the pinned engine is not older than the campaign was verified with
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+        run: |
+          set -euo pipefail
+          python3 - "$CAMPAIGN" <<'PY'
+          import re, sys, pathlib
+          campaign = sys.argv[1]
+
+          readme = pathlib.Path(f"campaigns/{campaign}/README.md").read_text(encoding="utf-8")
+          m = re.search(r"last verified with delvec ([0-9]+\.[0-9]+\.[0-9]+)", readme)
+          if not m:
+              sys.exit(
+                  f"REFUSING: campaigns/{campaign}/README.md carries no "
+                  "'last verified with delvec <x.y.z>' marker, so there is no "
+                  "statement of which engine validated this campaign."
+              )
+          verified = m.group(1)
+
+          cargo = pathlib.Path("engine/crates/compiler/Cargo.toml").read_text(encoding="utf-8")
+          pkg = cargo.split("[package]", 1)[1]
+          v = re.search(r'^version\s*=\s*"([^"]+)"', pkg, re.M)
+          if not v:
+              sys.exit("REFUSING: cannot read [package] version from the engine's compiler crate.")
+          engine = v.group(1)
+
+          key = lambda s: tuple(int(p) for p in s.split("."))
+          if key(engine) < key(verified):
+              sys.exit(
+                  f"REFUSING to publish: versions.toml [engine].ref checks out delvec "
+                  f"{engine}, but {campaign} states it was last verified with delvec "
+                  f"{verified}. The pin is stale — re-pin [engine].ref to the released "
+                  f"engine commit in a reviewed PR before tagging (see the RE-PIN "
+                  f"CONVENTION at the top of versions.toml)."
+              )
+          print(f"engine delvec {engine} >= verified delvec {verified} — OK")
+          PY
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine
+
+      # ---- 3. build --------------------------------------------------------
+      # `delvec` stamps the build's `content_sha` into manifest.json by reading
+      # the engine's `versions.toml` `[content].sha` — never git state, so the
+      # compiler stays deterministic and offline. For a CONTENT release that pin
+      # is the wrong way round: the content commit being released is this tag,
+      # not whatever the engine last pinned. Point it at the truth before
+      # building, so the manifest inside the shipped image names the commit the
+      # image was actually built from. Still fully deterministic: the value is
+      # fixed by the tag.
+      - name: point the engine's content pin at the commit being released
+        run: |
+          set -euo pipefail
+          python3 - "$GITHUB_SHA" <<'PY'
+          import re, sys
+          sha = sys.argv[1]
+          path = "engine/versions.toml"
+          text = open(path, encoding="utf-8").read()
+          # Rewrite the `sha = "..."` line inside [content] ONLY — other sections
+          # carry their own digests/checksums that must not be touched.
+          out, section, hits = [], None, 0
+          for line in text.splitlines(keepends=True):
+              s = line.strip()
+              if s.startswith("[") and s.endswith("]"):
+                  section = s
+              if section == "[content]" and re.match(r'^sha\s*=', s):
+                  line = f'sha = "{sha}"\n'
+                  hits += 1
+              out.append(line)
+          if hits != 1:
+              raise SystemExit(f"expected exactly one [content].sha line, found {hits}")
+          open(path, "w", encoding="utf-8").write("".join(out))
+          print(f"engine versions.toml [content].sha -> {sha}")
+          PY
+
+      - name: build the delve (implies validate + analyze — the static ladder)
+        working-directory: engine
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          LANG_CODE: ${{ steps.lang.outputs.lang }}
+        run: |
+          set -euo pipefail
+          cargo run -p delvewright-compiler --bin delvec -- --version
+          cargo run -p delvewright-compiler --bin delvec -- \
+            build "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" \
+            -o "$GITHUB_WORKSPACE/engine/validation/delve-output" \
+            --prefabs "$GITHUB_WORKSPACE/prefabs" \
+            --lang "$LANG_CODE"
+
+      # Everything the image labels and the release notes need comes from the
+      # build's own manifest.json, not from re-deriving it: the manifest IS the
+      # compiler's provenance record.
+      - name: inspect the build output
+        id: build
+        run: |
+          set -euo pipefail
+          python3 - "$GITHUB_SHA" <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib, json, pathlib, sys
+
+          out = pathlib.Path("engine/validation/delve-output")
+          m = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+
+          # The re-pin two steps up must have reached the compiler: if it did not,
+          # the manifest travelling inside the image names some other content
+          # commit, and the release's provenance is a lie no one would notice.
+          if m.get("content_sha") != sys.argv[1]:
+              raise SystemExit(
+                  f"::error::manifest content_sha {m.get('content_sha')!r} != "
+                  f"released commit {sys.argv[1]!r} — the engine content pin did not take"
+              )
+
+          # A single digest standing for the whole emitted datapack: sha256 over
+          # the manifest's own per-file hashes for `datapack/`, in sorted order.
+          # Two builds of one tag must produce the same value (ADR-0006), which
+          # is what makes the label checkable by anyone who rebuilds.
+          entries = sorted((k, v) for k, v in m.get("outputs", {}).items()
+                           if k.startswith("datapack/"))
+          digest = hashlib.sha256(
+              "".join(f"{k}\0{v}\n" for k, v in entries).encode()
+          ).hexdigest()
+
+          lines = {
+              "delvec_version": m.get("delvec_version", ""),
+              "dsl_version": m.get("dsl_version", ""),
+              "mc_version": m.get("mc_version", ""),
+              "content_sha": m.get("content_sha", ""),
+              "datapack_sha256": digest,
+          }
+
+          pack = out / "resourcepack.zip"
+          if pack.is_file():
+              actual = hashlib.sha1(pack.read_bytes()).hexdigest()
+              declared = m.get("resource_pack_sha1", "")
+              # The joining client verifies this SHA-1 against the bytes it
+              # downloads. If the manifest and the file ever disagreed, every
+              # player would get a pack rejection that NO server-side rung of the
+              # ladder can observe — so assert the agreement here, every release.
+              if actual != declared:
+                  raise SystemExit(
+                      f"::error::resourcepack.zip sha1 {actual} != "
+                      f"manifest resource_pack_sha1 {declared!r}"
+                  )
+              lines["resourcepack"] = "true"
+              lines["resourcepack_sha1"] = actual
+          else:
+              lines["resourcepack"] = "false"
+              lines["resourcepack_sha1"] = ""
+
+          for k, v in lines.items():
+              print(f"{k}={v}")
+          PY
+          cat "$GITHUB_OUTPUT"
+
+      # ---- 4. the release-tier ladder (the gate) ---------------------------
+      # Tier order is cheapest-failure-first: the generated PackTest suite, then
+      # the complete bot playthrough against the SHIPPED image.
+      #
+      # spec-0025 (branch-complete verification) extends the release tier to a
+      # bot run per narrative branch. When it lands, the extra runs belong here,
+      # between these two legs — nothing else in this workflow changes.
+      - name: PackTest suite (headless; exit code = failed tests)
+        env:
+          PACKTEST_CONTAINER: ${{ env.COMPOSE_PROJECT }}-packtest
+        run: |
+          docker compose -p "$COMPOSE_PROJECT" -f engine/validation/compose.yaml \
+            --profile packtest up --abort-on-container-exit --exit-code-from packtest
+
+      - name: tear down (packtest)
+        if: always()
+        env:
+          PACKTEST_CONTAINER: ${{ env.COMPOSE_PROJECT }}-packtest
+        run: |
+          docker compose -p "$COMPOSE_PROJECT" -f engine/validation/compose.yaml \
+            --profile packtest down -v --remove-orphans || true
+
+      # `--build` builds the delve image from the ORIGINAL Dockerfile.delve — the
+      # offline, pack-free dev defaults. That is deliberate: the bot joins
+      # offline, so the ladder cannot run against `ONLINE_MODE=TRUE`, and no
+      # server-side check can observe a resource pack at all. The release-only
+      # layer added in step 6 is therefore verified by the SHA-1 assertion above
+      # plus the owner's one hand-join at first release (spec-0024 criterion 2),
+      # never by this rig.
+      - name: bot completes the critical path against the shipped delve image
+        run: |
+          mkdir -p engine/validation/run-out
+          docker compose -p "$COMPOSE_PROJECT" -f engine/validation/compose.yaml \
+            --profile validate up --build --abort-on-container-exit --exit-code-from bot
+
+      # The shipped server's own log is the datapack-load criterion (spec-0002):
+      # a delve that boots with server-side ERROR lines is not releasable even if
+      # the bot finished. Captured before teardown, asserted after.
+      - name: the shipped server logged ZERO errors
+        if: always()
+        run: |
+          set -uo pipefail
+          docker compose -p "$COMPOSE_PROJECT" -f engine/validation/compose.yaml \
+            --profile validate logs --no-color --no-log-prefix server > server.log 2>&1 || true
+          if [ ! -s server.log ]; then
+            echo "::warning::no server log captured"; exit 0
+          fi
+          if grep -E '\[[^]]*/ERROR\]' server.log; then
+            echo "::error::the shipped delve logged server-side errors"; exit 1
+          fi
+          echo "shipped server log is error-free."
+
+      - name: tear down (validate)
+        if: always()
+        run: |
+          docker compose -p "$COMPOSE_PROJECT" -f engine/validation/compose.yaml \
+            --profile validate down -v --remove-orphans || true
+
+      - name: keep the run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ladder-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            server.log
+            engine/validation/run-out/**
+            engine/validation/delve-output/manifest.json
+            engine/validation/delve-output/critical-path.json
+
+      # ================= everything below runs ONLY on a green ladder =========
+
+      # ---- 5. the GitHub Release (created first: the image bakes its URL) ---
+      - name: compose the release notes
+        id: notes
+        if: steps.rel.outputs.dry_run == 'false'
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          VERSION: ${{ steps.rel.outputs.version }}
+          IMAGE: ${{ steps.rel.outputs.image }}
+          LANG_CODE: ${{ steps.lang.outputs.lang }}
+          HAS_PACK: ${{ steps.build.outputs.resourcepack }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > notes.md
+          # The reader-facing facts come from the STORYBOOK, which is the reviewed
+          # artifact, and from nowhere else.
+          #
+          # They used to be re-derived here from `world.json`, which made the notes a
+          # SECOND rendering of the same facts with nothing binding it to the first.
+          # v1.0.0 shipped that way and said "A delve for 1–4 players, about 120
+          # minutes" for a single-player ~20-minute delve: the storybook had been
+          # corrected by hand and the correction never reached anything else. The
+          # player count was worse than stale — it was a constant in this script, and
+          # no campaign document has ever declared one.
+          #
+          # So there is one source now. A campaign whose storybook does not carry the
+          # header table fails the release loudly rather than shipping a blank or a
+          # guess.
+          import json, os, re, sys
+          camp = os.environ["CAMPAIGN"]
+          # `campaigns/<id>/` is not proof of a campaign: `the-drowned-bell` is a
+          # directory of media and build output with no stage documents at all,
+          # because its remake has not been authored yet. Name that, rather than
+          # ending a release in a KeyError on someone's screen.
+          try:
+              c = json.load(open(f"campaigns/{camp}/world.json"))["content"]
+          except FileNotFoundError:
+              sys.exit(f"error: {camp} has no world.json, so it is a directory rather "
+                       f"than a campaign — nothing here is releasable. If you meant a "
+                       f"different campaign, check the tag.")
+          # A campaign with no storybook cannot release: spec-0007 makes the
+          # storybook the reader-facing artifact, and since the notes render it,
+          # its absence is now a release-stopping fact rather than a missing file
+          # someone notices later. Say so — an unguarded open() here would end a
+          # release in a Python traceback, which reads as "the pipeline broke"
+          # rather than "this campaign is not ready to ship".
+          try:
+              book = open(f"campaigns/{camp}/README.md", encoding="utf-8").read()
+          except FileNotFoundError:
+              sys.exit(f"error: {camp} has no README.md. The release notes are rendered "
+                       f"FROM the storybook (spec-0007), so a campaign without one has "
+                       f"nothing to announce and cannot be released. Write the storybook "
+                       f"first — title, blurb, and a header table carrying **Players** "
+                       f"and **Playtime**.")
+          image, version = os.environ["IMAGE"], os.environ["VERSION"]
+          lang, has_pack = os.environ["LANG_CODE"], os.environ["HAS_PACK"] == "true"
+
+          def row(label):
+              m = re.search(rf"^\|\s*\*\*{label}\*\*\s*\|\s*(.+?)\s*\|\s*$", book, re.M)
+              if not m:
+                  sys.exit(f"error: {camp}/README.md has no **{label}** row — the release "
+                           f"notes take their reader-facing facts from the storybook, so a "
+                           f"missing row is a missing fact, not a blank line.")
+              return m.group(1)
+
+          title = (re.search(r"^#\s+(.+)$", book, re.M) or [None, c.get("title", camp)])[1]
+          players, playtime = row("Players"), row("Playtime")
+
+          # The storybook and the campaign document must agree about length. This is the
+          # drift that shipped in v1.0.0; nothing was checking it.
+          declared = c.get("target_minutes")
+          book_mins = re.search(r"(\d+)\s*minute", playtime)
+          if declared and book_mins and int(book_mins.group(1)) != int(declared):
+              sys.exit(f"error: {camp} storybook says {playtime!r} but world.json declares "
+                       f"target_minutes={declared}. One of them is wrong; fix the source, "
+                       f"not this script.")
+
+          # The blurb is the storybook's own one-paragraph pitch: what follows the
+          # last blockquote (the engine-version marker and the epigraph both use one)
+          # and precedes the header table. Anchoring on "after the last quote" rather
+          # than "first ordinary line" is what keeps it from picking up the `**vX.Y.Z**`
+          # stamp, which is the line it grabbed the first time this was written.
+          head = book.split("| |")[0]
+          after_quotes = head[head.rindex("\n>") :] if "\n>" in head else head
+          blurb = next(
+              (ln.strip() for ln in after_quotes.split("\n")
+               if ln.strip() and not ln.lstrip().startswith((">", "!", "#", "|", "*"))),
+              None,
+          )
+          if not blurb:
+              sys.exit(f"error: {camp}/README.md has no blurb paragraph between its "
+                       f"epigraph and its header table — a release with no description "
+                       f"is a defect, not a shorter release.")
+          print(f"## {title}\n")
+          print(blurb + "\n")
+          noun = "player" if players.strip() == "1" else "players"
+          print(f"For {players} {noun}, {playtime}.\n")
+          print("### Host it\n")
+          print("```")
+          print(f"docker run -it -p 25565:25565 -e EULA=TRUE {image}:v{version}")
+          print("```\n")
+          print("Players join at `<your-address>:25565` with a vanilla Minecraft "
+                "Java 1.21.11 client.\n")
+          if has_pack:
+              print("The resource pack (character skins and in-game art) is served "
+                    "by the delve itself — accept the prompt when you join. "
+                    "Nothing to install by hand.\n")
+          print(f"In-game text is in `{lang}`.\n")
+          print("### Terms\n")
+          print("This release contains **no Minecraft server software**. The server "
+                "is downloaded by the container on first start, and you accept "
+                "[Mojang's EULA](https://aka.ms/MinecraftEULA) yourself by passing "
+                "`EULA=TRUE`. Delvewright is not affiliated with Mojang or Microsoft.\n")
+          print("Campaign content is licensed "
+                "[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); "
+                "see the repository README for the full picture.\n")
+          PY
+          cat notes.md
+          # The Release is named for the delve, not for its directory.
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          c = json.load(open(f"campaigns/{os.environ['CAMPAIGN']}/world.json"))["content"]
+          print(f"title={c.get('title') or os.environ['CAMPAIGN']} v{os.environ['VERSION']}")
+          PY
+
+      - name: publish the GitHub Release (+ resource pack asset)
+        id: release
+        if: steps.rel.outputs.dry_run == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.rel.outputs.tag }}
+          TITLE: ${{ steps.notes.outputs.title }}
+          HAS_PACK: ${{ steps.build.outputs.resourcepack }}
+        run: |
+          set -euo pipefail
+          # `--generate-notes` alongside `--notes-file`: GitHub pre-pends the
+          # supplied body to the notes it generates, so players get the blurb and
+          # the changelog follows.
+          if [ "$HAS_PACK" = "true" ]; then
+            cp engine/validation/delve-output/resourcepack.zip resourcepack.zip
+            gh release create "$TAG" --title "$TITLE" \
+              --notes-file notes.md --generate-notes resourcepack.zip
+          else
+            gh release create "$TAG" --title "$TITLE" \
+              --notes-file notes.md --generate-notes
+          fi
+          echo "created=true" >> "$GITHUB_OUTPUT"
+
+      - name: resolve the resource pack's live download URL
+        id: pack
+        if: steps.rel.outputs.dry_run == 'false' && steps.build.outputs.resourcepack == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.rel.outputs.tag }}
+          PREDICTED: ${{ steps.rel.outputs.asset_url }}
+        run: |
+          set -euo pipefail
+          # The URL the image bakes is the one GitHub actually serves, read back
+          # from the API — not a guess. A release tag contains slashes, so the
+          # predicted form is compared rather than trusted; a difference is a
+          # fact worth recording, not a failure.
+          url=$(gh release view "$TAG" --json assets \
+                  -q '.assets[] | select(.name=="resourcepack.zip") | .url')
+          if [ -z "$url" ]; then
+            echo "::error::resourcepack.zip is not attached to $TAG"; exit 1
+          fi
+          if [ "$url" != "$PREDICTED" ]; then
+            echo "::warning::asset URL '$url' differs from the predicted '$PREDICTED' — update the README's example if it matters"
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "resource pack URL: $url"
+
+      # ---- 6. the multi-arch delve image ------------------------------------
+      # The shipped image is the engine's Dockerfile.delve plus the three
+      # settings that separate a RELEASE from a dev build: the resource pack it
+      # serves, that pack's SHA-1, and online mode. They are appended here rather
+      # than added to the engine Dockerfile so the dev/CI image keeps its
+      # offline, pack-free defaults, and so this file stays a byte-for-byte
+      # derivative of the engine's — an engine edit flows through with no drift.
+      - name: derive the release Dockerfile
+        id: dockerfile
+        env:
+          PACK_URL: ${{ steps.pack.outputs.url }}
+          PACK_SHA1: ${{ steps.build.outputs.resourcepack_sha1 }}
+          HAS_PACK: ${{ steps.build.outputs.resourcepack }}
+          DRY_RUN: ${{ steps.rel.outputs.dry_run }}
+        run: |
+          set -euo pipefail
+          src=engine/validation/Dockerfile.delve
+          dst=engine/validation/Dockerfile.delve.release
+          cp "$src" "$dst"
+          {
+            echo ""
+            echo "# ---- appended by delvewright-campaigns .github/workflows/release.yml ----"
+            echo "# Release-only defaults (spec-0024). The itzg base maps these env vars"
+            echo "# onto server.properties via /image/property-definitions.json:"
+            echo "#   RESOURCE_PACK -> resource-pack, RESOURCE_PACK_SHA1 -> resource-pack-sha1,"
+            echo "#   ONLINE_MODE -> online-mode. require-resource-pack is deliberately left"
+            echo "# at its vanilla default (false): a joining client is PROMPTED, not forced."
+            echo "ENV ONLINE_MODE=TRUE"
+            if [ "$HAS_PACK" = "true" ] && [ -n "${PACK_URL:-}" ]; then
+              echo "ENV RESOURCE_PACK=\"${PACK_URL}\" \\"
+              echo "    RESOURCE_PACK_SHA1=\"${PACK_SHA1}\""
+            elif [ "$DRY_RUN" = "true" ]; then
+              echo "# dry run: no Release exists, so no RESOURCE_PACK is baked."
+            fi
+          } >> "$dst"
+          echo "----- appended -----"
+          tail -n 12 "$dst"
+
+      - uses: docker/setup-qemu-action@v3 # arm64 emulation for the Pi (ADR-0010)
+      - uses: docker/setup-buildx-action@v3
+
+      - name: log in to GHCR
+        if: steps.rel.outputs.dry_run == 'false'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Provenance rides in the labels: which campaign commit, which engine, which
+      # licence, and the datapack hash that makes a rebuild checkable (ADR-0006).
+      # `org.opencontainers.image.created` is deliberately absent — a wall-clock
+      # label would make two builds of one tag differ for no one's benefit.
+      - name: build + push amd64 + arm64
+        uses: docker/build-push-action@v6
+        with:
+          context: engine/validation/delve-output
+          file: engine/validation/Dockerfile.delve.release
+          platforms: linux/amd64,linux/arm64
+          push: ${{ steps.rel.outputs.dry_run == 'false' }}
+          provenance: false
+          tags: |
+            ${{ steps.rel.outputs.image }}:v${{ steps.rel.outputs.version }}
+            ${{ steps.rel.outputs.image }}:latest
+          labels: |
+            org.opencontainers.image.title=delve-${{ steps.rel.outputs.campaign }}
+            org.opencontainers.image.version=v${{ steps.rel.outputs.version }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.licenses=CC-BY-SA-4.0
+            org.opencontainers.image.vendor=Delvewright
+            ca.stellarfeline.delvewright.campaign=${{ steps.rel.outputs.campaign }}
+            ca.stellarfeline.delvewright.campaign-commit=${{ github.sha }}
+            ca.stellarfeline.delvewright.content-license=CC-BY-SA-4.0
+            ca.stellarfeline.delvewright.engine-repo=${{ steps.engine.outputs.repo }}
+            ca.stellarfeline.delvewright.engine-commit=${{ steps.engine_id.outputs.sha }}
+            ca.stellarfeline.delvewright.engine-version=delvec ${{ steps.build.outputs.delvec_version }}
+            ca.stellarfeline.delvewright.dsl-version=${{ steps.build.outputs.dsl_version }}
+            ca.stellarfeline.delvewright.mc-version=${{ steps.build.outputs.mc_version }}
+            ca.stellarfeline.delvewright.datapack-sha256=${{ steps.build.outputs.datapack_sha256 }}
+            ca.stellarfeline.delvewright.language=${{ steps.lang.outputs.lang }}
+            ca.stellarfeline.delvewright.resource-pack-sha1=${{ steps.build.outputs.resourcepack_sha1 }}
+
+      # ---- 7. roll back a half-published release ---------------------------
+      # The Release is minted before the image. If anything after that fails, the
+      # run must leave nothing behind (spec-0024: a red ladder — or a red publish
+      # — produces zero artifacts). The git tag is the operator's and stays.
+      - name: roll back the GitHub Release
+        if: failure() && steps.release.outputs.created == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.rel.outputs.tag }}
+        run: gh release delete "$TAG" --yes || true
+
+      - name: summary
+        if: always()
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          VERSION: ${{ steps.rel.outputs.version }}
+          IMAGE: ${{ steps.rel.outputs.image }}
+          DRY_RUN: ${{ steps.rel.outputs.dry_run }}
+          LANG_CODE: ${{ steps.lang.outputs.lang }}
+          PACK_URL: ${{ steps.pack.outputs.url }}
+          PREDICTED: ${{ steps.rel.outputs.asset_url }}
+          PACK_SHA1: ${{ steps.build.outputs.resourcepack_sha1 }}
+          ENGINE_SHA: ${{ steps.engine_id.outputs.sha }}
+        run: |
+          {
+            echo "### ${CAMPAIGN:-?} v${VERSION:-?}"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| dry run | \`${DRY_RUN:-?}\` |"
+            echo "| image | \`${IMAGE:-?}:v${VERSION:-?}\` |"
+            echo "| language | \`${LANG_CODE:-?}\` |"
+            echo "| engine commit | \`${ENGINE_SHA:-?}\` |"
+            echo "| campaign commit | \`${GITHUB_SHA}\` |"
+            echo "| resource pack sha1 | \`${PACK_SHA1:-none}\` |"
+            echo "| resource pack URL | \`${PACK_URL:-${PREDICTED} (predicted)}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"

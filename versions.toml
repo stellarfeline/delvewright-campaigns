@@ -1,0 +1,41 @@
+# Content-repo version manifest — which pipeline builds this content.
+#
+# The main repo (`delvewright`, GPL pipeline code) pins THIS repo in its own
+# `versions.toml` `[content].sha`, so a main-repo CI run is reproducible. This
+# file is the other direction: which main-repo commit a *release* of this
+# content is built and validated with. Both pins together make a released delve
+# reproducible from two commit ids and nothing else (ADR-0006).
+#
+# RE-PIN CONVENTION: bump `[engine].ref` in a normal reviewed PR when a release
+# needs newer compiler behaviour. A release tag always builds with whatever this
+# file names at the tagged commit — never with "latest".
+#
+# NOTE: `.github/workflows/prefab-audit.yml` carries its own, deliberately
+# different pin (`ADMIT_REF`): it names the first main-repo commit whose palette
+# allowlist admits every prefab merged here, which is a property of the
+# allowlist, not of the compiler. Do not collapse the two.
+
+[engine]
+# The main repo and the commit `release.yml` checks out to build + validate a
+# release. Private repo -> the checkout uses `secrets.MAIN_REPO_TOKEN`
+# (read-only `contents` on stellarfeline/delvewright), same as prefab-audit.yml.
+repo = "stellarfeline/delvewright"
+# Engine release `v1.0.0` (delvec 1.0.0), the commit the island's release-tier
+# ladder was run green on: PackTest 0 failures, bot 0, all four branches RAN.
+#
+# This pin was 75 commits stale until 2026-08-05 — it still named the spec-0024
+# docs PR that first carried the ladder inputs, so a release tag pushed at any
+# point since would have built the island with an engine predating almost
+# everything rounds 19-22 depend on: `DW0497` uniform wave machinery (#280, the
+# round-21 blocker), the per-NPC walk supersede (#287), branch-aware inter-area
+# transport (#276), cast-ledger talk-to positions (#284). Nothing checked it,
+# because the pin's only reader is `release.yml` and no release had ever run.
+# `.github/workflows/release.yml` now refuses to publish when the engine it
+# checks out is older than the version the campaign's storybook says it was
+# verified with.
+ref = "b1b269eabadb394741f1fadb1e33312beae9725e"
+
+[registry]
+# Where a released delve image is published. `delve-<campaign>` per campaign,
+# tagged `v<semver>` (immutable) plus `latest`.
+image_prefix = "ghcr.io/stellarfeline/delve-"
