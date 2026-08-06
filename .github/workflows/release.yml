@@ -440,16 +440,67 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY' > notes.md
-          import json, os
-          c = json.load(open(f"campaigns/{os.environ['CAMPAIGN']}/world.json"))["content"]
+          # The reader-facing facts come from the STORYBOOK, which is the reviewed
+          # artifact, and from nowhere else.
+          #
+          # They used to be re-derived here from `world.json`, which made the notes a
+          # SECOND rendering of the same facts with nothing binding it to the first.
+          # v1.0.0 shipped that way and said "A delve for 1–4 players, about 120
+          # minutes" for a single-player ~20-minute delve: the storybook had been
+          # corrected by hand and the correction never reached anything else. The
+          # player count was worse than stale — it was a constant in this script, and
+          # no campaign document has ever declared one.
+          #
+          # So there is one source now. A campaign whose storybook does not carry the
+          # header table fails the release loudly rather than shipping a blank or a
+          # guess.
+          import json, os, re, sys
+          camp = os.environ["CAMPAIGN"]
+          c = json.load(open(f"campaigns/{camp}/world.json"))["content"]
+          book = open(f"campaigns/{camp}/README.md", encoding="utf-8").read()
           image, version = os.environ["IMAGE"], os.environ["VERSION"]
           lang, has_pack = os.environ["LANG_CODE"], os.environ["HAS_PACK"] == "true"
-          print(f"## {c.get('title', os.environ['CAMPAIGN'])}\n")
-          if c.get("premise"):
-              print(c["premise"] + "\n")
-          mins = c.get("target_minutes")
-          if mins:
-              print(f"A delve for 1–4 players, about {mins} minutes.\n")
+
+          def row(label):
+              m = re.search(rf"^\|\s*\*\*{label}\*\*\s*\|\s*(.+?)\s*\|\s*$", book, re.M)
+              if not m:
+                  sys.exit(f"error: {camp}/README.md has no **{label}** row — the release "
+                           f"notes take their reader-facing facts from the storybook, so a "
+                           f"missing row is a missing fact, not a blank line.")
+              return m.group(1)
+
+          title = (re.search(r"^#\s+(.+)$", book, re.M) or [None, c.get("title", camp)])[1]
+          players, playtime = row("Players"), row("Playtime")
+
+          # The storybook and the campaign document must agree about length. This is the
+          # drift that shipped in v1.0.0; nothing was checking it.
+          declared = c.get("target_minutes")
+          book_mins = re.search(r"(\d+)\s*minute", playtime)
+          if declared and book_mins and int(book_mins.group(1)) != int(declared):
+              sys.exit(f"error: {camp} storybook says {playtime!r} but world.json declares "
+                       f"target_minutes={declared}. One of them is wrong; fix the source, "
+                       f"not this script.")
+
+          # The blurb is the storybook's own one-paragraph pitch: what follows the
+          # last blockquote (the engine-version marker and the epigraph both use one)
+          # and precedes the header table. Anchoring on "after the last quote" rather
+          # than "first ordinary line" is what keeps it from picking up the `**vX.Y.Z**`
+          # stamp, which is the line it grabbed the first time this was written.
+          head = book.split("| |")[0]
+          after_quotes = head[head.rindex("\n>") :] if "\n>" in head else head
+          blurb = next(
+              (ln.strip() for ln in after_quotes.split("\n")
+               if ln.strip() and not ln.lstrip().startswith((">", "!", "#", "|", "*"))),
+              None,
+          )
+          if not blurb:
+              sys.exit(f"error: {camp}/README.md has no blurb paragraph between its "
+                       f"epigraph and its header table — a release with no description "
+                       f"is a defect, not a shorter release.")
+          print(f"## {title}\n")
+          print(blurb + "\n")
+          noun = "player" if players.strip() == "1" else "players"
+          print(f"For {players} {noun}, {playtime}.\n")
           print("### Host it\n")
           print("```")
           print(f"docker run -it -p 25565:25565 -e EULA=TRUE {image}:v{version}")
