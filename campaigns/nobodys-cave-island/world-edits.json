@@ -1,5 +1,5 @@
 {
-  "dsl_version": "0.6.0",
+  "dsl_version": "0.9.0",
   "campaign_id": "nobodys-cave-island",
   "stage": "world-edits",
   "content": {
@@ -2896,6 +2896,153 @@
           {
             "verb": "carve",
             "region": "region/fold-air-2"
+          }
+        ]
+      },
+      {
+        "id": "batch/tideline",
+        "area": "area/island",
+        "note": "Owner ruling 2026-08-06: the meadow banks are MEANT to get their feet wet. The two bank-falls batches roll the berms down past the waterline, so the outermost bank columns of both greenfield pieces stand at world y=62 - the ocean line - and the delivered world takes them. Declare that: the west and east bank bands of both pieces (piece-local x 0..3 and 13..16, y 0..2) are the envelope the ambient sea is admitted into, and the compiler computes which cells it actually reaches (25) and materializes them as water instead of leaving the shoreline to first-boot fluid ticks. The envelope is an ENVELOPE, not a claim of wetness: it also contains one cell the sea cannot reach - a sealed one-block pocket in piece 2's west bank at piece-local [1,2,10] that two smoothing passes left dry a block under the waterline - and DW0364 goes on refusing that cell until this batch fills it back to the bank surface. The fill runs first so the flood sees the finished bank.",
+        "edits": [
+          {
+            "verb": "select",
+            "name": "region/bank-pocket-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                1,
+                2,
+                10
+              ],
+              "max": [
+                1,
+                2,
+                10
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/bank-pocket-2",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:coarse_dirt",
+                  "weight": 1.0
+                }
+              ],
+              "scale": 0.3
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/west-shore-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                3,
+                2,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/east-shore-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                13,
+                0,
+                0
+              ],
+              "max": [
+                16,
+                2,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/west-shore-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                3,
+                2,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/east-shore-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                13,
+                0,
+                0
+              ],
+              "max": [
+                16,
+                2,
+                14
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/tideline",
+            "shape": {
+              "kind": "union",
+              "of": [
+                "region/west-shore-1",
+                "region/east-shore-1",
+                "region/west-shore-2",
+                "region/east-shore-2"
+              ]
+            }
+          },
+          {
+            "verb": "flood",
+            "region": "region/tideline"
           }
         ]
       }
