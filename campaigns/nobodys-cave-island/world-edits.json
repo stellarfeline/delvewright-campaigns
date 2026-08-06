@@ -2898,6 +2898,257 @@
             "region": "region/fold-air-2"
           }
         ]
+      },
+      {
+        "id": "batch/fold-ring-one-material",
+        "area": "area/island",
+        "note": "Round-21 finding A (owner playtest): a sheep left the beach fold by walking OVER its wall. The fold's ring is minecraft:cobblestone_wall down the east and west sides and at the north corners, but minecraft:mossy_cobblestone - a FULL CUBE, one block high - along the middle of the north and south edges. A wall block is a 1.5-tall barrier the router may neither pass through nor stand on; a full cube is an ordinary one-block ledge every body in the dims table can hop. So the ring the player's eye reads as one enclosure is, to the route planner, impassable at nine cells and a step at five, and the flock's shortest way out of the pen ran up the east face at [7,63,-9], across the north wall's top at [7,64,-10] and down into the meadow - the pen's real opening at [6,63,-6] never used. Make the ring ONE material so the model's barrier and the player's eye agree. Five cells per greenfield piece, both pieces (the prefab is drawn twice, like batch/fold-clear): the north edge's three middles and the south edge's two, at the walk level (piece-local y=3). The openings are untouched - the south doorway at piece-local (4,3,9) and the south-west corner gap at (2,3,9) stay air, so the fold still has a way in and out, and it is now the only way.",
+        "edits": [
+          {
+            "verb": "select",
+            "name": "region/fold-ring-north-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                3,
+                5
+              ],
+              "max": [
+                5,
+                3,
+                5
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-ring-north-1",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:cobblestone_wall",
+                  "weight": 1.0
+                }
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-ring-south-west-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                3,
+                9
+              ],
+              "max": [
+                3,
+                3,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-ring-south-west-1",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:cobblestone_wall",
+                  "weight": 1.0
+                }
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-ring-south-east-1",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 1,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                5,
+                3,
+                9
+              ],
+              "max": [
+                5,
+                3,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-ring-south-east-1",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:cobblestone_wall",
+                  "weight": 1.0
+                }
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-ring-north-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                3,
+                5
+              ],
+              "max": [
+                5,
+                3,
+                5
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-ring-north-2",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:cobblestone_wall",
+                  "weight": 1.0
+                }
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-ring-south-west-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                3,
+                3,
+                9
+              ],
+              "max": [
+                3,
+                3,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-ring-south-west-2",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:cobblestone_wall",
+                  "weight": 1.0
+                }
+              ]
+            }
+          },
+          {
+            "verb": "select",
+            "name": "region/fold-ring-south-east-2",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "piece-local",
+                "piece": 2,
+                "prefab": "prefab/island-greenfield"
+              },
+              "min": [
+                5,
+                3,
+                9
+              ],
+              "max": [
+                5,
+                3,
+                9
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/fold-ring-south-east-2",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:cobblestone_wall",
+                  "weight": 1.0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "batch/pen-gate-open",
+        "area": "area/island",
+        "note": "Round-21 finding B (owner playtest): the flock walks through the mountain pen's fence gate and the player cannot. [18,73,-63] shipped minecraft:oak_fence_gate[facing=east,open=false]. Two defects in one cell. (1) ORIENTATION: the pen's south fence line runs east-west, so the gate belongs on the Z axis (facing north/south, vanilla's Z_SHAPE: full across X, thin in Z). facing=east gives it X_SHAPE instead - a leaf standing edge-on in the doorway, spanning the cell's full depth at x 18.375..18.625 - which is why walking straight through it was impossible and offsetting to x~18.0 squeezed past. (2) STATE: closed. A closed gate is passable for the PLAYER, who right-clicks it open, and for nobody else; a move-npc/move-actor puppet is a tp polyline that performs no interaction, and no runtime verb changes a fence gate's block state, so a gate shipped closed is closed for the whole delve. Sixteen walked legs crossed it anyway. Ship it open and square to the line: an open fence gate has no collision at all, so the same route becomes honest for puppet and player alike. DW0452 is the proof that now holds this.",
+        "edits": [
+          {
+            "verb": "select",
+            "name": "region/pen-gate",
+            "shape": {
+              "kind": "box",
+              "frame": {
+                "kind": "anchor-relative",
+                "anchor": "anchor/pen"
+              },
+              "min": [
+                0,
+                0,
+                3
+              ],
+              "max": [
+                0,
+                0,
+                3
+              ]
+            }
+          },
+          {
+            "verb": "fill",
+            "region": "region/pen-gate",
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:oak_fence_gate[facing=north,open=true]",
+                  "weight": 1.0
+                }
+              ]
+            }
+          }
+        ]
       }
     ]
   }
