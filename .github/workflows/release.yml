@@ -187,6 +187,58 @@ jobs:
           set -euo pipefail
           echo "sha=$(git -C engine rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
+      # The pin is the one input to a release that nothing else reads, so nothing
+      # else can notice it going stale. It sat 75 commits behind for the whole of
+      # the island's development — still naming the spec-0024 docs PR that first
+      # carried the ladder inputs — and a release tag pushed at any point would
+      # have built the campaign with an engine predating almost everything rounds
+      # 19-22 depend on. The ladder would have caught it as a wall of red with no
+      # hint that the PIN was the cause.
+      #
+      # Bind it to a fact the campaign already states about itself: its storybook
+      # marker records the delvec version it was last verified with
+      # (`tools/check-storybook-version.py` keeps that honest and CI-enforced in
+      # the engine repo). Building a release with an engine OLDER than that is
+      # shipping something nobody validated, so it is refused here rather than
+      # discovered downstream.
+      - name: the pinned engine is not older than the campaign was verified with
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+        run: |
+          set -euo pipefail
+          python3 - "$CAMPAIGN" <<'PY'
+          import re, sys, pathlib
+          campaign = sys.argv[1]
+
+          readme = pathlib.Path(f"campaigns/{campaign}/README.md").read_text(encoding="utf-8")
+          m = re.search(r"last verified with delvec ([0-9]+\.[0-9]+\.[0-9]+)", readme)
+          if not m:
+              sys.exit(
+                  f"REFUSING: campaigns/{campaign}/README.md carries no "
+                  "'last verified with delvec <x.y.z>' marker, so there is no "
+                  "statement of which engine validated this campaign."
+              )
+          verified = m.group(1)
+
+          cargo = pathlib.Path("engine/crates/compiler/Cargo.toml").read_text(encoding="utf-8")
+          pkg = cargo.split("[package]", 1)[1]
+          v = re.search(r'^version\s*=\s*"([^"]+)"', pkg, re.M)
+          if not v:
+              sys.exit("REFUSING: cannot read [package] version from the engine's compiler crate.")
+          engine = v.group(1)
+
+          key = lambda s: tuple(int(p) for p in s.split("."))
+          if key(engine) < key(verified):
+              sys.exit(
+                  f"REFUSING to publish: versions.toml [engine].ref checks out delvec "
+                  f"{engine}, but {campaign} states it was last verified with delvec "
+                  f"{verified}. The pin is stale — re-pin [engine].ref to the released "
+                  f"engine commit in a reviewed PR before tagging (see the RE-PIN "
+                  f"CONVENTION at the top of versions.toml)."
+              )
+          print(f"engine delvec {engine} >= verified delvec {verified} — OK")
+          PY
+
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: engine
