@@ -40,8 +40,13 @@ delvec build campaigns/<id> -o out/
   reviewable JSON validated by a closed schema. **No images, no worlds, no
   binaries, ever** — canonical images are built only by trusted CI from these
   sources (determinism makes the build reproducible by anyone).
-- Campaigns must pass the full validation ladder (`delvec validate` + `analyze`,
-  PackTest, bot playthrough) in CI before merge.
+- Campaigns must compile in CI before merge. Every push and pull request runs
+  `delvec validate` and a full `delvec build` (which implies `analyze`) for every
+  campaign in this repo, in every language it declares, against the engine pinned
+  in `versions.toml` — so a campaign that no longer compiles is red here, not
+  discovered at release time. The runtime half of the ladder (PackTest and a bot
+  playthrough against the shipped image) runs on a release tag; see *Releasing a
+  campaign* below.
 - Only distributable-class prefabs (this repo's `prefabs/`, per-item CC0/CC BY/
   original with recorded provenance) may be referenced. Prefab additions pass a
   mechanical NBT audit in CI (block-palette allowlist; no command/structure
