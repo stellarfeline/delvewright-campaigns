@@ -456,8 +456,30 @@ jobs:
           # guess.
           import json, os, re, sys
           camp = os.environ["CAMPAIGN"]
-          c = json.load(open(f"campaigns/{camp}/world.json"))["content"]
-          book = open(f"campaigns/{camp}/README.md", encoding="utf-8").read()
+          # `campaigns/<id>/` is not proof of a campaign: `the-drowned-bell` is a
+          # directory of media and build output with no stage documents at all,
+          # because its remake has not been authored yet. Name that, rather than
+          # ending a release in a KeyError on someone's screen.
+          try:
+              c = json.load(open(f"campaigns/{camp}/world.json"))["content"]
+          except FileNotFoundError:
+              sys.exit(f"error: {camp} has no world.json, so it is a directory rather "
+                       f"than a campaign — nothing here is releasable. If you meant a "
+                       f"different campaign, check the tag.")
+          # A campaign with no storybook cannot release: spec-0007 makes the
+          # storybook the reader-facing artifact, and since the notes render it,
+          # its absence is now a release-stopping fact rather than a missing file
+          # someone notices later. Say so — an unguarded open() here would end a
+          # release in a Python traceback, which reads as "the pipeline broke"
+          # rather than "this campaign is not ready to ship".
+          try:
+              book = open(f"campaigns/{camp}/README.md", encoding="utf-8").read()
+          except FileNotFoundError:
+              sys.exit(f"error: {camp} has no README.md. The release notes are rendered "
+                       f"FROM the storybook (spec-0007), so a campaign without one has "
+                       f"nothing to announce and cannot be released. Write the storybook "
+                       f"first — title, blurb, and a header table carrying **Players** "
+                       f"and **Playtime**.")
           image, version = os.environ["IMAGE"], os.environ["VERSION"]
           lang, has_pack = os.environ["LANG_CODE"], os.environ["HAS_PACK"] == "true"
 
