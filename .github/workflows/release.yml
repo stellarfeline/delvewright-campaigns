@@ -137,13 +137,24 @@ jobs:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
         run: |
           set -euo pipefail
-          # spec-0024 language delivery (v1): a release ships the campaign baked
-          # in its PRIMARY AUTHORED language — the one it was written and
-          # playtested in. The machine-readable statement of that is
-          # `world.json` `content.languages`, whose first entry is the campaign's
-          # own language; a campaign that declares none was authored in English.
-          # (i18n v2 ships every declared language inside one resource pack and
-          # retires this choice entirely; it does not gate any release.)
+          # i18n v2 (spec-0029) RETIRED the baked language, and this workflow was
+          # the last place still doing it. A release now runs the DEFAULT
+          # multi-language build: every authored string ships as a
+          # `{translate, fallback}` component, the resource pack carries one lang
+          # file per declared language, and THE CLIENT PICKS — a player with a
+          # Chinese client reads Chinese, an English client reads English, from
+          # the same image.
+          #
+          # `--lang <code>` still exists and still bakes: it ships NO lang files
+          # and puts that language's text on the component instead. That is a
+          # single-language artifact, and shipping one from here made the release
+          # narrower than the engine, silently — v1.1.0 went out zh-cn-only
+          # (8 files in the pack, zero of them lang files) on an engine that had
+          # supported client selection since #314.
+          #
+          # The value below is now only for the release NOTES and the summary
+          # table: which language the campaign was authored in, which is a fact
+          # about the writing, not about what the image serves.
           lang=$(python3 - "$CAMPAIGN" <<'PY'
           import json, sys
           w = json.load(open(f"campaigns/{sys.argv[1]}/world.json"))
@@ -299,8 +310,7 @@ jobs:
           cargo run -p delvec --bin delvec -- \
             build "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" \
             -o "$GITHUB_WORKSPACE/engine/validation/delve-output" \
-            --prefabs "$GITHUB_WORKSPACE/prefabs" \
-            --lang "$LANG_CODE"
+            --prefabs "$GITHUB_WORKSPACE/prefabs"
 
       # Everything the image labels and the release notes need comes from the
       # build's own manifest.json, not from re-deriving it: the manifest IS the
@@ -544,7 +554,9 @@ jobs:
               print("The resource pack (character skins and in-game art) is served "
                     "by the delve itself — accept the prompt when you join. "
                     "Nothing to install by hand.\n")
-          print(f"In-game text is in `{lang}`.\n")
+          print(f"In-game text follows your Minecraft client's language where the "
+                f"delve has been translated (authored in `{lang}`); accept the "
+                f"resource-pack prompt and it happens by itself.\n")
           print("### Terms\n")
           print("This release contains **no Minecraft server software**. The server "
                 "is downloaded by the container on first start, and you accept "
