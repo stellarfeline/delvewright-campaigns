@@ -277,6 +277,17 @@ jobs:
           print(f"engine versions.toml [content].sha -> {sha}")
           PY
 
+      # The PACKAGE is `delvec`, not `delvewright-compiler` (ADR-0017 §1): a
+      # crate is installed by package name, so the compiler had to BE `delvec`
+      # for `cargo install delvec` to work. Only the LIB TARGET keeps the old
+      # name (`delvewright_compiler`), which is why in-tree `use` paths did not
+      # churn — and why this line kept looking plausible after the rename.
+      #
+      # This broke the v1.1.0 release and nothing else: the content repo is the
+      # only consumer that names the engine's package, and only this workflow
+      # runs it. Same shape as the `--locked` gap — a defect whose sole
+      # exercise is the release path, so it is discovered at the most expensive
+      # possible moment.
       - name: build the delve (implies validate + analyze — the static ladder)
         working-directory: engine
         env:
@@ -284,8 +295,8 @@ jobs:
           LANG_CODE: ${{ steps.lang.outputs.lang }}
         run: |
           set -euo pipefail
-          cargo run -p delvewright-compiler --bin delvec -- --version
-          cargo run -p delvewright-compiler --bin delvec -- \
+          cargo run -p delvec --bin delvec -- --version
+          cargo run -p delvec --bin delvec -- \
             build "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" \
             -o "$GITHUB_WORKSPACE/engine/validation/delve-output" \
             --prefabs "$GITHUB_WORKSPACE/prefabs" \
