@@ -1,7 +1,8 @@
 # The Wake — design record
 
 **Authoritative design document.** Every iteration round is diffed against this
-file beat by beat (SKILL iteration protocol). Campaign id `the-wake`, DSL 0.8.0,
+file beat by beat (SKILL iteration protocol). Campaign id `the-wake`, DSL 0.9.0
+(world stage; the later stages stay at 0.8.0 behind their own fences),
 Minecraft 1.21.11.
 
 ## What this level is for
@@ -31,11 +32,49 @@ this evening, is four strangers.
 ## Map
 
 One area, one piece: `prefab/tk-barrow-field` (48 × 14 × 40, open air,
-`horizon: ocean`, `time: dusk`), bound as `prefab_pool: "pool/tidal-keep"` with
+`time: dusk`), bound as `prefab_pool: "pool/tidal-keep"` with
 `pieces {min: 1, max: 1}`. Exactly one piece is drawn — the pool's `entry` — so
 every anchor is unambiguous by construction (no `DW0305`), and the whole level
 is one readable open field with the keep gate at the north end and the water at
 the south.
+
+**Horizon — the cherry valley** (owner ruling, task #177; adopted at DSL 0.9.0):
+
+```json
+"horizon": { "base": "valley", "ratio": 3.0, "rim_height": 32,
+             "flora": "cherry", "palette": "stone-petal" }
+```
+
+A mountain annulus rings the field, cherry-crowned, with a flat gap floor
+between the field's edge and the slopes. Parameter rationale, one line each:
+
+- `ratio: 3.0` — the scene is 48 × 40, and the annulus band is floored at
+  `GAP_WIDTH + SLOPE_RUN` = 30 per axis, so at the 2.5 default the **short (Z)
+  axis** gets exactly 30 and has no outer face at all: the blossom line stops
+  crowning the north and south crests, which are the two directions this level
+  actually looks (the keep gate, the water). 3.0 is the smallest value that
+  gives the 40-deep axis a real outer face (40 > 30); measured cherry trunk
+  columns north/south rise 23/35 → 66/84, total 154 → 386.
+- `rim_height: 32` — the ring must close the horizon and must not lid the dusk
+  sky, since `time: dusk` under a clear sky is this level's whole mood and its
+  camera work is a low crane over a flat field. Measured from the party's eye at
+  spawn: the crest clears eye level at **every** azimuth (worst gap +6.0°, so no
+  window onto the ambient void anywhere in the field) while occupying only the
+  lower 6–25° of the view; the 48 default takes 11–36° and reads as a well over
+  a 40-deep scene.
+- `flora: cherry` — the owner's ruling; a funeral is what the blossom is for.
+- `palette: stone-petal` — the `"cherry-valley"` shorthand's own pairing: fallen
+  `pink_petals` as the slope understory rather than `short_grass`/`fern`. This
+  is the one parameter where this campaign deliberately differs from the
+  hollow-vigil construction mule, which kept `stone-grass` for a moorland keep.
+
+The horizon change re-datums the piece: `valley`'s `walk_ref_y` is the gap floor
++ 1, so the piece is placed at y 61 (was 60) and the field's walk plane sits at
+64 (was 63). The piece's own authored water (`waterline_y: 2`, world y 63) is
+therefore flush with the surrounding gap floor and reads as a valley tarn rather
+than as open sea. **The prose has not been re-fictioned** — `theme`, `premise`
+and the tide branch still say coast, tide and low water. That is an owner call,
+recorded as an open item in `GENERATION.md`.
 
 **Why the pool binding and not `areas[].prefab`.** The direct single-prefab
 binding skips the socket-sealing pass: the piece's unmated north connector was

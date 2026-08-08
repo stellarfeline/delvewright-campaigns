@@ -2,7 +2,8 @@
 
 - **Date**: 2026-08-03
 - **Generator**: `/new-delve` (Claude Code skill, ADR-0012), followed end to end
-- **DSL version**: 0.8.0 (all six stages)
+- **DSL version**: 0.8.0 (all six stages); the world stage moved to 0.9.0 in
+  round 2 below
 - **Engine**: `delvec` at Delvewright `main` d2d51d9
 - **Content base**: `delvewright-campaigns` `campaign/the-drowned-bell` 7bfc0b5
   (stacked — see "PR base" below; `main` does not carry the tidal-keep tileset)
@@ -279,6 +280,68 @@ Ordered by severity.
    finished English (`docs/reference/i18n.md`, "Fallback rule"). The three art
    titles stay ASCII in the sidecar deliberately — the `delve:art` banner font is
    glyph-checked (`DW0328`) and carries no Han glyphs.
+
+## Round 2 — cherry-valley adoption (2026-08-08)
+
+Owner ruling, task #177: **the-wake is the cherry valley's resident**;
+`hollow-vigil` was only the construction mule the horizon was developed against.
+This round rebases the world stage onto the spec-0026 `valley` surround. Engine:
+`worker/spec-0026-valley` (PR #259). Design record and the parameter rationale:
+`DESIGN.md`, "Horizon — the cherry valley".
+
+Four things had to become true, three of them prerequisites this round found
+rather than expected:
+
+1. **`walk_y` on the tidal-keep tileset.** spec-0026 §2 replaces the single
+   global `OCEAN_BASE_Y` with a per-area datum `walk_ref_y − walk_y`, and a
+   piece placed in **any** non-void horizon without the declaration is
+   `DW0367`. So this campaign was already red on this engine *before* the
+   horizon changed — under its own `horizon: ocean`. The engine-side half had
+   landed (`prefabs/tidal-keep-generator` emits `walk_y`, and
+   `prefabs/tidal-keep-tileset.md` documents the convention: shore 3, plinth
+   11); only the content-side re-export was missing. Added as one line per
+   piece, values taken from the generator's own output and diffed against it,
+   deliberately **without** carrying the generator's later un-re-exported
+   changes (the relocated `anchor/l0-bonfire`, the bell-tower pier and tide
+   gate) — those are a separate pair and would move this level's staging.
+   The datum is then proved empirically, not asserted: rebuilt under the
+   unchanged `horizon: ocean`, `DW0364`'s flood proof is green over every
+   standable cell, which is the engine confirming that `63 − 3 = 60` lands the
+   walk plane dry at 63.
+2. **Three actor nameplates in the `zh-cn` sidecar.** Engine #317 puts an
+   actor's own `name` into the l10n inventory, so `DW0180` (coverage must be
+   exact) now demands a row for each distinct actor name: `actor.bier.name`,
+   `actor.lamp-bearer.name`, `actor.mourner-widow.name` (the last is owned by
+   the first "Mourner" in traversal order). Same patch the island took. This is
+   a PATCH, not the l10n adoption: the sidecar still records no `source`, so
+   `DW0188` stands — the one-version deprecation window.
+3. **`dsl_version` 0.9.0 on the world stage only.** The `horizon` object form is
+   fenced at 0.9.0 (`DW0141`); the fences are per-stage, so the other five
+   stages stay at 0.8.0 and this round does not become a whole-campaign version
+   upgrade.
+4. **The horizon itself**, as the object form rather than the `"cherry-valley"`
+   shorthand — the shorthand cannot carry `ratio`/`rim_height`, and those two
+   are the parameters this scene actually needed off their defaults.
+
+**The surround binds** (the vacuous-green rule): 8 tiles emitted under
+`data/the-wake/structure/horizon/valley/`, 8 matching `place template` lines in
+`place_all.mcfunction`, 4 `fillbiome … minecraft:cherry_grove` rects in
+`setup_finish.mcfunction`, and 465 024 authored cells of which 15 667
+`cherry_leaves`, 1 703 `cherry_log` (386 distinct trunk columns) and 800
+`pink_petals` — the flora layer is not empty. `render-plan.json` carries the
+`vista` shot (FOV 69.3°, eye at spawn). Datapack 1.8 MB against the horizon
+dossier's 25 MB budget; 8 tiles against its 48.
+
+### Open item for the owner — the prose still says coast
+
+The horizon is a valley; `theme`, `premise`, `quest/the-tide` and
+`ending/the-tide` still say tide, low water and *came ashore*. The geometry
+survives the move — the piece's authored water is now a tarn flush with the gap
+floor, and the tide branch still walks to it — but "she read the tide for the
+keep" is a sentence about a sea. Re-fictioning is a content decision, not an
+adoption chore, so nothing in the prose was touched. Two coherent answers exist
+(keep the water and call it a lake the field's people read; or keep the sea
+words and let the valley hold a sea inlet) and the choice is the owner's.
 
 ## PR base — read this first
 
