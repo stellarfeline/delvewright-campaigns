@@ -1,9 +1,7 @@
 # 无人之岛
 
-**v1.0.0**(精确引擎钉版见 `versions.toml`)
-
 > **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.1.0.
-> 需要 delve 引擎 0.8.0 或更高版本 — 最近一次通过验证的 delvec 版本为 1.0.0。
+> (上一行是版本印记,不翻译:它声明本战役需要的引擎版本,以及最近一次验证所用的 delvec 版本。)
 
 > *"客人?客人是走门进来的,小东西们。而门,是关着的。"*
 
@@ -57,10 +55,10 @@
 
 ```sh
 docker run -d --name delve -p 25565:25565 -v delve-data:/data \
-  -e EULA=TRUE ghcr.io/stellarfeline/delve-nobodys-cave-island:v1.0.0
+  -e EULA=TRUE ghcr.io/stellarfeline/delve-nobodys-cave-island:latest
 ```
 
-每个版本的发布页附带资源包(人物皮肤——进服时客户端会提示启用)和完整更新日志。想重头再来:`docker rm -f delve && docker volume rm delve-data`,然后重跑同一条命令。
+这是当前版本的秘境。想把它定死在某一个版本上——同一个世界、同一份台词,永远不变——就改用发布页上的 `:vX.Y.Z` 标签,每个发布页都会写明自己的。每个版本的发布页附带资源包(人物皮肤——进服时客户端会提示启用)和完整更新日志。想重头再来:`docker rm -f delve && docker volume rm delve-data`,然后重跑同一条命令。
 
 ---
 
