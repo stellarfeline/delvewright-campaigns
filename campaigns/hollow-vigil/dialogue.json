@@ -1,5 +1,5 @@
 {
-  "dsl_version": "0.3.0",
+  "dsl_version": "0.4.0",
   "campaign_id": "hollow-vigil",
   "stage": "dialogue",
   "content": {
@@ -12,31 +12,57 @@
             "id": "dlg/gate",
             "text": "Hold there — easy, easy, I'm the watch, not the trouble. Hedric. You'll be the one Maren sent for. I'd walk you down myself, truly I would, but the knee won't have it. Twenty years of delving, and what ends it? Not a drake, not a barrow-wight — one crossbow bolt, straight through the knee. That was the last of my adventuring.",
             "options": [
-              { "label": "What is this place?", "next": "dlg/keep" },
-              { "label": "The knee? What's the story?", "next": "dlg/knee" },
-              { "label": "I'm going in.", "next": "dlg/shield" }
+              {
+                "label": "What is this place?",
+                "next": "dlg/keep"
+              },
+              {
+                "label": "The knee? What's the story?",
+                "next": "dlg/knee"
+              },
+              {
+                "label": "I'm going in.",
+                "next": "dlg/shield"
+              }
             ]
           },
           {
             "id": "dlg/keep",
             "text": "Barrowmere. Two hundred years of wardens keeping a vigil over the deep gate, and nobody left who remembers what for. Just Maren now. She'll tell it properly — she tells everything properly. Mind the halls; the old garrison's been walking again, and they were never friendly even when they breathed.",
             "options": [
-              { "label": "Back.", "next": "dlg/gate" }
+              {
+                "label": "Back.",
+                "next": "dlg/gate"
+              }
             ]
           },
           {
             "id": "dlg/knee",
             "text": "Ha! Everyone asks. Ambush at a toll bridge, bandit with a crossbow and better luck than aim. Went clean through. The chirurgeon said I'd walk again and he was half right — I walk to this gate every morning and back every night, and that's the whole of my range. Still. I keep the shield polished. A man can polish a shield.",
             "options": [
-              { "label": "Back.", "next": "dlg/gate" }
+              {
+                "label": "Back.",
+                "next": "dlg/gate"
+              }
             ]
           },
           {
             "id": "dlg/shield",
             "text": "Alone? Down there, in the dark, with the garrison walking? No, no, that won't do — it's dangerous down there for one sword on its own. Here. Take my shield. It held twenty years of trouble off me, it'll hold one night off you. Keep it raised and come back up those stairs, you hear?",
             "options": [
-              { "label": "Take the shield.", "effects": [ { "type": "complete-objective", "objective": "obj/gate-watch" } ] },
-              { "label": "Not yet — a question first.", "next": "dlg/gate" }
+              {
+                "label": "Take the shield.",
+                "effects": [
+                  {
+                    "type": "complete-objective",
+                    "objective": "obj/gate-watch"
+                  }
+                ]
+              },
+              {
+                "label": "Not yet — a question first.",
+                "next": "dlg/gate"
+              }
             ]
           }
         ]
@@ -49,31 +75,60 @@
             "id": "dlg/vigil",
             "text": "So Hedric let you through. Good. I am Maren, Warden of Barrowmere — the last, which is why you are here. \"While one warden stands, the gate stays barred; while the gate stays barred, the—\" ... forgive me. The oaths recite themselves, after enough years. Speak, delver.",
             "options": [
-              { "label": "What is the vigil?", "next": "dlg/order" },
-              { "label": "Who is the First Warden?", "next": "dlg/first" },
-              { "label": "I'm ready to swear the night's work.", "next": "dlg/charge" }
+              {
+                "label": "What is the vigil?",
+                "next": "dlg/order"
+              },
+              {
+                "label": "Who is the First Warden?",
+                "next": "dlg/first"
+              },
+              {
+                "label": "I'll swear the night's work.",
+                "next": "dlg/charge",
+                "requires_flags": [
+                  "flag/warned"
+                ]
+              }
             ]
           },
           {
             "id": "dlg/order",
             "text": "An order sworn to watch the deep gate below this keep. Against what, the founding scrolls do not say — only that the First Warden set his post at the barrow altar and never left it. We kept the watch for two hundred years. Now the garrison rises hollow from the barrow-earth, and I am too old to put my own dead brothers down. The vigil deserves an ending. Not an abandonment — an ending.",
             "options": [
-              { "label": "Back.", "next": "dlg/vigil" }
+              {
+                "label": "Back.",
+                "next": "dlg/vigil"
+              }
             ]
           },
           {
             "id": "dlg/first",
             "text": "The founder of the order. He stands his post yet — long past death, past sense, past mercy. The scrolls give his name, but I... the name is not one I choose to speak. Wardens of one line, first to last. That is all the answer I have for you.",
             "options": [
-              { "label": "Back.", "next": "dlg/vigil" }
+              {
+                "label": "Back.",
+                "next": "dlg/vigil"
+              }
             ]
           },
           {
             "id": "dlg/charge",
             "text": "Then hear the charge, and hold it: quiet the halls, take back the barrow key from the garrison's strongbox, unlock the deep door, and put down the First Warden at his post — the altar stands where he stands; speak the vigil's ending there. When you say the word, I will unbar this gate and speak the summons — and the hollow dead will answer it. They always answer. Are you ready?",
             "options": [
-              { "label": "Speak the summons. I am ready.", "effects": [ { "type": "complete-objective", "objective": "obj/swear" } ] },
-              { "label": "One moment more.", "next": "dlg/vigil" }
+              {
+                "label": "Say the summons. I'm ready.",
+                "effects": [
+                  {
+                    "type": "complete-objective",
+                    "objective": "obj/swear"
+                  }
+                ]
+              },
+              {
+                "label": "One moment more.",
+                "next": "dlg/vigil"
+              }
             ]
           }
         ]
