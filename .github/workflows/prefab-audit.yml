@@ -5,23 +5,31 @@ name: prefab palette audit
 # that gate for the content repo.
 #
 # The audit tool (`delve-admit`) is GPL pipeline code and lives in the *main*
-# repo (delvewright), which stays private for now. We build it from a PINNED main
-# SHA so the allowlist the audit enforces is reproducible: a309f61 is the first
-# main commit whose broadened allowlist (PR #56) admits every prefab merged into
-# this repo (content PR #6). Bumping the pin is a deliberate, reviewed change.
+# repo (delvewright). We build it from a PINNED main SHA so the allowlist the
+# audit enforces is reproducible: a309f61 is the first main commit whose
+# broadened allowlist (PR #56) admits every prefab merged into this repo
+# (content PR #6). Bumping the pin is a deliberate, reviewed change.
 #
-# Interim credential note: `delvewright` is private and this repo is public, so
-# the cross-repo checkout needs a token (`secrets.MAIN_REPO_TOKEN`, read-only
-# `contents` on stellarfeline/delvewright). GitHub withholds secrets from
-# fork-based PRs, so this gate covers same-repo (owner-authored) PRs today; once
-# the main repo is public the token can be dropped and the default GITHUB_TOKEN
-# will suffice, which also unlocks community fork PRs.
+# Credential note, RESOLVED. This step used to carry a cross-repo PAT
+# (`secrets.MAIN_REPO_TOKEN`) because `delvewright` was private, and the note
+# recorded its own exit condition: "once the main repo is public the token can
+# be dropped and the default GITHUB_TOKEN will suffice, which also unlocks
+# community fork PRs." Both repos are public, so the token is gone.
+#
+# That was not cosmetic. GitHub withholds secrets from fork-based PRs, so for as
+# long as the PAT was required this gate could not check out its own tool on a
+# fork PR — the community contribution path spec-0007 exists to protect was the
+# one path the gate did not cover. Dropping the token is what binds it.
 
 on:
   pull_request:
     paths:
       - "prefabs/**"
       - "catalog/**"
+  # On demand: the paths filter above means a change to this workflow itself
+  # never exercises it, so a change to the gate could otherwise only be proved
+  # by a later unrelated prefab PR.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -46,13 +54,13 @@ jobs:
         with:
           lfs: true
 
-      # The audit tool's source, pinned. Private repo -> needs a cross-repo token.
+      # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
+      # reaches it, and a fork PR gets the same checkout the owner's PRs do.
       - name: check out delve-admit source (main repo, pinned)
         uses: actions/checkout@v4
         with:
           repository: stellarfeline/delvewright
           ref: ${{ env.ADMIT_REF }}
-          token: ${{ secrets.MAIN_REPO_TOKEN }}
           path: admit-src
 
       # Cache cargo + build artifacts, keyed on the pinned SHA and the admit
