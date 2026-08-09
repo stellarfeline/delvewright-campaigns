@@ -180,16 +180,15 @@ jobs:
           PY
           cat "$GITHUB_OUTPUT"
 
-      # The pipeline that compiles this content is GPL code in the (currently
-      # private) main repo -> the cross-repo checkout needs a read-only token,
-      # exactly as prefab-audit.yml does. Once the main repo is public the
-      # default GITHUB_TOKEN suffices and `token:` can be dropped.
+      # The pipeline that compiles this content is GPL code in the main repo.
+      # That repo is public, so the default GITHUB_TOKEN reaches it and the
+      # cross-repo PAT this step used to carry is gone — the exit condition the
+      # old note wrote down for itself, now met. Same change as prefab-audit.yml.
       - name: check out the pinned engine
         uses: actions/checkout@v4
         with:
           repository: ${{ steps.engine.outputs.repo }}
           ref: ${{ steps.engine.outputs.ref }}
-          token: ${{ secrets.MAIN_REPO_TOKEN }}
           path: engine
 
       - name: record the engine commit + compiler version
