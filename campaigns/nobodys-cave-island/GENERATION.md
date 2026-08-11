@@ -1632,3 +1632,50 @@ All 52 ledger findings verified closed or owner-ruled before staging this
 build for the owner: rows 33/34/51/52 above updated from their stale r16
 "open/engine" statuses with the merge evidence per row. Nothing reported by
 the owner in any round survives into this build.
+
+### 2026-08-11 — `DW0478` respawn-seat round (engine PR #373, `fix/unbound-five`)
+
+Not an owner playtest round: a machine finding. Engine PR #373 widened `DW0478`
+from `plan.bonfires()` to every `CheckpointPlan`. This campaign declares 3
+`set-checkpoint` and 0 `bonfire`, so the proof had examined **0** pairs and
+reported green since it was written; widened it examines **8** and the campaign
+stopped compiling (exit 3) on **6** live violations, all shipped in v1.1.0.
+
+The six, each read out of the real diagnostic (engine `c24a7b3`), seat → onset →
+overlap:
+
+| seat | force | overlap |
+|---|---|---|
+| `anchor/checkpoint-1` [9,69,-47] | `actor/polyphemus-roused` @ `anchor/fire-side` [6,69,-56] | 9.5 / 16.0 |
+| `anchor/checkpoint-2` [9,69,-60] | same | 5.0 / 16.0 |
+| `anchor/checkpoint-3` [14,69,-60] | `wave/storm-shore` seated [11,63,-32] | 28.8 / 48.0 |
+| `anchor/checkpoint-3` | `actor/polyphemus-walker` @ `anchor/mouth-side` [7,69,-47] | 14.8 / 16.0 |
+| `anchor/checkpoint-3` | `actor/polyphemus-roused` | 8.9 / 16.0 |
+| `anchor/checkpoint-3` | `actor/polyphemus-blinded` @ `anchor/fire-pit` [9,69,-56] | 6.4 / 16.0 |
+
+`DW0478` stops at the first violating pair, so the last four were read from
+scratch-only isolation probes built from content `HEAD` with anchor-only edits
+(never text, so the l10n gate stayed green and every build reached the nav
+stage). Probes are scratch; nothing from them is in this commit.
+
+Fix, and the reasoning: DESIGN §12. Three `set-checkpoint` anchors → the hall's
+one cell outside all three warden bodies (`anchor/alcove-3`); `wave/storm-shore`
+→ `anchor/surf-wave`, because at `follow_range: 48` no island cell clears both
+wave clusters and the terminal checkpoint's reign never ends — the seat cannot be
+placed, so the force moves. `follow_range` untouched; no `dsl_version` bumped; no
+objective, quest graph, cast ledger or dialogue changed. Three respawn narrate
+lines re-written to name the new cell, with `source` + zh-cn re-translated in the
+same commit (3 keys; the key set is unchanged, so `DW0180`/`DW0181` coverage is
+unmoved and `DW0187` is what caught the drift).
+
+Ladder, local, engine `c24a7b3` + content `fix/island-respawn-safety`:
+`validate` 0 · `analyze` 0 · `build` en 0 · `build --lang zh-cn` 0 · double-build
+byte-identical · PackTest 42/42 · bot critical path PASSED (18 steps) · all four
+branch runs PASSED. Warning set byte-identical to the pre-change baseline (6:
+1× `DW0498`, 2× `DW0359`, 3× `DW0451`). `validation/respawn-safety.json` after:
+`examined: 3`, `pairs: 8`, `unbound: false` — the same 8 pairs, none of them
+bought back by narrowing the proof.
+
+Follow-up for the engine, not done here: `versions.toml` `[content].sha` must be
+re-pinned to this commit before the engine's "campaign builds" job can go green
+on #373.
