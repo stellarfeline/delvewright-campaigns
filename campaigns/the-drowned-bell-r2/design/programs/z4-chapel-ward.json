@@ -1,0 +1,2294 @@
+{
+  "name": "bell_chapel_ward",
+  "start": "chapel_ward",
+  "params": {
+    "chute/drop": 4,
+    "chute/duct_len": 2,
+    "chute/duct_width": 1,
+    "chute/head": 3,
+    "chute/rescue_ladder": 0,
+    "hearth/back_door": 0,
+    "hearth/head": 3,
+    "hearth/mouth_sealed": 0,
+    "hearth/nook_height": 2,
+    "hearth/nook_len": 3,
+    "hearth_run": 8,
+    "junction/door_height": 2,
+    "junction/head": 3,
+    "junction/sealed": 0,
+    "junction_run": 8,
+    "shortcut/door_height": 2,
+    "shortcut/head": 3,
+    "shortcut/unbarred": 0,
+    "strip_depth": 9
+  },
+  "palette": {
+    "chute/rock": "minecraft:stone",
+    "hearth/hearth_floor": "minecraft:polished_andesite",
+    "hearth/rock": "minecraft:stone_bricks",
+    "junction/rock": "minecraft:stone_bricks",
+    "margin": "minecraft:deepslate",
+    "shortcut/bar": "minecraft:iron_bars",
+    "shortcut/rock": "minecraft:stone_bricks"
+  },
+  "rules": {
+    "branch_strip": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "junction_run"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "shortcut/threshold"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "margin"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chapel_ward": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "ward_plan"
+          }
+        }
+      }
+    ],
+    "chute/duct_core": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "chute/drop"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "chute/head"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chute/duct_plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "chute/duct_width"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "chute/duct_len"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "chute/drop"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "chute/head"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "chute/duct_width"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "chute/duct_len"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "chute/duct_len"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "chute/landing_run"
+            },
+            {
+              "op": "call",
+              "symbol": "chute/duct_zone"
+            },
+            {
+              "op": "call",
+              "symbol": "chute/entry_run"
+            }
+          ]
+        }
+      }
+    ],
+    "chute/duct_zone": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "chute/duct_width"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "chute/duct_core"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chute/dumbwaiter": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "chute/duct_plan"
+          }
+        }
+      }
+    ],
+    "chute/entry_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "chute/drop"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "chute/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "chute/entry_floor"
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "hatch",
+                "at": "offset",
+                "x": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "x"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "y": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "z": {
+                  "expr": "int",
+                  "value": 0
+                }
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chute/entry_floor": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "chute/rescue_ladder"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "chute/rock"
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "chute/rescue_ladder"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chute/entry_run": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "chute/entry_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chute/landing_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "chute/drop"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "chute/head"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "landing",
+                "at": "offset",
+                "x": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "dim",
+                      "dim": "x"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "y": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "z": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "z"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "chute/landing_run": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "chute/landing_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "chute/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/corridor": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/lane_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/hearth_ward": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "hearth/ward_plan"
+          }
+        }
+      }
+    ],
+    "hearth/lane_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hearth/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/mouth": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "hearth/mouth_sealed"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "void"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "hearth/mouth_sealed"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "hearth/rock"
+          }
+        }
+      }
+    ],
+    "hearth/nook_air": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "hearth/mouth"
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "hearth",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/nook_band": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "hearth/outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/nook_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/lane_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/nook_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hearth/nook_len"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "hearth/nook_room"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/nook_room": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hearth/nook_height"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/hearth_floor"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/nook_air"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/outer_wall": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "hearth/back_door"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "hearth/rock"
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "hearth/back_door"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hearth/nook_height"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "hearth/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hearth/ward_plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 6
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "hearth/nook_len"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "hearth/head"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "hearth/nook_len"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "hearth/nook_height"
+              },
+              "op": "lt",
+              "rhs": {
+                "expr": "param",
+                "name": "hearth/head"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "hearth/nook_height"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "hearth/nook_len"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "hearth/corridor"
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/nook_band"
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/corridor"
+            }
+          ]
+        }
+      }
+    ],
+    "junction/branch_door": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "z": "local_x"
+          },
+          "body": {
+            "op": "mark",
+            "mark": {
+              "anchor": "branch-door",
+              "at": "floor_center"
+            },
+            "body": {
+              "op": "call",
+              "symbol": "junction/doorway_or_sealed"
+            }
+          }
+        }
+      }
+    ],
+    "junction/door_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "junction/door_height"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "junction/branch_door"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "junction/door_wall": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "junction/door_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "junction/doorway_or_sealed": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "junction/sealed"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "void"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "junction/sealed"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "junction/rock"
+          }
+        }
+      }
+    ],
+    "junction/lane_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "junction/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "junction/passage": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "junction/passage_plan"
+          }
+        }
+      }
+    ],
+    "junction/passage_plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "junction/door_height"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "junction/head"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "param",
+                "name": "junction/door_height"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "junction/head"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "junction/door_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "junction/lane_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "junction/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "mainline": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "junction_run"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hearth_run"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "junction/passage"
+            },
+            {
+              "op": "call",
+              "symbol": "hearth/hearth_ward"
+            },
+            {
+              "op": "call",
+              "symbol": "chute/dumbwaiter"
+            }
+          ]
+        }
+      }
+    ],
+    "shortcut/bar_or_open": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "shortcut/unbarred"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "shortcut/bar"
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "shortcut/unbarred"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "void"
+        }
+      }
+    ],
+    "shortcut/door_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "shortcut/door_height"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "gate",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "call",
+                "symbol": "shortcut/bar_or_open"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "shortcut/far_room": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            },
+            {
+              "op": "split",
+              "axis": "y",
+              "sizes": [
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "param",
+                    "name": "shortcut/head"
+                  }
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "op": "fill",
+                  "material": {
+                    "role": "shortcut/rock"
+                  }
+                },
+                {
+                  "op": "mark",
+                  "mark": {
+                    "anchor": "unlock",
+                    "at": "floor_center"
+                  },
+                  "body": {
+                    "op": "void"
+                  }
+                },
+                {
+                  "op": "fill",
+                  "material": {
+                    "role": "shortcut/rock"
+                  }
+                }
+              ]
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "shortcut/near_room": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            },
+            {
+              "op": "split",
+              "axis": "y",
+              "sizes": [
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "param",
+                    "name": "shortcut/head"
+                  }
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "op": "fill",
+                  "material": {
+                    "role": "shortcut/rock"
+                  }
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "fill",
+                  "material": {
+                    "role": "shortcut/rock"
+                  }
+                }
+              ]
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "shortcut/threshold": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "shortcut/threshold_plan"
+          }
+        }
+      }
+    ],
+    "shortcut/threshold_plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "shortcut/door_height"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "shortcut/head"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "param",
+                "name": "shortcut/door_height"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shortcut/head"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "shortcut/far_room"
+            },
+            {
+              "op": "call",
+              "symbol": "shortcut/wall"
+            },
+            {
+              "op": "call",
+              "symbol": "shortcut/near_room"
+            }
+          ]
+        }
+      }
+    ],
+    "shortcut/wall": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "shortcut/door_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "shortcut/rock"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "ward_plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "strip_depth"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "junction_run"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "junction_run"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "x"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "strip_depth"
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "hearth_run"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "x"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "strip_depth"
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "z"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "junction_run"
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "hearth_run"
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "x"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "strip_depth"
+                }
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "strip_depth"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "branch_strip"
+            },
+            {
+              "op": "call",
+              "symbol": "mainline"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,626 @@
+{
+  "name": "bell_barrow_shore",
+  "start": "barrow_shore",
+  "params": {
+    "arena/approach": 4,
+    "arena/flank_margin": 4,
+    "arena/head": 3,
+    "arena/radius": 4,
+    "arena/seal_flank": 0
+  },
+  "palette": {
+    "arena/stone": "minecraft:stone_bricks"
+  },
+  "rules": {
+    "arena/arena_alts": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "arena/radius"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 4
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "arena/flank_margin"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "arena/approach"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "arena/head"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "arena/radius"
+                    },
+                    "op": "mul",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 2
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "arena/flank_margin"
+                    },
+                    "op": "mul",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 2
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "arena/radius"
+                    },
+                    "op": "mul",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 2
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "arena/approach"
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "arena/head"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "arena/radius"
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arena/approach"
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "arena/floor_column"
+            },
+            {
+              "op": "call",
+              "symbol": "arena/circle_band"
+            },
+            {
+              "op": "call",
+              "symbol": "arena/floor_column"
+            }
+          ]
+        }
+      }
+    ],
+    "arena/arena_plan": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "arena/arena_alts"
+          }
+        }
+      }
+    ],
+    "arena/circle_band": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "arena/radius"
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "arena/stone"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "arena/west_flank"
+            },
+            {
+              "op": "call",
+              "symbol": "arena/elite_column"
+            },
+            {
+              "op": "call",
+              "symbol": "arena/east_flank"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "arena/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "arena/east_flank": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "arena/seal_flank"
+              },
+              "op": "div",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            "op": "rem",
+            "rhs": {
+              "expr": "int",
+              "value": 2
+            }
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "call",
+          "symbol": "arena/floor_column"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "arena/seal_flank"
+              },
+              "op": "div",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            "op": "rem",
+            "rhs": {
+              "expr": "int",
+              "value": 2
+            }
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "arena/stone"
+          }
+        }
+      }
+    ],
+    "arena/elite_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arena/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "arena/stone"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "elite",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "arena/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "arena/floor_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arena/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "arena/stone"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "arena/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "arena/west_flank": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "arena/seal_flank"
+            },
+            "op": "rem",
+            "rhs": {
+              "expr": "int",
+              "value": 2
+            }
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "call",
+          "symbol": "arena/floor_column"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "arena/seal_flank"
+            },
+            "op": "rem",
+            "rhs": {
+              "expr": "int",
+              "value": 2
+            }
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "arena/stone"
+          }
+        }
+      }
+    ],
+    "barrow_shore": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "shore_plan"
+          }
+        }
+      }
+    ],
+    "shore_plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "gt",
+          "rhs": {
+            "expr": "dim",
+            "dim": "x"
+          }
+        },
+        "body": {
+          "op": "call",
+          "symbol": "arena/arena_plan"
+        }
+      }
+    ]
+  }
+}
