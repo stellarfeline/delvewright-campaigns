@@ -24,6 +24,16 @@ These are **reference images**: concept art for the design, drawn before any
 geometry existed. They are not renders, they are not shipped in a delve, and no
 delve byte depends on them.
 
+## The design
+
+| file | holds |
+|---|---|
+| `story.md` | the place, the bell, what happened, what the player is, the endings |
+| `beats.md` | the beat sheet Z0→Z7, every beat naming the image element it is built on |
+| `quests.md` | the quest graph: critical path, optional strands, gates, shortcuts, the one branch |
+| `cast.md` | the five speaking characters, what they want, and their written dialogue |
+| `encounters.md` | the fights by intent and role, and the five first-encounter kills |
+
 ## The order, and it is not advisory
 
 **Read `design/` before authoring anything.** A zone program, a massing
