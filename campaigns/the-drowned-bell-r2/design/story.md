@@ -20,6 +20,13 @@ the tolling. Its wealth was other people's dying, and it was very good at it.
 The bell is named **Mercy**. It hangs in the open belfry and it is the only thing
 on the rock anyone on the mainland can hear.
 
+Mercy is **built**, not hung as an ornament: a bell of oxidised copper several
+storeys of the tower could not contain, in a timber frame that is itself part of
+the building, and the belfry is a room the player walks around it in. It is the
+largest single made thing on the coast and the priory bankrupted a generation
+casting it. Its size is the reason it is audible eleven miles inland, which is
+the reason everything in this story happens.
+
 Around its lip: **I CALL THE LIVING · I CARRY THE DEAD · I ANSWER THE LAST HAND.**
 
 Mercy is a clock, not an ornament. The causeway is invisible under water for
@@ -60,8 +67,22 @@ it. They struck out the bell's **tongue** and dropped it down the cistern well.
 They cut the rope. They broke the first flight of the belfry stair. Mercy has
 not spoken since.
 
-The sea kept the debt. The tide came into the outer ward that winter and never
-fully went out. The priory emptied. The rock did not.
+The sea kept the debt. That winter it came up two metres and stayed there — the
+standing tide, the level the coast has lived under ever since — and the outer
+ward has been under it for fifty-one years. The priory emptied. The rock did not.
+
+## Tonight
+
+The sea still moves; only the announcement of it stopped. Tonight is a night of
+two ebbs, and the second is the lowest water in fifty-one years.
+
+That is the whole reason there is a story tonight rather than on any of the
+eighteen thousand nights before it. **The bell's tongue has been under water
+since the day it went down the well, and for about two hours tonight it is
+not.** The rock has not changed. A tide table has.
+
+The full design of the moving sea — its levels, when it steps, and what each
+step changes — is `tide.md`.
 
 ## The answered
 
@@ -78,8 +99,8 @@ not stop. Nothing on this rock hates the player.
 
 ## What the player is
 
-You wake face-down on the Barrow Flat at the lowest water in fifty-one years,
-with a lead passage-token closed in your fist and nothing behind you but water.
+You wake face-down on the Barrow Flat at the first ebb of that night, with a
+lead passage-token closed in your fist and nothing behind you but water.
 
 You are one of the answered. You were on the flat that night, you heard two
 tolls, you turned around, and you have been down there since. What is different
@@ -109,15 +130,22 @@ it gives, and the coast believes it. That is the ending, and it is a choice of a
 number, made at the bell:
 
 - **Three.** *The way is open.* The debt is paid in the only currency it was ever
-  owed in. The answered walk down off the rock and across the dry causeway, and
-  the player goes with them, because the player is one of them. Halgrave is left
-  empty and quiet for the first time in fifty-one years.
+  owed in. The sea holds the Dead Ebb far past the hour it should; the answered
+  walk down off the rock and across the dry causeway, and the player goes with
+  them, because the player is one of them. Halgrave is left empty and quiet for
+  the first time in fifty-one years.
 - **Two.** *The way is shut.* Ancel's toll, rung a second time by someone who
-  knows exactly what it costs. The answered turn around on the stair. The rock
-  keeps them, and keeps the player, who now owns it.
+  knows exactly what it costs. The flood comes back as the second note dies and
+  makes it true. The answered turn around on the stair. The rock keeps them, and
+  keeps the player, who now owns it.
 - **Silence.** Fell the bell — cut the frame and let Mercy go through the tower
-  floor into the cistern. Nothing is ever answered again by anyone. The one
-  ending in which the player is not lied to and does not lie.
+  floor into the cistern. The sea never moves again. Nothing is ever answered
+  again by anyone. The one ending in which the player is not lied to and does
+  not lie.
+
+For fifty-one years the bell reported the tide. The last hand makes the tide
+report the bell, once, and that is the only supernatural thing that happens in
+this delve.
 
 The optional strands do not add a fourth ending. They change **who is standing
 there** when it is rung — whether Odo is beaten or standing aside, whether Hask

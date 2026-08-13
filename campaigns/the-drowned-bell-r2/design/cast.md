@@ -36,11 +36,17 @@ causeway who is not running.
 - `> What is the bell?` → **E-1b**: "One toll, a body's coming across. Two, the
   way's shut. Three, the way's open, come on. That's the whole of it. Every
   child on this coast knows it and not one of them will say it out loud."
+- `> How long is the flat dry?` → **E-1d**: "Not long. It's coming back in, and
+  then it goes out again before dawn, further than I have ever seen it go — and
+  I have watched this water every night for fifty-one years." *(he does not say
+  why he has, and will not if asked here.)*
 - `> Come with me.` → **E-1c**: "No."
 
 ### E-2 · Z2, after S1
 > "I have not been under this roof since I was twelve years old." *(pause)*
 > "It's smaller."
+> *(he looks back down the passage, at the water standing where the flat was)*
+> "You came up that. An hour ago that was a road."
 
 - `> Who shut the gate?` → **E-2a**: "The gate was never shut. That's the thing
   nobody gets right. The causeway was dry, the gate was up, and every one of
@@ -86,9 +92,16 @@ lied about, and she has been ringing it ever since.
 **Wants:** the rite done correctly. Not the bell struck — the bell **rung**: at
 the ebb, by a hand that owes nothing. She is the only character who cares about
 the difference between an act and its form, and she is right to.
+**Is also the delve's clock.** Every tide step is preceded by her ringing an
+hour somewhere above or below the player — she has been counting toward tonight's
+Dead Ebb for fifty-one years, which is what her round has always been for and
+what nobody has ever asked her about. Her hours are the only reason anyone on
+this rock can tell the time, and the sea moves on them.
 **Changes:** if the rite is completed (OPT-B) she stops walking, sits on the
 plinth, and is the first down the causeway in END-THREE. If it is not, she is
-still walking when the delve ends.
+still walking when the delve ends. Completing it also buys the player the tide
+table — she says what the sea will do next and what it will uncover — which is
+foreknowledge and never a key: the delve is completable without ever asking.
 
 ### I-1 · first meeting
 *(she does not stop walking)*
@@ -99,6 +112,9 @@ still walking when the delve ends.
   Please do not confuse them; a great many people did, once."
 - `> They're dead. All of them.` → **I-1b**: "Yes. The hour is not for them.
   The hour is for the hour."
+- `> Why keep counting?` → **I-1c**: "Because something is coming that only
+  arrives if you have counted to it." *(she starts walking again)* "Ask me
+  properly and I will tell you what."
 
 ### I-2 · the rite (OPT-B start)
 > "You are going up to it. I can tell — you have the walk. They all have the
@@ -112,10 +128,18 @@ still walking when the delve ends.
   the debt."
 - `> What do I owe?` → **I-2b**: "I don't know. Look in your fist. Everyone who
   came up this tide came up holding something."
+- `> What is coming?` → **I-2c** *(the tide table; foreknowledge, never a key)*:
+  "The water. Down, and down again, and the second one is lower than anything
+  this coast has a word for. Fifty-one years I have counted to it." *(pause)*
+  "You want the tongue. It is in the well and the well is full and it has been
+  full since the year they put it there. Tonight, for about two hours, it will
+  not be. That is the whole of what I know and it is worth more than a sword."
 
 ### I-3 · the rite complete (OPT-B end)
 > "There. Nine, ten, eleven." *(she sets the hand-bell down)*
 > "That's the round finished. Fifty-one years, and it turns out it does end."
+> *(the sea is going out, audibly, a long way below)*
+> "Listen to that. That is what I was counting."
 
 - `> Come up with me.` → **I-3a**: "No. I'll be at the bottom. Somebody sensible
   should be at the bottom when it goes."
@@ -161,8 +185,9 @@ its timing. That is his point.
 > thing and I'll show you the dry way round to the well."
 
 - `> Name it.` → **H-2a**: "Ring three, and ring it **at the ebb**. Not the
-  flood. Three at the ebb and the causeway's dry for two hours and I run, and I
-  never come back, and I don't want the lead."
+  flood. I need that road dry and I need it *empty*, and there's only one thing
+  that does both — the water goes out and the toll takes the walkers off it.
+  Three at the ebb, and I run, and I never come back, and I don't want the lead."
 - `> What if I ring two?` → **H-2b**: "Then I stay in the hole and you've cost
   me nothing I had. I'd rather you didn't. I'd rather quite a lot of things."
 - `> What if I break it?` → **H-2c**: "Break it and they never get called and
@@ -173,9 +198,11 @@ its timing. That is his point.
 ### H-3 · endings
 - **END-THREE at the ebb**: he is on the causeway ahead of everyone, running
   flat out, and he makes the mainland and does not look back.
-- **END-TWO**: he is at the cistern grate when the answered come back down, and
-  the delve does not follow him in.
-- **END-SILENT**: "Right." *(he sits back down)* "Right."
+- **END-TWO**: the flood comes back over the causeway as the second note dies,
+  and he is at the cistern grate when the answered come back down. The delve
+  does not follow him in.
+- **END-SILENT**: "Right." *(he sits back down; the sea does not move, and will
+  not again)* "Right."
 
 ---
 

@@ -17,17 +17,17 @@ list — no optional node is ever a prerequisite of a critical node.
 | CP-04 | The cliff road | Z1 | crossing the fallen ledge | CP-05 |
 | CP-05 | The mooring line | Z1 | taking the **rope** from the cliff opening | CP-06 |
 | CP-06 | Through the breach | Z1→Z2 | entering the gate passage | CP-07 |
-| CP-07 | The winch | Z2 | raising the portcullis (**S1**) | CP-08 |
+| CP-07 | The winch | Z2 | raising the portcullis (**S1**) — fires tide step `TIDE-1` | CP-08 |
 | CP-08 | The causeway | Z3 | crossing to the water-gate tower | CP-09 |
 | CP-09 | Over the arcade | Z3 | entering the tower at shutter height | CP-10 |
 | CP-10 | Unbar the tower | Z3 | opening the barred door from inside (**S2**) | CP-11 |
 | CP-11 | The cloister | Z4 | defeating the Two Sextons | CP-12 |
-| CP-12 | The banded door | Z4 | unbarring it from the chapel side (**S3**) | CP-13 |
+| CP-12 | The banded door | Z4 | unbarring it from the chapel side (**S3**) — fires `TIDE-2` | CP-13 |
 | CP-13 | The hall | Z5 | defeating **Housecarl Ridd** | CP-14 |
 | CP-14 | The prior | Z5 | speaking to Ancel — he names the well and the broken stair | CP-15 |
-| CP-15 | The descent | Z6 | reaching the well head | CP-16 |
-| CP-16 | The Founder | Z6 | defeating **the Founder** | CP-17 |
-| CP-17 | The tongue | Z6 | taking the bell's tongue | CP-18 |
+| CP-15 | The descent | Z6 | reaching the well head — fires `TIDE-3` on the descent stair | CP-16 |
+| CP-16 | The Founder | Z6 | defeating **the Founder** — fires `TIDE-4`, the Dead Ebb | CP-17 |
+| CP-17 | The tongue | Z6 | taking the bell's tongue, uncovered by `TIDE-4` and by nothing else | CP-18 |
 | CP-18 | The grille | Z6 | breaking **S4** outward (the only route back up) | CP-19 |
 | CP-19 | The ramp | Z7 | reaching the tower foot | CP-20 |
 | CP-20 | The broken flight | Z7 | bridging the stair with the rope from CP-05 | CP-21 |
@@ -36,6 +36,12 @@ list — no optional node is ever a prerequisite of a critical node.
 
 Required carried objects: exactly two — the **rope** (CP-05) and the **tongue**
 (CP-17). Nothing else in the delve is a key item on the critical path.
+
+**The tide is on this chain and nowhere else.** Four steps, four critical nodes,
+one direction each, no wall clock: the sea does not move until the player moves
+the story, so exploration is never rushed and the schedule is machine-checkable.
+Levels, elevations, per-beat effects and the anti-softlock audit are in
+`tide.md`.
 
 ## The branch
 
@@ -51,6 +57,12 @@ The three are mutually exclusive and each ends the delve. All three are
 reachable from a run that did zero optional content. The optional strands change
 the *content* of the chosen ending — who is present, what is said — and never
 its reachability.
+
+Each ending is expressed by what the sea does: `END-THREE` holds the Dead Ebb
+until the last of the answered is across, `END-TWO` steps the plane back to the
+flood as the second note dies, and `END-SILENT` never moves it again. The bell
+says a number and the water answers it — the one moment in the delve when
+Halgrave's relationship to its own bell inverts.
 
 ## Optional strands
 
@@ -80,11 +92,19 @@ of standing on the stair); Ide stops her round and sits.
 Reward: the hour-vault holds the priory's own bell-hand equipment.
 
 ### OPT-C · The ferry-tally (Z3)
-`CP-08 → C1 swim to the wrecks (G4) → C2 take Odo's tally → back to CP-08`
+`CP-08 → C1 reach the wrecks (G4) → C2 take Odo's tally → back to CP-08`
+`CP-18 → C1' walk to the wrecks on the Dead Ebb floor → C2 → back to CP-18`
 
 The tally is every crossing Odo made in thirty years, each line struck through
 when the passenger landed. The last line is not struck through and it is the
 player's name.
+
+**Two windows, deliberately.** At `T-STAND` on the first crossing it is a swim
+into exactly the water the zone has taught the player to fear. At `T-DEAD`,
+after the cistern grate opens onto a ward with no water in it, it is a walk.
+The second window is what stops a player who skipped the wrecks from being
+locked out of the pacifist resolution of the final boss, and it is the reward
+for coming back at the right hour rather than the right time.
 
 Unlocks: the pacifist resolution of CP-21 — Odo stands aside and follows the
 player up. The one place in the delve where a boss is resolved without a fight.
@@ -93,9 +113,14 @@ player up. The one place in the delve where a boss is resolved without a fight.
 `CP-15 → D1 find Hask in the side vault → D2 promise him the ebb toll → back to CP-15`
 
 Hask is a living scavenger who came out to loot the rock nine years ago and got
-caught by a tide. He cannot cross the flat alone because the answered walk it.
-He asks for three tolls rung at the ebb, so he can run for the mainland while
-the causeway is dry.
+caught by a tide. He cannot cross the flat alone because the answered walk it at
+every low water.
+
+His ask is precise rather than sentimental, and the tide is why: he needs the
+causeway **dry** and he needs it **empty**, and only three tolls at the Dead Ebb
+give him both — the ebb clears the water, the toll clears the walkers. The run
+reaches the belfry at the Dead Ebb by construction, so the ebb is a given and
+the number is the whole of it. He does not know that, and asks for both.
 
 Unlocks: in END-THREE, Hask is on the causeway ahead of the answered, running,
 and makes it. In END-TWO and END-SILENT the delve says what happened to him
@@ -108,10 +133,24 @@ Three of the answered making the sound of a bell with no bell. Pure optional
 elite: no story unlock, a gear reward, and it is the fight the delve expects
 most players to walk past on a first run.
 
+### OPT-F · The First Turned (Z0, at the Dead Ebb)
+`CP-18 → F1 return to the flat through S1 → F2 the First Turned (optional elite) → back to CP-18`
+
+The Dead Ebb uncovers the ground below the old tide-stake line, where the rest
+of the answered are standing motionless, facing the rock. One of them is the
+person who turned around first on the night of the Long Tide, and the rest
+followed. Nothing marks them out. The reward is gear and the strongest wordless
+image in the delve; the cost is walking down among several hundred of the dead
+to find out which one moves.
+
+This strand exists only because the tide does. It is a second visit to the
+delve's first zone, at a level nobody has seen, using a shortcut opened two
+hours earlier — three things the campaign already had, costing one actor.
+
 ## Reachability statement
 
 - Critical path: 22 nodes, one chain, no cycles, terminal at CP-22.
-- Optional nodes: 12 across five strands, each with exactly one predecessor on
+- Optional nodes: 14 across six strands, each with exactly one predecessor on
   the critical path and no successors outside its own strand.
 - Endings: 3, all from CP-22, all reachable with the optional set empty.
 - Locks: 5 shortcuts (S1–S5) and 4 gates (G1–G4). S1, S2, S3, S4 and S5 are all
@@ -121,16 +160,21 @@ most players to walk past on a first run.
   obtained inside a gate.
 - Deadlock check: the tongue (CP-17) is obtained below the only route back up
   (CP-18, S4), and S4 opens from the cistern side, so the sequence cannot strand
-  a player. The rope (CP-05) is on the Z1 corridor, which is single-route.
+  a player. The rope (CP-05) is taken from a store the cliff road passes
+  *through*, so it cannot be walked past, and Z1's main ledge is dry at every
+  tide level, so it can be recovered at any point in the run.
+- Tide deadlock check: every zone the tide closes is closed only between two
+  steps that are both on the critical path, and holds nothing required while
+  closed. The full audit is the last section of `tide.md`.
 
 ## Shortcut ledger
 
 | id | zone | opened from | collapses |
 |---|---|---|---|
-| S1 | Z2 | inside the gate passage | Z0 → Z2 in one walk; Z1 never mandatory again |
+| S1 | Z2 | inside the gate passage | Z0 → Z2 in one walk, paid out at `T-EBB1` one beat before the sea closes the flat, and re-opening at `T-DEAD` onto ground nobody has seen |
 | S2 | Z3 | inside the water-gate tower | the causeway crossing becomes one-way-free |
-| S3 | Z4 | the chapel side | Z4 → Z2 yard directly; all of Z3 becomes optional |
-| S4 | Z6 | the cistern side | Z6 → Z3 waterline; the descent becomes a drop |
+| S3 | Z4 | the chapel side | Z4 → Z2 yard directly; `TIDE-2` fires with it and makes the route it replaced impassable, so it is not a saved walk but the only route |
+| S4 | Z6 | the cistern side | Z6 → Z3, onto a ward floor the Dead Ebb has just uncovered; the descent becomes a walk across new ground |
 | S5 | Z7 | inside the tower foot | the boss retry walk becomes seconds |
 
 Every one is a door or grate that the player has already stood on the wrong side

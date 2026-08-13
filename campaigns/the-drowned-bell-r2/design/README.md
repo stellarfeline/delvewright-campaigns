@@ -31,6 +31,7 @@ delve byte depends on them.
 | `story.md` | the place, the bell, what happened, what the player is, the endings |
 | `beats.md` | the beat sheet Z0→Z7, every beat naming the image element it is built on |
 | `quests.md` | the quest graph: critical path, optional strands, gates, shortcuts, the one branch |
+| `tide.md` | the sea as one moving plane: levels, elevations, the four steps, what each changes, and the anti-softlock audit |
 | `cast.md` | the five speaking characters, what they want, and their written dialogue |
 | `encounters.md` | the fights by intent and role, and the five first-encounter kills |
 

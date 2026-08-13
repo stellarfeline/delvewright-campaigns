@@ -29,17 +29,37 @@ and each cheap the first time.
 | K4 | Z4 | a body among the rubble is not a body | it is the only one lying face-up, and it is the only one not weeded | corpses in this delve are a question, permanently | mid-cloister, before the Sextons |
 | K5 | Z6 | stepping into the old supply channel under the light shaft | the shaft's reflection lies flat on ankle-deep water and goes black over the channel | water depth is readable off the light, and this zone is read by its one lamp | S4 is not yet open, so this is the delve's most expensive death — deliberately, as the last one |
 
+**No first-encounter kill in this delve is created, moved or removed by a tide
+step.** The sea changes where the player can go; it never changes what a surface
+means. Two checks that keep that true: `K5`'s channel is below every level
+including the Dead Ebb, so it holds water in all four states and its tell is
+never withdrawn; and the flood rises into the `K2` gap and no other part of the
+cliff road, so the tide **confirms** that lesson rather than adding a second
+one. A tide state that made a taught surface newly lethal would be a defect, not
+a difficulty.
+
 K1–K3 are in the first hour and are all cheap. K5 is late and costs a walk,
 which is the point: by Z6 the player has been taught five times that this delve
 tells the truth before it kills, and K5 is the exam.
 
 ## Fights
 
-### Z0 — the first of the answered · tutorial
+### Z0 — the first of the answered · tutorial, and the return
+
 One, alone, at a cairn, unarmed, walking landward past the player. It does not
 attack until struck. The intended feeling on the first swing is *unkindness* —
 the delve establishes in ninety seconds that its enemies are pitiable, and never
 takes it back.
+
+**The return, at the Dead Ebb · optional elite — the First Turned.** Below the
+old stake line, on ground nobody has stood on since before the Long Tide, the
+rest of the answered are standing in the silt facing the rock, and they do not
+move. One of them does: the person who turned around first when the two tolls
+rang, and therefore the one the rest followed back into the water. Nothing
+identifies them and nothing has to — the player either goes down among several
+hundred motionless dead to find out, or does not.
+This is the delve's payoff for its first ninety seconds: the same enemy,
+several hundred of it, doing nothing.
 
 ### Z1 — the ledge, two encounters · spacing
 Single-file, no room to circle. The second is a **shover**: it grapples instead
@@ -66,6 +86,11 @@ spine fights nothing here and loses nothing by it; a player who wants the wrecks
 (OPT-C) must swim into exactly the water the zone has taught them to respect.
 This is the delve's cleanest risk/reward statement and it uses zero new
 mechanics.
+
+At the Dead Ebb the same enemies are standing on a bare silt floor with nothing
+to slow them and nothing to hide them, which inverts the zone without adding a
+single actor: the water that made them dangerous was also what made them
+avoidable.
 
 ### Z4 — the Two Sextons · **elite pair**, critical path
 They carried the dead in from the boats and they still work as a pair: they move
@@ -96,7 +121,9 @@ with. He never speaks.
 Role: the delve's only fight where the player and the boss want the same object
 for opposite reasons, and the arena says so — the water is ankle-deep everywhere
 except the channel (K5), and he is comfortable in it.
-Drops: nothing. The tongue is in the silt behind him and is taken, not awarded.
+He is also the delve's tide trigger: `TIDE-4` fires as he goes down, so he falls
+in water that then leaves from under him and the well drains behind him.
+Drops: nothing. The tongue is uncovered by the sea and is taken, not awarded.
 
 ### Z7 — Odo Ferrier · **final boss**
 At the stairhead, in the dark, one flight below the belfry floor.
@@ -121,3 +148,7 @@ to respect an edge; its last fight puts them on one.
 - **No hostile living human besides Ridd.** Emeric, Hask, Ide and Ancel cannot
   be fought, and Ancel in particular must never become hostile — the delve does
   not offer the relief of killing him.
+- **No tide timer.** The sea steps at four critical-path nodes and never on a
+  clock, so nothing in this delve is a race and no fight is harder for having
+  been reached slowly. A rising-water chase would cost the campaign its
+  exploration and buy tension it does not need.
