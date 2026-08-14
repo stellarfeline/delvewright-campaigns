@@ -50,6 +50,15 @@ turned by whoever notices. The record naming each of them lives with the audit
 in the pipeline repo, and it is an inversion, not a skip: a zone that starts
 passing, or fails with a different code, is a finding.
 
+**A recorded zone cannot be produced.** The bare-connection half is an export
+refusal as well as a gate, so `delve-grammar expand` on one of those five files
+writes a gate report and no `.nbt`. Z4 has a prefab and owner review shots
+regardless, which means the shipped Z4 was expanded from a program that is not
+Z4's file — the engine's copy of the zone, which carries the guarded bars the
+campaign file does not. Until the gap closes and these five files can produce
+their own prefabs, a zone's prefab and its program are not answerable to each
+other, and the program is the one to trust: it is the artifact of record.
+
 ## Zone status
 
 One prefab per zone (owner decision, 2026-08-12 — no candidate sweeps until
