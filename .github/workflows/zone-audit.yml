@@ -42,8 +42,16 @@ env:
   # to are the ones this commit carries, and a moving ref would let them change
   # underneath a campaign with nothing to review.
   #
-  # This pin is the commit that introduced `delve-grammar audit`; it moves to
-  # the merge commit once that lands on the pipeline repo's main.
+  # This pin is the commit that introduced `delve-grammar audit`, which is on a
+  # feature branch. It moves to the merge commit on the pipeline repo's `main`,
+  # and the bump is one line: replace the value below and nothing else.
+  #
+  # The bump is REQUIRED, not optional, and this job is red until it happens:
+  # the zone programs here declare a `version` (`1.4.0` for the five that write
+  # a `local` paint, `1.0.0` for the other three), and the pinned engine below
+  # predates the field entirely — its `Program` is a closed schema, so it
+  # refuses every one of them by name. Only an engine carrying the local axis
+  # frame accepts them.
   GRAMMAR_REF: ff971b2db095442780b636df78dd4a576c11a732
 
 jobs:
