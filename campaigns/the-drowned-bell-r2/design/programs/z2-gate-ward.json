@@ -9,6 +9,7 @@
     "door_run": 10,
     "gate/approach": 8,
     "gate/bay_height": 2,
+    "gate/haunch": 2,
     "gate/head": 4,
     "gate/obstruct": 0,
     "gate/span": 3,
@@ -41,11 +42,35 @@
   },
   "palette": {
     "door/stone": "minecraft:stone_bricks",
-    "gate/stone": "minecraft:stone",
-    "margin": "minecraft:deepslate",
-    "motif/curtain": "minecraft:iron_chain",
+    "gate/channel": "minecraft:water[level=0]",
+    "gate/drain_grate": "minecraft:iron_bars[east=false,north=true,south=true,waterlogged=false,west=false]",
+    "gate/grille": "minecraft:iron_bars[east=true,north=false,south=false,waterlogged=false,west=true]",
+    "gate/stone": [
+      {
+        "weight": 10,
+        "block": "minecraft:stone_bricks"
+      },
+      {
+        "weight": 5,
+        "block": "minecraft:mossy_stone_bricks"
+      },
+      {
+        "weight": 4,
+        "block": "minecraft:cracked_stone_bricks"
+      },
+      {
+        "weight": 2,
+        "block": "minecraft:cobblestone"
+      },
+      {
+        "weight": 1,
+        "block": "minecraft:mossy_cobblestone"
+      }
+    ],
+    "margin": "minecraft:deepslate[axis=y]",
+    "motif/curtain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     "motif/stone": "minecraft:stone_bricks",
-    "sally/bar": "minecraft:iron_bars",
+    "sally/bar": "minecraft:iron_bars[east=false,north=true,south=true,waterlogged=false,west=false]",
     "sally/rock": "minecraft:stone_bricks",
     "shaft/rock": "minecraft:stone",
     "stair/rough": "minecraft:cobblestone",
@@ -697,8 +722,67 @@
           }
         },
         "body": {
-          "op": "call",
-          "symbol": "gate/corridor"
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/corridor"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corner_low"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/drain"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corner_high"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corridor"
+            }
+          ]
         }
       },
       {
@@ -863,13 +947,6 @@
               "size": "absolute",
               "blocks": {
                 "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
                 "value": 2
               }
             },
@@ -897,12 +974,6 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "gate/stone"
-              }
-            },
-            {
               "op": "call",
               "symbol": "gate/bay_column"
             },
@@ -915,6 +986,397 @@
             {
               "op": "call",
               "symbol": "gate/corridor_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/channel_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "gate/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/channel"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/channel_grille_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "gate/haunch"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/channel"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/grille"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/corner_high": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/springer_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corridor_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/channel_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corner_high_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/corner_high_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/kerb_east_corner_high"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/corner_low": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/springer_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corridor_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/channel_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corner_low_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/corner_low_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/kerb_east_corner_low"
+            },
+            {
+              "op": "void"
             },
             {
               "op": "fill",
@@ -953,18 +1415,49 @@
                 "expr": "int",
                 "value": 1
               }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
             }
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "gate/stone"
-              }
+              "op": "call",
+              "symbol": "gate/springer_column"
             },
             {
               "op": "call",
               "symbol": "gate/corridor_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/channel_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/springer_kerb_column"
             },
             {
               "op": "fill",
@@ -1025,23 +1518,7 @@
         }
       }
     ],
-    "gate/gate_passage": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "gate/passage_plan"
-          }
-        }
-      }
-    ],
-    "gate/hazard_span": [
+    "gate/drain": [
       {
         "weight": 1,
         "body": {
@@ -1068,6 +1545,101 @@
                 "expr": "int",
                 "value": 1
               }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/springer_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/corridor_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/channel_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/spur_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/grate_wall_column"
+            }
+          ]
+        }
+      }
+    ],
+    "gate/gate_passage": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          },
+          "body": {
+            "op": "call",
+            "symbol": "gate/passage_plan"
+          }
+        }
+      }
+    ],
+    "gate/grate_wall_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
             }
           ],
           "children": [
@@ -1078,8 +1650,342 @@
               }
             },
             {
+              "op": "fill",
+              "material": {
+                "role": "gate/drain_grate"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/grille_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "gate/haunch"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/grille"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/hazard_span": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
               "op": "call",
-              "symbol": "gate/span_column"
+              "symbol": "gate/span_run"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/span_grille"
+            }
+          ]
+        }
+      }
+    ],
+    "gate/kerb_east": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "x",
+          "y": "y",
+          "z": "z"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=east,half=bottom,shape=straight,waterlogged=true]"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "z",
+          "y": "y",
+          "z": "x"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=south,half=bottom,shape=straight,waterlogged=true]"
+        }
+      }
+    ],
+    "gate/kerb_east_corner_high": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "x",
+          "y": "y",
+          "z": "z"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=south,half=bottom,shape=outer_left,waterlogged=true]"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "z",
+          "y": "y",
+          "z": "x"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=east,half=bottom,shape=outer_right,waterlogged=true]"
+        }
+      }
+    ],
+    "gate/kerb_east_corner_low": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "x",
+          "y": "y",
+          "z": "z"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=outer_right,waterlogged=true]"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "z",
+          "y": "y",
+          "z": "x"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=west,half=bottom,shape=outer_left,waterlogged=true]"
+        }
+      }
+    ],
+    "gate/kerb_west": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "x",
+          "y": "y",
+          "z": "z"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=west,half=bottom,shape=straight,waterlogged=true]"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "orientation",
+          "x": "z",
+          "y": "y",
+          "z": "x"
+        },
+        "body": {
+          "op": "fill",
+          "material": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=true]"
+        }
+      }
+    ],
+    "gate/kerb_west_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "gate/head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/kerb_west_grille_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "gate/haunch"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/grille"
+              }
             },
             {
               "op": "fill",
@@ -1124,13 +2030,45 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "param",
+                "name": "gate/haunch"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "dim",
                 "dim": "x"
               },
               "op": "ge",
               "rhs": {
                 "expr": "int",
-                "value": 6
+                "value": 8
               }
             },
             {
@@ -1183,6 +2121,41 @@
             }
           ]
         },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/port_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/passage_runs"
+            }
+          ]
+        }
+      }
+    ],
+    "gate/passage_runs": [
+      {
+        "weight": 1,
         "body": {
           "op": "split",
           "axis": "z",
@@ -1252,13 +2225,6 @@
               }
             },
             {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
               "size": "relative",
               "weight": {
                 "expr": "int",
@@ -1281,6 +2247,95 @@
               }
             },
             {
+              "op": "call",
+              "symbol": "gate/corridor_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/port_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "repeat": true,
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            },
+            {
+              "op": "void"
+            }
+          ]
+        }
+      }
+    ],
+    "gate/port_wall": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
               "op": "fill",
               "material": {
                 "role": "gate/stone"
@@ -1288,7 +2343,7 @@
             },
             {
               "op": "call",
-              "symbol": "gate/corridor_column"
+              "symbol": "gate/port_row"
             },
             {
               "op": "fill",
@@ -1345,6 +2400,337 @@
               "body": {
                 "op": "void"
               }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/span_grille": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/springer_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/grille_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west_grille_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/channel_grille_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/springer_kerb_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/span_run": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/springer_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/span_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/kerb_west_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/channel_column"
+            },
+            {
+              "op": "call",
+              "symbol": "gate/springer_kerb_column"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/springer_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/springer_kerb_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate/kerb_east"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/stone"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gate/spur_column": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "gate/head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "gate/haunch"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "gate/channel"
+              }
+            },
+            {
+              "op": "void"
             },
             {
               "op": "fill",
