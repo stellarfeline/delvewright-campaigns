@@ -15,9 +15,40 @@ Exported 2026-08-12 from the engine library `bell::` module at engine commit
 pipeline consumes only these files. Vocabulary is inlined at export, so each
 file is self-contained and expands via `delve-grammar expand --file`.
 
+`programs/zones.json` says at what size and seed this campaign builds each of
+them, and which optional gates each zone claims. Without it a program file
+cannot be expanded at all — a grammar program fits any region, so nothing but
+the campaign knows which one is this zone. It is a bijection with the directory:
+a program file it does not name is a finding, and so is an entry naming a file
+that is not there.
+
+`delve-grammar audit --campaign-root <this repo>` expands every zone declared
+here and runs every machine gate over it, stating what each gate examined. CI
+runs it on every pull request and every push, and the pipeline repo runs the
+same command against its pinned copy of this repo.
+
 An expansion's provenance (program hash, region, seed) is recorded in the
 metadata the expander writes beside every `.nbt`; the same inputs regenerate
 the same bytes.
+
+## Open capability gap: an oriented block state cannot be a palette role
+
+Five of the eight zones are held **known-red** by the audit, all for one
+reason. A palette role binds one block state to one name, and a connection,
+facing or rotation property names a *world* direction that a reorientation does
+not rewrite. A zone that wants barred doorways or a mounted skull therefore has
+two moves and both are red: leave the role bare and the state omits its
+connections, so it places as an isolated post; write the connections into the
+role and the state lands turned however the scope was turned.
+
+Z3, Z4 and Z6 took the first horn, Z1 and Z2 the second. The mechanism that
+does express it — one alternative per orientation under an `orientation` guard,
+each carrying the state that matches — is inline-only, so reaching for it costs
+the zone the role its material is restyled through. Which way a bar faces is a
+design decision, so these five wait for the missing surface rather than being
+turned by whoever notices. The record naming each of them lives with the audit
+in the pipeline repo, and it is an inversion, not a skip: a zone that starts
+passing, or fails with a different code, is a finding.
 
 ## Zone status
 
