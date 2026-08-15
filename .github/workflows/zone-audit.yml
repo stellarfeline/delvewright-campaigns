@@ -1,0 +1,95 @@
+name: zone program audit
+
+# A campaign's zone programs — `campaigns/<campaign>/design/programs/*.json` —
+# are the artifact of record for the geometry a zone's prefab is expanded from
+# (ADR-0018: the IR is the artifact). Nothing in this repo ever read one. The
+# prefab audit's paths filter is `prefabs/**` and `catalog/**` and its glob is
+# `prefabs/*.nbt`; the release workflow only runs at tag time, after the content
+# is already on the branch. So a zone program could be written, pushed and merged
+# with no job of any kind executing against it, and one was: nine machine gates
+# were written over Z2 in a scratch directory, read 1 of 9 on the unmodified
+# program with five at zero binding, and then stopped running because nothing
+# invoked them. That is the fourth vacuity mode — a gate nothing invokes is not a
+# gate, it is unrun — and this workflow is the invocation.
+#
+# NO PATHS FILTER, deliberately. A filter is an enumeration of where somebody
+# expected the change to land, and a gate that only looks where it was pointed is
+# how this shape survives review: renaming `design/programs/` would silently take
+# every zone out of the audit's reach. This job runs on every pull request and on
+# every push, and discovers campaigns rather than listing them.
+#
+# The engine half of the same binding lives in the pipeline repo's `campaign
+# builds` job, which runs the identical command against the PINNED content SHA.
+# That one cannot see a change until the next re-pin, which is why this exists
+# too: this job is what makes an edit on THIS branch answerable now.
+
+on:
+  pull_request:
+  push:
+  # A change to this workflow can otherwise only be proved by a later PR.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned pipeline-repo SHA the audit tool and its exclusions record are built
+  # from. Bumping it is a deliberate, reviewed change — the gates a zone is held
+  # to are the ones this commit carries, and a moving ref would let them change
+  # underneath a campaign with nothing to review.
+  #
+  # This pin is the commit that introduced `delve-grammar audit`, which is on a
+  # feature branch. It moves to the merge commit on the pipeline repo's `main`,
+  # and the bump is one line: replace the value below and nothing else.
+  #
+  # The bump is REQUIRED, not optional, and this job is red until it happens:
+  # the zone programs here declare a `version` (`1.4.0` for the five that write
+  # a `local` paint, `1.0.0` for the other three), and the pinned engine below
+  # predates the field entirely — its `Program` is a closed schema, so it
+  # refuses every one of them by name. Only an engine carrying the local axis
+  # frame accepts them.
+  GRAMMAR_REF: 13320bd555b7fe454b3aebc97c4c840b748621d2
+
+jobs:
+  zones:
+    name: zone programs (expand + judge every gate)
+    runs-on: ubuntu-latest
+    steps:
+      # Text only. A zone program is JSON and the expander needs no prefab
+      # bodies, so LFS stays off and the checkout is a few hundred KB.
+      - name: check out content repo
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: check out delve-grammar source (pipeline repo, pinned)
+        uses: actions/checkout@v4
+        with:
+          repository: stellarfeline/delvewright
+          ref: ${{ env.GRAMMAR_REF }}
+          path: grammar-src
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: grammar-src
+          key: grammar-${{ env.GRAMMAR_REF }}
+
+      - name: build delve-grammar
+        working-directory: grammar-src
+        run: cargo build -p delvewright-grammar --bin delve-grammar --release
+
+      # `--campaign-root .` is this repo's own root: the tool looks for
+      # `campaigns/<campaign>/design/programs/`. It reds if it finds no programs
+      # at all, if a programs directory carries no `zones.json` manifest, if a
+      # program file no manifest entry names is sitting there, if any gate fails,
+      # or if any gate examined zero objects. Every run prints a binding count
+      # per gate.
+      - name: every zone program expands and judges green
+        run: |
+          grammar-src/target/release/delve-grammar audit \
+            --campaign-root . \
+            --exclusions grammar-src/.github/zone-audit-exclusions.json

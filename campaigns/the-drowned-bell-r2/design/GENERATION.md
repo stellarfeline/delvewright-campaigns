@@ -15,9 +15,55 @@ Exported 2026-08-12 from the engine library `bell::` module at engine commit
 pipeline consumes only these files. Vocabulary is inlined at export, so each
 file is self-contained and expands via `delve-grammar expand --file`.
 
+`programs/zones.json` says at what size and seed this campaign builds each of
+them, and which optional gates each zone claims. Without it a program file
+cannot be expanded at all — a grammar program fits any region, so nothing but
+the campaign knows which one is this zone. It is a bijection with the directory:
+a program file it does not name is a finding, and so is an entry naming a file
+that is not there.
+
+`delve-grammar audit --campaign-root <this repo>` expands every zone declared
+here and runs every machine gate over it, stating what each gate examined. CI
+runs it on every pull request and every push, and the pipeline repo runs the
+same command against its pinned copy of this repo.
+
 An expansion's provenance (program hash, region, seed) is recorded in the
 metadata the expander writes beside every `.nbt`; the same inputs regenerate
-the same bytes.
+the same bytes. The hash is taken over the **effective** program — parameters
+and role overrides applied — so it identifies what was expanded rather than what
+the file said before the command line touched it, and a zone whose shipped values
+live in its own `params` needs no remembered flags to be reproduced.
+
+**Seven of the eight zones pass every gate; Z3 does not.** `fluid-contained` reds
+on the drowned ward with `DW0800`: 380 ways out of a 2304-cell body of water, so
+the ward renders as still water in every tool here and runs on the first tick in
+the world. It reproduces from Z3's program alone, in a corpus holding nothing
+else, and it is a *design* answer — where the ward's water is walled and where it
+is meant to spill — not a palette or a version matter.
+
+## An oriented block state is a palette role, written in the scope's own frame
+
+A connection, facing or rotation property names a direction, and a direction is
+only meaningful against a frame. Written bare, a state is in the **world** frame
+and a reorientation does not rewrite it — so a bar or a skull bound to a plain
+role lands turned however the scope was turned, and the piece ships facing the
+wrong way with every gate green. Wrapped as `{"local": …}` the state is in the
+**scope's own** frame and is resolved into the world's at fill time, which is
+what lets an orientation-dependent block stay a role a campaign can restyle
+without knowing which way the piece was laid.
+
+Every such role in this campaign is written that way, so no zone is held back by
+it: all eight pass `oriented-fills`, five of them carry local roles, and the
+audit totals **33** fills resolved out of a scope's own frame across those five.
+Z1 is the worked case, and it shows why the frame is not decoration: the corpse
+is authored as `rotation=8`, facing out of its own recess, and lands in the world
+as `rotation=4`.
+
+Two shapes the frame cannot resolve, and both are refusals rather than guesses: a
+16-step `rotation` and a handedness are stated against a fixed vertical *and* a
+fixed handedness, so under anything but a pure turn about the vertical they have
+no image (`DW0738`); and a state written bare under a turned frame is refused
+outright (`DW0736`).
 
 ## Zone status
 
@@ -39,30 +85,6 @@ Zone order of production is by complexity, hardest first (owner decision,
 2026-08-12): the most complex zone is produced and owner-reviewed before the
 rest, so a workflow defect is found on the zone most likely to expose it.
 
-## What checks these programs, and what it says today
-
-`programs/zones.json` is the manifest: for each zone, which program file, at what
-region and seed, claiming which optional gates. A program is region-polymorphic,
-so without that file nothing knows what to expand — which is why the expansion
-belonged in a manifest rather than in a sentence of this page.
-`delve-grammar audit --campaign-root <content repo>` reads it, expands every zone
-named there and judges it with the gates `expand` runs; both repos' CI run it.
-
-**It is red, and what it reds on is the work each unproduced zone still owes.**
-Two things stand between it and green, and both are per-zone:
-
-- A program file carries `"version"` — the grammar document format it is written
-  against — and the expander refuses a file without one.
-  `programs/z1-cliff-road.json` declares `1.4.0`, the version that admits a paint
-  written in the scope's own axis frame. The other seven carry no `version` field
-  and do not load at all: `delve-grammar check --file <program>` refuses each
-  with `missing field version` before anything is expanded.
-- `zones.json` names Z1 only, so the audit reports the other seven as *a zone
-  program nothing expands and nothing checks* — one line each, naming the file.
-
-A zone joins the audit when it declares its version and takes its manifest row,
-which is one step of producing it and not a separate chore.
-
 ## Z1 cliff road
 
 **Scene** (fixed before any tool ran, per the procedure's §1): the player walks a
@@ -82,11 +104,9 @@ blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0 under-specified).
 **Provenance** — program
 `sha256:67c441bc329fdd1517740c8d6fe8c765ed885b9ee11f4f4e52672894a71ad2fb`, seed
 1, region 10x28x44; re-expanding those inputs reproduces the `.nbt`, the metadata
-and the report byte for byte. The program hash is taken over the *effective*
-program — parameter and role overrides applied — so a piece is reproduced from
-the hash the metadata names rather than from the file plus a remembered command
-line. Both of this zone's shipped values (`fall` 12, `sea` 5) live in the
-program's own `params` for that reason.
+and the report byte for byte. Both of this zone's tuned values — `fall` 12 and
+`sea` 5, a drop that reads as lethal and a gulf wide enough to see down — live in
+the program's own `params`, so the file plus the manifest row is the whole recipe.
 
 **Artifacts** — `prefabs/z1-cliff-road.nbt` + `prefabs/z1-cliff-road.json`;
 review shots and what each camera did in `design/review/z1/`.
