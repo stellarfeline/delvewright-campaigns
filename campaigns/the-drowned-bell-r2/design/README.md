@@ -34,6 +34,11 @@ delve byte depends on them.
 | `tide.md` | the sea as one moving plane: levels, elevations, the four steps, what each changes, and the anti-softlock audit |
 | `cast.md` | the five speaking characters, what they want, and their written dialogue |
 | `encounters.md` | the fights by intent and role, and the five first-encounter kills |
+| `reference/` | the whole map: what the citadel is (`map-brief.md`), where the eight zones sit inside it (`map-zones.md`), and the multi-view reference sheet with the prompt and command that draw it |
+
+The eight zones have a reference image each; the whole has one too, on the same
+terms, and it comes before any composition program — a composition written
+without one has no criterion.
 
 ## The order, and it is not advisory
 
