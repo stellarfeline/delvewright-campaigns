@@ -26,6 +26,9 @@ on:
     paths:
       - "prefabs/**"
       - "catalog/**"
+      # A demo level ships a piece of its own, and a piece nothing audits is a
+      # piece that entered the repo through the one door with no gate on it.
+      - "demos/**"
   # On demand: the paths filter above means a change to this workflow itself
   # never exercises it, so a change to the gate could otherwise only be proved
   # by a later unrelated prefab PR.
@@ -81,8 +84,12 @@ jobs:
         run: |
           BIN="admit-src/target/release/delve-admit"
           shopt -s nullglob
-          nbts=(prefabs/*.nbt)
-          if [ ${#nbts[@]} -eq 0 ]; then
+          # Every place a piece can enter this repo, enumerated. A glob that only
+          # looks where somebody pointed is how an unaudited piece survives review.
+          library=(prefabs/*.nbt)
+          demo=(demos/*/*.nbt)
+          nbts=("${library[@]}" "${demo[@]}")
+          if [ ${#library[@]} -eq 0 ]; then
             echo "::error::no prefab .nbt found under prefabs/ — is git-lfs materialized?"
             exit 1
           fi
@@ -96,5 +103,5 @@ jobs:
               fail=1
             fi
           done
-          echo "audited ${#nbts[@]} prefab piece(s)"
+          echo "audited ${#nbts[@]} piece(s): ${#library[@]} library, ${#demo[@]} demo"
           exit $fail
