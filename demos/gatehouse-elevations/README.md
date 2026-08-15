@@ -67,11 +67,32 @@ An elevation is a camera that is **level, square-on, and outside the piece**.
 Eleven of the seventeen are not level — they look down from a corner bearing, or
 straight down. The other six *are* level and cardinal, and every one of them
 stands **inside**: they are a body's eye at 1.62 above a declared anchor. So the
-west front, the flank and the arch have no picture in the piece's own review
-set, and the planned set is complete and correct while containing none of them.
+planned set contains **no elevation of anything**, and it is complete and correct
+without one.
 
-That claim is a property of the manifest, not of this page — read it off the
-file:
+Be precise about what that does and does not mean, because the weaker claim is
+the true one and it is still the point. The corner isometrics **do show the
+exterior walls** — a front is visible in four of them. What no planned camera
+gives is a face seen *flat on*, and the difference is not aesthetic:
+
+- **A three-quarter view foreshortens both faces it shows.** Proportion — how
+  tall the towers stand against the gate they flank, whether the arch is as wide
+  as it looks from the road — cannot be read off it, and cannot be compared
+  between two builds of the same piece.
+- **A named square-on view is reproducible.** `north-front` means the same camera
+  in the next build as in this one, framed at a standoff computed from the face
+  rather than a `zoom=` guessed per building, so two runs can be put side by side
+  and the difference is the building.
+- **Some subjects are not in the set at all.** The arch a party walks under is a
+  detail of one face; no planned camera is aimed at it, obliquely or otherwise.
+
+And the deeper one: the planned set is chosen by the **instrument**. It is a good
+set — the isometrics carry massing, the plan carries layout, the eye shots carry
+what a body sees. But when a piece's identity is carried by one face, or by one
+detail, the author has no way to say *photograph this*. That is the capability,
+and everything below is what it looks like in use.
+
+The count is a property of the manifest, not of this page — read it off the file:
 
 ```sh
 python3 - <<'PY'
@@ -83,15 +104,17 @@ print(f"{len(p)} planned camera(s); level cameras outside the piece: "
 PY
 ```
 
-Here is the whole planned set on one page. Look for the front.
+Here is the whole planned set on one page. Find the front in it — it is there,
+in four of the isometrics, at an angle.
 
 ![the seventeen cameras the renderer plans on its own](review/planned-set.png)
 
-The set is doing its job. The corner isometrics carry the massing, the plan
-carries the layout, and the eye shots carry what a body sees — the tunnel, the
-benched guard rooms, the merlons at a sentry's knee. None of them answers *is
-this a gatehouse*, and a reviewer handed only this page answers about the
-instrument instead.
+The set is doing its job, and the exterior is not hidden in it. What is missing
+is narrower and more useful to name: no camera here can be **measured against
+another build**, because every view of a wall is oblique, and no camera here was
+**chosen by the person doing the reviewing**. Handed only this page, a reviewer
+can say what the piece is; they cannot say whether the towers stand right against
+the gate, and they cannot ask to see the arch.
 
 ---
 
