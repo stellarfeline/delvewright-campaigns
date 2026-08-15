@@ -76,7 +76,7 @@ the zone set is complete).
 | Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 10x28x44; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **awaiting owner review** — expands at 20x10x84; interior review set in `review/z2/` (largest program: 101 rules) |
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | program exported, unproduced |
-| Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — see below |
+| Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where the others carry 6; review set in `review/z4/` — see below |
 | Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | program exported, unproduced |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | program exported, unproduced |
 | Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | program exported, unproduced |
@@ -169,59 +169,214 @@ this way.
 
 ## Z4 chapel ward
 
-**Scene** (fixed before any tool ran, per the procedure's §1): the player drops
-out of the keep's kitchen duct onto the floor of a walled chapel ward of pale
-grey-green ashlar, steps aside into a low paved nook to rest, and walks the
-lane out past a side doorway — behind which a barred grate holds the sealed half
-of a shortcut that only opens from the far side.
+**Scene** (fixed before any tool ran, per the procedure's §1): the player comes up
+through the rock into the west range of a cloister whose roof is gone — arcades on
+all four sides, sky over all of it, moss standing in the joints of the paving.
+Fallen masonry is heaped along the west walk with bodies lying in it. The garth is
+open ground with a collapsed canopy across its north-west corner; the two north
+corners of the walk are down, so the ward cannot be crossed around whatever is
+standing in it. Three chiselled plinths mark the stations of an hour-round. In the
+paving there is a grate to look down through and a stair to go down by, and under
+the whole garth is the hour-vault, behind a gate that opens from the crypt side.
+The one intact door on the rock is in the south range, oak and iron-banded, with a
+broken traceried bay beside it that the drowned ward is seen through. The way on is
+north, up three steps to the terrace of the north range.
+
+### The two documents that disagreed about this zone, and which one this piece follows
+
+**Where Z4 sits in the delve.** `beats.md` places the chapel ward between the
+drowned ward and the hall, entered from below and left upward; the production
+record's earlier scene for this zone had the player drop out of the keep's kitchen
+duct into it, and the earlier program was built that way — a duct descent, a
+one-way fall, no way back. Beats 4.6 and 4.7 both need Emeric to arrive here after
+the shortcut opens, which the reversed order cannot stage.
+
+This piece follows **`beats.md`**, and the site plan and section in
+`reference/` agree with it: Z4 is the cloister on the upper shelf at +9, entered
+from the drowned ward's side, left north and up into the hall at +12, with the
+banded door on its south side looking down over the ward and the gatehouse yard.
+The document that was wrong is **this one** — the production record's own scene —
+and the paragraph above replaces it. The zone has no duct, no fall and no
+one-way descent; it is walked into and walked out of.
+
+**The roof.** The earlier record called the roof "a decision, not an omission",
+against a concept image of an open cloister. Measured against `beats.md` it was
+five absent beats, because sky is what four of them are staged in. **There is no
+roof.** Of 927 standable cells, 632 are open to the sky; the 295 that are
+sheltered are the hour-vault, the crypt stair and the cells under the arcades'
+own arch heads.
+
+### The seven beats, and the rule that builds each
+
+| # | beat | rule(s) that build it | anchors |
+|---|---|---|---|
+| 4.1 | a cloister with its roof gone: arcade on all four sides, sky above, grass in the paving | `ward_band` → `arcade_cross_row` / `garth_row` → `arcade_screen` → `arcade_pier_col` + `arcade_bay_col` → `arcade_bay_body` (4 bays a side, head narrowed to one cell); `paving_band` → `slab_floor` (`paving`, whose `moss_block` member is the growth in the joints) | `ward` |
+| 4.2 | K4 the fallen: bodies among rubble piles, one of them not scenery | `west_walk_lane` → `heap_row` → `rubble_heap` → `heap_body` (three heaps of `rubble` and `collapse`, each carrying a `corpse`, each two of the walk's three cells wide so the walk is squeezed and not sealed) | `fallen-1`, `fallen-2`, `fallen-3` |
+| 4.3 | the Two Sextons, fought where the ward cannot be crossed around them; the collapsed canopy | `garth_body` → `garth_centre_row` → `sexton_col` (the ground) + `garth_canopy_row` → `canopy_mass` → `canopy_body` (the fallen canopy, 5×5, as cover); `north_walk_row` → `corner_collapse` (both north corners of the round filled to head height, so the north range is reached only across the garth) | `sexton-1`, `sexton-2`, `canopy` |
+| 4.4 | Sister Ide walks the cloister round with a hand-bell; the plinth is her turning-point | the round is the four walks and the garth's own perimeter (`west_walk_lane`, `north_walk_row`, `south_walk_row`, `arcade_cross_row`); `station_col_turn` → `plinth_cell_turn` → `plinth_body_turn` is the plinth she turns on | `plinth` |
+| 4.5 | G2 the rite: three marked stations of her round; completing it opens the hour-vault below | `plinth_cell` / `plinth_cell_turn` → `plinth_body` (three plinths, and the only chiselled stone in the zone); `undercroft_band` → `vault_core` → `hour_wall` → `hour_run` → `hour_niche_col` (seven recesses), `vault_hall` → `vault_room` → `vault_air` → `vault_pier_row`; reached by `crypt_flight` → `crypt_treads` and shut by `vault_gate`; seen before it is earned through `slab_oculus_row`'s grate | `station-1..3`, `hour-1..7`, `vault-gate`, `crypt-head` |
+| 4.6 | S3 the banded door — oak, iron-banded, ring handle, barred on the chapel side; the ward visible below through the arcade gap | `south_wall` → `banded_door` → `door_leaf` (two leaves, four states, in an arch with a transom); `stoop_row` → `stoop_cell` is the sill beyond it; `arcade_gap_wall` is the broken bay beside it and the tracery left in it | `gate`, `stoop` |
+| 4.7 | Emeric comes this far and no further; he sets the lamp on the chapel step | `slab_step_row` lays the step's own flag in front of the door; `south_walk_row` → `chapel_step_lane` → `chapel_step_body` declares the cell he stands on | `lamp-step` |
+
+**7 of 7 built.** Every beat has a named rule and the anchors a campaign binds to.
+What each shot in `review/z4/` answers is in that directory's README.
 
 **Expansion** — `delve-grammar expand --file design/programs/z4-chapel-ward.json
---region 16x9x26 --seed 1 --traversable --allow-falls`. All gates pass with
-non-zero bindings: `blocks-exist` 7, `non-empty` 3744, `traversable` 10 (5
-standable cells at the approach end, 5 at the exit end, 165 in all; the entry is
-a fall, hence `--allow-falls`). 3045 filled cells, 7 distinct states, 6 anchors,
-silhouette complexity 1.03. `delve-admit audit` passes (0 forbidden, 0
-non-allowlisted, 0 unknown).
+--region 27x12x33 --seed 1`. **Fourteen gates, every one passing with a non-zero
+binding**: `blocks-exist` 24, `shape-complete` 24, `states-complete` 24,
+`oriented-fills` 258, `non-empty` 10692, `contract-well-formed` 18,
+`contract-coverage` 927, `contract-closure` 2750, `contract-edge-proof` 5,
+`contract-no-body` 3, `contract-reachability` 887, `contract-anchors` 26,
+`contract-exterior-faces` 3, `contract-no-body-majority` 927. 5191 filled cells,
+24 distinct states, 927 standable, 26 anchors, silhouette complexity 1.02.
+`delve-admit audit` passes over the whole model (0 forbidden, 0 non-allowlisted,
+0 unknown, 0 under-specified).
 
-**Provenance** — program `sha256:eb6b39ddd66c20ff4657767635a91269118b8d6cd494090988d7b90571435540`,
-seed 1, region 16x9x26; re-expanding those inputs reproduces the `.nbt` byte for
-byte (verified: `sha256:ac11c68d2eb97eca5f5218fbeb11df9dbb9a49eefb4bdfaaed0b8f67aecf6019`).
-It is recorded here as well as in the metadata because `delve-admit lighting
---write` rewrites the metadata without the machine-readable `license.generated_by`
-block.
+**The zone declares a spatial contract, and that is what it is judged by.** Six
+spaces (`garth`, `walk`, `terrace`, `stoop`, `crypt-foot`, `vault`), three
+out-of-walk regions (`rubble`, `canopy`, `stations`, every one earning `posted`
+from the anchors in it) and nine edges. The contract proves what a face-count
+cannot: that the arcade's openings are the only way between the walk and the
+garth, that the crypt stair really descends four and connects through its own
+treads, that both bars bar — the reachability walk names them, `space stoop:
+door-leaf` and `space vault: vault-door` — and that every one of the 26 anchors
+lands somewhere the contract classifies.
 
-**Artifacts** — `prefabs/z4-chapel-ward.nbt` + `prefabs/z4-chapel-ward.json`
-(the repo's flat prefab library, where every other campaign's pieces live);
-review shots in `design/review/z4/`.
+**Why the zone claims neither `traversable` nor `reachable-floor`.** Both were
+tried and both are the wrong claim for this piece, for one reason each, and the
+contract gate that replaces them is stronger than either. `traversable` requires a
+walk between **every pair** of declared exterior traversal edges; S3 ships barred,
+so the sill beyond it is severed from the way in by construction, and the gate can
+neither be told about a bar nor pass with one standing. `contract-reachability`
+is the gate that can: it walks from the entry through declared edges only, then
+re-walks with bars opened and names the spaces that needed it.
+`reachable-floor` turns "every roofed floor is walkable to" into a verdict, and
+the hour-vault's floor is deliberately not walkable to until the rite is done.
+Both facts are in the always-on reachability line rather than hidden: 698 of 927
+standable cells are reachable on foot with the bars standing, and the 227
+sheltered cells it cannot reach are one pocket, `x 2..24 y 1..1 z 7..17`, which is
+the hour-vault.
 
-**Palette** — measured, never named from memory: material colours sampled from
-the concept image (patch means over verified crops), then blocks taken from
-`tools/block-appearance.py --near` ranked lists, full-cube for everything
-structural.
+**Provenance** — program
+`sha256:67b2323217aba1008904c7bcf1b3c5c0f7f30c9d776139ed661eb71c8719bd59`, seed 1,
+region 27x12x33. Reproduction was checked from a **second instrument sharing no
+working directory and no build tree with the first**: a separate checkout of the
+pinned engine, built on its own, run from a different directory and writing to a
+different one. The two `.nbt` files hash alike —
+`12526f1306c0e8b2796ad4799071df7b7df211ffaf8414eb06a93ed2270d6c33`, taken over
+**stdin**, so no path enters the digest — and the cross-check does not hash at
+all: both files were parsed and compared cell by cell, 10692 of 10692 identical,
+with the metadata and the report equal object for object.
 
-| Role | Block | Measured | Concept sample |
+**Artifacts** — `prefabs/z4-chapel-ward.nbt` + `prefabs/z4-chapel-ward.json`;
+review shots and what each camera answers in `design/review/z4/`.
+
+**Palette** — measured from the concept image, never named from memory. Material
+colours are patch means over crops, and the crops were drawn back onto the image
+and looked at before any of them was used. The near stone of the concept has a
+very wide value range (the lit pier and voussoir measure `#5f6362` with luminance
+running 32 to 184 out of 255), which is a *mix* rather than a block: bound to one
+block the ward reads as a flat panel that no measurement of the mean would object
+to.
+
+| Role | Mix | Measured | Concept sample |
 |---|---|---|---|
-| `junction/rock` | `minecraft:tuff_bricks` | `#62675f` | `#626863` lit arcade ashlar |
-| `hearth/rock` | `minecraft:tuff_bricks` | `#62675f` | `#626863` — same stone as the junction, so the lane reads as one building |
-| `shortcut/rock` | `minecraft:polished_tuff` | `#626864` | `#5c6160` far-wall arch stone; smooth, for the plainer sealed chamber |
-| `chute/rock` | `minecraft:cobbled_deepslate` | `#4d4d51` | `#4f554b` shadowed lower masonry — the service duct is not the ward |
-| `hearth/hearth_floor` | `minecraft:polished_andesite` | `#848786` | `#7b8789` lit flagstone — the rest plate |
-| `margin` | `minecraft:deepslate` | `#545456` | inert mass, no player-visible face |
-| `shortcut/bar` | `minecraft:iron_bars` | `#898b88` | `#262e31` door ironwork |
+| `arcade` | `tuff_bricks` 55% · `polished_tuff` 25% · `mossy_stone_bricks` 10% · `cobbled_deepslate` 10% | `#61665f` | `#5f6362` lit pier and voussoir |
+| `wall` | `deepslate_bricks` 30% · `cobbled_deepslate` 25% · `tuff_bricks` 20% · `polished_deepslate` 15% · `mossy_stone_bricks` 10% | `#525452` | `#4c5147` / `#424844` range-wall ashlar, lit and shaded |
+| `paving` | `tuff` 30% · `cracked_stone_bricks` 25% · `cobbled_deepslate` 25% · `mossy_stone_bricks` 12% · `moss_block` 8% | `#676b60` | `#687375` the flagstones, and `#353733` the growth in their joints |
+| `crest` | `tuff_bricks` 30% · `cobbled_deepslate` 20% · `mossy_stone_bricks` 10% · **air 40%** | `#464747` | the broken roofline over every wall and pier |
+| `rubble` | `cobbled_deepslate` 30% · `cracked_deepslate_tiles` 20% · `chiseled_deepslate` 10% · `tuff_bricks` 10% · **air 30%** | `#464747` | `#323536` the heaps along the left arcade |
+| `collapse` | `cobbled_deepslate` 40% · `cracked_deepslate_tiles` 25% · `tuff_bricks` 25% · `mossy_stone_bricks` 10% | `#515350` | the same fall where it has to stop a body, so no air member |
+| `vault_stone` | `polished_tuff` 50% · `tuff_bricks` 30% · `cobbled_deepslate` 20% | `#5e625e` | the undercroft: the ward's stone, plainer |
+| `timber` | `dark_oak_wood` 50% · `dark_oak_log` 25% · `muddy_mangrove_roots` 15% · **air 10%** | `#3f311d` | `#17191c` the collapsed canopy at the back left |
+| `plinth` | `chiseled_tuff` | `#5b6059` | the standing plinth at the left of the ward |
+| `bedrock` | `deepslate[axis=y]` | `#545456` | inert mass, no player-visible face |
+| `corpse` | `skeleton_skull` | `#513e33` | what is lying in the heaps |
+| `grate`, `tracery`, `vault_bar` | `iron_bars` | `#898b88` | the grate over the oculus, the tracery in the broken bay, the hour-vault's gate |
+| `door_low_a/b`, `door_high_a/b` | `dark_oak_door` | `#493118` | the closed iron-banded double door with the ring handle |
 
-The bar is the one deliberate departure from the nearest colour match. The
-concept's barrier is a timber door leaf, but the rule seals a 6-wide by 3-high
-partition opening, which is a portcullis and not a leaf; a see-through grate is
-also what lets the player read the far side of a shortcut before it opens.
+The loudest member of every stone mix holds 10% of the area or less
+(`mossy_stone_bricks` in three of them, `moss_block` at 8% in the paving), which
+is the craft rule the numbers serve. `timber` is the exception and is stated
+rather than hidden: it is 75% chromatic area, because dark oak is, and it is 50
+cells of the 5191.
+
+**The palette tool reports a binding that is not the whole palette, and the number
+it prints reads as a pass.** `block-appearance.py --program` over this file says
+*"binding: 8 paint(s) examined"*. The program declares **18** roles. The ten it
+did not see are exactly the ten written in the scope's own axis frame: a `local`
+paint is skipped in silence and does not appear in the count, so a palette that
+is mostly oriented roles is reported as fully measured. Handing the same ten to
+`--mix` does not recover them either — the flag splits its argument on `=`, so a
+block state with a property in it is refused (`'y]=1' is not a weight`). **The real
+binding for the table above is 18 of 18 roles**: eight through `--program`, and
+ten through `--mix` with the state's properties stripped, which measures the
+block's own texture and is the right number for a colour anyway. Both halves are
+stated here so the shortfall is not carried forward as a pass.
+
+**Every orientation-carrying role is written in the scope's own axis frame, and
+this region cannot decide whether that mattered.** `oriented-fills` reports 258
+fills examined, 20 carrying block-state properties, and **20 of those 20 resolved
+out of the scope's own frame** — there is no world-frame literal left for the gate
+to bite on. That is the strongest form of the claim, and it is worth being plain
+about why it was worth making here: the zone's outermost frame is the identity,
+and a world-frame literal under the identity frame is licensed by the gate and
+lands correctly. A green on that branch would have proved nothing about this
+palette. What does prove something is the arcade: the north and south screens are
+the same rule as the east and west ones under a `z: world_x` transposition, and
+every state inside them resolves through it.
+
+**How much of this is mass nobody touches.** Measured by rebinding each role in
+turn to a marker block and counting the marker, which is the only way to ask the
+question — one block serves several roles, so a block census cannot answer it. The
+measurement variant has the contract and its claims stripped so a rebind that
+changes passability cannot be refused by a contract gate, and the run asserts what
+that costs: **10692 of 10692 cells identical to the shipped model**, because a
+claim writes no blocks.
+
+| what | cells | of the region | of the filled blocks |
+|---|---|---|---|
+| `bedrock` — the role that exists only as mass | 2148 | 20.1% | 41.4% |
+| stone with no air beside it and no outer face — mass nothing can look at | 1742 | 16.3% | 33.6% |
+| everything else | 3449 | 32.3% | 66.4% |
+
+The 2148 was taken twice by unrelated means: by counting the marker in a rebind
+expansion, and by adding up the layout's own bands on paper. Both give 2148. The
+1742 reconciles the other way: summed per role from the marker runs it is 1742, and
+scanned cell by cell over the shipped model for stone with no air neighbour it is
+also 1742.
 
 **Open against this piece**
 
-- Lighting profile is `dark` (`DW0751`, min floor light 0 over 165 walkable
-  cells). No rule in this zone exposes a light-emitting role, so the piece
-  cannot be lit from its palette: light has to arrive as campaign-bound content
-  on the declared anchors, or as a light role added to the library rules.
-- The concept image is an open, roofless cloister; the zone's design intent and
-  topology are an enclosed hub. The palette and proportions converge on the
-  concept's material and tone, and the composition does not — deliberately, the
-  topology is fixed.
-- 47.9% of the piece is `margin`, the inert mass behind the shortcut rooms.
+- **The hour-vault is a room and not yet a reason.** Seven recesses, two pier
+  ranks and a gate the rite opens — the geometry G2 needs — but what is *in* the
+  recesses is campaign-bound content that does not exist yet. Until it does, the
+  optional gate leads to an empty undercroft.
+- **The zone has no light-emitting role and does not need one above ground.** The
+  ward is roofless, so 632 of its 927 standable cells are open to the sky and it
+  is the first zone of this campaign that is lit at all. The hour-vault is not:
+  its only daylight is the oculus grate over the middle of it, and whether that
+  is enough is a measurement `delve-admit lighting --write` takes, not something
+  expansion can know.
+- **A sightline through tracery cannot be declared, only built.** Beat 4.6 wants
+  the drowned ward visible through the broken bay. It is: the bay's opening
+  carries iron-bar tracery, which a body cannot pass and an eye can. The contract
+  cannot say so — an `exterior` opening must be cells the air outside the piece
+  reaches, so a `vision` edge over the tracery is refused, and a `vision` edge
+  over an air opening would be an opening a body walks out of. The zone chose the
+  geometry that is right and left the claim unstated; nothing downstream knows the
+  bay is a window rather than a wall.
+- **A cloister's own image asks for scatter the walk model treats as a wall.**
+  The growth in the paving joints is `moss_block` set into the flags rather than
+  the concept's tufts standing proud of them, because the navigation predicate
+  admits only air and skulls: a `short_grass` on a walked floor is read as a
+  barrier, and the contract's coverage and reachability gates would red over a
+  floor a player can in fact cross. The same rule keeps every torch, lantern and
+  candle off the ground.
+- **Two of the three station plinths cannot be climbed, and that is the plinth
+  being a plinth**; the reachability measurement reports them as two cells of
+  unreachable floor open to the sky, which is a number and not a finding.
+- **The corner collapse is the pinch, and a player who breaks it breaks the
+  fight.** Beat 4.3's "the ward cannot be crossed around them" is built as two
+  head-high fills of `collapse` in the north corners of the walk. In adventure
+  mode nothing can mine them; in any other mode the pinch is a two-block dig.
