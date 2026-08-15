@@ -242,7 +242,9 @@ the causeway head, which unions with the strand at the cliff foot so the entry
 space is one floor and one connected piece. Reachability from it reaches 3 411 of
 6 578 standable cells in declared space: the whole arrival, the causeway, the
 whole of Z1 (foot, road, store, landing) and the whole of Z2 (passage, mouth
-behind its bar, chamber, roof, yard, head).
+behind its bar, chamber, roof, yard, head). What it does not reach is Z4's six
+spaces and the map's own upper shelf — 3 167 cells, every one of them behind
+seam 4, which is the seam Z3 cannot supply a near side for.
 
 **The belfry cannot be reached, and it is not a layout failure.** Z7 declares no
 contract, so the belfry floor is not a declared space, so no edge can end there
