@@ -34,12 +34,12 @@ and role overrides applied — so it identifies what was expanded rather than wh
 the file said before the command line touched it, and a zone whose shipped values
 live in its own `params` needs no remembered flags to be reproduced.
 
-**Seven of the eight zones pass every gate; Z3 does not.** `fluid-contained` reds
-on the drowned ward with `DW0800`: 380 ways out of a 2304-cell body of water, so
-the ward renders as still water in every tool here and runs on the first tick in
-the world. It reproduces from Z3's program alone, in a corpus holding nothing
-else, and it is a *design* answer — where the ward's water is walled and where it
-is meant to spill — not a palette or a version matter.
+**All eight zones pass every gate.** The drowned ward's `fluid-contained` red
+(`DW0800`: 380 ways out of a 2304-cell body of water) was the design answer it
+looked like, and §Z3 below records what that answer turned out to be: the ward's
+water is walled at every internal boundary and open only where it leaves the
+piece, because it is the sea rather than a pool. The zone now binds 3728 fluid
+cells with nothing open beside or below any of them.
 
 ## An oriented block state is a palette role, written in the scope's own frame
 
@@ -53,11 +53,14 @@ what lets an orientation-dependent block stay a role a campaign can restyle
 without knowing which way the piece was laid.
 
 Every such role in this campaign is written that way, so no zone is held back by
-it: all eight pass `oriented-fills`, six of them carry local roles, and the audit
-totals **193** fills resolved out of a scope's own frame across those six.
-Z1 is the worked case, and it shows why the frame is not decoration: the corpse
-is authored as `rotation=8`, facing out of its own recess, and lands in the world
-as `rotation=4`.
+it: all eight pass `oriented-fills`, every one of them carries local roles, and
+the audit totals **705** fills resolved out of a scope's own frame across the set.
+Z1 is the worked case for the *state*, and it shows why the frame is not
+decoration: the corpse is authored as `rotation=8`, facing out of its own recess,
+and lands in the world as `rotation=4`. Z7 is the worked case for the *rule* —
+one wall rule builds all four faces of a tower by naming its thin axis
+`smallest`, so two of the four calls run under a turned frame, and it contributes
+125 of the 705 by itself.
 
 Z0 is the other kind of case, and it is the one a green hides. Its root asks for
 `z: largest` over a box already longest along Z, so the frame it stands in is the
@@ -66,6 +69,19 @@ all, which is a different fact from being judged and found sound. The engine now
 splits those two with a third verdict, *this region cannot decide it*, and the
 way not to depend on which one a green means is to write the state in the scope's
 own frame in the first place.
+
+Z6 is the case that shows what the wrap costs when it is *not* needed, which is
+the reason to write it anyway. Its own frame is `z(largest)` over a region whose
+largest axis is world `Z`, so the frame is the identity and every local paint
+resolves to itself: the wrap moves nothing. Held against the same program with
+its two local roles written bare, the shipped region is **green on every gate**,
+`oriented-fills` included, which reports `0` fills resolved out of a scope's own
+frame and calls that a pass. Expanded into a region whose largest axis is world
+`X`, the wrapped program writes the grate's bars as `east`/`west` from the one
+binding, and the bare program is refused by `DW0736`. A region where the frame
+happens to be the identity is therefore not evidence that a bare state is
+correct — it is the one region where nothing can tell.
+
 
 Two shapes the frame cannot resolve, and both are refusals rather than guesses: a
 16-step `rotation` and a handedness are stated against a fixed vertical *and* a
@@ -81,13 +97,13 @@ the zone set is complete).
 | Zone | Concept | Program | Status |
 |---|---|---|---|
 | Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; review set in `review/z0/` — see below |
-| Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 10x28x44; review set in `review/z1/` — see below |
+| Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 16x24x72 as a 2-tile set; the second zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
-| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | program exported, unproduced |
-| Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where the others carry 6; review set in `review/z4/` — see below |
-| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | program exported, unproduced |
-| Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | program exported, unproduced |
-| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | program exported, unproduced |
+| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; review set in `review/z3/` — see below |
+| Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
+| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; review set in `review/z5/` — see below |
+| Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; review set in `review/z6/` — see below |
+| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x48x125; review set in `review/z7/` — see below |
 
 Zone order of production is by complexity, hardest first (owner decision,
 2026-08-12): the most complex zone is produced and owner-reviewed before the
@@ -315,87 +331,309 @@ that — it faces out of the piece, which is exactly what it is for.
   but a reader who lands on it first will read live claims about a file that no
   longer builds any of what it describes.
 
-## Z1 cliff road
+## Z1 崖道 cliff road
 
-**Scene** (fixed before any tool ran, per the procedure's §1): the player walks a
-one-block ledge cut into a sea cliff, the rock wall close on the landward hand
-and an open drop to the water on the seaward one, past shallow recesses in the
-wall — some empty enough to stand back into, two holding the skull of somebody
-who did not make the traverse.
+**Scene** (fixed before any tool ran, per the procedure's §1): the flat ends at a
+wall of cliff, and one cut ledge starts up it. A stepped flight climbs five
+courses off the last dry shelf onto a road one body wide, cut into the seaward
+face with the rock close on the landward hand and an open drop to the surf on the
+other. A line of iron brackets is driven into the wall at head height the whole
+length of it — the anchors of a rope handrail the priory stopped replacing. Where
+the brackets hang bent and then stop, the shelf beyond them has gone into the
+sea; the road does not cross that gap, it goes **through** the rock, in at one
+cave mouth and out at the next, past the store where the handrail was kept. Past
+the store the ledge resumes and runs to a wall of dressed masonry with a hole
+broken in it, which is the back of the gatehouse.
+
+**The road is a stage of the route, not a detail of the gatehouse**
+(`reference/map-brief.md`). It is the only way off the sand, so the piece is
+built as the whole distance between them: it is entered at the shore's own level
+and left through the breach, and both ends are declared ways in rather than
+region faces that happen to have floor on them.
+
+### The six beats, and the rule that builds each
+
+`beats.md` is what this zone must stage. A beat with no rule beside it is absent,
+and none is.
+
+| # | beat | rule(s) that build it | anchors |
+|---|---|---|---|
+| 1.1 | the ledge is single-file, met head-on with no room to circle | `road_plan` → `rail_band` → `rail_courses` → `deck_band` (the road's own floor, seaward edge at `sea`) + `road_walk` (`abs 1` of void between the open air and `path/rock`); the same walk course under `warn_courses`, `road_wide_courses` at the bend and `landing_courses` past the store | `shover`, `shover-watch` |
+| 1.2 | a row of iron brackets at hand height — the anchors of a gone rope handrail | `road_bay` / `landing_bay` → `road_bracket_slice` → `road_bracket_row` (`iron/bracket`, one driven into the wall face every `bracket_gap + 1` cells, over every stretch of open ledge) | — |
+| 1.3 | K2 the fallen ledge: the shelf has gone into the sea, round a blind bend | the tell is `warn_walk` → `warn_bay` → `bent_slice` → `bent_row` (`iron/bent`) and then three cells with no bracket at all; the bend is `bend_band` → `road_courses` under a `bind` that narrows `sea`, so the wall bulges seaward for two cells and the line goes round it; the gap itself is `store_band` → `gap_courses` → `gap_deck`, which lays no deck on the walking line | `warn-watch`, `gap-brink` |
+| 1.4 | a shover — one of the answered on the ledge that puts the player over the edge | `rail_walk` → `shover_bay` → `shover_slice` / `watch_slice` for the two positions, over the one-wide lane; the recesses a body presses into are `recess_pair` / `recess_pair_corpse` → `recess_cell` (one deep, two high, two long, out of the walk); the surf's rock teeth are `gulf_band` → `tooth_floor` → `tooth_field` → `tooth_col` → `tooth_tall` / `tooth_low`, twelve courses down | `shover`, `shover-watch`, `stand-back-1..3` |
+| 1.5 | the road goes *through* the rock — a rope store between two cave mouths, holding the Z1 rope | `store_band` → `mouth_a_courses` / `mouth_b_courses` → `mouth_a_walk` / `mouth_b_walk` (the two mouths, each a claimed opening in the wall face) → `gap_courses` and `room_courses` → `room_body` → `rope_col` (the rope's own cell), `rack_col` (`store/timber`) and `room_lamp_col` (`store/lamp`) | `rope`, `store-out` |
+| 1.6 | the road reaches a breach in the gatehouse's outer wall | `breach_band` → `breach_courses` → `breach_hole` + `breach_head` (`wall/ashlar`, a hole two wide and two high broken through it) and `reveal_courses` → `reveal_walk` (the wall's inner reveal) | `breach` |
+
+**6 of 6 built.** Beat 1.4 is built as far as a grammar program reaches — the
+ground, the positions and the drop — and needs one campaign-level declaration to
+finish: a body on `anchor/shover`. Beat 1.5 needs the rope itself on
+`anchor/rope`. Neither is geometry and neither is expressible here.
+
+**The overhang is expressible, and it is built.** The previous production of this
+zone recorded that the ledge could not project over an undercut drop, because its
+one lever laid the lip's course across the *whole* gulf width — so the lip's
+projection and the drop's width were the same number. Re-measured at the pin, that
+finding reproduces exactly on that program: at `ledge_shelf=1` the zone comes out
+with 182 standable cells at `sea=3`, 226 at `sea=4` and 269 at `sea=5` against 50
+shipped, and `sea=2` is refused by the plan's own guard. **The limit was in the
+decomposition, not in the grammar.** The gulf and the deck are siblings of a `y`
+split, so they share their other two extents by construction and each cuts `x`
+with its own number: the gulf's seaward void is `sea + lip` and the deck's is
+`sea`, and `lip` is a parameter of its own. Measured off the shipped bytes by a
+reader that shares no code with the expander: the deck stands over open air on
+**all 50** rows of open ledge, **two cells** on every one of them, with **12
+courses** of open air under the outer cell.
+
+### Every claim, measured
+
+Taken off the two `.nbt` tiles by a hand-written structure-template reader, not
+from the expander's report. It agrees with the expander on the two numbers both
+produce: 14 872 filled cells and 163 standable.
+
+| beat | the claim | measured |
+|---|---|---|
+| 1.1 | single-file | the open ledge is **one cell wide on 45 of its 50 rows**; the five wider rows are the breach sill and the two cells the bend turns on. The recesses are out of the walk and are 6 cells more |
+| 1.2 | a row of brackets | **7 driven into the wall** (z 4, 7, 10, 13 past the store; z 52, 54, 58 on the teaching run) and **3 hanging bent** (z 39, 42, 45), then three cells with none |
+| 1.3 | the shelf has gone, once | the walking line has **no floor under it in exactly one run, of 10 cells**, and floor under it everywhere else |
+| 1.3 | round a blind bend | the brink is in sight from **6 cells of road and from nowhere further up-path**: the buttress cuts the sightline, so a body that has not read the wall meets the gap with about a second of road left |
+| 1.5 | the rope cannot be walked past | sealing the store's two mouths and re-walking from the shore reaches **0 of the 20** standable cells on the far side, against 20 of 20 with them open |
+| 1.6 | a hole in a wall | 216 cells of `wall/ashlar` across the road, with a 2 × 2 opening claimed as the way out |
 
 **Expansion** — `delve-grammar expand --file design/programs/z1-cliff-road.json
---region 10x28x44 --seed 1 --traversable --reachable-floor`. Every gate passes
-with a non-zero binding: `blocks-exist` 7, `shape-complete` 7, `states-complete`
-7, `oriented-fills` 27, `non-empty` 12320, `traversable` 3, `reachable-floor` 6.
-5490 filled cells, 7 distinct states, 50 standable cells all reachable on foot,
-12 anchors, silhouette complexity 1.65. `delve-admit audit` passes over 12320
-blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0 under-specified).
+--region 16x24x72 --seed 1`. **Fourteen gates, every one passing with a non-zero
+binding**: `blocks-exist` 18, `shape-complete` 18, `states-complete` 18,
+`oriented-fills` 175, `non-empty` 27 648, `contract-well-formed` 11,
+`contract-coverage` 163, `contract-closure` 172, `contract-edge-proof` 3,
+`contract-no-body` 2, `contract-reachability` 125, `contract-anchors` 11,
+`contract-exterior-faces` 2, `contract-no-body-majority` 163. 14 872 filled cells,
+18 distinct states (17 of them not air), 163 standable, 11 anchors, silhouette complexity 1.92.
+`delve-admit audit` passes over 27 648 blocks (0 forbidden, 0 non-allowlisted, 0
+unknown, 0 under-specified), with a per-tile verdict for both tiles.
+
+**The zone declares a spatial contract, and that is what it is judged by.** Four
+spaces (`foot`, `road`, `store`, `landing`), two out-of-walk regions (`teeth`
+earning `facade`, `stand-backs` earning `posted` from the three anchors in it) and
+five edges. The contract proves what a face-count cannot: that the flight really
+climbs **five** courses between two spaces one floor each and connects through its
+own treads; that the store is `enclosed` and its 172 boundary cells are accounted
+for by its two claimed mouths and nothing else; that the way in at the shore and
+the way out at the breach are **doors** rather than the standable cells of a
+region face; and that all 125 standable cells in a declared space are reached from
+the shore through declared edges only.
+
+**Why the zone claims neither `traversable` nor `reachable-floor`.** Both are
+weaker than the contract here and one of them is the wrong claim. `traversable`
+without a contract falls back to the region's `Z` faces and counts standable cells
+on them, which is the number the previous production reported as 3; with the
+contract it would count the two doors the contract already proves. `reachable-floor`
+turns "every roofed floor is walkable to" into a verdict, and this zone has roofed
+floor that is deliberately not walkable to: the tops of the rock teeth, twelve
+courses down under an overhanging ledge. Both facts are in the always-on
+reachability line rather than hidden: 131 of 163 standable cells are reachable on
+foot from 3 grade entry cells, and the 32 it does not reach are the teeth — 8 of
+them sheltered, which is the overhang doing exactly what an overhang does.
 
 **Provenance** — program
-`sha256:67c441bc329fdd1517740c8d6fe8c765ed885b9ee11f4f4e52672894a71ad2fb`, seed
-1, region 10x28x44; re-expanding those inputs reproduces the `.nbt`, the metadata
-and the report byte for byte. Both of this zone's tuned values — `fall` 12 and
-`sea` 5, a drop that reads as lethal and a gulf wide enough to see down — live in
-the program's own `params`, so the file plus the manifest row is the whole recipe.
+`sha256:017d2b4bae8652e61faee8a933b4cddbc52a39a96e39250d44b8b36f43a411c0`, seed 1,
+region 16x24x72. Reproduction was checked from a **second instrument sharing no
+working directory and no build tree with the first**: a separate checkout of the
+pinned engine, built on its own, run from a different directory and writing to a
+different one. Three methods, none of which hashes a path — `cmp` over the bytes
+(4 of 4 files identical), `shasum` fed from **stdin** so no name reaches the
+digest (`fd4e8644…` and `dac927ae…`, equal both ways), and a cell-by-cell
+comparison through the hand-written reader (**27 648 of 27 648 equal, 0
+differing**), with the 11 anchors and the resolved contract equal object for
+object. The two release builds of the pinned commit are themselves byte-identical.
 
-**Artifacts** — `prefabs/z1-cliff-road.nbt` + `prefabs/z1-cliff-road.json`;
-review shots and what each camera did in `design/review/z1/`.
+**Artifacts** — `prefabs/z1-cliff-road.x0y0z0.nbt`,
+`prefabs/z1-cliff-road.x0y0z1.nbt` and `prefabs/z1-cliff-road.json` in the repo's
+flat prefab library. The zone is past the 48-per-axis structure-template cap on
+its long axis, so it ships as a tile set in a 1×1×2 grid and **the manifest is the
+only file that describes the zone**: the gates, the render and the admission audit
+all take it and treat the tiles as one thing. Review shots and what each camera
+answers: `design/review/z1/`.
 
-**Palette** — measured, never named from memory. Material colours are patch means
-over crops of the concept image, verified by looking at the crops drawn back onto
-the image; candidates come from `tools/block-appearance.py --screen` over the
-measured shelf, and the mixes were read as a swatch sheet before binding. The
-near cliff measures as a near-neutral dark grey of very wide value range (mean
-`#3f3e3a`, luminance p05 30 and p95 101 out of 255, saturation 6/255), which is a
-*mix* rather than a block: bound to one block the wall reads as a flat panel that
-no measurement of the mean would object to.
+**Palette** — measured from the concept image, never named from memory. Material
+colours are patch means over crops, and every crop was drawn back onto the image
+and looked at before it was used. The near cliff measures as a near-neutral dark
+grey of very wide value range (`#494e51`, luminance p05 53 and p95 111 out of
+255), which is a *mix* rather than a block: bound to one block the face reads as a
+flat panel that no measurement of the mean would object to.
 
 | Role | Mix | Measured | Concept sample |
 |---|---|---|---|
-| `crag` | `cobbled_deepslate` 50% · `smooth_basalt` 30% · `blackstone` 10% · `deepslate[axis=y]` 10% | `#49484d` | `#3f3e3a` near cliff face — the untouched sea-cliff mass below and behind the road |
-| `path/rock` | `cobbled_deepslate` 60% · `deepslate[axis=y]` 20% · `tuff` 10% · `blackstone` 10% | `#4e4e50` | `#464742` the cut ledge and its wall — same rock, a shade lighter and drier where it is worked |
-| `path/corpse` | `skeleton_skull[powered=false,rotation=8]` | — | the remains in the wall recesses |
+| `crag` | `cobbled_deepslate` 50% · `smooth_basalt` 30% · `blackstone` 10% · `deepslate[axis=y]` 10% | `#49484d` | `#494e51` the untouched sea-cliff mass. Z0's `cliff/rock` unchanged — Z0's crag and this cliff are the same rock, and two mixes would put a seam in it |
+| `path/rock` | `cobbled_deepslate` 60% · `deepslate[axis=y]` 20% · `tuff` 10% · `blackstone` 10% | `#4e4e50` | `#454541` the cut ledge and `#494a45` its wall — same rock, a shade lighter and drier where it is worked. Z0's `ledge/rock` unchanged |
+| `wall/ashlar` | `tuff_bricks` 40% · `polished_tuff` 20% · `cracked_stone_bricks` 15% · `deepslate_bricks` 15% · `mossy_stone_bricks` 10% | `#636661` | `#5c5f5d` the gatehouse's broken wall-head in `concept/z2-gatehouse.jpg`, p05 33 p95 139 — dressed stone, and the only thing on this road that was built rather than cut |
+| `teeth/rock` | `cobbled_deepslate` 40% · `smooth_basalt` 25% · `blackstone` 20% · `deepslate[axis=y]` 15% | `#464549` | `#677174` the dark rock standing in the surf, bottom-left of frame. The sample is contaminated by foam (p95 209), so the mix is bound darker than the mean and to the same family as the cliff it fell off |
+| `iron/bracket` | `lightning_rod[facing=west,…]` | `#c56f53` | the line of rusted pitons in the rock face — see below |
+| `iron/bent` | `lightning_rod[facing=down,…]` | `#c56f53` | the same bracket, bent down |
+| `store/timber` | `dark_oak_wood[axis=z]` 55% · `dark_oak_log[axis=z]` 30% · `muddy_mangrove_roots[axis=z]` 15% | `#3f301d` | the rack the handrail was kept on |
+| `store/lamp` | `lantern[hanging=true,waterlogged=false]` | `#6b5c55` | — |
+| `path/corpse` | `skeleton_skull[powered=false,rotation=8]` | `#513e33` | the remains in one wall recess |
 
-`blackstone` is the loud member of both mixes and holds 10% of the area, which is
-the craft rule the numbers serve; the near-black patches are the concept's deep
-crevices. `deepslate[axis=y]` carries the vertical grain the cliff face is
-striated with.
+The loudest member of every stone mix holds 20% of the area or less and none of
+them is chromatic at all (`chromatic_area 0.00` on all four), which is the craft
+rule the numbers serve. `store/timber` is the exception and is stated rather than
+hidden: 85% chromatic area, because dark oak is, and it is 4 cells of 14 872.
 
-**Every role is written in the scope's own axis frame.** The palette's three
-entries are `{"local": …}` paints, so each resolves its directions through the
-scope that fills it: `deepslate`'s `axis` and the skull's `rotation` follow the
-piece instead of the world. This is not decoration. The recesses are reached
-through a `reorient` that names the across-path axis as local `Z`, so the corpse
-is authored as `rotation=8` — facing out of its own recess — and the expander
-writes `rotation=4` into the world. Written bare, the same value is the world's
-own yaw: the skull would face along the road into the side wall of its recess,
-and every gate would still be green. 27 of 27 orientation-carrying fills resolve
-this way.
+**The ironwork is admitted, and the divergence is a hue family.** The concept's
+brackets and rings measure warm and dark — five tight crops over the pitons give
+`#3d3b37`, `#34322e`, `#44413c`, `#383733` and `#2d2b27`, hue 36–46°, saturation
+22–32 out of 255. Of the blocks the admission allowlist permits, the bar is
+`iron_bars` at `#898b88` — hue 120°, saturation 6, which is not a dark warm iron
+but a neutral grey — and the chain is `iron_chain` at `#333a4a`, hue 222°, the
+right value and a **cool** family. The block that is the right family, 1.21.11's
+`copper_bars` at `#9c5137`, is **not in the allowlist**, which was written before
+that block existed. Nothing here was weakened to get round it. What this zone
+ships instead is `lightning_rod` — allowlisted, `#c56f53`, hue 15°, the right
+family and lighter than the concept's value — because the element beat 1.2 needs
+is a **rod driven into a wall**, not a bar, and for a rod the warm family is
+reachable inside the allowlist even though for a bar it is not. Two states of one
+block carry the whole tell: `facing=west` is a bracket driven in, `facing=down` is
+one bent down. It is brighter than the rock it is set into, and that is the half
+of the substitution worth arguing with — but beat 1.2 says the brackets are the
+zone's only navigation aid and its only warning, and a tell that cannot be seen at
+walking distance is not one. In `review/z1/ext-nw.png` they are the only thing on
+the face besides the road.
+
+**The palette tool reports no binding at all over this program, and the output
+reads like a measurement.** `block-appearance.py --program` over this file prints
+**the whole block registry** and no `binding:` line, because every paint here is
+written in the scope's own axis frame: a `local` paint is a `dict`, both of the
+tool's arms want a string or a list, and neither says so. The count is **0 of 9**
+and it does not appear. Handing the nine to `--mix` does not recover them either —
+the flag splits its argument on `=`, so a block state with a property in it is
+refused (`'y]=10' is not a weight`). **The real binding for the table above is 9 of
+9 roles**, taken through `--mix` with the states' properties stripped, which
+measures the block's own texture and is the right number for a colour anyway. Both
+halves are stated here so the shortfall is not carried forward as a pass. Z4's
+record found the same tool reporting 8 of 18; over a palette that is entirely
+`local` the same defect reports nothing whatever.
+
+**Every orientation-carrying role is written in the scope's own axis frame, and
+this region cannot decide whether that mattered.** `oriented-fills` reports 175
+fills examined, 171 carrying block-state properties, and **171 of those 171
+resolved out of the scope's own frame** — there is no world-frame literal left for
+the gate to bite on, which is the strongest form the claim has. It is worth being
+plain about why it was worth making: this zone's outermost frame asks for
+`z: largest` over a box already longest along `Z`, so the frame it stands in is the
+**identity**, and a world-frame literal under an identity frame is licensed by the
+gate and lands correctly at this region and wrongly at any other. A green on that
+branch would have proved nothing. What does prove something is the recesses: each
+is entered through a `reorient` that names the across-path axis as local `Z`, a
+real transposition, and the corpse authored as `rotation=8` lands in the world as
+`rotation=4`.
+
+**The seed moves texture and nothing else.** This program makes no seeded choice
+of geometry anywhere: every alternative is selected by a guard, and the only draws
+from the stream are per-cell paint draws inside a mix. That is what makes a role
+rebind a measurement rather than a perturbation — a rebind changes how many values
+are drawn, and a program whose geometry depended on the draw would move under it.
+It also means there is no seed to reroll: at any seed this is the same building.
+
+**How much of this is mass nobody touches.** Measured by rebinding each role in
+turn to a marker block and counting the marker, which is the only way to ask the
+question — one block serves several roles, so a block census cannot answer it. The
+measurement variant has the contract and its claims stripped so a rebind that
+changes passability cannot be refused by a contract gate, and the run asserts what
+that costs: **27 648 of 27 648 cells identical to the shipped model**, because a
+claim writes no blocks. The nine roles come to 14 872 cells exactly and their
+union is 14 872, i.e. they partition the filled zone, which is the check that the
+method is reading what it thinks it is.
+
+| Role | cells | share of filled |
+|---|---|---|
+| `crag` | 12 731 | 85.6% |
+| `path/rock` | 1 860 | 12.5% |
+| `wall/ashlar` | 216 | 1.45% |
+| `teeth/rock` | 48 | 0.32% |
+| `iron/bracket` | 7 | 0.05% |
+| `store/timber` | 4 | 0.03% |
+| `iron/bent` | 3 | 0.02% |
+| `path/corpse` | 2 | 0.01% |
+| `store/lamp` | 1 | 0.01% |
+
+Read geometrically rather than by role, **9 901 cells — 66.6% of the filled zone —
+have no air beside them and no face on the region's own outside**: mass nothing
+can look at. The number was taken twice by unrelated means, once by scanning for a
+passable neighbour and once by counting the complement, and both give 9 901. It
+sits between Z0's 78.0% and Z4's 33.6%, and the reason is the same as Z0's: **this
+zone is a line cut across a face, and what surrounds the line is rock rather than
+enclosed air.** The rule the number serves is about volume a player is charged a
+walk across, and by that reading this piece encloses almost nothing — 163
+standable cells in all, of which the store is 45 and every other one is on a ledge
+one body wide.
 
 **Open against this piece**
 
-- Lighting profile is `dark` (`DW0751`, min light 0 over the 4 roofed walkable
-  cells). The road itself is open to the sky; the dark cells are the recesses,
-  and no rule in this zone exposes a light-emitting role, so a lantern in a
-  recess arrives as campaign-bound content on the declared anchors.
-- **The ledge does not overhang, and the program cannot make it.** The concept's
-  road projects from the cliff on a lip with the drop undercut beneath it; here
-  the walking surface is flush with the rock below, so the seaward elevation is a
-  flat plane with a seam. The one lever is `ledge_shelf`, which lays its course
-  across the *whole* gulf width, so the lip's projection and the drop's width are
-  the same number: `sea=3` gives 182 standable cells and `sea=5` gives 269,
-  against 50 shipped, and `sea=2` is refused by `road_plan`'s own guard. A narrow
-  lip over a wide drop is not expressible, and the zone ships at `ledge_shelf=0`
-  — a one-block ledge, which is the exposure the scene is about.
-- The concept's rusted iron stanchions and their chain rail have no role and no
-  rule in this program. They are the element that reads the road as *made* rather
-  than found, and adding them is design work this production did not do.
-- The piece declares no spatial contract, so every contract obligation examined
-  nothing and `traversable`'s binding counts standable cells on two region faces
-  rather than declared ways in.
-- Judge it from the eye shots. A cliff section is solid rock with a groove in it,
-  so its exterior orbit cameras photograph a slab and cannot show the road at
-  all; `review/z1/README.md` says which camera answers which question.
+- **The store is the only lit thing in the campaign, and it is one lantern.** No
+  other zone of this campaign exposes a light-emitting role, and the reconciliation
+  records that as a campaign-wide omission. This zone adds one, because the store
+  is roofed rock fourteen cells long on the critical path holding a carried key
+  item, and a room a player has to enter and cannot see is a defect the machine
+  gates do not name. It is a deliberate addition beyond what any beat asks for, and
+  it is one cell of 14 872.
+- **`delve-admit lighting` cannot measure a tiled zone, and does not say so.**
+  Handed the manifest it fails with `DW0732 gzip decode: invalid gzip header`,
+  having tried to read the JSON as NBT. Handed one tile of the set it returns a
+  verdict — `profile: dark`, 119 floor cells, min light 0 — over 48 of the zone's
+  72 blocks of length, with no indication that it is looking at part of a zone.
+  `delve-admit audit` refuses that same lone tile by name and points at the
+  manifest, and so does `delve-render`; the guard exists in two of the three doors.
+  So no lighting profile was written and the metadata still says
+  `"profile": "unmeasured"`, which is a positive statement that a measurement is
+  owed rather than a missing field. This is the second zone to hit it; Z0 recorded
+  it first.
+- **The number would be wrong here in a second way even if it could be taken.**
+  98 of this zone's 163 standable cells are open to the sky. An open cliff road at
+  noon reports `dark`.
+- **The surf is not in this piece.** Beat 1.4's named image element is surf *and*
+  rock teeth below the path; the teeth are built and the surf is the tide plane,
+  which `tide.md` fixes as one moving sea the assembled world carries. A basin of
+  water inside a piece open on three faces is a body of water with no walls, which
+  is the shape of the campaign's one open machine finding on Z3, so this zone
+  places none and says so rather than shipping a pond twelve courses down.
+- **The teeth read as blocks rather than as spurs.** They are two-cell and
+  one-cell stacks standing off the cliff's foot in a repeat, so at the distance the
+  exterior orbits look from they are a rhythm of nubs. What they have to do — give
+  the drop a bottom that is not flat, and give the overhang something to be over —
+  they do; what they do not have is a silhouette that would survive being looked at
+  from the sea.
+- **The reference draws a chain still hanging between the first brackets, and this
+  zone does not build one.** `reference/map-v2-west-elevation.jpg` draws the
+  bracket line with a sagging rail over its southern third and bare posts after it;
+  `beats.md` 1.2 says the handrail is "long gone" and the brackets are its anchors.
+  The zone follows the beat sheet, and the divergence is named here rather than
+  quietly split. Building the surviving stretch is one rule and is not hard; it was
+  not done because a rail on the first third would give the road a second gradient
+  competing with the sound → bent → gone one that beat 1.3's tell is read from.
+- **The recesses are declared out of the walk, and that is a reading of them.**
+  `contract-coverage` needs every standable cell accounted for, and a recess is
+  roofed by the cliff over it, so a recess claimed as part of an `open` road is a
+  roofed cell in a space that says it has no roof. They are declared as an
+  out-of-walk region instead, which earns `posted` from the three anchors in them
+  and is right for an ambusher's station — but a player who steps back into one to
+  survive a shove is standing in a cell the contract says no body goes to. The
+  distinction the checker can draw is roofed or not; the distinction the beat wants
+  is *whose* body.
+- **No standpoint in this piece can frame a recess.** It is one cell deep off a
+  lane one cell wide, so a camera in the lane is half a block from the wall it is
+  photographing. `review/z1/eye-recess_look.png` is the shot that shows why, and
+  the measurement is what answers the question instead.
+- **`beat-audit.md` describes the program this one replaces.** It is the document
+  that found four of this zone's six beats absent, and every Z1 row in it is about
+  a 10x28x44 expansion with 5490 filled cells, 7 block states, 50 standable cells,
+  12 anchors and no ironwork. It states the ledge's want of an overhang as a
+  property of the grammar, which this piece refutes with its own numbers. The audit
+  is a record of what was found and nothing in it should be quietly rewritten — but
+  a reader who lands on it first will read live claims about a file that no longer
+  builds any of what it describes.
+- **`review/z1/README.md`'s predecessor documented cameras the pinned renderer
+  cannot produce** — an author-aimed `--view` flag it does not have, and a global
+  option placed before the subcommand. It has been replaced rather than extended,
+  and every camera in the new one was run at the pin before it was written down.
 
 ## Z2 gate ward
 
@@ -674,6 +912,166 @@ instruments separate that green from a real one, and both were run.
   reproduction commands, which name a renderer flag the pinned build does not
   have.
 
+## Z3 drowned ward
+
+**Scene** (fixed before any tool ran, per the procedure's §1): the player comes
+out of the gate onto a raised stone spine crossing a ward whose floor is under
+the sea, two arcades standing in the water either side of it, heaped weed
+narrowing the walk at two points, sunken boats out in the water off the left,
+and at the far end a water-gate tower on its own base whose ground door is
+barred from the inside — so the way in is up a fallen bay onto the arcade, along
+it at shutter height, and down through the tower.
+
+**The tide decides everything here** (`tide.md`). One plane, whole-world, and
+this zone's water is a piece of it: no bounded basin, no air pocket under the
+plane, no flowing water. The program is written so that below the waterline
+every cell is either water or stone — there is no third case in any rule — and
+the causeway's mass rises through the water rather than being a lane cut into
+it. That is the whole of the answer, and it is why the spine is walkable at the
+standing tide and the ward is not.
+
+**Expansion** — `delve-grammar expand --file design/programs/z3-drowned-ward.json
+--region 40x10x60 --seed 1 --traversable`. Every gate passes with a non-zero
+binding: `blocks-exist` 20, `shape-complete` 20, `states-complete` 20,
+`oriented-fills` 296, `non-empty` 24000, `traversable` 72 (32 standable cells at
+the approach face, 40 at the exit face). 9036 filled cells of 24000, 20 distinct
+states, 2695 standable, 28 anchors, silhouette complexity 1.02. `delve-admit
+audit` passes over 24000 blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0
+under-specified). The zone is past the 48-per-axis cap, so it ships as 2 tiles
+and one manifest, and has no lighting step: the profile is `unmeasured`.
+
+**The water, and the instrument that established it.** The recorded `DW0800`
+red was real and reproduces exactly. `fluid-contained` is newer than the pinned
+engine the campaign audit runs, so at that pin the zone reported passing and the
+red could not be reproduced by the campaign's own gate — a green that proves
+nothing rather than a refutation. Three independent methods agree on the same
+number: read off the old program's rules by hand (252 cells beside the causeway
+lane, which was an air trench cut through the water, plus 128 beside the guard
+station), an independent reader over the shipped `.nbt`, and the gate itself on
+a later engine. All three say 380 ways out of 2304.
+
+Against the zone as built, the same three say: **3728 fluid cells, every one a
+source, none with an open cell beside or below it, and 0 internal escapes.** 344
+run directions leave the piece's own outer faces and are counted rather than
+judged — what is beyond a face is not in these bytes, and here what is beyond
+them is the sea. The old program also held 3519 air cells under its own water
+plane; this one holds none, which is `tide.md`'s rule stated as a property of
+the blocks.
+
+**Provenance** — program
+`sha256:14cc79961cfd27811f2013a0ea467674db848432eeadb5784b76b80f76a77aee`, seed
+1, region 40x10x60; re-expanding those inputs reproduces all four files byte for
+byte. Verified twice over, by `cmp` and by sha256 taken over each file's
+**content** alone — hashing a listing of `shasum` output would have hashed the
+output directory's name along with the bytes and called two identical runs
+different. A third build tree at a later engine reproduces both `.nbt` and the
+metadata identically; only the gate report differs, because that engine runs two
+gates more.
+
+**Artifacts** — `prefabs/z3-drowned-ward.json` (the manifest, and the only file
+that describes the zone) + `prefabs/z3-drowned-ward.x0y0z0.nbt` and
+`.x0y0z1.nbt`; review shots and what each camera did in `design/review/z3/`.
+
+**Every beat owes a rule**, and every beat has one:
+
+| Beat | The rules that build it |
+|---|---|
+| 3.1 the ward, the arcades, the spine above the water | `lower_ward_plan` places two `arcade_run`s either side of the spine; `open_water`; `causeway_run` + `causeway_mass` carry the deck one course clear of the water top; `kerb_column`. `anchor/causeway-head` |
+| 3.2 waders in the flooded ward, slow to climb the spine | `flat_run` + `wader_post` (12 `anchor/wader-*`); the causeway's four-course rise out of the seabed is what they cannot climb quickly |
+| 3.3 weed heaped at two points on the causeway | `lane_run`, `weed_pinch`, `weed_pinch_far` (the same rule handed its own reflection), `weed_heap`. `anchor/weed-pinch-1`, `-2` |
+| 3.4 the wrecks off the causeway's left | `wreck_reach`, `wreck_hull`, `hull_section` — three hulls flooded to the gunwale. `anchor/wreck-1..3` |
+| 3.5 the water-gate tower, barred from the causeway side | `water_tower`, `tower_plinth` / `plinth_mass` / `plinth_water` (the base standing in the sea, the storey oversailing it), `tower_face` (the shuttered windows), the roof course, `ground_near_wall` + `barred_door` + `bar_or_open` |
+| 3.6 over the arcade, in at shutter height, down inside | `crossing_ramp` + `ramp_low` / `ramp_mid` / `ramp_high`; the arcade deck course; `upper_east_wall`'s opening; `tower_midfloor` + `midfloor_well` + `stair_lower` + `tread_low`. `anchor/arcade-climb`, `arcade-walk`, `shutter`, `tower-upper`, `descent` |
+| 3.7 shortcut S2, the barred door | `bar_or_open` on the `unbarred` parameter, which ships at 0. `anchor/barred-door` |
+| 3.8 the ward at the Dead Ebb | No geometry of its own, by design — it is the same zone with the plane lowered. What makes the floor worth walking is `ward/seabed`, a mix carrying weed over old paving, with the wrecks and the arcade footings standing on it. `anchor/grate-landing` is where `S4` arrives |
+
+The route the `traversable` gate proves is the designed one, not a shortcut
+through the door: the causeway is walled by the bars at the tower's near face,
+so the only walk from the approach face to the exit face is up the fallen bay,
+along the arcade, in through the shutter and down the well.
+
+**Palette** — measured, never named from memory. Material colours are patch
+means over crops of the concept image, verified by looking at the crops drawn
+back onto the image; every mix was read as a swatch sheet before binding. The
+whole image is near-neutral — saturation runs 3 to 13 of 255 across every
+sample — so the palette separates by **value**, not by hue, and every structural
+role is a mix.
+
+| Role | Mix | Measured | Concept sample |
+|---|---|---|---|
+| `ward/sea` | `water[level=0]` | — | `#23282b` near water, `#42494d` far. Biome-tinted, so no measurement of the block predicts it |
+| `ward/seabed` | `mud` 40% · `deepslate_tiles` 25% · `cobbled_deepslate` 25% · `muddy_mangrove_roots[axis=y]` 10% | `#403e3f` | the ground the Dead Ebb uncovers — silt over the ward's old paving, weed lying in it |
+| `ward/quay` | `deepslate_tiles` 40% · `cobbled_deepslate` 30% · `polished_blackstone_bricks` 20% · `blackstone` 10% | `#3b393c` | `#2f3332` the causeway's wet flank |
+| `ward/deck` | `deepslate[axis=y]` 35% · `cobbled_deepslate` 30% · `polished_deepslate` 25% · `stone_bricks` 10% | `#535355` | `#54585b` the wet flagstone walking course |
+| `ward/kerb` | `tuff_bricks` 35% · `polished_tuff` 30% · `deepslate[axis=y]` 25% · `stone_bricks` 10% | `#616461` | `#5a6063` the raised kerb, which catches what light there is |
+| `ward/weed` | `muddy_mangrove_roots[axis=y]` 30% · `black_concrete` 30% · `blackstone` 25% · `polished_blackstone_bricks` 15% | `#292424` | `#282c2d` the black weed heaped on the deck and hanging on the tower base |
+| `arcade/footing`, `tower/base` | `deepslate_tiles` 35% · `cobbled_deepslate` 30% · `polished_blackstone_bricks` 25% · `muddy_mangrove_roots[axis=y]` 10% | `#3d3b3d` | `#3a3c38` masonry standing in the water, fouled with weed |
+| `arcade/pier_stone`, `arcade/arch_stone` | `tuff_bricks` 30% · `polished_tuff` 25% · `cobbled_deepslate` 20% · `chiseled_tuff` 15% · `blackstone` 10% | `#575a57` | `#5c6164` the arch voussoirs, the palest stone in the image |
+| `arcade/deck_stone` | `tuff_bricks` 30% · `cobbled_deepslate` 25% · `polished_tuff` 20% · `deepslate_tiles` 15% · `blackstone` 10% | `#515351` | `#3f4345` the arcade walk |
+| `ruin/*` | the three arcade roles again, each with `air` at 15% / 30% / 20% | — | the west arcade, as the sea has left it |
+| `tower/wall` | `tuff_bricks` 30% · `cobbled_deepslate` 30% · `chiseled_tuff` 15% · `deepslate_tiles` 15% · `blackstone` 10% | `#4f504e` | `#4e504f` the oversailing storey |
+| `tower/roof` | `polished_basalt[axis=x]` 40% · `deepslate[axis=y]` 25% · `polished_deepslate` 25% · `stone_bricks` 10% | `#59595a` | `#5c6268` the metal roof; `polished_basalt`'s stripe is what reads as standing seams |
+| `tower/shutter` | `dark_oak_trapdoor[facing=north,half=bottom,open=true,…]` | — | `#3a3b37` the shuttered windows. Stood open so it is a shutter rather than a floor hatch |
+| `shortcut/bar` | `iron_bars[…]` | — | the tower's ground door. See-through, so the far side of a shortcut can be read before it opens |
+| `wreck/hull` | `deepslate_tiles` 30% · `stripped_dark_oak_log[axis=z]` 25% · `cobbled_deepslate` 20% · `dark_oak_planks` 15% · `muddy_mangrove_roots[axis=y]` 10% | `#423930` | `#5a6267` the sunken boats |
+
+`blackstone` is the loud member of every dressed-stone mix and holds 10% of the
+area, which is the craft rule the numbers serve.
+
+Two departures from the nearest colour match, both for role fitness. The
+**wreck** measures as a pale bleached grey in the image; it is built from timber
+half rotted into the silt, because that reading is aerial perspective at thirty
+metres and a grey hull at arm's length reads as masonry. The **weed** is
+`muddy_mangrove_roots` and not the nearer-measuring `dried_kelp_block`, which
+the swatch sheet settled: kelp's mean is a dark olive but its texture is a
+bright green lattice, and it is the only chromatic thing in a monochrome world.
+
+**Every orientation-carrying role is written in the scope's own axis frame.**
+Nine of the fifteen roles are `{"local": …}` paints, so an `axis`, a `facing` or
+a bar's connection set follows the piece rather than the world: 117 of 296 fills
+resolve out of a scope's own frame. It is not decoration here — `tower_face` is
+one rule called for the tower's side walls in their own frame and again through
+`cross_face`, which hands it a frame where the wall's run is the local X, and the
+shutters stand correctly in both without a second rule.
+
+**Open against this piece**
+
+- **The region cannot hold the tower the beats describe.** `beats.md` asks for
+  three storeys and `concept/z3-drowned-ward.jpg` for a peaked roof; at the
+  manifest's ten courses the vertical budget is one course of ward floor, two of
+  water, three of arch, one of arcade deck, two of storey and one of roof, and
+  three storeys with a pitch needs thirteen. Two storeys and a single-course cap
+  are built, and the oversailing upper storey — the silhouette's strongest
+  element — is what carries the recognition instead. Raising the region is a
+  manifest change and a design decision, so it is recorded rather than taken.
+- **Only one of the two arcades is climbable.** `beats.md`'s *what fills it*
+  column asks for two arcades climbable end to end. The east arcade is the upper
+  route and has the fallen bay that reaches it; the west is a ruin with a holed
+  deck and no way up, which is what makes it read as the wrecked one. A second
+  climb is a design decision about whether the upper route should branch.
+- **The zone declares no `waterline_y`.** The prefab metadata has the field and
+  `DW0344` checks it against the campaign's ocean datum, but the grammar exporter
+  writes `None` unconditionally, so a zone whose water *is* the campaign's tide
+  plane cannot state where that plane sits from its own program. It is 2 in this
+  piece's local frame. Hand-editing it into the metadata was not done: it would
+  make the byte-reproduction claim above false. This is a missing engine surface,
+  not a defect in the zone.
+- The piece declares no spatial contract, so every contract obligation examined
+  nothing and `traversable`'s binding counts standable cells on two region faces
+  rather than declared ways in — the same gap Z1 carries.
+- Lighting is `unmeasured` and cannot be otherwise: `delve-admit lighting` takes
+  one structure template and refuses a tile set, and running it on a single tile
+  would write a second metadata document describing one slice of a building. No
+  rule here exposes a light-emitting role, so light arrives as campaign-bound
+  content on the declared anchors.
+- One standable cell under a roof has no walking route (x11 y3 z58) and 158 more
+  are unreachable but open to the sky. Both are the west arcade: the first is a
+  gap inside a ruined pier, the second is its deck, which is scenery and is meant
+  to have no way up.
+- `anchor/tower-gate` renders as an empty frame. It faces out of the exit face,
+  so what it is about lives in the assembled world; it is kept in the review set
+  rather than dropped so the gap is visible.
+
 ## Z4 chapel ward
 
 **Scene** (fixed before any tool ran, per the procedure's §1): the player comes up
@@ -887,3 +1285,479 @@ also 1742.
   fight.** Beat 4.3's "the ward cannot be crossed around them" is built as two
   head-high fills of `collapse` in the north corners of the walk. In adventure
   mode nothing can mine them; in any other mode the pinch is a two-block dig.
+
+## Z5 hall keep
+
+**Scene** (fixed before any tool ran, per the procedure's §1): the player enters
+an intact great hall — timber-beamed ceiling on, ashlar walls dry, floor swept —
+walks its length past a gallery perch and a store lane of standing barrels, and
+leaves down a descent that does not climb back. It is the first room in the delve
+that is not a ruin, and the only one the sea has never entered.
+
+**It is a one-way descent, and that is the design.** The route enters at the hall
+floor and ends on the lower landing; nothing climbs back. So the piece cannot
+satisfy `--reachable-floor` and does not claim it — a red gate writes no `.nbt`,
+so claiming it would ship nothing rather than ship a known red. The always-on
+reachability line is read instead, and the lower keep appears there as an
+unreachable sheltered pocket. **That pocket is the descent, not a room with no way
+in**, and this sentence is what tells a later reader which it is.
+
+**Expansion** — `delve-grammar expand --file design/programs/z5-hall-keep.json
+--region 11x11x76 --seed 1 --traversable --allow-falls`. All six gates pass with a
+non-zero binding: `blocks-exist` 11, `shape-complete` 11, `states-complete` 11,
+`oriented-fills` 106, `non-empty` 9196, `traversable` 18 (9 standable cells at the
+approach end, 9 at the exit end). 6126 filled cells, 11 distinct states, 697
+standable, 14 anchors, silhouette complexity 1.50, and 29 local-frame fills — the
+last is a measurement the corpus audit rolls up across programs, not a gate on
+this zone.
+`delve-admit audit` passes over 9196 blocks (0 forbidden, 0 non-allowlisted, 0
+unknown, 0 pre-pin unknown, 0 under-specified).
+
+**It ships as a tile set.** 76 is past the 48-per-axis structure-template cap, so
+the expansion is written as 2 tiles in a 1x1x2 grid plus one manifest, cut
+deterministically at z=48. Every gate above judged the whole zone, and
+`delve-render piece` reassembles the tiles before placing a camera, so the review
+set frames one building and no shot is cut at the packaging plane. The
+consequence to know: `delve-admit lighting` takes one structure template and
+refuses a manifest (`DW0732`), so **this zone has no lighting step and carries
+`"profile": "unmeasured"`**. Running `lighting` on a single tile would succeed and
+write a second metadata document describing one slice of the building, which is a
+number about nothing; the tiles are left alone.
+
+**Provenance** — program
+`sha256:3db9ce6916603b68d3bde669e2c67cc601c978a283b753f7f3108e261a715a2d`, seed 1,
+region 11x11x76; re-expanding those inputs reproduces both tiles and the manifest
+byte for byte (verified by direct comparison against the shipped files, and again
+by hashing each file's contents alone — a hash taken over a listing would have
+compared the file paths as well as the bytes). The hash is over the **effective**
+program, so it is not the hash of the file's own text. Every value this zone ships
+at lives in the program's own `params`, so the file plus the manifest row is the
+whole recipe and no remembered flag is needed.
+
+**Artifacts** — `prefabs/z5-hall-keep.json` (the tile-set manifest) with
+`prefabs/z5-hall-keep.x0y0z0.nbt` and `prefabs/z5-hall-keep.x0y0z1.nbt` beside it,
+in the repo's flat prefab library; review shots and what each camera answers in
+`design/review/z5/`.
+
+**Palette** — measured, never named from memory. Material colours are patch means
+over crops of the concept image, verified by drawing the crops back onto the image
+and looking at where they landed; candidates come from `tools/block-appearance.py`
+over the measured targets, and the mixes were read as a swatch sheet before
+binding.
+
+The concept is a dark, atmospheric painting, and every masonry patch in it
+measures with a very wide value range — the hall's ashlar runs from `#262829` in
+shadow through `#3b3d3e` to `#5e676b` in the light shafts, a spread of 73 out of
+255. **A near-neutral wide-range measurement is a mix, not a block**: bound to one
+block the hall reads as a flat panel that no measurement of the mean would object
+to, which is exactly what it did before this pass. The value the mix is anchored on
+is the **lit** share rather than the whole-patch mean, because the lit share is
+where the material is revealed and the shadow is the painting's lighting rather
+than the stone's colour.
+
+| Role | Mix | Measured | Concept sample |
+|---|---|---|---|
+| `hall/stone`, `gallery/stone`, `motif/stone`, `door/stone`, `stores/stone` | `tuff_bricks` 60% · `polished_tuff` 20% · `chiseled_tuff_bricks` 10% · `deepslate_tiles` 10% | `#5e635d` | `#5e676b` lit hall ashlar — the chimney breast and the wall piers where the light shafts cross them |
+| `duct/rock` | `minecraft:cobbled_deepslate` | `#4d4d51` | the service duct is not the hall, and is bound to the same stone Z4's chute is |
+| `gallery/pedestal` | `minecraft:chiseled_tuff_bricks` | `#696d65` | the stand in the gallery — the wall mix's own loud member, used whole so the object reads against the wall it stands on |
+| `hall/timber`, `gallery/timber` | `minecraft:dark_oak_wood[axis=y]` | `#3c2f1a` | `#282626` lit roof truss — the nearest wood on the shelf; the concept's timber is darker because it is the deepest shadow in the frame |
+| `motif/curtain` | `minecraft:iron_chain[axis=y,waterlogged=false]` | — | the hanging strands across the hall's far opening |
+| `stores/barrel`, `stores/barrel_unbanded` | `minecraft:barrel[facing=up,open=false]`, `minecraft:spruce_log[axis=y]` | — | the store lane's standing casks, banded and plain |
+| `margin` | `minecraft:deepslate[axis=y]` | — | inert mass, no player-visible face |
+
+The five keep-interior stone roles take **one** mix, so the hall, the gallery, the
+motif wall, the doorway and the stores read as one building — the rule that the
+interior belongs to the same theme as the outside, applied inside. `tuff_bricks`
+is also Z4's ashlar: the chapel ward is reached through this keep's own duct, and
+two rooms of one building are not two materials. `deepslate_tiles` is the dark
+member at 10%, which is the craft rule the numbers serve — the flat dark panels
+read as deliberate repair, where a rubbly dark member read as ruin on the swatch
+sheet and this hall is explicitly not one.
+
+**Every orientation-carrying role is written in the scope's own axis frame.** The
+six roles that carry a direction — both timbers, the margin, the curtain and both
+barrel roles — are `{"local": …}` paints, and the program declares `1.4.0`, the
+version the local frame is fenced behind. 29 of 29 orientation-carrying fills now
+resolve through the scope that fills them, where **0 did before**.
+
+The reason this is not decoration here is worth stating, because the zone passed
+every gate without it. The hall is entered through `reorient {y: world_y, z:
+largest}`, and at *this* region 76 is already the largest axis — so the frame is
+the identity, and a bare state lands correctly. The safety was a property of the
+region, not of the program: a grammar program is region-polymorphic, and at any
+region where x exceeded z the same bare states would land turned, with every gate
+still green. Two of the program's nine reorientations (`door/alcove_air`,
+`stores/tell_cell`) are genuine quarter-turns that only leave these states alone
+because all six are stated about the vertical, which no turn about the vertical
+moves. Wrapping them was proved to emit **byte-identical** blocks at this region,
+so it cost the shipped piece nothing and bought it correctness everywhere else.
+
+**Open against this piece**
+
+- **The lower landing is bare floor.** The descent ends on it and there is nothing
+  on it — no fitting, no cover, no object; `review/z5/eye-landing.png` is a frame
+  containing a floor and the background. A big empty room is a small building that
+  costs more to walk across, and this is one. The program exposes no rule that
+  furnishes the landing, so what goes there arrives as campaign-bound content on
+  the declared anchors, or as a rule this program does not have.
+- **46.0% of the piece is `margin`**, the inert mass around and below the hall. The
+  `anchor/hatch` anchor stands inside it, so its eye camera looks into solid rock
+  (`review/z5/eye-hatch.png`) — an anchor aimed at nothing in this piece.
+- Lighting is `unmeasured` and cannot be otherwise: a tiled zone has no lighting
+  step (above). No rule in this zone exposes a light-emitting role either, so the
+  hall's light — the shafts through the slit windows that beat 5.1 is built on —
+  has to arrive as campaign-bound content on the declared anchors.
+- **The hearth, the tapestries and the far arch have no role and no rule in this
+  program.** They are three of the zone's beats: the cold laid hearth, the priory's
+  own account of itself panel by panel, and the arched doorway to the chamber the
+  prior sits in. The hanging strands stand in for the third; the first two are
+  design work this production did not do.
+- The concept's roof is an open truss with rafters and light between them. Here the
+  span beams read as a beamed ceiling rather than an open truss, because the truss
+  band's course above the beam is the piece's top and there is nothing to see
+  through it to. At playable scale the ceiling carries the recognition; the
+  rafter-by-rafter detail it was never going to have is not a defect.
+- The piece declares no spatial contract, so every contract obligation examined
+  nothing and `traversable`'s binding counts standable cells on two region faces
+  rather than declared ways in.
+- Judge it from the eye shots. A roofed interior photographs as a closed box from
+  outside, so the exterior orbit cameras are the weakest shots in the set;
+  `review/z5/README.md` says which camera answers which question.
+- **This is the first tiled zone in the flat prefab library, and the prefab
+  palette audit cannot yet read one.** That job globs `prefabs/*.nbt` and audits
+  each file alone, which a tile set does not answer to in either direction: the
+  manifest is the only file that describes the zone and a `*.nbt` glob never
+  reaches it, while a per-tile verdict is one the current engine deliberately
+  **refuses** to give (`DW0732`) on the ground that a verdict over one file reads
+  as a verdict over the zone. Separately, the engine that job pins predates
+  `minecraft:iron_chain` in the palette allowlist, so it reds one tile with
+  `DW0730` — reproduced identically against this zone's pre-production expansion,
+  so it is a property of the pinned allowlist and of this zone's palette, not of
+  this production pass. Z1 and Z4 pass at that pin because neither ships the
+  block. The zone itself audits clean as a zone: `delve-admit audit` over the
+  manifest passes on 9196 blocks with zero findings.
+
+## Z6 cistern deep
+
+**Scene** (fixed before any tool ran, per the procedure's §1): the player comes
+out of a low duct high in the end wall and drops three courses into a brick
+barrel vault that is the largest interior in the delve — a nave ranked by
+transverse arches, an arcade down one side into a lower aisle, and one break in
+the crown. Under the break a ridge of fallen vault is climbable terrain; across
+the floor a supply channel is cut three courses down, spanning nave and aisle,
+crossed only on the arcade's own continuous footing. In the aisle wall a hole is
+smashed through to the ward beyond and barred. At the deep end, where the vault
+ends in a wall, a dressed apron ring sinks two steps to a silt bed.
+
+The zone is entered by falling and left through the hole in its side; the walk it
+claims is duct to deep end, and `--allow-falls` is the entry.
+
+**This program is not the engine export.** The exported one composed the staging
+vocabulary — a drop shaft, a watch bay, a broken grate, an open arena, a junction
+and a sealed door — and it passed every gate it was given, but it built a
+nineteen-wide lane beside a twenty-one-wide slab of inert rock and none of the
+scene: no vault, no piers, no break, no channel, no well. Two fifths of its
+blocks were `margin` a body never sees, its interiors were three courses high
+under six of solid mass, and six of the seven beats had no rule in it at all. It
+was replaced by a program written against this zone's own concept and beats. What
+survives is the shape of the plan — one run of named segments with a side strip
+— and the id.
+
+**Expansion** — `delve-grammar expand --file
+design/programs/z6-cistern-deep.json --region 40x10x100 --seed 1 --traversable
+--allow-falls --id z6-cistern-deep`. Every gate passes with a non-zero binding:
+`blocks-exist` 12, `shape-complete` 12, `states-complete` 12, `oriented-fills`
+527, `non-empty` 40000, `traversable` 12 (4 standable cells at the approach face
+— which are the duct and nothing else, the rest of that face being solid — and 8
+at the exit face, where the aisle's last arch is). 26463 filled cells of 40000,
+12 distinct states, 3168 standable, silhouette complexity 1.11, 14 anchors.
+Reachability 3076 of 3168 standable cells (97.1%) from 8 grade entry cells, in 3
+pockets, each of which is a design and is named below. `delve-admit audit` passes
+over 40000 blocks across the 3 tiles (0 forbidden, 0 non-allowlisted, 0 unknown,
+0 pre-pin unknown, 0 under-specified, no findings).
+
+100 is past the 48-per-axis structure-template cap, so the zone ships as **three
+tiles in a 1x1x3 grid plus a manifest**; `prefabs/z6-cistern-deep.json` is the
+manifest and is the only file that describes the zone. Per the procedure's §7 a
+tiled zone has no `lighting` step — `socket`, `anchor` and `lighting` take one
+template and refuse a manifest — so this piece carries `"profile": "unmeasured"`
+and means it.
+
+**Provenance** — program
+`sha256:104d2ccaf8372410db42f77aa6d2f6df44c8f7ab3b8b658c980f12b38f5f74b6`, seed
+1, region 40x10x100. The hash is over the effective program, and it binds: the
+same expansion with `--param hole=9` reports
+`sha256:d60f6d00e5a84555a73e7e9b54a6e26fc5b8b189ca8f6618382d4fe7acd09416`, so a
+matching hash is a statement about what was expanded and not only about which
+file was named.
+
+Reproduction is **verified by two methods whose configuration is not shared**,
+because hashing a listing of `shasum` output hashes the file paths as well as the
+bytes and would call two output directories different when nothing is. First: a
+second expansion run from a different working directory through a relative input
+path, compared with `cmp` — a byte comparator that never sees a name — giving 3
+of 3 tiles and the manifest byte-identical. Second: an independent NBT reader
+assembles both expansions into full 40x10x100 grids and compares cell by cell —
+**40000 cells examined, 0 differing**, anchors and provenance row equal, and its
+own count of filled cells (26463) equals the expander's.
+
+**Artifacts** — `prefabs/z6-cistern-deep.json` (the manifest) +
+`prefabs/z6-cistern-deep.x0y0z{0,1,2}.nbt`; review shots and what each camera
+did in `design/review/z6/`.
+
+**Palette** — measured, never named from memory. The concept image is a lit
+render, so its patch means are the scene's darkness rather than the material: the
+masonry crops mean `#272a2d` and the same pixels' lit decile means `#3e4345`,
+over a value range of p05 20 to p95 70 at a saturation of 6 out of 255. A
+near-neutral colour of that range is a **mix** and not a block — bound to one
+block the vault reads as a flat panel — and the number the mixes are matched
+against is the lit decile, because the only material fact in a rendered scene is
+what the key light reaches.
+
+| Role | Mix | Mix mean | Concept sample |
+|---|---|---|---|
+| `vault` | `deepslate_bricks` 50% · `cracked_deepslate_bricks` 20% · `deepslate_tiles` 20% · `chiseled_deepslate` 10% | `#414141` | `#3e4345` the lit masonry of crown and wall |
+| `pier` | `polished_deepslate` 50% · `deepslate_bricks` 30% · `cobbled_deepslate` 10% · `chiseled_deepslate` 10% | `#464747` | `#4c5051` the lit rib — the same rock, worked smoother |
+| `floor` | `deepslate_tiles` 50% · `cracked_deepslate_tiles` 30% · `cobbled_deepslate` 10% · `chiseled_deepslate` 10% | `#383839` | `#2e3234` the lit band of the water, which is what the floor is seen through |
+| `render` | `deepslate[axis=y]` 50% · `polished_deepslate` 20% · `cobbled_deepslate` 20% · `basalt[axis=y]` 10% | `#505052` | `#4b5356` the pale broken face around the breach — lighter and cooler than the brick, and the highest saturation in the image |
+| `rubble` | `cobbled_deepslate` 45% · `cracked_deepslate_bricks` 25% · `deepslate_tiles` 10% · `chiseled_deepslate` 10% · `air` 10% | `#454547` | fallen vault; a tenth of the paint is not there, which is what makes it rubble rather than a block of stone |
+| `silt` | `mud` 60% · `cracked_deepslate_tiles` 30% · `deepslate_tiles` 10% | `#39383a` | not in the image — the bed is under water in every frame of it. Read as the cistern's own paving with fifty-one years over it |
+| `grate` | `iron_bars`, local | `#898b88` | `#535a5c` the lit ironwork of the grille |
+
+Two decisions the measurement made rather than confirmed. The first shortlist put
+`polished_blackstone` and `polished_blackstone_bricks` in the vault, floor and
+rubble as the loud member at the craft rule's 10%; both are warm-purple
+(dominant hue 314 degrees) while every crop of the concept is cool — blue above
+red in the lit decile of all four materials. They were swapped for
+`chiseled_deepslate`, which is loud in value and neutral in hue, and the swatch
+sheet is what settled it. The second was silt: the first mix carried `clay`,
+which tiles as near-white blotches and reads as nothing the fiction has.
+
+**Every role that carries a direction is written in the scope's own axis frame.**
+`render` (through `deepslate` and `basalt`, both of which carry `axis`) and
+`grate` are `{"local": …}` paints; `oriented-fills` reports 2 of 2
+orientation-carrying fills resolved that way. Why this matters here even though
+it changes nothing here is in the section above.
+
+**Every beat has a rule.** `design/beats.md` §Z6, in order:
+
+| beat | the rules that build it |
+|---|---|
+| 6.1 the ranked vault, ankle-deep | `deep_plan` (a 22-wide nave, a 2-wide arcade and a 12-wide aisle across 40), `bay_section` · `vault_head` · `vault_haunch` (the section), `ranked_run` · `pier_slab` · `pier_jamb` · `pier_arch` · `pier_head` · `pier_shoulder` (the transverse arches), `arcade_run` · `arcade_pier` (the second rank line). The water is not authored — see below. |
+| 6.2 the daylight shaft through a collapse | `sky_crown` (the break and its rubble lip), `cone_side` (the vault gone to rubble around it), `rubble_ridge` · `ridge_step` · `ridge_cap` (the debris as climbable terrain), `cone_nave` · `cone_head` · `cone_run` · `cone_slot` |
+| 6.3 K5, the supply channel | `chan_seg` · `chan_trench` · `trench_bay` · `trench_aisle` (the cut, three courses into a four-course sub-floor, spanning nave and aisle), and `bay_section` in the arcade lane, which is the crossing |
+| 6.4 the Choir's side vault | `choir_seg` · `choir_aisle` · `choir_pair` · `choir_bay` (the vault), `choir_arcade` (the wide opening it is heard through), `choir_watch_bay` (the cell it is counted from) |
+| 6.5 the Founder and the well head | `well_seg` · `well_end` · `well_nave` · `well_floor` · `apron_row` · `apron_slab` · `well_row` (the dressed apron), `well_shaft` · `well_step` · `well_pit` (the mouth), `well_jamb_band` (`anchor/founder`, `anchor/well`) |
+| 6.6 the tongue in the silt | `well_pit`'s `silt` course and `anchor/tongue` on the bed above it |
+| 6.7 S4, the grille | `breach_wall` · `breach_section` · `breach_opening` · `breach_mouth` · `grate_leaf` |
+
+**The sea is the campaign's, and this piece authors none of it.** `design/tide.md`
+is the design of record: one world-wide plane, no bounded basin, every wet volume
+solid water, no flow. A cistern is the zone most likely to want a basin and this
+one has none — the geometry is dry and the plane arrives from outside it, which
+is the only construction that cannot re-flood from its own edges. What the piece
+owes the tide is the **ordering of three heights**, and it carries it: the floor
+is the top of a four-course sub-floor; the well's bed is one course above the
+region's floor and the channel's bed is on it, so the channel's invert is one
+course lower than the well's. That is the whole of the two rows `tide.md` says
+carry the design — at the Dead Ebb the channel still holds water and the well's
+silt clears the plane. Both cuts are open to the room above, so nothing under the
+plane is a trapped pocket.
+
+**Open against this piece**
+
+- **The three unreachable pockets are three designs, and each is named.** 44
+  cells at `x 2..23 y 1 z 48..49` and 24 at `x 26..37 y 1 z 48..49` are the
+  channel's bed: a body that walks on to it cannot climb out, which is what beat
+  6.3 asks of it, and in play it is under water at every state of the tide. 24 cells
+  at `x 10..13 y 7 z 94..99` are the entry duct, which is a one-way descent —
+  the case `prefab-procedure.md` §4 says to describe rather than gate, and the
+  reason this zone does not claim `reachable-floor`. Nothing else is stranded.
+- **The vault is segmental, not semicircular, and the region decides that.** A
+  barrel over a 22-block span wants eleven courses of rise; the zone has ten
+  courses in total and four of them are the sub-floor the channel and the well
+  are cut into. The section that fits is 22 wide at the springing stepping to 14
+  at the crown over five courses. Narrowing the nave would buy the profile at the
+  cost of the one thing beat 6.1 is about, so the silhouette carries it and the
+  arcade's arches carry the rest.
+- **The wellhead is a dressed apron and a sunk mouth, not a built-up kerb.** A
+  kerb standing proud of the floor has to come out of the head band, which starts
+  the vault one course higher over the well than over its neighbours. The apron
+  is the floor's own top course in `pier`, and it is flush.
+- **The grate does not lean.** The concept's grille is half out of its hole,
+  which is a diagonal, and the grammar has no diagonal (`grammar.md` §6). What is
+  built is a flat leaf of bars in the wall's outer course over a fallen sill of
+  `rubble`, with the pale `render` lip around it.
+- **No rule in this zone exposes a light-emitting role**, so the piece is dark
+  and the shaft of daylight the scene is composed around is a hole rather than a
+  beam. Light arrives as campaign-bound content on the declared anchors.
+- **The piece declares no spatial contract**, so every contract obligation
+  examined nothing and `traversable`'s binding counts standable cells on two
+  region faces rather than declared ways in. It would say something real here —
+  the zone has one entry, one interior route and two openings that are not on the
+  same axis — and it is the largest single thing left undone against this piece.
+- **`tools/block-appearance.py --program` does not read a `local` paint.** Over
+  this seven-role palette it reports `binding: 5 paint(s) examined` and skips
+  `render` and `grate` in silence; their numbers in the table above came from
+  `--mix` and `--id` instead. The binding count is the only tell, and a palette
+  written entirely in the scope's own frame would measure as zero paints and
+  print no error.
+
+## Z7 bell tower
+
+**Scene** (fixed before any tool ran, per the procedure's §1): the player climbs a
+cobbled ramp that steps up between the collapsed low buildings of the upper ward,
+with the tower standing at its head; enters at the tower's foot through a small
+arched door; finds the first flight of the belfry stair broken — its lower treads
+gone, what is left climbing four courses and stopping — and above it a ringing
+floor, a louvre stage and a stairhead, and over those an open belfry whose four
+faces are arcade bays and whose middle is filled by **a bell built out of blocks**,
+hung in a timber frame that is part of the building, with a walk-around lane wide
+enough to circle it and headroom enough to stand under its mouth.
+
+**The tower above the break is unreachable on foot, and that is the design.** The
+household broke the first flight; the campaign closes the gap on
+`anchor/broken-flight` with the rope carried from Z1. So the expansion's
+reachability line raises the storeys, the belfry and the inside of the bell as
+unreachable sheltered pockets, and this paragraph is the reader §4 asks for — the
+pockets are the design, not rooms with no way in. The zone accordingly claims
+`traversable` and **not** `reachable-floor`, which is also what its manifest row
+says.
+
+**The manifest region changed, and it is the one design decision in this
+production.** The row read `41x14x125`. Fourteen courses is one storey: it cannot
+hold a stair, a ringing floor, a stairhead and a belfry above them, and a bell
+that a body stands under needs eleven of the fourteen by itself. The scene needs
+41 courses above grade — 7 of foundation, 4 storeys of 6, and 17 of belfry — so
+the row now reads `41x48x125`. The footprint the campaign chose is untouched, and
+48 is still one tile on the vertical axis. A bell tower fourteen blocks tall would
+have been the block that shares the object's name, laid where the object goes.
+
+**Expansion** — `delve-grammar expand --file design/programs/z7-bell-tower.json
+--region 41x48x125 --seed 1 --traversable --id z7-bell-tower`. Every gate passes
+with a non-zero binding: `blocks-exist` 25, `shape-complete` 25, `states-complete`
+25, `oriented-fills` 268, `non-empty` 246000, `traversable` 82 (41 standable cells
+on the approach face, 41 on the exit face). 38808 filled cells, 25 distinct
+states, 6312 standable, footprint 5125 columns, perimeter 332, silhouette
+complexity 1.16, 37 anchors. Reachability: 4259 of 6312 standable cells reachable
+on foot from 41 grade entries (67.5%), 1276 unreachable sheltered in 43 pockets —
+the four largest are the three upper storeys and the belfry deck, and the
+smallest named one is the inside of the bell. `delve-admit audit` passes over
+246000 blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0
+under-specified).
+
+**Provenance** — program `sha256:17a315185a211f743d8fbea314aec76e7b0dd82f6a866dfcc75b7cac5cee1945`
+(the hash of the *effective* program, which is what regenerates the bytes; the
+sha256 of the committed file itself is
+`713c54d5993b71460702e1f720b03d149210272a3024ec1065507f318b92c52f`), seed 1,
+region 41x48x125. Re-expanding those inputs reproduces every shipped file byte for
+byte — verified by comparing file **contents**, and by three instruments that do
+not share a working directory, an output path or a build tree, one of them a
+different engine commit. The tile contents are
+`0ad4f90e67495b9c6b472cf4e575be2fcd50c5d45589c6e6ebcc427fd039b333`,
+`2e163c480be39b73758c6dab670cf5b0c276dababc1dc03d0dea9612a64034ef` and
+`25305fb67a4d28e37447f43100c680f6e8532beb23b7340048e1e7e605ad5d96`.
+
+**Artifacts** — the zone is past the 48-per-axis structure-template cap, so it
+ships as a **tile set**: `prefabs/z7-bell-tower.x0y0z0.nbt`,
+`…x0y0z1.nbt`, `…x0y0z2.nbt` and the manifest `prefabs/z7-bell-tower.json`, which
+is the only file that describes the zone. Review shots and what each camera did in
+`design/review/z7/`.
+
+**Palette** — measured, never named from memory. Material colours are patch means
+over crops of the concept image, verified by drawing the crops back onto the image
+and looking at them; candidates come from `tools/block-appearance.py --screen` and
+`--near` over the measured shelf, and every mix was read as a swatch sheet before
+binding. The tower's ashlar measures as a pale near-neutral of very wide value
+range (lit `#8a8e8f`, shaded `#7e8285`, saturation 10–15 of 255, luminance p05–p95
+spread 88), which is a *mix* rather than a block: bound to one block the shaft
+reads as a flat panel that no measurement of the mean would object to.
+
+| Role | Mix | Measured | Concept sample |
+|---|---|---|---|
+| `tower/ashlar` | `stone_bricks` 40% · `andesite` 25% · `cracked_stone_bricks` 15% · `smooth_stone` 10% · `tuff` 5% · `chiseled_stone_bricks` 5% | `#808080` | `#8a8e8f` sunlit shaft face / `#7e8285` the shaded face |
+| `tower/base` | `tuff_bricks` 40% · `andesite` 20% · `cobblestone` 15% · `polished_tuff` 15% · `mossy_stone_bricks` 10% | `#70736e` | `#626463` the streaked, stained lower shaft |
+| `tower/floor`, `stair/rock` | `andesite` 40% · `cobblestone` 30% · `stone_bricks` 20% · `tuff` 10% | `#808080` | plainer than the wall, so a tread reads against it |
+| `belfry/timber` | `dark_oak_wood[axis=x]` 75% · `muddy_mangrove_roots[axis=x]` 25% | `#3e321f` | `#42464b` the belfry's head-frame |
+| `bell/bronze` | `oxidized_cut_copper` 60% · `oxidized_copper` 25% · `weathered_cut_copper` 15% | `#559b7d` | `#202328` Mercy, in shade |
+| `bell/chain` | `iron_chain[axis=y,waterlogged=false]` | — | the tongue's hanging and the rope's fall |
+| `ramp/cobble` | `cobbled_deepslate` 50% · `deepslate_bricks` 20% · `basalt[axis=y]` 15% · `polished_deepslate` 10% · `smooth_basalt` 5% | `#4b4b4e` | `#404449` the cobbled way |
+| `ruin/rubble` | `cobbled_deepslate` 40% · `deepslate[axis=y]` 20% · `basalt[axis=y]` 15% · `mossy_cobblestone` 10% · `cracked_deepslate_bricks` 10% · `air` 5% | `#515252` | `#414548` the collapsed low buildings |
+| `margin` | `deepslate[axis=y]` | — | inert mass, no player-visible face |
+
+The loud member holds 5–15% of every structural mix, which is the craft rule the
+numbers serve; `ruin/rubble`'s 5% of `minecraft:air` is the collapse itself — a
+material that is partly not there.
+
+**Two deliberate departures from the nearest colour match**, both stated rather
+than smoothed over. The belfry's frame measures as a *cool* dark grey-brown and
+**every wood block in 1.21.11 is warm**: the mix matches the concept's value and
+cannot match its hue, so the frame is a shade browner than the painting. And the
+bell measures near-black (`#202328`) because in the concept it is a shaded object
+seen against a bright sky; its material is named in the campaign's own text as
+oxidised copper, and a bell bound to the measured shadow would be a black box. It
+is bound to a copper mix that is near-uniform on purpose — a bell is one casting,
+and a four-block mottle would read as damage rather than as patina.
+
+**Every orientation-carrying role is written in the scope's own axis frame.** Six
+of the ten roles are `{"local": …}` paints, and this is not decoration here: a
+tower wall is the same 2-thick slab on all four faces, so **one** rule builds all
+four by naming its thin axis `smallest` — which hands two of the four calls a
+turned frame. A bare `axis=y` or `axis=x` under those calls is in the world's
+frame, and the rubble grain, the deepslate bedding and the belfry beams would run
+the wrong way on half the building with every gate green. The stair well
+reflects its frame as well: alternate flights are the same rule under
+`mirror: {z: true}`, which is what makes the climb a switchback. 268 fills were
+examined, 125 carry block-state properties, and **125 of 125 resolve out of a
+scope's own frame**.
+
+**Open against this piece**
+
+- **Lighting is `unmeasured`, and cannot be otherwise for this zone.**
+  `delve-admit lighting` reads one structure template and refuses a tile-set
+  manifest (`DW0732`, exit 2); the zone's own tiles are not a way round it,
+  because a lighting number for one slice of a building is a number about
+  nothing. No rule in this zone exposes a light-emitting role either, so light
+  arrives as campaign-bound content on the declared anchors.
+- The piece declares no spatial contract, so every contract obligation examined
+  nothing and `traversable`'s binding counts standable cells on two region faces
+  rather than declared ways in. This is true of every zone in the campaign.
+- **`tools/block-appearance.py --program` does not see a `local` paint.** Run
+  against this program it reports `binding: 4 paint(s) examined` where the palette
+  has ten roles: the six wrapped in `{"local": …}` are skipped in silence, and the
+  six include every mix in the piece that carries an `axis`. The procedure's §2
+  makes that command the palette check, so on any program written at document
+  version 1.4.0 the check is a binding of 4 out of 10 wearing a pass. The numbers
+  in the table above were therefore taken with `--mix` per role instead.
+- **The bell is a stepped silhouette, not a curve.** The grammar has no smooth
+  curve by design, so Mercy flares 3 → 5 → 7 across in two visible steps rather
+  than in a profile. At playable scale the silhouette carries it; a reviewer
+  looking for a bell-shaped *curve* will not find one, and no seed will produce
+  it.
+- **The tower's top is a flat cap.** The concept's belfry finishes with a cornice
+  and a shallow crown; here the head band is one course of ashlar and timber and
+  the roof one course of ashlar above it. The mass is right and the profile of the
+  finish is not.
+- The concept's shaft carries far more staining and streaking than a six-member
+  mix can place, because a mix has no gradient — the weathering is uniform up the
+  whole shaft where the painting concentrates it under the openings and above the
+  base. A graded band per storey would fix it and is authoring work this
+  production did not do.
+- `anchor/belfry-stairhead` and `anchor/stair-head-1` have no useful eye shot;
+  `review/z7/README.md` says why for each, and which cameras answer those
+  questions instead.
+- **`prefab-audit` reds on `minecraft:iron_chain`, and the piece is not what is
+  wrong.** That job globs `prefabs/*.nbt` and audits each file with its own
+  pinned `delve-admit`, which is older than the pin the zone audit uses and older
+  than the 1.21.11 chain rename: its allowlist has no `iron_chain`, so the one
+  chain block in the belfry tile is `DW0730`, one block of 94464 in that tile and
+  the only offender in the whole palette. `iron_chain` is in the pinned 1.21.11
+  registry and is allowlisted by the engine the zone audit runs, where the whole
+  zone audits clean — 246000 blocks, 0 not-allowlisted. The fix is the same
+  one-line pin bump the zone audit's own comment describes for its engine ref,
+  and it is a reviewed decision rather than a content edit: dropping the chain
+  would trade the tongue's hanging and the bell-rope's fall for a green from a
+  checker that is wrong about the pinned game version. **This is not specific to
+  Z7** — `z2-gate-ward` and `z5-hall-keep` also paint a chain, so the same red is
+  latent in two more zones and Z7 is only the first of the three to be produced
+  into the library.
