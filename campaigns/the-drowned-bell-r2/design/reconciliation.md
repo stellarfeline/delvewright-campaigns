@@ -28,7 +28,13 @@ gutter tells the same story) and Z4's enclosed topology (fixed by design). They
 are listed because they change what the place looks like from outside, which is a
 site-plan fact whoever draws the whole needs, not because they are defects.
 
-## The omissions are all one omission
+## The omissions are all one omission — CORRECTED BELOW
+
+**Read the correction at the end of this section before acting on it.** The fact
+this section establishes is right and is confirmed harder than its own evidence
+put it. The *shape* it draws from that fact is wrong, and a later audit measured
+by how much.
+
 
 Read down the column and the dropped items are not a scatter. Stanchions and a
 chain rail. A hearth and tapestries. A cornice. A furnished landing. Light.
@@ -45,6 +51,31 @@ fittings and no light do not read as a citadel. They read as a quarry.**
 The universal `dark` row is the same omission, not a separate one: a lamp is a
 fitting. No zone's palette can light it because no zone's palette contains
 anything that was *put there* rather than *cut from* the rock.
+
+### The correction, and the method that caused the error
+
+An audit against the **beat sheet** — the document that says what each zone must
+stage — found 19 of the campaign's 27 beats absent. Sorted by what would have to
+change to build them, **exactly one** needs only a fitting. Four need a fitting
+and a different room. **Fourteen need a different room**: sky where there is a
+roof, a second storey where there is one, a gap in a floor that is continuous, a
+chamber off a route with no branch, an arena where there is a corridor.
+
+So the fact above holds — 24 361 filled cells and not one that emits light, props
+and fluids between 0.00% and 0.59% of each zone — and **the conclusion drawn from
+it does not**. The rooms are wrong before the ornament is.
+
+**The method is why, and it is the part worth keeping.** This section was written
+from the zones' own "open against this piece" lists, and those lists compare a
+build to its **concept image**. That comparison catches ornament, because ornament
+is exactly what differs once palette and proportion agree — and it **structurally
+cannot catch a missing beat**, because the beat sheet was never one of its
+inputs. The chapel ward is the proof: its record notes its roof honestly and
+classifies it as a decision rather than an omission, and this document carried
+that forward in good faith. Measured against the beat sheet it is five absent
+beats.
+
+A reconciliation is only as wide as the documents it reads.
 
 ## Two of them are on the silhouette, which is where it costs most
 
