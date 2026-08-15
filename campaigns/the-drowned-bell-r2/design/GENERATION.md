@@ -303,8 +303,17 @@ that — it faces out of the piece, which is exactly what it is for.
   of a cliff — the same risk `grammar.md` §5c records for Z6's margin, at twice
   the share.
 - **The shore is drawn against `reference/map-brief.md`, which is not on this
-  branch.** So is `beat-audit.md`, the document that found this zone staged none
-  of its beats. Both were read from their own branches.
+  branch** and was read from its own. `beat-audit.md`, the document that found
+  this zone staged none of its beats, has since landed here — and every Z0 row in
+  it describes the program this one replaces. It states Z0 at 19×6×24, 1422
+  filled cells, two block states, one anchor and 7 of 7 beats absent; it gives a
+  reproduction command at a region `zones.json` no longer declares; and its
+  campaign-wide finding that there is **not one block that emits light** across
+  the produced zones, which `reconciliation.md` carries too, now has this zone's
+  lamp as its counter-example. The audit is a record of what was found, not a
+  claim about what is here now, and nothing in it should be quietly rewritten —
+  but a reader who lands on it first will read live claims about a file that no
+  longer builds any of what it describes.
 
 ## Z1 cliff road
 
