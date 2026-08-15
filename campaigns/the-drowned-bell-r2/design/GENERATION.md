@@ -53,8 +53,8 @@ what lets an orientation-dependent block stay a role a campaign can restyle
 without knowing which way the piece was laid.
 
 Every such role in this campaign is written that way, so no zone is held back by
-it: all eight pass `oriented-fills`, five of them carry local roles, and the
-audit totals **33** fills resolved out of a scope's own frame across those five.
+it: all eight pass `oriented-fills`, six of them carry local roles, and the
+audit totals **62** fills resolved out of a scope's own frame across those six.
 Z1 is the worked case, and it shows why the frame is not decoration: the corpse
 is authored as `rotation=8`, facing out of its own recess, and lands in the world
 as `rotation=4`.
@@ -77,7 +77,7 @@ the zone set is complete).
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **awaiting owner review** — expands at 20x10x84; interior review set in `review/z2/` (largest program: 101 rules) |
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | program exported, unproduced |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — see below |
-| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | program exported, unproduced |
+| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | program exported, unproduced |
 | Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | program exported, unproduced |
 
@@ -225,3 +225,154 @@ also what lets the player read the far side of a shortcut before it opens.
   concept's material and tone, and the composition does not — deliberately, the
   topology is fixed.
 - 47.9% of the piece is `margin`, the inert mass behind the shortcut rooms.
+
+## Z5 hall keep
+
+**Scene** (fixed before any tool ran, per the procedure's §1): the player enters
+an intact great hall — timber-beamed ceiling on, ashlar walls dry, floor swept —
+walks its length past a gallery perch and a store lane of standing barrels, and
+leaves down a descent that does not climb back. It is the first room in the delve
+that is not a ruin, and the only one the sea has never entered.
+
+**It is a one-way descent, and that is the design.** The route enters at the hall
+floor and ends on the lower landing; nothing climbs back. So the piece cannot
+satisfy `--reachable-floor` and does not claim it — a red gate writes no `.nbt`,
+so claiming it would ship nothing rather than ship a known red. The always-on
+reachability line is read instead, and the lower keep appears there as an
+unreachable sheltered pocket. **That pocket is the descent, not a room with no way
+in**, and this sentence is what tells a later reader which it is.
+
+**Expansion** — `delve-grammar expand --file design/programs/z5-hall-keep.json
+--region 11x11x76 --seed 1 --traversable --allow-falls`. All six gates pass with a
+non-zero binding: `blocks-exist` 11, `shape-complete` 11, `states-complete` 11,
+`oriented-fills` 106, `non-empty` 9196, `traversable` 18 (9 standable cells at the
+approach end, 9 at the exit end). 6126 filled cells, 11 distinct states, 697
+standable, 14 anchors, silhouette complexity 1.50, and 29 local-frame fills — the
+last is a measurement the corpus audit rolls up across programs, not a gate on
+this zone.
+`delve-admit audit` passes over 9196 blocks (0 forbidden, 0 non-allowlisted, 0
+unknown, 0 pre-pin unknown, 0 under-specified).
+
+**It ships as a tile set.** 76 is past the 48-per-axis structure-template cap, so
+the expansion is written as 2 tiles in a 1x1x2 grid plus one manifest, cut
+deterministically at z=48. Every gate above judged the whole zone, and
+`delve-render piece` reassembles the tiles before placing a camera, so the review
+set frames one building and no shot is cut at the packaging plane. The
+consequence to know: `delve-admit lighting` takes one structure template and
+refuses a manifest (`DW0732`), so **this zone has no lighting step and carries
+`"profile": "unmeasured"`**. Running `lighting` on a single tile would succeed and
+write a second metadata document describing one slice of the building, which is a
+number about nothing; the tiles are left alone.
+
+**Provenance** — program
+`sha256:3db9ce6916603b68d3bde669e2c67cc601c978a283b753f7f3108e261a715a2d`, seed 1,
+region 11x11x76; re-expanding those inputs reproduces both tiles and the manifest
+byte for byte (verified by direct comparison against the shipped files, and again
+by hashing each file's contents alone — a hash taken over a listing would have
+compared the file paths as well as the bytes). The hash is over the **effective**
+program, so it is not the hash of the file's own text. Every value this zone ships
+at lives in the program's own `params`, so the file plus the manifest row is the
+whole recipe and no remembered flag is needed.
+
+**Artifacts** — `prefabs/z5-hall-keep.json` (the tile-set manifest) with
+`prefabs/z5-hall-keep.x0y0z0.nbt` and `prefabs/z5-hall-keep.x0y0z1.nbt` beside it,
+in the repo's flat prefab library; review shots and what each camera answers in
+`design/review/z5/`.
+
+**Palette** — measured, never named from memory. Material colours are patch means
+over crops of the concept image, verified by drawing the crops back onto the image
+and looking at where they landed; candidates come from `tools/block-appearance.py`
+over the measured targets, and the mixes were read as a swatch sheet before
+binding.
+
+The concept is a dark, atmospheric painting, and every masonry patch in it
+measures with a very wide value range — the hall's ashlar runs from `#262829` in
+shadow through `#3b3d3e` to `#5e676b` in the light shafts, a spread of 73 out of
+255. **A near-neutral wide-range measurement is a mix, not a block**: bound to one
+block the hall reads as a flat panel that no measurement of the mean would object
+to, which is exactly what it did before this pass. The value the mix is anchored on
+is the **lit** share rather than the whole-patch mean, because the lit share is
+where the material is revealed and the shadow is the painting's lighting rather
+than the stone's colour.
+
+| Role | Mix | Measured | Concept sample |
+|---|---|---|---|
+| `hall/stone`, `gallery/stone`, `motif/stone`, `door/stone`, `stores/stone` | `tuff_bricks` 60% · `polished_tuff` 20% · `chiseled_tuff_bricks` 10% · `deepslate_tiles` 10% | `#5e635d` | `#5e676b` lit hall ashlar — the chimney breast and the wall piers where the light shafts cross them |
+| `duct/rock` | `minecraft:cobbled_deepslate` | `#4d4d51` | the service duct is not the hall, and is bound to the same stone Z4's chute is |
+| `gallery/pedestal` | `minecraft:chiseled_tuff_bricks` | `#696d65` | the stand in the gallery — the wall mix's own loud member, used whole so the object reads against the wall it stands on |
+| `hall/timber`, `gallery/timber` | `minecraft:dark_oak_wood[axis=y]` | `#3c2f1a` | `#282626` lit roof truss — the nearest wood on the shelf; the concept's timber is darker because it is the deepest shadow in the frame |
+| `motif/curtain` | `minecraft:iron_chain[axis=y,waterlogged=false]` | — | the hanging strands across the hall's far opening |
+| `stores/barrel`, `stores/barrel_unbanded` | `minecraft:barrel[facing=up,open=false]`, `minecraft:spruce_log[axis=y]` | — | the store lane's standing casks, banded and plain |
+| `margin` | `minecraft:deepslate[axis=y]` | — | inert mass, no player-visible face |
+
+The five keep-interior stone roles take **one** mix, so the hall, the gallery, the
+motif wall, the doorway and the stores read as one building — the rule that the
+interior belongs to the same theme as the outside, applied inside. `tuff_bricks`
+is also Z4's ashlar: the chapel ward is reached through this keep's own duct, and
+two rooms of one building are not two materials. `deepslate_tiles` is the dark
+member at 10%, which is the craft rule the numbers serve — the flat dark panels
+read as deliberate repair, where a rubbly dark member read as ruin on the swatch
+sheet and this hall is explicitly not one.
+
+**Every orientation-carrying role is written in the scope's own axis frame.** The
+six roles that carry a direction — both timbers, the margin, the curtain and both
+barrel roles — are `{"local": …}` paints, and the program declares `1.4.0`, the
+version the local frame is fenced behind. 29 of 29 orientation-carrying fills now
+resolve through the scope that fills them, where **0 did before**.
+
+The reason this is not decoration here is worth stating, because the zone passed
+every gate without it. The hall is entered through `reorient {y: world_y, z:
+largest}`, and at *this* region 76 is already the largest axis — so the frame is
+the identity, and a bare state lands correctly. The safety was a property of the
+region, not of the program: a grammar program is region-polymorphic, and at any
+region where x exceeded z the same bare states would land turned, with every gate
+still green. Two of the program's nine reorientations (`door/alcove_air`,
+`stores/tell_cell`) are genuine quarter-turns that only leave these states alone
+because all six are stated about the vertical, which no turn about the vertical
+moves. Wrapping them was proved to emit **byte-identical** blocks at this region,
+so it cost the shipped piece nothing and bought it correctness everywhere else.
+
+**Open against this piece**
+
+- **The lower landing is bare floor.** The descent ends on it and there is nothing
+  on it — no fitting, no cover, no object; `review/z5/eye-landing.png` is a frame
+  containing a floor and the background. A big empty room is a small building that
+  costs more to walk across, and this is one. The program exposes no rule that
+  furnishes the landing, so what goes there arrives as campaign-bound content on
+  the declared anchors, or as a rule this program does not have.
+- **46.0% of the piece is `margin`**, the inert mass around and below the hall. The
+  `anchor/hatch` anchor stands inside it, so its eye camera looks into solid rock
+  (`review/z5/eye-hatch.png`) — an anchor aimed at nothing in this piece.
+- Lighting is `unmeasured` and cannot be otherwise: a tiled zone has no lighting
+  step (above). No rule in this zone exposes a light-emitting role either, so the
+  hall's light — the shafts through the slit windows that beat 5.1 is built on —
+  has to arrive as campaign-bound content on the declared anchors.
+- **The hearth, the tapestries and the far arch have no role and no rule in this
+  program.** They are three of the zone's beats: the cold laid hearth, the priory's
+  own account of itself panel by panel, and the arched doorway to the chamber the
+  prior sits in. The hanging strands stand in for the third; the first two are
+  design work this production did not do.
+- The concept's roof is an open truss with rafters and light between them. Here the
+  span beams read as a beamed ceiling rather than an open truss, because the truss
+  band's course above the beam is the piece's top and there is nothing to see
+  through it to. At playable scale the ceiling carries the recognition; the
+  rafter-by-rafter detail it was never going to have is not a defect.
+- The piece declares no spatial contract, so every contract obligation examined
+  nothing and `traversable`'s binding counts standable cells on two region faces
+  rather than declared ways in.
+- Judge it from the eye shots. A roofed interior photographs as a closed box from
+  outside, so the exterior orbit cameras are the weakest shots in the set;
+  `review/z5/README.md` says which camera answers which question.
+- **This is the first tiled zone in the flat prefab library, and the prefab
+  palette audit cannot yet read one.** That job globs `prefabs/*.nbt` and audits
+  each file alone, which a tile set does not answer to in either direction: the
+  manifest is the only file that describes the zone and a `*.nbt` glob never
+  reaches it, while a per-tile verdict is one the current engine deliberately
+  **refuses** to give (`DW0732`) on the ground that a verdict over one file reads
+  as a verdict over the zone. Separately, the engine that job pins predates
+  `minecraft:iron_chain` in the palette allowlist, so it reds one tile with
+  `DW0730` — reproduced identically against this zone's pre-production expansion,
+  so it is a property of the pinned allowlist and of this zone's palette, not of
+  this production pass. Z1 and Z4 pass at that pin because neither ships the
+  block. The zone itself audits clean as a zone: `delve-admit audit` over the
+  manifest passes on 9196 blocks with zero findings.
