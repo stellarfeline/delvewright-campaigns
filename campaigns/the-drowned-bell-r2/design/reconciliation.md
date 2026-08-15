@@ -74,3 +74,84 @@ known to be a capability gap — Z1's lip, where the only lever couples the
 projection to the width of the drop. The others have not been triaged, and a
 triage that assumes "no rule exists" means "the language cannot" would be the
 same error at the other end.
+
+---
+
+# Part two: what the whole-map reference settled, and what it broke
+
+The first part read the zones against their own images. This part reads them
+against the image of the **whole**, now that one exists, and adjudicates the
+measurements that forced a placement judgement.
+
+## The landform belongs to nothing, and it is the largest thing on the sheet
+
+The reference draws the crag as natural rock: a curved shoreline, an undercut
+cliff, sloping turf, and the ward's ring wall as a curve. **The grammar has no
+smooth curve, no diagonal and no terrain, by design.** So the rock the whole
+place stands on is not a zone, is not connective tissue between zones, and is not
+expressible as a grammar program at all.
+
+The composition model has two kinds of thing in it — the parts, and the program
+that composes them. The reference says there is a third: **the ground.** It
+carries the silhouette from every angle a player approaches by, it is what the
+zones are cut into rather than placed upon, and nothing in the model or in this
+campaign's file set owns it.
+
+This is not an argument against the composition model. It is a hole in its
+inventory, found by the first artifact that looked at the whole, which is exactly
+what that artifact was for.
+
+## The zone the reference forgot is the zone the reference was anchored on
+
+Z1's cut road-ledge is asked for in the prompt and appears on the west cliff in
+**neither** sheet. The one zone that is a *line across a face* rather than a
+*volume on a shelf* did not survive into the whole-map drawing.
+
+Read with the first part's finding — that Z1's built seaward elevation is a flat
+plane with a seam where the concept has an undercut lip — the same element has now
+failed to appear twice, in two different media, for two unrelated reasons. A thing
+that neither the grammar nor the reference will draw is a thing at risk of being
+absent from the finished map while every record says it exists.
+
+## The measurements that forced a judgement
+
+**Settled, and it is a clean independent confirmation.** The whole-map work found
+that the tide document puts the belfry sixteen metres above its own tower
+approach while the zone manifest declared the tower **fourteen blocks tall**. The
+producer of that zone, working from a different fact — the bell alone needs eleven
+courses — had already raised the row to forty-eight. Two agents with no contact
+and no shared evidence reached the same conclusion about the same row. The change
+stands, and it stands better for having been reached twice.
+
+**Open, and it is a scale question rather than an arithmetic one.** The shore zone
+is declared at twenty-four blocks along its long axis; the beat sheet describes
+half a mile of flat with several hundred figures on it. That is roughly two orders
+of magnitude, and it is not a mistake in either document — it is the difference
+between fictional scale and played scale. The rule that decides it is that a delve
+is *walked*: eight hundred blocks of sand is a big empty room that costs more to
+cross, so the beat sheet's figure is fiction and the manifest's direction is right.
+Whether twenty-four is enough to *read* as a tidal flat is a separate question and
+is not settled here.
+
+**Open, and the composition machinery would catch it.** Measured from their own
+declared floors the hall reaches one elevation and the cistern another, with a
+descent specified between them that is one metre short of the difference. A metre
+is nothing to a reader and fatal to a seam: it is exactly the drift that a
+whole-map datum bound downward with guarded identities refuses at expansion,
+naming both numbers. The discrepancy is evidence for that machinery, not against
+the design.
+
+**Not a contradiction.** The chapel-side door drops the player some six metres into
+the gatehouse yard. That is a fall, and the zone that receives it declares falls.
+
+## Two documents describe different places and neither points at the other
+
+The beat sheet says what fills each zone, at fictional scale. The manifest
+declares each zone as a block region. Nothing cross-references them, so a reader
+working from either alone gets a coherent place — and a different one. The scale
+question above is one instance; there is no reason to believe it is the only one.
+
+Related, and the same shape: the production record has detailed sections for only
+two of the four zones produced before this round. One zone's record lives in its
+review directory instead, and one is a single table cell. A reader told to derive
+from "the produced zones' records" finds half of them.
