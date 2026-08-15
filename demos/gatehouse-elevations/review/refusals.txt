@@ -1,0 +1,30 @@
+Every --view refusal this piece can raise, as the tool prints it.
+Reproduce: build the tools as the README says, then run each command below
+from this directory.
+
+$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+      --view name=portcullis,face=north,of=anchor/portcullis
+DW0721 [error] view aims at `anchor/portcullis`, which this piece does not declare. Declared anchors: anchor/gate, anchor/guard-1, anchor/guard-2, anchor/walk-1, anchor/walk-2, anchor/watch
+exit 2
+
+$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+      --view name=north-front,face=north,yaw=180
+DW0721 [error] view states both `face=` and `yaw=` — a camera has one bearing. Use `face=` for a square-on elevation, `yaw=` for any other angle
+exit 2
+
+$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+      --view name=north-front,of=model
+DW0721 [error] view `name=north-front,of=model` states no bearing — give `face=<north|south|east|west|up|down>` for a square-on elevation, or `yaw=<degrees>`
+exit 2
+
+$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+      --view name=top,face=up
+DW0721 [error] view `top` is already the name of a plan shot in this set — rendering it would overwrite that image. Give the view its own `name=`
+exit 2
+
+$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+      --view name=gate-close,face=north,of=anchor/gate,zoom=8
+DW0727 [warning] gatehouse/gate-close: the declared view `name=gate-close,face=north,of=anchor/gate,zoom=8` is an EMPTY frame (1 distinct colour(s)) — a camera aimed at anchor/gate on bearing yaw 180 pitch 0 at zoom 8 sees nothing but flat background. A zoom past the fit distance puts the camera inside the model, and a cutaway can strip the only layer there was. The picture this view was asked for is NOT in this set; re-aim the view — never read the blank frame as the answer
+rendered 18 shot(s) for gatehouse.nbt -> /tmp/gh-refuse (6 eye-level shot(s) over 6 anchor(s), 6 of them eye-eligible; 1 declared view(s), 1 planned)
+exit 0
+
