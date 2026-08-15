@@ -155,3 +155,43 @@ Related, and the same shape: the production record has detailed sections for onl
 two of the four zones produced before this round. One zone's record lives in its
 review directory instead, and one is a single table cell. A reader told to derive
 from "the produced zones' records" finds half of them.
+
+---
+
+# Part three: the exported programs are not the zones they name
+
+Three zones were produced in one round. In **all three**, the program that was
+exported into this campaign as its artifact of record did not build the zone it
+is named after, and the producer had to author the zone instead:
+
+- The bell tower was a generic chain of rooms laid flat on a plinth: no climb, no
+  belfry, **no bell, and no copper in its palette** — under the name of the object
+  this campaign is named after.
+- The cistern deep composed the staging vocabulary and passed every gate it was
+  given while laying a nineteen-wide lane beside a twenty-one-wide slab of inert
+  rock: no vault, no piers, no channel, no well, interiors three courses high
+  under six of solid mass. **Six of its seven beats had no rule in it.**
+- The hall keep passed all six gates with **three of its beats** — hearth,
+  tapestries, far arch — having no role and no rule at all.
+
+Three for three is not a run of bad luck; it is the normal state of the exported
+set. The zones that were produced in earlier rounds were produced from the same
+export, and nobody has re-asked the question of them.
+
+**What the gates could not see, stated plainly.** Every one of those programs was
+green. `blocks-exist`, `shape-complete`, `states-complete`, `oriented-fills`,
+`non-empty`, `traversable` all bind and all pass on a program that builds a lane
+beside a slab. They measure that the blocks are real, the shapes are complete, and
+a body can walk from one face to another. **Nothing in the set asks whether the
+scene the campaign designed is present**, and the beat sheet — which says exactly
+what each zone must contain — is read by no machine at all.
+
+**The instance fixes are done. The general form is not.** The general form is a
+per-beat rule audit: the beat sheet names what a zone stages, and the zone's
+program either has a rule that builds each beat or it does not. Run as a
+checklist by a producer it caught six missing beats in one zone; run as a doc
+line it caught nothing for however long the export has been sitting there.
+
+This is also the strongest single argument for the whole-map reference existing.
+The bell tower's collapse was found by holding the program against a picture. No
+count would have found it, because every count was green.
