@@ -184,9 +184,28 @@ taken a role at a time with `--mix`: `block-appearance.py --program` reads a
 paint only when it is a string or a list, so a paint written in the scope's own
 axis frame is a `dict` and is skipped by both arms in silence. Pointed at this
 program it prints `binding: 4 paint(s) examined` over a program that declares
-nine, having missed all five local ones — including `shore/sand` and
-`cliff/rock`, which are 77% of the zone's blocks between them. The line reads as
-a pass.
+nine, having missed all five local ones — including `cliff/rock` and
+`shore/sand`, which write 50.3% of the zone's blocks between them. The line reads
+as a pass.
+
+**What each role actually writes**, measured rather than inferred from the block
+census: the two are different questions, since one block serves several roles.
+Each role was rebound to a marker block in turn and the marker counted off the
+expansion, which moves no geometry — and the nine come to 19 067 cells exactly,
+i.e. they partition the filled zone, which is the check that the method is
+reading what it thinks it is.
+
+| Role | cells | share of filled |
+|---|---|---|
+| `cliff/rock` | 7446 | 39.1% |
+| `shore/bed` | 7430 | 39.0% |
+| `shore/sand` | 2150 | 11.3% |
+| `cairn/stone` | 997 | 5.2% |
+| `shore/silt` | 490 | 2.6% |
+| `ledge/rock` | 328 | 1.7% |
+| `shelf/stone` | 216 | 1.1% |
+| `stake/iron` | 9 | 0.05% |
+| `shelf/lamp` | 1 | 0.01% |
 
 Two substitutions, both deliberate and neither a colour match:
 
@@ -274,12 +293,15 @@ that — it faces out of the piece, which is exactly what it is for.
   `damage-players {amount, in: {anchor: mire-<i>, extent}}` under `requires_state`
   on the tide, which is gateable at all 35 sites. Recorded because the obvious
   reading of beat 0.4 reaches for the wrong verb.
-- **Inert mass is 60% of the zone.** `cobbled_deepslate` alone is 64.6% of the
-  filled cells, and most of that is the crag: 14 courses of solid rock behind a
-  face the player only ever sees from the south. It is doing the work beat 0.6
-  asks for and it is still mass nobody walks in, so when the §4 palette budget
-  lands as a diagnostic this zone's claim will need scoping to reachable mass, the
-  same risk `grammar.md` §5c already records for Z6's margin.
+- **Mass the player never touches is 78.0% of the zone.** `shore/bed` is 39.0%
+  — the courses under every surface, with no visible face but the region's own
+  sides — and `cliff/rock` is 39.1%, nearly all of it solid rock behind a face
+  seen only from the south. Both are doing work beat 0.6 asks for, and both are
+  still mass nobody walks in; the eight roles a player can actually see total
+  22.0%. So when the §4 palette budget lands as a diagnostic, this zone's claim
+  has to be scoped to reachable mass or it will be a judgement about the inside
+  of a cliff — the same risk `grammar.md` §5c records for Z6's margin, at twice
+  the share.
 - **The shore is drawn against `reference/map-brief.md`, which is not on this
   branch.** So is `beat-audit.md`, the document that found this zone staged none
   of its beats. Both were read from their own branches.
