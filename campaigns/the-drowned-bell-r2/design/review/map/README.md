@@ -16,6 +16,9 @@ cloister are the three blank masses.
 
 `../../map-composition-log.md` §6 carries the derivation and the numbers.
 
+Three of the ten seams are green as edges; a fourth is edge-proved but its cells
+are unreached because the route to it is severed upstream. §2 has the table.
+
 | image | view | how it was aimed |
 |---|---|---|
 | `front-elevation.png` | the south face, square on — the view from the flat | `--view name=front-elevation,face=south` |
