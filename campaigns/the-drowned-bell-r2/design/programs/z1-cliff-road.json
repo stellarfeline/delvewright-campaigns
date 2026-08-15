@@ -1,1236 +1,1277 @@
 {
-  "name": "bell_cliff_road",
-  "start": "cliff_road",
-  "params": {
-    "fall": 8,
-    "ledge_shelf": 0,
-    "path/niche_height": 2,
-    "path/spacing_min": 6,
-    "path/watch_back": 3,
-    "sea": 3
+ "version": "1.4.0",
+ "name": "bell_cliff_road",
+ "start": "cliff_road",
+ "params": {
+  "fall": 12,
+  "ledge_shelf": 0,
+  "path/niche_height": 2,
+  "path/spacing_min": 6,
+  "path/watch_back": 3,
+  "sea": 5
+ },
+ "palette": {
+  "crag": {
+   "local": [
+    {
+     "weight": 5,
+     "block": "minecraft:cobbled_deepslate"
+    },
+    {
+     "weight": 3,
+     "block": "minecraft:smooth_basalt"
+    },
+    {
+     "weight": 1,
+     "block": "minecraft:blackstone"
+    },
+    {
+     "weight": 1,
+     "block": "minecraft:deepslate[axis=y]"
+    }
+   ]
   },
-  "palette": {
-    "crag": "minecraft:stone",
-    "path/corpse": "minecraft:skeleton_skull[rotation=8]",
-    "path/rock": "minecraft:stone"
+  "path/corpse": {
+   "local": "minecraft:skeleton_skull[powered=false,rotation=8]"
   },
-  "rules": {
-    "cliff_road": [
+  "path/rock": {
+   "local": [
+    {
+     "weight": 6,
+     "block": "minecraft:cobbled_deepslate"
+    },
+    {
+     "weight": 2,
+     "block": "minecraft:deepslate[axis=y]"
+    },
+    {
+     "weight": 1,
+     "block": "minecraft:tuff"
+    },
+    {
+     "weight": 1,
+     "block": "minecraft:blackstone"
+    }
+   ]
+  }
+ },
+ "rules": {
+  "cliff_road": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "reorient",
+     "orient": {
+      "y": "world_y",
+      "z": "largest"
+     },
+     "body": {
+      "op": "call",
+      "symbol": "road_plan"
+     }
+    }
+   }
+  ],
+  "gulf": [
+   {
+    "weight": 1,
+    "when": {
+     "cond": "cmp",
+     "lhs": {
+      "expr": "param",
+      "name": "ledge_shelf"
+     },
+     "op": "le",
+     "rhs": {
+      "expr": "int",
+      "value": 0
+     }
+    },
+    "body": {
+     "op": "call",
+     "symbol": "open_gulf"
+    }
+   },
+   {
+    "weight": 1,
+    "when": {
+     "cond": "cmp",
+     "lhs": {
+      "expr": "param",
+      "name": "ledge_shelf"
+     },
+     "op": "ge",
+     "rhs": {
+      "expr": "int",
+      "value": 1
+     }
+    },
+    "body": {
+     "op": "split",
+     "axis": "y",
+     "sizes": [
       {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "road_plan"
-          }
-        }
-      }
-    ],
-    "gulf": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "ledge_shelf"
-          },
-          "op": "le",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "call",
-          "symbol": "open_gulf"
-        }
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
       },
       {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "ledge_shelf"
-          },
-          "op": "ge",
-          "rhs": {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "open_gulf"
+      },
+      {
+       "op": "fill",
+       "material": {
+        "role": "crag"
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "open_gulf": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "x",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "param",
+        "name": "sea"
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "void"
+      },
+      {
+       "op": "fill",
+       "material": {
+        "role": "crag"
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "path/cliff_courses": [
+   {
+    "weight": 1,
+    "when": {
+     "cond": "all",
+     "of": [
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "dim",
+        "dim": "x"
+       },
+       "op": "ge",
+       "rhs": {
+        "expr": "int",
+        "value": 3
+       }
+      },
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "dim",
+        "dim": "y"
+       },
+       "op": "ge",
+       "rhs": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/niche_height"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 2
+        }
+       }
+      }
+     ]
+    },
+    "body": {
+     "op": "split",
+     "axis": "y",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "param",
+        "name": "path/niche_height"
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "fill",
+       "material": {
+        "role": "path/rock"
+       }
+      },
+      {
+       "op": "call",
+       "symbol": "path/niche_band"
+      },
+      {
+       "op": "call",
+       "symbol": "path/wall_lane"
+      }
+     ]
+    }
+   }
+  ],
+  "path/cliff_path": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "reorient",
+     "orient": {
+      "y": "world_y",
+      "z": "largest"
+     },
+     "body": {
+      "op": "call",
+      "symbol": "path/cliff_courses"
+     }
+    }
+   }
+  ],
+  "path/niche_band": [
+   {
+    "weight": 1,
+    "when": {
+     "cond": "cmp",
+     "lhs": {
+      "expr": "dim",
+      "dim": "z"
+     },
+     "op": "ge",
+     "rhs": {
+      "expr": "arith",
+      "lhs": {
+       "expr": "arith",
+       "lhs": {
+        "expr": "param",
+        "name": "path/spacing_min"
+       },
+       "op": "add",
+       "rhs": {
+        "expr": "int",
+        "value": 0
+       }
+      },
+      "op": "add",
+      "rhs": {
+       "expr": "int",
+       "value": 2
+      }
+     }
+    },
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/spacing_min"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 0
+        }
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_run"
+      },
+      {
+       "op": "call",
+       "symbol": "path/niche_band"
+      }
+     ]
+    }
+   },
+   {
+    "weight": 1,
+    "when": {
+     "cond": "cmp",
+     "lhs": {
+      "expr": "dim",
+      "dim": "z"
+     },
+     "op": "ge",
+     "rhs": {
+      "expr": "arith",
+      "lhs": {
+       "expr": "arith",
+       "lhs": {
+        "expr": "param",
+        "name": "path/spacing_min"
+       },
+       "op": "add",
+       "rhs": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      "op": "add",
+      "rhs": {
+       "expr": "int",
+       "value": 2
+      }
+     }
+    },
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/spacing_min"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 1
+        }
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_run"
+      },
+      {
+       "op": "call",
+       "symbol": "path/niche_band"
+      }
+     ]
+    }
+   },
+   {
+    "weight": 1,
+    "when": {
+     "cond": "cmp",
+     "lhs": {
+      "expr": "dim",
+      "dim": "z"
+     },
+     "op": "ge",
+     "rhs": {
+      "expr": "arith",
+      "lhs": {
+       "expr": "arith",
+       "lhs": {
+        "expr": "param",
+        "name": "path/spacing_min"
+       },
+       "op": "add",
+       "rhs": {
+        "expr": "int",
+        "value": 2
+       }
+      },
+      "op": "add",
+      "rhs": {
+       "expr": "int",
+       "value": 2
+      }
+     }
+    },
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/spacing_min"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 2
+        }
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_run"
+      },
+      {
+       "op": "call",
+       "symbol": "path/niche_band"
+      }
+     ]
+    }
+   },
+   {
+    "weight": 1,
+    "when": {
+     "cond": "cmp",
+     "lhs": {
+      "expr": "dim",
+      "dim": "z"
+     },
+     "op": "ge",
+     "rhs": {
+      "expr": "arith",
+      "lhs": {
+       "expr": "arith",
+       "lhs": {
+        "expr": "param",
+        "name": "path/spacing_min"
+       },
+       "op": "add",
+       "rhs": {
+        "expr": "int",
+        "value": 3
+       }
+      },
+      "op": "add",
+      "rhs": {
+       "expr": "int",
+       "value": 2
+      }
+     }
+    },
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/spacing_min"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 3
+        }
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_run"
+      },
+      {
+       "op": "call",
+       "symbol": "path/niche_band"
+      }
+     ]
+    }
+   },
+   {
+    "weight": 1,
+    "when": {
+     "cond": "otherwise"
+    },
+    "body": {
+     "op": "call",
+     "symbol": "path/wall_lane"
+    }
+   }
+  ],
+  "path/niche_corpse": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "x",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "void"
+      },
+      {
+       "op": "reorient",
+       "orient": {
+        "z": "local_x"
+       },
+       "body": {
+        "op": "mark",
+        "mark": {
+         "anchor": "niche",
+         "at": "corner_min",
+         "index": "auto"
+        },
+        "body": {
+         "op": "split",
+         "axis": "y",
+         "sizes": [
+          {
+           "size": "absolute",
+           "blocks": {
             "expr": "int",
             "value": 1
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "open_gulf"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "crag"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "open_gulf": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "sea"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "crag"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "path/cliff_courses": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 3
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "y"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/niche_height"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              }
-            }
-          ]
-        },
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "path/niche_height"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "path/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "path/niche_band"
-            },
-            {
-              "op": "call",
-              "symbol": "path/wall_lane"
-            }
-          ]
-        }
-      }
-    ],
-    "path/cliff_path": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
+           }
           },
-          "body": {
-            "op": "call",
-            "symbol": "path/cliff_courses"
+          {
+           "size": "relative",
+           "weight": {
+            "expr": "int",
+            "value": 1
+           }
           }
-        }
-      }
-    ],
-    "path/niche_band": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "dim",
-            "dim": "z"
+         ],
+         "children": [
+          {
+           "op": "fill",
+           "material": {
+            "role": "path/corpse"
+           }
           },
-          "op": "ge",
-          "rhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "path/spacing_min"
-              },
-              "op": "add",
-              "rhs": {
-                "expr": "int",
-                "value": 0
-              }
-            },
-            "op": "add",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
+          {
+           "op": "void"
           }
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/spacing_min"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 0
-                }
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_run"
-            },
-            {
-              "op": "call",
-              "symbol": "path/niche_band"
-            }
-          ]
+         ]
         }
+       }
       },
       {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "dim",
-            "dim": "z"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "path/spacing_min"
-              },
-              "op": "add",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            "op": "add",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/spacing_min"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_run"
-            },
-            {
-              "op": "call",
-              "symbol": "path/niche_band"
-            }
-          ]
-        }
+       "op": "fill",
+       "material": {
+        "role": "path/rock"
+       }
       },
       {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "dim",
-            "dim": "z"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "path/spacing_min"
-              },
-              "op": "add",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            "op": "add",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/spacing_min"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_run"
-            },
-            {
-              "op": "call",
-              "symbol": "path/niche_band"
-            }
-          ]
-        }
+       "op": "fill",
+       "material": {
+        "role": "path/rock"
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "path/niche_empty": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "x",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
       },
       {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "dim",
-            "dim": "z"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "path/spacing_min"
-              },
-              "op": "add",
-              "rhs": {
-                "expr": "int",
-                "value": 3
-              }
-            },
-            "op": "add",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/spacing_min"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 3
-                }
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_run"
-            },
-            {
-              "op": "call",
-              "symbol": "path/niche_band"
-            }
-          ]
-        }
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
       },
       {
-        "weight": 1,
-        "when": {
-          "cond": "otherwise"
-        },
-        "body": {
-          "op": "call",
-          "symbol": "path/wall_lane"
-        }
-      }
-    ],
-    "path/niche_corpse": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "reorient",
-              "orient": {
-                "z": "local_x"
-              },
-              "body": {
-                "op": "mark",
-                "mark": {
-                  "anchor": "niche",
-                  "at": "corner_min",
-                  "index": "auto"
-                },
-                "body": {
-                  "op": "split",
-                  "axis": "y",
-                  "sizes": [
-                    {
-                      "size": "absolute",
-                      "blocks": {
-                        "expr": "int",
-                        "value": 1
-                      }
-                    },
-                    {
-                      "size": "relative",
-                      "weight": {
-                        "expr": "int",
-                        "value": 1
-                      }
-                    }
-                  ],
-                  "children": [
-                    {
-                      "op": "fill",
-                      "material": {
-                        "role": "path/corpse"
-                      }
-                    },
-                    {
-                      "op": "void"
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "path/rock"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "path/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "path/niche_empty": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "reorient",
-              "orient": {
-                "z": "local_x"
-              },
-              "body": {
-                "op": "mark",
-                "mark": {
-                  "anchor": "niche",
-                  "at": "corner_min",
-                  "index": "auto"
-                },
-                "body": {
-                  "op": "void"
-                }
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "path/rock"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "path/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "path/niche_run": [
-      {
-        "weight": 2,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/recess_teach"
-            },
-            {
-              "op": "call",
-              "symbol": "path/watch_one"
-            }
-          ]
-        }
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
       },
       {
-        "weight": 3,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/recess_test"
-            },
-            {
-              "op": "call",
-              "symbol": "path/watch_one"
-            }
-          ]
-        }
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "void"
       },
       {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/recess_twist"
-            },
-            {
-              "op": "call",
-              "symbol": "path/watch_two"
-            }
-          ]
-        }
-      }
-    ],
-    "path/recess_teach": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_corpse"
-            },
-            {
-              "op": "call",
-              "symbol": "path/wall_lane"
-            }
-          ]
-        }
-      }
-    ],
-    "path/recess_test": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_empty"
-            },
-            {
-              "op": "call",
-              "symbol": "path/wall_lane"
-            }
-          ]
-        }
-      }
-    ],
-    "path/recess_twist": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "path/niche_empty"
-            },
-            {
-              "op": "call",
-              "symbol": "path/niche_empty"
-            }
-          ]
-        }
-      }
-    ],
-    "path/wall_lane": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "path/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "path/watch_one": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "niche-watch",
-            "at": "offset",
-            "x": {
-              "expr": "int",
-              "value": 0
-            },
-            "y": {
-              "expr": "int",
-              "value": 0
-            },
-            "z": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/watch_back"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 0
-                }
-              },
-              "op": "sub",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            "index": "auto"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "path/wall_lane"
-          }
-        }
-      }
-    ],
-    "path/watch_two": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "niche-watch",
-            "at": "offset",
-            "x": {
-              "expr": "int",
-              "value": 0
-            },
-            "y": {
-              "expr": "int",
-              "value": 0
-            },
-            "z": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "path/watch_back"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 0
-                }
-              },
-              "op": "sub",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            "index": "auto"
-          },
-          "body": {
-            "op": "mark",
-            "mark": {
-              "anchor": "niche-watch",
-              "at": "offset",
-              "x": {
-                "expr": "int",
-                "value": 0
-              },
-              "y": {
-                "expr": "int",
-                "value": 0
-              },
-              "z": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "path/watch_back"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "index": "auto"
-            },
-            "body": {
-              "op": "call",
-              "symbol": "path/wall_lane"
-            }
-          }
-        }
-      }
-    ],
-    "road_plan": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "fall"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 8
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "sea"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 3
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "y"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "fall"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "param",
-                    "name": "path/niche_height"
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "sea"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 3
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "sea"
-                }
-              }
-            }
-          ]
+       "op": "reorient",
+       "orient": {
+        "z": "local_x"
+       },
+       "body": {
+        "op": "mark",
+        "mark": {
+         "anchor": "niche",
+         "at": "corner_min",
+         "index": "auto"
         },
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "fall"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "gulf"
-            },
-            {
-              "op": "call",
-              "symbol": "shelf"
-            }
-          ]
+         "op": "void"
         }
-      }
-    ],
-    "shelf": [
+       }
+      },
       {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "sea"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "call",
-              "symbol": "path/cliff_path"
-            }
-          ]
-        }
+       "op": "fill",
+       "material": {
+        "role": "path/rock"
+       }
+      },
+      {
+       "op": "fill",
+       "material": {
+        "role": "path/rock"
+       }
       }
-    ]
-  }
+     ]
+    }
+   }
+  ],
+  "path/niche_run": [
+   {
+    "weight": 2,
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 2
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/recess_teach"
+      },
+      {
+       "op": "call",
+       "symbol": "path/watch_one"
+      }
+     ]
+    }
+   },
+   {
+    "weight": 3,
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 2
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/recess_test"
+      },
+      {
+       "op": "call",
+       "symbol": "path/watch_one"
+      }
+     ]
+    }
+   },
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 2
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/recess_twist"
+      },
+      {
+       "op": "call",
+       "symbol": "path/watch_two"
+      }
+     ]
+    }
+   }
+  ],
+  "path/recess_teach": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_corpse"
+      },
+      {
+       "op": "call",
+       "symbol": "path/wall_lane"
+      }
+     ]
+    }
+   }
+  ],
+  "path/recess_test": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_empty"
+      },
+      {
+       "op": "call",
+       "symbol": "path/wall_lane"
+      }
+     ]
+    }
+   }
+  ],
+  "path/recess_twist": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "z",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "path/niche_empty"
+      },
+      {
+       "op": "call",
+       "symbol": "path/niche_empty"
+      }
+     ]
+    }
+   }
+  ],
+  "path/wall_lane": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "x",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "void"
+      },
+      {
+       "op": "fill",
+       "material": {
+        "role": "path/rock"
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "path/watch_one": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "mark",
+     "mark": {
+      "anchor": "niche-watch",
+      "at": "offset",
+      "x": {
+       "expr": "int",
+       "value": 0
+      },
+      "y": {
+       "expr": "int",
+       "value": 0
+      },
+      "z": {
+       "expr": "arith",
+       "lhs": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/watch_back"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 0
+        }
+       },
+       "op": "sub",
+       "rhs": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      "index": "auto"
+     },
+     "body": {
+      "op": "call",
+      "symbol": "path/wall_lane"
+     }
+    }
+   }
+  ],
+  "path/watch_two": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "mark",
+     "mark": {
+      "anchor": "niche-watch",
+      "at": "offset",
+      "x": {
+       "expr": "int",
+       "value": 0
+      },
+      "y": {
+       "expr": "int",
+       "value": 0
+      },
+      "z": {
+       "expr": "arith",
+       "lhs": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "path/watch_back"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 0
+        }
+       },
+       "op": "sub",
+       "rhs": {
+        "expr": "int",
+        "value": 1
+       }
+      },
+      "index": "auto"
+     },
+     "body": {
+      "op": "mark",
+      "mark": {
+       "anchor": "niche-watch",
+       "at": "offset",
+       "x": {
+        "expr": "int",
+        "value": 0
+       },
+       "y": {
+        "expr": "int",
+        "value": 0
+       },
+       "z": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "arith",
+         "lhs": {
+          "expr": "param",
+          "name": "path/watch_back"
+         },
+         "op": "add",
+         "rhs": {
+          "expr": "int",
+          "value": 1
+         }
+        },
+        "op": "sub",
+        "rhs": {
+         "expr": "int",
+         "value": 1
+        }
+       },
+       "index": "auto"
+      },
+      "body": {
+       "op": "call",
+       "symbol": "path/wall_lane"
+      }
+     }
+    }
+   }
+  ],
+  "road_plan": [
+   {
+    "weight": 1,
+    "when": {
+     "cond": "all",
+     "of": [
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "param",
+        "name": "fall"
+       },
+       "op": "ge",
+       "rhs": {
+        "expr": "int",
+        "value": 8
+       }
+      },
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "param",
+        "name": "sea"
+       },
+       "op": "ge",
+       "rhs": {
+        "expr": "int",
+        "value": 3
+       }
+      },
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "dim",
+        "dim": "y"
+       },
+       "op": "ge",
+       "rhs": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "arith",
+         "lhs": {
+          "expr": "param",
+          "name": "fall"
+         },
+         "op": "add",
+         "rhs": {
+          "expr": "param",
+          "name": "path/niche_height"
+         }
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 2
+        }
+       }
+      },
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "dim",
+        "dim": "x"
+       },
+       "op": "ge",
+       "rhs": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "param",
+         "name": "sea"
+        },
+        "op": "add",
+        "rhs": {
+         "expr": "int",
+         "value": 3
+        }
+       }
+      },
+      {
+       "cond": "cmp",
+       "lhs": {
+        "expr": "dim",
+        "dim": "z"
+       },
+       "op": "gt",
+       "rhs": {
+        "expr": "arith",
+        "lhs": {
+         "expr": "dim",
+         "dim": "x"
+        },
+        "op": "sub",
+        "rhs": {
+         "expr": "param",
+         "name": "sea"
+        }
+       }
+      }
+     ]
+    },
+    "body": {
+     "op": "split",
+     "axis": "y",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "param",
+        "name": "fall"
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "call",
+       "symbol": "gulf"
+      },
+      {
+       "op": "call",
+       "symbol": "shelf"
+      }
+     ]
+    }
+   }
+  ],
+  "shelf": [
+   {
+    "weight": 1,
+    "body": {
+     "op": "split",
+     "axis": "x",
+     "sizes": [
+      {
+       "size": "absolute",
+       "blocks": {
+        "expr": "param",
+        "name": "sea"
+       }
+      },
+      {
+       "size": "relative",
+       "weight": {
+        "expr": "int",
+        "value": 1
+       }
+      }
+     ],
+     "children": [
+      {
+       "op": "void"
+      },
+      {
+       "op": "call",
+       "symbol": "path/cliff_path"
+      }
+     ]
+    }
+   }
+  ]
+ }
 }
