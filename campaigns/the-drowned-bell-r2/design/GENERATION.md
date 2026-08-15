@@ -54,10 +54,22 @@ without knowing which way the piece was laid.
 
 Every such role in this campaign is written that way, so no zone is held back by
 it: all eight pass `oriented-fills`, five of them carry local roles, and the
-audit totals **33** fills resolved out of a scope's own frame across those five.
+audit totals **32** fills resolved out of a scope's own frame across those five.
 Z1 is the worked case, and it shows why the frame is not decoration: the corpse
 is authored as `rotation=8`, facing out of its own recess, and lands in the world
 as `rotation=4`.
+
+Z6 is the case that shows what the wrap costs when it is *not* needed, which is
+the reason to write it anyway. Its own frame is `z(largest)` over a region whose
+largest axis is world `Z`, so the frame is the identity and every local paint
+resolves to itself: the wrap moves nothing. Held against the same program with
+its two local roles written bare, the shipped region is **green on every gate**,
+`oriented-fills` included, which reports `0` fills resolved out of a scope's own
+frame and calls that a pass. Expanded into a region whose largest axis is world
+`X`, the wrapped program writes the grate's bars as `east`/`west` from the one
+binding, and the bare program is refused by `DW0736`. A region where the frame
+happens to be the identity is therefore not evidence that a bare state is
+correct — it is the one region where nothing can tell.
 
 Two shapes the frame cannot resolve, and both are refusals rather than guesses: a
 16-step `rotation` and a handedness are stated against a fixed vertical *and* a
@@ -78,7 +90,7 @@ the zone set is complete).
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | program exported, unproduced |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — see below |
 | Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | program exported, unproduced |
-| Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | program exported, unproduced |
+| Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; review set in `review/z6/` — see below |
 | Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | program exported, unproduced |
 
 Zone order of production is by complexity, hardest first (owner decision,
@@ -225,3 +237,169 @@ also what lets the player read the far side of a shortcut before it opens.
   concept's material and tone, and the composition does not — deliberately, the
   topology is fixed.
 - 47.9% of the piece is `margin`, the inert mass behind the shortcut rooms.
+
+## Z6 cistern deep
+
+**Scene** (fixed before any tool ran, per the procedure's §1): the player comes
+out of a low duct high in the end wall and drops three courses into a brick
+barrel vault that is the largest interior in the delve — a nave ranked by
+transverse arches, an arcade down one side into a lower aisle, and one break in
+the crown. Under the break a ridge of fallen vault is climbable terrain; across
+the floor a supply channel is cut three courses down, spanning nave and aisle,
+crossed only on the arcade's own continuous footing. In the aisle wall a hole is
+smashed through to the ward beyond and barred. At the deep end, where the vault
+ends in a wall, a dressed apron ring sinks two steps to a silt bed.
+
+The zone is entered by falling and left through the hole in its side; the walk it
+claims is duct to deep end, and `--allow-falls` is the entry.
+
+**This program is not the engine export.** The exported one composed the staging
+vocabulary — a drop shaft, a watch bay, a broken grate, an open arena, a junction
+and a sealed door — and it passed every gate it was given, but it built a
+nineteen-wide lane beside a twenty-one-wide slab of inert rock and none of the
+scene: no vault, no piers, no break, no channel, no well. Two fifths of its
+blocks were `margin` a body never sees, its interiors were three courses high
+under six of solid mass, and six of the seven beats had no rule in it at all. It
+was replaced by a program written against this zone's own concept and beats. What
+survives is the shape of the plan — one run of named segments with a side strip
+— and the id.
+
+**Expansion** — `delve-grammar expand --file
+design/programs/z6-cistern-deep.json --region 40x10x100 --seed 1 --traversable
+--allow-falls --id z6-cistern-deep`. Every gate passes with a non-zero binding:
+`blocks-exist` 12, `shape-complete` 12, `states-complete` 12, `oriented-fills`
+527, `non-empty` 40000, `traversable` 12 (4 standable cells at the approach face
+— which are the duct and nothing else, the rest of that face being solid — and 8
+at the exit face, where the aisle's last arch is). 26463 filled cells of 40000,
+12 distinct states, 3168 standable, silhouette complexity 1.11, 14 anchors.
+Reachability 3076 of 3168 standable cells (97.1%) from 8 grade entry cells, in 3
+pockets, each of which is a design and is named below. `delve-admit audit` passes
+over 40000 blocks across the 3 tiles (0 forbidden, 0 non-allowlisted, 0 unknown,
+0 pre-pin unknown, 0 under-specified, no findings).
+
+100 is past the 48-per-axis structure-template cap, so the zone ships as **three
+tiles in a 1x1x3 grid plus a manifest**; `prefabs/z6-cistern-deep.json` is the
+manifest and is the only file that describes the zone. Per the procedure's §7 a
+tiled zone has no `lighting` step — `socket`, `anchor` and `lighting` take one
+template and refuse a manifest — so this piece carries `"profile": "unmeasured"`
+and means it.
+
+**Provenance** — program
+`sha256:104d2ccaf8372410db42f77aa6d2f6df44c8f7ab3b8b658c980f12b38f5f74b6`, seed
+1, region 40x10x100. The hash is over the effective program, and it binds: the
+same expansion with `--param hole=9` reports
+`sha256:d60f6d00e5a84555a73e7e9b54a6e26fc5b8b189ca8f6618382d4fe7acd09416`, so a
+matching hash is a statement about what was expanded and not only about which
+file was named.
+
+Reproduction is **verified by two methods whose configuration is not shared**,
+because hashing a listing of `shasum` output hashes the file paths as well as the
+bytes and would call two output directories different when nothing is. First: a
+second expansion run from a different working directory through a relative input
+path, compared with `cmp` — a byte comparator that never sees a name — giving 3
+of 3 tiles and the manifest byte-identical. Second: an independent NBT reader
+assembles both expansions into full 40x10x100 grids and compares cell by cell —
+**40000 cells examined, 0 differing**, anchors and provenance row equal, and its
+own count of filled cells (26463) equals the expander's.
+
+**Artifacts** — `prefabs/z6-cistern-deep.json` (the manifest) +
+`prefabs/z6-cistern-deep.x0y0z{0,1,2}.nbt`; review shots and what each camera
+did in `design/review/z6/`.
+
+**Palette** — measured, never named from memory. The concept image is a lit
+render, so its patch means are the scene's darkness rather than the material: the
+masonry crops mean `#272a2d` and the same pixels' lit decile means `#3e4345`,
+over a value range of p05 20 to p95 70 at a saturation of 6 out of 255. A
+near-neutral colour of that range is a **mix** and not a block — bound to one
+block the vault reads as a flat panel — and the number the mixes are matched
+against is the lit decile, because the only material fact in a rendered scene is
+what the key light reaches.
+
+| Role | Mix | Mix mean | Concept sample |
+|---|---|---|---|
+| `vault` | `deepslate_bricks` 50% · `cracked_deepslate_bricks` 20% · `deepslate_tiles` 20% · `chiseled_deepslate` 10% | `#414141` | `#3e4345` the lit masonry of crown and wall |
+| `pier` | `polished_deepslate` 50% · `deepslate_bricks` 30% · `cobbled_deepslate` 10% · `chiseled_deepslate` 10% | `#464747` | `#4c5051` the lit rib — the same rock, worked smoother |
+| `floor` | `deepslate_tiles` 50% · `cracked_deepslate_tiles` 30% · `cobbled_deepslate` 10% · `chiseled_deepslate` 10% | `#383839` | `#2e3234` the lit band of the water, which is what the floor is seen through |
+| `render` | `deepslate[axis=y]` 50% · `polished_deepslate` 20% · `cobbled_deepslate` 20% · `basalt[axis=y]` 10% | `#505052` | `#4b5356` the pale broken face around the breach — lighter and cooler than the brick, and the highest saturation in the image |
+| `rubble` | `cobbled_deepslate` 45% · `cracked_deepslate_bricks` 25% · `deepslate_tiles` 10% · `chiseled_deepslate` 10% · `air` 10% | `#454547` | fallen vault; a tenth of the paint is not there, which is what makes it rubble rather than a block of stone |
+| `silt` | `mud` 60% · `cracked_deepslate_tiles` 30% · `deepslate_tiles` 10% | `#39383a` | not in the image — the bed is under water in every frame of it. Read as the cistern's own paving with fifty-one years over it |
+| `grate` | `iron_bars`, local | `#898b88` | `#535a5c` the lit ironwork of the grille |
+
+Two decisions the measurement made rather than confirmed. The first shortlist put
+`polished_blackstone` and `polished_blackstone_bricks` in the vault, floor and
+rubble as the loud member at the craft rule's 10%; both are warm-purple
+(dominant hue 314 degrees) while every crop of the concept is cool — blue above
+red in the lit decile of all four materials. They were swapped for
+`chiseled_deepslate`, which is loud in value and neutral in hue, and the swatch
+sheet is what settled it. The second was silt: the first mix carried `clay`,
+which tiles as near-white blotches and reads as nothing the fiction has.
+
+**Every role that carries a direction is written in the scope's own axis frame.**
+`render` (through `deepslate` and `basalt`, both of which carry `axis`) and
+`grate` are `{"local": …}` paints; `oriented-fills` reports 2 of 2
+orientation-carrying fills resolved that way. Why this matters here even though
+it changes nothing here is in the section above.
+
+**Every beat has a rule.** `design/beats.md` §Z6, in order:
+
+| beat | the rules that build it |
+|---|---|
+| 6.1 the ranked vault, ankle-deep | `deep_plan` (a 22-wide nave, a 2-wide arcade and a 12-wide aisle across 40), `bay_section` · `vault_head` · `vault_haunch` (the section), `ranked_run` · `pier_slab` · `pier_jamb` · `pier_arch` · `pier_head` · `pier_shoulder` (the transverse arches), `arcade_run` · `arcade_pier` (the second rank line). The water is not authored — see below. |
+| 6.2 the daylight shaft through a collapse | `sky_crown` (the break and its rubble lip), `cone_side` (the vault gone to rubble around it), `rubble_ridge` · `ridge_step` · `ridge_cap` (the debris as climbable terrain), `cone_nave` · `cone_head` · `cone_run` · `cone_slot` |
+| 6.3 K5, the supply channel | `chan_seg` · `chan_trench` · `trench_bay` · `trench_aisle` (the cut, three courses into a four-course sub-floor, spanning nave and aisle), and `bay_section` in the arcade lane, which is the crossing |
+| 6.4 the Choir's side vault | `choir_seg` · `choir_aisle` · `choir_pair` · `choir_bay` (the vault), `choir_arcade` (the wide opening it is heard through), `choir_watch_bay` (the cell it is counted from) |
+| 6.5 the Founder and the well head | `well_seg` · `well_end` · `well_nave` · `well_floor` · `apron_row` · `apron_slab` · `well_row` (the dressed apron), `well_shaft` · `well_step` · `well_pit` (the mouth), `well_jamb_band` (`anchor/founder`, `anchor/well`) |
+| 6.6 the tongue in the silt | `well_pit`'s `silt` course and `anchor/tongue` on the bed above it |
+| 6.7 S4, the grille | `breach_wall` · `breach_section` · `breach_opening` · `breach_mouth` · `grate_leaf` |
+
+**The sea is the campaign's, and this piece authors none of it.** `design/tide.md`
+is the design of record: one world-wide plane, no bounded basin, every wet volume
+solid water, no flow. A cistern is the zone most likely to want a basin and this
+one has none — the geometry is dry and the plane arrives from outside it, which
+is the only construction that cannot re-flood from its own edges. What the piece
+owes the tide is the **ordering of three heights**, and it carries it: the floor
+is the top of a four-course sub-floor; the well's bed is one course above the
+region's floor and the channel's bed is on it, so the channel's invert is one
+course lower than the well's. That is the whole of the two rows `tide.md` says
+carry the design — at the Dead Ebb the channel still holds water and the well's
+silt clears the plane. Both cuts are open to the room above, so nothing under the
+plane is a trapped pocket.
+
+**Open against this piece**
+
+- **The three unreachable pockets are three designs, and each is named.** 44
+  cells at `x 2..23 y 1 z 48..49` and 24 at `x 26..37 y 1 z 48..49` are the
+  channel's bed: a body that walks on to it cannot climb out, which is what beat
+  6.3 asks of it, and in play it is under water at every state of the tide. 24 cells
+  at `x 10..13 y 7 z 94..99` are the entry duct, which is a one-way descent —
+  the case `prefab-procedure.md` §4 says to describe rather than gate, and the
+  reason this zone does not claim `reachable-floor`. Nothing else is stranded.
+- **The vault is segmental, not semicircular, and the region decides that.** A
+  barrel over a 22-block span wants eleven courses of rise; the zone has ten
+  courses in total and four of them are the sub-floor the channel and the well
+  are cut into. The section that fits is 22 wide at the springing stepping to 14
+  at the crown over five courses. Narrowing the nave would buy the profile at the
+  cost of the one thing beat 6.1 is about, so the silhouette carries it and the
+  arcade's arches carry the rest.
+- **The wellhead is a dressed apron and a sunk mouth, not a built-up kerb.** A
+  kerb standing proud of the floor has to come out of the head band, which starts
+  the vault one course higher over the well than over its neighbours. The apron
+  is the floor's own top course in `pier`, and it is flush.
+- **The grate does not lean.** The concept's grille is half out of its hole,
+  which is a diagonal, and the grammar has no diagonal (`grammar.md` §6). What is
+  built is a flat leaf of bars in the wall's outer course over a fallen sill of
+  `rubble`, with the pale `render` lip around it.
+- **No rule in this zone exposes a light-emitting role**, so the piece is dark
+  and the shaft of daylight the scene is composed around is a hole rather than a
+  beam. Light arrives as campaign-bound content on the declared anchors.
+- **The piece declares no spatial contract**, so every contract obligation
+  examined nothing and `traversable`'s binding counts standable cells on two
+  region faces rather than declared ways in. It would say something real here —
+  the zone has one entry, one interior route and two openings that are not on the
+  same axis — and it is the largest single thing left undone against this piece.
+- **`tools/block-appearance.py --program` does not read a `local` paint.** Over
+  this seven-role palette it reports `binding: 5 paint(s) examined` and skips
+  `render` and `grate` in silence; their numbers in the table above came from
+  `--mix` and `--id` instead. The binding count is the only tell, and a palette
+  written entirely in the scope's own frame would measure as zero paints and
+  print no error.
