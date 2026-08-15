@@ -3,191 +3,179 @@
   "name": "bell_cistern_deep",
   "start": "cistern_deep",
   "params": {
-    "arena/approach": 4,
-    "arena/flank_margin": 4,
-    "arena/head": 3,
-    "arena/radius": 4,
-    "arena/seal_flank": 0,
-    "arena_run": 20,
-    "gallery/approach": 8,
-    "gallery/bay_height": 2,
-    "gallery/head": 4,
-    "gallery/obstruct": 0,
-    "gallery/span": 3,
-    "gallery_run": 20,
-    "sally/door_height": 2,
-    "sally/head": 3,
-    "sally/unbarred": 0,
-    "sally_run": 20,
-    "shaft/drop": 4,
-    "shaft/head": 3,
-    "shaft/rescue_ladder": 0,
-    "strip_depth": 21,
-    "tee/door_height": 2,
-    "tee/head": 3,
-    "tee/sealed": 0,
-    "vent/grate_height": 2,
-    "vent/head": 3,
-    "vent_run": 20
+    "aisle_min": 8,
+    "apron": 2,
+    "arc_open": 5,
+    "arc_pier": 3,
+    "arcade": 2,
+    "bay": 4,
+    "breach_h": 3,
+    "breach_z": 4,
+    "chan_run": 14,
+    "choir_run": 20,
+    "drop": 3,
+    "endwall": 2,
+    "gal_run": 26,
+    "head": 5,
+    "hole": 7,
+    "hole_lip": 1,
+    "jamb": 2,
+    "nave": 22,
+    "pier": 1,
+    "respond": 2,
+    "shelf": 6,
+    "sub": 4,
+    "trench": 2,
+    "wall": 2,
+    "well_len": 6,
+    "well_run": 22,
+    "well_w": 5,
+    "well_z": 2
   },
   "palette": {
-    "arena/stone": "minecraft:stone_bricks",
-    "gallery/stone": "minecraft:stone",
-    "margin": "minecraft:deepslate[axis=y]",
-    "sally/bar": {
-      "local": "minecraft:iron_bars[east=true,north=false,south=false,waterlogged=false,west=true]"
-    },
-    "sally/rock": "minecraft:stone_bricks",
-    "shaft/rock": "minecraft:stone",
-    "tee/rock": "minecraft:stone_bricks",
-    "vent/grate": {
-      "local": "minecraft:iron_bars[east=false,north=true,south=true,waterlogged=false,west=false]"
-    },
-    "vent/grate_broken": "minecraft:mossy_cobblestone",
-    "vent/stone": "minecraft:cobblestone"
-  },
-  "rules": {
-    "arena/arena_alts": [
+    "floor": [
+      {
+        "weight": 5,
+        "block": "minecraft:deepslate_tiles"
+      },
+      {
+        "weight": 3,
+        "block": "minecraft:cracked_deepslate_tiles"
+      },
       {
         "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
+        "block": "minecraft:cobbled_deepslate"
+      },
+      {
+        "weight": 1,
+        "block": "minecraft:chiseled_deepslate"
+      }
+    ],
+    "grate": {
+      "local": "minecraft:iron_bars[east=false,north=true,south=true,waterlogged=false,west=false]"
+    },
+    "pier": [
+      {
+        "weight": 5,
+        "block": "minecraft:polished_deepslate"
+      },
+      {
+        "weight": 3,
+        "block": "minecraft:deepslate_bricks"
+      },
+      {
+        "weight": 1,
+        "block": "minecraft:cobbled_deepslate"
+      },
+      {
+        "weight": 1,
+        "block": "minecraft:chiseled_deepslate"
+      }
+    ],
+    "render": {
+      "local": [
+        {
+          "weight": 5,
+          "block": "minecraft:deepslate[axis=y]"
+        },
+        {
+          "weight": 2,
+          "block": "minecraft:polished_deepslate"
+        },
+        {
+          "weight": 2,
+          "block": "minecraft:cobbled_deepslate"
+        },
+        {
+          "weight": 1,
+          "block": "minecraft:basalt[axis=y]"
+        }
+      ]
+    },
+    "rubble": [
+      {
+        "weight": 45,
+        "block": "minecraft:cobbled_deepslate"
+      },
+      {
+        "weight": 25,
+        "block": "minecraft:cracked_deepslate_bricks"
+      },
+      {
+        "weight": 10,
+        "block": "minecraft:deepslate_tiles"
+      },
+      {
+        "weight": 10,
+        "block": "minecraft:chiseled_deepslate"
+      },
+      {
+        "weight": 10,
+        "block": "minecraft:air"
+      }
+    ],
+    "silt": [
+      {
+        "weight": 6,
+        "block": "minecraft:mud"
+      },
+      {
+        "weight": 3,
+        "block": "minecraft:cracked_deepslate_tiles"
+      },
+      {
+        "weight": 1,
+        "block": "minecraft:deepslate_tiles"
+      }
+    ],
+    "vault": [
+      {
+        "weight": 5,
+        "block": "minecraft:deepslate_bricks"
+      },
+      {
+        "weight": 2,
+        "block": "minecraft:cracked_deepslate_bricks"
+      },
+      {
+        "weight": 2,
+        "block": "minecraft:deepslate_tiles"
+      },
+      {
+        "weight": 1,
+        "block": "minecraft:chiseled_deepslate"
+      }
+    ]
+  },
+  "rules": {
+    "apron_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
             {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/radius"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 4
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/flank_margin"
-              },
-              "op": "ge",
-              "rhs": {
+              "size": "relative",
+              "weight": {
                 "expr": "int",
                 "value": 1
               }
             },
             {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/approach"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/head"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
+              "size": "absolute",
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "arena/radius"
-                    },
-                    "op": "mul",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 2
-                    }
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "arena/flank_margin"
-                    },
-                    "op": "mul",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 2
-                    }
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "arena/radius"
-                    },
-                    "op": "mul",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 2
-                    }
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "param",
+                  "name": "well_w"
                 },
                 "op": "add",
                 "rhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "arena/approach"
+                    "name": "apron"
                   },
                   "op": "mul",
                   "rhs": {
@@ -198,27 +186,523 @@
               }
             },
             {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "y"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "arena/head"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "apron_slab"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
               }
             }
           ]
+        }
+      }
+    ],
+    "apron_slab": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sub"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "arcade_pier": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "arcade_run": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "arc_pier"
+              },
+              "op": "add",
+              "rhs": {
+                "expr": "param",
+                "name": "arc_open"
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "param",
+              "name": "arc_pier"
+            }
+          }
         },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arc_pier"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arc_open"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "arcade_pier"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "arcade_run"
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "call",
+          "symbol": "arcade_pier"
+        }
+      }
+    ],
+    "bay_section": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "breach_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "breach",
+                "at": "floor_center",
+                "facing": "east"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "breach_mouth": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "rubble"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "grille",
+                "at": "floor_center",
+                "facing": "east"
+              },
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "breach_opening": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "breach_mouth"
+            },
+            {
+              "op": "call",
+              "symbol": "grate_leaf"
+            }
+          ]
+        }
+      }
+    ],
+    "breach_section": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "breach_h"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "breach_opening"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "render"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "breach_wall": [
+      {
+        "weight": 1,
         "body": {
           "op": "split",
           "axis": "z",
@@ -233,68 +717,41 @@
             {
               "size": "absolute",
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "arena/radius"
-                  },
-                  "op": "mul",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
+                "expr": "param",
+                "name": "breach_z"
               }
             },
             {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "arena/approach"
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
               }
             }
           ],
+          "rounding": "middle",
           "children": [
             {
-              "op": "call",
-              "symbol": "arena/floor_column"
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
             },
             {
               "op": "call",
-              "symbol": "arena/circle_band"
+              "symbol": "breach_section"
             },
             {
-              "op": "call",
-              "symbol": "arena/floor_column"
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
             }
           ]
         }
       }
     ],
-    "arena/arena_plan": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "arena/arena_alts"
-          }
-        }
-      }
-    ],
-    "arena/circle_band": [
+    "chan_cone": [
       {
         "weight": 1,
         "body": {
@@ -304,8 +761,22 @@
             {
               "size": "absolute",
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
               }
             },
             {
@@ -313,6 +784,304 @@
               "weight": {
                 "expr": "int",
                 "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "cone_nave"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "chan_far": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "chan_watch_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "chan_lip": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "channel",
+                "at": "floor_center",
+                "facing": "north"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            }
+          ]
+        }
+      }
+    ],
+    "chan_seg": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "chan_run"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "trench"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "shelf"
+                  }
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "trench"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "shelf"
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "chan_far"
+            },
+            {
+              "op": "call",
+              "symbol": "chan_trench"
+            },
+            {
+              "op": "call",
+              "symbol": "chan_cone"
+            }
+          ]
+        }
+      }
+    ],
+    "chan_trench": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "trench_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "trench_aisle"
+            },
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "chan_watch_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
               }
             },
             {
@@ -320,34 +1089,19 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "arena/radius"
-                  },
-                  "op": "mul",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "param",
+                  "name": "head"
                 },
-                "op": "add",
+                "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "param",
+                  "name": "jamb"
                 }
               }
             },
             {
               "size": "relative",
               "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
                 "expr": "int",
                 "value": 1
               }
@@ -358,171 +1112,44 @@
             {
               "op": "fill",
               "material": {
-                "role": "arena/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "arena/west_flank"
-            },
-            {
-              "op": "call",
-              "symbol": "arena/elite_column"
-            },
-            {
-              "op": "call",
-              "symbol": "arena/east_flank"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "arena/east_flank": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/seal_flank"
-              },
-              "op": "div",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "call",
-          "symbol": "arena/floor_column"
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/seal_flank"
-              },
-              "op": "div",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "arena/stone"
-          }
-        }
-      }
-    ],
-    "arena/elite_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "arena/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
+                "role": "floor"
               }
             },
             {
               "op": "mark",
               "mark": {
-                "anchor": "elite",
-                "at": "floor_center"
+                "anchor": "channel-watch",
+                "at": "floor_center",
+                "facing": "south"
               },
               "body": {
                 "op": "void"
               }
             },
             {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
               "op": "fill",
               "material": {
-                "role": "arena/stone"
+                "role": "vault"
               }
             }
           ]
         }
       }
     ],
-    "arena/floor_column": [
+    "choir_aisle": [
       {
         "weight": 1,
         "body": {
           "op": "split",
-          "axis": "y",
+          "axis": "z",
           "sizes": [
             {
-              "size": "absolute",
-              "blocks": {
+              "size": "relative",
+              "weight": {
                 "expr": "int",
                 "value": 1
               }
@@ -531,7 +1158,7 @@
               "size": "absolute",
               "blocks": {
                 "expr": "param",
-                "name": "arena/head"
+                "name": "bay"
               }
             },
             {
@@ -542,85 +1169,25 @@
               }
             }
           ],
+          "rounding": "middle",
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
+              "op": "call",
+              "symbol": "ranked_run"
             },
             {
-              "op": "void"
+              "op": "call",
+              "symbol": "choir_pair"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
+              "op": "call",
+              "symbol": "ranked_run"
             }
           ]
         }
       }
     ],
-    "arena/west_flank": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "param",
-              "name": "arena/seal_flank"
-            },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "call",
-          "symbol": "arena/floor_column"
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "param",
-              "name": "arena/seal_flank"
-            },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "arena/stone"
-          }
-        }
-      }
-    ],
-    "branch_strip": [
+    "choir_arcade": [
       {
         "weight": 1,
         "body": {
@@ -631,14 +1198,76 @@
               "size": "absolute",
               "blocks": {
                 "expr": "param",
-                "name": "arena_run"
+                "name": "arc_pier"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
               }
             },
             {
               "size": "absolute",
               "blocks": {
                 "expr": "param",
-                "name": "sally_run"
+                "name": "arc_pier"
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "arcade_pier"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "arcade_pier"
+            }
+          ]
+        }
+      }
+    ],
+    "choir_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
               }
             },
             {
@@ -654,17 +1283,257 @@
             {
               "op": "fill",
               "material": {
-                "role": "margin"
+                "role": "floor"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "choir",
+                "at": "floor_center",
+                "facing": "west"
+              },
+              "body": {
+                "op": "void"
               }
             },
             {
               "op": "call",
-              "symbol": "sally/threshold"
+              "symbol": "vault_head"
             },
             {
               "op": "fill",
               "material": {
-                "role": "margin"
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "choir_nave": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "bay"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "choir_watch_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay_section"
+            }
+          ]
+        }
+      }
+    ],
+    "choir_pair": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "choir_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "breach_bay"
+            }
+          ]
+        }
+      }
+    ],
+    "choir_seg": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "choir_nave"
+            },
+            {
+              "op": "call",
+              "symbol": "choir_arcade"
+            },
+            {
+              "op": "call",
+              "symbol": "choir_aisle"
+            },
+            {
+              "op": "call",
+              "symbol": "breach_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "choir_watch_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "choir-watch",
+                "at": "floor_center",
+                "facing": "east"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
               }
             }
           ]
@@ -687,6 +1556,264 @@
         }
       }
     ],
+    "cone_head": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "chan_lip"
+            },
+            {
+              "op": "call",
+              "symbol": "cone_run"
+            },
+            {
+              "op": "call",
+              "symbol": "shaft_lip"
+            }
+          ]
+        }
+      }
+    ],
+    "cone_nave": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "head"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "cone_head"
+            },
+            {
+              "op": "call",
+              "symbol": "sky_crown"
+            }
+          ]
+        }
+      }
+    ],
+    "cone_run": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "hole"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "hole_lip"
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 4
+                  }
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cone_side"
+            },
+            {
+              "op": "call",
+              "symbol": "cone_slot"
+            },
+            {
+              "op": "call",
+              "symbol": "cone_side"
+            }
+          ]
+        }
+      }
+    ],
+    "cone_side": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "rubble"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "cone_slot": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "rubble_ridge"
+            },
+            {
+              "op": "call",
+              "symbol": "ridge_cap"
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "shaft",
+                "at": "floor_center",
+                "facing": "north"
+              },
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      }
+    ],
     "deep_plan": [
       {
         "weight": 1,
@@ -696,637 +1823,6 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "strip_depth"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "sally_run"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "arena_run"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "strip_depth"
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "sally_run"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "strip_depth"
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "vent_run"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "strip_depth"
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "gallery_run"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "strip_depth"
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "arith",
-                      "lhs": {
-                        "expr": "dim",
-                        "dim": "z"
-                      },
-                      "op": "sub",
-                      "rhs": {
-                        "expr": "param",
-                        "name": "arena_run"
-                      }
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "param",
-                      "name": "sally_run"
-                    }
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "param",
-                    "name": "vent_run"
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "gallery_run"
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "strip_depth"
-                }
-              }
-            }
-          ]
-        },
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "strip_depth"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "branch_strip"
-            },
-            {
-              "op": "call",
-              "symbol": "mainline"
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/approach_run": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "gallery/obstruct"
-          },
-          "op": "le",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "call",
-          "symbol": "gallery/corridor"
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "gallery/obstruct"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "gallery/corridor"
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/pillar_slice"
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/corridor"
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/bay_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "gallery/bay_room"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/bay_room": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "gallery/bay_height"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "watch",
-                "at": "floor_center"
-              },
-              "body": {
-                "op": "void"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/bay_zone": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/bay_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/corridor_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/corridor": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/corridor_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/corridor_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "gallery/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/gate_passage": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "gallery/passage_plan"
-          }
-        }
-      }
-    ],
-    "gallery/hazard_span": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/span_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/passage_plan": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "gallery/approach"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 6
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "gallery/bay_height"
-              },
-              "op": "lt",
-              "rhs": {
-                "expr": "param",
-                "name": "gallery/head"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 6
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
                 "expr": "dim",
                 "dim": "y"
               },
@@ -1334,1154 +1830,29 @@
               "rhs": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "gallery/head"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "gallery/approach"
+                    "name": "sub"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "param",
-                    "name": "gallery/span"
+                    "name": "head"
                   }
                 },
                 "op": "add",
                 "rhs": {
                   "expr": "int",
-                  "value": 4
+                  "value": 1
                 }
-              }
-            }
-          ]
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "gallery/span"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "gallery/approach"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "gallery/corridor"
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/hazard_span"
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/approach_run"
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/bay_zone"
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/pillar_slice": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/corridor_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "gallery/span_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "gallery/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "gate",
-                "at": "floor_center"
-              },
-              "body": {
-                "op": "void"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "mainline": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "arena_run"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "sally_run"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "vent_run"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "gallery_run"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "arena/arena_plan"
-            },
-            {
-              "op": "call",
-              "symbol": "tee/passage"
-            },
-            {
-              "op": "call",
-              "symbol": "vent/broken_grate"
-            },
-            {
-              "op": "call",
-              "symbol": "gallery/gate_passage"
-            },
-            {
-              "op": "call",
-              "symbol": "shaft/drop_shaft"
-            }
-          ]
-        }
-      }
-    ],
-    "sally/bar_or_open": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "sally/unbarred"
-          },
-          "op": "le",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "sally/bar"
-          }
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "sally/unbarred"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "void"
-        }
-      }
-    ],
-    "sally/door_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "sally/door_height"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "sally-gate",
-                "at": "floor_center"
-              },
-              "body": {
-                "op": "call",
-                "symbol": "sally/bar_or_open"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "sally/far_room": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            },
-            {
-              "op": "split",
-              "axis": "y",
-              "sizes": [
-                {
-                  "size": "absolute",
-                  "blocks": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                {
-                  "size": "absolute",
-                  "blocks": {
-                    "expr": "param",
-                    "name": "sally/head"
-                  }
-                },
-                {
-                  "size": "relative",
-                  "weight": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              ],
-              "children": [
-                {
-                  "op": "fill",
-                  "material": {
-                    "role": "sally/rock"
-                  }
-                },
-                {
-                  "op": "mark",
-                  "mark": {
-                    "anchor": "unlock",
-                    "at": "floor_center"
-                  },
-                  "body": {
-                    "op": "void"
-                  }
-                },
-                {
-                  "op": "fill",
-                  "material": {
-                    "role": "sally/rock"
-                  }
-                }
-              ]
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "sally/near_room": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            },
-            {
-              "op": "split",
-              "axis": "y",
-              "sizes": [
-                {
-                  "size": "absolute",
-                  "blocks": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                {
-                  "size": "absolute",
-                  "blocks": {
-                    "expr": "param",
-                    "name": "sally/head"
-                  }
-                },
-                {
-                  "size": "relative",
-                  "weight": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              ],
-              "children": [
-                {
-                  "op": "fill",
-                  "material": {
-                    "role": "sally/rock"
-                  }
-                },
-                {
-                  "op": "void"
-                },
-                {
-                  "op": "fill",
-                  "material": {
-                    "role": "sally/rock"
-                  }
-                }
-              ]
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "sally/threshold": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "sally/threshold_plan"
-          }
-        }
-      }
-    ],
-    "sally/threshold_plan": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 3
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 3
               }
             },
             {
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
-                "name": "sally/door_height"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "sally/head"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "param",
-                "name": "sally/door_height"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "y"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "sally/head"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              }
-            }
-          ]
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "sally/far_room"
-            },
-            {
-              "op": "call",
-              "symbol": "sally/wall"
-            },
-            {
-              "op": "call",
-              "symbol": "sally/near_room"
-            }
-          ]
-        }
-      }
-    ],
-    "sally/wall": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "sally/door_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "sally/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "shaft/drop_shaft": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "shaft/shaft_plan"
-          }
-        }
-      }
-    ],
-    "shaft/entry_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "shaft/drop"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "shaft/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "shaft/entry_floor"
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "spill",
-                "at": "offset",
-                "x": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "dim",
-                    "dim": "x"
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "y": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "z": {
-                  "expr": "int",
-                  "value": 0
-                }
-              },
-              "body": {
-                "op": "void"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "shaft/entry_floor": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "shaft/rescue_ladder"
-          },
-          "op": "le",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "shaft/rock"
-          }
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "shaft/rescue_ladder"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "shaft/entry_zone": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "shaft/entry_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "shaft/landing_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "shaft/drop"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "param",
-                  "name": "shaft/head"
-                }
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "landing",
-                "at": "offset",
-                "x": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "dim",
-                      "dim": "x"
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 1
-                    }
-                  },
-                  "op": "div",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "y": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "z": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "dim",
-                    "dim": "z"
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "body": {
-                "op": "void"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "shaft/landing_zone": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "shaft/landing_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "shaft/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "shaft/shaft_plan": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 3
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
+                "name": "sub"
               },
               "op": "ge",
               "rhs": {
@@ -2492,307 +1863,45 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "shaft/drop"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "shaft/head"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            }
-          ]
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "shaft/landing_zone"
-            },
-            {
-              "op": "call",
-              "symbol": "shaft/entry_zone"
-            }
-          ]
-        }
-      }
-    ],
-    "tee/branch_door": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "z": "local_x"
-          },
-          "body": {
-            "op": "mark",
-            "mark": {
-              "anchor": "branch-door",
-              "at": "floor_center"
-            },
-            "body": {
-              "op": "call",
-              "symbol": "tee/doorway_or_sealed"
-            }
-          }
-        }
-      }
-    ],
-    "tee/door_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "tee/door_height"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "tee/branch_door"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "tee/door_wall": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "tee/door_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "tee/doorway_or_sealed": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "tee/sealed"
-          },
-          "op": "le",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "void"
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "tee/sealed"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "tee/rock"
-          }
-        }
-      }
-    ],
-    "tee/lane_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "tee/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            },
-            {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "tee/passage": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "tee/passage_plan"
-          }
-        }
-      }
-    ],
-    "tee/passage_plan": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
-            {
-              "cond": "cmp",
-              "lhs": {
                 "expr": "dim",
                 "dim": "x"
               },
               "op": "ge",
               "rhs": {
-                "expr": "int",
-                "value": 3
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "wall"
+                      },
+                      "op": "mul",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 2
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "nave"
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "arcade"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "aisle_min"
+                }
               }
             },
             {
@@ -2803,34 +1912,844 @@
               },
               "op": "ge",
               "rhs": {
-                "expr": "int",
-                "value": 3
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "param",
+                          "name": "well_run"
+                        },
+                        "op": "add",
+                        "rhs": {
+                          "expr": "param",
+                          "name": "choir_run"
+                        }
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "chan_run"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "gal_run"
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "shelf"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "bay"
+                }
               }
             },
             {
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
-                "name": "tee/door_height"
+                "name": "well_run"
               },
               "op": "ge",
               "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "endwall"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "well_z"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "apron"
+                      },
+                      "op": "mul",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 2
+                      }
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "well_len"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "bay"
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "nave"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "well_w"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "apron"
+                    },
+                    "op": "mul",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 2
+                    }
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "chan_run"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "trench"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "shelf"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "bay"
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "nave"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "hole"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "hole_lip"
+                    },
+                    "op": "mul",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 4
+                    }
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "head"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "breach_h"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "drop"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "head"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "jamb"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "well_run"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "choir_run"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "chan_run"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "gal_run"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "well_seg"
+            },
+            {
+              "op": "call",
+              "symbol": "choir_seg"
+            },
+            {
+              "op": "call",
+              "symbol": "chan_seg"
+            },
+            {
+              "op": "call",
+              "symbol": "gallery_seg"
+            },
+            {
+              "op": "call",
+              "symbol": "landing_seg"
+            }
+          ]
+        }
+      }
+    ],
+    "duct_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "wall"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "nave"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "shelf_duct"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "entry_plug": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sub"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "drop"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "duct_row"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gallery_nave": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
                 "expr": "int",
                 "value": 1
               }
             },
             {
-              "cond": "cmp",
-              "lhs": {
+              "size": "absolute",
+              "blocks": {
                 "expr": "param",
-                "name": "tee/head"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "param",
-                "name": "tee/door_height"
+                "name": "bay"
               }
             },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ranked_run"
+            },
+            {
+              "op": "call",
+              "symbol": "watch_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "ranked_run"
+            }
+          ]
+        }
+      }
+    ],
+    "gallery_seg": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "gallery_nave"
+            },
+            {
+              "op": "call",
+              "symbol": "arcade_run"
+            },
+            {
+              "op": "call",
+              "symbol": "ranked_run"
+            },
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "grate_leaf": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "rubble"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "grate"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "landing_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "landing",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "landing_body": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "landing_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "arcade_run"
+            },
+            {
+              "op": "call",
+              "symbol": "ranked_run"
+            },
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "landing_seg": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "shelf"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "landing_body"
+            },
+            {
+              "op": "call",
+              "symbol": "entry_plug"
+            }
+          ]
+        }
+      }
+    ],
+    "outer_wall": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "vault"
+          }
+        }
+      }
+    ],
+    "pier_arch": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "respond"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "respond"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "pier_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "pier_head": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
             {
               "cond": "cmp",
               "lhs": {
@@ -2839,108 +2758,24 @@
               },
               "op": "ge",
               "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "tee/head"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
               }
             }
           ]
         },
-        "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "tee/door_wall"
-            },
-            {
-              "op": "call",
-              "symbol": "tee/lane_column"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "tee/rock"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "vent/broken_cell": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "z": "local_x"
-          },
-          "body": {
-            "op": "mark",
-            "mark": {
-              "anchor": "grate-secret",
-              "at": "corner_min"
-            },
-            "body": {
-              "op": "fill",
-              "material": {
-                "role": "vent/grate_broken"
-              }
-            }
-          }
-        }
-      }
-    ],
-    "vent/broken_grate": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "vent/wall_plan"
-          }
-        }
-      }
-    ],
-    "vent/floor_column": [
-      {
-        "weight": 1,
         "body": {
           "op": "split",
           "axis": "y",
@@ -2953,10 +2788,50 @@
               }
             },
             {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "pier_shoulder"
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "pier"
+          }
+        }
+      }
+    ],
+    "pier_jamb": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
               "size": "absolute",
               "blocks": {
                 "expr": "param",
-                "name": "vent/head"
+                "name": "respond"
               }
             },
             {
@@ -2965,13 +2840,21 @@
                 "expr": "int",
                 "value": 1
               }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "respond"
+              }
             }
           ],
+          "rounding": "start",
           "children": [
             {
               "op": "fill",
               "material": {
-                "role": "vent/stone"
+                "role": "pier"
               }
             },
             {
@@ -2980,23 +2863,65 @@
             {
               "op": "fill",
               "material": {
-                "role": "vent/stone"
+                "role": "pier"
               }
             }
           ]
         }
       }
     ],
-    "vent/grate_row": [
+    "pier_shoulder": [
       {
         "weight": 1,
         "body": {
-          "op": "call",
-          "symbol": "vent/line_before_tell"
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "pier_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "pier"
+              }
+            }
+          ]
         }
       }
     ],
-    "vent/grate_wall": [
+    "pier_slab": [
       {
         "weight": 1,
         "body": {
@@ -3007,7 +2932,29 @@
               "size": "absolute",
               "blocks": {
                 "expr": "param",
-                "name": "vent/grate_height"
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
               }
             },
             {
@@ -3018,35 +2965,70 @@
               }
             }
           ],
+          "rounding": "start",
           "children": [
             {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
               "op": "call",
-              "symbol": "vent/grate_row"
+              "symbol": "pier_jamb"
+            },
+            {
+              "op": "call",
+              "symbol": "pier_arch"
             },
             {
               "op": "fill",
               "material": {
-                "role": "vent/stone"
+                "role": "vault"
               }
             }
           ]
         }
       }
     ],
-    "vent/line_after_tell": [
+    "plain_head": [
       {
         "weight": 1,
         "body": {
-          "op": "fill",
-          "material": {
-            "role": "vent/grate"
-          }
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            }
+          ]
         }
       }
     ],
-    "vent/line_before_tell": [
+    "ranked_run": [
       {
-        "weight": 3,
+        "weight": 1,
         "when": {
           "cond": "cmp",
           "lhs": {
@@ -3055,8 +3037,24 @@
           },
           "op": "ge",
           "rhs": {
-            "expr": "int",
-            "value": 2
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "pier"
+              },
+              "op": "add",
+              "rhs": {
+                "expr": "param",
+                "name": "bay"
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "param",
+              "name": "pier"
+            }
           }
         },
         "body": {
@@ -3064,75 +3062,40 @@
           "axis": "z",
           "sizes": [
             {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "pier"
               }
             },
             {
               "size": "absolute",
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "param",
+                "name": "bay"
               }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "vent/line_before_tell"
             },
-            {
-              "op": "fill",
-              "material": {
-                "role": "vent/grate"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "dim",
-            "dim": "z"
-          },
-          "op": "ge",
-          "rhs": {
-            "expr": "int",
-            "value": 2
-          }
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
             {
               "size": "relative",
               "weight": {
                 "expr": "int",
                 "value": 1
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
             }
           ],
+          "rounding": "start",
           "children": [
             {
               "op": "call",
-              "symbol": "vent/line_after_tell"
+              "symbol": "pier_slab"
             },
             {
               "op": "call",
-              "symbol": "vent/broken_cell"
+              "symbol": "bay_section"
+            },
+            {
+              "op": "call",
+              "symbol": "ranked_run"
             }
           ]
         }
@@ -3144,74 +3107,60 @@
         },
         "body": {
           "op": "call",
-          "symbol": "vent/broken_cell"
+          "symbol": "pier_slab"
         }
       }
     ],
-    "vent/wall_plan": [
+    "ridge_cap": [
       {
         "weight": 1,
-        "when": {
-          "cond": "all",
-          "of": [
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
             {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
+              "size": "relative",
+              "weight": {
                 "expr": "int",
-                "value": 3
+                "value": 1
               }
             },
             {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "y"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "vent/head"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hole"
               }
             },
             {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
-              },
-              "op": "ge",
-              "rhs": {
+              "size": "relative",
+              "weight": {
                 "expr": "int",
-                "value": 3
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "vent/grate_height"
-              },
-              "op": "le",
-              "rhs": {
-                "expr": "param",
-                "name": "vent/head"
+                "value": 1
               }
             }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "void"
+            }
           ]
-        },
+        }
+      }
+    ],
+    "ridge_step": [
+      {
+        "weight": 1,
         "body": {
           "op": "split",
           "axis": "x",
@@ -3238,20 +3187,1197 @@
               }
             }
           ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "rubble_ridge"
+            },
+            {
+              "op": "void"
+            }
+          ]
+        }
+      }
+    ],
+    "rubble_ridge": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
           "children": [
             {
               "op": "fill",
               "material": {
-                "role": "vent/stone"
+                "role": "rubble"
               }
             },
             {
               "op": "call",
-              "symbol": "vent/floor_column"
+              "symbol": "ridge_step"
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "rubble"
+          }
+        }
+      }
+    ],
+    "shaft_lip": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "break",
+                "at": "floor_center",
+                "facing": "north"
+              },
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "call",
-              "symbol": "vent/grate_wall"
+              "symbol": "vault_head"
+            }
+          ]
+        }
+      }
+    ],
+    "shelf_duct": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "bay"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "duct",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "sky_crown": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hole_lip"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hole"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "hole_lip"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "rubble"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "rubble"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "trench_aisle": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sub"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "trench_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sub"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "call",
+              "symbol": "sky_crown"
+            }
+          ]
+        }
+      }
+    ],
+    "vault_haunch": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "vault_head": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "vault_haunch"
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "void"
+        }
+      }
+    ],
+    "watch_bay": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "vault-watch",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "vault_head"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "well_end": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "endwall"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "well_nave"
+            }
+          ]
+        }
+      }
+    ],
+    "well_floor": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "well_z"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "apron"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "well_len"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "apron"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "apron_row"
+            },
+            {
+              "op": "call",
+              "symbol": "well_row"
+            },
+            {
+              "op": "call",
+              "symbol": "apron_row"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "well_head_band": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "call",
+          "symbol": "vault_head"
+        }
+      }
+    ],
+    "well_jamb_band": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "well_z"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "apron"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "well_len"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "apron"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "well",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "founder",
+                "at": "floor_center"
+              },
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "well_nave": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "sub"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "jamb"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "jamb"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "well_floor"
+            },
+            {
+              "op": "call",
+              "symbol": "well_jamb_band"
+            },
+            {
+              "op": "call",
+              "symbol": "well_head_band"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "vault"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "well_pit": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sub"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "silt"
+              }
+            },
+            {
+              "op": "mark",
+              "mark": {
+                "anchor": "tongue",
+                "at": "floor_center",
+                "facing": "south"
+              },
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "well_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "apron"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "well_w"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "apron"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "middle",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "apron_slab"
+            },
+            {
+              "op": "call",
+              "symbol": "well_shaft"
+            },
+            {
+              "op": "call",
+              "symbol": "apron_slab"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "well_seg": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "nave"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "arcade"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "wall"
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "well_end"
+            },
+            {
+              "op": "call",
+              "symbol": "arcade_run"
+            },
+            {
+              "op": "call",
+              "symbol": "ranked_run"
+            },
+            {
+              "op": "call",
+              "symbol": "outer_wall"
+            }
+          ]
+        }
+      }
+    ],
+    "well_shaft": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "well_step"
+            },
+            {
+              "op": "call",
+              "symbol": "well_pit"
+            }
+          ]
+        }
+      }
+    ],
+    "well_step": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sub"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "floor"
+              }
+            },
+            {
+              "op": "void"
             }
           ]
         }
