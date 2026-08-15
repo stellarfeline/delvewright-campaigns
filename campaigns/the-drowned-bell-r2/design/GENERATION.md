@@ -34,12 +34,20 @@ and role overrides applied — so it identifies what was expanded rather than wh
 the file said before the command line touched it, and a zone whose shipped values
 live in its own `params` needs no remembered flags to be reproduced.
 
-**All eight zones pass every gate.** The drowned ward's `fluid-contained` red
-(`DW0800`: 380 ways out of a 2304-cell body of water) was the design answer it
-looked like, and §Z3 below records what that answer turned out to be: the ward's
-water is walled at every internal boundary and open only where it leaves the
-piece, because it is the sea rather than a pool. The zone now binds 3728 fluid
-cells with nothing open beside or below any of them.
+**No gate is red on any of the eight zones, and one verdict is not a pass.** Z2
+gate ward is UNDECIDED on `oriented-fills` (`DW0742`): four `iron_bars` fills
+under `y: world_y, z: largest` carry a frame-sensitive state written in the
+world frame, and at this region's proportions the scope's reorientation resolves
+to a no-op, so they stand in the identity frame and nothing this region can do
+decides them. Neither the verdict nor the artifact is refused on it — the
+program may be right — but four fills are unanswered for, and the repair is to
+wrap the state as `{"local": …}` or pin the frame with an `orientation` guard.
+Seven zones pass every gate they bind outright.
+
+`fluid-contained` binds **3742** cells over two zones — 3728 in the drowned ward
+and 14 in the gate ward — every one a source with nothing open beside or below
+it. The drowned ward's water is walled at every internal boundary and open only
+where it leaves the piece, because it is the sea rather than a pool.
 
 ## An oriented block state is a palette role, written in the scope's own frame
 
@@ -52,9 +60,16 @@ wrong way with every gate green. Wrapped as `{"local": …}` the state is in the
 what lets an orientation-dependent block stay a role a campaign can restyle
 without knowing which way the piece was laid.
 
-Every such role in this campaign is written that way, so no zone is held back by
-it: all eight pass `oriented-fills`, every one of them carries local roles, and
-the audit totals **625** fills resolved out of a scope's own frame across the set.
+Every such role in this campaign is written that way, and the audit totals
+**625** fills resolved out of a scope's own frame across the eight. Seven zones
+pass `oriented-fills` outright. Z2 does not, and it is the case this section
+argues: four of its `iron_bars` fills are frame-sensitive states written bare,
+so `oriented-fills` returns `DW0742` — *this region cannot decide it* — rather
+than a pass, and the four are unjudged at the one region the campaign builds Z2
+at. The gate is right to withhold: at a region whose axes rank differently the
+same scope is turned and the same literal is read. Wrapping those four is what
+turns the withheld verdict into a decided one.
+
 Z1 is the worked case for the *state*, and it shows why the frame is not
 decoration: the corpse is authored as `rotation=8`, facing out of its own recess,
 and lands in the world as `rotation=4`. Z7 is the worked case for the *rule* —
@@ -656,30 +671,24 @@ standing tide and the ward is not.
 **Expansion** — `delve-grammar expand --file design/programs/z3-drowned-ward.json
 --region 40x10x60 --seed 1 --traversable`. Every gate passes with a non-zero
 binding: `blocks-exist` 20, `shape-complete` 20, `states-complete` 20,
-`oriented-fills` 296, `non-empty` 24000, `traversable` 72 (32 standable cells at
-the approach face, 40 at the exit face). 9036 filled cells of 24000, 20 distinct
+`oriented-fills` 296, `fluid-contained` 3728, `non-empty` 24000, `traversable`
+72 (32 standable cells at the approach face, 40 at the exit face). 9036 filled
+cells of 24000, 20 distinct
 states, 2695 standable, 28 anchors, silhouette complexity 1.02. `delve-admit
 audit` passes over 24000 blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0
 under-specified). The zone is past the 48-per-axis cap, so it ships as 2 tiles
 and one manifest, and has no lighting step: the profile is `unmeasured`.
 
-**The water, and the instrument that established it.** The recorded `DW0800`
-red was real and reproduces exactly. `fluid-contained` is newer than the pinned
-engine the campaign audit runs, so at that pin the zone reported passing and the
-red could not be reproduced by the campaign's own gate — a green that proves
-nothing rather than a refutation. Three independent methods agree on the same
-number: read off the old program's rules by hand (252 cells beside the causeway
-lane, which was an air trench cut through the water, plus 128 beside the guard
-station), an independent reader over the shipped `.nbt`, and the gate itself on
-a later engine. All three say 380 ways out of 2304.
-
-Against the zone as built, the same three say: **3728 fluid cells, every one a
+**The water, and the instruments that establish it.** Two methods whose failure
+modes are unrelated agree to the cell: `fluid-contained` at expansion, and a
+reader of the shipped `.nbt` palettes and block lists that shares nothing with
+the expander but the bytes on disk. Both say **3728 fluid cells, every one a
 source, none with an open cell beside or below it, and 0 internal escapes.** 344
 run directions leave the piece's own outer faces and are counted rather than
 judged — what is beyond a face is not in these bytes, and here what is beyond
-them is the sea. The old program also held 3519 air cells under its own water
-plane; this one holds none, which is `tide.md`'s rule stated as a property of
-the blocks.
+them is the sea, so whatever this zone is placed against decides where that
+water goes. Below the waterline the zone holds no air at all, which is
+`tide.md`'s rule stated as a property of the blocks rather than as an intention.
 
 **Provenance** — program
 `sha256:14cc79961cfd27811f2013a0ea467674db848432eeadb5784b76b80f76a77aee`, seed
