@@ -6,9 +6,14 @@ name: prefab palette audit
 #
 # The audit tool (`delve-admit`) is GPL pipeline code and lives in the *main*
 # repo (delvewright). We build it from a PINNED main SHA so the allowlist the
-# audit enforces is reproducible: a309f61 is the first main commit whose
-# broadened allowlist (PR #56) admits every prefab merged into this repo
-# (content PR #6). Bumping the pin is a deliberate, reviewed change.
+# audit enforces is reproducible.
+#
+# A pin is a version of the allowlist, so a pin that trails the engine judges
+# this repo's prefabs against a vocabulary the pinned game no longer has: the
+# 1.21.11 id for a hanging chain is `minecraft:iron_chain`, and a pin from
+# before that rename refuses it with DW0730. Bumping the pin is a deliberate,
+# reviewed change, and it is owed whenever a piece is refused for an id the
+# pinned registry does hold.
 #
 # Credential note, RESOLVED. This step used to carry a cross-repo PAT
 # (`secrets.MAIN_REPO_TOKEN`) because `delvewright` was private, and the note
@@ -43,7 +48,7 @@ concurrency:
 
 env:
   # Pinned main-repo SHA the audit tool is built from (see header).
-  ADMIT_REF: a309f61e2ab75d0f8cd2759e02eb7703e048e072
+  ADMIT_REF: 680a5e34302206e09b46a01a224a982a9237b6d6
 
 jobs:
   audit:
