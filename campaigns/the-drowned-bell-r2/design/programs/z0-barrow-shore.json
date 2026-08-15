@@ -1,20 +1,305 @@
 {
-  "version": "1.0.0",
   "name": "bell_barrow_shore",
-  "start": "barrow_shore",
-  "params": {
-    "arena/approach": 4,
-    "arena/flank_margin": 4,
-    "arena/head": 3,
-    "arena/radius": 4,
-    "arena/seal_flank": 0
-  },
   "palette": {
-    "arena/stone": "minecraft:stone_bricks"
+    "cairn/stone": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 42
+      },
+      {
+        "block": "minecraft:andesite",
+        "weight": 18
+      },
+      {
+        "block": "minecraft:cobbled_deepslate",
+        "weight": 18
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 10
+      },
+      {
+        "block": "minecraft:blackstone",
+        "weight": 12
+      }
+    ],
+    "cliff/rock": {
+      "local": [
+        {
+          "block": "minecraft:cobbled_deepslate",
+          "weight": 50
+        },
+        {
+          "block": "minecraft:smooth_basalt",
+          "weight": 30
+        },
+        {
+          "block": "minecraft:blackstone",
+          "weight": 10
+        },
+        {
+          "block": "minecraft:deepslate[axis=y]",
+          "weight": 10
+        }
+      ]
+    },
+    "ledge/rock": {
+      "local": [
+        {
+          "block": "minecraft:cobbled_deepslate",
+          "weight": 60
+        },
+        {
+          "block": "minecraft:deepslate[axis=y]",
+          "weight": 20
+        },
+        {
+          "block": "minecraft:tuff",
+          "weight": 10
+        },
+        {
+          "block": "minecraft:blackstone",
+          "weight": 10
+        }
+      ]
+    },
+    "shelf/lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "shelf/stone": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 48
+      },
+      {
+        "block": "minecraft:tuff",
+        "weight": 22
+      },
+      {
+        "block": "minecraft:cobbled_deepslate",
+        "weight": 20
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 10
+      }
+    ],
+    "shore/bed": "minecraft:cobbled_deepslate",
+    "shore/sand": {
+      "local": [
+        {
+          "block": "minecraft:cobbled_deepslate",
+          "weight": 30
+        },
+        {
+          "block": "minecraft:deepslate[axis=y]",
+          "weight": 18
+        },
+        {
+          "block": "minecraft:tuff",
+          "weight": 20
+        },
+        {
+          "block": "minecraft:mud",
+          "weight": 22
+        },
+        {
+          "block": "minecraft:blackstone",
+          "weight": 10
+        }
+      ]
+    },
+    "shore/silt": {
+      "local": [
+        {
+          "block": "minecraft:mud",
+          "weight": 55
+        },
+        {
+          "block": "minecraft:cobbled_deepslate",
+          "weight": 20
+        },
+        {
+          "block": "minecraft:deepslate[axis=y]",
+          "weight": 15
+        },
+        {
+          "block": "minecraft:blackstone",
+          "weight": 10
+        }
+      ]
+    },
+    "stake/iron": {
+      "local": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]"
+    }
+  },
+  "params": {
+    "cairn/d": 5,
+    "cairn/gap": 9,
+    "cairn/row_gap": 6,
+    "cairn/w": 5,
+    "cliff/batter_run": 6,
+    "cliff/ledge_w": 4,
+    "cliff/tread": 3,
+    "cliff/wall_w": 1,
+    "mud/cairn_gap": 7,
+    "mud/fig_gap": 4,
+    "mud/fig_row": 2,
+    "shelf/run": 6,
+    "shelf/w": 7,
+    "shore/base": 2,
+    "shore/causeway_w": 5,
+    "shore/cliff_run": 14,
+    "shore/mud_run": 14,
+    "shore/outer_run": 20,
+    "shore/stake_run": 13,
+    "stake/gap": 6,
+    "stake/h": 3
   },
   "rules": {
-    "arena/arena_alts": [
+    "barrow_shore": [
       {
+        "body": {
+          "body": {
+            "op": "call",
+            "symbol": "shore_plan"
+          },
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          }
+        },
+        "weight": 1
+      }
+    ],
+    "cairn/field": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cairn/row"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/d"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/row_gap"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "cairn/d"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "param",
+              "name": "cairn/row_gap"
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cairn/grave": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "cairn/heap"
+              },
+              "mark": {
+                "anchor": "grave",
+                "at": "floor_center",
+                "index": "auto"
+              },
+              "op": "mark"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
         "weight": 1,
         "when": {
           "cond": "all",
@@ -22,606 +307,3415 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "arena/radius"
+                "dim": "x",
+                "expr": "dim"
               },
               "op": "ge",
               "rhs": {
                 "expr": "int",
-                "value": 4
+                "value": 3
               }
             },
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "arena/flank_margin"
+                "dim": "z",
+                "expr": "dim"
               },
               "op": "ge",
               "rhs": {
                 "expr": "int",
-                "value": 1
+                "value": 3
               }
             },
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "arena/approach"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/head"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "x"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "arena/radius"
-                    },
-                    "op": "mul",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 2
-                    }
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "arena/flank_margin"
-                    },
-                    "op": "mul",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 2
-                    }
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "z"
-              },
-              "op": "ge",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "arena/radius"
-                    },
-                    "op": "mul",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 2
-                    }
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "arena/approach"
-                  },
-                  "op": "mul",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "dim",
-                "dim": "y"
+                "dim": "y",
+                "expr": "dim"
               },
               "op": "ge",
               "rhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "arena/head"
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cairn/grave_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/grave"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/grave"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/grave"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "op": "mul",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 6
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cairn/heap": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cairn/stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/inset_x"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cairn/stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cairn/inset_x": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/inset_z"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "cairn/inset_z": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/heap"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "cairn/mound": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/heap"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cairn/row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cairn/mound"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/gap"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "cairn/w"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "param",
+              "name": "cairn/gap"
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "causeway/mouth_post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "body": {
+                  "op": "void"
+                },
+                "mark": {
+                  "anchor": "crossing",
+                  "at": "floor_center"
+                },
+                "op": "mark"
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "z": true
+                }
+              }
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "causeway/mouth_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "causeway/mouth_post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "causeway/spine": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "causeway/wake_row"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "causeway/mouth_row"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 8
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "causeway/wake_post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "mark": {
+                "anchor": "wake",
+                "at": "floor_center"
+              },
+              "op": "mark"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "causeway/wake_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "causeway/wake_post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "cliff/band": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cliff/crag"
+            },
+            {
+              "op": "call",
+              "symbol": "cliff/cut"
+            },
+            {
+              "op": "call",
+              "symbol": "cliff/shelf_lane"
+            },
+            {
+              "op": "call",
+              "symbol": "cliff/crag"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cliff/wall_w"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cliff/ledge_w"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shelf/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "cliff/batter": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cliff/rock"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "call",
+                  "symbol": "cliff/batter"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 4
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "cliff/rock"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cliff/crag": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cliff/rock"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "cliff/crag_face"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "cliff/crag_face": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "cliff/rock"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "cliff/batter"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cliff/batter_run"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "gt",
+          "rhs": {
+            "expr": "param",
+            "name": "cliff/batter_run"
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "cliff/batter"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "cliff/cut": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "ledge/rock"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "ledge/start"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "cliff/mass": [
+      {
+        "body": {
+          "material": {
+            "role": "cliff/rock"
+          },
+          "op": "fill"
+        },
+        "weight": 1
+      }
+    ],
+    "cliff/shelf_lane": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cliff/mass"
+            },
+            {
+              "op": "call",
+              "symbol": "shelf/plate"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shelf/run"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "gt",
+          "rhs": {
+            "expr": "param",
+            "name": "shelf/run"
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "cliff/mass"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "flat/answered_post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "mark": {
+                "anchor": "first-answered",
+                "at": "floor_center"
+              },
+              "op": "mark"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "flat/first_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/mound"
+            },
+            {
+              "op": "call",
+              "symbol": "flat/answered_post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "cairn/w"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 6
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "flat/inner": [
+      {
+        "body": {
+          "body": {
+            "op": "call",
+            "symbol": "cairn/field"
+          },
+          "op": "bind",
+          "params": {
+            "cairn/gap": {
+              "expr": "int",
+              "value": 11
+            },
+            "cairn/row_gap": {
+              "expr": "int",
+              "value": 8
+            }
+          }
+        },
+        "weight": 1
+      }
+    ],
+    "flat/outer": [
+      {
+        "body": {
+          "body": {
+            "axis": "z",
+            "children": [
+              {
+                "op": "call",
+                "symbol": "cairn/field"
+              },
+              {
+                "op": "call",
+                "symbol": "flat/first_row"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "blocks": {
+                  "expr": "param",
+                  "name": "cairn/d"
+                },
+                "size": "absolute"
+              }
+            ]
+          },
+          "op": "bind",
+          "params": {
+            "cairn/gap": {
+              "expr": "int",
+              "value": 4
+            },
+            "cairn/row_gap": {
+              "expr": "int",
+              "value": 3
+            }
+          }
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "gt",
+          "rhs": {
+            "expr": "param",
+            "name": "cairn/d"
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "ground/flat": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ground/mire": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/silt"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/base"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ledge/foot_tread": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "ledge/rock"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "mark": {
+                "anchor": "ledge-foot",
+                "at": "floor_center"
+              },
+              "op": "mark"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ledge/run": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "ledge/rock"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "call",
+                  "symbol": "ledge/run"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "ledge/rock"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cliff/tread"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "cliff/tread"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "ledge/rock"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "ledge/start": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "ledge/rock"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "call",
+                  "symbol": "ledge/run"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "call",
+              "symbol": "ledge/foot_tread"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cliff/tread"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "cliff/tread"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ledge/foot_tread"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mud/band": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "mud/field"
+            },
+            {
+              "op": "call",
+              "symbol": "causeway/spine"
+            },
+            {
+              "op": "call",
+              "symbol": "mud/field"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/causeway_w"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "shore/causeway_w"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 16
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/mire"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mud/cairn_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "mud/mound"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/mire"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/w"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "mud/cairn_gap"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "cairn/w"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "param",
+              "name": "mud/cairn_gap"
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/mire"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mud/field": [
+      {
+        "body": {
+          "body": {
+            "op": "call",
+            "symbol": "mud/plan"
+          },
+          "mark": {
+            "anchor": "mire",
+            "at": "offset",
+            "index": "auto",
+            "x": {
+              "expr": "arith",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "div",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            "y": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "shore/base"
+              },
+              "op": "add",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            "z": {
+              "expr": "arith",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "div",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "mud/figure_field": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "mud/figure_row"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/mire"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "mud/fig_row"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "mud/fig_row"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/mire"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mud/figure_post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/silt"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "mark": {
+                "anchor": "silt",
+                "at": "floor_center",
+                "index": "auto"
+              },
+              "op": "mark"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/base"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "mud/figure_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "mud/figure_post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/mire"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "mud/fig_gap"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "mud/fig_gap"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/mire"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mud/mound": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/silt"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "cairn/heap"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/base"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/mire"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mud/plan": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "mud/cairn_row"
+            },
+            {
+              "op": "call",
+              "symbol": "mud/figure_field"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/d"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "gt",
+          "rhs": {
+            "expr": "param",
+            "name": "cairn/d"
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/mire"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "shelf/front_wall": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "shelf/wall_course"
+            },
+            {
+              "op": "call",
+              "symbol": "shelf/lamp_cell"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "shelf/wall_course"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 7
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "shelf/wall_course"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "shelf/furnish": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "shelf/stand"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "shelf/front_wall"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 4
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "void"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "shelf/lamp_cell": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shelf/stone"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shelf/lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "shelf/plate": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shelf/stone"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shelf/stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "shelf/furnish"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
                 },
                 "op": "add",
                 "rhs": {
                   "expr": "int",
                   "value": 2
                 }
-              }
-            }
-          ]
-        },
-        "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
             {
               "size": "relative",
               "weight": {
                 "expr": "int",
                 "value": 1
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "arena/radius"
-                  },
-                  "op": "mul",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "arena/approach"
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "arena/floor_column"
-            },
-            {
-              "op": "call",
-              "symbol": "arena/circle_band"
-            },
-            {
-              "op": "call",
-              "symbol": "arena/floor_column"
             }
           ]
-        }
+        },
+        "weight": 1
       }
     ],
-    "arena/arena_plan": [
+    "shelf/stand": [
       {
-        "weight": 1,
         "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "arena/arena_alts"
-          }
-        }
-      }
-    ],
-    "arena/circle_band": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
           "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "arena/radius"
-                  },
-                  "op": "mul",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
           "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
-            },
-            {
-              "op": "call",
-              "symbol": "arena/west_flank"
-            },
-            {
-              "op": "call",
-              "symbol": "arena/elite_column"
-            },
-            {
-              "op": "call",
-              "symbol": "arena/east_flank"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "arena/east_flank": [
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/seal_flank"
-              },
-              "op": "div",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "call",
-          "symbol": "arena/floor_column"
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "arena/seal_flank"
-              },
-              "op": "div",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "arena/stone"
-          }
-        }
-      }
-    ],
-    "arena/elite_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "arena/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "elite",
-                "at": "floor_center"
-              },
-              "body": {
-                "op": "void"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "arena/floor_column": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "arena/head"
-              }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "arena/stone"
-              }
-            },
             {
               "op": "void"
             },
             {
-              "op": "fill",
+              "body": {
+                "body": {
+                  "op": "void"
+                },
+                "mark": {
+                  "anchor": "lampman",
+                  "at": "floor_center"
+                },
+                "op": "mark"
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "z": true
+                }
+              }
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "shelf/wall_course": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
               "material": {
-                "role": "arena/stone"
+                "role": "shelf/stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "shore_plan": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cliff/band"
+            },
+            {
+              "op": "call",
+              "symbol": "flat/inner"
+            },
+            {
+              "op": "call",
+              "symbol": "flat/outer"
+            },
+            {
+              "op": "call",
+              "symbol": "stake/band"
+            },
+            {
+              "op": "call",
+              "symbol": "mud/band"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/cliff_run"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/outer_run"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/stake_run"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "shore/mud_run"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "dim": "x",
+                "expr": "dim"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "shore/cliff_run"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "shore/outer_run"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "shore/stake_run"
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "shore/mud_run"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "cliff/wall_w"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "cliff/ledge_w"
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "shelf/w"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 8
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/causeway_w"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 16
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "shore/base"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "stake/h"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 9
+                }
               }
             }
           ]
         }
       }
     ],
-    "arena/west_flank": [
+    "stake/band": [
       {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "param",
-              "name": "arena/seal_flank"
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cairn/grave_row"
             },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
-            }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 0
-          }
-        },
-        "body": {
-          "op": "call",
-          "symbol": "arena/floor_column"
-        }
-      },
-      {
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "arith",
-            "lhs": {
-              "expr": "param",
-              "name": "arena/seal_flank"
+            {
+              "body": {
+                "op": "call",
+                "symbol": "cairn/row"
+              },
+              "op": "bind",
+              "params": {
+                "cairn/gap": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "cairn/row_gap": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
             },
-            "op": "rem",
-            "rhs": {
-              "expr": "int",
-              "value": 2
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "stake/line"
             }
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/d"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "cairn/d"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
         },
-        "body": {
-          "op": "fill",
-          "material": {
-            "role": "arena/stone"
-          }
-        }
-      }
-    ],
-    "barrow_shore": [
-      {
-        "weight": 1,
-        "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "shore_plan"
-          }
-        }
-      }
-    ],
-    "shore_plan": [
-      {
         "weight": 1,
         "when": {
           "cond": "cmp",
           "lhs": {
-            "expr": "dim",
-            "dim": "z"
+            "dim": "z",
+            "expr": "dim"
           },
           "op": "gt",
           "rhs": {
-            "expr": "dim",
-            "dim": "x"
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "cairn/d"
+              },
+              "op": "mul",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
           }
-        },
+        }
+      },
+      {
         "body": {
           "op": "call",
-          "symbol": "arena/arena_plan"
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
         }
       }
+    ],
+    "stake/line": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "stake/post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "stake/post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "stake/post"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "stake/gap"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "stake/gap"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "stake/gap"
+              },
+              "op": "mul",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 9
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "stake/post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "shore/bed"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "shore/sand"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "stake/iron"
+                },
+                "op": "fill"
+              },
+              "mark": {
+                "anchor": "stake",
+                "at": "floor_center",
+                "index": "auto"
+              },
+              "op": "mark"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "stake/h"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
     ]
-  }
+  },
+  "start": "barrow_shore",
+  "version": "1.4.0"
 }
