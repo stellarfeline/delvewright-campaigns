@@ -160,7 +160,7 @@ from "the produced zones' records" finds half of them.
 
 # Part three: the exported programs are not the zones they name
 
-Three zones were produced in one round. In **all three**, the program that was
+Four zones were produced in one round. In **all four**, the program that was
 exported into this campaign as its artifact of record did not build the zone it
 is named after, and the producer had to author the zone instead:
 
@@ -173,8 +173,12 @@ is named after, and the producer had to author the zone instead:
   under six of solid mass. **Six of its seven beats had no rule in it.**
 - The hall keep passed all six gates with **three of its beats** — hearth,
   tapestries, far arch — having no role and no rule at all.
+- The drowned ward had **no arcades, no tower, no wrecks and no weed**, a stone
+  lid over a ward that is open to the sky, and a side strip that was eight
+  thousand four hundred cells of inert margin. Its module shared only vocabulary
+  with its subject: rules named for a flood and a causeway.
 
-Three for three is not a run of bad luck; it is the normal state of the exported
+Four for four is not a run of bad luck; it is the normal state of the exported
 set. The zones that were produced in earlier rounds were produced from the same
 export, and nobody has re-asked the question of them.
 
