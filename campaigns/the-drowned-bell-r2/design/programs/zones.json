@@ -7,7 +7,14 @@
     "`delve-grammar audit --campaign-root <content repo>` reads it; every program file in",
     "this directory must appear here, and every entry must name a file that is here.",
     "`traversable` is the claim that a body walks the zone from its approach face to its",
-    "exit face; `allow_falls` is the claim that the route descends and does not come back."
+    "exit face; `allow_falls` is the claim that the route descends and does not come back.",
+    "",
+    "`map.json` is the whole map composed as one program (spec-0040). It is listed in",
+    "`zones` because that is the list `audit` walks: an entry there is what expands the",
+    "map inside its composition and judges it with the same gates every zone gets. The",
+    "`composition` block below is the spec-0040 artifact of record -- which zones the map",
+    "takes in, and which it leaves detached -- and this engine does not read it, so it",
+    "states the composition and binds nothing."
   ],
   "zones": [
     {
@@ -98,6 +105,37 @@
       ],
       "seed": 1,
       "traversable": true
+    },
+    {
+      "id": "halgrave-map",
+      "program": "map.json",
+      "region": [
+        79,
+        72,
+        436
+      ],
+      "seed": 1
     }
-  ]
+  ],
+  "composition": {
+    "id": "halgrave-map",
+    "program": "map.json",
+    "region": [
+      79,
+      72,
+      436
+    ],
+    "seed": 1,
+    "composes": [
+      "z0-barrow-shore",
+      "z1-cliff-road",
+      "z2-gate-ward",
+      "z3-drowned-ward",
+      "z4-chapel-ward",
+      "z5-hall-keep",
+      "z6-cistern-deep",
+      "z7-bell-tower"
+    ],
+    "detached": []
+  }
 }
