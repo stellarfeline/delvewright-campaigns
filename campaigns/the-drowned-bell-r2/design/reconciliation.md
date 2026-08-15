@@ -83,35 +83,46 @@ The first part read the zones against their own images. This part reads them
 against the image of the **whole**, now that one exists, and adjudicates the
 measurements that forced a placement judgement.
 
-## The landform belongs to nothing, and it is the largest thing on the sheet
+## The landform has an owner, the owner is unapproved, and this campaign's base is not in it
 
 The reference draws the crag as natural rock: a curved shoreline, an undercut
-cliff, sloping turf, and the ward's ring wall as a curve. **The grammar has no
-smooth curve, no diagonal and no terrain, by design.** So the rock the whole
-place stands on is not a zone, is not connective tissue between zones, and is not
-expressible as a grammar program at all.
+cliff, sloping turf, and the ward's ring wall as a curve. The grammar has no
+smooth curve, no diagonal and no terrain — but that is not a hole, because
+terrain was never the grammar's job. **Ground belongs to the horizon line**,
+where a surround is compiler-generated tiles from an analytic generator, so a
+curved base is a generator question and is achievable in principle.
 
-The composition model has two kinds of thing in it — the parts, and the program
-that composes them. The reference says there is a third: **the ground.** It
-carries the silhouette from every angle a player approaches by, it is what the
-zones are cut into rather than placed upon, and nothing in the model or in this
-campaign's file set owns it.
+Three facts qualify that, and together they are the real finding:
 
-This is not an argument against the composition model. It is a hole in its
-inventory, found by the first artifact that looked at the whole, which is exactly
-what that artifact was for.
+- The horizon specification is **Proposed, not accepted**, and its branches are
+  open and blocked — on a content-pin ordering problem rather than on merit.
+- Its bases are sky, flatland, valley, cherry-valley and summit. **A tidal sea
+  crag is not among them.** The `ocean` base generates no surround at all: it is
+  a pinned water plane and nothing else. The stepped oval rock with a sheer west
+  cliff that this campaign stands on has no base to be built from.
+- The same specification's own problem statement names the defect this
+  campaign's last zone hit — a waterline exemption that means no proof ever
+  looks. That is not a new gap; it is a live instance of the thing this
+  specification exists to make impossible.
 
-## The zone the reference forgot is the zone the reference was anchored on
+So the composition model's inventory is not missing a third kind of thing. The
+third kind of thing is specified, unbuilt, and specified without the case this
+campaign needs.
 
-Z1's cut road-ledge is asked for in the prompt and appears on the west cliff in
-**neither** sheet. The one zone that is a *line across a face* rather than a
-*volume on a shelf* did not survive into the whole-map drawing.
+## Correction: the cliff road is in the reference
 
-Read with the first part's finding — that Z1's built seaward elevation is a flat
-plane with a seam where the concept has an undercut lip — the same element has now
-failed to appear twice, in two different media, for two unrelated reasons. A thing
-that neither the grammar nor the reference will draw is a thing at risk of being
-absent from the finished map while every record says it exists.
+An earlier reading of this document claimed the cut road-ledge appears on the
+west cliff in neither sheet. That is false, and it is visible in three of the
+four panels once looked for.
+
+What is true is narrower and is about the prompt rather than the drawing: the
+road is written into the reference brief as a **detail of the gatehouse stage**
+rather than as a stage of its own. So it is drawn as a scratch across the rock
+face — which is what was asked for — instead of as the route between the sand
+and the gate, which is what it is.
+
+That is the same shape as the arrival-order gap below: the brief describes the
+place correctly and describes the *journey through it* not at all.
 
 ## The measurements that forced a judgement
 
@@ -199,3 +210,20 @@ line it caught nothing for however long the export has been sitting there.
 This is also the strongest single argument for the whole-map reference existing.
 The bell tower's collapse was found by holding the program against a picture. No
 count would have found it, because every count was green.
+
+## The reference does not state the order a player reaches anything
+
+The brief numbers five stages, and the numbering is explicitly about **height**:
+the stages must read as clearly different levels stacked above one another. The
+word *player* does not appear in it, and no route is described anywhere.
+
+That is why two sheets can differ in layout while both satisfying the brief
+completely — and layout decides the order structures are reached, which decides
+what story the place tells. The campaign already holds the order: its reference
+images are tabled in the player's ascent order and its beat sheet runs the same
+way. The brief simply did not carry it.
+
+The repair is not a wording change. The arrival sequence is stated explicitly,
+structure by structure, and the plan panel is asked to draw the route as a line
+— which also makes two candidate sheets comparable on the axis that matters
+rather than on how they look.
