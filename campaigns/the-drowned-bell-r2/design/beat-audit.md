@@ -39,9 +39,12 @@ either built by a rule of that zone's program or it is not.
 - The subject is the **program**, not the zone's own record. `design/programs/z*.json`
   are the artifacts of record; `programs/zones.json` gives each its region and seed.
   Where a record and its program disagree, the disagreement is named below.
-- Programs were expanded with `delve-grammar` built from the engine commit
-  `zone-audit.yml` carries in `GRAMMAR_REF`, at the region and seed `zones.json`
-  declares, with the optional gates it claims. Every one passed every gate.
+- Programs were expanded with `delve-grammar` built from engine commit
+  `13320bd5`, at the region and seed `zones.json` declares, with the optional
+  gates it claims. Every one passed every gate. The engine is named by its own
+  SHA and not by whatever `zone-audit.yml` pins today: a measurement resolved
+  through a moving reference is re-read against a different instrument every
+  time that reference moves, and the reading below belongs to this one.
 - **Verdicts are traced to rules.** A rule that merely occupies the part of the
   region a beat happens in is not credited. Where reading the rules settles the
   question the verdict is by reading; where it does not, the zone was expanded and
@@ -55,7 +58,7 @@ either built by a rule of that zone's program or it is not.
 Reproducing every verdict below:
 
 ```sh
-# engine at the pin zone-audit.yml carries in GRAMMAR_REF
+# engine at 13320bd5 — the instrument this reading was taken with
 cargo build -p delvewright-grammar --release
 delve-grammar expand --file design/programs/z0-barrow-shore.json --region 19x6x24  --seed 1 --traversable                                   --id z0 -o out/
 delve-grammar expand --file design/programs/z1-cliff-road.json   --region 10x28x44 --seed 1 --traversable --reachable-floor                 --id z1 -o out/
@@ -335,7 +338,7 @@ shortcut opens, which the reversed order makes impossible to stage.
 
 **19 of 27 beats are absent. 3 are built.** Every one of the four programs passed
 every machine gate with a non-zero binding, at the region and seed the campaign
-declares, at the pinned engine.
+declares, at engine `13320bd5`.
 
 The worst zone by count is **Z0**, at 7 of 7 — but its program never claimed to be
 the shore, and the engine's own index says so. The worst zone by consequence is
@@ -401,10 +404,11 @@ consulted at either end.
 
 Named because each cost time to run down, and each would mislead the next reader.
 
-- The audit workflow's own comment about its pin is wrong in both directions: it
-  says the pin is a feature-branch commit and that the job is red until a bump is
-  made. The pin it carries is a merge commit on the engine repo's main and the
-  bump has already happened. The commit that made the bump says so.
+- **CLOSED.** The audit workflow's comment about its own pin claimed the pin was
+  a feature-branch commit and the job red until a bump was made, when neither
+  held; the comment now states what the pin is and what it is chosen for. The
+  claim is recorded because it is the expensive kind: a document asserting a red
+  that does not exist costs every reader who plans around it, and two did.
 - Both review READMEs give reproduction commands the pinned renderer cannot run:
   an author-aimed `--view` flag it does not have, and a global option placed before
   the subcommand. Z2's review set is additionally reproduced at a seed the campaign

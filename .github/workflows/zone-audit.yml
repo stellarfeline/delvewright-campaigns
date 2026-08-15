@@ -42,17 +42,18 @@ env:
   # to are the ones this commit carries, and a moving ref would let them change
   # underneath a campaign with nothing to review.
   #
-  # This pin is the commit that introduced `delve-grammar audit`, which is on a
-  # feature branch. It moves to the merge commit on the pipeline repo's `main`,
-  # and the bump is one line: replace the value below and nothing else.
+  # The pin is a commit on the pipeline repo's `main`, and the bump is one line:
+  # replace the value below and nothing else.
   #
-  # The bump is REQUIRED, not optional, and this job is red until it happens:
-  # the zone programs here declare a `version` (`1.4.0` for the five that write
-  # a `local` paint, `1.0.0` for the other three), and the pinned engine below
-  # predates the field entirely — its `Program` is a closed schema, so it
-  # refuses every one of them by name. Only an engine carrying the local axis
-  # frame accepts them.
-  GRAMMAR_REF: 13320bd555b7fe454b3aebc97c4c840b748621d2
+  # It is chosen for what the engine at it can READ, not for what it makes
+  # green. Every zone program here declares document version `1.4.0`, and the
+  # whole-map program that composes them declares `1.5.0` — the `include` list,
+  # which names another program file and the prefix its vocabulary arrives
+  # under. A `Program` schema without that field refuses a composed document at
+  # parse, by field name, before any gate runs; so an engine that cannot read
+  # `1.5.0` is not a stricter judge of the map, it is no judge of it at all.
+  # The pin below carries `1.5.0`, and that is the floor any later bump holds.
+  GRAMMAR_REF: 421c9100e92c95222bb8e39bb531756b44a0e744
 
 jobs:
   zones:
@@ -88,8 +89,21 @@ jobs:
       # program file no manifest entry names is sitting there, if any gate fails,
       # or if any gate examined zero objects. Every run prints a binding count
       # per gate.
+      #
+      # `--library` audits the pinned engine's own rule vocabulary in the same
+      # call, and it is the corpus pairing the exclusions record is written for.
+      # That record INVERTS an assertion rather than removing one: a recorded
+      # program is still expanded and still judged, and it is a finding if it
+      # passes, if it fails with a different code, or if it fails with one more.
+      # Its ids are audit labels — `library/<program>` as well as
+      # `<campaign>/<zone>` — so a call that walks only one corpus holds the
+      # other corpus's records to nothing, and the audit reds by name rather
+      # than letting an inversion go unexercised (`RECORD STALE`). Both corpora
+      # in one call is also what the pipeline repo's own CI runs, which is what
+      # keeps one record answerable from either repo.
       - name: every zone program expands and judges green
         run: |
           grammar-src/target/release/delve-grammar audit \
+            --library \
             --campaign-root . \
             --exclusions grammar-src/.github/zone-audit-exclusions.json
