@@ -1,5 +1,29 @@
 # Beat audit — the four zones produced before the current round
 
+
+> **SUPERSEDED IN PART — the barrow shore was rebuilt after this was measured.**
+>
+> This document measured eight zones as they stood. One of them, Z0, has since
+> been rebuilt *because of what this document found*, and every Z0 figure below
+> is therefore a record of what was, not of what is. Read them as the case for
+> the rebuild, which is what they are.
+>
+> **The count as it stands now: 10 built, 5 partial, 12 absent, out of 27** —
+> Z0's seven moved from absent to built and every one of them names the rule
+> that builds it. The other three zones this document examined are unchanged.
+>
+> **One campaign-wide claim is now false and is corrected here rather than
+> edited away below.** This document, and the reconciliation beside it, state
+> that across the zones examined there is not one block that emits light. The
+> rebuilt shore has a lit lamp on Emeric's shelf. The claim held over the zones
+> as measured; it does not hold over the campaign, and the difference matters
+> because it was being read as a fact about the engine's palette rather than
+> about four particular programs.
+>
+> Nothing below is rewritten. A measurement is a record of an instrument reading
+> at a time, and editing one to agree with a later world destroys the only thing
+> it was for.
+
 `reconciliation.md` part three asks, of the zones produced in the current round,
 whether the program exported as a zone's artifact of record builds the zone it
 names. In all of those it did not. **This document asks the same question of the
