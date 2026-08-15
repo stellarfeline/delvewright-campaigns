@@ -28,6 +28,18 @@ gutter tells the same story) and Z4's enclosed topology (fixed by design). They
 are listed because they change what the place looks like from outside, which is a
 site-plan fact whoever draws the whole needs, not because they are defects.
 
+### A second correction: the light claim has a counter-example
+
+The fact this section rests on — no block in any examined zone emits light — was
+measured over the zones as they then stood. **The barrow shore has since been
+rebuilt and has a lit lamp**, so the claim is true of what was measured and false
+of the campaign.
+
+That distinction is the useful part. The claim was being read as a fact about the
+*engine's palette* — that no grammar role can emit light — when it was only ever
+a fact about four particular programs. A campaign-wide statement drawn from a
+four-zone sample is a generalisation, and this one did not survive the fifth.
+
 ## The omissions are all one omission — CORRECTED BELOW
 
 **Read the correction at the end of this section before acting on it.** The fact
