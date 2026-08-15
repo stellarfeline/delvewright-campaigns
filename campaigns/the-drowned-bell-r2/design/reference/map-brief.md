@@ -11,7 +11,7 @@ produced pieces actually are. It adjudicates nothing. Where a fact forced a
 judgement, the fact is written down and the judgement is left out.
 
 Heights are metres against the **standing tide**, `0.0`, the datum `tide.md`
-fixes. The sheet and every elevation below are drawn at that level.
+fixes. Every image and every elevation below is drawn at that level.
 
 ---
 
@@ -19,14 +19,15 @@ fixes. The sheet and every elevation below are drawn at that level.
 
 Halgrave is a low oval crag standing out of a wide flat of grey tidal sand, an
 hour's walk off a drowned coast, with a priory on it that is also a fort. The
-rock steps up from south to north in five stages and each stage is a different
-zone: the sand at the bottom, a squat gatehouse built into the rock's south foot
-at the head of the causeway, a wide roofless outer ward behind it that is full of
-standing sea, a roofless cloister on the shelf above that, the one intact roofed
-building — a long hall and its keep — above that again, and at the crown, set
-back and standing clear of everything, a plain square bell tower. The rock's
-whole western face is sheer dark cliff falling to surf, with one cut road-ledge
-scratched across it. Under the upper half of the site, invisible from every
+rock steps up from south to north and each step is a different zone: the sand at
+the bottom; a single cut road-ledge climbing north across the sheer western sea
+cliff, which is **the only way off the sand and the whole of the route between
+the shore and the gate**; a squat gatehouse built into the rock's south foot at
+the head of the causeway; a wide roofless outer ward behind it that is full of
+standing sea; a roofless cloister on the shelf above that; the one intact roofed
+building — a long hall and its keep — above that again; and at the crown, set
+back and standing clear of everything, a plain square bell tower. Under the upper
+half of the site, invisible from every
 outside view, a brick cistern is cut into the rock; the only evidence of it above
 ground is a collapse hole in the paving of the upper ward and an iron grille in
 the ward's rock face. The recognition, from the shore and at the size a
@@ -52,7 +53,7 @@ a causeway of wet sand running south off the site, uncovered twice a day.
 
 ## The massing, bottom to top
 
-Six ground planes, and they are not one plane. **A composition that lays these
+Seven stacked ground planes, and they are not one plane. **A composition that lays these
 out at a single level has not built Halgrave.**
 
 | stage | floor | what it is |
@@ -84,6 +85,40 @@ Three facts of the massing that a plan drawn from boxes loses:
    tower whose interior is a chain of rooms at one level is not this tower, under
    the name the campaign is called after.
 
+## The journey through it
+
+The massing above says how high each part is. It does not say what order the
+parts are reached in, and **that order is the layout's job**: it decides which
+structure a player stands in front of first, and two layouts that satisfy every
+height in the table can still tell different stories. The order is not open — it
+is `beats.md`, which runs the zones in the player's ascent order, and
+`map-zones.md`'s seam table, which says at what height each hand-off happens.
+Written out, structure by structure:
+
+| # | the player arrives at | from | the move |
+|---|---|---|---|
+| 1 | **the sand**, at the far south end of the flat | — | wakes face-down on it, with the whole citadel ahead to the north |
+| 2 | **the cairn field and the tide-stake line** | the wake point | walks north; the stake line is the flat's lethal boundary |
+| 3 | **the flat's north-west shelf** | the cairn field | the sand ends at a wall of cliff; the last dry shelf is where the lampman waits |
+| 4 | **the cliff road** | the shelf, at −1.2 | one cut ledge, one body wide, climbing north to +4.0 across the whole seaward face, through the rope store cut into the rock |
+| 5 | **the gate passage**, at +2.5 | the road's north end | a **fall** through the sea-torn breach in the gatehouse's outer wall. The player enters Halgrave through the back of its own gate, and the gate is shut in front of them |
+| 6 | **the causeway**, at +0.4 | the passage, going down and inward | the raised spine across the drowned ward, the water on both sides |
+| 7 | **the water-gate tower**, in the ward's water | the causeway's far end | its ground door is barred from inside; the way in is over the arcade at shutter height and down inside it |
+| 8 | **the cloister**, at +9 | the water-gate tower, up through the rock | out onto open ground and sky for the first time since the shore |
+| 9 | **the hall and keep**, at +12 | the cloister's north range | up and north, into the one building with its roof on |
+| 10 | **the cistern**, at −0.15 | the hall, by the descent stair | the climb's last move is a descent, under everything already crossed |
+| 11 | **the drowned ward again**, at −1.5 | the cistern's grille | out into the ward with the water gone from it |
+| 12 | **the tower foot**, at +14 | the upper ward's cobbled ramp | the ramp climbs north-east between the collapsed low buildings |
+| 13 | **the belfry**, at +30 | the tower's own stair, broken at the first flight | the whole rock is under the player, at the lowest water in fifty-one years |
+
+**The cliff road is a stage of the route, not a detail of the gatehouse.** It is
+the only way off the sand, it is a fifteen-minute zone, it carries a first-encounter
+kill and one of the delve's two carried key items, and it is where the player
+learns that this delve kills for a misread wall. Drawn as a scratch across the
+rock it reads as an incident on the cliff; drawn as a line that starts at the
+sand and ends inside the gatehouse's broken wall, it reads as what it is. Any
+whole-map view that shows the west face must show it that way.
+
 ## The silhouette
 
 Judged at playable scale. A cathedral is a cathedral-sized cathedral, and the
@@ -108,7 +143,74 @@ bands stacked:
    that the sky shows through — and something black inside the hole.
 
 Everything below the tower steps; the tower does not. That contrast is the
-recognition and it is the one thing the reference sheet exists to fix.
+recognition and it is the one thing the whole-map reference exists to fix.
+
+## The shore is large, and its edge is fiction
+
+The flat is the standpoint the whole silhouette is composed for, so its length is
+not a taste question: it is **the distance at which the citadel reads as one
+whole object**, and that distance is derived rather than chosen.
+
+**The inputs.** `tide.md` puts the belfry floor at +30. Above it stands the
+belfry storey, which is a room walked around a bell that is itself a structure —
+five metres of bell and frame, two of headroom over the ring, two of cap — so the
+crown is at **+39**. The flat is at −1.2 and a standing player's eye is 1.62
+above the ground they stand on, so the eye is at +0.42 and the crown stands
+**38.58 m above it**.
+
+**The derivation.** A building is read as one whole object, rather than as
+detail or as landscape, when it subtends about **27°** in the vertical. At
+38.58 m of height that is `38.58 / tan 27° = 75.7 m`. Checked a second way, by
+the ratio rule from a different source rather than by the same tangent: the same
+reading is conventionally written `D/H = 2`, which gives `2 × 38.58 = 77.2 m`.
+The two land **1.9% apart**, which is what says neither is a units error.
+
+**Three bounds the figure has to sit inside, and it does.** Minecraft's default
+field of view is 70° vertical, so at a level gaze the crown falls outside the
+frame nearer than `38.58 / tan 35° = 55.1 m`. The belfry has to see the flat's
+far end in one downward look, and a 31.2 m drop at 10° of depression reaches
+**177 m**. And the recognition feature — the square hole of sky with the bell in
+it — stays legible on a 1080p screen out to **321 m**, so legibility is not the
+binding constraint at any length the flat could have.
+
+**The figure of record: the flat's long axis is 80 blocks**, from the wake point
+to the gatehouse's foot. It is measured to the **gate**, not to the tower, and
+that is deliberately conservative: the tower stands further north again, so its
+angle from the wake point is smaller than 27° rather than larger. The answer
+moves 1.96 m per metre of crown height, so a crown three metres out either way
+still gives 70–82 m; the number is robust at the scale of the decision.
+
+**The cross axis is 40 blocks.** Beat 0.4's tell is that the three tide-stakes
+read as *a line*, which they only do if all three are in one frame. Minecraft's
+horizontal field of view is 102.5° on a 16:9 screen, so from a standpoint 20
+blocks back the frame is `20 × tan 51.2° = 24.9` blocks to each side: a 40-wide
+stake line fits, and a wider one does not.
+
+For the record, and with the judgement left out as everywhere else in this
+document: `programs/zones.json` declares Z0's region as **19 x 6 x 24**.
+
+### The fog band, and what it means
+
+The flat is bounded, and a bounded world has an edge. **The edge is answered with
+fiction, not with a gradient in the fog** — graded fog is not a thing this game
+has, and it is not faked.
+
+Outside the played flat, on the south, east and west, is the **fog band**. It is
+not scenery standing in for more shore: it is *the crossing*, the way the player
+came, and it is finished. It holds nothing to find, nothing to fight and no
+ground worth standing on, and the delve says so in its own voice rather than
+letting the player learn it by walking into a wall:
+
+> *Behind you the flat goes on into fog. That is the crossing, and you have
+> already made it. There is nothing back there but water closing over a road.*
+
+> *You came that way once. It is the only part of tonight that is over.*
+
+The band is what reconciles the built flat with the written one. `story.md` puts
+half a mile of people on this sand on the night of the Long Tide, and `beats.md`
+gives Z0 a half-mile of open flat. Eighty blocks is the part that is *played*;
+the half-mile is what the fog is holding, and the narration is what makes the fog
+mean it rather than merely hide it.
 
 ## Grandeur is what happens in it
 
@@ -138,7 +240,7 @@ collapse shaft must all fall inside one downward view from the tower's top. A
 layout that strings the zones end to end satisfies every route in `quests.md` and
 loses this.
 
-## The state the sheet is drawn at
+## The state the images are drawn at
 
 The **standing tide**, `0.0`. One plane, whole-world, at the same height in the
 ward, around the rock and over the sand, because it is one sea and not a set of
@@ -188,33 +290,42 @@ meant to spill.
 **This brief describes Halgrave, not the produced pieces.** The four notes above
 are what a reader needs in order to know which of the two they are looking at.
 
-## The sheet
+## The images
 
-`map-sheet.jpg` is the whole-map reference this brief was written for, and
-`map-prompt.md` holds the prompt, the exact command, the three concept images
-used as style anchors, and the provider response kept beside the image.
+**The reference of record is the five per-view images**, one view to an image, at
+the full size the provider gives:
 
-**Which sheet was kept, and why.** Two sheets came back from the same series and
-both hold the four-panel separation — the model neither merged the views nor drew
-four unrelated buildings. `map-sheet.jpg` is the one of record because it is the
-only one that returned a genuine straight-down site plan: a flat map with no
-horizon and no perspective, showing the sand and its cairn field, the gatehouse
-at the flat's head, the flooded ward as a ring of water inside a broken wall with
-the causeway crossing it, the cloister's open court, the hall's roof, the tower,
-and the black collapse hole in the ground beside the tower. That panel is the
-view a composition program is written from, and the first sheet drew a second
-aerial oblique in its place.
+| image | the view |
+|---|---|
+| `map-v1-front-elevation.jpg` | the front elevation, from the shore at the derived standoff |
+| `map-v2-west-elevation.jpg` | the seaward elevation, and **the cliff road as a route across the whole face** |
+| `map-v3-site-plan.jpg` | the straight-down site plan, **with the arrival order drawn on it as a line** |
+| `map-v4-aerial.jpg` | the three-quarter aerial: the compact stepped mass as one object |
+| `map-v5-section.jpg` | the south–north cutaway: every level stacked, and the cistern beneath them |
 
-`map-sheet-alt.jpg` is kept beside it for the one thing the sheet of record
-loses: the belfry. In the alternate the belfry is a square opening on every face
-and the bell nearly fills it, which is what *built, not hung as an ornament*
-means; the sheet of record draws a single arched opening with a smaller bell.
-**Between the two images, the alternate's belfry is the one to build from, and
-the paragraph above on Mercy is the binding statement of its scale.**
+They are per-view because a view is worth the detail it is drawn at, and four
+views divided into one canvas each get a quarter of it — which is what a
+reference exists to preserve. Each carries its own prompt file and its own
+provider response, and `map-prompt.md` holds the method, the exact command for
+each, and the line-by-line check of every view against this brief.
 
-Both sheets draw the crag as natural rock with a curved shoreline, an undercut
-cliff and sloping turf, and draw the ward's ring wall as a curve. The grammar
-back end has no smooth curve, no diagonal and no terrain. That is named in
-`map-prompt.md` as a triage item rather than quietly redrawn out of the
+**The earlier four-panel sheets are kept**: `map-sheet.jpg` and
+`map-sheet-alt.jpg` with `map-prompt.txt` and their responses. They are not the
+reference of record. They are kept because they are the only images of this place
+drawn with all four views in one canvas, which is what made those four agree
+about its geometry — the property per-view generation gives up, and the reason
+the geometry lives in this document instead.
+
+Two facts they carry that survive them. `map-sheet-alt.jpg`'s belfry is a square
+opening on every face with the bell nearly filling it, which is what *built, not
+hung as an ornament* means; the paragraph above on Mercy is the binding statement
+of that scale, and views 1, 4 and 5 draw it. And neither sheet draws the cliff
+road as a route — it appears on both as a scratch on the rock — which is the
+omission view 2 exists to answer.
+
+Every image here draws the crag as natural rock with a curved shoreline, an
+undercut cliff and sloping turf, and draws the ward's ring wall as a curve. The
+grammar back end has no smooth curve, no diagonal and no terrain. That is named
+in `map-prompt.md` as a triage item rather than quietly redrawn out of the
 reference, because simplifying a reference to fit the tool is the same defect
 this brief exists to prevent, arriving through the front door.
