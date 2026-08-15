@@ -13,18 +13,34 @@ name: prefab palette audit
 #
 #     python3 tools/prefab-audit.py --bin <path to delve-admit>
 #
-# What an AUDITED UNIT is, and why it is not a glob over `prefabs/*.nbt`, is
-# documented in that script. In short: a zone past the 48-per-axis template cap
-# ships several `.nbt` plus one `structure_set` manifest and no single `.nbt`,
-# so for that zone the manifest is the unit and `delve-admit` refuses a per-tile
-# verdict (DW0739). A glob reaches the tiles and never the manifest, which is
-# the one file that describes the zone.
+# The script walks this repository and audits every `.nbt` git will carry — the
+# roots are discovered, printed, and never configured. What an AUDITED UNIT is
+# is documented there too: a zone past the 48-per-axis template cap ships
+# several `.nbt` plus one `structure_set` manifest and no single `.nbt`, so for
+# that zone the manifest is the unit and `delve-admit` refuses a per-tile
+# verdict (DW0739).
+#
+# There is deliberately NO `paths:` filter, and that is the same rule one layer
+# out. A paths filter is a hand-maintained list of the directories a piece can
+# enter through, which is exactly the shape the script stopped relying on: a
+# `.nbt` committed somewhere the list does not name would leave the gate green
+# by never running it at all. It is cheap to leave off — the pinned tool build
+# is cached on `ADMIT_REF`, and auditing forty units takes seconds.
 #
 # The audit tool (`delve-admit`) is GPL pipeline code and lives in the pipeline
 # repo (delvewright). It is built from a PINNED SHA so the allowlist the audit
 # enforces is reproducible, and bumping the pin is a deliberate, reviewed change
 # — the rules a piece is held to are the ones that commit carries, and a moving
 # ref would let them change underneath the library with nothing to review.
+#
+# The pin is a claim about the GAME as much as about the tool. The allowlist is
+# a set of block ids at the pinned Minecraft version, and a builder writes the
+# spelling that version has. So a pin that trails the game refuses live ids
+# (DW0730) while holding dead ones in their place — an id the game no longer
+# knows loads as air, which is a hole in a building rather than a failure. The
+# pin holds the rules still; it does not hold them behind. It moves forward
+# whenever the ids it names stop being the ids the delve runs on, and the value
+# below is the one whose ids are.
 #
 # Credential note, RESOLVED. This step used to carry a cross-repo PAT
 # (`secrets.MAIN_REPO_TOKEN`) because `delvewright` was private, and the note
@@ -39,15 +55,10 @@ name: prefab palette audit
 
 on:
   pull_request:
-    paths:
-      - "prefabs/**"
-      - "catalog/**"
-      # The check is a script now, so a change to the script is a change to the
-      # gate and must exercise it. Same for this file: a paths filter that does
-      # not name the gate's own sources is a gate that cannot be tested by the
-      # PR that changes it.
-      - "tools/**"
-      - ".github/workflows/prefab-audit.yml"
+  # A pull request is not the only way a piece arrives — a commit pushed
+  # straight to a branch is the other one, and `zone-audit.yml` here already
+  # covers both for the same reason.
+  push:
   workflow_dispatch:
 
 permissions:
@@ -67,7 +78,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # This repo — with git-lfs so the .nbt prefabs materialize (they are LFS
-      # pointers otherwise and the audit would fail to parse them).
+      # pointers otherwise and the audit would fail to parse them). Full history
+      # is not needed, but the checkout must be a git checkout: the script asks
+      # git which `.nbt` the repository actually carries, and cross-checks that
+      # answer against its own walk of the tree.
       - name: check out content repo (with LFS)
         uses: actions/checkout@v4
         with:
@@ -75,6 +89,14 @@ jobs:
 
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
+      #
+      # `actions/checkout` can only write inside the workspace, so `admit-src/`
+      # lands inside the tree the script walks. It is a different repository and
+      # is not audited — and what excludes it is the only thing that excludes
+      # anything here: this repository's git does not track it and would not add
+      # it. No directory name is written down anywhere to achieve that. If the
+      # pinned pipeline tree ever carries a `.nbt`, the run prints it by name as
+      # not audited, with that reason.
       - name: check out delve-admit source (pipeline repo, pinned)
         uses: actions/checkout@v4
         with:
@@ -96,10 +118,12 @@ jobs:
         working-directory: admit-src
         run: cargo build -p delvewright-admit --bin delve-admit --release
 
-      # One audited unit at a time, with the binding count printed: how many
-      # single-file prefabs and how many tiled zones were examined, and how many
-      # tiles those zones covered. A run that examines zero units fails.
-      - name: audit every prefab and every tiled zone
+      # One audited unit at a time, with the binding count printed: which roots
+      # the walk discovered, how many single-file prefabs and how many tiled
+      # zones were examined in each, how many tiles those zones covered, and how
+      # many `.nbt` files the walk found in total. A run that examines zero units
+      # fails.
+      - name: audit every `.nbt` in the repository
         run: |
           python3 tools/prefab-audit.py \
             --bin admit-src/target/release/delve-admit \
