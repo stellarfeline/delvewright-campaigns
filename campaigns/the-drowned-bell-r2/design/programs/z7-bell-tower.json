@@ -13,6 +13,7 @@
     "forecourt_run": 16,
     "frame_beam": 2,
     "frame_period": 5,
+    "head_run": 2,
     "landing_run": 2,
     "pier": 3,
     "ramp_step": 9,
@@ -23,6 +24,7 @@
     "slit_period": 7,
     "slit_sill": 2,
     "stair_bay": 5,
+    "stair_leg": 3,
     "storey": 6,
     "storeys": 24,
     "tower_run": 21,
@@ -1557,8 +1559,23 @@
             {
               "size": "absolute",
               "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "stair_bay"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "tread"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
                 "expr": "param",
-                "name": "stair_bay"
+                "name": "wall_thick"
               }
             }
           ],
@@ -1578,6 +1595,12 @@
               },
               "body": {
                 "op": "void"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/floor"
               }
             }
           ],
@@ -3197,27 +3220,13 @@
         "weight": 1,
         "body": {
           "op": "split",
-          "axis": "y",
+          "axis": "x",
           "sizes": [
             {
               "size": "absolute",
               "blocks": {
                 "expr": "param",
-                "name": "storey"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "storey"
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "storey"
+                "name": "stair_leg"
               }
             },
             {
@@ -3231,35 +3240,11 @@
           "children": [
             {
               "op": "call",
-              "symbol": "stair/flight_broken"
-            },
-            {
-              "op": "reorient",
-              "orient": {
-                "mirror": {
-                  "z": true
-                }
-              },
-              "body": {
-                "op": "call",
-                "symbol": "stair/flight"
-              }
+              "symbol": "stair/leg_near"
             },
             {
               "op": "call",
-              "symbol": "stair/flight"
-            },
-            {
-              "op": "reorient",
-              "orient": {
-                "mirror": {
-                  "z": true
-                }
-              },
-              "body": {
-                "op": "call",
-                "symbol": "stair/flight"
-              }
+              "symbol": "stair/leg_far"
             }
           ],
           "rounding": "start"
@@ -4327,6 +4312,223 @@
             {
               "op": "call",
               "symbol": "rear_ward"
+            }
+          ],
+          "rounding": "start"
+        }
+      }
+    ],
+    "stair/leg_near": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "storey"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "storey"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "storey"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "stair/flight_broken"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "stair/flight"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "rounding": "start"
+        }
+      }
+    ],
+    "stair/leg_far": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "storey"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "storey"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "storey"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "z": true
+                }
+              },
+              "body": {
+                "op": "call",
+                "symbol": "stair/flight"
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "z": true
+                }
+              },
+              "body": {
+                "op": "call",
+                "symbol": "stair/flight_head"
+              }
+            }
+          ],
+          "rounding": "start"
+        }
+      }
+    ],
+    "stair/flight_head": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "head_run"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "landing_run"
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "stair/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "stair/run"
+            },
+            {
+              "op": "call",
+              "symbol": "stair/landing"
             }
           ],
           "rounding": "start"

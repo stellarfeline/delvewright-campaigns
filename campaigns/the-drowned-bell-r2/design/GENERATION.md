@@ -1699,11 +1699,18 @@ enough to circle it and headroom enough to stand under its mouth.
 **The tower above the break is unreachable on foot, and that is the design.** The
 household broke the first flight; the campaign closes the gap on
 `anchor/broken-flight` with the rope carried from Z1. So the expansion's
-reachability line raises the storeys, the belfry and the inside of the bell as
-unreachable sheltered pockets, and this paragraph is the reader §4 asks for — the
-pockets are the design, not rooms with no way in. The zone accordingly claims
-`traversable` and **not** `reachable-floor`, which is also what its manifest row
-says.
+reachability line raises everything over the break as one unreachable sheltered
+pocket, and this paragraph is the reader §4 asks for — the pocket is the design,
+not rooms with no way in. The zone accordingly claims `traversable` and **not**
+`reachable-floor`, which is also what its manifest row says.
+
+**One pocket is the shape that says the stair is sound.** Above the break the
+ringing floor, the louvre stage, the stairhead and the belfry deck are a single
+connected component: the climb is walkable end to end, and the only severance in
+the tower is the broken flight the household made. A tower whose storeys came out
+as SEPARATE pockets would be saying the opposite — that each flight fails on its
+own — and that is a defect rather than a design, whatever the first flight is
+doing.
 
 **The manifest region changed, and it is the one design decision in this
 production.** The row read `41x14x125`. Fourteen courses is one storey: it cannot
@@ -1717,27 +1724,36 @@ have been the block that shares the object's name, laid where the object goes.
 **Expansion** — `delve-grammar expand --file design/programs/z7-bell-tower.json
 --region 41x48x125 --seed 1 --traversable --id z7-bell-tower`. Every gate passes
 with a non-zero binding: `blocks-exist` 25, `shape-complete` 25, `states-complete`
-25, `oriented-fills` 268, `non-empty` 246000, `traversable` 82 (41 standable cells
-on the approach face, 41 on the exit face). 38808 filled cells, 25 distinct
-states, 6312 standable, footprint 5125 columns, perimeter 332, silhouette
-complexity 1.16, 37 anchors. Reachability: 4259 of 6312 standable cells reachable
-on foot from 41 grade entries (67.5%), 1276 unreachable sheltered in 43 pockets —
-the four largest are the three upper storeys and the belfry deck, and the
-smallest named one is the inside of the bell. `delve-admit audit` passes over
-246000 blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0
-under-specified).
+25, `oriented-fills` 272, `non-empty` 246000, `traversable` 82 (41 standable cells
+on the approach face, 41 on the exit face). 38317 filled cells, 25 distinct
+states, 6248 standable, footprint 5125 columns, perimeter 332, silhouette
+complexity 1.16, 37 anchors. Reachability: 4259 of 6248 standable cells reachable
+on foot from 41 grade entries (68.2%), 1212 unreachable sheltered in 43 pockets —
+the largest by far is the whole tower over the break at 1102 cells, and the next
+two are the inside of the bell. `delve-admit audit` passes over 246000 blocks (0
+forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified);
+the block-state set is the same 25 it has always been.
 
-**Provenance** — program `sha256:17a315185a211f743d8fbea314aec76e7b0dd82f6a866dfcc75b7cac5cee1945`
-(the hash of the *effective* program, which is what regenerates the bytes; the
-sha256 of the committed file itself is
-`713c54d5993b71460702e1f720b03d149210272a3024ec1065507f318b92c52f`), seed 1,
+**Provenance** — program `sha256:2a2609c1c272461de281b0d1ef6f98fb324fcd2b710823d804e062e1dc62eac6`
+(the hash of the *effective* program, which is what regenerates the bytes and is
+carried in the manifest's own `generated_by.program_hash`; the sha256 of the
+committed file itself is
+`595828a85793a857c49fce83df31cda9a093d80dd3f9e530624e91eb277d4b0a`), seed 1,
 region 41x48x125. Re-expanding those inputs reproduces every shipped file byte for
-byte — verified by comparing file **contents**, and by three instruments that do
-not share a working directory, an output path or a build tree, one of them a
-different engine commit. The tile contents are
+byte — verified by comparing file **contents** on stdin, never a path, since
+hashing a `shasum` line hashes the filename with it. The tile contents are
 `0ad4f90e67495b9c6b472cf4e575be2fcd50c5d45589c6e6ebcc427fd039b333`,
-`2e163c480be39b73758c6dab670cf5b0c276dababc1dc03d0dea9612a64034ef` and
-`25305fb67a4d28e37447f43100c680f6e8532beb23b7340048e1e7e605ad5d96`.
+`607a8e442993832ee2596023970a32bab2ad2d399c9904d0af855db5aef73ee3` and
+`bf50ce1d43f2d7cff73c4cbf2d30fbd00f6bffd29f54347aab9c93ccbd3cc967`.
+
+**The first tile is byte-identical to the tile before the stair was repaired, and
+the other two are not.** The well is drawn after the approach in the seeded
+stream, so re-shaping it re-rolls every weighted mix downstream of it: 10266
+cells differ, of which 938 are the well and the deck opening themselves and 9328
+are the same role drawing a different member. Only 98 of those 9328 change
+whether a cell is solid, and every one is `ruin/rubble` against its own declared
+5% of air. The change is confined to `z 84..124` — the tower block and the rear
+ward — which is why tile `x0y0z0` does not move, and git agrees with the hash.
 
 **Artifacts** — the zone is past the 48-per-axis structure-template cap, so it
 ships as a **tile set**: `prefabs/z7-bell-tower.x0y0z0.nbt`,
@@ -1788,9 +1804,33 @@ turned frame. A bare `axis=y` or `axis=x` under those calls is in the world's
 frame, and the rubble grain, the deepslate bedding and the belfry beams would run
 the wrong way on half the building with every gate green. The stair well
 reflects its frame as well: alternate flights are the same rule under
-`mirror: {z: true}`, which is what makes the climb a switchback. 268 fills were
+`mirror: {z: true}`, which is half of what makes the climb a switchback — the
+other half is that they stand in different legs of the well. 272 fills were
 examined, 125 carry block-state properties, and **125 of 125 resolve out of a
 scope's own frame**.
+
+**The well carries two legs, and that is what lets the tower be climbed.** A
+flight's first act is to cast a solid course under its whole run. Stack two
+flights in one bay and that course lands one block over the flight below's
+landing: the landing loses its headroom, and the next tread stands three courses
+above the last one a body can reach. The walk steps ±1 and does not jump, so
+every joint severs — and it severs at every joint at once, which is why the
+storeys came out as separate pockets rather than as one. So `stair/well` splits
+the bay in `x` into a near leg (`stair_leg`) and a far leg, and the flights
+alternate between them: no flight's plinth is ever cast over the flight below
+it, and each flight's landing is entered from the other leg one course up. Only
+the far leg touches the storey floors, so a body leaves the stair onto each
+storey and rejoins it on the other side.
+
+**The last flight ends in a pier, not in open air.** The belfry deck sits two
+courses over the shaft's top course, so a flight that finishes with a landing
+finishes one course short of the deck's own floor. `stair/flight_head` therefore
+ends its run against a `head_run` pier carried the full height of the flight:
+the body walks the landing, steps up onto the pier through the deck's opening,
+and steps again onto the deck. The opening is `stair_bay + tread` long so that it
+clears the landing as well as the pier — sized to the pier alone it roofs the
+last treads and severs the climb one course below the bell — and it now stops
+short of the wall it used to hole.
 
 **Open against this piece**
 
@@ -1807,16 +1847,29 @@ scope's own frame**.
   rules and so their own names — it proves green, rise 6 as declared. The earlier
   refusal ("standable floor at y 1..7, which is 7 levels") was the answer to the
   wrong question.
-- **What blocks this zone is that the tower stair does not climb.** Declared with
-  each storey its own space and the stair well as their shared transit volume,
-  `contract-edge-proof` refuses every flight, including the ones that are not the
-  designed break: "the climb does not connect its two ends through its own
-  treads". Including the tread blocks themselves in the transit volume does not
-  change it, so it is not a claiming omission. The zone's own on-foot measurement
-  agrees by a different code path — the four storeys and the belfry come out as
-  four separate unreachable pockets of 264, 242, 260 and 397 cells. The storeys
-  above the tower foot therefore cannot be declared as reachable spaces, and no
-  claim structure closes it: the repair is to the stair's geometry.
+- **The tower stair climbs, and the claim that it does not is withdrawn.** The
+  four separate pockets of 264, 242, 260 and 397 cells were one defect seen four
+  times, not four: every flight cast its plinth across the whole bay at the foot
+  of its own storey slab, which is a ceiling over the flight below. Stood in
+  alternating legs the flights connect, and the storeys, the belfry deck and the
+  climb between them are now a single component of 1102 cells. Two instruments
+  that share only the frozen bytes agree: the zone's own reachability line, and a
+  walk over the exported tiles that finds a 38-step route from the ringing floor
+  to the belfry deck whose largest single step is one course.
+- **What blocks the contract is that no edge class can state a gap the campaign
+  closes.** This is not a geometry finding and no claim structure fixes it.
+  `contract-reachability` demands every declared space be reached from `entry`
+  through declared edges, and its one escape is a `barred` edge, which is proved
+  by **voiding** a region — an obstruction that is taken away. Z7's break is the
+  dual: treads that are not there, which the rope carried from Z1 puts back. A
+  region that is FILLED at delve time has no representation, so the storeys over
+  the break cannot be declared reachable however they are claimed. Declaring them
+  out of the walk instead is exactly the opt-out `CLAUDE.md` forbids — it would be
+  secured by the very unreachability that is the finding. Coverage is global, so
+  no partial contract ships either: **until the engine can state a gap that
+  content closes, Z7 declares no contract at all.** The general form is a
+  capability gap and reaches well past this zone — every one-way shortcut opened
+  from the far side, every lowered bridge, every placed ladder is the same shape.
 - **The rise range is a separate matter and does not block the contract.** The
   declared rises of 6, 6, 6 and 7 between the storeys are accepted as written —
   the edge proof objects to the connection, never to the numbers — so the
