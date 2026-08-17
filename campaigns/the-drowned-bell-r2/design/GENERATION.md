@@ -108,7 +108,7 @@ the zone set is complete).
 
 | Zone | Concept | Program | Status |
 |---|---|---|---|
-| Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; review set in `review/z0/` — see below |
+| Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; declares a spatial contract whose nine contract gates all pass, and reds on `traversable` alone — see below; review set in `review/z0/` |
 | Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 16x24x72 as a 2-tile set; the second zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; review set in `review/z3/` — see below |
@@ -286,30 +286,32 @@ that — it faces out of the piece, which is exactly what it is for.
 
 **Open against this piece**
 
-- **The piece declares no spatial contract, and it cannot.** One was written and
-  refused, and the refusals are the finding. The partition itself is sound: the
-  flat, the mire and the lamp shelf cover 2014 standable cells, five out-of-walk
-  regions cover the other 840, `contract-coverage` binds 2854 with nothing left
-  over, and `contract-closure` binds 11 430 once the three spaces are `open_top`.
-  Three things then stop it, none of them a matter of authoring care:
-  - **The cut ledge cannot be classified.** As a space it refuses — "standable
-    floor at y 4..8, which is 5 levels — a space is ONE floor" — and it cannot be
-    split, because `ledge/run` recurses to lay its five treads and a region name
-    is a literal, so every tread receives the same name. As a transit volume it
-    needs a declared space at both ends and there is none at the top. As an
-    exterior edge's opening it refuses, because such an opening must touch its
-    space and be reached by outside air, and 775 of its cells touch nothing. As
-    out-of-walk it would be a lie: it is the zone's whole route to Z1.
-  - **No `stair` edge may touch `exterior`.** Declared with a rise it refuses —
-    "an edge with an `exterior` endpoint has no resolved box on the far side to
-    measure a level against" — and declared without one the document will not
-    parse: `missing field 'rise'`. The Z0→Z1 seam is a climb and cannot be
-    declared as one.
-  - **An open-air space exports the sky as a face.** The only scope over the sand
-    is the void running from the ground to the top of the region, so `flat`
-    reaches the region's upper plane and any exterior edge on it exports an `up`
-    face beside the ground-level ones. `traversable` then asks for a walk between
-    the shore and the sky and reds. There is no narrower scope to claim.
+- **The piece declares a spatial contract, and every contract gate passes.** Five
+  spaces, five out-of-walk regions and six edges: the sand flat, the mire one
+  course under it, the lamp shelf, and the two ends of the cut ledge. Bindings —
+  well-formed 16, coverage 2854 with nothing left over, closure 11 419, edge
+  proof 4, no-body 5, reachability 2014 (every cell of every space reached),
+  anchors 37, exterior faces 2, majority 2854. The five out-of-walk regions —
+  the cairn field, the mire heaps, the tide-stake tops, the crag's batter and the
+  shelf coping — each earn `facade` from the blocks.
+- **The cut ledge is a CLIMB, so it is an edge and not a space.** Its five treads
+  union into one transit volume, and a `via` carries no one-floor rule — that
+  rule governs spaces, which is why the ledge refused as one ("standable floor at
+  y 4..8, which is 5 levels"). Both ends are separately nameable because the
+  program gives each its own rule: the foot has `ledge/foot_tread`, and the head
+  is the recursion's own base alternative. The `stair` edge between them proves,
+  rise 4, and because it is INTERIOR it never meets the rule that an `exterior`
+  endpoint has no box to measure a rise against.
+- **`traversable` is the one gate that reds, and the sky is why.** The ledge head
+  is an open-air ledge, so the only air scope over it runs to the top of the
+  region; its exterior edge therefore exports an `up` face beside the `north` one,
+  and `traversable` asks for a walk between every pair of declared ways. The
+  mechanism is aimable in principle and was demonstrated: giving the flat's
+  exterior edge a one-course `via` at the causeway mouth took the face count from
+  six to three. The ledge head has no such scope — its base alternative splits
+  `[1 rock, ~1 void]`, so its only air runs to the ceiling, and the rock sill
+  cannot serve because an opening must be reached by the air outside the piece.
+  **Until that is resolved the campaign's zone-audit job reds on this zone.**
 - **The crag's batter is regular.** The face steps back one cell every three
   courses, which makes it a cliff rather than a staircase (a one-course riser
   would be a step, and the way on would stop being the only way on) and gives the
@@ -1087,11 +1089,18 @@ shutters stand correctly in both without a second rule.
   give two names and then refuses on the box: "standable floor at y 3..7, which is
   5 levels — a space is ONE floor". Naming them apart needs a ruined twin of the
   arcade rule chain, which is a change to what the zone builds.
-- A second obstacle sits behind it: 266 of the flooded floor's cells are
-  sheltered, under the two decks and the tower, so they can be neither `open`
-  (refused over a cell with the piece's own blocks overhead) nor `enclosed` (their
-  boundaries run on into the open basins), and no anchor is near enough for
-  `posted`.
+- **The partly-roofed floor is NOT a second obstacle, and the claim that it was
+  is withdrawn.** The ward's own water is `open_water`'s air; the sheltered cells
+  under the two decks are `arcade_bay`'s arch void, which is a different rule and
+  therefore a different region. Claimed apart, `ward/water` takes `open_top` and
+  `ward/arches` takes `enclosed` with no envelope refusal of any kind. The
+  sheltered floor fits an envelope perfectly well once it is named as the thing it
+  is.
+- The way out is `include`: lifting the arcade into its own document and composing
+  it twice under an `east/` and a `west/` prefix gives the two runs distinct
+  region names, because the loader prefixes regions as it prefixes rules. That is
+  a restructure of the zone rather than a declaration added to it, so it is a
+  round of its own.
 - **The head-to-floor rise is already a param, and the record that said otherwise
   was wrong.** It is `$water_depth + $quay_h`, and an exhaustive scan for
   param-free arithmetic finds only anchor-centring on X anywhere in the program.
@@ -1791,25 +1800,34 @@ scope's own frame**.
   because a lighting number for one slice of a building is a number about
   nothing. No rule in this zone exposes a light-emitting role either, so light
   arrives as campaign-bound content on the declared anchors.
-- **The piece declares no spatial contract, and two separate facts stop it.**
-  The cobbled way refuses as a space — "standable floor at y 1..7, which is 7
-  levels — a space is ONE floor" — and cannot be split, because `ramp/terrace`
-  recurses to lay its seven terraces and a region name is a literal, so all seven
-  take the same name. And the climb itself does not connect: declared as a
-  `stair` from the tower foot to the belfry, `contract-edge-proof` refuses with
-  "the climb does not connect its two ends through its own treads", and
-  `contract-reachability` names 382 unreached cells of which 217 are the belfry
-  floor. `stair/run` lays one tread per recursion, so the top usable cell of each
-  flight stands three courses under the next flight's landing, and the last gap
-  into the belfry deck is two. It is five breaks, not one, and it is geometry
-  rather than authoring: no claim structure closes it.
-- **The foot-to-belfry rise is `$storeys + 1`, not a bare literal** — but
-  `storeys` has exactly one legal value at this region, because `zone_plan`
-  guards `dim.y ge base_height + storeys + belfry_run` and 48 = 7 + 24 + 17
-  exactly. The rise is structurally `4 × $storey + 1` with `$storey ge 5`
-  guarded, so its minimum is 21 where the design asks for 16. **The written +30
-  belfry is unreachable at every parameter value**, which is a rule change and
-  not a datum a composing whole can bind.
+- **The cobbled way is declarable, and the claim that it was not is withdrawn.**
+  A climb is an EDGE, not a space: the seven terraces union into one transit
+  volume, and a `via` carries no one-floor rule. Modelled as the `via` of a
+  `stair` edge from `ramp/foot` to `ramp/head_way` — both of which are their own
+  rules and so their own names — it proves green, rise 6 as declared. The earlier
+  refusal ("standable floor at y 1..7, which is 7 levels") was the answer to the
+  wrong question.
+- **What blocks this zone is that the tower stair does not climb.** Declared with
+  each storey its own space and the stair well as their shared transit volume,
+  `contract-edge-proof` refuses every flight, including the ones that are not the
+  designed break: "the climb does not connect its two ends through its own
+  treads". Including the tread blocks themselves in the transit volume does not
+  change it, so it is not a claiming omission. The zone's own on-foot measurement
+  agrees by a different code path — the four storeys and the belfry come out as
+  four separate unreachable pockets of 264, 242, 260 and 397 cells. The storeys
+  above the tower foot therefore cannot be declared as reachable spaces, and no
+  claim structure closes it: the repair is to the stair's geometry.
+- **The rise range is a separate matter and does not block the contract.** The
+  declared rises of 6, 6, 6 and 7 between the storeys are accepted as written —
+  the edge proof objects to the connection, never to the numbers — so the
+  contract can state this tower's geometry at any parameter value. What
+  `4 x $storey + 1` against a guarded `$storey ge 5` rules out is the DESIGN
+  plane: a foot-to-belfry rise of 16, which `map-zones.md` asks for, is
+  unreachable at every parameter value. That is a rule change and a design
+  question, and it is not what stops the declaration.
+- The rise is `$storeys + 1` rather than a bare literal, but `storeys` has
+  exactly one legal value at this region: `zone_plan` guards
+  `dim.y ge base_height + storeys + belfry_run`, and 48 = 7 + 24 + 17 exactly.
 - **`tools/block-appearance.py --program` does not see a `local` paint.** Run
   against this program it reports `binding: 4 paint(s) examined` where the palette
   has ten roles: the six wrapped in `{"local": …}` are skipped in silence, and the
