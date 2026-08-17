@@ -173,13 +173,21 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "door/stone"
+              "op": "claim",
+              "region": "keep/door",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "door/stone"
+                }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "keep/door",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -243,14 +251,22 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "door/stone"
+              "op": "claim",
+              "region": "keep/door",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "door/stone"
+                }
               }
             },
             {
-              "op": "call",
-              "symbol": "door/alcove_air"
+              "op": "claim",
+              "region": "keep/door",
+              "body": {
+                "op": "call",
+                "symbol": "door/alcove_air"
+              }
             },
             {
               "op": "fill",
@@ -376,19 +392,27 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "door/stone"
+              "op": "claim",
+              "region": "keep/door",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "door/stone"
+                }
               }
             },
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "threshold",
-                "at": "corner_min"
-              },
+              "op": "claim",
+              "region": "keep/door",
               "body": {
-                "op": "void"
+                "op": "mark",
+                "mark": {
+                  "anchor": "threshold",
+                  "at": "corner_min"
+                },
+                "body": {
+                  "op": "void"
+                }
               }
             },
             {
@@ -756,13 +780,21 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "duct/rock"
+              "op": "claim",
+              "region": "duct/shaft",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "duct/rock"
+                }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "duct/shaft",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -1025,37 +1057,45 @@
               }
             },
             {
-              "op": "call",
-              "symbol": "duct/entry_floor"
+              "op": "claim",
+              "region": "duct/entry",
+              "body": {
+                "op": "call",
+                "symbol": "duct/entry_floor"
+              }
             },
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "hatch",
-                "at": "offset",
-                "x": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "dim",
-                    "dim": "x"
+              "op": "claim",
+              "region": "duct/entry",
+              "body": {
+                "op": "mark",
+                "mark": {
+                  "anchor": "hatch",
+                  "at": "offset",
+                  "x": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "dim",
+                      "dim": "x"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
                   },
-                  "op": "sub",
-                  "rhs": {
+                  "y": {
                     "expr": "int",
-                    "value": 1
+                    "value": 0
+                  },
+                  "z": {
+                    "expr": "int",
+                    "value": 0
                   }
                 },
-                "y": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "z": {
-                  "expr": "int",
-                  "value": 0
+                "body": {
+                  "op": "void"
                 }
-              },
-              "body": {
-                "op": "void"
               }
             },
             {
@@ -1226,55 +1266,63 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "duct/rock"
+              "op": "claim",
+              "region": "duct/landing",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "duct/rock"
+                }
               }
             },
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "landing",
-                "at": "offset",
-                "x": {
-                  "expr": "arith",
-                  "lhs": {
+              "op": "claim",
+              "region": "duct/landing",
+              "body": {
+                "op": "mark",
+                "mark": {
+                  "anchor": "landing",
+                  "at": "offset",
+                  "x": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "dim",
+                        "dim": "x"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    "op": "div",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 2
+                    }
+                  },
+                  "y": {
+                    "expr": "int",
+                    "value": 0
+                  },
+                  "z": {
                     "expr": "arith",
                     "lhs": {
                       "expr": "dim",
-                      "dim": "x"
+                      "dim": "z"
                     },
                     "op": "sub",
                     "rhs": {
                       "expr": "int",
                       "value": 1
                     }
-                  },
-                  "op": "div",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
                   }
                 },
-                "y": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "z": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "dim",
-                    "dim": "z"
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                "body": {
+                  "op": "void"
                 }
-              },
-              "body": {
-                "op": "void"
               }
             },
             {
@@ -1384,9 +1432,13 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
+              "op": "claim",
+              "region": "keep/gallery",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "gallery/stone"
+                }
               }
             },
             {
@@ -1442,16 +1494,28 @@
           ],
           "children": [
             {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/timber"
+              "op": "claim",
+              "region": "keep/gallery",
+              "body": {
+                "op": "void"
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "gallery/perch",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "gallery/timber"
+                }
+              }
+            },
+            {
+              "op": "claim",
+              "region": "gallery/perch",
+              "body": {
+                "op": "void"
+              }
             }
           ]
         }
@@ -1560,13 +1624,21 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
+              "op": "claim",
+              "region": "keep/gallery",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "gallery/stone"
+                }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "keep/gallery",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -1659,9 +1731,13 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "gallery/stone"
+              "op": "claim",
+              "region": "keep/gallery",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "gallery/stone"
+                }
               }
             },
             {
@@ -1731,39 +1807,59 @@
           ],
           "children": [
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "bait",
-                "at": "floor_center"
-              },
+              "op": "claim",
+              "region": "keep/gallery",
               "body": {
-                "op": "fill",
-                "material": {
-                  "role": "gallery/pedestal"
+                "op": "mark",
+                "mark": {
+                  "anchor": "bait",
+                  "at": "floor_center"
+                },
+                "body": {
+                  "op": "fill",
+                  "material": {
+                    "role": "gallery/pedestal"
+                  }
                 }
               }
             },
             {
-              "op": "void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "gallery/timber"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "bait-perch",
-                "at": "floor_center"
-              },
+              "op": "claim",
+              "region": "keep/gallery",
               "body": {
                 "op": "void"
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "gallery/perch",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "gallery/timber"
+                }
+              }
+            },
+            {
+              "op": "claim",
+              "region": "gallery/perch",
+              "body": {
+                "op": "mark",
+                "mark": {
+                  "anchor": "bait-perch",
+                  "at": "floor_center"
+                },
+                "body": {
+                  "op": "void"
+                }
+              }
+            },
+            {
+              "op": "claim",
+              "region": "gallery/perch",
+              "body": {
+                "op": "void"
+              }
             }
           ]
         }
@@ -2117,45 +2213,49 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "hall/timber"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "perch",
-                "at": "face_center",
-                "axis": "x",
-                "side": "max",
-                "index": "auto"
+          "op": "claim",
+          "region": "hall/corbels",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               },
-              "body": {
-                "op": "void"
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            }
-          ]
+            ],
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "hall/timber"
+                }
+              },
+              {
+                "op": "mark",
+                "mark": {
+                  "anchor": "perch",
+                  "at": "face_center",
+                  "axis": "x",
+                  "side": "max",
+                  "index": "auto"
+                },
+                "body": {
+                  "op": "void"
+                }
+              }
+            ]
+          }
         }
       }
     ],
@@ -2163,45 +2263,49 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "hall/timber"
-              }
-            },
-            {
-              "op": "mark",
-              "mark": {
-                "anchor": "perch",
-                "at": "face_center",
-                "axis": "x",
-                "side": "min",
-                "index": "auto"
+          "op": "claim",
+          "region": "hall/corbels",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               },
-              "body": {
-                "op": "void"
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            }
-          ]
+            ],
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "hall/timber"
+                }
+              },
+              {
+                "op": "mark",
+                "mark": {
+                  "anchor": "perch",
+                  "at": "face_center",
+                  "axis": "x",
+                  "side": "min",
+                  "index": "auto"
+                },
+                "body": {
+                  "op": "void"
+                }
+              }
+            ]
+          }
         }
       }
     ],
@@ -2209,35 +2313,39 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
+          "op": "claim",
+          "region": "hall/roof-timbers",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
+            ],
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "hall/timber"
+                }
+              },
+              {
+                "op": "void"
               }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "hall/timber"
-              }
-            },
-            {
-              "op": "void"
-            }
-          ]
+            ]
+          }
         }
       }
     ],
@@ -2540,7 +2648,11 @@
           }
         },
         "body": {
-          "op": "void"
+          "op": "claim",
+          "region": "hall/roof-timbers",
+          "body": {
+            "op": "void"
+          }
         }
       },
       {
@@ -2558,35 +2670,39 @@
           }
         },
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
+          "op": "claim",
+          "region": "hall/roof-timbers",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
+            ],
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "hall/timber"
+                }
+              },
+              {
+                "op": "void"
               }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "hall/timber"
-              }
-            },
-            {
-              "op": "void"
-            }
-          ]
+            ]
+          }
         }
       }
     ],
@@ -2778,14 +2894,22 @@
               "symbol": "hall/slice_left"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "hall/roof-timbers",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "call",
               "symbol": "hall/slice_right"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "hall/roof-timbers",
+              "body": {
+                "op": "void"
+              }
             }
           ]
         }
@@ -2829,21 +2953,33 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "hall/stone"
+              "op": "claim",
+              "region": "keep/hall",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "hall/stone"
+                }
               }
             },
             {
-              "op": "call",
-              "symbol": "hall/nave"
+              "op": "claim",
+              "region": "keep/hall",
+              "body": {
+                "op": "call",
+                "symbol": "hall/nave"
+              }
             },
             {
               "op": "call",
               "symbol": "hall/truss_band"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "hall/roof-timbers",
+              "body": {
+                "op": "void"
+              }
             }
           ]
         }
@@ -3266,20 +3402,28 @@
           ],
           "children": [
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "threshold-narrate",
-                "at": "floor_center"
-              },
+              "op": "claim",
+              "region": "keep/motif",
               "body": {
-                "op": "fill",
-                "material": {
-                  "role": "motif/stone"
+                "op": "mark",
+                "mark": {
+                  "anchor": "threshold-narrate",
+                  "at": "floor_center"
+                },
+                "body": {
+                  "op": "fill",
+                  "material": {
+                    "role": "motif/stone"
+                  }
                 }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "keep/motif",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "call",
@@ -3426,13 +3570,21 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "motif/stone"
+              "op": "claim",
+              "region": "keep/motif",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "motif/stone"
+                }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "keep/motif",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -3637,13 +3789,21 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "stores/stone"
+              "op": "claim",
+              "region": "keep/stores",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "stores/stone"
+                }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "keep/stores",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -3808,17 +3968,29 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "stores/stone"
+              "op": "claim",
+              "region": "keep/stores",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "stores/stone"
+                }
               }
             },
             {
-              "op": "call",
-              "symbol": "stores/barrel_line"
+              "op": "claim",
+              "region": "keep/stores",
+              "body": {
+                "op": "call",
+                "symbol": "stores/barrel_line"
+              }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "keep/stores",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -4008,6 +4180,94 @@
             }
           ]
         }
+      }
+    ]
+  },
+  "contract": {
+    "entry": "keep/hall",
+    "spaces": {
+      "keep/hall": {
+        "envelope": "enclosed"
+      },
+      "keep/door": {
+        "envelope": "enclosed"
+      },
+      "keep/stores": {
+        "envelope": "enclosed"
+      },
+      "keep/gallery": {
+        "envelope": "enclosed"
+      },
+      "keep/motif": {
+        "envelope": "enclosed"
+      },
+      "duct/entry": {
+        "envelope": "enclosed"
+      },
+      "duct/landing": {
+        "envelope": "enclosed"
+      }
+    },
+    "no_body": {
+      "gallery/perch": {
+        "reason": "the bait perch over the gallery floor -- a timber shelf a watcher stands on, with no stair to it"
+      },
+      "hall/corbels": {
+        "reason": "the two corbels at the truss ends, where a watcher is placed over the hall"
+      },
+      "hall/roof-timbers": {
+        "reason": "the hall's trusses and the open bays between them -- roof structure read from the floor below, never floor"
+      }
+    },
+    "edges": [
+      {
+        "a": "exterior",
+        "b": "keep/hall",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "keep/hall",
+        "b": "keep/door",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "keep/door",
+        "b": "keep/stores",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "keep/stores",
+        "b": "keep/gallery",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "keep/gallery",
+        "b": "keep/motif",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "keep/motif",
+        "b": "duct/entry",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "duct/entry",
+        "b": "duct/landing",
+        "class": "drop",
+        "rise": -4,
+        "via": "duct/shaft"
+      },
+      {
+        "a": "duct/landing",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0
       }
     ]
   }
