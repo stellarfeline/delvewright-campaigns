@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.7.0",
   "name": "bell_bell_tower",
   "start": "zone",
   "params": {
@@ -204,7 +204,8 @@
         "weight": 10,
         "block": "minecraft:tuff"
       }
-    ]
+    ],
+    "stair/tread": "minecraft:andesite"
   },
   "rules": {
     "approach": [
@@ -340,7 +341,11 @@
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/belfry",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -408,14 +413,18 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "belfry-bay",
-            "at": "floor_center",
-            "facing": "east"
-          },
+          "op": "claim",
+          "region": "tower/belfry",
           "body": {
-            "op": "void"
+            "op": "mark",
+            "mark": {
+              "anchor": "belfry-bay",
+              "at": "floor_center",
+              "facing": "east"
+            },
+            "body": {
+              "op": "void"
+            }
           }
         }
       }
@@ -790,45 +799,49 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "walk_lane"
+          "op": "claim",
+          "region": "tower/belfry",
+          "body": {
+            "op": "split",
+            "axis": "x",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "walk_lane"
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "walk_lane"
+                }
               }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
+            ],
+            "children": [
+              {
+                "op": "call",
+                "symbol": "belfry/lane_west"
+              },
+              {
+                "op": "call",
+                "symbol": "belfry/under_bell_cell"
+              },
+              {
+                "op": "void"
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "walk_lane"
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "belfry/lane_west"
-            },
-            {
-              "op": "call",
-              "symbol": "belfry/under_bell_cell"
-            },
-            {
-              "op": "void"
-            }
-          ],
-          "rounding": "middle"
+            ],
+            "rounding": "middle"
+          }
         }
       }
     ],
@@ -1039,43 +1052,47 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "walk_lane"
+          "op": "claim",
+          "region": "tower/bell",
+          "body": {
+            "op": "split",
+            "axis": "x",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "walk_lane"
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "bell_side"
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "walk_lane"
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "bell_side"
+            ],
+            "children": [
+              {
+                "op": "void"
+              },
+              {
+                "op": "call",
+                "symbol": "bell/column"
+              },
+              {
+                "op": "void"
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "walk_lane"
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "call",
-              "symbol": "bell/column"
-            },
-            {
-              "op": "void"
-            }
-          ]
+            ]
+          }
         }
       }
     ],
@@ -1587,14 +1604,22 @@
               }
             },
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "belfry-stairhead",
-                "at": "floor_center",
-                "facing": "north"
-              },
+              "op": "claim",
+              "region": "tower/stair-upper",
               "body": {
-                "op": "void"
+                "op": "claim",
+                "region": "tower/stair-well",
+                "body": {
+                  "op": "mark",
+                  "mark": {
+                    "anchor": "belfry-stairhead",
+                    "at": "floor_center",
+                    "facing": "north"
+                  },
+                  "body": {
+                    "op": "void"
+                  }
+                }
               }
             },
             {
@@ -1645,7 +1670,11 @@
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/door",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -1698,14 +1727,18 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "shortcut-foot",
-            "at": "floor_center",
-            "facing": "north"
-          },
+          "op": "claim",
+          "region": "tower/door",
           "body": {
-            "op": "void"
+            "op": "mark",
+            "mark": {
+              "anchor": "shortcut-foot",
+              "at": "floor_center",
+              "facing": "north"
+            },
+            "body": {
+              "op": "void"
+            }
           }
         }
       }
@@ -1798,7 +1831,41 @@
               }
             },
             {
-              "op": "void"
+              "op": "split",
+              "axis": "y",
+              "sizes": [
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  }
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "op": "claim",
+                  "region": "ward",
+                  "body": {
+                    "op": "void"
+                  }
+                },
+                {
+                  "op": "claim",
+                  "region": "ward/wall-tops",
+                  "body": {
+                    "op": "void"
+                  }
+                }
+              ],
+              "rounding": "start"
             }
           ],
           "rounding": "start"
@@ -1986,7 +2053,37 @@
                 "facing": "south"
               },
               "body": {
-                "op": "void"
+                "op": "split",
+                "axis": "y",
+                "sizes": [
+                  {
+                    "size": "absolute",
+                    "blocks": {
+                      "expr": "param",
+                      "name": "ruin_height"
+                    }
+                  },
+                  {
+                    "size": "relative",
+                    "weight": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
+                ],
+                "children": [
+                  {
+                    "op": "claim",
+                    "region": "approach/foot",
+                    "body": {
+                      "op": "void"
+                    }
+                  },
+                  {
+                    "op": "void"
+                  }
+                ],
+                "rounding": "start"
               }
             }
           ],
@@ -1998,14 +2095,18 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "ramp-head",
-            "at": "floor_center",
-            "facing": "south"
-          },
+          "op": "claim",
+          "region": "approach/crest",
           "body": {
-            "op": "void"
+            "op": "mark",
+            "mark": {
+              "anchor": "ramp-head",
+              "at": "floor_center",
+              "facing": "south"
+            },
+            "body": {
+              "op": "void"
+            }
           }
         }
       }
@@ -2130,7 +2231,11 @@
               "symbol": "ruin/block"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "approach/ramp",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "reorient",
@@ -2190,7 +2295,11 @@
               "symbol": "ruin/low_walls"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "ward/wall-tops",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "rounding": "start"
@@ -2227,7 +2336,11 @@
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/ringing",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "rounding": "start"
@@ -2285,14 +2398,18 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "tower-foot",
-            "at": "floor_center",
-            "facing": "north"
-          },
+          "op": "claim",
+          "region": "tower/foot",
           "body": {
-            "op": "void"
+            "op": "mark",
+            "mark": {
+              "anchor": "tower-foot",
+              "at": "floor_center",
+              "facing": "north"
+            },
+            "body": {
+              "op": "void"
+            }
           }
         }
       }
@@ -2301,36 +2418,40 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
+          "op": "claim",
+          "region": "tower/foot",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
+            ],
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
+              },
+              {
+                "op": "void"
               }
-            }
-          ],
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
-              }
-            },
-            {
-              "op": "void"
-            }
-          ],
-          "rounding": "start"
+            ],
+            "rounding": "start"
+          }
         }
       }
     ],
@@ -2338,34 +2459,38 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "frame_beam"
+          "op": "claim",
+          "region": "tower/louvre",
+          "body": {
+            "op": "split",
+            "axis": "z",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "frame_beam"
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 3
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 3
+            ],
+            "children": [
+              {
+                "op": "call",
+                "symbol": "room/louvre_rack"
+              },
+              {
+                "op": "void"
               }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "room/louvre_rack"
-            },
-            {
-              "op": "void"
-            }
-          ],
-          "repeat": true
+            ],
+            "repeat": true
+          }
         }
       }
     ],
@@ -2488,43 +2613,47 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "z",
-          "sizes": [
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
+          "op": "claim",
+          "region": "tower/ringing",
+          "body": {
+            "op": "split",
+            "axis": "z",
+            "sizes": [
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "int",
-                "value": 1
+            ],
+            "children": [
+              {
+                "op": "void"
+              },
+              {
+                "op": "call",
+                "symbol": "room/rope_drop"
+              },
+              {
+                "op": "void"
               }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "children": [
-            {
-              "op": "void"
-            },
-            {
-              "op": "call",
-              "symbol": "room/rope_drop"
-            },
-            {
-              "op": "void"
-            }
-          ]
+            ]
+          }
         }
       }
     ],
@@ -2621,14 +2750,18 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "boss",
-            "at": "floor_center",
-            "facing": "north"
-          },
+          "op": "claim",
+          "region": "tower/stairhead",
           "body": {
-            "op": "void"
+            "op": "mark",
+            "mark": {
+              "anchor": "boss",
+              "at": "floor_center",
+              "facing": "north"
+            },
+            "body": {
+              "op": "void"
+            }
           }
         }
       }
@@ -2661,7 +2794,11 @@
               "symbol": "ruin/walls"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "approach/ruin-tops",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "rounding": "start"
@@ -2699,9 +2836,13 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "approach/ruin-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             },
             {
@@ -2709,9 +2850,13 @@
               "symbol": "ruin/interior"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "approach/ruin-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             }
           ],
@@ -2743,12 +2888,20 @@
           ],
           "children": [
             {
-              "op": "void"
+              "op": "claim",
+              "region": "approach/ramp",
+              "body": {
+                "op": "void"
+              }
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "approach/ruin-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             }
           ],
@@ -2787,9 +2940,13 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "approach/ruin-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             },
             {
@@ -2797,9 +2954,13 @@
               "symbol": "ruin/doorway"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "approach/ruin-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             }
           ],
@@ -2811,14 +2972,18 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "ruin-cell",
-            "index": "auto",
-            "at": "floor_center"
-          },
+          "op": "claim",
+          "region": "approach/ramp",
           "body": {
-            "op": "void"
+            "op": "mark",
+            "mark": {
+              "anchor": "ruin-cell",
+              "index": "auto",
+              "at": "floor_center"
+            },
+            "body": {
+              "op": "void"
+            }
           }
         }
       }
@@ -2851,7 +3016,11 @@
               "symbol": "ruin/stub"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "ward",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "repeat": true
@@ -2882,13 +3051,21 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "ward/low-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "ward",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "rounding": "start"
@@ -2926,9 +3103,13 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "ruin/rubble"
+              "op": "claim",
+              "region": "approach/ruin-walls",
+              "body": {
+                "op": "fill",
+                "material": {
+                  "role": "ruin/rubble"
+                }
               }
             },
             {
@@ -3012,7 +3193,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "stair/run"
+              "symbol": "stair/run_gone"
             },
             {
               "op": "call",
@@ -3219,35 +3400,39 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "x",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "stair_leg"
+          "op": "claim",
+          "region": "tower/stair-well",
+          "body": {
+            "op": "split",
+            "axis": "x",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "stair_leg"
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
+            ],
+            "children": [
+              {
+                "op": "call",
+                "symbol": "stair/leg_near"
+              },
+              {
+                "op": "call",
+                "symbol": "stair/leg_far"
               }
-            }
-          ],
-          "children": [
-            {
-              "op": "call",
-              "symbol": "stair/leg_near"
-            },
-            {
-              "op": "call",
-              "symbol": "stair/leg_far"
-            }
-          ],
-          "rounding": "start"
+            ],
+            "rounding": "start"
+          }
         }
       }
     ],
@@ -3727,7 +3912,11 @@
               "symbol": "ruin/low_walls"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "ward/wall-tops",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "rounding": "start"
@@ -3868,7 +4057,11 @@
           ],
           "children": [
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/slit",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -4073,7 +4266,11 @@
           ],
           "children": [
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/slit",
+              "body": {
+                "op": "void"
+              }
             },
             {
               "op": "fill",
@@ -4384,14 +4581,26 @@
               "symbol": "stair/flight_broken"
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/stair-upper",
+              "body": {
+                "op": "void"
+              }
             },
             {
-              "op": "call",
-              "symbol": "stair/flight"
+              "op": "claim",
+              "region": "tower/stair-upper",
+              "body": {
+                "op": "call",
+                "symbol": "stair/flight"
+              }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/stair-upper",
+              "body": {
+                "op": "void"
+              }
             }
           ],
           "rounding": "start"
@@ -4452,33 +4661,49 @@
           ],
           "children": [
             {
-              "op": "void"
-            },
-            {
-              "op": "reorient",
-              "orient": {
-                "mirror": {
-                  "z": true
-                }
-              },
+              "op": "claim",
+              "region": "tower/stair-upper",
               "body": {
-                "op": "call",
-                "symbol": "stair/flight"
+                "op": "void"
               }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "tower/stair-upper",
+              "body": {
+                "op": "reorient",
+                "orient": {
+                  "mirror": {
+                    "z": true
+                  }
+                },
+                "body": {
+                  "op": "call",
+                  "symbol": "stair/flight"
+                }
+              }
             },
             {
-              "op": "reorient",
-              "orient": {
-                "mirror": {
-                  "z": true
-                }
-              },
+              "op": "claim",
+              "region": "tower/stair-upper",
               "body": {
-                "op": "call",
-                "symbol": "stair/flight_head"
+                "op": "void"
+              }
+            },
+            {
+              "op": "claim",
+              "region": "tower/stair-upper",
+              "body": {
+                "op": "reorient",
+                "orient": {
+                  "mirror": {
+                    "z": true
+                  }
+                },
+                "body": {
+                  "op": "call",
+                  "symbol": "stair/flight_head"
+                }
               }
             }
           ],
@@ -4533,6 +4758,401 @@
           ],
           "rounding": "start"
         }
+      }
+    ],
+    "stair/run_gone": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tread"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "stair/rock"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "stair/run_above_gone"
+            }
+          ],
+          "rounding": "start"
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "mark",
+          "mark": {
+            "anchor": "stair-head",
+            "index": "auto",
+            "at": "floor_center"
+          },
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ],
+            "children": [
+              {
+                "op": "void"
+              },
+              {
+                "op": "claim",
+                "region": "stair/broken-flight",
+                "body": {
+                  "op": "void"
+                }
+              },
+              {
+                "op": "void"
+              }
+            ],
+            "rounding": "start"
+          }
+        }
+      }
+    ],
+    "stair/run_above_gone": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "tread"
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "stair/run_gone"
+            },
+            {
+              "op": "split",
+              "axis": "z",
+              "sizes": [
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "op": "split",
+                  "axis": "y",
+                  "sizes": [
+                    {
+                      "size": "absolute",
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "op": "claim",
+                      "region": "stair/broken-flight",
+                      "body": {
+                        "op": "void"
+                      }
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "rounding": "start"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "rounding": "start"
+            }
+          ],
+          "rounding": "start"
+        },
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "y"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 3
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "tread"
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "stair/run_gone"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "rounding": "start"
+        },
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ]
+  },
+  "contract": {
+    "entry": "approach/foot",
+    "spaces": {
+      "approach/foot": {
+        "envelope": "open"
+      },
+      "approach/crest": {
+        "envelope": "open"
+      },
+      "ward": {
+        "envelope": "open"
+      },
+      "tower/door": {
+        "envelope": "enclosed"
+      },
+      "tower/foot": {
+        "envelope": "enclosed"
+      },
+      "tower/ringing": {
+        "envelope": "enclosed"
+      },
+      "tower/louvre": {
+        "envelope": "enclosed"
+      },
+      "tower/stairhead": {
+        "envelope": "enclosed"
+      },
+      "tower/belfry": {
+        "envelope": "enclosed"
+      }
+    },
+    "no_body": {
+      "approach/ruin-tops": {
+        "reason": "the broken wall-heads of the collapsed buildings the ramp climbs between"
+      },
+      "approach/ruin-walls": {
+        "reason": "the rubble of those walls, and the gaps its own collapse left in it"
+      },
+      "ward/low-walls": {
+        "reason": "the low ruined walls standing in the ward, and the gaps in their rubble"
+      },
+      "ward/wall-tops": {
+        "reason": "the air over the ward, walked on only where a ruined wall-head stands in it"
+      },
+      "tower/slit": {
+        "reason": "the window slits cut through the tower wall"
+      },
+      "tower/bell": {
+        "reason": "the bell itself, and the ledges of its own casting"
+      }
+    },
+    "edges": [
+      {
+        "a": "exterior",
+        "b": "approach/foot",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "approach/foot",
+        "b": "approach/crest",
+        "class": "stair",
+        "rise": 6,
+        "via": "approach/ramp"
+      },
+      {
+        "a": "approach/crest",
+        "b": "ward",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "ward",
+        "b": "tower/door",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "tower/door",
+        "b": "tower/foot",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "tower/foot",
+        "b": "tower/ringing",
+        "class": "stair",
+        "rise": 6,
+        "via": "tower/stair-well",
+        "way": {
+          "opens": "laid",
+          "region": "stair/broken-flight",
+          "block": "stair/tread"
+        }
+      },
+      {
+        "a": "tower/ringing",
+        "b": "tower/louvre",
+        "class": "stair",
+        "rise": 6,
+        "via": "tower/stair-upper"
+      },
+      {
+        "a": "tower/louvre",
+        "b": "tower/stairhead",
+        "class": "stair",
+        "rise": 6,
+        "via": "tower/stair-upper"
+      },
+      {
+        "a": "tower/stairhead",
+        "b": "tower/belfry",
+        "class": "stair",
+        "rise": 7,
+        "via": "tower/stair-upper"
+      },
+      {
+        "a": "ward",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0
       }
     ]
   }
