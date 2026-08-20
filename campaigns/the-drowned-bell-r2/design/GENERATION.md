@@ -1886,6 +1886,20 @@ not there are the ones at the TOP, and a region carved at the foot would open
 nothing: filling the whole lower gap moves the reachable count by two cells and
 leaves the tower shut. The declaration names the cells that carry the climb.
 
+**An open space is the stratum a body walks, not the sky column over it.** This
+is the first zone here whose spaces are mostly `open`, and the first draft
+claimed each one all the way to the top of the region, because that is the shape
+of the `void` scope the rules produce. Every such space then exported an
+exterior face on the region's UP plane — the sky, declared as a way out of the
+piece — and `traversable` red, correctly, because no walk connects a face at
+y 47 to anything. An opening is claimed rather than discovered, and a claim that
+reaches the sky discovers one. So the ramp's foot is claimed as deep as the
+ruins beside it and the ward as deep as the low walls standing in it, both by
+the program's own parameters rather than by a number chosen to make the gate
+green; the air above each is claimed separately and out of walk. Six faces are
+exported where the sky-reaching draft exported eight, and the two that went are
+the two that were not doors.
+
 **A way is one material, so the tread it lays is one block.** `stair/rock` is a
 four-member mix and is refused for a way under the same rule that refuses a mix
 for a bar; `stair/tread` is bound to `minecraft:andesite`, the dominant member of
