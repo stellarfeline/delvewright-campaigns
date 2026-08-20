@@ -42,17 +42,34 @@ env:
   # to are the ones this commit carries, and a moving ref would let them change
   # underneath a campaign with nothing to review.
   #
-  # The pin is a commit on the pipeline repo's `main`, and the bump is one line:
-  # replace the value below and nothing else.
+  # The pin is a commit on the pipeline repo's `main`. Bumping it replaces the
+  # value below; no machinery in this repository moves with it.
   #
-  # It is chosen for what the engine at it can READ, not for what it makes
-  # green. Every zone program here declares document version `1.4.0`, and the
-  # whole-map program that composes them declares `1.5.0` — the `include` list,
-  # which names another program file and the prefix its vocabulary arrives
-  # under. A `Program` schema without that field refuses a composed document at
-  # parse, by field name, before any gate runs; so an engine that cannot read
-  # `1.5.0` is not a stricter judge of the map, it is no judge of it at all.
-  # The pin below carries `1.5.0`, and that is the floor any later bump holds.
+  # It is chosen for what the engine at it can READ and for what it can JUDGE,
+  # never for what it makes green. Two floors any later bump holds:
+  #
+  # Document version. Every zone program here declares `1.4.0`, and a whole-map
+  # program that composes them declares `1.5.0` — the `include` list, which
+  # names another program file and the prefix its vocabulary arrives under. A
+  # `Program` schema without that field refuses a composed document at parse, by
+  # field name, before any gate runs; so an engine that cannot read `1.5.0` is
+  # not a stricter judge of the map, it is no judge of it at all.
+  #
+  # One authority on a zero binding. A gate that examined nothing has proved
+  # nothing, so it fails — and the rule lives in one function that every door
+  # calls, so the `expand` that writes a prefab and the audit that judges the
+  # same program cannot reach opposite verdicts about it. A binding of zero is
+  # an honest answer only where the gate itself computes that there was nothing
+  # of its kind to examine; that fact is derived from the expansion and no
+  # author can write it into a program. An engine below this floor carries a
+  # second, contradicting rule in the audit's own red filter, and passes through
+  # one door a building it refuses at the other.
+  #
+  # Both floors are stated because a pin is an INSTRUMENT and a stale one
+  # manufactures false reds indistinguishable from content defects: this pin sat
+  # nineteen commits behind and failed a zone whose every cell is play space,
+  # where the repair a reader reaches for — inventing the region the old gate
+  # asks for — is the vacuity the gate exists to catch.
   GRAMMAR_REF: 57025e1c91626b71ab055f9b8a336caf9dc2489f
 
 jobs:
