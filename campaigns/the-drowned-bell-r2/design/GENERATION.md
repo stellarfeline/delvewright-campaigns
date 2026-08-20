@@ -1932,10 +1932,12 @@ audit builds the engine at `57025e1c91626b71ab055f9b8a336caf9dc2489f`. Built
 from that revision in its own tree, `delve-grammar audit --library
 --campaign-root . --exclusions …` exits 0 over 43 programs with this zone at
 `pass 15 gate(s)`, and its output is identical line for line to the same audit
-run from a build four commits later — `crates/grammar`, `Cargo.lock`,
-`Cargo.toml` and `rust-toolchain.toml` are content-identical across those four
-commits, so the two are the same instrument and are recorded as agreeing rather
-than assumed to.
+run from a build at `7d7a1057748d8660ecb9334eed9bcbdb0ace3764`, four commits
+later. Both revisions are written out, because "the current engine" is a value
+that moves and this one moved during the round: `crates/grammar`, `Cargo.lock`,
+`Cargo.toml` and `rust-toolchain.toml` are content-identical between those two
+commits, so the two builds are the same instrument, and that is recorded as
+measured rather than assumed.
 
 **Open against this piece**
 
