@@ -1955,6 +1955,17 @@ than assumed to.
   finding. The general form reaches well past this zone — every one-way shortcut
   opened from the far side, every lowered bridge, every placed ladder is the same
   shape, and all of them are now writable.
+- **`anchor/broken-flight` and the cells the way lays are not in the same place,
+  and a beat written against the anchor has to know it.** The anchor sits at
+  `13,7,97`, on the flat where the lower treads were; the region the contract
+  lays is `x 12..14 y 11..12 z 86..87`, at the head of the surviving flight,
+  four courses up and ten blocks along. Both are right about the fiction — one
+  is where a party stands to work, the other is where the treads go back — but
+  a beat that reads "close the gap at `anchor/broken-flight`" and writes blocks
+  there closes nothing, because that stretch is already walkable. Whoever writes
+  the beat either moves the anchor to the head of the flight or writes the beat
+  as reaching from the one place to the other. This round did not move the
+  anchor: it is the campaign's own name for a location, and quests refer to it.
 - **`stair/gap` is named for a break it does not make, and the name is the only
   thing wrong.** The rule voids six blocks of the flight's run and marks
   `anchor/broken-flight` on them, but the tower's base fills the courses below,
