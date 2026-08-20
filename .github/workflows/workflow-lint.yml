@@ -1,0 +1,38 @@
+name: workflow lint
+
+# The release pipeline (spec-0024) lives entirely in `release.yml`, and a release
+# runs only on a tag — so a typo in it is otherwise discovered by a failed
+# release, which is the worst possible place to discover one. actionlint parses
+# every workflow, type-checks each `${{ }}` expression against the contexts that
+# actually exist for its trigger, and runs shellcheck over every `run:` block.
+# Cheap enough (~20s, no build) to gate every PR that touches a workflow.
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  actionlint:
+    name: actionlint (+ shellcheck over every run block)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: actionlint
+        run: |
+          # Pinned by digest so the gate cannot change under us (ADR-0006 spirit:
+          # a check is only a check if it is the same check every time).
+          docker run --rm -v "$PWD:/repo" -w /repo \
+            rhysd/actionlint@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 \
+            -color

@@ -1,0 +1,62 @@
+The boundary check: the same program at three region widths, one block
+apart. The refusal at 21 says local dim:z = 11 where 12 is required, so
+the boundary is one more block of world X and nowhere else. Reproduce:
+run the three commands below from this directory.
+
+$ delve-grammar expand --file signal-station.program.json \
+      --region 20x9x13 --seed 1 --id signal-station -o out/
+error: signal-station: no alternative of rule "plan" applies to this scope, and none is `otherwise`
+  at: station › split z→z piece 2/2 › terrace › split x→x piece 2/3 › plan
+  scope: local 10x9x10 (x→world z, y→world y, z→world x, local z reversed; world box corner 5,0,3 size 10x9x10) — these are the dimensions at the failure site, not the region as given
+  alternative 1 of 3 rejected — 4 condition(s) decided it:
+    required dim:z >= ((param:landing + param:deck) + 5); at this scope left = 10, right = 12  [param:landing = 4, param:deck = 3]
+    required (dim:z - param:landing) >= ((param:deck * param:stringer) + 2); at this scope left = 6, right = 8  [dim:z = 10, param:landing = 4, param:deck = 3, param:stringer = 2]
+    required dim:smallest > (param:landing + 6); at this scope left = 9, right = 10  [param:landing = 4]
+    forbidden (under none_of) dim:z < ((param:landing + param:deck) + 4); at this scope it held, left = 10, right = 11  [param:landing = 4, param:deck = 3]
+  alternative 2 of 3 rejected — 3 condition(s) decided it:
+    required dim:y == param:crown; at this scope left = 9, right = 1
+    forbidden (under none_of) dim:x <= (param:landing + 6); at this scope it held, left = 10, right = 10  [param:landing = 4]
+    could not evaluate (dim:z / param:flight) >= param:deck: division or remainder by zero
+  alternative 3 of 3 rejected — 1 condition(s) decided it:
+    required orientation x→x, y→y, z→z; this scope has x→z, y→y, z→x, local z reversed
+exit 2
+
+$ delve-grammar expand --file signal-station.program.json \
+      --region 21x9x13 --seed 1 --id signal-station -o out/
+error: signal-station: no alternative of rule "plan" applies to this scope, and none is `otherwise`
+  at: station › split z→z piece 2/2 › terrace › split x→x piece 2/3 › plan
+  scope: local 10x9x11 (x→world z, y→world y, z→world x, local z reversed; world box corner 5,0,3 size 11x9x10) — these are the dimensions at the failure site, not the region as given
+  alternative 1 of 3 rejected — 3 condition(s) decided it:
+    required dim:z >= ((param:landing + param:deck) + 5); at this scope left = 11, right = 12  [param:landing = 4, param:deck = 3]
+    required (dim:z - param:landing) >= ((param:deck * param:stringer) + 2); at this scope left = 7, right = 8  [dim:z = 11, param:landing = 4, param:deck = 3, param:stringer = 2]
+    required dim:smallest > (param:landing + 6); at this scope left = 9, right = 10  [param:landing = 4]
+  alternative 2 of 3 rejected — 3 condition(s) decided it:
+    required dim:y == param:crown; at this scope left = 9, right = 1
+    forbidden (under none_of) dim:x <= (param:landing + 6); at this scope it held, left = 10, right = 10  [param:landing = 4]
+    could not evaluate (dim:z / param:flight) >= param:deck: division or remainder by zero
+  alternative 3 of 3 rejected — 1 condition(s) decided it:
+    required orientation x→x, y→y, z→z; this scope has x→z, y→y, z→x, local z reversed
+exit 2
+
+$ delve-grammar expand --file signal-station.program.json \
+      --region 22x9x13 --seed 1 --id signal-station -o out/
+signal-station: pass
+  blocks-exist    pass  bound 6      6 block state(s), all present in Minecraft 1.21.11
+  shape-complete  pass  bound 6      6 placed block state(s), every shape-carrying (multipart) property written
+  states-complete pass  bound 6      6 placed block state(s), every property of every block written
+  oriented-fills  pass  bound 9      9 fill(s) examined, 0 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients
+  non-empty       pass  bound 2574   1902 filled cell(s) of 2574 in the region
+  measurements   filled 1902 / 2574 cells · 6 distinct states · 96 standable · footprint 286 cols, perimeter 70 (complexity 1.03)
+       42.1%  minecraft:stone_bricks
+       31.2%  minecraft:gravel
+       11.6%  minecraft:polished_andesite
+        8.8%  minecraft:cobblestone
+        6.3%  minecraft:oak_planks
+  settling       0 stair(s) · 0 fluid cell(s), 0 still (waterlogged), 0 run direction(s) leaving the piece
+  reachability   0 of 96 standable cell(s) reachable on foot from 0 grade entry cell(s) (0.0%) · 96 sheltered · unreachable 96 sheltered + 0 open to the sky, in 1 pocket(s)
+      pocket  96 cell(s), 96 sheltered — x 5..16 y 1..1 z 4..11
+  finding: this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours
+  finding: the reachability measurement found ZERO entry cells — no standable cell touches a side face of the region at grade, so there is nowhere for a body to walk in from and the measurement binds to nothing. The piece's 96 standable cell(s) form 1 component(s)
+  finding: the program declared no anchors: nothing in a campaign can name a place inside this piece
+out/signal-station.nbt + signal-station.json + signal-station.report.json — 22x9x13, seed 1, 1902 filled cell(s), 0 anchor(s)
+exit 0

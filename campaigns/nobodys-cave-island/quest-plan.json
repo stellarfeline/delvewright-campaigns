@@ -1,0 +1,222 @@
+{
+ "dsl_version": "0.8.0",
+ "campaign_id": "nobodys-cave-island",
+ "stage": "quest-plan",
+ "content": {
+  "quests": [
+   {
+    "id": "quest/shipwrecked",
+    "goal": "Wake on the strand below the smoking mountain, take up a class and kit at the driftwood fire, drive off the drowned that stumble out of the surf, and hear Eurylochus out before you climb.",
+    "area": "area/island",
+    "npcs": [
+     "npc/eurylochus",
+     "npc/antiphos",
+     "npc/elpenor"
+    ],
+    "depends_on": [],
+    "mandatory": true,
+    "act": 1
+   },
+   {
+    "id": "quest/follow-the-smoke",
+    "goal": "Follow Eurylochus up off the sand, past the empty sheep-fold in the meadow, to the cave mouth in the mountain's face where the thread of smoke rises.",
+    "area": "area/island",
+    "npcs": [
+     "npc/eurylochus"
+    ],
+    "depends_on": [
+     "quest/shipwrecked"
+    ],
+    "mandatory": true,
+    "act": 1
+   },
+   {
+    "id": "quest/cave-of-plenty",
+    "goal": "Inside the cave of racked cheese and penned lambs, take a wheel of kefalotyri, and decide with Eurylochus: carry off what you can and run for the ship, or wait to meet the owner of this cave.",
+    "area": "area/island",
+    "npcs": [
+     "npc/eurylochus"
+    ],
+    "depends_on": [
+     "quest/follow-the-smoke"
+    ],
+    "mandatory": true,
+    "act": 2
+   },
+   {
+    "id": "quest/take-the-cheese",
+    "goal": "You chose the sea. Slip back down the mountain before the light fails and board the galley at the gangplank while the cave is still empty behind you.",
+    "area": "area/island",
+    "npcs": [],
+    "depends_on": [
+     "quest/cave-of-plenty"
+    ],
+    "mandatory": true,
+    "act": 2
+   },
+   {
+    "id": "quest/hide",
+    "goal": "Night, and the owner comes home. Get into the shadow of the alcoves and stay hidden while Polyphemus herds his flock in, seals the mouth with a stone no man can shift, and takes the first of you.",
+    "area": "area/island",
+    "npcs": [
+     "npc/perimedes"
+    ],
+    "depends_on": [
+     "quest/cave-of-plenty"
+    ],
+    "mandatory": true,
+    "act": 2
+   },
+   {
+    "id": "quest/nobody",
+    "goal": "Sealed in with the giant, offer him the strong wine at his own fire, take the name he offers in return, and give him one back that will cost him nothing to curse.",
+    "area": "area/island",
+    "npcs": [
+     "npc/polyphemus"
+    ],
+    "depends_on": [
+     "quest/hide"
+    ],
+    "mandatory": true,
+    "act": 2
+   },
+   {
+    "id": "quest/the-stake",
+    "goal": "While he sleeps, grind the olive stake to a point on his own stone, char it hard in the fire, and put out the single eye. Then follow him blind up the ramp toward the pen without giving him a sound to hunt.",
+    "area": "area/island",
+    "npcs": [],
+    "depends_on": [
+     "quest/nobody"
+    ],
+    "mandatory": true,
+    "act": 3
+   },
+   {
+    "id": "quest/under-the-rams",
+    "goal": "He is blind and listening at the mouth. Get in among the rams of the upper pen and let the flock carry you down and out, back to the gangplank and the waiting oars.",
+    "area": "area/island",
+    "npcs": [
+     "npc/perimedes"
+    ],
+    "depends_on": [
+     "quest/the-stake"
+    ],
+    "mandatory": true,
+    "act": 3
+   },
+   {
+    "id": "quest/the-sail",
+    "goal": "Board the galley and put the island under your stern. However you leave it, the sea remembers what was said on it.",
+    "area": "area/island",
+    "npcs": [],
+    "depends_on": [
+     "quest/under-the-rams",
+     "quest/the-quiet-voyage"
+    ],
+    "mandatory": true,
+    "act": 3
+   },
+   {
+    "id": "quest/the-voyage",
+    "goal": "Stand on the deck with the island already gone behind you, and hear what the story you leave behind is going to be.",
+    "area": "area/open-sea",
+    "npcs": [],
+    "depends_on": [
+     "quest/the-sail"
+    ],
+    "mandatory": true,
+    "act": 3
+   },
+   {
+    "id": "quest/the-quiet-voyage",
+    "goal": "You chose the sea and the sea took you: stand out from the island with every man you came with, and hear what the quiet costs.",
+    "area": "area/open-sea",
+    "npcs": [],
+    "depends_on": [
+     "quest/take-the-cheese"
+    ],
+    "mandatory": true,
+    "act": 3
+   }
+  ],
+  "finale": "quest/the-voyage",
+  "branch_points": [
+   {
+    "id": "branch-point/the-argument",
+    "opens_at": "quest/cave-of-plenty",
+    "forks_on": [
+     "flag/wait",
+     "flag/flee",
+     "flag/name-nobody",
+     "flag/name-lie",
+     "flag/name-boast",
+     "flag/sharpened",
+     "flag/asleep",
+     "flag/at-pen",
+     "flag/blinded",
+     "flag/escaped",
+     "flag/eury-hidden",
+     "flag/hardened",
+     "flag/sealed"
+    ],
+    "branches": [
+     {
+      "id": "branch/flee",
+      "flags": [
+       "flag/flee"
+      ],
+      "leads_to": "ending/the-quiet-sail"
+     },
+     {
+      "id": "branch/wait-nobody",
+      "flags": [
+       "flag/wait",
+       "flag/name-nobody",
+       "flag/sharpened",
+       "flag/asleep",
+       "flag/at-pen",
+       "flag/blinded",
+       "flag/escaped",
+       "flag/eury-hidden",
+       "flag/hardened",
+       "flag/sealed"
+      ],
+      "leads_to": "ending/nobody"
+     },
+     {
+      "id": "branch/wait-lie",
+      "flags": [
+       "flag/wait",
+       "flag/name-lie",
+       "flag/sharpened",
+       "flag/asleep",
+       "flag/at-pen",
+       "flag/blinded",
+       "flag/escaped",
+       "flag/eury-hidden",
+       "flag/hardened",
+       "flag/sealed"
+      ],
+      "leads_to": "ending/nobody"
+     },
+     {
+      "id": "branch/wait-boast",
+      "flags": [
+       "flag/wait",
+       "flag/name-boast",
+       "flag/sharpened",
+       "flag/asleep",
+       "flag/at-pen",
+       "flag/blinded",
+       "flag/escaped",
+       "flag/eury-hidden",
+       "flag/hardened",
+       "flag/sealed"
+      ],
+      "leads_to": "ending/nobody"
+     }
+    ]
+   }
+  ]
+ }
+}

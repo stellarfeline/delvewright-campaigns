@@ -1,0 +1,19 @@
+The refusal, as the tool prints it. Reproduce: build delve-grammar as the
+README says, then run the command below from this directory.
+
+$ delve-grammar expand --file signal-station.program.json \
+      --region 21x9x13 --seed 1 --id signal-station -o out/
+error: signal-station: no alternative of rule "plan" applies to this scope, and none is `otherwise`
+  at: station › split z→z piece 2/2 › terrace › split x→x piece 2/3 › plan
+  scope: local 10x9x11 (x→world z, y→world y, z→world x, local z reversed; world box corner 5,0,3 size 11x9x10) — these are the dimensions at the failure site, not the region as given
+  alternative 1 of 3 rejected — 3 condition(s) decided it:
+    required dim:z >= ((param:landing + param:deck) + 5); at this scope left = 11, right = 12  [param:landing = 4, param:deck = 3]
+    required (dim:z - param:landing) >= ((param:deck * param:stringer) + 2); at this scope left = 7, right = 8  [dim:z = 11, param:landing = 4, param:deck = 3, param:stringer = 2]
+    required dim:smallest > (param:landing + 6); at this scope left = 9, right = 10  [param:landing = 4]
+  alternative 2 of 3 rejected — 3 condition(s) decided it:
+    required dim:y == param:crown; at this scope left = 9, right = 1
+    forbidden (under none_of) dim:x <= (param:landing + 6); at this scope it held, left = 10, right = 10  [param:landing = 4]
+    could not evaluate (dim:z / param:flight) >= param:deck: division or remainder by zero
+  alternative 3 of 3 rejected — 1 condition(s) decided it:
+    required orientation x→x, y→y, z→z; this scope has x→z, y→y, z→x, local z reversed
+exit 2

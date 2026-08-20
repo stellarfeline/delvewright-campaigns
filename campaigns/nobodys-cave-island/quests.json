@@ -1,0 +1,4157 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "nobodys-cave-island",
+  "stage": "quests",
+  "content": {
+    "actors": [
+      {
+        "id": "actor/polyphemus-walker",
+        "entity": "minecraft:warden",
+        "name": "Polyphemus",
+        "anchor": "anchor/mouth-side",
+        "vulnerable": false,
+        "tier": "elite"
+      },
+      {
+        "id": "actor/polyphemus-herdsman",
+        "entity": "minecraft:warden",
+        "name": "Polyphemus",
+        "anchor": "anchor/meadow",
+        "vulnerable": false
+      },
+      {
+        "id": "actor/polyphemus-roused",
+        "entity": "minecraft:warden",
+        "name": "Polyphemus",
+        "anchor": "anchor/fire-side"
+      },
+      {
+        "id": "actor/polyphemus-blinded",
+        "entity": "minecraft:warden",
+        "name": "Polyphemus",
+        "anchor": "anchor/fire-pit"
+      },
+      {
+        "id": "actor/sheep-1",
+        "entity": "minecraft:sheep",
+        "name": "Ram of the Cave",
+        "anchor": "anchor/pen"
+      },
+      {
+        "id": "actor/sheep-2",
+        "entity": "minecraft:sheep",
+        "name": "Ram of the Cave",
+        "anchor": "anchor/pen-d"
+      },
+      {
+        "id": "actor/sheep-3",
+        "entity": "minecraft:sheep",
+        "name": "Ewe of the Cave",
+        "anchor": "anchor/pen-e"
+      },
+      {
+        "id": "actor/sheep-4",
+        "entity": "minecraft:sheep",
+        "name": "Ewe of the Cave",
+        "anchor": "anchor/pen-f"
+      },
+      {
+        "id": "actor/sheep-5",
+        "entity": "minecraft:sheep",
+        "name": "Ram of the Cave",
+        "anchor": "anchor/fold"
+      },
+      {
+        "id": "actor/sheep-6",
+        "entity": "minecraft:sheep",
+        "name": "Ram of the Cave",
+        "anchor": "anchor/fold-b"
+      },
+      {
+        "id": "actor/sheep-7",
+        "entity": "minecraft:sheep",
+        "name": "Ewe of the Cave",
+        "anchor": "anchor/fold-h"
+      },
+      {
+        "id": "actor/sheep-8",
+        "entity": "minecraft:sheep",
+        "name": "Lamb of the Cave",
+        "anchor": "anchor/fold-d"
+      },
+      {
+        "id": "actor/voyage-eurylochus",
+        "entity": "minecraft:mannequin",
+        "name": "Eurylochus",
+        "skin": {
+          "texture_id": "eurylochus",
+          "model": "wide"
+        },
+        "anchor": "anchor/deck-fore",
+        "vulnerable": false
+      },
+      {
+        "id": "actor/voyage-perimedes",
+        "entity": "minecraft:mannequin",
+        "name": "Perimedes",
+        "skin": {
+          "texture_id": "perimedes",
+          "model": "wide"
+        },
+        "anchor": "anchor/deck-port",
+        "vulnerable": false
+      },
+      {
+        "id": "actor/voyage-elpenor",
+        "entity": "minecraft:mannequin",
+        "name": "Elpenor",
+        "skin": {
+          "texture_id": "elpenor",
+          "model": "wide"
+        },
+        "anchor": "anchor/deck-star",
+        "vulnerable": false
+      },
+      {
+        "id": "actor/voyage-antiphos",
+        "entity": "minecraft:mannequin",
+        "name": "Antiphos",
+        "skin": {
+          "texture_id": "antiphos",
+          "model": "wide"
+        },
+        "anchor": "anchor/deck-aft",
+        "vulnerable": false
+      }
+    ],
+    "waves": [
+      {
+        "id": "wave/storm-shore",
+        "anchor": "anchor/surf-wave",
+        "mobs": [
+          {
+            "entity": "minecraft:drowned",
+            "count": 2,
+            "name": "Drowned of Poseidon",
+            "attributes": {
+              "max_health": 8.0,
+              "movement_speed": 0.2,
+              "follow_range": 48.0,
+              "attack_damage": 2.0
+            },
+            "equipment": {
+              "head": "minecraft:leather_helmet"
+            }
+          }
+        ]
+      },
+      {
+        "id": "wave/storm-fire",
+        "anchor": "anchor/surf-wave",
+        "mobs": [
+          {
+            "entity": "minecraft:drowned",
+            "count": 2,
+            "name": "Drowned of Poseidon",
+            "attributes": {
+              "max_health": 8.0,
+              "movement_speed": 0.2,
+              "follow_range": 48.0,
+              "attack_damage": 2.0
+            },
+            "equipment": {
+              "head": "minecraft:leather_helmet"
+            }
+          }
+        ]
+      },
+      {
+        "id": "wave/storm-surf",
+        "anchor": "anchor/surf-wave",
+        "mobs": [
+          {
+            "entity": "minecraft:drowned",
+            "count": 3,
+            "name": "Drowned of Poseidon",
+            "attributes": {
+              "max_health": 8.0,
+              "movement_speed": 0.2,
+              "follow_range": 48.0,
+              "attack_damage": 2.0
+            },
+            "equipment": {
+              "head": "minecraft:leather_helmet"
+            }
+          }
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "id": "quest/shipwrecked",
+        "trigger": {
+          "type": "campaign-start"
+        },
+        "objectives": [
+          {
+            "type": "talk-to",
+            "id": "obj/climb-out",
+            "npc": "npc/eurylochus",
+            "title": "Tell Eurylochus You Will Climb",
+            "hint": "He is still at the fire, watching the smoke on the mountain. Give him the word to lead on.",
+            "happening": {
+              "verb": "departs",
+              "text": "The party leaves the beach camp for the smoke on the mountain, and Elpenor is left holding the fire alone."
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "anchor/crew-a",
+              "dialogue": "dlg/root",
+              "doing": "Sitting the fire out with his knees drawn up, sizing the mountain and saying nothing about it.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "dialogue": "dlg/root",
+              "doing": "Sitting the fire out with his knees drawn up, sizing the mountain and saying nothing about it.",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": {
+            "at": "anchor/crew-b",
+            "doing": "Feeding the driftwood fire too fast and talking to keep the dark off his back.",
+            "dialogue": "dlg/root"
+          },
+          "npc/eurylochus": [
+            {
+              "at": "anchor/class-post",
+              "dialogue": "dlg/root",
+              "doing": "Working the crew count in his head at the class-post and arguing the smoke to the captain's face before the order comes.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "dialogue": "dlg/root",
+              "doing": "Working the crew count in his head at the class-post and arguing the smoke to the captain's face before the order comes.",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/climb-out": [
+            {
+              "type": "move-npc",
+              "npc": "npc/eurylochus",
+              "to_anchor": "anchor/mouth",
+              "happening": {
+                "verb": "departs",
+                "text": "Eurylochus leads the climb with the rope on his shoulder and waits for the party on the ledge.",
+                "subject": "npc/eurylochus"
+              },
+              "speed": 0.35
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Eurylochus shoulders a coil of rope and starts up the worn path. Follow the smoke."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:block.campfire.crackle",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/camp-fire"
+              }
+            },
+            {
+              "type": "give-item",
+              "item": "minecraft:honey_bottle",
+              "count": 1,
+              "name": "Skin of Maron's Wine"
+            }
+          ]
+        },
+        "on_complete": [
+          {
+            "type": "narrate",
+            "style": "chat",
+            "text": "Antiphos hoists the wine and the meal-sacks onto one shoulder. \"Somebody carries the man's dinner,\" he says, and falls in behind you. Elpenor stays with the fire — alone, and burning it high."
+          },
+          {
+            "type": "move-npc",
+            "npc": "npc/antiphos",
+            "to_anchor": "anchor/mouth-side",
+            "on_arrive": [
+              {
+                "type": "narrate",
+                "style": "chat",
+                "text": "Antiphos sets the sacks down in the light of the mouth and stays there, catching his wind and counting lambs."
+              },
+              {
+                "type": "set-flag",
+                "flag": "flag/antiphos-posted"
+              }
+            ],
+            "happening": {
+              "verb": "arrives",
+              "text": "Antiphos carries the provision-sacks up the switchbacks and sets them down in the light of the cave mouth.",
+              "subject": "npc/antiphos"
+            }
+          }
+        ],
+        "happening": {
+          "verb": "arrives",
+          "text": "The sea puts what is left of the crew on an unknown shore, with one fire above the tideline and one thread of smoke on the mountain."
+        }
+      },
+      {
+        "id": "quest/follow-the-smoke",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/shipwrecked"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/reach-mouth",
+            "anchor": "anchor/mouth",
+            "radius": 3,
+            "title": "Follow Eurylochus to the Cave",
+            "hint": "Climb up off the sand behind him: through the grazing meadow, past the low stone sheep-fold standing walled and empty, and up the switchbacks of the mountain's face to the smoking cave mouth where the great boulder rests.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party reaches the cave mouth and looks into a hall somebody keeps.",
+              "subject": "anchor/mouth"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "anchor/mouth-side",
+              "dialogue": "dlg/at-the-mouth",
+              "doing": "Setting the provision-sacks down in the light of the mouth, catching his wind and counting the pens off on one finger.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/mouth-side",
+              "dialogue": "dlg/at-the-mouth",
+              "doing": "Setting the provision-sacks down in the light of the mouth, catching his wind and counting the pens off on one finger.",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": {
+            "at": "anchor/crew-b",
+            "doing": "Left holding the beach alone and burning the fire high enough to be seen from the ledge.",
+            "dialogue": {
+              "barks": [
+                "Still burning, Captain! Told you I could keep a fire!",
+                "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                "If you are not down by first light I am coming up there. — I am not. But I have said it."
+              ]
+            }
+          },
+          "npc/eurylochus": [
+            {
+              "at": "anchor/mouth",
+              "dialogue": "dlg/root",
+              "doing": "Leading the climb with a coil of rope on his shoulder, waiting on the ledge for the party to make the last switchback.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/mouth",
+              "dialogue": "dlg/root",
+              "doing": "Leading the climb with a coil of rope on his shoulder, waiting on the ledge for the party to make the last switchback.",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/reach-mouth": [
+            {
+              "type": "move-npc",
+              "npc": "npc/eurylochus",
+              "to_anchor": "anchor/checkpoint-1",
+              "happening": {
+                "verb": "arrives",
+                "text": "Eurylochus comes in off the ledge and takes station just inside the entry.",
+                "subject": "npc/eurylochus"
+              }
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The mouth breathes cool air and old smoke. Eurylochus steps inside ahead of you."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.sheep.ambient",
+              "at": {
+                "at": "players"
+              }
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:ambient.cave",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/mouth"
+              }
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "arrives",
+          "text": "The party climbs the mountain face and reaches the mouth of the cave the smoke comes from.",
+          "subject": "anchor/mouth"
+        }
+      },
+      {
+        "id": "quest/cave-of-plenty",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/follow-the-smoke"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/checkpoint",
+            "anchor": "anchor/checkpoint-1",
+            "radius": 2,
+            "title": "Step Into the Cave",
+            "hint": "Move in past the mouth to the first broad shelf of the hall, where the racks begin.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party crosses into the hall proper and the way back out is a long walk behind them.",
+              "subject": "anchor/checkpoint-1"
+            }
+          },
+          {
+            "type": "collect",
+            "id": "obj/cheese",
+            "anchor": "anchor/cheese-store",
+            "after": [
+              "obj/checkpoint"
+            ],
+            "title": "Take a Wheel of Cheese",
+            "hint": "The cheese is racked on the shelves by the entry. Take a wheel from the barrel among them.",
+            "item": "minecraft:sponge",
+            "count": 1,
+            "container": "anchor/cheese-barrel",
+            "item_name": "Kefalotyri Cheese",
+            "fill_count": 26,
+            "happening": {
+              "verb": "gains",
+              "text": "Odysseus takes a wheel of kefalotyri from the barrel among the racks.",
+              "subject": "item/kefalotyri-cheese"
+            }
+          },
+          {
+            "type": "talk-to",
+            "id": "obj/the-argument",
+            "npc": "npc/eurylochus",
+            "after": [
+              "obj/cheese"
+            ],
+            "title": "Decide With Eurylochus",
+            "hint": "He is at your shoulder by the cheese racks. Tell him whether you run for the ship or wait for the owner of this cave.",
+            "happening": {
+              "verb": "believes",
+              "text": "The crew put the argument to the captain — take the food and go, or stay and meet the host — and he answers it.",
+              "subject": "npc/eurylochus"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "anchor/mouth-side",
+              "dialogue": "dlg/at-the-mouth",
+              "doing": "Holding the daylight at the mouth with the sacks, out of the dark on purpose.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": {
+                "barks": [
+                  "Still burning, Captain! Told you I could keep a fire!",
+                  "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                  "If you are not down by first light I am coming up there. — I am not. But I have said it."
+                ]
+              },
+              "doing": "Alone at the fire on the strand, keeping the one promise anybody gave him.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/checkpoint-1",
+              "dialogue": "dlg/at-the-racks",
+              "doing": "At the captain's shoulder among the racks, pricing the cheese and pressing for the decision to run.",
+              "forbids_flags": [
+                "flag/flee"
+              ],
+              "requires_flags": [
+                "flag/cheese-taken"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/checkpoint-1",
+              "dialogue": {
+                "barks": [
+                  "Weigh one wheel in your hand, Captain. Then tell me to my face that we stay.",
+                  "Twelve men eat for a week off one shelf of this. And he will never miss it.",
+                  "The milk pails are warm. Warm, Captain. Count what that means in strides."
+                ]
+              },
+              "doing": "At the racks with the captain, weighing a wheel in one hand and the argument in the other.",
+              "forbids_flags": [
+                "flag/flee",
+                "flag/cheese-taken"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/alcove-2",
+              "dialogue": "dlg/just-arrived",
+              "doing": "Newly in at the party's heel with the ship's wine-skin, backed into the recess beside the racks and reading the whole hall once.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/checkpoint": [
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/alcove-3",
+              "on_respawn": [
+                {
+                  "type": "narrate",
+                  "style": "chat",
+                  "text": "You come to in the east shadow beyond the racks, cold stone at your back, cheese-smell and old smoke in your throat."
+                }
+              ]
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Cheese racked to the roof, lambs penned and sorted by age, the milk pails still warm on the shelf. Whoever keeps this house walked out of it this morning meaning to walk back in tonight."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:ambient.cave",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/checkpoint-1"
+              }
+            },
+            {
+              "type": "spawn-npc",
+              "npc": "npc/perimedes",
+              "happening": {
+                "verb": "arrives",
+                "text": "Perimedes comes in at the party's heel, still counting the pens.",
+                "subject": "npc/perimedes"
+              }
+            },
+            {
+              "type": "move-npc",
+              "npc": "npc/perimedes",
+              "to_anchor": "anchor/alcove-2",
+              "happening": {
+                "verb": "arrives",
+                "text": "Perimedes takes the recess by the racks, where he can see the mouth.",
+                "subject": "npc/perimedes"
+              }
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Perimedes slips in at your heel with the ship's wine-skin on his shoulder, reads the whole hall once, and puts his back to the recess beside the racks."
+            }
+          ],
+          "obj/cheese": [
+            {
+              "type": "set-flag",
+              "flag": "flag/cheese-taken"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "A wheel of hard yellow cheese, heavy as a shield. Perimedes presses the wine-skin from the ship into your other hand: \"Carried it up myself, Captain. In case a stranger needs making a guest.\""
+            }
+          ],
+          "obj/the-argument": [
+            {
+              "type": "set-flag",
+              "flag": "flag/wait",
+              "requires_flags": [
+                "flag/wait"
+              ]
+            },
+            {
+              "type": "set-flag",
+              "flag": "flag/flee",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "type": "move-npc",
+              "npc": "npc/perimedes",
+              "to_anchor": "anchor/class-post",
+              "requires_flags": [
+                "flag/flee"
+              ],
+              "on_arrive": [
+                {
+                  "type": "narrate",
+                  "style": "chat",
+                  "text": "Perimedes is through the mouth before you finish speaking and down the path ahead of all of you, counting heads onto the sand as they arrive."
+                }
+              ],
+              "happening": {
+                "verb": "departs",
+                "text": "Perimedes goes down the path ahead of everyone and does not look back at the cave.",
+                "subject": "npc/perimedes"
+              }
+            },
+            {
+              "type": "move-npc",
+              "npc": "npc/antiphos",
+              "to_anchor": "anchor/crew-a",
+              "requires_flags": [
+                "flag/flee"
+              ],
+              "on_arrive": [
+                {
+                  "type": "narrate",
+                  "style": "chat",
+                  "text": "Antiphos shoulders the sacks without a word and starts down. Arithmetic, Captain: everything you came in with, and one wheel of cheese to the good."
+                }
+              ],
+              "happening": {
+                "verb": "departs",
+                "text": "Antiphos carries the sacks back down to the strand with the rest of them.",
+                "subject": "npc/antiphos"
+              }
+            },
+            {
+              "type": "move-npc",
+              "npc": "npc/eurylochus",
+              "to_anchor": "anchor/gangplank",
+              "requires_flags": [
+                "flag/flee"
+              ],
+              "on_arrive": [
+                {
+                  "type": "narrate",
+                  "style": "chat",
+                  "text": "Eurylochus comes down last with the rope still on his shoulder, stands at the gangplank and counts the party aboard one at a time, out loud, twice."
+                }
+              ],
+              "happening": {
+                "verb": "departs",
+                "text": "Eurylochus comes down last with the rope still on his shoulder and counts the party aboard.",
+                "subject": "npc/eurylochus"
+              }
+            }
+          ]
+        },
+        "on_complete": [
+          {
+            "type": "move-npc",
+            "npc": "npc/eurylochus",
+            "to_anchor": "anchor/alcove-1",
+            "requires_flags": [
+              "flag/wait"
+            ],
+            "on_arrive": [
+              {
+                "type": "set-flag",
+                "flag": "flag/eury-hidden"
+              },
+              {
+                "type": "narrate",
+                "style": "chat",
+                "text": "Eurylochus presses himself into the recess beside you, sword drawn and pointless, breathing through his teeth."
+              }
+            ],
+            "happening": {
+              "verb": "arrives",
+              "text": "Eurylochus presses himself into the recess beside the captain to wait, sword drawn and pointless.",
+              "subject": "npc/eurylochus"
+            }
+          }
+        ],
+        "happening": {
+          "verb": "learns",
+          "text": "Inside, the party finds a hall stocked like a household — pens sorted by age, racks of cheese — and understands that whatever keeps it is coming back."
+        }
+      },
+      {
+        "id": "quest/take-the-cheese",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/cave-of-plenty"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/flee-back",
+            "anchor": "anchor/gangplank",
+            "radius": 3,
+            "requires_flags": [
+              "flag/flee"
+            ],
+            "title": "Run for the Ship",
+            "hint": "Back down the mountain the way you climbed, past the fold and the fire, to the gangplank where the galley waits.",
+            "happening": {
+              "verb": "departs",
+              "text": "The party goes back down the mountain with the cheese and nothing else.",
+              "subject": "anchor/class-post"
+            }
+          },
+          {
+            "type": "interact",
+            "id": "obj/board-flee",
+            "anchor": "anchor/deck",
+            "after": [
+              "obj/flee-back"
+            ],
+            "requires_flags": [
+              "flag/flee"
+            ],
+            "title": "Board the Galley",
+            "hint": "Cross the gangplank and take your place at the oars while the cave is still empty behind you.",
+            "happening": {
+              "verb": "departs",
+              "text": "Odysseus boards, and the galley pulls off a shore nobody will remember him for."
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "anchor/mouth-side",
+              "dialogue": "dlg/at-the-mouth",
+              "doing": "Holding the daylight at the mouth with the sacks, out of the dark on purpose.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": {
+                "barks": [
+                  "Still burning, Captain! Told you I could keep a fire!",
+                  "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                  "If you are not down by first light I am coming up there. — I am not. But I have said it."
+                ]
+              },
+              "doing": "Alone at the fire on the strand, keeping the one promise anybody gave him.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/checkpoint-1",
+              "dialogue": "dlg/at-the-racks",
+              "doing": "At the captain's shoulder among the racks, pricing the cheese and pressing for the decision to run.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/alcove-2",
+              "dialogue": "dlg/just-arrived",
+              "doing": "Still in the recess by the racks on a branch this quest never reaches; out through the mouth ahead of the party on the one it does.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/flee-back": [
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Cheese in the crook of your arm, and behind you the lambs left complaining in their pens. Nobody will ever make a song of this one, Captain. You will simply get home."
+            }
+          ],
+          "obj/board-flee": [
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Oars out, and the strand slides away astern with the lambs still complaining in it. Nobody looks back at the mountain, and nobody has to."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.boat.paddle_water",
+              "at": {
+                "at": "players"
+              }
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "departs",
+          "text": "The crew take what they can carry and leave the island to whatever keeps it."
+        }
+      },
+      {
+        "id": "quest/hide",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/cave-of-plenty"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/take-cover",
+            "anchor": "anchor/alcove-1",
+            "radius": 2,
+            "requires_flags": [
+              "flag/wait",
+              "flag/eury-hidden",
+              "flag/antiphos-posted"
+            ],
+            "stealth": true,
+            "title": "Get Into the Shadows",
+            "hint": "The light is going and something is coming up the slope. Press into one of the dark recesses along the hall wall, and watch.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party gets out of the open before the flock reaches the mouth.",
+              "subject": "anchor/alcove-1"
+            }
+          },
+          {
+            "type": "talk-to",
+            "id": "obj/the-stone",
+            "npc": "npc/perimedes",
+            "after": [
+              "obj/take-cover"
+            ],
+            "requires_flags": [
+              "flag/sealed"
+            ],
+            "title": "Find Perimedes in the Dark",
+            "hint": "When the stone is down and the giant sits to his milking, find Perimedes pressed into the recess beside the racks and learn what walked in.",
+            "happening": {
+              "verb": "learns",
+              "text": "Eurylochus and the captain measure the stone and learn that no number of men will shift it.",
+              "subject": "npc/eurylochus"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "anchor/mouth-side",
+              "dialogue": "dlg/at-the-mouth",
+              "doing": "Standing in the light of the mouth with the sacks when the herdsman comes home, and the first thing the giant reaches for.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": {
+                "barks": [
+                  "Still burning, Captain! Told you I could keep a fire!",
+                  "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                  "If you are not down by first light I am coming up there. — I am not. But I have said it."
+                ]
+              },
+              "doing": "Alone at the fire on the strand, keeping the one promise anybody gave him.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/alcove-1",
+              "dialogue": {
+                "barks": [
+                  "(barely a breath) Don't. Don't move, don't ask me anything. Watch.",
+                  "(barely a breath) If he turns this way, look at the floor. Eyes catch firelight, Captain.",
+                  "(barely a breath) I counted twelve of us onto that beach. I am not counting again tonight."
+                ]
+              },
+              "doing": "Pressed into the recess beside the captain with his sword drawn and useless, breathing through his teeth.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/alcove-2",
+              "dialogue": "dlg/root",
+              "doing": "Flat in the recess by the racks, watching the mouth and putting the whole scene to memory because he cannot stop himself.",
+              "forbids_flags": [
+                "flag/flee"
+              ],
+              "requires_flags": [
+                "flag/sealed"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/alcove-2",
+              "dialogue": {
+                "barks": [
+                  "(a whisper) He counts them in, Captain. Watch — he touches every fleece as they pass.",
+                  "(a whisper) Every step he takes, I am keeping. Someone will want to know how this was done.",
+                  "(a whisper) When the stone comes down, hold still through the dark of it. Then we talk."
+                ]
+              },
+              "doing": "Flat in the recess with his eyes on the mouth, keeping the count of the giant's steps for whoever lives to ask.",
+              "forbids_flags": [
+                "flag/flee",
+                "flag/sealed"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/take-cover": [
+            {
+              "type": "set-time",
+              "time": "night"
+            },
+            {
+              "type": "set-flag",
+              "flag": "flag/sealed"
+            },
+            {
+              "type": "narrate",
+              "style": "title",
+              "text": "Hide"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Stay in the shadows and watch. What comes home now was never yours to fight."
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-1",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ewe of the home flock stands in the fold.",
+                "subject": "actor/sheep-1"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-2",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ewe of the home flock stands in the fold.",
+                "subject": "actor/sheep-2"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-3",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ewe of the home flock stands in the fold.",
+                "subject": "actor/sheep-3"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-4",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ewe of the home flock stands in the fold.",
+                "subject": "actor/sheep-4"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-5",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ram of the home flock stands in the fold.",
+                "subject": "actor/sheep-5"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-6",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ram of the home flock stands in the fold.",
+                "subject": "actor/sheep-6"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-7",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ram of the home flock stands in the fold.",
+                "subject": "actor/sheep-7"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/sheep-8",
+              "happening": {
+                "verb": "arrives",
+                "text": "A ram of the home flock stands in the fold.",
+                "subject": "actor/sheep-8"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/polyphemus-herdsman",
+              "happening": {
+                "verb": "arrives",
+                "text": "Polyphemus comes down off the meadow behind his flock, driving them home for the night.",
+                "subject": "actor/polyphemus-herdsman"
+              }
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.sheep.ambient",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/mouth"
+              }
+            },
+            {
+              "type": "sequence",
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.warden.emerge",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/mouth"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 40,
+                  "effects": [
+                    {
+                      "type": "cutscene",
+                      "shots": [
+                        {
+                          "path": [
+                            {
+                              "anchor": "anchor/meadow",
+                              "offset": [
+                                8,
+                                6,
+                                6
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/meadow",
+                              "offset": [
+                                3,
+                                5,
+                                2
+                              ]
+                            }
+                          ],
+                          "seconds": 8,
+                          "look_at": {
+                            "anchor": "anchor/fold",
+                            "offset": [
+                              0,
+                              1,
+                              0
+                            ]
+                          }
+                        },
+                        {
+                          "path": [
+                            {
+                              "anchor": "anchor/meadow",
+                              "offset": [
+                                0,
+                                8,
+                                2
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/mouth",
+                              "offset": [
+                                0,
+                                5,
+                                8
+                              ]
+                            }
+                          ],
+                          "seconds": 7,
+                          "look_at": {
+                            "anchor": "anchor/mouth",
+                            "offset": [
+                              0,
+                              2,
+                              0
+                            ]
+                          }
+                        },
+                        {
+                          "path": [
+                            {
+                              "anchor": "anchor/mouth",
+                              "offset": [
+                                1,
+                                4,
+                                8
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/mouth",
+                              "offset": [
+                                0,
+                                2,
+                                4
+                              ]
+                            }
+                          ],
+                          "seconds": 7,
+                          "look_at": {
+                            "anchor": "anchor/mouth",
+                            "offset": [
+                              0,
+                              2,
+                              0
+                            ]
+                          }
+                        },
+                        {
+                          "path": [
+                            {
+                              "anchor": "anchor/fire-pit",
+                              "offset": [
+                                2,
+                                3,
+                                6
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/fire-pit",
+                              "offset": [
+                                1,
+                                2,
+                                8
+                              ]
+                            }
+                          ],
+                          "seconds": 7,
+                          "look_at": {
+                            "anchor": "anchor/mouth",
+                            "offset": [
+                              0,
+                              2,
+                              0
+                            ]
+                          }
+                        },
+                        {
+                          "path": [
+                            {
+                              "anchor": "anchor/fire-pit",
+                              "offset": [
+                                4,
+                                3,
+                                4
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/fire-pit",
+                              "offset": [
+                                3,
+                                2,
+                                2
+                              ]
+                            }
+                          ],
+                          "seconds": 7,
+                          "look_at": {
+                            "anchor": "anchor/fire-side",
+                            "offset": [
+                              0,
+                              2,
+                              0
+                            ]
+                          }
+                        },
+                        {
+                          "path": [
+                            {
+                              "anchor": "anchor/boulder",
+                              "offset": [
+                                1,
+                                3,
+                                6
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/boulder",
+                              "offset": [
+                                0,
+                                2,
+                                4
+                              ]
+                            }
+                          ],
+                          "seconds": 7,
+                          "look_at": {
+                            "anchor": "anchor/boulder",
+                            "offset": [
+                              0,
+                              1,
+                              0
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 80,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/polyphemus-herdsman",
+                      "to_anchor": "anchor/mouth",
+                      "on_arrive": [
+                        {
+                          "type": "play-sound",
+                          "sound": "minecraft:entity.warden.roar",
+                          "at": {
+                            "at": "anchor",
+                            "anchor": "anchor/mouth"
+                          }
+                        }
+                      ],
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "Polyphemus fills the doorway of his own house and ducks through it.",
+                        "subject": "actor/polyphemus-herdsman"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 180,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-5",
+                      "to_anchor": "anchor/pen-g",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "A ram comes in through the mouth and goes up to the pen.",
+                        "subject": "actor/sheep-5"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 200,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-6",
+                      "to_anchor": "anchor/pen-h",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "A ram comes in through the mouth and goes up to the pen.",
+                        "subject": "actor/sheep-6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 220,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-7",
+                      "to_anchor": "anchor/pen-i",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "A ram comes in through the mouth and goes up to the pen.",
+                        "subject": "actor/sheep-7"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 240,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-8",
+                      "to_anchor": "anchor/pen-j",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "A ram comes in through the mouth and goes up to the pen.",
+                        "subject": "actor/sheep-8"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 380,
+                  "effects": [
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "He picks a man up by the ankle without looking, the way a man rights a kicked-over pail. It is Antiphos. No one has time to make a sound."
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.warden.attack_impact",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/mouth"
+                      }
+                    },
+                    {
+                      "type": "despawn-npc",
+                      "npc": "npc/antiphos",
+                      "happening": {
+                        "verb": "dies",
+                        "text": "Antiphos is picked up by the ankle in the light of the mouth and does not get one word out.",
+                        "subject": "npc/antiphos"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 420,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/polyphemus-herdsman",
+                      "to_anchor": "anchor/fire-side",
+                      "on_arrive": [
+                        {
+                          "type": "play-sound",
+                          "sound": "minecraft:entity.warden.step",
+                          "at": {
+                            "at": "anchor",
+                            "anchor": "anchor/fire-side"
+                          }
+                        },
+                        {
+                          "type": "despawn-actor",
+                          "actor": "actor/polyphemus-herdsman",
+                          "style": "vanish",
+                          "happening": {
+                            "verb": "departs",
+                            "text": "The walking puppet hands the giant off at the hearth.",
+                            "subject": "actor/polyphemus-herdsman"
+                          }
+                        },
+                        {
+                          "type": "spawn-npc",
+                          "npc": "npc/polyphemus",
+                          "happening": {
+                            "verb": "arrives",
+                            "text": "Polyphemus takes his place at his own fire, where he can be spoken to.",
+                            "subject": "npc/polyphemus"
+                          }
+                        },
+                        {
+                          "type": "play-sound",
+                          "sound": "minecraft:entity.warden.ambient",
+                          "at": {
+                            "at": "anchor",
+                            "anchor": "anchor/fire-side"
+                          }
+                        }
+                      ],
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "Polyphemus walks the length of his hall and settles at the hearth.",
+                        "subject": "actor/polyphemus-herdsman"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 520,
+                  "effects": [
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.sheep.step",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/mouth"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 880,
+                  "effects": [
+                    {
+                      "type": "narrate",
+                      "style": "title",
+                      "text": "Sealed In"
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "Stone grinds across the mouth. The daylight narrows to a line, then to nothing."
+                    },
+                    {
+                      "type": "close-gate",
+                      "anchor": "anchor/boulder",
+                      "happening": {
+                        "verb": "seals",
+                        "text": "The stone comes across the mouth and the daylight narrows to a line, then to nothing.",
+                        "subject": "anchor/boulder"
+                      }
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.wither.break_block",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/boulder"
+                      }
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:block.deepslate.fall",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/boulder"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 1000,
+                  "effects": [
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:block.deepslate.fall",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/boulder"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/alcove-3",
+              "on_respawn": [
+                {
+                  "type": "set-time",
+                  "time": "night"
+                },
+                {
+                  "type": "despawn-actor",
+                  "actor": "actor/polyphemus-walker",
+                  "style": "vanish",
+                  "happening": {
+                    "verb": "departs",
+                    "text": "The scene is reset to the sealed hall: the walking puppet is taken off the board.",
+                    "subject": "actor/polyphemus-walker"
+                  }
+                },
+                {
+                  "type": "despawn-actor",
+                  "actor": "actor/polyphemus-herdsman",
+                  "style": "vanish",
+                  "happening": {
+                    "verb": "departs",
+                    "text": "The scene is reset to the sealed hall: the herdsman puppet is taken off the board.",
+                    "subject": "actor/polyphemus-herdsman"
+                  }
+                },
+                {
+                  "type": "despawn-actor",
+                  "actor": "actor/polyphemus-roused",
+                  "style": "vanish",
+                  "happening": {
+                    "verb": "departs",
+                    "text": "The scene is reset to the sealed hall: the roused warden is taken off the board.",
+                    "subject": "actor/polyphemus-roused"
+                  }
+                },
+                {
+                  "type": "despawn-actor",
+                  "actor": "actor/polyphemus-blinded",
+                  "style": "vanish",
+                  "happening": {
+                    "verb": "departs",
+                    "text": "The scene is reset to the sealed hall: the blinded warden is taken off the board.",
+                    "subject": "actor/polyphemus-blinded"
+                  }
+                },
+                {
+                  "type": "spawn-npc",
+                  "npc": "npc/polyphemus",
+                  "happening": {
+                    "verb": "arrives",
+                    "text": "Polyphemus is at his fire again, exactly as he was before the party's last mistake.",
+                    "subject": "npc/polyphemus"
+                  }
+                },
+                {
+                  "type": "narrate",
+                  "style": "chat",
+                  "text": "You come to in the dark of the east alcove, far side of the hall. The giant is a shape at his own fire, milking, unhurried."
+                }
+              ]
+            }
+          ],
+          "obj/the-stone": [
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "\"One eye, middle of the forehead, and he talks like a man — asked us who we were, polite as you like. The stone took twenty-two waggons to set and he rolled it one-handed. We do not fight him, Captain. We think.\""
+            }
+          ]
+        },
+        "on_complete": [
+          {
+            "type": "set-flag",
+            "flag": "flag/sealed-in"
+          }
+        ],
+        "happening": {
+          "verb": "survives",
+          "text": "The party goes to ground among the pens while the herd comes home and the giant follows it in.",
+          "subject": null
+        }
+      },
+      {
+        "id": "quest/nobody",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/hide"
+        },
+        "objectives": [
+          {
+            "type": "talk-to",
+            "id": "obj/the-name",
+            "npc": "npc/polyphemus",
+            "requires_flags": [
+              "flag/sealed"
+            ],
+            "title": "Meet the Owner of the Cave",
+            "hint": "Polyphemus sits at the great fire at the heart of the hall. Go to him before you touch anything else of his, and mind your manners about the wine.",
+            "happening": {
+              "verb": "believes",
+              "text": "Polyphemus drinks unmixed wine and takes the name he is given for the truth.",
+              "subject": "npc/polyphemus"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "dead",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": {
+                "barks": [
+                  "Still burning, Captain! Told you I could keep a fire!",
+                  "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                  "If you are not down by first light I am coming up there. — I am not. But I have said it."
+                ]
+              },
+              "doing": "Alone at the fire on the strand, keeping the one promise anybody gave him.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/alcove-1",
+              "dialogue": {
+                "barks": [
+                  "(barely a breath) Don't. Don't move, don't ask me anything. Watch.",
+                  "(barely a breath) If he turns this way, look at the floor. Eyes catch firelight, Captain.",
+                  "(barely a breath) I counted twelve of us onto that beach. I am not counting again tonight."
+                ]
+              },
+              "doing": "Pressed into the recess beside the captain with his sword drawn and useless, breathing through his teeth.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/alcove-2",
+              "dialogue": "dlg/root",
+              "doing": "Keeping the recess and the count, close enough to the fire to hear every word of the guest-gift.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "anchor/fire-side",
+              "doing": "Milking at his own fire, entertaining the talking meat, and asking a guest for the one thing a guest cannot refuse.",
+              "dialogue": "dlg/guest",
+              "forbids_flags": [
+                "flag/asleep"
+              ]
+            },
+            {
+              "at": "anchor/fire-side",
+              "doing": "Gone over at his own fire with the cup spilled, saying the flock and the wine and the promise out loud in his sleep.",
+              "dialogue": {
+                "barks": [
+                  "...mm. The grey ewe. Grey ewe first, then the black one, then...",
+                  "...more. Give me it again. Again...",
+                  "...last. I said last. I keep my word, little...",
+                  "...no. No, father. They were only men. They were only men, they were..."
+                ]
+              },
+              "requires_flags": [
+                "flag/asleep"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/the-name": [
+            {
+              "type": "set-flag",
+              "flag": "flag/asleep"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The wine of Maron does its work. His chin sinks to his chest, and the whole cave fills with the long tide of his breathing."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.generic.drink",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/fire-pit"
+              }
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.warden.ambient",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/fire-pit"
+              }
+            }
+          ]
+        },
+        "on_complete": [
+          {
+            "type": "give-item",
+            "item": "minecraft:stripped_oak_log",
+            "count": 1,
+            "name": "Green Olive Stake"
+          },
+          {
+            "type": "narrate",
+            "style": "chat",
+            "text": "Perimedes drags a beam of green olive-wood from the giant's stacked timber and puts it in your hands. \"Big as a mast, Captain. We cut it down to a point.\""
+          }
+        ],
+        "happening": {
+          "verb": "believes",
+          "text": "Over the wine the giant asks the stranger's name, and is given one.",
+          "subject": "npc/polyphemus"
+        }
+      },
+      {
+        "id": "quest/the-stake",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/nobody"
+        },
+        "objectives": [
+          {
+            "type": "interact",
+            "id": "obj/grind",
+            "anchor": "anchor/shaft-1",
+            "prop": {
+              "block": "minecraft:grindstone[face=floor]"
+            },
+            "requires_item": "minecraft:stripped_oak_log",
+            "missing_item_hint": "The wheel turns under your palm, takes a slow full circle and bites on nothing at all.",
+            "requires_flags": [
+              "flag/asleep"
+            ],
+            "title": "Grind the Point",
+            "hint": "The giant keeps a grinding stone under the light-shaft on the west floor. Turn the olive beam against it until it takes an edge.",
+            "happening": {
+              "verb": "gains",
+              "text": "Odysseus grinds the olive beam to a point on the giant's own whetstone.",
+              "subject": "item/olive-stake"
+            }
+          },
+          {
+            "type": "interact",
+            "id": "obj/harden",
+            "anchor": "anchor/hearth",
+            "after": [
+              "obj/grind"
+            ],
+            "requires_flags": [
+              "flag/sharpened"
+            ],
+            "title": "Char It in the Fire",
+            "hint": "Take the sharpened stake to the great walled hearth at the heart of the hall and turn the point in the coals until it blackens hard.",
+            "happening": {
+              "verb": "gains",
+              "text": "The point is turned in the hearth until it is hard enough to hold.",
+              "subject": "item/olive-stake"
+            }
+          },
+          {
+            "type": "interact",
+            "id": "obj/blind",
+            "anchor": "anchor/eye",
+            "requires_item": "minecraft:stripped_oak_log",
+            "missing_item_hint": "You lay a hand on the great closed lid. It is warm, and it moves. The giant talks up out of the wine without waking: \"...mm. Not yet. The black one is still to milk...\" — and your hand, which is only a hand, comes away.",
+            "after": [
+              "obj/harden"
+            ],
+            "requires_flags": [
+              "flag/hardened"
+            ],
+            "title": "Put Out the Eye",
+            "hint": "He is down where the wine took him, at his own fire. Set the hardened point to the single eye and lean your whole weight on it.",
+            "happening": {
+              "verb": "loses",
+              "text": "Polyphemus loses his eye to the hardened stake while he sleeps off the wine.",
+              "subject": "npc/polyphemus"
+            }
+          },
+          {
+            "type": "reach-anchor",
+            "id": "obj/climb-to-pen",
+            "anchor": "anchor/ramp-top",
+            "radius": 2,
+            "after": [
+              "obj/blind"
+            ],
+            "requires_flags": [
+              "flag/blinded"
+            ],
+            "stealth": true,
+            "title": "Climb Toward the Pen",
+            "hint": "Leave him roaring at the floor and slip from shadow to shadow up the rock ramp toward the upper sheep-pen. Do not run and do not jump; he hunts by sound now.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party gets up the ramp to the upper pen without giving the blind giant a sound to hunt.",
+              "subject": "anchor/ramp-top"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "dead",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": {
+                "barks": [
+                  "Still burning, Captain! Told you I could keep a fire!",
+                  "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                  "If you are not down by first light I am coming up there. — I am not. But I have said it."
+                ]
+              },
+              "doing": "Alone at the fire on the strand, keeping the one promise anybody gave him.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/alcove-1",
+              "dialogue": {
+                "barks": [
+                  "(barely a breath) Don't. Don't move, don't ask me anything. Watch.",
+                  "(barely a breath) If he turns this way, look at the floor. Eyes catch firelight, Captain.",
+                  "(barely a breath) I counted twelve of us onto that beach. I am not counting again tonight."
+                ]
+              },
+              "doing": "Pressed into the recess beside the captain with his sword drawn and useless, breathing through his teeth.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/alcove-2",
+              "doing": "Feeding the fire under the point and keeping watch on the sleeping face.",
+              "dialogue": "dlg/root",
+              "forbids_flags": [
+                "flag/blinded"
+              ]
+            },
+            {
+              "at": "anchor/alcove-2",
+              "doing": "Shadow to shadow with the captain, teaching him how to walk in a hall that hunts by ear.",
+              "dialogue": "dlg/after-the-eye",
+              "requires_flags": [
+                "flag/blinded"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "anchor/fire-side",
+              "doing": "Asleep at his fire with the wine in him, talking through it, while the point is ground and charred in his own hearth.",
+              "dialogue": {
+                "barks": [
+                  "...mm. The grey ewe. Grey ewe first, then the black one, then...",
+                  "...more. Give me it again. Again...",
+                  "...last. I said last. I keep my word, little...",
+                  "...no. No, father. They were only men. They were only men, they were..."
+                ]
+              },
+              "forbids_flags": [
+                "flag/blinded"
+              ]
+            },
+            {
+              "at": "dead",
+              "requires_flags": [
+                "flag/blinded"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/grind": [
+            {
+              "type": "set-flag",
+              "flag": "flag/sharpened"
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:block.deepslate.hit",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/shaft-1"
+              }
+            }
+          ],
+          "obj/harden": [
+            {
+              "type": "set-flag",
+              "flag": "flag/hardened"
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:block.campfire.crackle",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/hearth"
+              }
+            }
+          ],
+          "obj/blind": [
+            {
+              "type": "set-flag",
+              "flag": "flag/blinded"
+            },
+            {
+              "type": "despawn-npc",
+              "npc": "npc/polyphemus",
+              "happening": {
+                "verb": "departs",
+                "text": "The giant who could be talked to is gone; what stands up cannot be reasoned with.",
+                "subject": "npc/polyphemus"
+              }
+            },
+            {
+              "type": "set-weather",
+              "weather": "thunder"
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.warden.hurt",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/fire-pit"
+              }
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.lightning_bolt.thunder",
+              "at": {
+                "at": "players"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/polyphemus-blinded",
+              "happening": {
+                "verb": "arrives",
+                "text": "Polyphemus rises blind, hands out, listening for anything that breathes.",
+                "subject": "actor/polyphemus-blinded"
+              }
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "requires_flags": [
+                "flag/name-nobody"
+              ],
+              "text": "The hills answer him. His own kind call in at the stone: \"Polyphemus! Who is killing you?\" And he roars his ruined face against the rock: \"NOBODY! Nobody is killing me!\" A pause. Then, going away up the mountain: \"If nobody hurts you, it is a sickness from Zeus. Pray to your father.\" And the footsteps do not come back. He hears them go."
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "requires_flags": [
+                "flag/name-boast"
+              ],
+              "text": "The hills answer him. His own kind call in: \"Polyphemus! Who has done this?\" And he roars back the name you laid down over the wine, whole and proud: \"ODYSSEUS! Sacker of cities, son of Laertes, of Ithaca — he was under my roof!\" And they believe him. \"Hold, cousin — we cannot shift your stone from without. Wait for the light; at dawn every hand on the mountain opens it together.\" Perimedes has your sleeve: \"They come back at dawn, Captain. We leave before they do.\""
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "requires_flags": [
+                "flag/name-lie"
+              ],
+              "text": "The hills answer him. His own kind call in: \"Polyphemus! Who has done this?\" And he roars back the name you gave him over the wine: \"AITHON! A Cretan, out of Crete — at my own fire!\" A silence. Then, cool and turning away: \"A Cretan. Cousin, the Cretans lie; it is the one thing known of them. Sleep it off.\" And the footsteps go, half-convinced of nothing, and do not come back tonight."
+            },
+            {
+              "type": "set-checkpoint",
+              "anchor": "anchor/alcove-3",
+              "on_respawn": [
+                {
+                  "type": "set-weather",
+                  "weather": "thunder"
+                },
+                {
+                  "type": "despawn-actor",
+                  "actor": "actor/polyphemus-blinded",
+                  "style": "vanish",
+                  "happening": {
+                    "verb": "departs",
+                    "text": "The hunt is reset: the blind giant is taken off the board.",
+                    "subject": "actor/polyphemus-blinded"
+                  }
+                },
+                {
+                  "type": "spawn-actor",
+                  "actor": "actor/polyphemus-blinded",
+                  "happening": {
+                    "verb": "arrives",
+                    "text": "The hunt is reset: the blind giant is put back on the cavern floor.",
+                    "subject": "actor/polyphemus-blinded"
+                  }
+                },
+                {
+                  "type": "unleash-actor",
+                  "actor": "actor/polyphemus-blinded",
+                  "happening": {
+                    "verb": "arrives",
+                    "text": "The blind giant is pacing and listening again when the party comes to in the east alcove.",
+                    "subject": "actor/polyphemus-blinded"
+                  }
+                },
+                {
+                  "type": "narrate",
+                  "style": "chat",
+                  "text": "You come to in the east alcove, out of the firelight. The blind giant is still pacing the cavern floor, hands out, listening."
+                }
+              ]
+            },
+            {
+              "type": "sequence",
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "type": "narrate",
+                      "style": "title",
+                      "text": "He Rises Blind"
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "Get up the ramp. Make no sound he can follow."
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.warden.roar",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/fire-pit"
+                      }
+                    },
+                    {
+                      "type": "unleash-actor",
+                      "actor": "actor/polyphemus-blinded",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "The blind giant begins to hunt the hall by ear.",
+                        "subject": "actor/polyphemus-blinded"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "type": "begin-stealth",
+                      "grace_ticks": 260,
+                      "zones": [
+                        {
+                          "anchor": "anchor/alcove-3",
+                          "extent": [
+                            2,
+                            2,
+                            2
+                          ]
+                        },
+                        {
+                          "anchor": "anchor/alcove-4",
+                          "extent": [
+                            2,
+                            2,
+                            2
+                          ]
+                        },
+                        {
+                          "anchor": "anchor/ramp-top",
+                          "extent": [
+                            3,
+                            2,
+                            3
+                          ]
+                        }
+                      ],
+                      "on_caught": [
+                        {
+                          "type": "narrate",
+                          "style": "chat",
+                          "text": "His head snaps toward you. Freeze — get back into a shadow."
+                        },
+                        {
+                          "type": "play-sound",
+                          "sound": "minecraft:entity.warden.nearby_close",
+                          "at": {
+                            "at": "players"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "obj/climb-to-pen": [
+            {
+              "type": "set-flag",
+              "flag": "flag/at-pen"
+            },
+            {
+              "type": "end-stealth"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The rams crowd the upper pen, warm and stupid and enormous. Below you the giant paces the floor he can no longer see."
+            },
+            {
+              "type": "move-npc",
+              "npc": "npc/eurylochus",
+              "to_anchor": "anchor/pen-b",
+              "happening": {
+                "verb": "arrives",
+                "text": "Eurylochus reaches the upper pen and gets in among the rams.",
+                "subject": "npc/eurylochus"
+              }
+            },
+            {
+              "type": "move-npc",
+              "npc": "npc/perimedes",
+              "to_anchor": "anchor/pen-c",
+              "happening": {
+                "verb": "arrives",
+                "text": "Perimedes reaches the upper pen and gets in among the rams.",
+                "subject": "npc/perimedes"
+              }
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "gains",
+          "text": "The party grinds and fire-hardens the olive stake: the cave's one weapon, made ready.",
+          "subject": "item/olive-stake"
+        }
+      },
+      {
+        "id": "quest/under-the-rams",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/the-stake"
+        },
+        "objectives": [
+          {
+            "type": "interact",
+            "id": "obj/under-ram",
+            "anchor": "anchor/pen",
+            "requires_flags": [
+              "flag/at-pen"
+            ],
+            "title": "Get Under a Ram",
+            "hint": "Take two fistfuls of fleece at the belly of the biggest ram and let it carry you, close and quiet, when the flock goes out.",
+            "happening": {
+              "verb": "departs",
+              "text": "Odysseus takes hold of a ram's belly-wool and is carried out of the cave under the blind giant's own hands."
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "dead",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": {
+                "barks": [
+                  "Still burning, Captain! Told you I could keep a fire!",
+                  "Every time that mountain makes a noise I put another log on. There is a lot of log gone.",
+                  "If you are not down by first light I am coming up there. — I am not. But I have said it."
+                ]
+              },
+              "doing": "Alone at the fire on the strand, keeping the one promise anybody gave him.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/pen-b",
+              "dialogue": {
+                "barks": [
+                  "Wool in your fists, Captain, and mind the horns. This is not the hour for dignity.",
+                  "I have had worse ideas than this one. I cannot at present bring one to mind.",
+                  "When the stone goes, look at the sand. Look at the sand and think about the sand."
+                ]
+              },
+              "doing": "Under a ram of his own at the pen rail, telling the captain where to put his hands.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/pen-c",
+              "dialogue": "dlg/under-the-ram",
+              "doing": "Third ram from the gate, talking the captain in under the belly of the biggest one.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/under-ram": [
+            {
+              "type": "set-flag",
+              "flag": "flag/aboard"
+            },
+            {
+              "type": "sequence",
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "type": "set-time",
+                      "time": "night"
+                    },
+                    {
+                      "type": "set-weather",
+                      "weather": "thunder"
+                    },
+                    {
+                      "type": "open-gate",
+                      "anchor": "anchor/boulder",
+                      "happening": {
+                        "verb": "opens",
+                        "text": "Polyphemus rolls the stone back to put his flock out, with no way of knowing he is opening it on a black sky.",
+                        "subject": "anchor/boulder"
+                      }
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:block.deepslate.break",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/boulder"
+                      }
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.lightning_bolt.thunder",
+                      "at": {
+                        "at": "players"
+                      }
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "Stone grinds back off the mouth — and there is no daylight behind it. A blind man cannot tell noon from midnight, and he has opened his house onto a black sky with the sea standing on end under it."
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 80,
+                  "effects": [
+                    {
+                      "type": "despawn-actor",
+                      "actor": "actor/polyphemus-blinded",
+                      "style": "vanish",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "The hunting giant stops hunting and goes to the mouth to count his flock out.",
+                        "subject": "actor/polyphemus-blinded"
+                      }
+                    },
+                    {
+                      "type": "spawn-actor",
+                      "actor": "actor/polyphemus-walker",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "Polyphemus sets himself beside the open gap, hands out, feeling the back of every animal that passes.",
+                        "subject": "actor/polyphemus-walker"
+                      }
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.warden.emerge",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/mouth-side"
+                      }
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "He settles himself against the rock beside the gap and puts his hands out over it, running them along every back that passes. Only the backs. He never thinks to feel underneath."
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 160,
+                  "effects": [
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.warden.roar",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/mouth-side"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 200,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-1",
+                      "to_anchor": "anchor/fold",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ewe goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-1"
+                      }
+                    },
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-5",
+                      "to_anchor": "anchor/fold-e",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ram goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-5"
+                      }
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.sheep.step",
+                      "at": {
+                        "at": "anchor",
+                        "anchor": "anchor/mouth"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 230,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-2",
+                      "to_anchor": "anchor/fold-b",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ewe goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-2"
+                      }
+                    },
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-6",
+                      "to_anchor": "anchor/fold-f",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ram goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-6"
+                      }
+                    },
+                    {
+                      "type": "move-npc",
+                      "npc": "npc/perimedes",
+                      "to_anchor": "anchor/oar-star",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "Perimedes comes out with the flock and keeps going down the mountain to the strand.",
+                        "subject": "npc/perimedes"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 260,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-3",
+                      "to_anchor": "anchor/fold-c",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ewe goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-3"
+                      }
+                    },
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-7",
+                      "to_anchor": "anchor/fold-g",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ram goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-7"
+                      }
+                    },
+                    {
+                      "type": "move-npc",
+                      "npc": "npc/eurylochus",
+                      "to_anchor": "anchor/oar-port",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "Eurylochus comes out with the flock and goes down to hold the gangplank.",
+                        "subject": "npc/eurylochus"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 290,
+                  "effects": [
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-4",
+                      "to_anchor": "anchor/fold-d",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ewe goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-4"
+                      }
+                    },
+                    {
+                      "type": "move-actor",
+                      "actor": "actor/sheep-8",
+                      "to_anchor": "anchor/fold-h",
+                      "happening": {
+                        "verb": "departs",
+                        "text": "A ram goes out past the giant's hands to the meadow fold.",
+                        "subject": "actor/sheep-8"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 380,
+                  "effects": [
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "Salt air, and no light in it at all. Somewhere under the noise a very old voice is being told what was done to its son, and the water starts to come in wrong."
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.lightning_bolt.thunder",
+                      "at": {
+                        "at": "players"
+                      }
+                    },
+                    {
+                      "type": "spawn-wave",
+                      "wave": "wave/storm-shore",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "The surf below the mountain gives up its dead into the storm, between the party and the ship.",
+                        "subject": "wave/storm-shore"
+                      }
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "Do not stop to fight them. Nothing on this island is worth one more man. Get down the mountain and get to the oars."
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 520,
+                  "effects": [
+                    {
+                      "type": "spawn-wave",
+                      "wave": "wave/storm-fire",
+                      "happening": {
+                        "verb": "arrives",
+                        "text": "Drowned wade out of the surf at the dead camp fire, between the mountain and the ship.",
+                        "subject": "wave/storm-fire"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "opens",
+          "text": "The flock is let out to graze at first light, and the crew go out under them.",
+          "subject": "anchor/boulder"
+        }
+      },
+      {
+        "id": "quest/the-sail",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/under-the-rams"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/last-sand",
+            "anchor": "anchor/gangplank",
+            "radius": 3,
+            "title": "Down to the Ship",
+            "hint": "Come down off the mountain to the strand where the galley rides at her gangplank, oars manned and waiting.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party crosses the last of the sand to the waiting galley.",
+              "subject": "anchor/gangplank"
+            }
+          },
+          {
+            "type": "interact",
+            "id": "obj/board-nobody",
+            "anchor": "anchor/deck",
+            "after": [
+              "obj/last-sand"
+            ],
+            "title": "Board and Give Way",
+            "hint": "Cross the gangplank to the deck and take your place. However you leave him, the water is listening.",
+            "happening": {
+              "verb": "departs",
+              "text": "Odysseus goes up the gangplank and the oars take the ship off the beach."
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "dead",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-a",
+              "doing": "Back at the strand with the sacks aboard and every man he climbed with still on his feet.",
+              "dialogue": {
+                "barks": [
+                  "Sacks are aboard, Captain. Everything we came in with, and one wheel to the good.",
+                  "Say the word and I will shove her off. I would like very much to be rowing."
+                ]
+              },
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": [
+            {
+              "at": "anchor/crew-b",
+              "dialogue": "dlg/the-fire-held",
+              "doing": "Standing over a fire he kept all night, counting the party back down the path and asking the one question nobody wants to answer.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/crew-b",
+              "doing": "Standing over the fire he kept, with a speech prepared for a loss that never happened.",
+              "dialogue": "dlg/all-of-you",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/eurylochus": [
+            {
+              "at": "anchor/oar-port",
+              "dialogue": "dlg/at-the-gangplank",
+              "doing": "At the gangplank counting heads out loud for the third time and refusing to grieve until the oars are moving.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/gangplank",
+              "doing": "At the gangplank counting the party aboard twice over, on the one branch of this island where the number comes out whole.",
+              "dialogue": "dlg/quiet-sail",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "anchor/oar-star",
+              "dialogue": "dlg/on-the-sand",
+              "doing": "On the sand with two fists of ram's wool still in them, laughing wrong and asking to be told the count is four.",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "anchor/class-post",
+              "doing": "Down on the sand ahead of everyone with the wine-skin still unopened, working out whether the giant counts his cheeses.",
+              "dialogue": "dlg/all-hands",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/last-sand": [
+            {
+              "type": "set-flag",
+              "flag": "flag/escaped"
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Behind you, high on the mountain, the blind giant has not gone back inside. He has set himself across the mouth of his own cave with his hands out and his head turned, waiting for a sound to hate. Whatever is still in there is his now."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:entity.drowned.ambient",
+              "at": {
+                "at": "anchor",
+                "anchor": "anchor/surf-wave"
+              }
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "The gangplank is ten strides off, and the sea grudges you every one of them: the shallows give up their dead at your back."
+            },
+            {
+              "type": "spawn-wave",
+              "wave": "wave/storm-surf",
+              "happening": {
+                "verb": "arrives",
+                "text": "A last surge of drowned rises between the party and the plank.",
+                "subject": "wave/storm-surf"
+              }
+            }
+          ],
+          "obj/board-nobody": [
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Oars out, and the strand slides away astern. Nobody looks back at the mountain; there is a great deal of open water to be got between you and it before anyone feels like talking."
+            },
+            {
+              "type": "play-sound",
+              "sound": "minecraft:ui.toast.challenge_complete",
+              "at": {
+                "at": "players"
+              }
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "departs",
+          "text": "The survivors come down the mountain to the boat, with the blinded giant holding the mouth behind them."
+        }
+      },
+      {
+        "id": "quest/the-voyage",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/the-sail"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/aboard",
+            "anchor": "anchor/sea-deck",
+            "radius": 3,
+            "title": "Take Your Place at the Oar",
+            "hint": "The island is astern and going. Find your bench and let the water do the rest.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party comes aboard and the galley stands out to sea.",
+              "subject": "anchor/deck"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": {
+            "at": "offstage"
+          },
+          "npc/eurylochus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/aboard": [
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-eurylochus",
+              "happening": {
+                "verb": "arrives",
+                "text": "Eurylochus takes his place at the oar.",
+                "subject": "actor/voyage-eurylochus"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-perimedes",
+              "happening": {
+                "verb": "arrives",
+                "text": "Perimedes takes his place at the oar.",
+                "subject": "actor/voyage-perimedes"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-elpenor",
+              "happening": {
+                "verb": "arrives",
+                "text": "Elpenor takes his place at the oar.",
+                "subject": "actor/voyage-elpenor"
+              }
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Open water on every side, and the oars finding their stroke. Somewhere behind the dark the island is still there, and it is already somebody else's problem."
+            },
+            {
+              "type": "cutscene",
+              "shots": [
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -6,
+                        3,
+                        0
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -20,
+                        5,
+                        0
+                      ]
+                    }
+                  ],
+                  "seconds": 7,
+                  "look_at": {
+                    "anchor": "anchor/sea-deck",
+                    "offset": [
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                },
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -20,
+                        5,
+                        0
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -44,
+                        10,
+                        0
+                      ]
+                    }
+                  ],
+                  "seconds": 8,
+                  "look_at": {
+                    "anchor": "anchor/sea-deck",
+                    "offset": [
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "sequence",
+              "steps": [
+                {
+                  "at_ticks": 120,
+                  "effects": [
+                    {
+                      "type": "set-time",
+                      "time": "night"
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:ambient.underwater.enter",
+                      "at": {
+                        "at": "players"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 340,
+                  "effects": [
+                    {
+                      "type": "narrate",
+                      "style": "art",
+                      "text": "NOBODY"
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "requires_flags": [
+                        "flag/name-nobody"
+                      ],
+                      "text": "You won the cave. He will tell the story to the end of his days and never once get the name right, and the neighbours who came as far as the stone have gone back to their own fires believing a sickness took him. No song, no herald, no one ashore who will ever hear it. You will live on that. You will have to."
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "requires_flags": [
+                        "flag/name-boast"
+                      ],
+                      "text": "You won the cave, and then you signed it. Somewhere astern the mountain is awake — hands on the slope, cousin calling to cousin, every one of them coming at first light to lift the stone off a man who can now give the sea your name and your father's. Eurylochus has the stroke going and will not look back. Whatever you bought in there, the water will come to collect."
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "requires_flags": [
+                        "flag/name-lie"
+                      ],
+                      "text": "You won the cave, and a Cretan took the credit. The hills heard the name, weighed it and went back to sleep — a trader out of Crete, and Cretans lie, so nothing worth waking for was said at all. No one is coming for Aithon; there was never an Aithon to come for. You have your crew, your water and a clean horizon, and the best hour of your life belongs to a man who does not exist."
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:ui.toast.challenge_complete",
+                      "at": {
+                        "at": "players"
+                      }
+                    },
+                    {
+                      "type": "campaign-complete",
+                      "happening": {
+                        "verb": "survives",
+                        "text": "NOBODY: the crew that is left rows away from an island whose keeper cannot name them."
+                      },
+                      "ending": "ending/nobody"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "survives",
+          "text": "Open water, and the island falls away astern with the story of it already fixed."
+        }
+      },
+      {
+        "id": "quest/the-quiet-voyage",
+        "trigger": {
+          "type": "quest-complete",
+          "quest": "quest/take-the-cheese"
+        },
+        "objectives": [
+          {
+            "type": "reach-anchor",
+            "id": "obj/out-to-sea",
+            "anchor": "anchor/sea-deck",
+            "radius": 3,
+            "requires_flags": [
+              "flag/flee"
+            ],
+            "title": "Take Your Place at the Oar",
+            "hint": "The island is astern and going. Find your bench and let the water do the rest.",
+            "happening": {
+              "verb": "arrives",
+              "text": "The party comes aboard and the galley stands out to sea, every man alive.",
+              "subject": "anchor/sea-deck"
+            }
+          }
+        ],
+        "cast": {
+          "npc/antiphos": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/elpenor": {
+            "at": "offstage"
+          },
+          "npc/eurylochus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/perimedes": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ],
+          "npc/polyphemus": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/flee"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/flee"
+              ]
+            }
+          ]
+        },
+        "on_objective_complete": {
+          "obj/out-to-sea": [
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-eurylochus",
+              "happening": {
+                "verb": "arrives",
+                "text": "Eurylochus takes his place at the oar.",
+                "subject": "actor/voyage-eurylochus"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-perimedes",
+              "happening": {
+                "verb": "arrives",
+                "text": "Perimedes takes his place at the oar.",
+                "subject": "actor/voyage-perimedes"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-elpenor",
+              "happening": {
+                "verb": "arrives",
+                "text": "Elpenor takes his place at the oar.",
+                "subject": "actor/voyage-elpenor"
+              }
+            },
+            {
+              "type": "spawn-actor",
+              "actor": "actor/voyage-antiphos",
+              "happening": {
+                "verb": "arrives",
+                "text": "Antiphos stows the sacks under the aft bench and takes up his oar.",
+                "subject": "actor/voyage-antiphos"
+              }
+            },
+            {
+              "type": "narrate",
+              "style": "chat",
+              "text": "Open water on every side, and the oars finding their stroke. Behind you the island keeps its giant, its cheese, and its story — short one wheel, and none the wiser."
+            },
+            {
+              "type": "cutscene",
+              "shots": [
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -6,
+                        3,
+                        0
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -20,
+                        5,
+                        0
+                      ]
+                    }
+                  ],
+                  "seconds": 7,
+                  "look_at": {
+                    "anchor": "anchor/sea-deck",
+                    "offset": [
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                },
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -20,
+                        5,
+                        0
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/sea-deck",
+                      "offset": [
+                        -44,
+                        10,
+                        0
+                      ]
+                    }
+                  ],
+                  "seconds": 8,
+                  "look_at": {
+                    "anchor": "anchor/sea-deck",
+                    "offset": [
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "sequence",
+              "steps": [
+                {
+                  "at_ticks": 120,
+                  "effects": [
+                    {
+                      "type": "set-time",
+                      "time": "night"
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:ambient.underwater.enter",
+                      "at": {
+                        "at": "players"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 340,
+                  "effects": [
+                    {
+                      "type": "narrate",
+                      "style": "title",
+                      "text": "THE QUIET SAIL"
+                    },
+                    {
+                      "type": "narrate",
+                      "style": "chat",
+                      "text": "Ithaca inside the month. Safe, and fed, and a little smaller for it — and every man you came in with still at his oar."
+                    },
+                    {
+                      "type": "play-sound",
+                      "sound": "minecraft:entity.villager.celebrate",
+                      "at": {
+                        "at": "players"
+                      }
+                    },
+                    {
+                      "type": "campaign-complete",
+                      "happening": {
+                        "verb": "survives",
+                        "text": "THE QUIET SAIL: every man who came ashore leaves it, and no story is made of any of them."
+                      },
+                      "ending": "ending/the-quiet-sail"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "on_complete": [],
+        "happening": {
+          "verb": "survives",
+          "text": "The quiet sail: a whole crew, a full hold, and a story nobody aboard will ever tell twice."
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "id": "trigger/boulder-wont-move",
+        "at": "anchor/boulder",
+        "on": {
+          "on": "strike"
+        },
+        "once": false,
+        "requires_flags": [
+          "flag/sealed"
+        ],
+        "effects": [
+          {
+            "type": "narrate",
+            "style": "chat",
+            "text": "You set your shoulder to the great stone. It does not so much as grind. No blade you carry will bite it — whatever opens this cave, it will not be you."
+          },
+          {
+            "type": "play-sound",
+            "sound": "minecraft:block.deepslate.hit",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/boulder"
+            }
+          }
+        ]
+      },
+      {
+        "id": "trigger/wake-the-giant",
+        "on": {
+          "on": "strike-npc",
+          "npc": "npc/polyphemus"
+        },
+        "once": false,
+        "requires_flags": [
+          "flag/asleep"
+        ],
+        "effects": [
+          {
+            "type": "narrate",
+            "style": "title",
+            "text": "He Wakes"
+          },
+          {
+            "type": "narrate",
+            "style": "chat",
+            "text": "Never strike a sleeping god's son. He comes up off the floor with his whole strength, and there is nothing in this cave that can stand against that."
+          },
+          {
+            "type": "play-sound",
+            "sound": "minecraft:entity.warden.roar",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/fire-side"
+            }
+          },
+          {
+            "type": "despawn-npc",
+            "npc": "npc/polyphemus",
+            "happening": {
+              "verb": "departs",
+              "text": "The giant who could be talked to is gone the moment he is struck.",
+              "subject": "npc/polyphemus"
+            }
+          },
+          {
+            "type": "spawn-actor",
+            "actor": "actor/polyphemus-roused",
+            "happening": {
+              "verb": "arrives",
+              "text": "Polyphemus comes awake as something that only fights.",
+              "subject": "actor/polyphemus-roused"
+            }
+          },
+          {
+            "type": "unleash-actor",
+            "actor": "actor/polyphemus-roused",
+            "happening": {
+              "verb": "arrives",
+              "text": "The roused giant comes for whoever woke him, and the starting kit does not beat him.",
+              "subject": "actor/polyphemus-roused"
+            }
+          }
+        ]
+      },
+      {
+        "id": "trigger/his-house",
+        "on": {
+          "on": "strike-npc",
+          "npc": "npc/polyphemus"
+        },
+        "once": false,
+        "requires_flags": [
+          "flag/sealed"
+        ],
+        "forbids_flags": [
+          "flag/asleep"
+        ],
+        "effects": [
+          {
+            "type": "narrate",
+            "style": "chat",
+            "text": "Your blade turns on his hide like a stick on a ship's keel. He sets down the pail. Slowly. In his own house, under his own stone, you have raised a hand to him — and he rises to answer it in full."
+          },
+          {
+            "type": "play-sound",
+            "sound": "minecraft:entity.warden.roar",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/fire-side"
+            }
+          },
+          {
+            "type": "despawn-npc",
+            "npc": "npc/polyphemus",
+            "happening": {
+              "verb": "departs",
+              "text": "The host stops being a host the moment a blade is put in him.",
+              "subject": "npc/polyphemus"
+            }
+          },
+          {
+            "type": "spawn-actor",
+            "actor": "actor/polyphemus-roused",
+            "happening": {
+              "verb": "arrives",
+              "text": "Polyphemus answers the strike in kind.",
+              "subject": "actor/polyphemus-roused"
+            }
+          },
+          {
+            "type": "unleash-actor",
+            "actor": "actor/polyphemus-roused",
+            "happening": {
+              "verb": "arrives",
+              "text": "The roused giant comes for the man who struck him, in a house with the stone across it.",
+              "subject": "actor/polyphemus-roused"
+            }
+          }
+        ]
+      },
+      {
+        "id": "trigger/he-holds-the-mouth",
+        "at": "anchor/mouth",
+        "on": {
+          "on": "approach",
+          "range": 5
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/escaped"
+        ],
+        "effects": [
+          {
+            "type": "narrate",
+            "style": "title",
+            "text": "He Is Still There"
+          },
+          {
+            "type": "narrate",
+            "style": "chat",
+            "text": "Your foot turns a pebble in the mouth of the cave and his head comes round on the sound like a door slamming. He told the hills he would eat you last. He did not say he had stopped."
+          },
+          {
+            "type": "play-sound",
+            "sound": "minecraft:entity.warden.roar",
+            "at": {
+              "at": "anchor",
+              "anchor": "anchor/mouth"
+            }
+          },
+          {
+            "type": "unleash-actor",
+            "actor": "actor/polyphemus-walker",
+            "happening": {
+              "verb": "arrives",
+              "text": "The blinded giant is still across his own mouth, and anything that comes back in is his.",
+              "subject": "actor/polyphemus-walker"
+            }
+          }
+        ]
+      }
+    ],
+    "loot": [
+      {
+        "id": "loot/cheese-barrel-b",
+        "anchor": "anchor/cheese-barrel-b",
+        "items": [
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          }
+        ]
+      },
+      {
+        "id": "loot/cheese-barrel-c",
+        "anchor": "anchor/cheese-barrel-c",
+        "items": [
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          }
+        ]
+      },
+      {
+        "id": "loot/cheese-barrel-d",
+        "anchor": "anchor/cheese-barrel-d",
+        "items": [
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          },
+          {
+            "item": "minecraft:sponge",
+            "count": 1,
+            "name": "Kefalotyri Cheese"
+          }
+        ]
+      }
+    ]
+  }
+}
