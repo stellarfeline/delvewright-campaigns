@@ -1,8 +1,6 @@
 # Nobody's Isle
 
-**v1.0.0** (exact engine pin: `versions.toml`)
-
-> **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.0.0.
+> **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.1.0.
 
 > *"Guests, is it. Guests come by the door, little ones. The door was shut."*
 
@@ -56,10 +54,10 @@ One command and the island is up — then Multiplayer → Direct Connect to `loc
 
 ```sh
 docker run -d --name delve -p 25565:25565 -v delve-data:/data \
-  -e EULA=TRUE ghcr.io/stellarfeline/delve-nobodys-cave-island:v1.0.0
+  -e EULA=TRUE ghcr.io/stellarfeline/delve-nobodys-cave-island:latest
 ```
 
-The release page for each version carries the resource pack (character skins — your client will prompt for it on join) and the full changelog. To start the story over, `docker rm -f delve && docker volume rm delve-data`, then run the same command again.
+That is the current delve. To hold a delve at one exact version — the same world, the same words, forever — take the `:vX.Y.Z` tag from a release page instead; every release names its own. The release page for each version carries the resource pack (character skins — your client will prompt for it on join) and the full changelog. To start the story over, `docker rm -f delve && docker volume rm delve-data`, then run the same command again.
 
 ---
 
