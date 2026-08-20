@@ -11,9 +11,15 @@
 # file names at the tagged commit — never with "latest".
 #
 # NOTE: `.github/workflows/prefab-audit.yml` carries its own, deliberately
-# different pin (`ADMIT_REF`): it names the first main-repo commit whose palette
-# allowlist admits every prefab merged here, which is a property of the
-# allowlist, not of the compiler. Do not collapse the two.
+# different pin (`ADMIT_REF`): it names the main-repo commit the AUDIT is built
+# from, which is a property of the rules a piece is judged by, not of the
+# compiler a release ships. Do not collapse the two — one must never move and the
+# other must not be allowed to sit still unexamined.
+#
+# Neither pin's terms live in a comment. Both are registered in
+# `.github/pins.toml`, and `tools/check-pins.py` is what holds them to those
+# terms: the release pin must be a commit a release tag points at, and the audit
+# pin is measured against the sources it builds, in the job that builds them.
 
 [engine]
 # The main repo and the commit `release.yml` checks out to build + validate a
