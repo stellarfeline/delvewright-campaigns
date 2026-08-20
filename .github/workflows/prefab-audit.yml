@@ -15,10 +15,10 @@ name: prefab palette audit
 # THE AUDIT'S UNIT IS A PIECE, NOT A FILE. A zone past the structure-template cap
 # ships as several `.nbt` tiles under one `.json` manifest, and both settling
 # rules read a cell's neighbours — so judging a tile alone reports every channel
-# and stair run that crosses a tile seam as broken. The tool refuses a lone tile
-# by name rather than answering about it, so the enumeration below is derived
-# from the manifests: a tile set is audited through its manifest, and a `.nbt`
-# no manifest claims is audited on its own.
+# and stair run that crosses a tile seam as broken, and the tool refuses a lone
+# tile by name rather than answering about it. `tools/prefab-audit.py` is the
+# whole of that check: it walks the tree, closes its accounting over git's index,
+# and audits a tile set through its manifest and a standalone piece on its own.
 #
 # Credential note, RESOLVED. This step used to carry a cross-repo PAT
 # (`secrets.MAIN_REPO_TOKEN`) because `delvewright` was private, and the note
@@ -47,6 +47,7 @@ on:
       - ".github/workflows/prefab-audit.yml"
       - ".github/pins.toml"
       - "tools/check-pins.py"
+      - "tools/prefab-audit.py"
   # On demand: proves a change to the gate before a later unrelated prefab PR.
   workflow_dispatch:
 
@@ -125,58 +126,29 @@ jobs:
         working-directory: admit-src
         run: cargo build -p delvewright-admit --bin delve-admit --release
 
-      # The unit list is DERIVED, not globbed. Every place a piece can enter this
-      # repo is swept — a list that only looks where somebody pointed is how an
-      # unaudited piece survives review — and then each piece is reduced to the
-      # one thing the tool will answer about: a tile set through its manifest, a
-      # standalone `.nbt` on its own. Sorted, so the log reads the same twice.
-      - name: enumerate the pieces to audit
+      # One audited unit at a time, with the binding count printed: which roots
+      # the walk discovered, how many single-file prefabs and how many tiled
+      # zones were examined in each, how many tiles those zones covered, and how
+      # many `.nbt` files the walk found in total. A run that examines zero units
+      # fails.
+      #
+      # The whole of the check lives in the script, not in this YAML, so a
+      # creator runs exactly what CI runs with one command and no workflow
+      # runner. The audited set is a WALK of the tree closed over git's index,
+      # never a glob over roots somebody listed — a glob only ever looks where it
+      # was pointed, and the first piece committed somewhere nobody anticipated
+      # enters through the one door with no gate on it.
+      - name: audit every `.nbt` in the repository
         run: |
-          python3 - <<'PY' > /tmp/audit-units.txt
-          import glob, json, os, sys
-          sys.stdout.reconfigure(newline="\n")
-          docs = sorted(glob.glob("prefabs/*.json")) + sorted(glob.glob("demos/*/*.json"))
-          tiles, units = set(), []
-          for doc in docs:
-              try:
-                  data = json.load(open(doc, encoding="utf-8"))
-              except (OSError, ValueError):
-                  continue
-              tileset = data.get("structure_set")
-              if not tileset:
-                  continue
-              units.append(doc)
-              for part in tileset.get("parts", []):
-                  tiles.add(os.path.join(os.path.dirname(doc), part["file"]))
-          for nbt in sorted(glob.glob("prefabs/*.nbt")) + sorted(glob.glob("demos/*/*.nbt")):
-              if nbt not in tiles:
-                  units.append(nbt)
-          print("\n".join(sorted(units)))
-          PY
-          echo "enumerated $(grep -c . /tmp/audit-units.txt || true) piece(s) to audit:"
-          cat /tmp/audit-units.txt
+          python3 tools/prefab-audit.py \
+            --bin admit-src/target/release/delve-admit \
+            --reports "${RUNNER_TEMP}/prefab-audit-reports" \
+            --github
 
-      - name: every piece passes the audit
-        run: |
-          BIN="admit-src/target/release/delve-admit"
-          n="$(grep -c . /tmp/audit-units.txt || true)"
-          if [ "$n" -eq 0 ]; then
-            echo "::error::the audit enumerated ZERO pieces. That is a finding, not"
-            echo "::error::a pass — either git-lfs did not materialize, or the layout"
-            echo "::error::moved out from under this sweep."
-            exit 1
-          fi
-          fail=0
-          while read -r f; do
-            [ -z "$f" ] && continue
-            echo "--- auditing $f ---"
-            # Report to stdout as the machine-readable record; diagnostics go to
-            # stderr. Non-zero exit = a forbidden block, a not-allowlisted block,
-            # or a settling rule the piece fails.
-            if ! "$BIN" audit "$f" -o "/tmp/$(basename "$f").report.json"; then
-              echo "::error file=$f::audit failed"
-              fail=1
-            fi
-          done < /tmp/audit-units.txt
-          echo "audited $n piece(s)"
-          exit $fail
+      - name: upload the audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prefab-audit-reports
+          path: ${{ runner.temp }}/prefab-audit-reports
+          if-no-files-found: warn
