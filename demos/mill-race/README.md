@@ -110,10 +110,13 @@ needs, or write the shape the neighbours give
 ```
 
 Fifty-five stairs are examined and eleven of them are wrong: the kerb. The
-twenty-two stairs of the roof's eaves and the twenty-two of its ridge are all
-`straight`, and all of them derive `straight`, because their neighbours across
-the facing axis are planks or air. The kerb's neighbours are air on both sides,
-so the kerb derives `straight` too — and says `outer_left`.
+forty-four in the mill's roof are written `straight` and derive `straight`, for
+two different reasons worth separating. Across the facing axis of an eaves stair
+there is planking on one side and nothing at all on the other, and a cell that
+holds no stair cannot turn a corner. The two ridge stairs *do* have a stair
+across that axis — each other — but a corner is only turned by a neighbour facing
+onto a **different** axis, and those two face along the same one. The kerb has
+air on both sides, so it derives `straight` too, and claims `outer_left`.
 
 Each line carries the cell, the block, its `facing` and `half` — the two
 properties the derivation reads — and then **both shapes**: what the piece
