@@ -1,0 +1,1604 @@
+{
+  "version": "1.7.0",
+  "name": "bell_halgrave_map",
+  "start": "halgrave",
+  "params": {
+    "tide_y": 4,
+    "invert_y": -3,
+    "well_bed_y": -2,
+    "ward_floor_y": -2,
+    "flat_floor_y": -1,
+    "cistern_y": 0,
+    "causeway_y": 0,
+    "gate_y": 3,
+    "road_y": 4,
+    "cloister_y": 9,
+    "hall_y": 12,
+    "upper_ward_y": 14,
+    "belfry_y": 30,
+    "crown_y": 39,
+    "base_course": 1,
+    "flat_run": 80,
+    "flat_cross": 40,
+    "rock_run": 70
+  },
+  "palette": {
+    "crag": "minecraft:deepslate",
+    "seabed": "minecraft:gravel",
+    "sea": "minecraft:water"
+  },
+  "include": [
+    {
+      "program": "z0-barrow-shore.json",
+      "prefix": "z0"
+    },
+    {
+      "program": "z1-cliff-road.json",
+      "prefix": "z1",
+      "rename_anchors": {
+        "breach": "road-breach"
+      }
+    },
+    {
+      "program": "z2-gate-ward.json",
+      "prefix": "z2",
+      "rename_anchors": {
+        "lampman": "gate-lampman",
+        "stair-head": "gate-stair-head",
+        "causeway-head": "gate-causeway-head"
+      }
+    },
+    {
+      "program": "z3-drowned-ward.json",
+      "prefix": "z3"
+    },
+    {
+      "program": "z4-chapel-ward.json",
+      "prefix": "z4",
+      "rename_anchors": {
+        "gate": "chapel-gate"
+      }
+    },
+    {
+      "program": "z5-hall-keep.json",
+      "prefix": "z5",
+      "rename_anchors": {
+        "landing": "keep-landing"
+      }
+    },
+    {
+      "program": "z6-cistern-deep.json",
+      "prefix": "z6",
+      "rename_anchors": {
+        "breach": "cistern-breach"
+      }
+    },
+    {
+      "program": "z7-bell-tower.json",
+      "prefix": "z7"
+    }
+  ],
+  "rules": {
+    "halgrave": [
+      {
+        "body": {
+          "op": "call",
+          "symbol": "brief_plan_is_square"
+        },
+        "when": {
+          "cond": "cmp",
+          "op": "eq",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "flat_run"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "param",
+              "name": "rock_run"
+            }
+          }
+        }
+      }
+    ],
+    "brief_plan_is_square": [
+      {
+        "body": {
+          "op": "call",
+          "symbol": "brief_vertical_range"
+        },
+        "when": {
+          "cond": "cmp",
+          "op": "eq",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "rhs": {
+            "expr": "param",
+            "name": "rock_run"
+          }
+        }
+      }
+    ],
+    "brief_vertical_range": [
+      {
+        "body": {
+          "op": "call",
+          "symbol": "site_plan"
+        },
+        "when": {
+          "cond": "cmp",
+          "op": "eq",
+          "lhs": {
+            "expr": "dim",
+            "dim": "y"
+          },
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "crown_y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "invert_y"
+                }
+              },
+              "op": "add",
+              "rhs": {
+                "expr": "param",
+                "name": "base_course"
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        }
+      }
+    ],
+    "site_plan": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "flat_run"
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "rock_run"
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "the_flat"
+            },
+            {
+              "op": "call",
+              "symbol": "the_rock"
+            }
+          ]
+        }
+      }
+    ],
+    "the_flat": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "param",
+                "name": "flat_cross"
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "flat_band"
+            },
+            {
+              "op": "call",
+              "symbol": "open_sea"
+            }
+          ]
+        },
+        "when": {
+          "cond": "cmp",
+          "op": "eq",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "rhs": {
+            "expr": "param",
+            "name": "flat_run"
+          }
+        }
+      }
+    ],
+    "flat_band": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tide_y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "road_y"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "shore_band"
+            },
+            {
+              "op": "call",
+              "symbol": "sky"
+            }
+          ]
+        },
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "op": "eq",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "rhs": {
+                "expr": "param",
+                "name": "flat_cross"
+              }
+            },
+            {
+              "cond": "cmp",
+              "op": "eq",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "rhs": {
+                "expr": "param",
+                "name": "flat_run"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "shore_band": [
+      {
+        "body": {
+          "op": "bind",
+          "palette": {
+            "z0/cliff/rock": {
+              "role": "crag"
+            }
+          },
+          "body": {
+            "op": "call",
+            "symbol": "z0/barrow_shore"
+          }
+        }
+      }
+    ],
+    "the_rock": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "x"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "x"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "dim",
+                      "dim": "x"
+                    },
+                    "op": "div",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 4
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "x"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "seaward_face"
+            },
+            {
+              "op": "call",
+              "symbol": "the_spine"
+            },
+            {
+              "op": "call",
+              "symbol": "east_lobe"
+            }
+          ]
+        },
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "op": "eq",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "rhs": {
+                "expr": "param",
+                "name": "rock_run"
+              }
+            },
+            {
+              "cond": "cmp",
+              "op": "eq",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "rhs": {
+                "expr": "param",
+                "name": "rock_run"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "seaward_face": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tide_y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "upper_ward_y"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cliff_road_band"
+            },
+            {
+              "op": "call",
+              "symbol": "sky"
+            }
+          ]
+        }
+      }
+    ],
+    "cliff_road_band": [
+      {
+        "body": {
+          "op": "bind",
+          "palette": {
+            "z1/crag": {
+              "role": "crag"
+            }
+          },
+          "body": {
+            "op": "call",
+            "symbol": "z1/cliff_road"
+          }
+        }
+      }
+    ],
+    "east_lobe": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tide_y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "cloister_y"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "drowned_ward_band"
+            },
+            {
+              "op": "call",
+              "symbol": "sky"
+            }
+          ]
+        }
+      }
+    ],
+    "drowned_ward_band": [
+      {
+        "body": {
+          "op": "bind",
+          "palette": {
+            "z3/ward/sea": {
+              "role": "sea"
+            }
+          },
+          "body": {
+            "op": "call",
+            "symbol": "z3/drowned_ward"
+          }
+        }
+      }
+    ],
+    "the_spine": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "z"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "z"
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "z"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "south_foot"
+            },
+            {
+              "op": "call",
+              "symbol": "upper_half"
+            }
+          ]
+        }
+      }
+    ],
+    "south_foot": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tide_y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "cloister_y"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "gate_band"
+            },
+            {
+              "op": "call",
+              "symbol": "sky"
+            }
+          ]
+        }
+      }
+    ],
+    "gate_band": [
+      {
+        "body": {
+          "op": "call",
+          "symbol": "z2/gate_ward"
+        }
+      }
+    ],
+    "upper_half": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tide_y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "cloister_y"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "cistern_band"
+            },
+            {
+              "op": "call",
+              "symbol": "upper_ground"
+            }
+          ]
+        }
+      }
+    ],
+    "cistern_band": [
+      {
+        "body": {
+          "op": "call",
+          "symbol": "z6/cistern_deep"
+        }
+      }
+    ],
+    "upper_ground": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "z"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "z"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "z"
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "shelf_band"
+            },
+            {
+              "op": "call",
+              "symbol": "the_crown"
+            }
+          ]
+        }
+      }
+    ],
+    "shelf_band": [
+      {
+        "body": {
+          "op": "bind",
+          "palette": {
+            "z4/bedrock": {
+              "role": "crag"
+            }
+          },
+          "body": {
+            "op": "call",
+            "symbol": "z4/chapel_ward"
+          }
+        }
+      }
+    ],
+    "the_crown": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "z"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "dim",
+                  "dim": "z"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "z"
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "hall_band"
+            },
+            {
+              "op": "call",
+              "symbol": "tower_band"
+            }
+          ]
+        },
+        "when": {
+          "cond": "cmp",
+          "op": "ge",
+          "lhs": {
+            "expr": "dim",
+            "dim": "y"
+          },
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "crown_y"
+              },
+              "op": "sub",
+              "rhs": {
+                "expr": "param",
+                "name": "cloister_y"
+              }
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        }
+      }
+    ],
+    "hall_band": [
+      {
+        "body": {
+          "op": "bind",
+          "palette": {
+            "z5/margin": {
+              "role": "crag"
+            }
+          },
+          "body": {
+            "op": "call",
+            "symbol": "z5/keep"
+          }
+        }
+      }
+    ],
+    "tower_band": [
+      {
+        "body": {
+          "op": "bind",
+          "palette": {
+            "z7/margin": {
+              "role": "crag"
+            }
+          },
+          "body": {
+            "op": "call",
+            "symbol": "z7/zone"
+          }
+        }
+      }
+    ],
+    "open_sea": [
+      {
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "tide_y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "flat_floor_y"
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "flat_floor_y"
+                }
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "seabed"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "sea"
+              }
+            },
+            {
+              "op": "void"
+            }
+          ]
+        }
+      }
+    ],
+    "sky": [
+      {
+        "body": {
+          "op": "void"
+        }
+      }
+    ]
+  },
+  "contract": {
+    "entry": "z0/flat",
+    "spaces": {
+      "z0/flat": {
+        "envelope": "open_top"
+      },
+      "z0/mire": {
+        "envelope": "open_top"
+      },
+      "z0/shelf": {
+        "envelope": "open"
+      },
+      "z0/ledge/foot": {
+        "envelope": "open_top"
+      },
+      "z0/ledge/head": {
+        "envelope": "open_top"
+      },
+      "z1/foot": {
+        "envelope": "open"
+      },
+      "z1/road": {
+        "envelope": "open"
+      },
+      "z1/store": {
+        "envelope": "enclosed"
+      },
+      "z1/landing": {
+        "envelope": "open"
+      },
+      "z2/gate/chamber": {
+        "envelope": "enclosed"
+      },
+      "z2/gate/head": {
+        "envelope": "open_top"
+      },
+      "z2/gate/mouth": {
+        "envelope": "enclosed"
+      },
+      "z2/gate/passage": {
+        "envelope": "enclosed"
+      },
+      "z2/gate/roof": {
+        "envelope": "open_top"
+      },
+      "z2/gate/yard": {
+        "envelope": "open_top"
+      },
+      "z3/arcade/walk": {
+        "envelope": "open_top"
+      },
+      "z3/causeway": {
+        "envelope": "open_top"
+      },
+      "z3/tower/hall": {
+        "envelope": "enclosed"
+      },
+      "z3/tower/upper": {
+        "envelope": "enclosed"
+      },
+      "z4/crypt-foot": {
+        "envelope": "enclosed"
+      },
+      "z4/garth": {
+        "envelope": "open_top"
+      },
+      "z4/stoop": {
+        "envelope": "open"
+      },
+      "z4/terrace": {
+        "envelope": "open_top"
+      },
+      "z4/vault": {
+        "envelope": "enclosed"
+      },
+      "z4/walk": {
+        "envelope": "open_top"
+      },
+      "z5/keep/hall": {
+        "envelope": "enclosed"
+      },
+      "z5/keep/door": {
+        "envelope": "enclosed"
+      },
+      "z5/keep/stores": {
+        "envelope": "enclosed"
+      },
+      "z5/keep/gallery": {
+        "envelope": "enclosed"
+      },
+      "z5/keep/motif": {
+        "envelope": "enclosed"
+      },
+      "z5/duct/entry": {
+        "envelope": "enclosed"
+      },
+      "z5/duct/landing": {
+        "envelope": "enclosed"
+      },
+      "z6/duct": {
+        "envelope": "enclosed"
+      },
+      "z6/cistern": {
+        "envelope": "enclosed"
+      },
+      "z6/well-step": {
+        "envelope": "enclosed"
+      },
+      "z6/well-bed": {
+        "envelope": "enclosed"
+      },
+      "z6/shaft-platform": {
+        "envelope": "enclosed"
+      },
+      "z6/channel-invert": {
+        "envelope": "enclosed"
+      },
+      "z7/approach/foot": {
+        "envelope": "open"
+      },
+      "z7/approach/crest": {
+        "envelope": "open"
+      },
+      "z7/ward": {
+        "envelope": "open"
+      },
+      "z7/tower/door": {
+        "envelope": "enclosed"
+      },
+      "z7/tower/foot": {
+        "envelope": "enclosed"
+      },
+      "z7/tower/ringing": {
+        "envelope": "enclosed"
+      },
+      "z7/tower/louvre": {
+        "envelope": "enclosed"
+      },
+      "z7/tower/stairhead": {
+        "envelope": "enclosed"
+      },
+      "z7/tower/belfry": {
+        "envelope": "enclosed"
+      }
+    },
+    "no_body": {
+      "z0/cairn/heaps": {
+        "reason": "the cairn field -- one heap per body recovered off this shore; a heap has a top and nobody stands on it"
+      },
+      "z0/mud/heaps": {
+        "reason": "the heaps out in the mire, the same cairns the tide has already taken"
+      },
+      "z0/stake/tops": {
+        "reason": "the iron tops of the tide-stake line: what the water is read against, never a step"
+      },
+      "z0/crag/steps": {
+        "reason": "the crag's batter, stepping back one course in three -- a cliff read from the sand, and the reason the cut ledge is the only way up"
+      },
+      "z0/shelf/coping": {
+        "reason": "the coping of the shelf's front wall and the head of the lamp cell, seen from the flat below"
+      },
+      "z1/teeth": {
+        "reason": "the rock teeth standing in the surf at the cliff's foot, twelve courses under the walking line: what the drop ends on, and never ground the road offers a body"
+      },
+      "z1/stand-backs": {
+        "reason": "the recesses cut into the inner wall: one body deep, so a thing that waits in one is not on the road until it steps out, and the walking line stays single-file past it"
+      },
+      "z2/gate/lodge": {
+        "reason": "the porter's lodge, grated shut across its own embrasure; the crossing-ledger is inside and the gate key is what opens it"
+      },
+      "z2/gate/wall-head": {
+        "reason": "the ward curtain's own wall-head over the yard and the causeway head -- dressing read from below, never floor"
+      },
+      "z3/arcade/ruin": {
+        "reason": "the west arcade as the sea has left it: pier stone holed through, a deck with no way up to it, and the voids the collapse closed inside the masonry"
+      },
+      "z3/ward/tide": {
+        "reason": "the flooded ward — the sea standing over the ward floor, inside the arches, around the wrecks and against the tower base. The spine is walkable at the standing tide and the ward is not"
+      },
+      "z4/canopy": {
+        "reason": "the chapel canopy where it came down: broken timber to fight around, standable only because a heap has a top"
+      },
+      "z4/rubble": {
+        "reason": "fallen masonry heaped along the west walk, and what is lying in it: cover to read and a body to mistake for scenery, never floor to cross"
+      },
+      "z4/stations": {
+        "reason": "the three plinths of the hour-round: the bell is set down on them and nobody stands there"
+      },
+      "z5/gallery/perch": {
+        "reason": "the bait perch over the gallery floor -- a timber shelf a watcher stands on, with no stair to it"
+      },
+      "z5/hall/corbels": {
+        "reason": "the two corbels at the truss ends, where a watcher is placed over the hall"
+      },
+      "z5/hall/roof-timbers": {
+        "reason": "the hall's trusses and the open bays between them -- roof structure read from the floor below, never floor"
+      },
+      "z7/approach/ruin-tops": {
+        "reason": "the broken wall-heads of the collapsed buildings the ramp climbs between"
+      },
+      "z7/approach/ruin-walls": {
+        "reason": "the rubble of those walls, and the gaps its own collapse left in it"
+      },
+      "z7/ward/low-walls": {
+        "reason": "the low ruined walls standing in the ward, and the gaps in their rubble"
+      },
+      "z7/ward/wall-tops": {
+        "reason": "the air over the ward, walked on only where a ruined wall-head stands in it"
+      },
+      "z7/tower/slit": {
+        "reason": "the window slits cut through the tower wall"
+      },
+      "z7/tower/bell": {
+        "reason": "the bell itself, and the ledges of its own casting"
+      }
+    },
+    "edges": [
+      {
+        "a": "exterior",
+        "b": "z0/flat",
+        "class": "walk",
+        "rise": 0,
+        "via": "z0/causeway/mouth"
+      },
+      {
+        "a": "z0/flat",
+        "b": "z0/mire",
+        "class": "walk",
+        "rise": -1
+      },
+      {
+        "a": "z0/flat",
+        "b": "z0/shelf",
+        "class": "walk",
+        "rise": 1,
+        "via": "z0/shelf/gap"
+      },
+      {
+        "a": "z0/shelf",
+        "b": "z0/ledge/foot",
+        "class": "walk",
+        "rise": -1
+      },
+      {
+        "a": "z0/ledge/foot",
+        "b": "z0/ledge/head",
+        "class": "stair",
+        "rise": 4,
+        "via": "z0/ledge/treads"
+      },
+      {
+        "a": "z0/ledge/head",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0,
+        "via": "z0/ledge/mouth"
+      },
+      {
+        "a": "exterior",
+        "b": "z1/foot",
+        "class": "walk",
+        "via": "z1/shore-mouth"
+      },
+      {
+        "a": "z1/foot",
+        "b": "z1/road",
+        "class": "stair",
+        "rise": 5,
+        "via": "z1/flight-treads"
+      },
+      {
+        "a": "z1/road",
+        "b": "z1/store",
+        "class": "walk",
+        "via": "z1/mouth-upper"
+      },
+      {
+        "a": "z1/store",
+        "b": "z1/landing",
+        "class": "walk",
+        "via": "z1/mouth-lower"
+      },
+      {
+        "a": "z1/landing",
+        "b": "exterior",
+        "class": "walk",
+        "via": "z1/breach"
+      },
+      {
+        "a": "exterior",
+        "b": "z2/gate/passage",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z2/gate/passage",
+        "b": "z2/gate/mouth",
+        "bar": {
+          "block": "z2/gate/bar",
+          "region": "z2/gate/portcullis"
+        },
+        "class": "barred",
+        "rise": 0
+      },
+      {
+        "a": "z2/gate/passage",
+        "b": "z2/gate/chamber",
+        "class": "stair",
+        "rise": 8,
+        "via": "z2/gate/stair"
+      },
+      {
+        "a": "z2/gate/chamber",
+        "b": "z2/gate/roof",
+        "class": "stair",
+        "rise": 5,
+        "via": "z2/gate/stair"
+      },
+      {
+        "a": "z2/gate/chamber",
+        "b": "z2/gate/passage",
+        "class": "drop",
+        "rise": -8,
+        "via": "z2/gate/murder-shafts"
+      },
+      {
+        "a": "z2/gate/passage",
+        "b": "z2/gate/yard",
+        "class": "walk",
+        "rise": 1,
+        "via": "z2/gate/inner-arch"
+      },
+      {
+        "a": "z2/gate/yard",
+        "b": "z2/gate/head",
+        "class": "drop",
+        "rise": -2,
+        "via": "z2/gate/lip"
+      },
+      {
+        "a": "z2/gate/head",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "exterior",
+        "b": "z3/causeway",
+        "class": "walk"
+      },
+      {
+        "a": "z3/causeway",
+        "b": "z3/arcade/walk",
+        "class": "stair",
+        "rise": 3,
+        "via": "z3/crossing"
+      },
+      {
+        "a": "z3/arcade/walk",
+        "b": "z3/tower/upper",
+        "class": "walk",
+        "via": "z3/tower/shutter-way"
+      },
+      {
+        "a": "z3/tower/hall",
+        "b": "z3/tower/upper",
+        "class": "stair",
+        "rise": 3,
+        "via": "z3/tower/well"
+      },
+      {
+        "a": "z3/causeway",
+        "b": "z3/tower/hall",
+        "class": "barred",
+        "bar": {
+          "region": "z3/shortcut/s2-bar",
+          "block": "z3/shortcut/bar"
+        }
+      },
+      {
+        "a": "z3/tower/hall",
+        "b": "exterior",
+        "class": "walk"
+      },
+      {
+        "a": "exterior",
+        "b": "z4/walk",
+        "class": "walk",
+        "via": "z4/west-door"
+      },
+      {
+        "a": "z4/walk",
+        "b": "z4/garth",
+        "class": "walk",
+        "via": "z4/arcade-opening"
+      },
+      {
+        "a": "z4/walk",
+        "b": "z4/terrace",
+        "class": "stair",
+        "rise": 3,
+        "via": "z4/north-flight"
+      },
+      {
+        "a": "z4/terrace",
+        "b": "exterior",
+        "class": "walk",
+        "via": "z4/north-door"
+      },
+      {
+        "a": "z4/walk",
+        "b": "z4/stoop",
+        "bar": {
+          "block": "z4/door_low_a",
+          "region": "z4/door-leaf"
+        },
+        "class": "barred",
+        "via": "z4/banded-door"
+      },
+      {
+        "a": "z4/stoop",
+        "b": "exterior",
+        "class": "walk"
+      },
+      {
+        "a": "z4/crypt-foot",
+        "b": "z4/garth",
+        "class": "stair",
+        "rise": 4,
+        "via": "z4/crypt-stair"
+      },
+      {
+        "a": "z4/crypt-foot",
+        "b": "z4/vault",
+        "bar": {
+          "block": "z4/vault_bar",
+          "region": "z4/vault-door"
+        },
+        "class": "barred",
+        "via": "z4/vault-doorway"
+      },
+      {
+        "a": "z4/garth",
+        "b": "z4/vault",
+        "class": "vision",
+        "via": "z4/oculus"
+      },
+      {
+        "a": "exterior",
+        "b": "z5/keep/hall",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z5/keep/hall",
+        "b": "z5/keep/door",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z5/keep/door",
+        "b": "z5/keep/stores",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z5/keep/stores",
+        "b": "z5/keep/gallery",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z5/keep/gallery",
+        "b": "z5/keep/motif",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z5/keep/motif",
+        "b": "z5/duct/entry",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z5/duct/entry",
+        "b": "z5/duct/landing",
+        "class": "drop",
+        "rise": -4,
+        "via": "z5/duct/shaft"
+      },
+      {
+        "a": "z5/duct/landing",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "exterior",
+        "b": "z6/duct",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z6/duct",
+        "b": "z6/cistern",
+        "class": "drop",
+        "rise": -3
+      },
+      {
+        "a": "z6/cistern",
+        "b": "z6/well-step",
+        "class": "walk",
+        "rise": -1
+      },
+      {
+        "a": "z6/well-step",
+        "b": "z6/well-bed",
+        "class": "walk",
+        "rise": -1
+      },
+      {
+        "a": "z6/cistern",
+        "b": "z6/shaft-platform",
+        "class": "stair",
+        "rise": 3,
+        "via": "z6/debris"
+      },
+      {
+        "a": "z6/cistern",
+        "b": "z6/channel-invert",
+        "class": "drop",
+        "rise": -3
+      },
+      {
+        "a": "z6/cistern",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "exterior",
+        "b": "z7/approach/foot",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z7/approach/foot",
+        "b": "z7/approach/crest",
+        "class": "stair",
+        "rise": 6,
+        "via": "z7/approach/ramp"
+      },
+      {
+        "a": "z7/approach/crest",
+        "b": "z7/ward",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z7/ward",
+        "b": "z7/tower/door",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z7/tower/door",
+        "b": "z7/tower/foot",
+        "class": "walk",
+        "rise": 0
+      },
+      {
+        "a": "z7/tower/foot",
+        "b": "z7/tower/ringing",
+        "class": "stair",
+        "rise": 6,
+        "via": "z7/tower/stair-well",
+        "way": {
+          "opens": "laid",
+          "region": "z7/stair/broken-flight",
+          "block": "z7/stair/tread"
+        }
+      },
+      {
+        "a": "z7/tower/ringing",
+        "b": "z7/tower/louvre",
+        "class": "stair",
+        "rise": 6,
+        "via": "z7/tower/stair-upper"
+      },
+      {
+        "a": "z7/tower/louvre",
+        "b": "z7/tower/stairhead",
+        "class": "stair",
+        "rise": 6,
+        "via": "z7/tower/stair-upper"
+      },
+      {
+        "a": "z7/tower/stairhead",
+        "b": "z7/tower/belfry",
+        "class": "stair",
+        "rise": 7,
+        "via": "z7/tower/stair-upper"
+      },
+      {
+        "a": "z7/ward",
+        "b": "exterior",
+        "class": "walk",
+        "rise": 0
+      }
+    ]
+  }
+}
