@@ -111,7 +111,7 @@ the zone set is complete).
 | Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z0/` — see below |
 | Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 16x24x72 as a 2-tile set; the second zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
-| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares no spatial contract, so it is judged by 7 gates where a zone with one carries 16. The contract is written and is not yet in the program: it was refused at this piece's own seed by a single cell the ruin mix seals inside a pier, and the engine now computes the out-of-walk kind per cell, which is what that cell needed. Declaring it is an open authoring item; the whole account is below. Review set in `review/z3/` — see below |
+| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares a spatial contract, so it is judged by 16 gates where this zone without one carries 7. Review set in `review/z3/` — see below |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
 | Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
@@ -982,15 +982,22 @@ it. That is the whole of the answer, and it is why the spine is walkable at the
 standing tide and the ward is not.
 
 **Expansion** — `delve-grammar expand --file design/programs/z3-drowned-ward.json
---region 40x10x60 --seed 1 --traversable`. Every gate passes with a non-zero
-binding: `blocks-exist` 20, `shape-complete` 20, `states-complete` 20,
-`oriented-fills` 296, `fluid-contained` 3728, `non-empty` 24000, `traversable`
-72 (32 standable cells at the approach face, 40 at the exit face). 9036 filled
+--region 40x10x60 --seed 1 --traversable --id z3-drowned-ward`. **Sixteen
+gates, every one passing with a non-zero binding**: `blocks-exist` 20,
+`shape-complete` 20, `states-complete` 20, `oriented-fills` 296,
+`fluid-contained` 3728, `non-empty` 24000, `traversable` **2 declared ways in or
+out** (not face cells — the piece declares a contract), `contract-well-formed`
+12, `contract-coverage` 2695, `contract-closure` 2096, `contract-edge-proof` 4,
+`contract-no-body` 2, `contract-reachability` 647, `contract-anchors` 28,
+`contract-exterior-faces` 2, `contract-no-body-majority` 2695. 9036 filled
 cells of 24000, 20 distinct states, 2695 standable, 28 anchors, silhouette
 complexity 1.02. `delve-admit
 audit` passes over 24000 blocks (0 forbidden, 0 non-allowlisted, 0 unknown, 0
-under-specified). The zone is past the 48-per-axis cap, so it ships as 2 tiles
-and one manifest, and has no lighting step: the profile is `unmeasured`.
+under-specified) and opens its second door on the same manifest: 40 declared
+objects — 4 spaces, 2 out-of-walk regions, 6 edges, 28 anchors — over 9
+obligations examining 8181 objects, 0 failed. The zone is past the 48-per-axis
+cap, so it ships as 2 tiles and one manifest, and has no lighting step: the
+profile is `unmeasured`.
 
 **The water, and the instruments that establish it.** Two methods whose failure
 modes are unrelated agree to the cell: `fluid-contained` at expansion, and a
@@ -1004,14 +1011,12 @@ water goes. Below the waterline the zone holds no air at all, which is
 `tide.md`'s rule stated as a property of the blocks rather than as an intention.
 
 **Provenance** — program
-`sha256:14cc79961cfd27811f2013a0ea467674db848432eeadb5784b76b80f76a77aee`, seed
+`sha256:e6c6e37debed79135cc10c8249834da926b68e0ae07ec7549eba0fa32e769264`, seed
 1, region 40x10x60; re-expanding those inputs reproduces all four files byte for
 byte. Verified twice over, by `cmp` and by sha256 taken over each file's
 **content** alone — hashing a listing of `shasum` output would have hashed the
 output directory's name along with the bytes and called two identical runs
-different. A third build tree at a later engine reproduces both `.nbt` and the
-metadata identically; only the gate report differs, because that engine runs two
-gates more.
+different.
 
 **Artifacts** — `prefabs/z3-drowned-ward.json` (the manifest, and the only file
 that describes the zone) + `prefabs/z3-drowned-ward.x0y0z0.nbt` and
@@ -1136,12 +1141,14 @@ shutters stand correctly in both without a second rule.
   and fully contained, and inherited the misreading in exchange. What is true is
   the sentence the zone was written around — the spine is walkable at the
   standing tide and the ward is not. So the whole water surface is ONE
-  out-of-walk region, `ward/tide`, earning `facade` because the sea outside the
-  piece reaches every cell of it, and the piece says it is mostly out of walk
-  over an acknowledgement whose majority is `facade` and holds no `posted` cell.
-- **The contract that follows is written, and this piece's own seed refuses it by
-  one cell.** Four spaces, two out-of-walk regions, six edges, three transit
-  volumes and a bar:
+  out-of-walk region, `ward/tide`, and the piece says it is mostly out of walk
+  over an acknowledgement — 2048 of 2695 standable cells. The kind is computed
+  per cell and comes out mixed: 1518 `facade`, because the sea outside the piece
+  reaches them, and 370 `posted`, the water the campaign's own sixteen anchors
+  stand in. `posted` is not the majority of the out-of-walk floor, which is what
+  the acknowledgement is allowed to cover.
+- **The contract is declared.** Four spaces, two out-of-walk regions, six edges,
+  two transit volumes, an opening and a bar:
 
   | element | kind | claimed at |
   |---|---|---|
@@ -1149,58 +1156,66 @@ shutters stand correctly in both without a second rule.
   | `arcade/walk` | space, `open_top` | the intact run's deck void |
   | `tower/hall` | space, `enclosed` | `ground_room` |
   | `tower/upper` | space, `enclosed` | `upper_room` |
-  | `ward/tide` | out-of-walk, `facade` | `open_water`, `wreck_hull`, `plinth_water`, `arch_void`, and the oversail gap beside `ground_room` |
-  | `arcade/ruin` | out-of-walk, `facade` | the ruined run's pier stone, deck course and deck void |
+  | `ward/tide` | out-of-walk | `open_water`, `wreck_hull`, `plinth_water`, `arch_void`, and the oversail gap either side of `ground_room` |
+  | `arcade/ruin` | out-of-walk | the ruined run's pier stone, deck course and deck void |
   | `crossing` | transit volume | `crossing_ramp` — the treads belong to the edge |
-  | `tower/well` | transit volume | `midfloor_well` |
-  | `tower/shutter-way` | transit volume | the opening in `upper_east_wall` |
+  | `tower/well` | transit volume | the void course of `midfloor_well` |
+  | `tower/shutter-way` | opening | the opening in `upper_east_wall` |
   | `shortcut/s2-bar` | bar | `bar_or_open`, both arms |
 
   The edges are `exterior`–`causeway` walk, `causeway`–`arcade/walk` stair rise 3
   via `crossing`, `arcade/walk`–`tower/upper` walk via `tower/shutter-way`,
   `tower/hall`–`tower/upper` stair rise 3 via `tower/well`,
   `causeway`–`tower/hall` barred on `shortcut/s2-bar`, and `tower/hall`–
-  `exterior` walk. Declaring it costs the building nothing: five rules of
-  indirection and one `ruined` parameter defaulting to 0 leave both `.nbt` tiles
-  and all 28 anchors byte-identical, checked by content hash and again by `cmp`.
-  At a seed it is admitted at, every gate binds and passes —
-  `contract-well-formed` 12, `contract-coverage` 2698, `contract-closure` 2096,
-  `contract-edge-proof` 4, `contract-no-body` 2, `contract-reachability` 647,
-  `contract-anchors` 28, `contract-exterior-faces` 2 and
-  `contract-no-body-majority` 2698 — and the zone is judged by 16 gates where
-  undeclared it is judged by 7, which is half what every other zone of this
-  campaign is held to.
-- **Seed 1 is the seed that refuses, and one cell is why.** Swept over sixteen
-  seeds the contract is green at fifteen; the exception is the seed this piece
-  ships at. `ruin/pier_stone` carries 15% air, and at this roll it seals a
-  two-cell void inside the last pier of the ruined run, the lower cell of which
-  (x11 y3 z58) a body could stand in. `arcade/ruin` then qualifies for nothing:
-  `facade` asks that the air outside the piece reach every standable cell the
-  region holds, and this one it does not reach; `sealed` asks that the region's
-  own boundary be closed, and a pier standing in open water has no closed
-  boundary at any box a rule can claim. Both demands are right and the cell meets
-  neither. Rerolling is not a repair and was not taken — the sweep is a
-  measurement of how the mix behaves, not a search for a green seed.
-- **What that cell needed was a kind of its own, and the kind now belongs to the
-  cell rather than to the region — the engine repair has landed and this zone is
-  the one waiting on it.** `contract-no-body` used to compute one verdict per
-  region, so a region holding 159 standable cells the outside air reaches and one
-  it does not had no honest label although every cell in it had one. The property
-  the sealed cell earns — *the piece's own blocks enclose it from the air outside
-  the piece* — is a fact about the blocks, is already computed for `facade`, and
-  is not one stranding can supply: floor that is merely unreachable but open to
-  the sky is reached by that air and fails it. The gate now asks each demand of
-  the standable cell, strongest first, and `sealed` per cell demands that the
-  cell's whole passable component lie inside the declared out-of-walk cells and
-  touch no cell of the model's outer layer — which is what a void the masonry
-  closes meets and what stranding still cannot buy. Two regions elsewhere in this
-  campaign re-verdicted under it with no artifact and no gate moving: Z0's cairn
-  field, and Z2's lodge. So this zone's remaining work is the campaign's rather
-  than the engine's: the contract tabled above is written, is not in the program,
-  and declaring it is an open authoring item to be re-measured at the seed the
-  piece ships at — not a wait. The alternative repair, a ruin eroded from its
-  faces instead of mixed with air through its mass, is a change to what the zone
-  builds and is not needed for the declaration to be admissible.
+  `exterior` walk. **Neither out-of-walk region is given a kind**, because a kind
+  is a fact about the blocks: the engine computes it per standable cell and what
+  the author supplies is the `reason`. And `tower/shutter-way` is an **opening**
+  rather than a transit volume — a `via` on a `walk` has to lie on the boundary
+  the two spaces share and outside both of them, where a `stair`'s own volume is
+  a third place a body stands in. The two are different obligations and the shutter
+  meets the first.
+
+  Declaring it costs the building nothing. Three rules of indirection —
+  `pier_course`, `deck_course` and `deck_void`, each a pair of alternatives
+  guarded on a new `ruined` parameter that defaults to 0 and is bound to 1 at the
+  west run's own call site, beside the palette rebind already there — plus 13
+  `claim` wrappers on existing rules and one extra `y` course under the causeway
+  so the claim stops one below the region's top. A rule with a single admissible
+  alternative draws nothing from the seeded stream and a `claim` writes no
+  blocks, so both `.nbt` tiles and all 28 anchors come out unchanged. Two
+  instruments with unrelated failure modes agree: `cmp` and sha256 taken over
+  each file's **content** call both tiles identical to the ones already in
+  `prefabs/`, and a reader that decodes the two tile sets and compares them cell
+  by cell finds **0 of 24000 cells differing** and all 28 anchors at the same
+  position and facing. What moves in the metadata is what the contract adds — the
+  `spatial_contract` block, a `resolves_to` on every anchor, and the program's own
+  hash.
+- **The one cell the ruin mix seals inside a pier is `sealed`, and it is why the
+  kind belongs to the cell.** `ruin/pier_stone` carries 15% air, and at this
+  piece's own seed it closes a two-cell void inside the last pier of the ruined
+  run, the lower cell of which (x11 y3 z58) a body could stand in. Asked of the
+  REGION, that cell could earn nothing: `facade` asks that the air outside the
+  piece reach every standable cell the region holds and it does not reach this
+  one, and a pier standing in open water has no closed boundary at any box a rule
+  can draw. Asked of the CELL, `sealed` demands instead that the cell's whole
+  passable component lie inside the declared out-of-walk cells and touch no cell
+  of the model's outer layer. Here the component is exactly `(11,3,58)` and
+  `(11,4,58)`, both inside `arcade/ruin` and neither on an outer layer, so the
+  cell earns `sealed` and the region reports as the mixture it is — **1 cell
+  `sealed`, 159 `facade`**. Stranding still cannot buy it: the 158 unreachable
+  deck cells beside it are open to the sky, so their component runs out to the
+  edge of the world and they take `facade` instead. No seed was rerolled and none
+  was searched for — seed 1 is the seed this piece ships at and the seed every
+  number here is taken at.
+- **The sixteen anchors standing in the water are `posted`, and declaring the
+  contract is what made that answerable.** Twelve waders, three wrecks and the
+  grate landing are declared inside `ward/tide`, which is out of walk — the
+  campaign putting bodies where its own fiction says a player does not walk.
+  `contract-anchors` binds 28 and passes: 8 anchors land in a space, 16 in an
+  out-of-walk region, 3 in a transit volume and 1 in the bar, and each of the
+  sixteen posts cells of its own region, so none of them draws the gate's *posts
+  none of its cells* line. `posted` is the expected kind for floor a thing is
+  placed on, and it is the whole of what the sixteen were a finding about.
 - **The head-to-floor rise is already a param, and the record that said otherwise
   was wrong.** It is `$water_depth + $quay_h`, and an exhaustive scan for
   param-free arithmetic finds only anchor-centring on X anywhere in the program.

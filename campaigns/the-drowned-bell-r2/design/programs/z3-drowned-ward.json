@@ -5,8 +5,8 @@
   "params": {
     "arcade_thick": 3,
     "arch_h": 3,
-    "bay": 5,
     "base_inset": 2,
+    "bay": 5,
     "bed_h": 1,
     "chan_w": 5,
     "deck_h": 1,
@@ -21,6 +21,7 @@
     "ramp_run": 4,
     "ramp_tail": 2,
     "roof_h": 1,
+    "ruined": 0,
     "shutter_open": 3,
     "spine_w": 5,
     "springing": 2,
@@ -785,6 +786,12 @@
             },
             {
               "op": "bind",
+              "params": {
+                "ruined": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
               "palette": {
                 "arcade/pier_stone": {
                   "role": "ruin/pier_stone"
@@ -897,49 +904,53 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "bed_h"
+          "op": "claim",
+          "region": "ward/tide",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "bed_h"
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "water_depth"
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "water_depth"
+            ],
+            "rounding": "start",
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "ward/seabed"
+                }
+              },
+              {
+                "op": "fill",
+                "material": {
+                  "role": "ward/sea"
+                }
+              },
+              {
+                "op": "void"
               }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "ward/seabed"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "ward/sea"
-              }
-            },
-            {
-              "op": "void"
-            }
-          ]
+            ]
+          }
         }
       }
     ],
@@ -1209,19 +1220,16 @@
               }
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "arcade/pier_stone"
-              }
+              "op": "call",
+              "symbol": "pier_course"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "arcade/deck_stone"
-              }
+              "op": "call",
+              "symbol": "deck_course"
             },
             {
-              "op": "void"
+              "op": "call",
+              "symbol": "deck_void"
             }
           ]
         }
@@ -1285,17 +1293,20 @@
               }
             },
             {
-              "op": "call",
-              "symbol": "arch_void"
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "arcade/deck_stone"
+              "op": "claim",
+              "region": "ward/tide",
+              "body": {
+                "op": "call",
+                "symbol": "arch_void"
               }
             },
             {
-              "op": "void"
+              "op": "call",
+              "symbol": "deck_course"
+            },
+            {
+              "op": "call",
+              "symbol": "deck_void"
             }
           ]
         }
@@ -1549,83 +1560,87 @@
       {
         "weight": 1,
         "body": {
-          "op": "mark",
-          "mark": {
-            "anchor": "wreck",
-            "at": "offset",
-            "x": {
-              "expr": "arith",
-              "lhs": {
+          "op": "claim",
+          "region": "ward/tide",
+          "body": {
+            "op": "mark",
+            "mark": {
+              "anchor": "wreck",
+              "at": "offset",
+              "x": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "dim",
-                  "dim": "x"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "dim",
+                    "dim": "x"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
-                "op": "sub",
+                "op": "div",
                 "rhs": {
                   "expr": "int",
-                  "value": 1
+                  "value": 2
                 }
               },
-              "op": "div",
-              "rhs": {
+              "y": {
+                "expr": "param",
+                "name": "bed_h"
+              },
+              "z": {
                 "expr": "int",
-                "value": 2
-              }
+                "value": 1
+              },
+              "facing": "south",
+              "index": "auto"
             },
-            "y": {
-              "expr": "param",
-              "name": "bed_h"
-            },
-            "z": {
-              "expr": "int",
-              "value": 1
-            },
-            "facing": "south",
-            "index": "auto"
-          },
-          "body": {
-            "op": "split",
-            "axis": "y",
-            "sizes": [
-              {
-                "size": "absolute",
-                "blocks": {
-                  "expr": "param",
-                  "name": "bed_h"
+            "body": {
+              "op": "split",
+              "axis": "y",
+              "sizes": [
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "param",
+                    "name": "bed_h"
+                  }
+                },
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "param",
+                    "name": "water_depth"
+                  }
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
-              },
-              {
-                "size": "absolute",
-                "blocks": {
-                  "expr": "param",
-                  "name": "water_depth"
+              ],
+              "rounding": "start",
+              "children": [
+                {
+                  "op": "fill",
+                  "material": {
+                    "role": "ward/seabed"
+                  }
+                },
+                {
+                  "op": "call",
+                  "symbol": "hull_section"
+                },
+                {
+                  "op": "void"
                 }
-              },
-              {
-                "size": "relative",
-                "weight": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            ],
-            "rounding": "start",
-            "children": [
-              {
-                "op": "fill",
-                "material": {
-                  "role": "ward/seabed"
-                }
-              },
-              {
-                "op": "call",
-                "symbol": "hull_section"
-              },
-              {
-                "op": "void"
-              }
-            ]
+              ]
+            }
           }
         }
       }
@@ -1770,6 +1785,13 @@
                   "expr": "int",
                   "value": 1
                 }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             ],
             "rounding": "start",
@@ -1779,8 +1801,15 @@
                 "symbol": "causeway_mass"
               },
               {
-                "op": "call",
-                "symbol": "causeway_over"
+                "op": "claim",
+                "region": "causeway",
+                "body": {
+                  "op": "call",
+                  "symbol": "causeway_over"
+                }
+              },
+              {
+                "op": "void"
               }
             ]
           }
@@ -2208,8 +2237,12 @@
               "symbol": "open_water"
             },
             {
-              "op": "call",
-              "symbol": "crossing_ramp"
+              "op": "claim",
+              "region": "crossing",
+              "body": {
+                "op": "call",
+                "symbol": "crossing_ramp"
+              }
             },
             {
               "op": "call",
@@ -2630,49 +2663,53 @@
       {
         "weight": 1,
         "body": {
-          "op": "split",
-          "axis": "y",
-          "sizes": [
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "bed_h"
+          "op": "claim",
+          "region": "ward/tide",
+          "body": {
+            "op": "split",
+            "axis": "y",
+            "sizes": [
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "bed_h"
+                }
+              },
+              {
+                "size": "absolute",
+                "blocks": {
+                  "expr": "param",
+                  "name": "water_depth"
+                }
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
-            },
-            {
-              "size": "absolute",
-              "blocks": {
-                "expr": "param",
-                "name": "water_depth"
+            ],
+            "rounding": "start",
+            "children": [
+              {
+                "op": "fill",
+                "material": {
+                  "role": "ward/seabed"
+                }
+              },
+              {
+                "op": "fill",
+                "material": {
+                  "role": "ward/sea"
+                }
+              },
+              {
+                "op": "void"
               }
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ],
-          "rounding": "start",
-          "children": [
-            {
-              "op": "fill",
-              "material": {
-                "role": "ward/seabed"
-              }
-            },
-            {
-              "op": "fill",
-              "material": {
-                "role": "ward/sea"
-              }
-            },
-            {
-              "op": "void"
-            }
-          ]
+            ]
+          }
         }
       }
     ],
@@ -2771,14 +2808,26 @@
           "rounding": "start",
           "children": [
             {
-              "op": "void"
+              "op": "claim",
+              "region": "ward/tide",
+              "body": {
+                "op": "void"
+              }
             },
             {
-              "op": "call",
-              "symbol": "ground_room"
+              "op": "claim",
+              "region": "tower/hall",
+              "body": {
+                "op": "call",
+                "symbol": "ground_room"
+              }
             },
             {
-              "op": "void"
+              "op": "claim",
+              "region": "ward/tide",
+              "body": {
+                "op": "void"
+              }
             }
           ]
         }
@@ -2893,8 +2942,12 @@
             "facing": "north"
           },
           "body": {
-            "op": "call",
-            "symbol": "bar_or_open"
+            "op": "claim",
+            "region": "shortcut/s2-bar",
+            "body": {
+              "op": "call",
+              "symbol": "bar_or_open"
+            }
           }
         }
       }
@@ -3383,14 +3436,18 @@
               }
             },
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "descent",
-                "at": "floor_center",
-                "facing": "south"
-              },
+              "op": "claim",
+              "region": "tower/well",
               "body": {
-                "op": "void"
+                "op": "mark",
+                "mark": {
+                  "anchor": "descent",
+                  "at": "floor_center",
+                  "facing": "south"
+                },
+                "body": {
+                  "op": "void"
+                }
               }
             },
             {
@@ -3439,8 +3496,12 @@
               "symbol": "tower_face"
             },
             {
-              "op": "call",
-              "symbol": "upper_room"
+              "op": "claim",
+              "region": "tower/upper",
+              "body": {
+                "op": "call",
+                "symbol": "upper_room"
+              }
             },
             {
               "op": "call",
@@ -3486,14 +3547,18 @@
               "symbol": "tower_face"
             },
             {
-              "op": "mark",
-              "mark": {
-                "anchor": "shutter",
-                "at": "floor_center",
-                "facing": "west"
-              },
+              "op": "claim",
+              "region": "tower/shutter-way",
               "body": {
-                "op": "void"
+                "op": "mark",
+                "mark": {
+                  "anchor": "shutter",
+                  "at": "floor_center",
+                  "facing": "west"
+                },
+                "body": {
+                  "op": "void"
+                }
               }
             },
             {
@@ -3734,6 +3799,215 @@
           }
         }
       }
+    ],
+    "deck_void": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "ruined"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "claim",
+          "region": "arcade/walk",
+          "body": {
+            "op": "void"
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "ruined"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "claim",
+          "region": "arcade/ruin",
+          "body": {
+            "op": "void"
+          }
+        }
+      }
+    ],
+    "pier_course": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "ruined"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "arcade/pier_stone"
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "ruined"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "claim",
+          "region": "arcade/ruin",
+          "body": {
+            "op": "fill",
+            "material": {
+              "role": "arcade/pier_stone"
+            }
+          }
+        }
+      }
+    ],
+    "deck_course": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "ruined"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        },
+        "body": {
+          "op": "fill",
+          "material": {
+            "role": "arcade/deck_stone"
+          }
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "ruined"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        },
+        "body": {
+          "op": "claim",
+          "region": "arcade/ruin",
+          "body": {
+            "op": "fill",
+            "material": {
+              "role": "arcade/deck_stone"
+            }
+          }
+        }
+      }
     ]
+  },
+  "contract": {
+    "entry": "causeway",
+    "spaces": {
+      "arcade/walk": {
+        "envelope": "open_top"
+      },
+      "causeway": {
+        "envelope": "open_top"
+      },
+      "tower/hall": {
+        "envelope": "enclosed"
+      },
+      "tower/upper": {
+        "envelope": "enclosed"
+      }
+    },
+    "no_body": {
+      "arcade/ruin": {
+        "reason": "the west arcade as the sea has left it: pier stone holed through, a deck with no way up to it, and the voids the collapse closed inside the masonry"
+      },
+      "ward/tide": {
+        "reason": "the flooded ward — the sea standing over the ward floor, inside the arches, around the wrecks and against the tower base. The spine is walkable at the standing tide and the ward is not"
+      }
+    },
+    "edges": [
+      {
+        "a": "exterior",
+        "b": "causeway",
+        "class": "walk"
+      },
+      {
+        "a": "causeway",
+        "b": "arcade/walk",
+        "class": "stair",
+        "rise": 3,
+        "via": "crossing"
+      },
+      {
+        "a": "arcade/walk",
+        "b": "tower/upper",
+        "class": "walk",
+        "via": "tower/shutter-way"
+      },
+      {
+        "a": "tower/hall",
+        "b": "tower/upper",
+        "class": "stair",
+        "rise": 3,
+        "via": "tower/well"
+      },
+      {
+        "a": "causeway",
+        "b": "tower/hall",
+        "class": "barred",
+        "bar": {
+          "region": "shortcut/s2-bar",
+          "block": "shortcut/bar"
+        }
+      },
+      {
+        "a": "tower/hall",
+        "b": "exterior",
+        "class": "walk"
+      }
+    ],
+    "no_body_majority_ack": "Most of this piece is water. The ward floor lies under the tide and the west arcade is a ruin with no way up to it, so the walk is the causeway, the east arcade deck and the two rooms of the water-gate tower; the rest is sea the piece is standing in and masonry a body only looks at."
   }
 }
