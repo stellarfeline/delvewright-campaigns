@@ -32,22 +32,30 @@ name: prefab palette audit
 # one path the gate did not cover. Dropping the token is what binds it.
 
 on:
+  # NO PATH FILTER, deliberately, and the reason is a live deadlock this file
+  # used to cause. This job's name is a REQUIRED status check on the default
+  # branch, and branch protection matches a context by NAME: a pull request
+  # whose files matched none of the filters produced no run, so the required
+  # context never reported and the pull request was blocked FOREVER — including
+  # the pull request that would have fixed it. Measured: a campaign-only change
+  # showed zero checks and a blocked merge state, while a piece-touching one
+  # merged normally.
+  #
+  # The earlier repair added the gate's OWN inputs to the filter, because a
+  # change that moved the pinned instrument or rewrote this workflow used to
+  # decide every future audit while running none — "the required check was
+  # satisfied by never reporting", which is how a pin sat four hundred commits
+  # behind with nothing red. That was correct and did not go far enough: it
+  # fixed the cases where the gate judged the wrong thing, not the case where it
+  # judged nothing and the answer was mistaken for a verdict.
+  #
+  # A filter is the wrong instrument for the saving anyway. The audit's own
+  # driver walks the tree and closes its accounting over git's index, and it
+  # STATES ITS BINDING COUNT — so on a change that touches no piece it reports,
+  # honestly, how many it examined. A zero binding stated out loud is a fact a
+  # reviewer can act on; a check that never ran is a silence branch protection
+  # cannot distinguish from a pass.
   pull_request:
-    paths:
-      - "prefabs/**"
-      - "catalog/**"
-      # A demo level ships a piece of its own, and a piece nothing audits is a
-      # piece that entered the repo through the one door with no gate on it.
-      - "demos/**"
-      # The gate's OWN inputs. Without these three, a pull request that moved
-      # the pinned instrument, rewrote this workflow, or edited the pin registry
-      # changed what every future audit decides and ran no audit at all — the
-      # required check was satisfied by never reporting. That is how a pin sat
-      # four hundred commits behind with nothing red.
-      - ".github/workflows/prefab-audit.yml"
-      - ".github/pins.toml"
-      - "tools/check-pins.py"
-      - "tools/prefab-audit.py"
   # On demand: proves a change to the gate before a later unrelated prefab PR.
   workflow_dispatch:
 
