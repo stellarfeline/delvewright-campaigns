@@ -885,6 +885,170 @@
         }
       }
     ],
+    "causeway/mouth_gate": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 6
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "shore/base"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "shore/bed"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "shore/sand"
+              }
+            },
+            {
+              "op": "claim",
+              "region": "causeway/mouth",
+              "body": {
+                "op": "split",
+                "axis": "x",
+                "sizes": [
+                  {
+                    "size": "relative",
+                    "weight": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  {
+                    "size": "absolute",
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  {
+                    "size": "relative",
+                    "weight": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
+                ],
+                "children": [
+                  {
+                    "op": "void"
+                  },
+                  {
+                    "op": "reorient",
+                    "orient": {
+                      "mirror": {
+                        "z": true
+                      }
+                    },
+                    "body": {
+                      "op": "mark",
+                      "mark": {
+                        "anchor": "crossing",
+                        "at": "floor_center"
+                      },
+                      "body": {
+                        "op": "void"
+                      }
+                    }
+                  },
+                  {
+                    "op": "void"
+                  }
+                ]
+              }
+            },
+            {
+              "op": "claim",
+              "region": "flat",
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "call",
+          "symbol": "ground/flat"
+        }
+      }
+    ],
     "causeway/mouth_post": [
       {
         "body": {
@@ -977,6 +1141,83 @@
     ],
     "causeway/mouth_row": [
       {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "x"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 6
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            },
+            {
+              "op": "call",
+              "symbol": "causeway/mouth_gate"
+            },
+            {
+              "op": "call",
+              "symbol": "ground/flat"
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
         "body": {
           "axis": "x",
           "children": [
@@ -1018,8 +1259,7 @@
               }
             }
           ]
-        },
-        "weight": 1
+        }
       }
     ],
     "causeway/spine": [
@@ -2048,6 +2288,118 @@
         "weight": 1
       }
     ],
+    "ledge/head_air": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "z"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "dim",
+                "dim": "y"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "split",
+              "axis": "y",
+              "sizes": [
+                {
+                  "size": "absolute",
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "op": "claim",
+                  "region": "ledge/mouth",
+                  "body": {
+                    "op": "void"
+                  }
+                },
+                {
+                  "op": "claim",
+                  "region": "ledge/head",
+                  "body": {
+                    "op": "void"
+                  }
+                }
+              ]
+            },
+            {
+              "op": "claim",
+              "region": "ledge/head",
+              "body": {
+                "op": "void"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        },
+        "body": {
+          "op": "claim",
+          "region": "ledge/head",
+          "body": {
+            "op": "void"
+          }
+        }
+      }
+    ],
     "ledge/run": [
       {
         "body": {
@@ -2189,11 +2541,8 @@
               "op": "fill"
             },
             {
-              "op": "claim",
-              "region": "ledge/head",
-              "body": {
-                "op": "void"
-              }
+              "op": "call",
+              "symbol": "ledge/head_air"
             }
           ],
           "op": "split",
@@ -3871,7 +4220,8 @@
         "a": "exterior",
         "b": "flat",
         "class": "walk",
-        "rise": 0
+        "rise": 0,
+        "via": "causeway/mouth"
       },
       {
         "a": "flat",
@@ -3903,7 +4253,8 @@
         "a": "ledge/head",
         "b": "exterior",
         "class": "walk",
-        "rise": 0
+        "rise": 0,
+        "via": "ledge/mouth"
       }
     ]
   }
