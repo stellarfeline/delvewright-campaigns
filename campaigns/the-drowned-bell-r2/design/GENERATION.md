@@ -111,7 +111,7 @@ the zone set is complete).
 | Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z0/` — see below |
 | Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 16x24x72 as a 2-tile set; the second zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
-| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares no spatial contract, so it is judged by 7 gates where a zone with one carries 16. The contract is written and is refused at this piece's own seed by a single cell the ruin mix seals inside a pier; the cause and both candidate repairs are below. Review set in `review/z3/` — see below |
+| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares no spatial contract, so it is judged by 7 gates where a zone with one carries 16. The contract is written and is not yet in the program: it was refused at this piece's own seed by a single cell the ruin mix seals inside a pier, and the engine now computes the out-of-walk kind per cell, which is what that cell needed. Declaring it is an open authoring item; the whole account is below. Review set in `review/z3/` — see below |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
 | Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
@@ -294,9 +294,13 @@ that — it faces out of the piece, which is exactly what it is for.
   course under it, the lamp shelf, and the two ends of the cut ledge. Bindings —
   well-formed 16, coverage 2854 with nothing left over, closure 11 408, edge
   proof 4, no-body 5, reachability 2014 (every cell of every space reached),
-  anchors 37, exterior faces 2, majority 2854. The five out-of-walk regions —
+  anchors 37, exterior faces 2, majority 2854. The five out-of-walk regions are
   the cairn field, the mire heaps, the tide-stake tops, the crag's batter and the
-  shelf coping — each earn `facade` from the blocks.
+  shelf coping, and each earns its kind from the blocks, computed per standable
+  cell. Four are `facade` throughout — the mire heaps 100 cells, the crag's
+  batter 116, the tide-stake tops 3, the shelf coping 6. The cairn field is
+  `mixed`: 72 of its 615 cells are `posted`, the floor the three readable graves
+  stand on, and the other 543 are `facade`.
 - **The cut ledge is a CLIMB, so it is an edge and not a space.** Its five treads
   union into one transit volume, and a `via` carries no one-floor rule — that
   rule governs spaces, which is why the ledge refused as one ("standable floor at
@@ -702,7 +706,7 @@ absent, and none is.
 | 2.1 | entry through the breach, inside a **lowered** portcullis, the shore visible through its bars | `breach/skin` → `breach/outer` / `breach/inner` — the hole goes through both leaves of the seaward skin and the passage reaches its own outer face through it — then `breach/lane` → `breach/room` → `breach/stand`. The gate itself is `grille/band` → `grille/plane` → `grille/bars` + `grille/threshold`, the bar standing from the flags to the springing | `breach` (south), `gate` (on the bar) |
 | 2.2 | **K3 the murder-holes**: openings in the vault, a killing drop on the centre line, safe edges, and a floor above with something on it | `pass/crown` → `shaft/crown_row` → `shaft/hole` and `pass/soffit` → `shaft/floor_row` → `shaft/floor_hole` cut one cell through both courses every `shaft_period`; `gate/paving` puts the gutter on the centre line with a mitred kerb each side and two flags of safe outside each kerb; the storey is `pass/lane` → `chamber/room` → `chamber/watch`, and what is on its floor is `winch/lane` → `chamber/store` → `chamber/gear` | `murder-hole-1..4` (in the openings), `murder-watch` |
 | 2.3 | the drain: a cut channel, still water at the plane's height or a dry gutter, out under the gate | `gate/paving` (the gutter one course below the flags, `gate/kerb_west` / `gate/kerb_east` mitred against it), `grille/threshold` (the outfall through the portcullis's own bars), `mouth/paving` (the gutter running on through the arch to the region face) | — |
-| 2.4 | **G1 the guardroom**: a grated embrasure, ledger leaves on the sill and floor, the bound ledger inside | `lodge/band` → `lodge/room` → `lodge/air` → `lodge/fitout` → `lodge/litter` → `lodge/desk`; the embrasure is `lodge/face` → `lodge/embrasure` → `lodge/sill` + `lodge/grate` → `lodge/grate_leaf`. The lodge is declared **out of the walk** and earns the `posted` kind | `ledger` (east), `embrasure` (west) |
+| 2.4 | **G1 the guardroom**: a grated embrasure, ledger leaves on the sill and floor, the bound ledger inside | `lodge/band` → `lodge/room` → `lodge/air` → `lodge/fitout` → `lodge/litter` → `lodge/desk`; the embrasure is `lodge/face` → `lodge/embrasure` → `lodge/sill` + `lodge/grate` → `lodge/grate_leaf`. The lodge is declared **out of the walk** and earns the `sealed` kind | `ledger` (east), `embrasure` (west) |
 | 2.5 | **optional elite — the Gatewright**, on the roof above the murder-holes, working a winch; roof stair off the critical path | the leads are `top_gear` → `roof/leads` → `roof/winch` → `roof/frame` / `roof/drum` / `roof/stand`, with `roof/spall` heaping fallen coping along them; the climb is `stair/band` → `stair/well` → `stair/foot_landing` / `stair/lower` / `stair/mid_landing` / `stair/upper` / `stair/head_landing`, over `stair/run` and its reflection | `gatewright`, `stair-foot`, `stair-head` |
 | 2.6 | **S1 the portcullis**, raised from a winch on the passage's inner side | `grille/bars` is the bar region the contract's `barred` edge is proved against; the winch is `winch/band` → `winch/lane` → `winch/room` → `winch/gear` → `winch/frame` / `winch/post` / `winch/drum`, and the cell it is worked from is `winch/stand` | `gate` (on the bar), `winch` (south, i.e. down the passage at the gate) |
 | 2.7 | Emeric moves up to the gate passage and stays; the lamp goes with him | `lodge/band` → `lamp/niche` → `lamp/air` → `lamp/fitout` → `lamp/bracket` — a pocket off the lane, one way in through `lamp/mouth`, its own floor, and a lantern set in its wall | `lampman` (east, out of the niche) |
@@ -720,9 +724,14 @@ of arch beyond them. The `stair` edges are the reachable storey beat 2.2 calls a
 map and the roof beat 2.5 puts a man on: `contract-reachability` reaches all
 1690 standable cells in declared space from the entry, one of them only once
 that bar is opened, and names which bar. And the lodge is beat 2.4's *gate*: it
-is declared out of the walk and earns `posted` — 25 standable cells, every one
-within two of a declared anchor — rather than being a room that happens to have
-no door.
+is declared out of the walk and earns `sealed` — 25 standable cells, the air
+each of them stands in closed by this piece's own blocks and lying wholly inside
+the declared out-of-walk cells — rather than being a room that happens to have
+no door. The kind is computed per cell and strongest first, so `sealed` is what
+these cells earn on the blocks and neither the ledger nor the embrasure anchor
+posts any of them; the enumeration names both, and every gate passes. That is
+the stronger of the two readings: `posted` is a kind an author secures by
+placing something, and `sealed` is one the masonry has to supply.
 
 **The stair is beside the route, measured rather than argued.** Cut its doorway
 column (56 standable cells at `x = 16`) and the breach face still reaches the
@@ -1172,20 +1181,26 @@ shutters stand correctly in both without a second rule.
   boundary at any box a rule can claim. Both demands are right and the cell meets
   neither. Rerolling is not a repair and was not taken — the sweep is a
   measurement of how the mix behaves, not a search for a green seed.
-- **What that cell needs is a kind of its own, and the kind belongs to the cell
-  rather than to the region.** `contract-no-body` computes one verdict per
+- **What that cell needed was a kind of its own, and the kind now belongs to the
+  cell rather than to the region — the engine repair has landed and this zone is
+  the one waiting on it.** `contract-no-body` used to compute one verdict per
   region, so a region holding 159 standable cells the outside air reaches and one
-  it does not has no honest label although every cell in it has one. The property
+  it does not had no honest label although every cell in it had one. The property
   the sealed cell earns — *the piece's own blocks enclose it from the air outside
   the piece* — is a fact about the blocks, is already computed for `facade`, and
   is not one stranding can supply: floor that is merely unreachable but open to
-  the sky is reached by that air and fails it. The alternative repair is the
-  building's rather than the engine's — a ruin eroded from its faces instead of
-  mixed with air through its mass cannot seal an interior void — and that is a
-  change to what the zone builds. Until one of the two lands the program is left
-  undeclared deliberately: a declaration that cannot be admitted at the seed the
-  piece ships at would stop the zone building, and the record that holds a
-  known-red program is the pipeline repo's, not this one's.
+  the sky is reached by that air and fails it. The gate now asks each demand of
+  the standable cell, strongest first, and `sealed` per cell demands that the
+  cell's whole passable component lie inside the declared out-of-walk cells and
+  touch no cell of the model's outer layer — which is what a void the masonry
+  closes meets and what stranding still cannot buy. Two regions elsewhere in this
+  campaign re-verdicted under it with no artifact and no gate moving: Z0's cairn
+  field, and Z2's lodge. So this zone's remaining work is the campaign's rather
+  than the engine's: the contract tabled above is written, is not in the program,
+  and declaring it is an open authoring item to be re-measured at the seed the
+  piece ships at — not a wait. The alternative repair, a ruin eroded from its
+  faces instead of mixed with air through its mass, is a change to what the zone
+  builds and is not needed for the declaration to be admissible.
 - **The head-to-floor rise is already a param, and the record that said otherwise
   was wrong.** It is `$water_depth + $quay_h`, and an exhaustive scan for
   param-free arithmetic finds only anchor-centring on X anywhere in the program.
@@ -2054,16 +2069,21 @@ says the version move is owed by the declaration and by nothing else — the
 structure compiles unchanged at the old version.
 
 **Judged at the pin, and the pin is named by revision.** The content repo's zone
-audit builds the engine at `57025e1c91626b71ab055f9b8a336caf9dc2489f`. Built
+audit builds the engine at `5e0ad7fd46d3855796e1963ad2eb54269ec76622`. Built
 from that revision in its own tree, `delve-grammar audit --library
 --campaign-root . --exclusions …` exits 0 over 43 programs with this zone at
-`pass 15 gate(s)`, and its output is identical line for line to the same audit
-run from a build at `7d7a1057748d8660ecb9334eed9bcbdb0ace3764`, four commits
-later. Both revisions are written out, because "the current engine" is a value
-that moves and this one moved during the round: `crates/grammar`, `Cargo.lock`,
-`Cargo.toml` and `rust-toolchain.toml` are content-identical between those two
-commits, so the two builds are the same instrument, and that is recorded as
-measured rather than assumed.
+`pass 15 gate(s)`. Its output is identical line for line to the same audit run
+from a build at `57025e1c91626b71ab055f9b8a336caf9dc2489f`, and that revision's
+output was in turn identical to a build at
+`7d7a1057748d8660ecb9334eed9bcbdb0ace3764`, whose `crates/grammar`,
+`Cargo.lock`, `Cargo.toml` and `rust-toolchain.toml` are content-identical to
+it. Every revision is written out rather than called "the current engine",
+because that phrase is a value that moves and this one has moved twice. The
+move that carries a behaviour is `33d1af8a6786c2d4c702c33556f79c008fffddd6`: it
+computes the out-of-walk kind per standable cell instead of once per declared
+region, which changes what the report says about two regions of this campaign —
+neither of them in this zone — and changes no verdict, no binding count and no
+byte anywhere.
 
 **Open against this piece**
 
