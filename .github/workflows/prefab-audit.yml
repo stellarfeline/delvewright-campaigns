@@ -96,9 +96,20 @@ jobs:
       # it exists to end.
       #
       # It reads the live rulesets by default. A public repository's rulesets
-      # need no credential, so this needs no token and no permission grant; when
-      # the API cannot be read it REFUSES rather than passing.
+      # need no credential, so this needs no permission grant and nothing here
+      # can be revoked out from under it; when the API cannot be read it REFUSES
+      # rather than passing.
+      #
+      # The token is passed only for the RATE LIMIT. Anonymous reads are capped
+      # per IP at 60/hour and a hosted runner's IP is shared, so anonymous-only
+      # would red intermittently through no fault of the pull request — and an
+      # intermittent red is a finding, not something to re-run. `github.token`
+      # charges the request to a per-repository quota. The checker falls back to
+      # anonymous if the token is refused, because the two failure modes are
+      # opposite ones.
       - name: every job gates something
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/check-required-contexts.py
 
       # Every pin in THIS repo is declared, and every declaration still matches

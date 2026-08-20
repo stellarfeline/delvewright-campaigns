@@ -41,12 +41,14 @@ and the checker judges in three ref-aware arms plus a live one:
 
   B. RESOLUTION (ref-scoped). Every context required on the ref being judged
      resolves to a job `name:` in this tree. On a pull request the ref judged is
-     the BASE ref, and the tree is the head — which is exactly the pair GitHub
-     will use, because a `pull_request` workflow runs from the merge ref. So a
-     pull request into `campaign/*` from a branch that dropped `zone-audit.yml`
-     reds HERE, before the context it removed can block that branch forever.
-     Contexts required only on refs this tree does not serve are STATED, with
-     the ref pattern and the pull request that will judge them, never dropped.
+     the BASE ref, and the tree is the MERGE ref — head merged into base, which
+     is what `actions/checkout` gives a `pull_request` job and therefore exactly
+     the pair whose workflows GitHub will run. So merging `main` forward into a
+     campaign branch does not red for lacking `zone-audit.yml`, because the base
+     half of the merge carries it; but a pull request that DELETES it does red,
+     here, before the context it removed can block that ref forever. Contexts
+     required only on refs this tree does not serve are STATED, with the ref
+     pattern and the pull request that will judge them, never dropped.
 
   C. ELIGIBILITY (ref-independent). A job named as required must be ABLE to
      report on every pull request into the refs it guards: its workflow has a
@@ -106,6 +108,7 @@ import subprocess
 import sys
 import tomllib
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -317,19 +320,79 @@ def judged_ref(explicit: str | None) -> tuple[str | None, str]:
 # ---------------------------------------------------------------------------
 
 
-def _get(path: str, timeout: float) -> object:
+def _fetch(path: str, timeout: float, token: str | None) -> object:
     req = urllib.request.Request(f"{API}{path}", headers={
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "delvewright-check-required-contexts",
     })
-    # A public repository's rulesets read without a credential; a token is used
-    # only when one happens to be present, and only to buy the higher rate limit.
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     with urllib.request.urlopen(req, timeout=timeout) as fh:
         return json.load(fh)
+
+
+def _get(path: str, timeout: float) -> object:
+    """Read one endpoint, WITH a token first and anonymously second.
+
+    A public repository's rulesets read with no credential at all, which is what
+    lets this arm gate without a permission grant. But anonymous requests are
+    rate limited PER IP at 60/hour, and a hosted runner's IP is shared with
+    everything else on that host — so anonymous-only would be an intermittent
+    red, which this project treats as a finding rather than something to re-run.
+    A token raises the limit to a per-repository quota, and `GITHUB_TOKEN` is
+    present in every job.
+
+    The order is token-then-anonymous rather than one or the other, because the
+    two failure modes are opposite: a token can be rate limited or scoped out of
+    an endpoint anonymous access allows, and anonymous can be rate limited where
+    a token is not. Trying both costs one extra request in the rare case and
+    removes a class of red that is nobody's fault.
+    """
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if not token:
+        return _fetch(path, timeout, None)
+    try:
+        return _fetch(path, timeout, token)
+    except urllib.error.HTTPError as exc:
+        if exc.code not in (401, 403, 404):
+            raise
+        return _fetch(path, timeout, None)
+
+
+def list_branches(timeout: float) -> list[str]:
+    """Every branch in the repository.
+
+    Paginated to exhaustion rather than to a limit. A count equal to its own
+    fetch limit is not a measurement, it is the limit — and truncation fakes
+    coverage in the direction that reads as a clean pass, which is precisely the
+    shape this file exists to catch.
+    """
+    names: list[str] = []
+    page = 1
+    per_page = 100
+    while True:
+        batch = _get(f"/repos/{OWNER_REPO}/branches?per_page={per_page}&page={page}", timeout)
+        names.extend(b["name"] for b in batch)  # type: ignore[union-attr,index]
+        if len(batch) < per_page:  # type: ignore[arg-type]
+            return names
+        page += 1
+        if page > 100:
+            raise ValueError("branch listing did not terminate within 100 pages")
+
+
+def workflows_on_ref(ref: str, timeout: float) -> set[str] | None:
+    """Workflow file paths present on `ref`, or None if it has no workflow dir."""
+    try:
+        entries = _get(
+            f"/repos/{OWNER_REPO}/contents/.github/workflows?ref={urllib.parse.quote(ref, safe='')}",
+            timeout,
+        )
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return None
+        raise
+    return {e["path"] for e in entries}  # type: ignore[union-attr,index]
 
 
 def read_live(timeout: float) -> tuple[dict | None, str | None]:
@@ -360,6 +423,19 @@ def read_live(timeout: float) -> tuple[dict | None, str | None]:
             }
         return {"default_branch": repo.get("default_branch"), "rulesets": observed}, None  # type: ignore[union-attr]
     except urllib.error.HTTPError as exc:
+        # A rate-limited 403 is a different problem from a missing repository or
+        # a scoped-out token, and it is the one an operator can act on. Naming it
+        # is what keeps this from reading as mysterious flakiness — which is how
+        # an intermittent red gets re-run instead of root-caused.
+        remaining = exc.headers.get("X-GitHub-RateLimit-Remaining") or exc.headers.get("X-RateLimit-Remaining")
+        if exc.code == 403 and remaining == "0":
+            reset = exc.headers.get("X-RateLimit-Reset", "?")
+            return None, (
+                f"the GitHub API rate limit is exhausted (HTTP 403, resets at "
+                f"unix {reset}). Anonymous reads are limited per IP; set "
+                f"GITHUB_TOKEN so the request is charged to a per-repository "
+                f"quota instead"
+            )
         return None, f"HTTP {exc.code} from {exc.url}"
     except urllib.error.URLError as exc:
         return None, f"the GitHub API is unreachable ({exc.reason})"
@@ -628,8 +704,28 @@ def main() -> int:
             "resolves to a job in this tree."
         )
 
+    # --- `provided_by` is complete, and agrees with this tree ---------------
+    for rs in rulesets:
+        provided = rs.get("provided_by", {})
+        for ctx in rs.get("contexts", []):
+            if ctx not in provided:
+                findings.append(
+                    f"ruleset {rs['name']!r} requires {ctx!r} and does not say "
+                    f"which workflow produces it.\n"
+                    f"    Add it to `[ruleset.provided_by]`. Without it nothing "
+                    f"can ask whether every ref this ruleset covers is able to "
+                    f"satisfy it."
+                )
+            elif ctx in jobs and jobs[ctx][0].rel != provided[ctx]:
+                findings.append(
+                    f"ruleset {rs['name']!r} says {ctx!r} comes from "
+                    f"{provided[ctx]!r}; in this tree that job is defined in "
+                    f"{jobs[ctx][0].rel!r}."
+                )
+
     # --- ARM D: live rulesets ----------------------------------------------
     live_examined = 0
+    covered_refs = 0
     if args.offline:
         notes.append(
             "the LIVE ruleset comparison did not run (--offline). This run cannot "
@@ -717,6 +813,72 @@ def main() -> int:
                     "nothing has proved nothing."
                 )
 
+            # --- ARM E: every ref a ruleset COVERS can satisfy it -----------
+            #
+            # A ruleset's include pattern is a promise about a set of branches,
+            # and the set is usually larger than whoever wrote the pattern was
+            # picturing. A branch inside it that does not carry the workflow
+            # producing a required context is a branch NO pull request can ever
+            # merge into — the deadlock, already sprung, silently, on a ref
+            # nobody has opened a pull request against yet.
+            #
+            # Nothing else in this file can see that: the other arms judge the
+            # tree they are handed, and this failure lives on refs that tree
+            # knows nothing about. It is the reason arm B alone would have been
+            # an existence check that only looks where someone pointed.
+            try:
+                branches = list_branches(args.timeout)
+                for rs in rulesets:
+                    provided = rs.get("provided_by", {})
+                    needed = {provided[c] for c in rs.get("contexts", []) if c in provided}
+                    if not needed:
+                        continue
+                    covered = [
+                        b for b in branches
+                        if any(ref_matches(p, b, default_branch) for p in rs.get("include", []))
+                    ]
+                    if not covered:
+                        notes.append(
+                            f"ruleset {rs['name']!r} covers "
+                            f"{', '.join(rs.get('include', []))}, which no branch "
+                            f"currently matches. It gates nothing today."
+                        )
+                    for branch in covered:
+                        covered_refs += 1
+                        present = workflows_on_ref(branch, args.timeout)
+                        have = present or set()
+                        missing = sorted(needed - have)
+                        if not missing:
+                            continue
+                        blocked = sorted(
+                            c for c in rs.get("contexts", [])
+                            if provided.get(c) in missing
+                        )
+                        findings.append(
+                            f"branch {branch!r} is covered by ruleset "
+                            f"{rs['name']!r}, which requires "
+                            f"{', '.join(repr(c) for c in blocked)} — and the "
+                            f"branch does not carry "
+                            f"{', '.join(missing)}.\n"
+                            f"    No workflow on that ref can report those "
+                            f"contexts, so EVERY pull request into it is blocked "
+                            f"forever, including one that would fix it. Either "
+                            f"narrow the ruleset's pattern to the refs that can "
+                            f"satisfy it, or put the workflow on the branch."
+                        )
+            except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError) as exc:
+                findings.append(
+                    f"the covered-ref comparison did not run "
+                    f"({type(exc).__name__}: {exc}). This is a refusal, not a "
+                    f"pass — a ruleset may be covering refs that cannot satisfy "
+                    f"it."
+                )
+            if covered_refs == 0:
+                findings.append(
+                    "arm E examined 0 covered refs. A gate that examined nothing "
+                    "has proved nothing."
+                )
+
     # --- report ------------------------------------------------------------
     scope = (
         f"{len(jobs)} jobs in {len(workflows)} workflows; "
@@ -724,7 +886,7 @@ def main() -> int:
         f"{len(eligibility_seen)} required jobs checked for eligibility; "
         f"{len(advisory)}/{max_advisory} advisory; "
         + ("live comparison SKIPPED (--offline)" if args.offline
-           else f"{live_examined} live rulesets compared")
+           else f"{live_examined} live rulesets compared over {covered_refs} covered refs")
     )
 
     for n in notes:

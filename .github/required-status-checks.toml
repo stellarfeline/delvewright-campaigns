@@ -65,6 +65,14 @@ contexts = [
   "NBT palette audit (allowlist + code-injection forbid)",
 ]
 
+# Which workflow file produces each context. This is not bookkeeping: it is what
+# lets the checker ask whether EVERY ref a ruleset covers can actually satisfy
+# it. A ruleset's pattern is a promise about a set of branches, and a branch in
+# that set that does not carry the producing workflow is a branch no pull
+# request can ever merge into.
+[ruleset.provided_by]
+"NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
+
 [[ruleset]]
 name = "protect-campaign-branches"
 # A campaign in progress lives on its own branch and everything of it lands
@@ -82,6 +90,10 @@ contexts = [
   # checker says so rather than passing over it in silence.
   "zone programs (expand + judge every gate)",
 ]
+
+[ruleset.provided_by]
+"NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
+"zone programs (expand + judge every gate)" = ".github/workflows/zone-audit.yml"
 
 # ---------------------------------------------------------------------------
 # Deliberately advisory jobs.
