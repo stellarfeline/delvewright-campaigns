@@ -1,0 +1,744 @@
+#!/usr/bin/env python3
+"""Every CI job gates something, and every gate can report.
+
+A required status check is matched BY ITS NAME STRING. That single fact has two
+failure directions, and this repository has shipped both.
+
+  FORWARD — a required context that no job produces never reports, so every pull
+  request into that ref is blocked forever, including the pull request that
+  would fix it. It happened here: a path filter meant a campaign-only change
+  produced no run of `prefab-audit.yml`, so the context required on `main` never
+  reported and the merge state was blocked with nothing to click.
+
+  REVERSE — a job that runs and is not required gates nothing. Its red is a
+  colour on a page and `gh pr merge` walks past it. `actionlint` has been in
+  that state on every workflow-touching pull request into `main`.
+
+Both are silent. Nothing about a repository looks different in either case, and
+that is why this file exists: it turns each of them into an ordinary red on the
+pull request that would have caused it.
+
+## What is different about THIS repository
+
+The pipeline repo's equivalent compares one flat list to one `ci.yml`, because
+one branch is protected and every job is required on it. Here neither holds.
+
+Protection lives in **rulesets**, not in classic branch protection — `main` has
+no classic protection at all — and there are two of them, over different refs
+with different required sets. And one required job's workflow, `zone-audit.yml`,
+exists ONLY on the campaign branches, deliberately: it builds a pinned engine to
+expand and judge zone programs, which is work only a campaign branch has. So it
+is required exactly where it exists.
+
+A single flat list would have to either be wrong about that or lie about it.
+The declaration is therefore ref-scoped (`.github/required-status-checks.toml`),
+and the checker judges in three ref-aware arms plus a live one:
+
+  A. COVERAGE (ref-independent). Every job defined in THIS tree is required by
+     at least one declared ruleset, or is declared advisory with a reason this
+     file can evaluate. This is the reverse direction and it needs no ref: a job
+     that gates on some ref is a gate; a job that gates nowhere is not.
+
+  B. RESOLUTION (ref-scoped). Every context required on the ref being judged
+     resolves to a job `name:` in this tree. On a pull request the ref judged is
+     the BASE ref, and the tree is the head — which is exactly the pair GitHub
+     will use, because a `pull_request` workflow runs from the merge ref. So a
+     pull request into `campaign/*` from a branch that dropped `zone-audit.yml`
+     reds HERE, before the context it removed can block that branch forever.
+     Contexts required only on refs this tree does not serve are STATED, with
+     the ref pattern and the pull request that will judge them, never dropped.
+
+  C. ELIGIBILITY (ref-independent). A job named as required must be ABLE to
+     report on every pull request into the refs it guards: its workflow has a
+     `pull_request:` trigger, that trigger carries no `paths`/`paths-ignore`/
+     `branches`/`branches-ignore` filter, the job has no `if:` (a skipped job
+     reports "skipped", which GitHub counts as a satisfied required check — a
+     hole that looks exactly like a pass), and no `strategy:` (a matrix job's
+     context is `name (value)`, not `name`). This arm is the one that would have
+     caught the path filter before it deadlocked the repository, and it is why
+     `actionlint` cannot simply be promoted today.
+
+  D. LIVE (default on). The declaration equals the live rulesets: same ref
+     patterns, same contexts, `enforcement = "active"`, and no live ruleset
+     undeclared. This is what catches a ruleset edited in the web UI, which no
+     file-to-file comparison can see.
+
+## Why the live arm gates instead of merely reporting
+
+The pipeline repo's checker reads only the repo, on the reasoning that CI's
+token has `contents: read` and cannot see branch protection, and a gate that
+needs a privileged token is a gate that quietly stops running. That reasoning is
+sound and it does not apply here, which was worth measuring rather than
+assuming: **both repositories are public, and a public repository's rulesets are
+readable with NO credential at all** — `GET /repos/{owner}/{repo}/rulesets/{id}`
+returns `conditions` and `rules`, contexts included, unauthenticated. So the
+live comparison needs no token, no permission grant, and nothing that can be
+revoked out from under it. It runs in the required job on every pull request.
+
+It is on by DEFAULT, and the opt-out is `--offline`. That polarity is the whole
+point: dropping the live guarantee then requires ADDING a flag, which a reviewer
+sees in the diff, instead of removing one, which nobody notices.
+
+And it never degrades to a pass. If the API cannot be read — offline, rate
+limited, an HTTP error — that is not a green: the checker says the comparison
+DID NOT RUN and exits non-zero. `--offline` is the honest way to get a green
+without it, and it prints, loudly, which arm did not run. A creator with no
+network can still run every other arm on their own clone, which is the floor
+this project does not negotiate.
+
+## Binding counts
+
+Each arm states how many objects it examined, and zero is a finding rather than
+a pass in every one of them. A checker that parsed no jobs, or resolved no
+contexts, or compared no rulesets, has proved nothing — and it is green.
+
+Exit 0 clean, 1 on any finding or refusal.
+"""
+
+from __future__ import annotations
+
+import argparse
+import fnmatch
+import json
+import os
+import re
+import subprocess
+import sys
+import tomllib
+import urllib.error
+import urllib.request
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+MANIFEST = REPO / ".github" / "required-status-checks.toml"
+WORKFLOW_DIR = REPO / ".github" / "workflows"
+
+OWNER_REPO = "stellarfeline/delvewright-campaigns"
+API = "https://api.github.com"
+
+# The advisory reasons this checker can EVALUATE. A reason it cannot evaluate is
+# a reason it cannot retire, which is a free-text hatch wearing an enum's name.
+ADVISORY_REASONS = {
+    "no-pull-request-trigger",
+    "pull-request-path-filtered",
+}
+
+# Filters on a required job's `pull_request:` trigger that can stop it reporting.
+DISQUALIFYING_PR_FILTERS = ("paths", "paths-ignore", "branches", "branches-ignore")
+
+
+# ---------------------------------------------------------------------------
+# A deliberately small YAML reader.
+#
+# Stdlib only, because this runs in a required CI job and on a creator's clone
+# with nothing installed. It understands exactly the workflow shapes this
+# repository uses and REFUSES on anything else rather than guessing — a parser
+# that silently returns nothing is the vacuity mode this whole file is about.
+# ---------------------------------------------------------------------------
+
+_KEY = re.compile(r"^(?P<indent> *)(?P<key>[A-Za-z_][A-Za-z0-9_.-]*|\"[^\"]+\"|'[^']+'):(?P<rest>.*)$")
+
+
+def _unquote(s: str) -> str:
+    s = s.strip()
+    if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
+        return s[1:-1]
+    return s
+
+
+def _scalar(rest: str) -> str:
+    """The value on a `key: value` line, with a trailing YAML comment removed."""
+    v = rest.strip()
+    # YAML starts a comment at ` #` (hash preceded by whitespace) or a leading #.
+    if v.startswith("#"):
+        return ""
+    cut = v.find(" #")
+    if cut != -1:
+        v = v[:cut]
+    return _unquote(v.strip())
+
+
+def _structural_lines(text: str) -> list[tuple[int, str]]:
+    out: list[tuple[int, str]] = []
+    for n, line in enumerate(text.splitlines(), 1):
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        out.append((n, line.rstrip()))
+    return out
+
+
+def _block(lines: list[tuple[int, str]], start: int, indent: int) -> list[tuple[int, str]]:
+    """Lines after `start` that are indented deeper than `indent`."""
+    out: list[tuple[int, str]] = []
+    for i in range(start + 1, len(lines)):
+        _, text = lines[i]
+        if len(text) - len(text.lstrip()) <= indent:
+            break
+        out.append(lines[i])
+    return out
+
+
+class Workflow:
+    def __init__(self, path: Path):
+        self.path = path
+        self.rel = path.relative_to(REPO).as_posix()
+        self.errors: list[str] = []
+        # trigger name -> set of its sub-keys
+        self.triggers: dict[str, set[str]] = {}
+        # job key -> attributes
+        self.jobs: dict[str, dict[str, object]] = {}
+        self._parse()
+
+    def _parse(self) -> None:
+        lines = _structural_lines(self.path.read_text(encoding="utf-8"))
+        top: dict[str, tuple[int, str]] = {}
+        for i, (_, text) in enumerate(lines):
+            m = _KEY.match(text)
+            if m and m.group("indent") == "":
+                top[_unquote(m.group("key"))] = (i, m.group("rest"))
+
+        # `on:` — YAML 1.1 folds bare `on` to boolean true, so a `true` key is
+        # the same thing arriving through a different door.
+        on_key = "on" if "on" in top else ("true" if "true" in top else None)
+        if on_key is None:
+            self.errors.append(f"{self.rel}: no top-level `on:` trigger block")
+        else:
+            i, rest = top[on_key]
+            inline = _scalar(rest)
+            if inline:
+                # Flow form: `on: [pull_request, push]` or `on: push`.
+                if inline.startswith("["):
+                    for t in inline.strip("[]").split(","):
+                        if t.strip():
+                            self.triggers[_unquote(t)] = set()
+                else:
+                    self.triggers[inline] = set()
+            else:
+                for j in range(i + 1, len(lines)):
+                    _, text = lines[j]
+                    ind = len(text) - len(text.lstrip())
+                    if ind == 0:
+                        break
+                    m = _KEY.match(text)
+                    if not m or len(m.group("indent")) != 2:
+                        continue
+                    name = _unquote(m.group("key"))
+                    subkeys = set()
+                    for _, sub in _block(lines, j, 2):
+                        sm = _KEY.match(sub)
+                        if sm and len(sm.group("indent")) == 4:
+                            subkeys.add(_unquote(sm.group("key")))
+                    self.triggers[name] = subkeys
+
+        if "jobs" not in top:
+            self.errors.append(f"{self.rel}: no top-level `jobs:` block")
+            return
+        ji, _ = top["jobs"]
+        for j in range(ji + 1, len(lines)):
+            _, text = lines[j]
+            ind = len(text) - len(text.lstrip())
+            if ind == 0:
+                break
+            m = _KEY.match(text)
+            if not m or len(m.group("indent")) != 2:
+                continue
+            key = _unquote(m.group("key"))
+            attrs: dict[str, object] = {"if": False, "strategy": False, "uses": False}
+            # GitHub falls back to the job KEY when there is no `name:`, and so
+            # does the status context. Defaulting to the key is not a guess.
+            name = key
+            for _, sub in _block(lines, j, 2):
+                sm = _KEY.match(sub)
+                if not sm or len(sm.group("indent")) != 4:
+                    continue
+                k = _unquote(sm.group("key"))
+                if k == "name":
+                    raw = sm.group("rest").strip()
+                    if raw in ("|", ">", "|-", ">-"):
+                        self.errors.append(
+                            f"{self.rel}: job {key!r} names itself with a block "
+                            f"scalar; this reader will not guess what context "
+                            f"string that produces"
+                        )
+                    else:
+                        name = _scalar(sm.group("rest"))
+                elif k in ("if", "strategy", "uses"):
+                    attrs[k] = True
+            attrs["name"] = name
+            self.jobs[key] = attrs
+
+    def pull_request_filters(self) -> list[str] | None:
+        """Disqualifying filters on `pull_request:`, or None if there is no such
+        trigger at all."""
+        if "pull_request" not in self.triggers:
+            return None
+        return [f for f in DISQUALIFYING_PR_FILTERS if f in self.triggers["pull_request"]]
+
+
+# ---------------------------------------------------------------------------
+# Ref matching
+# ---------------------------------------------------------------------------
+
+
+def ref_matches(pattern: str, ref: str, default_branch: str) -> bool:
+    """`ref` is a short branch name; `pattern` is a ruleset include pattern."""
+    if pattern == "~ALL":
+        return True
+    if pattern == "~DEFAULT_BRANCH":
+        return ref == default_branch
+    full = ref if ref.startswith("refs/") else f"refs/heads/{ref}"
+    return fnmatch.fnmatchcase(full, pattern)
+
+
+def judged_ref(explicit: str | None) -> tuple[str | None, str]:
+    """The ref whose required set this run judges, and how it was determined."""
+    if explicit:
+        return explicit, "--ref"
+    base = os.environ.get("GITHUB_BASE_REF", "").strip()
+    if base:
+        return base, "GITHUB_BASE_REF (the pull request's base)"
+    name = os.environ.get("GITHUB_REF_NAME", "").strip()
+    if name:
+        return name, "GITHUB_REF_NAME"
+    try:
+        out = subprocess.run(
+            ["git", "-C", str(REPO), "rev-parse", "--abbrev-ref", "HEAD"],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None, "undeterminable"
+    if out and out != "HEAD":
+        return out, "the current git branch"
+    return None, "undeterminable"
+
+
+# ---------------------------------------------------------------------------
+# Live rulesets
+# ---------------------------------------------------------------------------
+
+
+def _get(path: str, timeout: float) -> object:
+    req = urllib.request.Request(f"{API}{path}", headers={
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "delvewright-check-required-contexts",
+    })
+    # A public repository's rulesets read without a credential; a token is used
+    # only when one happens to be present, and only to buy the higher rate limit.
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        req.add_header("Authorization", f"Bearer {token}")
+    with urllib.request.urlopen(req, timeout=timeout) as fh:
+        return json.load(fh)
+
+
+def read_live(timeout: float) -> tuple[dict | None, str | None]:
+    """(observed, None) or (None, why the comparison could not be made)."""
+    try:
+        repo = _get(f"/repos/{OWNER_REPO}", timeout)
+        listing = _get(f"/repos/{OWNER_REPO}/rulesets", timeout)
+        observed: dict[str, dict] = {}
+        for entry in listing:  # type: ignore[union-attr]
+            if entry.get("target") != "branch":
+                continue
+            full = _get(f"/repos/{OWNER_REPO}/rulesets/{entry['id']}", timeout)
+            rules = full.get("rules", [])  # type: ignore[union-attr]
+            checks = [r for r in rules if r.get("type") == "required_status_checks"]
+            if not checks:
+                # Out of scope: a branch ruleset carrying no status-check rule
+                # decides nothing this file is about.
+                continue
+            params = checks[0].get("parameters", {})
+            observed[full["name"]] = {  # type: ignore[index]
+                "id": full["id"],  # type: ignore[index]
+                "enforcement": full.get("enforcement"),  # type: ignore[union-attr]
+                "include": list(full.get("conditions", {}).get("ref_name", {}).get("include", [])),  # type: ignore[union-attr]
+                "contexts": sorted(
+                    c.get("context", "") for c in params.get("required_status_checks", [])
+                ),
+                "strict": params.get("strict_required_status_checks_policy"),
+            }
+        return {"default_branch": repo.get("default_branch"), "rulesets": observed}, None  # type: ignore[union-attr]
+    except urllib.error.HTTPError as exc:
+        return None, f"HTTP {exc.code} from {exc.url}"
+    except urllib.error.URLError as exc:
+        return None, f"the GitHub API is unreachable ({exc.reason})"
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        return None, f"{type(exc).__name__}: {exc}"
+
+
+# ---------------------------------------------------------------------------
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument(
+        "--offline", action="store_true",
+        help="skip the live ruleset comparison and say so, loudly. The default "
+             "is to make it, because dropping a guarantee should require adding "
+             "a flag a reviewer can see, not removing one nobody notices.",
+    )
+    ap.add_argument("--ref", default=None, help="the ref whose required set to judge")
+    ap.add_argument("--timeout", type=float, default=20.0)
+    args = ap.parse_args()
+
+    if not MANIFEST.is_file():
+        print(f"check-required-contexts: FAIL — no declaration at {MANIFEST}", file=sys.stderr)
+        return 1
+    if not WORKFLOW_DIR.is_dir():
+        print(f"check-required-contexts: FAIL — no {WORKFLOW_DIR}", file=sys.stderr)
+        return 1
+
+    with MANIFEST.open("rb") as fh:
+        decl = tomllib.load(fh)
+
+    default_branch = decl.get("default_branch")
+    rulesets = decl.get("ruleset", [])
+    advisory = decl.get("advisory", {})
+    max_advisory = decl.get("max_advisory")
+    if not default_branch or not rulesets or max_advisory is None:
+        print(
+            "check-required-contexts: FAIL — the declaration is missing "
+            "`default_branch`, `[[ruleset]]`, or `max_advisory`",
+            file=sys.stderr,
+        )
+        return 1
+
+    findings: list[str] = []
+    notes: list[str] = []
+
+    # --- parse every workflow in this tree ---------------------------------
+    workflows = sorted(
+        list(WORKFLOW_DIR.glob("*.yml")) + list(WORKFLOW_DIR.glob("*.yaml"))
+    )
+    parsed = [Workflow(p) for p in workflows]
+    for wf in parsed:
+        findings.extend(wf.errors)
+
+    # job context name -> (workflow, attrs)
+    jobs: dict[str, tuple[Workflow, dict]] = {}
+    for wf in parsed:
+        for key, attrs in wf.jobs.items():
+            name = str(attrs["name"])
+            if name in jobs:
+                findings.append(
+                    f"two jobs produce the same status context {name!r} "
+                    f"({jobs[name][0].rel} and {wf.rel}). A required context that "
+                    f"two jobs report is satisfied by whichever reports last."
+                )
+            jobs[name] = (wf, attrs)
+
+    # Vacuity: parsing nothing is not a pass.
+    if not workflows:
+        findings.append("no workflow files found; this checker examined nothing")
+    if not jobs and not any(wf.errors for wf in parsed):
+        findings.append(
+            "parsed 0 job names from .github/workflows; the `  <job>:` / "
+            "`    name:` shape this reader keys off has changed"
+        )
+
+    required_anywhere: set[str] = set()
+    for rs in rulesets:
+        required_anywhere.update(rs.get("contexts", []))
+    if not required_anywhere:
+        findings.append("the declaration names 0 required contexts; every gate would be advisory")
+
+    # --- ARM A: coverage ---------------------------------------------------
+    for name in sorted(jobs):
+        if name in required_anywhere or name in advisory:
+            continue
+        findings.append(
+            f"job {name!r} ({jobs[name][0].rel}) is required by no ruleset and is "
+            f"not declared advisory.\n"
+            f"    It runs and it gates nothing — its red is a colour on a page. "
+            f"Add it to a `[[ruleset]]`'s `contexts` in "
+            f"{MANIFEST.name} AND to that ruleset on GitHub, or declare it under "
+            f"`[advisory.\"{name}\"]` with a `because` this checker can evaluate."
+        )
+
+    # --- advisory hygiene --------------------------------------------------
+    if len(advisory) > max_advisory:
+        findings.append(
+            f"{len(advisory)} advisory jobs are declared and the budget is "
+            f"{max_advisory}: {', '.join(sorted(advisory))}.\n"
+            f"    Make the new one required, or raise `max_advisory` in "
+            f"{MANIFEST.name} and say in the same diff why this repository now "
+            f"needs another gate nobody has to obey."
+        )
+    for name, entry in sorted(advisory.items()):
+        because = entry.get("because")
+        wf_rel = entry.get("workflow")
+        if because not in ADVISORY_REASONS:
+            findings.append(
+                f"advisory job {name!r} gives reason {because!r}, which this "
+                f"checker cannot evaluate. Allowed: {', '.join(sorted(ADVISORY_REASONS))}.\n"
+                f"    A reason that cannot be evaluated cannot be retired, which "
+                f"is a free-text hatch wearing an enum's name."
+            )
+            continue
+        if name in required_anywhere:
+            findings.append(
+                f"job {name!r} is declared advisory AND required by a ruleset. "
+                f"It is one or the other."
+            )
+        if name not in jobs:
+            findings.append(
+                f"advisory job {name!r} is not a job in this tree. Drop the entry "
+                f"— it is holding a budget slot for a gate that does not exist."
+            )
+            continue
+        wf = jobs[name][0]
+        if wf_rel != wf.rel:
+            findings.append(
+                f"advisory job {name!r} says it lives in {wf_rel!r}; it is defined "
+                f"in {wf.rel!r}."
+            )
+        filters = wf.pull_request_filters()
+        if because == "no-pull-request-trigger" and filters is not None:
+            findings.append(
+                f"advisory job {name!r} is exempt because its workflow has no "
+                f"`pull_request:` trigger — and {wf.rel} now has one. The reason "
+                f"has expired.\n"
+                f"    It can report on a pull request now, so it can gate one. "
+                f"Promote it, or re-declare it under a reason that still holds."
+            )
+        if because == "pull-request-path-filtered":
+            if filters is None:
+                findings.append(
+                    f"advisory job {name!r} is exempt because its `pull_request:` "
+                    f"is path-filtered, and {wf.rel} has no `pull_request:` "
+                    f"trigger at all. Re-declare it under `no-pull-request-trigger`."
+                )
+            elif not any(f.startswith("paths") for f in filters):
+                findings.append(
+                    f"advisory job {name!r} is exempt because its `pull_request:` "
+                    f"is path-filtered, and that filter is gone from {wf.rel}. "
+                    f"The reason has expired.\n"
+                    f"    It now reports on every pull request, so requiring it "
+                    f"no longer risks a deadlock. Move its line into a "
+                    f"`[[ruleset]]`'s `contexts`, add the context to that ruleset "
+                    f"on GitHub in the same act, and delete this entry."
+                )
+
+    # --- ARM B: resolution, on the ref being judged ------------------------
+    ref, how = judged_ref(args.ref)
+    if ref is None:
+        findings.append(
+            "the ref to judge could not be determined (no --ref, no "
+            "GITHUB_BASE_REF/GITHUB_REF_NAME, no current branch), so the "
+            "resolution arm did not run. This is a refusal, not a pass."
+        )
+        governing: list[dict] = []
+    else:
+        governing = [
+            rs for rs in rulesets
+            if any(ref_matches(p, ref, default_branch) for p in rs.get("include", []))
+        ]
+        if not governing:
+            governing = [
+                rs for rs in rulesets
+                if any(ref_matches(p, default_branch, default_branch) for p in rs.get("include", []))
+            ]
+            notes.append(
+                f"ref {ref!r} matches no declared ruleset, so nothing is required "
+                f"on it; judged against the default branch's ruleset(s) as the "
+                f"floor this work will eventually meet."
+            )
+
+    resolved_count = 0
+    for rs in governing:
+        for ctx in rs.get("contexts", []):
+            resolved_count += 1
+            if ctx not in jobs:
+                findings.append(
+                    f"context {ctx!r}, required by ruleset {rs['name']!r} on "
+                    f"{ref!r}, matches no job in this tree.\n"
+                    f"    A required context that never reports blocks EVERY pull "
+                    f"request into that ref, including the one that would fix it. "
+                    f"If a job was renamed: add the NEW context to the ruleset "
+                    f"first, then merge the rename with {MANIFEST.name}, then drop "
+                    f"the old context."
+                )
+    if ref is not None and resolved_count == 0:
+        findings.append(
+            f"0 contexts were resolved for ref {ref!r}. A gate that examined "
+            f"nothing has proved nothing."
+        )
+
+    # Contexts required only on refs this tree does not serve are STATED.
+    elsewhere = sorted(
+        (ctx, rs["name"], ", ".join(rs.get("include", [])))
+        for rs in rulesets
+        for ctx in rs.get("contexts", [])
+        if rs not in governing and ctx not in jobs
+    )
+    for ctx, rs_name, patterns in elsewhere:
+        notes.append(
+            f"context {ctx!r} is required by {rs_name!r} on {patterns} and its "
+            f"job is not in this tree. Not judged here; it is judged on a pull "
+            f"request into those refs, where the head checkout carries it."
+        )
+
+    # --- ARM C: eligibility ------------------------------------------------
+    # Counted by DISTINCT job, not by (ruleset, context) pair: a job required by
+    # both rulesets is one job, and a count that says two is a number inflated by
+    # its own iteration order.
+    eligibility_seen: set[str] = set()
+    for rs in rulesets:
+        for ctx in rs.get("contexts", []):
+            if ctx not in jobs or ctx in eligibility_seen:
+                continue
+            eligibility_seen.add(ctx)
+            wf, attrs = jobs[ctx]
+            filters = wf.pull_request_filters()
+            if filters is None:
+                findings.append(
+                    f"required context {ctx!r} is produced by {wf.rel}, which has "
+                    f"no `pull_request:` trigger. It can never report on a pull "
+                    f"request, so every pull request into "
+                    f"{', '.join(rs.get('include', []))} blocks forever."
+                )
+            elif filters:
+                findings.append(
+                    f"required context {ctx!r} is produced by {wf.rel}, whose "
+                    f"`pull_request:` carries {', '.join(filters)}.\n"
+                    f"    A pull request matching none of that filter produces no "
+                    f"run, so the required context never reports and the merge is "
+                    f"blocked with nothing to click. This repository has already "
+                    f"paid for this once. Drop the filter; a gate's own driver "
+                    f"stating a binding count of zero is an honest answer, and a "
+                    f"check that never ran is a silence protection cannot tell "
+                    f"from a pass."
+                )
+            if attrs.get("if"):
+                findings.append(
+                    f"required context {ctx!r} ({wf.rel}) has a job-level `if:`. A "
+                    f"skipped job reports `skipped`, which GitHub counts as a "
+                    f"SATISFIED required check — the gate would pass by not running."
+                )
+            if attrs.get("strategy"):
+                findings.append(
+                    f"required context {ctx!r} ({wf.rel}) has a `strategy:`. A "
+                    f"matrix job reports as `name (value)`, so the bare name will "
+                    f"never report."
+                )
+    if required_anywhere and not eligibility_seen:
+        findings.append(
+            "0 required jobs were examined for eligibility; no declared context "
+            "resolves to a job in this tree."
+        )
+
+    # --- ARM D: live rulesets ----------------------------------------------
+    live_examined = 0
+    if args.offline:
+        notes.append(
+            "the LIVE ruleset comparison did not run (--offline). This run cannot "
+            "see a ruleset edited in the web UI: a context added, removed, "
+            "renamed, or a ruleset switched out of `active`. Re-run without "
+            "--offline to make that comparison."
+        )
+    else:
+        observed, why = read_live(args.timeout)
+        if observed is None:
+            findings.append(
+                f"the LIVE ruleset comparison did not run: {why}.\n"
+                f"    This is a refusal, not a pass — the declaration below may be "
+                f"describing protection that no longer exists. A public "
+                f"repository's rulesets read without any credential, so this is "
+                f"normally a network problem. To get a green without this arm, "
+                f"pass --offline, which says so in its output."
+            )
+        else:
+            if observed["default_branch"] != default_branch:
+                findings.append(
+                    f"the declaration says the default branch is "
+                    f"{default_branch!r}; the repository says "
+                    f"{observed['default_branch']!r}. `~DEFAULT_BRANCH` expands to "
+                    f"the second one."
+                )
+            live = observed["rulesets"]
+            declared_names = {rs["name"] for rs in rulesets}
+            for name in sorted(set(live) - declared_names):
+                findings.append(
+                    f"ruleset {name!r} requires "
+                    f"{', '.join(live[name]['contexts']) or '(nothing)'} on "
+                    f"{', '.join(live[name]['include'])} and is not declared in "
+                    f"{MANIFEST.name}. Protection nobody wrote down is protection "
+                    f"nobody maintains."
+                )
+            for rs in rulesets:
+                live_examined += 1
+                name = rs["name"]
+                if name not in live:
+                    findings.append(
+                        f"ruleset {name!r} is declared to require "
+                        f"{', '.join(rs.get('contexts', []))} on "
+                        f"{', '.join(rs.get('include', []))}, and no such live "
+                        f"ruleset carries required status checks.\n"
+                        f"    The file claims a gate that does not gate."
+                    )
+                    continue
+                obs = live[name]
+                if obs["enforcement"] != "active":
+                    findings.append(
+                        f"ruleset {name!r} is live but its enforcement is "
+                        f"{obs['enforcement']!r}, not `active`. It reports its "
+                        f"verdict and merges the pull request anyway."
+                    )
+                if sorted(obs["include"]) != sorted(rs.get("include", [])):
+                    findings.append(
+                        f"ruleset {name!r} covers {obs['include']} live and "
+                        f"{rs.get('include')} in {MANIFEST.name}."
+                    )
+                want = sorted(rs.get("contexts", []))
+                got = obs["contexts"]
+                if want != got:
+                    missing = [c for c in want if c not in got]
+                    extra = [c for c in got if c not in want]
+                    detail = []
+                    if missing:
+                        detail.append(
+                            f"declared and NOT required live: {', '.join(repr(c) for c in missing)} "
+                            f"— the file claims a gate that does not gate"
+                        )
+                    if extra:
+                        detail.append(
+                            f"required live and NOT declared: {', '.join(repr(c) for c in extra)} "
+                            f"— an unwritten context that will block every pull "
+                            f"request if its job is ever renamed"
+                        )
+                    findings.append(
+                        f"ruleset {name!r} disagrees with the live setting.\n    "
+                        + "\n    ".join(detail)
+                    )
+            if live_examined == 0:
+                findings.append(
+                    "the live arm compared 0 rulesets. A gate that examined "
+                    "nothing has proved nothing."
+                )
+
+    # --- report ------------------------------------------------------------
+    scope = (
+        f"{len(jobs)} jobs in {len(workflows)} workflows; "
+        f"{resolved_count} contexts required on {ref!r} ({how}); "
+        f"{len(eligibility_seen)} required jobs checked for eligibility; "
+        f"{len(advisory)}/{max_advisory} advisory; "
+        + ("live comparison SKIPPED (--offline)" if args.offline
+           else f"{live_examined} live rulesets compared")
+    )
+
+    for n in notes:
+        print(f"check-required-contexts: note — {n}")
+
+    if findings:
+        print(f"\ncheck-required-contexts: {len(findings)} finding(s) — {scope}\n", file=sys.stderr)
+        for f in findings:
+            print(f"  {f}\n", file=sys.stderr)
+        return 1
+
+    print(f"check-required-contexts: OK — {scope}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

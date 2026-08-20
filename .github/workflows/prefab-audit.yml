@@ -85,6 +85,22 @@ jobs:
         with:
           lfs: true
 
+      # Every job gates something, and every required context can report.
+      #
+      # This step lives HERE, in this job, deliberately. The check has to run on
+      # every pull request into every protected ref, and this job's context is
+      # the only one BOTH rulesets require — so a pull request cannot reach a
+      # protected branch without it. Its own job would be a new context, which
+      # nothing requires until somebody edits a ruleset, and a gate whose
+      # enforcement is pending a separate manual act is the advisory-job defect
+      # it exists to end.
+      #
+      # It reads the live rulesets by default. A public repository's rulesets
+      # need no credential, so this needs no token and no permission grant; when
+      # the API cannot be read it REFUSES rather than passing.
+      - name: every job gates something
+        run: python3 tools/check-required-contexts.py
+
       # Every pin in THIS repo is declared, and every declaration still matches
       # the file it claims to describe. Offline, stdlib-only, so it runs here and
       # on a creator's own clone with nothing installed. It states its binding

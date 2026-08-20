@@ -53,6 +53,14 @@ delvec build campaigns/<id> -o out/
   user-local assets are for private play and don't belong here.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
+- **Touching a workflow means saying what it gates.**
+  `.github/required-status-checks.toml` records which CI jobs block a merge and
+  on which refs, and `tools/check-required-contexts.py` holds that file, the
+  workflows, and the live rulesets in lockstep — so a renamed job reds on the
+  pull request that renamed it instead of blocking every future one, and a job
+  that gates nothing reds instead of looking green. Run it yourself with the
+  same command CI runs: `python3 tools/check-required-contexts.py`. Add
+  `--offline` with no network; it prints which comparison it skipped.
 
 ## Releasing a campaign
 
