@@ -54,18 +54,21 @@ def local_y(param):
 
 
 # --------------------------------------------------------------------------
-def orient_box(dx, dz, bx, bz):
-    """The allocation as the part meets it.
+def best_fit(dx, dz, bx, bz):
+    """The box's two horizontals, put the way round that most favours fitting.
 
-    A grammar rule opens on the box's largest horizontal, so a part turns its
-    own length onto whichever of the box's two horizontals is longer
-    (`grammar.md` §5c, the reading `map-site-plan.md` §5 records). This is the
-    one placement fact on these sheets read out of documented behaviour rather
-    than measured; every sheet using it says so.
+    Which way a part actually turns in its box is a property of the rule that
+    opens on the scope, not of the zone: `map-site-plan.md` §5 records Z2, Z5,
+    Z6 and Z7 reading their box turned, while the engine's own refusal for Z4
+    names its 33 on world z untuned. So these sheets assert no turn at all.
+    They compare the part's footprint against the box **in whichever
+    orientation fits best**, which needs no assumption and is still decisive:
+    where the best case fails the part cannot fit either way round, and where
+    the best case fits the sheet claims only that.
     """
-    if dx >= dz:
-        return max(bx, bz), min(bx, bz)
-    return min(bx, bz), max(bx, bz)
+    d = sorted((dx, dz))
+    b = sorted((bx, bz))
+    return (b[0], b[1]) if d[0] == dx else (b[1], b[0])
 
 
 def crop(*masks):
@@ -183,8 +186,10 @@ def sheet1(path):
           'party the delve is built for standing on it' % (RX, RY, RZ),
           'Solid blue is the box the site plan hands each part. The dashed '
           'outline is what that part declares in zones.json, laid in that box '
-          'at true scale and turned as the engine turns it — cut off at the '
-          'edge of the sheet where it runs past. A grammar program is '
+          'at true scale, put the way round that fits best — cut off at the '
+          'edge of the sheet where it runs past. Which way a part actually '
+          'turns is a property of the rule that opens on the box, so no sheet '
+          'here asserts one. A grammar program is '
           'region-polymorphic, so a part whose declared size disagrees with '
           'its box may still BUILD there: it builds a different piece from the '
           'one that was reviewed, which is what the plan’s own DW0806 debt is '
@@ -218,9 +223,8 @@ def sheet1(path):
     for zid in ZF.ORDER:
         (ox, oy, oz), (bx, by, bz) = BOX[zid]
         dx, dy, dz = ZONES[zid]['region']
-        wx, wz = orient_box(dx, dz, bx, bz)
-        wx, wz = (max(dx, dz), min(dx, dz)) if bx >= bz else (min(dx, dz),
-                                                              max(dx, dz))
+        # drawn the way round that fits best, which is the only claim made
+        wx, wz = (dx, dz) if (bx >= bz) == (dx >= dz) else (dz, dx)
         ok = fits(zid)
         sh.rect(px(ox), py(oz + wz), wx * S, wz * S, 'none',
                 PART if ok else OVER, 1.7, .9, '6,4')
@@ -267,13 +271,13 @@ def sheet1(path):
                 'it declares %d × %d × %d  —  %s' %
                 (dx, dy, dz, 'it builds here, at the box’s size' if ok
                  else 'it refuses here'), 10.5, PART if ok else OVER)
-        abx, abz = orient_box(dx, dz, bx, bz)
+        abx, abz = best_fit(dx, dz, bx, bz)
         marks = []
-        for got, need, ax in ((abx, dx, 'across'), (by, dy, 'high'),
-                              (abz, dz, 'along')):
-            marks.append('%s %d vs %d %s' % ('OK ' if got >= need else 'NO ',
+        for got, need, ax in ((by, dy, 'high'), (abx, dx, 'one way'),
+                              (abz, dz, 'the other')):
+            marks.append('%s %d in %d %s' % ('OK' if got >= need else 'NO',
                                              need, got, ax))
-        sh.text(lab_x, ly + 46, 'declared vs offered:  ' +
+        sh.text(lab_x, ly + 46, 'best case either way round:  ' +
                 '   ·   '.join(marks), 9.8, PART if ok else OVER)
         sh.text(lab_x, ly + 60, 'the player ' + f['does'], 10.5, GREY)
         sh.text(lab_x, ly + 74, 'floor: ' + f['floor'], 9.5, FAINT)
@@ -334,7 +338,7 @@ def sheet2(path):
           'The storey drawn is the one with the most floor on it, chosen by '
           'count. Tone is wall; pale is floor a body can stand on. The heavy '
           'rectangle is the box the site plan hands that part, laid on the '
-          'part corner to corner and turned as the engine turns it. A grammar '
+          'part corner to corner, put the way round that fits best. A grammar '
           'program is region-polymorphic, so where a part DOES build in its '
           'box it builds a different piece from the one drawn here — which is '
           'what the plan’s own DW0806 debt is about.')
@@ -354,7 +358,7 @@ def sheet2(path):
         paint_plan(sh, m['floors'][lvl], gx, base, S, FLOOR)
         paint_plan(sh, m['levels'][lvl], gx, base, S, PART_FILL)
 
-        abx, abz = orient_box(dx, dz, bx, bz)
+        abx, abz = best_fit(dx, dz, bx, bz)
         sh.rect(gx, base - abz * S, abx * S, abz * S, 'none',
                 ALLOC if ok else OVER, 2.2, .95)
 

@@ -15,7 +15,7 @@ rather than the boxes.**
 
 | sheet | what it shows |
 |---|---|
-| `01-site-plan.svg` | the whole region in plan at 1 block = 6 px — the box the plan hands each part, what that part declares laid in that box at true scale, the order of arrival, and a party of four standing on the sand. Every box carries the axis-by-axis comparison of declared against offered, so the direction each part misses in is on the page |
+| `01-site-plan.svg` | the whole region in plan at 1 block = 6 px — the box the plan hands each part, what that part declares laid in that box at true scale, the order of arrival, and a party of four standing on the sand. Every box carries the comparison of declared against offered — height, and the footprint whichever way round fits best — so the axis each part misses on is on the page |
 | `02-parts-at-scale.svg` | the eight parts as the engine actually builds them, at the same scale: each part's own floor plan measured off an expansion at the region `zones.json` declares, with its allocated box laid over it and the engine's own words when it is expanded there |
 | `03-section.svg` | the south–north section: the fourteen planes of the brief's massing table at the region-local layer `map.json` puts each at, the sixteen-block climb, and the tower zone's measured long section laid against the whole site's height and depth |
 | `04-how-big-is-the-rock.svg` | the ruler. The same plan re-evaluated at `rock_run` = 70, 90, 97 and 110, with every part expanded at the box each size gives it |
@@ -75,6 +75,14 @@ runs no engine at all.
 A reading, offered as one — the sheets are the instrument and this is not part
 of it.
 
+**Which way a part turns in its box is not asserted anywhere here.** It is a
+property of the rule that opens on the scope rather than of the zone: §5 of the
+site plan's derivation records four parts reading their box turned, and the
+engine's own refusal for the flat names its 40 × 8 × 80 with `x → world x`,
+untuned. So every comparison on these sheets is made in whichever orientation
+fits best, which needs no assumption and is still decisive — where the best case
+fails, no turn saves it.
+
 **The rock's size is not what is stopping anything.** Sheet 4 expands every part
 at the box every rock size from 70 to 140 gives it, and the set that builds does
 not change: it is the cliff road, at every size, and nothing else. The plan
@@ -84,6 +92,11 @@ against a tower that declares 125. Growing the rock grows an eighth of it. And
 the flat's box never moves at all, because both its plan numbers are brief facts
 and its height is `tide_y + road_y`; it refuses on height, and the rock cannot
 reach it.
+
+The first refusal the site plan reaches is the flat's, at a box 8 blocks high
+against a zone declaring 18, and that is what the zone-program audit reports
+when it expands `map-halgrave` at 70 × 44 × 150. Sheet 1 puts the same three
+numbers beside the same box.
 
 **The parts are not too big for the site.** Their declared volumes sum to
 440,336 blocks against a site of 462,000 — 95.3 % of it. They are the wrong
