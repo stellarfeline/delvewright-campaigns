@@ -1915,10 +1915,14 @@ which excludes the broken flight entirely.
 identically to the pre-contract expansion when their **contents** are hashed on
 stdin rather than a `shasum` line that would carry the filename with it; `cmp`
 agrees file for file; and a voxel-by-voxel comparison of the assembled 41x48x125
-model finds 0 of 246000 cells differing. The structural edits the carve needed —
-a private copy of the run chain for this one flight, and three splits of void
-into void — were demonstrated byte-neutral on their own, before any `claim` or
-`contract` was added.
+model finds 0 of 246000 cells differing. The structural edits the carve needed
+were demonstrated byte-neutral **on their own** first, in a draft that still
+declares `1.4.0` and carries no `contract` at all: 92 split nodes where the
+shipped program carries 84, six of the eight new ones inside a private copy of
+the run chain for this one flight and two outside it, every one of them cutting
+void into void. That draft expands to the same three tiles, which is also what
+says the version move is owed by the declaration and by nothing else — the
+structure compiles unchanged at the old version.
 
 **Judged at the pin, and the pin is named by revision.** The content repo's zone
 audit builds the engine at `57025e1c91626b71ab055f9b8a336caf9dc2489f`. Built
