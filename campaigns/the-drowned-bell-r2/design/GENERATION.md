@@ -111,7 +111,7 @@ the zone set is complete).
 | Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z0/` — see below |
 | Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 16x24x72 as a 2-tile set; the second zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
-| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; review set in `review/z3/` — see below |
+| Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares no spatial contract, so it is judged by 7 gates where a zone with one carries 16. The contract is written and is refused at this piece's own seed by a single cell the ruin mix seals inside a pier; the cause and both candidate repairs are below. Review set in `review/z3/` — see below |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
 | Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
@@ -1087,31 +1087,105 @@ shutters stand correctly in both without a second rule.
   climb is a design decision about whether the upper route should branch.
 - **The zone declares no `waterline_y`.** The prefab metadata has the field and
   `DW0344` checks it against the campaign's ocean datum, but the grammar exporter
-  writes `None` unconditionally, so a zone whose water *is* the campaign's tide
-  plane cannot state where that plane sits from its own program. It is 2 in this
-  piece's local frame. Hand-editing it into the metadata was not done: it would
+  writes `None` unconditionally — at both of its export sites, and still at the
+  engine revision the zone audit pins — so a zone whose water *is* the campaign's
+  tide plane cannot state where that plane sits from its own program. No program
+  field and no flag reaches it. It is 2 in this piece's local frame. Hand-editing it into the metadata was not done: it would
   make the byte-reproduction claim above false. This is a missing engine surface,
   not a defect in the zone.
-- **The piece declares no spatial contract, and the arcades are why.** The intact
-  east run is the upper route and must be a space; the ruined west run is 160
-  cells of which 158 are unreachable and must be out of the walk. Both are built
-  by `arcade_pier` and `arcade_bay`, and a region name is a literal, so a claim
-  inside either rule gives the two runs one name. Claiming at the call site does
-  give two names and then refuses on the box: "standable floor at y 3..7, which is
-  5 levels — a space is ONE floor". Naming them apart needs a ruined twin of the
-  arcade rule chain, which is a change to what the zone builds.
-- **The partly-roofed floor is NOT a second obstacle, and the claim that it was
-  is withdrawn.** The ward's own water is `open_water`'s air; the sheltered cells
-  under the two decks are `arcade_bay`'s arch void, which is a different rule and
-  therefore a different region. Claimed apart, `ward/water` takes `open_top` and
-  `ward/arches` takes `enclosed` with no envelope refusal of any kind. The
-  sheltered floor fits an envelope perfectly well once it is named as the thing it
-  is.
-- The way out is `include`: lifting the arcade into its own document and composing
-  it twice under an `east/` and a `west/` prefix gives the two runs distinct
-  region names, because the loader prefixes regions as it prefixes rules. That is
-  a restructure of the zone rather than a declaration added to it, so it is a
-  round of its own.
+- **The two runs are nameable apart today, and the record that said otherwise was
+  wrong.** Both the ruined twin of the arcade rule chain and the `include`
+  restructure — lifting the run into its own document and composing it twice
+  under an `east/` and a `west/` prefix — are withdrawn. `bind` is what already
+  tells the two runs apart: the west call site rebinds three palette roles to
+  `ruin/*`, and a `bind` carries **parameters** as well as roles. So one
+  parameter pushed from that same call site, read by a rule whose two
+  alternatives are guarded on it, chooses the region literal — the intact run's
+  deck void claims `arcade/walk`, the ruined run's claims `arcade/ruin` — and the
+  geometry stays in one place, where nothing can drift out of step. It is
+  `bar_or_open`'s idiom, which this program already uses for the barred door,
+  applied to a claim. A region name being a literal was never the obstacle:
+  nothing requires a rule to reach a literal by only one path.
+- **The five-level refusal was about the wrong box, not about the name.**
+  "standable floor at y 3..7, which is 5 levels" is what a claim at the CALL SITE
+  earns, and it earns it on the intact run as readily as the ruined one: an
+  arcade column carries two floors five courses apart — the water surface inside
+  the arches at y 3, and the deck walk at y 7. A space is the walked volume, so
+  the claim belongs on the void course over the deck (`arcade_pier` and
+  `arcade_bay`'s last child, y 7..9), where the intact run measures one floor and
+  180 standable cells and `contract-well-formed` passes. Two mistakes were being
+  read as one, and only the second was real.
+- **The ward is not a walked space, and the claim that it is two is withdrawn.**
+  `nav`'s `standable` calls any non-air cell a floor, so this zone's sea reads as
+  1888 cells of walkable ground at y 3, and a contract declaring them a space —
+  `ward/water` `open_top` beside an `enclosed` `ward/arches` — would go green
+  while being false. That is the capability the audit's exclusions record already
+  names against `library/causeway`, arriving here by the door that record
+  predicted: the library rule floods to the ceiling *so that* its flanks are
+  unwalkable and is red on containment for it; this zone took the repair that
+  record calls the only one keeping the design, holds its water two courses deep
+  and fully contained, and inherited the misreading in exchange. What is true is
+  the sentence the zone was written around — the spine is walkable at the
+  standing tide and the ward is not. So the whole water surface is ONE
+  out-of-walk region, `ward/tide`, earning `facade` because the sea outside the
+  piece reaches every cell of it, and the piece says it is mostly out of walk
+  over an acknowledgement whose majority is `facade` and holds no `posted` cell.
+- **The contract that follows is written, and this piece's own seed refuses it by
+  one cell.** Four spaces, two out-of-walk regions, six edges, three transit
+  volumes and a bar:
+
+  | element | kind | claimed at |
+  |---|---|---|
+  | `causeway` | space, `open_top`, the entry | `causeway_over`, under a `y` split that keeps the top course out so the piece's up face is not a way in |
+  | `arcade/walk` | space, `open_top` | the intact run's deck void |
+  | `tower/hall` | space, `enclosed` | `ground_room` |
+  | `tower/upper` | space, `enclosed` | `upper_room` |
+  | `ward/tide` | out-of-walk, `facade` | `open_water`, `wreck_hull`, `plinth_water`, `arch_void`, and the oversail gap beside `ground_room` |
+  | `arcade/ruin` | out-of-walk, `facade` | the ruined run's pier stone, deck course and deck void |
+  | `crossing` | transit volume | `crossing_ramp` — the treads belong to the edge |
+  | `tower/well` | transit volume | `midfloor_well` |
+  | `tower/shutter-way` | transit volume | the opening in `upper_east_wall` |
+  | `shortcut/s2-bar` | bar | `bar_or_open`, both arms |
+
+  The edges are `exterior`–`causeway` walk, `causeway`–`arcade/walk` stair rise 3
+  via `crossing`, `arcade/walk`–`tower/upper` walk via `tower/shutter-way`,
+  `tower/hall`–`tower/upper` stair rise 3 via `tower/well`,
+  `causeway`–`tower/hall` barred on `shortcut/s2-bar`, and `tower/hall`–
+  `exterior` walk. Declaring it costs the building nothing: five rules of
+  indirection and one `ruined` parameter defaulting to 0 leave both `.nbt` tiles
+  and all 28 anchors byte-identical, checked by content hash and again by `cmp`.
+  At a seed it is admitted at, every gate binds and passes —
+  `contract-well-formed` 12, `contract-coverage` 2698, `contract-closure` 2096,
+  `contract-edge-proof` 4, `contract-no-body` 2, `contract-reachability` 647,
+  `contract-anchors` 28, `contract-exterior-faces` 2 and
+  `contract-no-body-majority` 2698 — and the zone is judged by 16 gates where
+  undeclared it is judged by 7, which is half what every other zone of this
+  campaign is held to.
+- **Seed 1 is the seed that refuses, and one cell is why.** Swept over sixteen
+  seeds the contract is green at fifteen; the exception is the seed this piece
+  ships at. `ruin/pier_stone` carries 15% air, and at this roll it seals a
+  two-cell void inside the last pier of the ruined run, the lower cell of which
+  (x11 y3 z58) a body could stand in. `arcade/ruin` then qualifies for nothing:
+  `facade` asks that the air outside the piece reach every standable cell the
+  region holds, and this one it does not reach; `sealed` asks that the region's
+  own boundary be closed, and a pier standing in open water has no closed
+  boundary at any box a rule can claim. Both demands are right and the cell meets
+  neither. Rerolling is not a repair and was not taken — the sweep is a
+  measurement of how the mix behaves, not a search for a green seed.
+- **What that cell needs is a kind of its own, and the kind belongs to the cell
+  rather than to the region.** `contract-no-body` computes one verdict per
+  region, so a region holding 159 standable cells the outside air reaches and one
+  it does not has no honest label although every cell in it has one. The property
+  the sealed cell earns — *the piece's own blocks enclose it from the air outside
+  the piece* — is a fact about the blocks, is already computed for `facade`, and
+  is not one stranding can supply: floor that is merely unreachable but open to
+  the sky is reached by that air and fails it. The alternative repair is the
+  building's rather than the engine's — a ruin eroded from its faces instead of
+  mixed with air through its mass cannot seal an interior void — and that is a
+  change to what the zone builds. Until one of the two lands the program is left
+  undeclared deliberately: a declaration that cannot be admitted at the seed the
+  piece ships at would stop the zone building, and the record that holds a
+  known-red program is the pipeline repo's, not this one's.
 - **The head-to-floor rise is already a param, and the record that said otherwise
   was wrong.** It is `$water_depth + $quay_h`, and an exhaustive scan for
   param-free arithmetic finds only anchor-centring on X anywhere in the program.
@@ -1124,10 +1198,9 @@ shutters stand correctly in both without a second rule.
   would write a second metadata document describing one slice of a building. No
   rule here exposes a light-emitting role, so light arrives as campaign-bound
   content on the declared anchors.
-- One standable cell under a roof has no walking route (x11 y3 z58) and 158 more
-  are unreachable but open to the sky. Both are the west arcade: the first is a
-  gap inside a ruined pier, the second is its deck, which is scenery and is meant
-  to have no way up.
+- 158 standable cells are unreachable but open to the sky: the ruined run's deck,
+  which is scenery and is meant to have no way up. They are `arcade/ruin`'s
+  `facade` cells, and being open to the sky is exactly what earns them that kind.
 - `anchor/tower-gate` renders as an empty frame. It faces out of the exit face,
   so what it is about lives in the assembled world; it is kept in the review set
   rather than dropped so the gap is visible.
