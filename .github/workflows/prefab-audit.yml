@@ -42,6 +42,20 @@ name: prefab palette audit
 # whenever the ids it names stop being the ids the delve runs on, and the value
 # below is the one whose ids are.
 #
+# The pin is also a claim about WHICH DOORS OPEN, and that is the floor any
+# later bump holds. `delve-admit audit` has a second door — the spatial
+# contract — and a door can only open on a document the engine can read. An
+# engine that cannot open a tile-set MANIFEST audits a tiled zone on its
+# palette alone: nothing about that zone's spaces, its out-of-walk regions or
+# the way a body moves through it is judged, and nothing says so. That is a
+# green over zero obligations, and it reads exactly like a green over
+# thousands. Measured on this repository, an engine below the floor ran the
+# contract over 0 of the 7 tiled zones here and printed no binding count for
+# any of them; the revision named below opens on all 7 — 276 declared objects,
+# 80 772 objects examined — and where a piece carries no contract at all it
+# says so by name (`DW0783`) rather than staying silent. A pin is chosen for
+# what it can JUDGE, never for what it makes green.
+#
 # Credential note, RESOLVED. This step used to carry a cross-repo PAT
 # (`secrets.MAIN_REPO_TOKEN`) because `delvewright` was private, and the note
 # recorded its own exit condition: "once the main repo is public the token can
@@ -70,7 +84,7 @@ concurrency:
 
 env:
   # Pinned pipeline-repo SHA the audit tool is built from (see header).
-  ADMIT_REF: 680a5e34302206e09b46a01a224a982a9237b6d6
+  ADMIT_REF: 5e0ad7fd46d3855796e1963ad2eb54269ec76622
 
 jobs:
   audit:
