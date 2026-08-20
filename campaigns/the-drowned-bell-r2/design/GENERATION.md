@@ -2023,18 +2023,17 @@ than assumed to.
 - `anchor/belfry-stairhead` and `anchor/stair-head-1` have no useful eye shot;
   `review/z7/README.md` says why for each, and which cameras answer those
   questions instead.
-- **`prefab-audit` reds on `minecraft:iron_chain`, and the piece is not what is
-  wrong.** That job globs `prefabs/*.nbt` and audits each file with its own
-  pinned `delve-admit`, which is older than the pin the zone audit uses and older
-  than the 1.21.11 chain rename: its allowlist has no `iron_chain`, so the one
-  chain block in the belfry tile is `DW0730`, one block of 94464 in that tile and
-  the only offender in the whole palette. `iron_chain` is in the pinned 1.21.11
-  registry and is allowlisted by the engine the zone audit runs, where the whole
-  zone audits clean — 246000 blocks, 0 not-allowlisted. The fix is the same
-  one-line pin bump the zone audit's own comment describes for its engine ref,
-  and it is a reviewed decision rather than a content edit: dropping the chain
-  would trade the tongue's hanging and the bell-rope's fall for a green from a
-  checker that is wrong about the pinned game version. **This is not specific to
-  Z7** — `z2-gate-ward` and `z5-hall-keep` also paint a chain, so the same red is
-  latent in two more zones and Z7 is only the first of the three to be produced
-  into the library.
+- **The `minecraft:iron_chain` red is closed, and this entry is what is left of
+  it.** It was real: the prefab audit's pinned `delve-admit` predated the 1.21.11
+  chain rename, its allowlist had no `iron_chain`, and the one chain block in the
+  belfry tile was the only offender in the whole palette. The pin has since
+  moved, and the job now audits this zone as a tiled unit — the manifest is the
+  audited unit for a zone past the template cap, not the individual `.nbt` — and
+  passes: 45 of 45 units over 54 in-scope files, `prefabs/z7-bell-tower.json`
+  named among them, with 0 files disowned by git. Nothing about the piece
+  changed; the checker caught up with the pinned game version, which is what the
+  entry said would fix it. The same red was noted as latent in `z2-gate-ward` and
+  `z5-hall-keep`, and it is closed for them by the same bump. What survives the
+  closure is a `DW0734` warning on two hero prefabs that carry the pre-rename
+  `minecraft:chain` at a DataVersion of 2975 and rely on load-time datafixing;
+  those are not this zone and not this campaign.
