@@ -108,13 +108,13 @@ the zone set is complete).
 
 | Zone | Concept | Program | Status |
 |---|---|---|---|
-| Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; review set in `review/z0/` — see below |
+| Z0 barrow shore | `concept/z0-barrow-shore.jpg` | `programs/z0-barrow-shore.json` | **produced, awaiting owner review** — expands at 40x18x80 as a 2-tile set; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z0/` — see below |
 | Z1 cliff road | `concept/z1-cliff-road.jpg` | `programs/z1-cliff-road.json` | **produced, awaiting owner review** — expands at 16x24x72 as a 2-tile set; the second zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z1/` — see below |
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; review set in `review/z3/` — see below |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
-| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; review set in `review/z5/` — see below |
-| Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; review set in `review/z6/` — see below |
+| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
+| Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
 | Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x48x125; review set in `review/z7/` — see below |
 
 Zone order of production is by complexity, hardest first (owner decision,
@@ -155,8 +155,11 @@ declaration to finish: a hazard on `anchor/mire-1..2`, and bodies on
 **Expansion** — `delve-grammar expand --file design/programs/z0-barrow-shore.json
 --region 40x18x80 --seed 1 --traversable --id z0-barrow-shore -o out/`. Every
 gate passes with a non-zero binding: `blocks-exist` 12, `shape-complete` 12,
-`states-complete` 12, `oriented-fills` 383, `non-empty` 57600, `traversable` 44.
-19 067 filled cells of 57 600, 12 distinct states (11 of them not air), 2854
+`states-complete` 12, `oriented-fills` 383, `non-empty` 57600, `traversable` 2,
+`contract-well-formed` 16, `contract-coverage` 2854, `contract-closure` 11408,
+`contract-edge-proof` 4, `contract-no-body` 5, `contract-reachability` 2014,
+`contract-anchors` 37, `contract-exterior-faces` 2, `contract-no-body-majority`
+2854. 19 067 filled cells of 57 600, 12 distinct states (11 of them not air), 2854
 standable cells, footprint 3200 columns, perimeter 240, silhouette complexity
 1.06, 37 anchors. Reachability: 2764 of 2854 standable cells reached on foot from
 135 grade entry cells; **0 sheltered**, so the piece is open to the sky end to
@@ -286,13 +289,40 @@ that — it faces out of the piece, which is exactly what it is for.
 
 **Open against this piece**
 
-- **The piece declares no spatial contract**, so every contract obligation
-  examined nothing, and `traversable`'s binding of 44 counts standable cells on
-  two faces of the region rather than declared ways in. The zone has four real
-  ones — the causeway's mouth south, the ledge north, and the open flat running
-  off east and west into the fog — and stating them would turn that 44 into 4
-  doors and put the mire, the shelf and the ledge into named spaces with proven
-  edges between them. It is the largest single thing still owed here.
+- **The piece declares a spatial contract, and every contract gate passes.** Five
+  spaces, five out-of-walk regions and six edges: the sand flat, the mire one
+  course under it, the lamp shelf, and the two ends of the cut ledge. Bindings —
+  well-formed 16, coverage 2854 with nothing left over, closure 11 419, edge
+  proof 4, no-body 5, reachability 2014 (every cell of every space reached),
+  anchors 37, exterior faces 2, majority 2854. The five out-of-walk regions —
+  the cairn field, the mire heaps, the tide-stake tops, the crag's batter and the
+  shelf coping — each earn `facade` from the blocks.
+- **The cut ledge is a CLIMB, so it is an edge and not a space.** Its five treads
+  union into one transit volume, and a `via` carries no one-floor rule — that
+  rule governs spaces, which is why the ledge refused as one ("standable floor at
+  y 4..8, which is 5 levels"). Both ends are separately nameable because the
+  program gives each its own rule: the foot has `ledge/foot_tread`, and the head
+  is the recursion's own base alternative. The `stair` edge between them proves,
+  rise 4, and because it is INTERIOR it never meets the rule that an `exterior`
+  endpoint has no box to measure a rise against.
+- **Both exterior edges name their opening, because an open-air zone cannot let
+  one be discovered.** An edge with no `via` exports the whole of its space's
+  cells that sit on the piece's outer layer, and both of this zone's exterior
+  spaces are open to the sky: their air runs to the top of the region, so the
+  region's top plane is part of them and the derivation reads it as a way out.
+  Six faces came out of two edges that way: four around the sides, and two of
+  open sky. No walk reaches sky, so nine of the fifteen pairs the gate examines
+  were severed, and a gate asking for a walk between every pair of declared ways
+  is asking for something no building can supply. The declaration is the half
+  that was wrong, and the repair is the one the surface is for: `causeway/mouth`
+  is the walking width of the causeway where it meets the shore, `ledge/mouth`
+  is the body-height slot the cut ledge ends in, and each is claimed out of the
+  air its space would otherwise hold. Faces go from six to two — `north walk` 8
+  cells, `south walk` 6 — and the piece's own bytes do not move: both tiles are
+  identical before and after, because naming an opening says where a body leaves
+  and places no block. The flanking course of the causeway stays `flat` on
+  purpose: it is what the mire beside it is closed against, and an opening taken
+  all the way to the mire's edge leaves those cells excused by nothing.
 - **The crag's batter is regular.** The face steps back one cell every three
   courses, which makes it a cliff rather than a staircase (a one-course riser
   would be a step, and the way on would stop being the only way on) and gives the
@@ -1062,9 +1092,33 @@ shutters stand correctly in both without a second rule.
   piece's local frame. Hand-editing it into the metadata was not done: it would
   make the byte-reproduction claim above false. This is a missing engine surface,
   not a defect in the zone.
-- The piece declares no spatial contract, so every contract obligation examined
-  nothing and `traversable`'s binding counts standable cells on two region faces
-  rather than declared ways in — the same gap Z1 carries.
+- **The piece declares no spatial contract, and the arcades are why.** The intact
+  east run is the upper route and must be a space; the ruined west run is 160
+  cells of which 158 are unreachable and must be out of the walk. Both are built
+  by `arcade_pier` and `arcade_bay`, and a region name is a literal, so a claim
+  inside either rule gives the two runs one name. Claiming at the call site does
+  give two names and then refuses on the box: "standable floor at y 3..7, which is
+  5 levels — a space is ONE floor". Naming them apart needs a ruined twin of the
+  arcade rule chain, which is a change to what the zone builds.
+- **The partly-roofed floor is NOT a second obstacle, and the claim that it was
+  is withdrawn.** The ward's own water is `open_water`'s air; the sheltered cells
+  under the two decks are `arcade_bay`'s arch void, which is a different rule and
+  therefore a different region. Claimed apart, `ward/water` takes `open_top` and
+  `ward/arches` takes `enclosed` with no envelope refusal of any kind. The
+  sheltered floor fits an envelope perfectly well once it is named as the thing it
+  is.
+- The way out is `include`: lifting the arcade into its own document and composing
+  it twice under an `east/` and a `west/` prefix gives the two runs distinct
+  region names, because the loader prefixes regions as it prefixes rules. That is
+  a restructure of the zone rather than a declaration added to it, so it is a
+  round of its own.
+- **The head-to-floor rise is already a param, and the record that said otherwise
+  was wrong.** It is `$water_depth + $quay_h`, and an exhaustive scan for
+  param-free arithmetic finds only anchor-centring on X anywhere in the program.
+  What the zone lacks is a *named datum* a composer can set: the offset is an
+  emergent sum of two block thicknesses, retunable only by shallowing the sea or
+  deleting the quay course. The written 1.9 is unreachable either way, because
+  every rise in this grammar is an integer.
 - Lighting is `unmeasured` and cannot be otherwise: `delve-admit lighting` takes
   one structure template and refuses a tile set, and running it on a single tile
   would write a second metadata document describing one slice of a building. No
@@ -1423,9 +1477,16 @@ so it cost the shipped piece nothing and bought it correctness everywhere else.
   band's course above the beam is the piece's top and there is nothing to see
   through it to. At playable scale the ceiling carries the recognition; the
   rafter-by-rafter detail it was never going to have is not a defect.
-- The piece declares no spatial contract, so every contract obligation examined
-  nothing and `traversable`'s binding counts standable cells on two region faces
-  rather than declared ways in.
+- **The piece declares a spatial contract.** Seven spaces, three out-of-walk
+  regions and eight edges: the chain of rooms on one floor — hall, door
+  threshold, stores, gallery, motif threshold — and the dumbwaiter duct down to
+  the cistern, an entry floor and a landing four courses under it joined by a
+  `drop`. `traversable` now binds 2 declared ways rather than 18 standable cells
+  on two region faces. The bait perch and the two truss corbels earn `posted`;
+  the roof timbers earn `facade`, every one of their 28 standable cells reached
+  by the air over the piece's open top. `duct/drop` is the datum a composing
+  whole binds, and the declared rise guards it: moved to 3, expansion refuses
+  naming both numbers.
 - Judge it from the eye shots. A roofed interior photographs as a closed box from
   outside, so the exterior orbit cameras are the weakest shots in the set;
   `review/z5/README.md` says which camera answers which question.
@@ -1473,9 +1534,12 @@ survives is the shape of the plan — one run of named segments with a side stri
 design/programs/z6-cistern-deep.json --region 40x10x100 --seed 1 --traversable
 --allow-falls --id z6-cistern-deep`. Every gate passes with a non-zero binding:
 `blocks-exist` 12, `shape-complete` 12, `states-complete` 12, `oriented-fills`
-527, `non-empty` 40000, `traversable` 12 (4 standable cells at the approach face
-— which are the duct and nothing else, the rest of that face being solid — and 8
-at the exit face, where the aisle's last arch is). 26463 filled cells of 40000,
+527, `non-empty` 40000, `traversable` 2 (the two declared ways in or out — the
+duct and the aisle's last arch — with a walk, falls allowed, between them),
+`contract-well-formed` 13, `contract-coverage` 3168, `contract-closure` 9311,
+`contract-edge-proof` 5, `contract-reachability` 3168, `contract-anchors` 14,
+`contract-exterior-faces` 2, `contract-no-body-majority` 3168. 26463 filled
+cells of 40000,
 12 distinct states, 3168 standable, silhouette complexity 1.11, 14 anchors.
 Reachability 3076 of 3168 standable cells (97.1%) from 8 grade entry cells, in 3
 pockets, each of which is a design and is named below. `delve-admit audit` passes
@@ -1597,11 +1661,39 @@ plane is a trapped pocket.
 - **No rule in this zone exposes a light-emitting role**, so the piece is dark
   and the shaft of daylight the scene is composed around is a hole rather than a
   beam. Light arrives as campaign-bound content on the declared anchors.
-- **The piece declares no spatial contract**, so every contract obligation
-  examined nothing and `traversable`'s binding counts standable cells on two
-  region faces rather than declared ways in. It would say something real here —
-  the zone has one entry, one interior route and two openings that are not on the
-  same axis — and it is the largest single thing left undone against this piece.
+- **The piece declares a spatial contract.** Six spaces and seven edges: the
+  entry duct, the cistern, the two one-block steps to the well's silt bed, the
+  debris platform under the collapse, and the supply channel's invert — declared
+  a space behind a one-way `drop`, because a body does go there and no
+  out-of-walk kind fits a cut that opens upward, holds no anchor, and is reached
+  by outside air on only 14 of its 68 cells. This zone therefore declares no
+  out-of-walk region at all, which is answered by the rule below rather than by
+  inventing one. `drop` is the datum a whole binds, guarded by the declared rise.
+- **One authority decides that zero, and this zone's emptiness proves itself.**
+  Both doors onto the contract checker — `expand` and `audit` — take the
+  same verdict from the same function, and the strict reading holds: a gate that
+  examined nothing has proved nothing. What saves this zone is not an exemption
+  it claims but a fact the checker computes about it. `contract-no-body` is
+  withheld, by name and with its reason printed, when a contract declares no
+  out-of-walk region **and does not need one** — every standable cell lying in a
+  declared space or a traversal edge's transit volume. That is the whole of this
+  building, so the gate is not emitted and the zone is judged by 14. The
+  withholding is secured by something the defect cannot supply: deleting a
+  region that qualifies for nothing does not delete its cells, and they must
+  then sit in a space, where the walk has to reach every one of them and the
+  boundary has to close around them — strictly more proof than any out-of-walk
+  kind asks for. Inventing a region to turn the audit green would have been the
+  vacuity the gate exists to catch, one layer out.
+- **Two things this zone cannot say, each established by a refusal.** S4's
+  grille stands in the piece's outer column rather than between the room and its
+  niche, so a `barred` edge refuses — "the bar does not bar anything" — and an
+  opening claimed across both columns refuses as well, because with the grille up
+  no cell there is reached by the air outside. The niche is part of the cistern
+  and S4 is a seam the composing map declares. Separately, the collapse shaft and
+  the aisle arch at z=0 cannot both be declared: an exterior edge is a property of
+  the space and not of a face, so one edge on `cistern` exported both at once and
+  `traversable` asked for a walk between a hole in the ceiling and a doorway on
+  the floor. The two declared ways are the duct and the arch.
 - **`tools/block-appearance.py --program` does not read a `local` paint.** Over
   this seven-role palette it reports `binding: 5 paint(s) examined` and skips
   `render` and `grate` in silence; their numbers in the table above came from
@@ -1725,9 +1817,34 @@ scope's own frame**.
   because a lighting number for one slice of a building is a number about
   nothing. No rule in this zone exposes a light-emitting role either, so light
   arrives as campaign-bound content on the declared anchors.
-- The piece declares no spatial contract, so every contract obligation examined
-  nothing and `traversable`'s binding counts standable cells on two region faces
-  rather than declared ways in. This is true of every zone in the campaign.
+- **The cobbled way is declarable, and the claim that it was not is withdrawn.**
+  A climb is an EDGE, not a space: the seven terraces union into one transit
+  volume, and a `via` carries no one-floor rule. Modelled as the `via` of a
+  `stair` edge from `ramp/foot` to `ramp/head_way` — both of which are their own
+  rules and so their own names — it proves green, rise 6 as declared. The earlier
+  refusal ("standable floor at y 1..7, which is 7 levels") was the answer to the
+  wrong question.
+- **What blocks this zone is that the tower stair does not climb.** Declared with
+  each storey its own space and the stair well as their shared transit volume,
+  `contract-edge-proof` refuses every flight, including the ones that are not the
+  designed break: "the climb does not connect its two ends through its own
+  treads". Including the tread blocks themselves in the transit volume does not
+  change it, so it is not a claiming omission. The zone's own on-foot measurement
+  agrees by a different code path — the four storeys and the belfry come out as
+  four separate unreachable pockets of 264, 242, 260 and 397 cells. The storeys
+  above the tower foot therefore cannot be declared as reachable spaces, and no
+  claim structure closes it: the repair is to the stair's geometry.
+- **The rise range is a separate matter and does not block the contract.** The
+  declared rises of 6, 6, 6 and 7 between the storeys are accepted as written —
+  the edge proof objects to the connection, never to the numbers — so the
+  contract can state this tower's geometry at any parameter value. What
+  `4 x $storey + 1` against a guarded `$storey ge 5` rules out is the DESIGN
+  plane: a foot-to-belfry rise of 16, which `map-zones.md` asks for, is
+  unreachable at every parameter value. That is a rule change and a design
+  question, and it is not what stops the declaration.
+- The rise is `$storeys + 1` rather than a bare literal, but `storeys` has
+  exactly one legal value at this region: `zone_plan` guards
+  `dim.y ge base_height + storeys + belfry_run`, and 48 = 7 + 24 + 17 exactly.
 - **`tools/block-appearance.py --program` does not see a `local` paint.** Run
   against this program it reports `binding: 4 paint(s) examined` where the palette
   has ten roles: the six wrapped in `{"local": …}` are skipped in silence, and the
