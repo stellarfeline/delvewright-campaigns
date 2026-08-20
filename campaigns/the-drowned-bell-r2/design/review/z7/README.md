@@ -8,6 +8,8 @@ and one eye-level view per anchor, looking the way that anchor faces. Nothing
 aims a camera by hand, so **the way to get an eye on a thing is to declare an
 anchor at it** — and the anchors below were placed for the campaign first and
 chosen as cameras second, which is why a few of them photograph a wall and say so.
+Three anchors declared after this set was taken have no camera in it yet; the last
+section names them.
 
 There is **no square-on elevation of any face** anywhere in the set. Every
 exterior camera sits on a corner bearing and the only level camera stands inside
@@ -60,6 +62,19 @@ how many open cells lie ahead of it.
   block short of the tower's front wall. Its derived facing is the way the climb
   runs, so it looks into that wall at zero clearance. `eye-broken_flight` is the
   view of the same break from below, which is the one the beat is about.
+
+## Three anchors this set does not photograph
+
+`anchor/tread-stand`, `anchor/tread-lower` and `anchor/tread-upper` are where the
+broken flight is repaired (`../../GENERATION.md`, Z7). They are declared for the
+campaign, and `shots.json` was taken before them, so the set is three cameras
+short. Two of the three could never carry a useful one: `tread-lower` at
+`13,11,87` and `tread-upper` at `13,12,86` are cells the way lays, so no body
+stands in either — the same reason `anchor/belfry-stairhead` photographs nothing.
+`tread-stand` at `13,11,88` is a body's cell with two clear cells ahead of it, the
+two courses that are missing and the front wall behind them; that is the shot the
+next render pass owes, and it is the view the party has while doing the work,
+where `eye-broken_flight` is the view they have while finding it.
 
 ## Reproducing the set
 

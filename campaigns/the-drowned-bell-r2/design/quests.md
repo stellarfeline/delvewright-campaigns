@@ -30,12 +30,22 @@ list — no optional node is ever a prerequisite of a critical node.
 | CP-17 | The tongue | Z6 | taking the bell's tongue, uncovered by `TIDE-4` and by nothing else | CP-18 |
 | CP-18 | The grille | Z6 | breaking **S4** outward (the only route back up) | CP-19 |
 | CP-19 | The ramp | Z7 | reaching the tower foot | CP-20 |
-| CP-20 | The broken flight | Z7 | bridging the stair with the rope from CP-05 | CP-21 |
+| CP-20 | The broken flight | Z7 | laying the two missing tread courses at the head of the flight, with the rope from CP-05 | CP-21 |
 | CP-21 | The stairhead | Z7 | resolving **Odo Ferrier** (defeat *or* the tally, see OPT-C) | CP-22 |
 | CP-22 | Hang the tongue | Z7 | fitting tongue and rope to the bell | **END** |
 
 Required carried objects: exactly two — the **rope** (CP-05) and the **tongue**
 (CP-17). Nothing else in the delve is a key item on the critical path.
+
+**CP-20 opens a way the zone declares, and the cells are the prefab's own.** Z7's
+spatial contract states the first flight severed as built and names what fills
+it, so the node is two region fills — `anchor/tread-lower` and
+`anchor/tread-upper`, each a box of extent `1,0,0` — pressed from
+`anchor/tread-stand`, the cell at the head of the surviving flight the party is
+standing in. Both fills or neither: one alone leaves the tower shut, and so does
+a single fill over the two courses' bounding box. `anchor/broken-flight` is the
+view of the break from the flat below and is not where this node writes anything.
+The derivation and the measurements are in `GENERATION.md`, Z7.
 
 **The tide is on this chain and nowhere else.** Four steps, four critical nodes,
 one direction each, no wall clock: the sea does not move until the player moves
