@@ -89,8 +89,8 @@ value is 9: not 21, not 13, and not any number on the command line either.
 blocks or narrower* — so what gets reported is a condition that **held**, printed
 as `forbidden (under none_of)` with the values that made it hold. And its last
 conjunct divides by a parameter that is still zero. That conjunct is never
-evaluated during the build, because the conjunct before it is already false and
-the test stops there; the report walks the guard anyway and names it rather than
+evaluated during the build, because an earlier conjunct is already false and the
+test stops there; the report walks the guard anyway and names it rather than
 leaving a silent hole where a constraint should be.
 
 **Alternative 3 is a frame guard**, and it prints the frame it wanted beside the
