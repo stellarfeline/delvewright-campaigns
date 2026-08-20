@@ -1,0 +1,264 @@
+{
+  "version": "1.5.0",
+  "name": "signal_station",
+  "start": "station",
+  "params": {
+    "crown": 1,
+    "deck": 3,
+    "flight": 0,
+    "landing": 4,
+    "stringer": 2
+  },
+  "palette": {
+    "apron": "minecraft:gravel",
+    "deck": "minecraft:oak_planks",
+    "mass": "minecraft:stone_bricks",
+    "parapet": "minecraft:polished_andesite",
+    "rail": "minecraft:cobblestone"
+  },
+  "rules": {
+    "station": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "apron" } },
+            { "op": "call", "symbol": "terrace" }
+          ]
+        }
+      }
+    ],
+    "terrace": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 5 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 5 } }
+          ],
+          "children": [
+            { "op": "call", "symbol": "flank" },
+            {
+              "op": "reorient",
+              "orient": {
+                "x": "world_z",
+                "y": "world_y",
+                "z": "world_x",
+                "mirror": { "z": true }
+              },
+              "body": { "op": "call", "symbol": "plan" }
+            },
+            { "op": "call", "symbol": "flank" }
+          ]
+        }
+      }
+    ],
+    "flank": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "mass" } },
+            { "op": "fill", "material": { "role": "parapet" } }
+          ]
+        }
+      }
+    ],
+    "plan": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": { "expr": "dim", "dim": "y" },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": { "expr": "param", "name": "deck" },
+                "op": "add",
+                "rhs": { "expr": "param", "name": "stringer" }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": { "expr": "dim", "dim": "z" },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": { "expr": "param", "name": "landing" },
+                  "op": "add",
+                  "rhs": { "expr": "param", "name": "deck" }
+                },
+                "op": "add",
+                "rhs": { "expr": "int", "value": 5 }
+              }
+            },
+            {
+              "cond": "any",
+              "of": [
+                {
+                  "cond": "cmp",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": { "expr": "dim", "dim": "z" },
+                    "op": "sub",
+                    "rhs": { "expr": "param", "name": "landing" }
+                  },
+                  "op": "ge",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": { "expr": "param", "name": "deck" },
+                      "op": "mul",
+                      "rhs": { "expr": "param", "name": "stringer" }
+                    },
+                    "op": "add",
+                    "rhs": { "expr": "int", "value": 2 }
+                  }
+                },
+                {
+                  "cond": "cmp",
+                  "lhs": { "expr": "dim", "dim": "smallest" },
+                  "op": "gt",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": { "expr": "param", "name": "landing" },
+                    "op": "add",
+                    "rhs": { "expr": "int", "value": 6 }
+                  }
+                }
+              ]
+            },
+            {
+              "cond": "none_of",
+              "of": [
+                {
+                  "cond": "cmp",
+                  "lhs": { "expr": "dim", "dim": "z" },
+                  "op": "lt",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": { "expr": "param", "name": "landing" },
+                      "op": "add",
+                      "rhs": { "expr": "param", "name": "deck" }
+                    },
+                    "op": "add",
+                    "rhs": { "expr": "int", "value": 4 }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "body": { "op": "call", "symbol": "terrace_plan" }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": { "expr": "dim", "dim": "y" },
+              "op": "eq",
+              "rhs": { "expr": "param", "name": "crown" }
+            },
+            {
+              "cond": "none_of",
+              "of": [
+                {
+                  "cond": "cmp",
+                  "lhs": { "expr": "dim", "dim": "x" },
+                  "op": "le",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": { "expr": "param", "name": "landing" },
+                    "op": "add",
+                    "rhs": { "expr": "int", "value": 6 }
+                  }
+                }
+              ]
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": { "expr": "dim", "dim": "z" },
+                "op": "div",
+                "rhs": { "expr": "param", "name": "flight" }
+              },
+              "op": "ge",
+              "rhs": { "expr": "param", "name": "deck" }
+            }
+          ]
+        },
+        "body": { "op": "fill", "material": { "role": "mass" } }
+      },
+      {
+        "weight": 1,
+        "when": { "cond": "orientation", "x": "x", "y": "y", "z": "z" },
+        "body": { "op": "fill", "material": { "role": "rail" } }
+      }
+    ],
+    "terrace_plan": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "deck" } },
+            { "op": "call", "symbol": "rail_walls" },
+            { "op": "fill", "material": { "role": "parapet" } }
+          ]
+        }
+      }
+    ],
+    "rail_walls": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "rail" } },
+            { "op": "void" },
+            { "op": "fill", "material": { "role": "rail" } }
+          ]
+        }
+      }
+    ]
+  }
+}
