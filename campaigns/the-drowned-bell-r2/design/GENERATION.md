@@ -1898,7 +1898,10 @@ ruins beside it and the ward as deep as the low walls standing in it, both by
 the program's own parameters rather than by a number chosen to make the gate
 green; the air above each is claimed separately and out of walk. Six faces are
 exported where the sky-reaching draft exported eight, and the two that went are
-the two that were not doors.
+the two that were not doors. The cut is owed exactly where a space carries an
+`exterior` edge, because that is the only kind of space a face is exported from:
+`approach/crest` keeps its full column and is 6724 cells of mostly air, which
+costs nothing and says nothing, because no exterior edge names it.
 
 **A way is one material, so the tread it lays is one block.** `stair/rock` is a
 four-member mix and is refused for a way under the same rule that refuses a mix
