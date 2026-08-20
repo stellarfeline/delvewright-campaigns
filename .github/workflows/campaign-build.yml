@@ -1,0 +1,202 @@
+name: campaign build
+
+# Every campaign in this repo compiles, on every push and every pull request.
+#
+# Why this exists. The other workflows here are `prefab-audit.yml` (path-filtered
+# to `prefabs/**` / `catalog/**`), `release.yml` (tag-only) and `workflow-lint.yml`
+# (path-filtered to `.github/workflows/**`), so a push that touched nothing but
+# `campaigns/**` reported ZERO checks, and the only thing that ever compiled a
+# campaign was a release tag. A campaign sat un-buildable on `main` for days as a
+# result: the engine grew `DW0331` (dialogue option labels wider than the button
+# vanilla draws them on) and `DW0205` (a dialogue button that lets the party skip
+# a load-bearing beat) after the campaign was authored, and nothing anywhere went
+# red, because nothing anywhere built it. The engine repo does not close this
+# either: its CI compiles only its own `crates/dsl/fixtures/**` campaigns, never
+# a real one.
+#
+# What this gate is, and is not. The STATIC ladder — `delvec validate` (schema +
+# referential + text fit + l10n sidecars) and `delvec build` (placement,
+# reachability, emission) — per campaign, per push, in every language the
+# campaign declares. The RUNTIME ladder (PackTest, the bot playthrough, the
+# multi-arch image) stays where it is: `release.yml`, on a release tag. That is
+# the tiered-testing split applied to the repo where campaigns actually live.
+#
+# Which engine. `versions.toml` `[engine].ref` — the same pin `release.yml`
+# builds a release with, so "green here" means "this campaign compiles with the
+# engine that would ship it", and the answer is reproducible from two commit ids
+# (ADR-0006). Deliberately NOT the engine repo's `main`: this repo must not go
+# red for a change that has not been pinned yet. Re-pinning the engine is the
+# moment new compiler obligations arrive, and that pull request is where a
+# campaign's adoption round is scheduled — which is exactly what this gate makes
+# visible.
+#
+# Credentials. Both repos are public, so the cross-repo checkout needs no
+# credential of its own; the default GITHUB_TOKEN reaches the engine repo, same
+# as `prefab-audit.yml`. That is not cosmetic: GitHub withholds secrets from
+# fork-based pull requests, so a cross-repo PAT here would leave the community
+# contribution path as the one path this gate did not cover.
+
+on:
+  pull_request:
+    paths:
+      - "campaigns/**"
+      - "prefabs/**"
+      - "catalog/**"
+      - "versions.toml"
+      - ".github/workflows/campaign-build.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "campaigns/**"
+      - "prefabs/**"
+      - "catalog/**"
+      - "versions.toml"
+      - ".github/workflows/campaign-build.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Which campaigns exist, as a matrix. A campaign directory is one holding a
+  # `world.json` — the same rule the storybook version check uses, so the two
+  # cannot disagree about what a campaign is.
+  discover:
+    name: discover campaigns
+    runs-on: ubuntu-latest
+    outputs:
+      campaigns: ${{ steps.list.outputs.campaigns }}
+      count: ${{ steps.list.outputs.count }}
+    steps:
+      # Text only — no LFS. The prefab bodies are not read here.
+      - uses: actions/checkout@v4
+
+      - name: list campaign directories
+        id: list
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, pathlib, sys
+          root = pathlib.Path("campaigns")
+          ids = sorted(p.name for p in root.iterdir()
+                       if p.is_dir() and (p / "world.json").is_file())
+          print("campaigns=" + json.dumps(ids))
+          print("count=" + str(len(ids)))
+          print(f"discovered {len(ids)} campaign(s): {', '.join(ids) or '(none)'}",
+                file=sys.stderr)
+          PY
+
+      # A gate that binds to nothing is vacuous, not a pass. Zero campaigns means
+      # the discovery rule broke, not that the repo is clean.
+      - name: the matrix binds to at least one campaign
+        env:
+          COUNT: ${{ steps.list.outputs.count }}
+        run: |
+          set -euo pipefail
+          if [ "$COUNT" -eq 0 ]; then
+            echo "::error::no campaign directory found under campaigns/ (a campaign is a directory holding world.json) — this gate would pass vacuously"
+            exit 1
+          fi
+          echo "campaign build gate binds to $COUNT campaign(s)"
+
+  build:
+    name: build ${{ matrix.campaign }} (validate + analyze + emit)
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      # One red campaign must not hide the state of the others.
+      fail-fast: false
+      matrix:
+        campaign: ${{ fromJson(needs.discover.outputs.campaigns) }}
+    steps:
+      # With LFS: `delvec build` copies the prefab `.nbt` bodies into the
+      # datapack, and an LFS pointer is not an NBT file.
+      - name: check out content repo (with LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: read the pinned engine from versions.toml
+        id: engine
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import tomllib
+          e = tomllib.load(open("versions.toml", "rb"))["engine"]
+          print(f"repo={e['repo']}")
+          print(f"ref={e['ref']}")
+          PY
+
+      - name: check out the pinned engine
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.engine.outputs.repo }}
+          ref: ${{ steps.engine.outputs.ref }}
+          path: engine-src
+
+      - name: cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine-src
+          key: delvec-${{ steps.engine.outputs.ref }}
+
+      # Selected by BINARY name, never by package name. The engine's compiler
+      # package has been renamed once already, and a build command that names the
+      # package is a value that moves underneath a pin nobody re-tests: the same
+      # command spelled `-p <package>` was correct at one pin and a hard failure
+      # at the next, with nothing in between to say so. `[[bin]] name = "delvec"`
+      # is stable across that rename and is the name ADR-0016 gives the engine.
+      - name: build delvec
+        working-directory: engine-src
+        run: cargo build --release --bin delvec
+
+      - name: record the engine this campaign is built with
+        env:
+          ENGINE_REPO: ${{ steps.engine.outputs.repo }}
+          ENGINE_REF: ${{ steps.engine.outputs.ref }}
+        run: |
+          set -euo pipefail
+          echo "engine ${ENGINE_REPO}@${ENGINE_REF}"
+          engine-src/target/release/delvec --version
+
+      # Static ladder, stage one: schema + referential + text fit + l10n sidecar
+      # coverage. Language-independent apart from the sidecar checks, so it runs
+      # once for the whole campaign.
+      - name: validate
+        env:
+          CAMPAIGN: ${{ matrix.campaign }}
+        run: |
+          set -euo pipefail
+          engine-src/target/release/delvec validate \
+            "campaigns/${CAMPAIGN}" --prefabs prefabs
+
+      # Stage two: the full deterministic build (implies validate + analyze), in
+      # the canonical English and in every language the campaign declares — an
+      # emission defect can be language-specific, and a localized build is what
+      # a playtest is run on.
+      - name: build every declared language
+        env:
+          CAMPAIGN: ${{ matrix.campaign }}
+        run: |
+          set -euo pipefail
+          langs=$(python3 -c '
+          import json, sys
+          w = json.load(open(sys.argv[1]))
+          print(" ".join(["en", *w["content"].get("languages", [])]))
+          ' "campaigns/${CAMPAIGN}/world.json")
+          echo "languages: ${langs}"
+          fail=0
+          for lang in ${langs}; do
+            echo "--- building ${CAMPAIGN} (--lang ${lang}) ---"
+            if ! engine-src/target/release/delvec build \
+                 "campaigns/${CAMPAIGN}" \
+                 -o "${RUNNER_TEMP}/delve-${CAMPAIGN}-${lang}" \
+                 --prefabs prefabs --lang "${lang}"; then
+              echo "::error::${CAMPAIGN} does not build at --lang ${lang}"
+              fail=1
+            fi
+          done
+          exit "${fail}"
