@@ -1787,8 +1787,9 @@ hung in a timber frame that is part of the building, with a walk-around lane wid
 enough to circle it and headroom enough to stand under its mouth.
 
 **The tower above the break is unreachable on foot, and that is the design.** The
-household broke the first flight; the campaign closes the gap on
-`anchor/broken-flight` with the rope carried from Z1. So the expansion's
+household broke the first flight; the campaign closes the gap by laying
+`anchor/tread-lower` and `anchor/tread-upper`, worked from `anchor/tread-stand` at
+the head of the surviving flight, with the rope carried from Z1. So the expansion's
 reachability line raises everything over the break as one unreachable sheltered
 pocket, and this paragraph is the reader §4 asks for — the pocket is the design,
 not rooms with no way in. The zone accordingly claims `traversable` and **not**
@@ -1817,29 +1818,40 @@ every one with a non-zero binding: `blocks-exist` 25, `shape-complete` 25,
 `states-complete` 25, `oriented-fills` 272, `non-empty` 246000, `traversable` 6,
 `contract-well-formed` 25, `contract-coverage` 6248, `contract-closure` 4876,
 `contract-edge-proof` 8, `contract-no-body` 6, `contract-reachability` 5187,
-`contract-anchors` 37, `contract-exterior-faces` 2, `contract-no-body-majority`
+`contract-anchors` 40, `contract-exterior-faces` 2, `contract-no-body-majority`
 6248. `traversable` counts declared doors rather than standable cells on two
 region faces, which is what having a contract buys it: 6 where the contractless
-reading said 82. 38317 filled cells, 25 distinct
+reading said 82. `contract-anchors` splits its 40 as 13 in a space, 25 in a via
+and 2 in a way — the way pair being the two treads CP-20 lays, which is the
+engine saying in the manifest that those anchors are the declared opening rather
+than a private copy of it. 38317 filled cells, 25 distinct
 states, 6248 standable, footprint 5125 columns, perimeter 332, silhouette
-complexity 1.16, 37 anchors. Reachability: 4259 of 6248 standable cells reachable
+complexity 1.16, 40 anchors. Reachability: 4259 of 6248 standable cells reachable
 on foot from 41 grade entries (68.2%), 1212 unreachable sheltered in 43 pockets —
 the largest by far is the whole tower over the break at 1102 cells, and the next
 two are the inside of the bell. `delve-admit audit` passes over 246000 blocks (0
 forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified);
 the block-state set is the same 25 it has always been.
 
-**Provenance** — program `sha256:dfce5bb569b6f789ad50f01ae2d2222b0b459ded2af1be86c7bbc9cca8fa634d`
+**Provenance** — program `sha256:c0e0a23554cb9e30a237f57e8747eec39cef59d507a7acd8650a9cff2ec2238a`
 (the hash of the *effective* program, which is what regenerates the bytes and is
 carried in the manifest's own `generated_by.program_hash`; the sha256 of the
 committed file itself is
-`1147f28f8158c19483688b1d481380802f8b21fb6caa359ce9daaacfaf2162ae`), seed 1,
+`08e595eb00c7deb0a314f458c36efb8aaac94caaad602674a39abc111f0449bf`), seed 1,
 region 41x48x125. Re-expanding those inputs reproduces every shipped file byte for
 byte — verified by comparing file **contents** on stdin, never a path, since
 hashing a `shasum` line hashes the filename with it. The tile contents are
 `0ad4f90e67495b9c6b472cf4e575be2fcd50c5d45589c6e6ebcc427fd039b333`,
 `607a8e442993832ee2596023970a32bab2ad2d399c9904d0af855db5aef73ee3` and
 `bf50ce1d43f2d7cff73c4cbf2d30fbd00f6bffd29f54347aab9c93ccbd3cc967`.
+
+**The program hash moves and the building does not.** Declaring the three beat
+anchors and renaming `stair/foot_flat` changes the effective program, so the
+manifest's `program_hash` and provenance line move with it — and a `mark` places
+no block and a rule name reaches no output, so the three tile contents above are
+the same three strings they were before the edit, `cmp` agreeing file for file.
+The manifest's own diff is the three anchors and the two hashes, and nothing else:
+the resolved spatial contract compares equal object for object.
 
 **The first tile is byte-identical to the tile before the stair was repaired, and
 the other two are not.** The well is drawn after the approach in the seeded
@@ -1957,7 +1969,48 @@ flat stretch where the lower treads were is bare floor a body walks across,
 because the tower's own base fills the courses beneath it. So the cells that are
 not there are the ones at the TOP, and a region carved at the foot would open
 nothing: filling the whole lower gap moves the reachable count by two cells and
-leaves the tower shut. The declaration names the cells that carry the climb.
+leaves the tower shut. The declaration names the cells that carry the climb. The
+rule that makes that flat is `stair/foot_flat`, named for the floor it produces
+rather than for a break, because the severance is at the head of the run and not
+here.
+
+**The beat stands on the last surviving tread, and that is not where the break is
+photographed from.** `anchor/broken-flight` sits at `13,7,97`, on the flat where
+the lower treads were — the place the break is *seen* from, four courses below
+the cells that carry the climb and ten blocks along it. A beat that wrote blocks
+at that anchor would close nothing, and the number says so: filling the whole of
+that flat takes the reachable count from 4259 to 4261 and leaves the tower shut.
+So the repair is declared where it happens. `anchor/tread-stand` at `13,11,88` is
+the cell at the head of the surviving flight that the repair leaves alone, facing
+the two courses that are gone; it is reached from the tower door before anything
+is laid, and it is still standable afterwards, because nothing the way lays
+touches it. The two
+courses are `anchor/tread-lower` at `13,11,87` and `anchor/tread-upper` at
+`13,12,86`, and the manifest resolves both to `way:stair/broken-flight` — the
+anchors ARE the way rather than a second description of it that could drift from
+it.
+
+**The nearest-looking anchor is the one that stops existing.** `anchor/stair-head-1`
+at `13,11,86` is the auto-indexed mark at the top of the run, and it is the obvious
+thing to reach for: it is at the break, and its name says stair head. A body stands
+in it as built and does not once the way is laid — `tread-upper` is the cell
+directly over it, so the repair turns it into the riser of the new step. A beat
+anchored there would put the party inside its own repair, and would do it silently.
+`tread-stand` sits two cells back along the run at the same level, on the last
+course of surviving tread the repair leaves clear, which is why it is a declared
+name rather than an index.
+
+**Both courses, or nothing, and the enclosing box is not the beat.** CP-20 is two
+region fills, each an anchor-centred box of extent `1,0,0` on a tread anchor, and
+together they are exactly the six cells the contract declares — set equality
+against the manifest's own boxes, not a count. Neither half is a smaller version
+of the beat: the lower course alone leaves the reachable count at 4259, the upper
+course alone drops it to 4256, and only both together raise it to 5361 and put a
+body in the belfry. Nor is one fill over the region's bounding box the beat: `x
+12..14 y 11..12 z 86..87` covers every declared cell, and it walls the climb at
+4253 — six cells BELOW doing nothing at all, while reading exactly like "fill the
+region". A way that is a stair is not a box, and a campaign that restates a
+declared way as boxes gets no help from anything when it restates it wrongly.
 
 **An open space is the stratum a body walks, not the sky column over it.** This
 is the first zone here whose spaces are mostly `open`, and the first draft
@@ -2051,27 +2104,22 @@ measured rather than assumed.
   finding. The general form reaches well past this zone — every one-way shortcut
   opened from the far side, every lowered bridge, every placed ladder is the same
   shape, and all of them are now writable.
-- **`anchor/broken-flight` and the cells the way lays are not in the same place,
-  and a beat written against the anchor has to know it.** The anchor sits at
-  `13,7,97`, on the flat where the lower treads were; the region the contract
-  lays is `x 12..14 y 11..12 z 86..87`, at the head of the surviving flight,
-  four courses up and ten blocks along. Both are right about the fiction — one
-  is where a party stands to work, the other is where the treads go back — but
-  a beat that reads "close the gap at `anchor/broken-flight`" and writes blocks
-  there closes nothing, because that stretch is already walkable. Whoever writes
-  the beat either moves the anchor to the head of the flight or writes the beat
-  as reaching from the one place to the other. This round did not move the
-  anchor: it is the campaign's own name for a location, and quests refer to it.
-- **`stair/gap` is named for a break it does not make, and the name is the only
-  thing wrong.** The rule voids six blocks of the flight's run and marks
-  `anchor/broken-flight` on them, but the tower's base fills the courses below,
-  so what it produces is floor — walkable, and level with the tower foot. The
-  severance it was meant to make is real and is three courses higher, produced
-  by the same rule: eating six blocks of run leaves the flight two courses short
-  of the landing above. Nothing is misbuilt and the declaration states the
-  severance where it is; a rule named for one effect while producing another is
-  a trap for the next reader, and renaming it is a byte-neutral edit this round
-  did not take because it is outside the declaration.
+- **The DSL has no way to say "lay this declared way", so the campaign restates
+  the cells.** The contract names the region and the block, the manifest carries
+  the exact boxes, and a quest effect can reach neither: CP-20 has to spell the
+  same six cells again as two anchor-centred fills, and nothing compares the two
+  statements. The restatement is not hard to get wrong in a way that looks right
+  — the region's bounding box is one fill, covers every declared cell, and leaves
+  the tower shut with six fewer cells reachable than doing nothing. This is a
+  capability gap in the engine, not a defect in this zone, and it is worth naming
+  because the general shape is every repaired stair, lowered bridge and placed
+  ladder the `way` surface was written for.
+- **The review set predates the three beat anchors.** `shots.json` carries a
+  camera per anchor and was taken before `tread-stand`, `tread-lower` and
+  `tread-upper` were declared, so it is three cameras short; `review/z7/README.md`
+  says which and what each would show. Re-rendering is owed at the next render
+  pass and changes no geometry — the three `.nbt` tiles are byte-identical across
+  this edit, `cmp` file for file.
 - **The envelope vocabulary has no term for a roofed, open-sided space, and the
   belfry is one.** An arcade is `enclosed` only in the sense that a roof stands
   over it; its four faces are open bays a player walks round the bell in and
