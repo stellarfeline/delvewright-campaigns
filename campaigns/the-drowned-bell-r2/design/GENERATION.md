@@ -310,8 +310,9 @@ that — it faces out of the piece, which is exactly what it is for.
   cells that sit on the piece's outer layer, and both of this zone's exterior
   spaces are open to the sky: their air runs to the top of the region, so the
   region's top plane is part of them and the derivation reads it as a way out.
-  Two `up` faces of sky came out that way beside the two real ones, and no walk
-  reaches sky, so a gate asking for a walk between every pair of declared ways
+  Six faces came out of two edges that way: four around the sides, and two of
+  open sky. No walk reaches sky, so nine of the fifteen pairs the gate examines
+  were severed, and a gate asking for a walk between every pair of declared ways
   is asking for something no building can supply. The declaration is the half
   that was wrong, and the repair is the one the surface is for: `causeway/mouth`
   is the walking width of the causeway where it meets the shore, `ledge/mouth`
