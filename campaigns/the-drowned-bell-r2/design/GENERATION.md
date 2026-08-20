@@ -115,7 +115,7 @@ the zone set is complete).
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
 | Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
-| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x48x125; review set in `review/z7/` — see below |
+| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x48x125 into a 3-tile set; declares a spatial contract at document version `1.7.0`, and its broken flight is a contingent edge, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z7/` — see below |
 
 Zone order of production is by complexity, hardest first (owner decision,
 2026-08-12): the most complex zone is produced and owner-reviewed before the
@@ -1812,10 +1812,15 @@ the row now reads `41x48x125`. The footprint the campaign chose is untouched, an
 have been the block that shares the object's name, laid where the object goes.
 
 **Expansion** — `delve-grammar expand --file design/programs/z7-bell-tower.json
---region 41x48x125 --seed 1 --traversable --id z7-bell-tower`. Every gate passes
-with a non-zero binding: `blocks-exist` 25, `shape-complete` 25, `states-complete`
-25, `oriented-fills` 272, `non-empty` 246000, `traversable` 82 (41 standable cells
-on the approach face, 41 on the exit face). 38317 filled cells, 25 distinct
+--region 41x48x125 --seed 1 --traversable --id z7-bell-tower`. Fifteen gates pass,
+every one with a non-zero binding: `blocks-exist` 25, `shape-complete` 25,
+`states-complete` 25, `oriented-fills` 272, `non-empty` 246000, `traversable` 6,
+`contract-well-formed` 25, `contract-coverage` 6248, `contract-closure` 4876,
+`contract-edge-proof` 8, `contract-no-body` 6, `contract-reachability` 5187,
+`contract-anchors` 37, `contract-exterior-faces` 2, `contract-no-body-majority`
+6248. `traversable` counts declared doors rather than standable cells on two
+region faces, which is what having a contract buys it: 6 where the contractless
+reading said 82. 38317 filled cells, 25 distinct
 states, 6248 standable, footprint 5125 columns, perimeter 332, silhouette
 complexity 1.16, 37 anchors. Reachability: 4259 of 6248 standable cells reachable
 on foot from 41 grade entries (68.2%), 1212 unreachable sheltered in 43 pockets —
@@ -1824,11 +1829,11 @@ two are the inside of the bell. `delve-admit audit` passes over 246000 blocks (0
 forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified);
 the block-state set is the same 25 it has always been.
 
-**Provenance** — program `sha256:2a2609c1c272461de281b0d1ef6f98fb324fcd2b710823d804e062e1dc62eac6`
+**Provenance** — program `sha256:dfce5bb569b6f789ad50f01ae2d2222b0b459ded2af1be86c7bbc9cca8fa634d`
 (the hash of the *effective* program, which is what regenerates the bytes and is
 carried in the manifest's own `generated_by.program_hash`; the sha256 of the
 committed file itself is
-`595828a85793a857c49fce83df31cda9a093d80dd3f9e530624e91eb277d4b0a`), seed 1,
+`1147f28f8158c19483688b1d481380802f8b21fb6caa359ce9daaacfaf2162ae`), seed 1,
 region 41x48x125. Re-expanding those inputs reproduces every shipped file byte for
 byte — verified by comparing file **contents** on stdin, never a path, since
 hashing a `shasum` line hashes the filename with it. The tile contents are
@@ -1922,6 +1927,91 @@ clears the landing as well as the pier — sized to the pier alone it roofs the
 last treads and severs the climb one course below the bell — and it now stops
 short of the wall it used to hole.
 
+**The declaration, and the break declared as a way**
+
+Nine spaces, six out-of-walk regions and ten edges, all read off the program's
+own splits. The route is the zone: the ramp's foot, the climb to its crest, the
+ward the tower stands in, the door through the tower wall, the tower's foot
+room, and above it the ringing floor, the louvre stage, the stairhead and the
+belfry — each its own floor, each entered by a declared edge. The document
+version moves `1.4.0` → `1.7.0`, which is the version that owns `way`; `1.6.0`
+is reserved in the ledger and is refused, so the move is direct.
+
+**The broken flight is one contingent edge, and the region it opens is six
+cells.** `tower/foot --stair--> tower/ringing` carries
+`way { laid, stair/broken-flight, stair/tread }`: two treads at the head of the
+surviving flight — `x 12..14 y 11 z 87` and `x 12..14 y 12 z 86` — empty as
+built, and filled when content lays them. Laid, they carry a body off the last
+surviving tread, round the switchback and onto the landing of the flight above,
+and the whole tower opens: the four storey spaces and both upper stair volumes
+are named in the verdict as *reached only once `stair/broken-flight` is laid*.
+The proof is held to both halves and the verdict says so — **closed on the bytes
+as shipped, open on the single-delta copy** — so a break that opens nothing
+could not have been declared here.
+
+**The break is at the head of the flight, not at its foot, and the region says
+so.** The scene has the lower treads gone and what is left "climbing four
+courses and stopping"; the bytes agree exactly — the surviving treads climb from
+y 8 to y 11 and stop three courses under the landing they should meet, while the
+flat stretch where the lower treads were is bare floor a body walks across,
+because the tower's own base fills the courses beneath it. So the cells that are
+not there are the ones at the TOP, and a region carved at the foot would open
+nothing: filling the whole lower gap moves the reachable count by two cells and
+leaves the tower shut. The declaration names the cells that carry the climb.
+
+**An open space is the stratum a body walks, not the sky column over it.** This
+is the first zone here whose spaces are mostly `open`, and the first draft
+claimed each one all the way to the top of the region, because that is the shape
+of the `void` scope the rules produce. Every such space then exported an
+exterior face on the region's UP plane — the sky, declared as a way out of the
+piece — and `traversable` red, correctly, because no walk connects a face at
+y 47 to anything. An opening is claimed rather than discovered, and a claim that
+reaches the sky discovers one. So the ramp's foot is claimed as deep as the
+ruins beside it and the ward as deep as the low walls standing in it, both by
+the program's own parameters rather than by a number chosen to make the gate
+green; the air above each is claimed separately and out of walk. Six faces are
+exported where the sky-reaching draft exported eight, and the two that went are
+the two that were not doors. The cut is owed exactly where a space carries an
+`exterior` edge, because that is the only kind of space a face is exported from:
+`approach/crest` keeps its full column and is 6724 cells of mostly air, which
+costs nothing and says nothing, because no exterior edge names it.
+
+**A way is one material, so the tread it lays is one block.** `stair/rock` is a
+four-member mix and is refused for a way under the same rule that refuses a mix
+for a bar; `stair/tread` is bound to `minecraft:andesite`, the dominant member of
+the rock the surviving treads are built from.
+
+**The climb out of the foot owns its own transit volume.** A way lies inside its
+own edge's volume and is disjoint from every other edge's — that disjointness is
+what makes opening monotone. So the well carries two volumes: `tower/stair-well`
+for the contingent climb, and `tower/stair-upper` for the three climbs above it,
+which excludes the broken flight entirely.
+
+**The building did not change, proved three ways**: the three `.nbt` tiles hash
+identically to the pre-contract expansion when their **contents** are hashed on
+stdin rather than a `shasum` line that would carry the filename with it; `cmp`
+agrees file for file; and a voxel-by-voxel comparison of the assembled 41x48x125
+model finds 0 of 246000 cells differing. The structural edits the carve needed
+were demonstrated byte-neutral **on their own** first, in a draft that still
+declares `1.4.0` and carries no `contract` at all: 92 split nodes where the
+shipped program carries 84, six of the eight new ones inside a private copy of
+the run chain for this one flight and two outside it, every one of them cutting
+void into void. That draft expands to the same three tiles, which is also what
+says the version move is owed by the declaration and by nothing else — the
+structure compiles unchanged at the old version.
+
+**Judged at the pin, and the pin is named by revision.** The content repo's zone
+audit builds the engine at `57025e1c91626b71ab055f9b8a336caf9dc2489f`. Built
+from that revision in its own tree, `delve-grammar audit --library
+--campaign-root . --exclusions …` exits 0 over 43 programs with this zone at
+`pass 15 gate(s)`, and its output is identical line for line to the same audit
+run from a build at `7d7a1057748d8660ecb9334eed9bcbdb0ace3764`, four commits
+later. Both revisions are written out, because "the current engine" is a value
+that moves and this one moved during the round: `crates/grammar`, `Cargo.lock`,
+`Cargo.toml` and `rust-toolchain.toml` are content-identical between those two
+commits, so the two builds are the same instrument, and that is recorded as
+measured rather than assumed.
+
 **Open against this piece**
 
 - **Lighting is `unmeasured`, and cannot be otherwise for this zone.**
@@ -1961,15 +2051,39 @@ short of the wall it used to hole.
   finding. The general form reaches well past this zone — every one-way shortcut
   opened from the far side, every lowered bridge, every placed ladder is the same
   shape, and all of them are now writable.
-- **What Z7 still owes is the declaration itself, and it is a round of its own.**
-  `way` is `1.7.0` surface and every program here declares `1.4.0`, so the fence
-  refuses it by name until the document version moves; and contract coverage is
-  global, so nothing partial ships — every standable cell of a 41x48x125 piece
-  has to land in a declared space, an out-of-walk region or a traversal edge's
-  transit volume before a single gate can run. That is the same shape as the
-  arcade split Z3 owes: a production round, not a declaration bolted onto the end
-  of this one. Until it is done the zone is judged by its 6 gates, all of which
-  pass, and the campaign's zone audit is green on it.
+- **`anchor/broken-flight` and the cells the way lays are not in the same place,
+  and a beat written against the anchor has to know it.** The anchor sits at
+  `13,7,97`, on the flat where the lower treads were; the region the contract
+  lays is `x 12..14 y 11..12 z 86..87`, at the head of the surviving flight,
+  four courses up and ten blocks along. Both are right about the fiction — one
+  is where a party stands to work, the other is where the treads go back — but
+  a beat that reads "close the gap at `anchor/broken-flight`" and writes blocks
+  there closes nothing, because that stretch is already walkable. Whoever writes
+  the beat either moves the anchor to the head of the flight or writes the beat
+  as reaching from the one place to the other. This round did not move the
+  anchor: it is the campaign's own name for a location, and quests refer to it.
+- **`stair/gap` is named for a break it does not make, and the name is the only
+  thing wrong.** The rule voids six blocks of the flight's run and marks
+  `anchor/broken-flight` on them, but the tower's base fills the courses below,
+  so what it produces is floor — walkable, and level with the tower foot. The
+  severance it was meant to make is real and is three courses higher, produced
+  by the same rule: eating six blocks of run leaves the flight two courses short
+  of the landing above. Nothing is misbuilt and the declaration states the
+  severance where it is; a rule named for one effect while producing another is
+  a trap for the next reader, and renaming it is a byte-neutral edit this round
+  did not take because it is outside the declaration.
+- **The envelope vocabulary has no term for a roofed, open-sided space, and the
+  belfry is one.** An arcade is `enclosed` only in the sense that a roof stands
+  over it; its four faces are open bays a player walks round the bell in and
+  looks out of. `open` and `open_top` are both refused over a roofed cell, and
+  rightly — so `enclosed` is what the belfry declares, and its bay openings are
+  excused the way any opening is: by the claimed air outside them,
+  `ward/wall-tops`. That excuse is load-bearing rather than incidental, and it
+  is worth naming that a wall which is simply missing would supply the same
+  excuse a deliberate arcade does. Declaring the bays out of walk would have
+  avoided the question and would have been false — a body walks them, and they
+  are 180 standable cells of the belfry's play space. This is a capability
+  observation, not a defect in this zone.
 - **The rise range is a separate matter and does not block the contract.** The
   declared rises of 6, 6, 6 and 7 between the storeys are accepted as written —
   the edge proof judges the connection, never the numbers — so the
@@ -2005,18 +2119,17 @@ short of the wall it used to hole.
 - `anchor/belfry-stairhead` and `anchor/stair-head-1` have no useful eye shot;
   `review/z7/README.md` says why for each, and which cameras answer those
   questions instead.
-- **`prefab-audit` reds on `minecraft:iron_chain`, and the piece is not what is
-  wrong.** That job globs `prefabs/*.nbt` and audits each file with its own
-  pinned `delve-admit`, which is older than the pin the zone audit uses and older
-  than the 1.21.11 chain rename: its allowlist has no `iron_chain`, so the one
-  chain block in the belfry tile is `DW0730`, one block of 94464 in that tile and
-  the only offender in the whole palette. `iron_chain` is in the pinned 1.21.11
-  registry and is allowlisted by the engine the zone audit runs, where the whole
-  zone audits clean — 246000 blocks, 0 not-allowlisted. The fix is the same
-  one-line pin bump the zone audit's own comment describes for its engine ref,
-  and it is a reviewed decision rather than a content edit: dropping the chain
-  would trade the tongue's hanging and the bell-rope's fall for a green from a
-  checker that is wrong about the pinned game version. **This is not specific to
-  Z7** — `z2-gate-ward` and `z5-hall-keep` also paint a chain, so the same red is
-  latent in two more zones and Z7 is only the first of the three to be produced
-  into the library.
+- **The `minecraft:iron_chain` red is closed, and this entry is what is left of
+  it.** It was real: the prefab audit's pinned `delve-admit` predated the 1.21.11
+  chain rename, its allowlist had no `iron_chain`, and the one chain block in the
+  belfry tile was the only offender in the whole palette. The pin has since
+  moved, and the job now audits this zone as a tiled unit — the manifest is the
+  audited unit for a zone past the template cap, not the individual `.nbt` — and
+  passes: 45 of 45 units over 54 in-scope files, `prefabs/z7-bell-tower.json`
+  named among them, with 0 files disowned by git. Nothing about the piece
+  changed; the checker caught up with the pinned game version, which is what the
+  entry said would fix it. The same red was noted as latent in `z2-gate-ward` and
+  `z5-hall-keep`, and it is closed for them by the same bump. What survives the
+  closure is a `DW0734` warning on two hero prefabs that carry the pre-rename
+  `minecraft:chain` at a DataVersion of 2975 and rely on load-time datafixing;
+  those are not this zone and not this campaign.
