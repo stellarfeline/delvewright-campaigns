@@ -62,14 +62,29 @@ concurrency:
 
 jobs:
   # Which campaigns exist, as a matrix. A campaign directory is one holding a
-  # `world.json` — the same rule the storybook version check uses, so the two
+  # `world.json`, and `release.yml` says the same thing in its own words:
+  # "`campaigns/<id>/` is not proof of a campaign" — it has already met a
+  # directory here that carried media and build output and no stage documents at
+  # all. So the rule is the entry DOCUMENT, never the directory, and the two
   # cannot disagree about what a campaign is.
+  #
+  # Which makes the rule an EXCLUSION, and an exclusion nobody counts is how a
+  # count stays honest about a smaller world than the tool claims to cover. This
+  # repository has paid for that exact shape once: a constant naming directories
+  # to skip removed 27 tracked files — every campaign stage document — from a
+  # tool's enumeration while every stated number remained truthful about what it
+  # had been handed. A campaign whose `world.json` is renamed, moved or lost
+  # would drop out of this matrix the same way, and the binding count would go on
+  # reading as a pass. So the discovery states what it EXCLUDED as well as what
+  # it found, and refuses on the one exclusion that cannot be innocent.
   discover:
     name: discover campaigns
     runs-on: ubuntu-latest
     outputs:
       campaigns: ${{ steps.list.outputs.campaigns }}
       count: ${{ steps.list.outputs.count }}
+      excluded: ${{ steps.list.outputs.excluded }}
+      headless: ${{ steps.list.outputs.headless }}
     steps:
       # Text only — no LFS. The prefab bodies are not read here.
       - uses: actions/checkout@v4
@@ -80,27 +95,67 @@ jobs:
           set -euo pipefail
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
           import json, pathlib, sys
+
+          # Every document a campaign is authored out of. A directory carrying
+          # one of these is a campaign whatever else is true of it.
+          STAGE = ("world.json", "quest-plan.json", "quests.json", "npcs.json",
+                   "classes.json", "dialogue.json", "world-edits.json")
+
           root = pathlib.Path("campaigns")
-          ids = sorted(p.name for p in root.iterdir()
-                       if p.is_dir() and (p / "world.json").is_file())
+          ids, media, headless = [], [], []
+          for p in sorted(root.iterdir()):
+              if not p.is_dir():
+                  continue
+              if (p / "world.json").is_file():
+                  ids.append(p.name)
+                  continue
+              # Excluded. Which kind is decided by the OBJECT, not by whoever
+              # wrote the directory: one carrying no stage document at all is
+              # media or build output and is nothing this gate can build; one
+              # carrying any OTHER stage document is a campaign that has lost
+              # its entry document, and silently dropping it is the defect.
+              others = [s for s in STAGE if (p / s).is_file()]
+              (headless if others else media).append(
+                  {"dir": p.name, "carries": others})
+
           print("campaigns=" + json.dumps(ids))
           print("count=" + str(len(ids)))
+          print("excluded=" + json.dumps(media + headless))
+          print("headless=" + json.dumps(headless))
           print(f"discovered {len(ids)} campaign(s): {', '.join(ids) or '(none)'}",
                 file=sys.stderr)
           PY
 
-      # A gate that binds to nothing is vacuous, not a pass. Zero campaigns means
-      # the discovery rule broke, not that the repo is clean.
-      - name: the matrix binds to at least one campaign
+      # A gate that binds to nothing is vacuous, not a pass — and a gate that
+      # binds to FEWER than the tree holds is the same defect with a plausible
+      # number on it. Both are stated here, in the step whose stdout is not
+      # redirected into `$GITHUB_OUTPUT`, so a workflow command is a workflow
+      # command rather than a line in an outputs file.
+      - name: the matrix binds to every campaign, and every exclusion is counted
         env:
           COUNT: ${{ steps.list.outputs.count }}
+          CAMPAIGNS: ${{ steps.list.outputs.campaigns }}
+          EXCLUDED: ${{ steps.list.outputs.excluded }}
+          HEADLESS: ${{ steps.list.outputs.headless }}
         run: |
           set -euo pipefail
           if [ "$COUNT" -eq 0 ]; then
             echo "::error::no campaign directory found under campaigns/ (a campaign is a directory holding world.json) — this gate would pass vacuously"
             exit 1
           fi
-          echo "campaign build gate binds to $COUNT campaign(s)"
+          echo "campaign build gate binds to $COUNT campaign(s): ${CAMPAIGNS}"
+          echo "excluded from the matrix: ${EXCLUDED}"
+          python3 - <<'PY'
+          import json, os, sys
+          headless = json.loads(os.environ["HEADLESS"])
+          for h in headless:
+              print(f"::error::campaigns/{h['dir']} carries "
+                    f"{', '.join(h['carries'])} but no world.json, so it is a "
+                    f"campaign the matrix would drop while still reporting a "
+                    f"binding count — an honest number about a smaller world "
+                    f"than this gate claims to cover")
+          sys.exit(1 if headless else 0)
+          PY
 
   build:
     name: build ${{ matrix.campaign }} (validate + analyze + emit)
