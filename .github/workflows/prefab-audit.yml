@@ -131,6 +131,38 @@ jobs:
         run: |
           git -C admit-src fetch origin main:refs/remotes/origin/main
 
+      # `tools/check-pins.py` is not maintained here. It is ONE tool with two
+      # copies — the pipeline's is the source, this one is a verbatim vendored
+      # copy — and this step is what makes that sentence checkable rather than
+      # aspirational. It runs BEFORE the pinned tool is trusted below, and before
+      # anything is built out of the checkout.
+      #
+      # The two copies once differed by a single constant naming directories to
+      # skip. In the pipeline repository every name in it matched zero tracked
+      # files, so the entry was inert and correct where it was written; carried
+      # here, where `campaigns/` IS the content, it removed 27 tracked files —
+      # every campaign stage document — from both pin discovery and the fetch-
+      # verb enumeration. Nothing was red and nothing could have been: the counts
+      # were truthful about what they were handed, and a file the enumeration
+      # never lists cannot be reported as unexamined.
+      #
+      # It is a SEPARATE script, not a mode of `check-pins.py`, and that is the
+      # load-bearing choice. `check-pins.py` ignores registry keys it does not
+      # know — measured, not assumed — so a vendor check living inside it would
+      # disappear the moment an older copy was vendored, which is precisely when
+      # the copies have drifted. The check would supply its own exemption. This
+      # script is never vendored, so nothing that can go wrong with a vendored
+      # file can stop it running.
+      #
+      # It states its binding count WITH ITS DENOMINATOR — how many vendored
+      # files compared, against how many tracked files here and how many in the
+      # pinned tree — because a truthful count over a truncated input is exactly
+      # what went wrong last time. A binding of zero is a finding.
+      - name: a vendored file is the upstream file, byte for byte
+        run: |
+          python3 tools/check-vendored.py \
+            --checkout admit-ref=admit-src
+
       # The pin is judged HERE, in the job that uses it, immediately before the
       # tool is built out of it. There is no arrangement in which this job builds
       # from the pin and skips its own next step, which is what a gate bound to a

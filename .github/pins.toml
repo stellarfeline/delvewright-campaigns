@@ -23,6 +23,7 @@ policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
 reviewed = "20ab52a311cf63409a9f3531de2477d6eb150ffa"
 builds = ["delvewright-admit"]
+vendors = ["tools/check-pins.py"]
 why = """
 The pipeline commit `delve-admit` — the audit every piece in this repository must
 pass — is built from. It is an INSTRUMENT: its verdicts decide what enters the
@@ -46,6 +47,24 @@ modules. So a red naming commits that all landed in `crates/compiler` is a
 correct statement about the closure and says nothing yet about a verdict; the
 closure is deliberately not narrowed, because narrowing a watch to dodge a red is
 the defect, and a wide watch that is understood costs one reading.
+
+WHAT `vendors` DECLARES, and why it is a pin's business at all.
+`tools/check-pins.py` is ONE tool with two copies: the pipeline's is the source,
+this repository's is a verbatim copy. `vendors` names the paths here that are
+copies of the same paths in the pinned checkout, and `tools/check-vendored.py`
+holds them to it — byte-for-byte against `value`, plus a refusal when the source
+has moved upstream since `reviewed`. That second half is what keeps the guarantee
+alive between re-pins: byte-identity against a frozen revision is satisfied
+forever by never looking.
+
+The two copies once differed by one constant naming directories to skip. It
+matched zero tracked files in the pipeline repository, so it was inert and
+correct where it was written; carried here, where `campaigns/` IS the content, it
+removed 27 tracked files — every campaign stage document — from both pin
+discovery and the fetch-verb enumeration. Nothing was red, because a file the
+enumeration never lists cannot be reported as unexamined. The checker no longer
+carries a per-repository claim at all, which is what makes a verbatim copy
+possible; `vendors` is what stops one being edited back into existence here.
 
 The spatial-contract door is the one place in the audit path where a grammar
 change moves a verdict, and it opens only on a piece whose declaration document
