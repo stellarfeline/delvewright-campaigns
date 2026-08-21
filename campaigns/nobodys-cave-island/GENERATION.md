@@ -1679,3 +1679,54 @@ bought back by narrowing the proof.
 Follow-up for the engine, not done here: `versions.toml` `[content].sha` must be
 re-pinned to this commit before the engine's "campaign builds" job can go green
 on #373.
+
+### The design seats come back (`DW0478` under spec-0044)
+
+Not a playtest round: a machine correction, and the previous entry is what it
+corrects. The six `DW0478` verdicts recorded above were **all false**. An
+adjudication measured every one of them with two instruments whose failure modes
+are unrelated — the engine over the frozen release tree, and the coordinates the
+shipped datapack itself contains, emitted by the release's own pinned engine —
+and the two agree to 0.000 blocks on every distance. Nothing was wrong with the
+shipped campaign. What was wrong was the criterion: it asked *"does any hostile's
+declared perception radius cover this cell?"* and reported the answer as *"this
+is a soft-lock"*, which is a combat question no set of declarations decides.
+
+spec-0044 repairs it without moving the geometry by one block. A red now claims
+only that **nothing the campaign declares separates this retry from a soft-lock**,
+and three evidence routes answer it: an unconditional post-reset fold, an onset
+bound (gate flags, trigger bearer, puppet-hood), and dominance by a forced beat
+the critical path already walks inside the same reign.
+
+So the seats move back. `anchor/checkpoint-1/2/3` return to their own cells,
+`wave/storm-shore` returns to `anchor/mountain-foot`, and the three respawn
+narrate lines (with their `source` and zh-cn renditions) go back to describing
+where the party actually wakes. A released campaign is never edited to satisfy a
+criterion, and this edit was nothing else.
+
+Under the repaired criterion the six clear structurally, not by margin:
+
+| seat | force | verdict |
+|---|---|---|
+| `anchor/checkpoint-1` | `actor/polyphemus-roused` | skipped, flag-bound — every staging trigger is gated on `flag/sealed`, which nothing sets before the bundle that ends this reign |
+| `anchor/checkpoint-2` | `actor/polyphemus-roused` | credited, reset — the seat's own `on_respawn` unconditionally despawns it |
+| `anchor/checkpoint-3` | `wave/storm-shore` | credited, dominated — the forced walk crosses the wave's seated cells at 0.00 against the seat's 28.79 |
+| `anchor/checkpoint-3` | `actor/polyphemus-walker` | credited, dominated — 3.00 against 14.76 |
+| `anchor/checkpoint-3` | `actor/polyphemus-roused` | credited, dominated — the forced blind beat stands the party 1.00 from the body against the seat's 8.94 |
+| `anchor/checkpoint-3` | `actor/polyphemus-blinded` | credited, dominated — 0.00 against 6.40 |
+
+The fifth reads `dominated` rather than the `bearer-bound` skip the spec's own
+worked example predicted, and the difference is the conservative direction: the
+bearer bound needs every route into the reign closed, and an instance staged
+before the seat can still be standing there on a route with no death in it, so
+the engine compares the pair and the forced beat answers it instead.
+
+Ladder, local: `validate` 0 · `analyze` 0 · `build` en 0 · `build --lang zh-cn`
+0 · double build byte-identical · `validation/respawn-safety.json` `examined: 3`,
+`pairs: 7`, `credits: 5`, `unbound: false`. The warning set is byte-identical to
+the pre-revert baseline (8: 1× `DW0498`, 2× `DW0359`, 3× `DW0451`, 2× `DW0781`).
+
+Ordering, and it is not optional: this commit **must not land before the engine
+carries spec-0044**. On the previous criterion these seats are six live reds, so
+a content main that has them without an engine that credits them re-reds the
+engine's own campaign-builds job.

@@ -69,8 +69,7 @@ keep-clear for every scatter.
   Antiphos shoulders the provisions and **climbs with the party**; Elpenor
   holds the beach alone (round 6).
 - **B1 Follow**: Eurylochus `move-npc`-walks beach → mouth; the player follows.
-- **B2 Cavern entry — CHECKPOINT 1** (the beat is the entry; the SEAT is
-  `anchor/alcove-3` — §12). Perimedes enters at the party's heel and
+- **B2 Cavern entry — CHECKPOINT 1**. Perimedes enters at the party's heel and
   posts up in the recess by the racks. The cheese is a **collect** objective —
   take a wheel from the barrel among the racks (owner ruling, round 4/5), not
   an interact marker. **Choice dialogue**: *take the cheese and run* →
@@ -89,7 +88,7 @@ keep-clear for every scatter.
   the Antiphos beat; the reverse angle — interior, looking out through the gap
   at daylight, sea and the galley's mast, flock silhouetted coming in; the
   giant settling at his fire; the stone, close. **CHECKPOINT 2** at the
-  aftermath (seat `anchor/alcove-3` — §12); its `on_respawn` clears every giant stand-in and re-seats the
+  aftermath; its `on_respawn` clears every giant stand-in and re-seats the
   dialogue statue at his fire.
 - **B4 Trapped**: the boulder answers a strike with "it will not move".
   Dialogue with Polyphemus: the wine gift (gated on being sealed in), the
@@ -99,7 +98,7 @@ keep-clear for every scatter.
   striker. The starting kits do not beat a warden; the player dies, and
   checkpoint 2 restores the scene exactly as it was. Losing quickly is how the
   unwinnable fight is marked.
-- **B5 The eye — CHECKPOINT 3** (seat `anchor/alcove-3` — §12): grind the olive stake under the west light
+- **B5 The eye — CHECKPOINT 3**: grind the olive stake under the west light
   shaft, char it at the **walled hearth** (the hall's one true fire — round
   11), and put it in the eye at `anchor/eye` beside the sleeping body.
   **The stake must be IN HAND** (owner ruling, round 13; engine #205 made
@@ -218,8 +217,8 @@ reach / talk-to / kill objectives · props (grindstone) · triggers strike and
 strike-npc · a tutorial wave with attributes + equipment · unwinnable combat by
 `unleash-actor` · `move-actor` / `move-npc` with `on_arrive` · `sequence`
 timelines · a six-shot spectator cinematic with `look_at` · set-time /
-set-weather cuts · `close-gate` / `open-gate` · checkpoints ×3, one seat, three distinct
-`on_respawn` resets (§12) · ocean horizon + boundary · area `night-vision`
+set-weather cuts · `close-gate` / `open-gate` · checkpoints ×3 with distinct
+`on_respawn` resets · ocean horizon + boundary · area `night-vision`
 mitigation · positional sounds · stealth zones · full en + zh-cn l10n (312
 keys) · the stage-7 world-edit script.
 
@@ -510,54 +509,3 @@ that sentence.
    event-contradiction proofs. On a campaign whose one real fork has a death on
    only one side, those will have findings, and findings there need owner
    rulings. Queued as its own round.
-
-## 12. The respawn seats — one safe cell in the hall (`DW0478`, engine PR #373)
-
-`DW0478` (no respawn point inside a hostile's aggro range) used to quantify over
-`bonfire`s only. This campaign declares three `set-checkpoint`s and no bonfire,
-so the proof examined **zero** pairs and reported green for its whole life.
-Widened to every respawn point, it examines **8** pairs and found **six live
-violations** — shipped in v1.1.0 and never visible to any check.
-
-**The geometry, stated once.** The hall is ~30 × 26 blocks with the giant's fire
-at its centre, and three warden bodies are staged on it — `polyphemus-roused`
-and the dialogue statue at `anchor/fire-side` [6,69,-56], `polyphemus-blinded`
-at `anchor/fire-pit` [9,69,-56], `polyphemus-walker` at `anchor/mouth-side`
-[7,69,-47], each with the default 16-block `follow_range`. Measured over every
-anchor the island declares, **exactly two cells in the cave clear all three**:
-`anchor/alcove-3` (19.3 / 19.1 / 16.1) and `anchor/pen-f` (23.9 / 18.5 / 16.1).
-Every checkpoint anchor the prefab provides — `checkpoint-1/2/3` — is inside the
-fire's reach. So the hall has one usable respawn seat, and all three checkpoints
-take it: **the beat is where the checkpoint is armed; the seat is where the party
-comes back.** The three distinct `on_respawn` scene resets — the entry, the
-sealed hall, the blind hunt — are untouched, and they are what the three
-checkpoints were ever for. Seating the blind act in a shadow alcove is also the
-right souls answer: you come back in cover, and the hunter is out there.
-
-**The drowned, and why one wave moved instead.** `wave/storm-shore` declares
-`follow_range: 48` (round-2 aggro raise, kept so the tutorial wave rushes the
-camp) and was seated at `anchor/mountain-foot`. Forty-eight blocks is wider than
-the island: **no cell on `area/island` is 48 blocks from both the mountain-foot
-and the strand spawns** (they are 40 blocks apart), and the *last* checkpoint's
-reign never ends, so it is measured against every force in the campaign. The
-consequence is a proof, not a preference — with that wave at the mountain foot,
-**no arrangement of respawn points can satisfy `DW0478`**: adding a fourth
-checkpoint only moves the unbounded reign onto it, and the only cell that clears
-everything is on the galley in `area/open-sea`, which is not somewhere a party
-can respawn mid-escape. `DW0478`'s own prescription names the alternative — move
-the force's anchor, **never** shrink `follow_range` to buy clearance — so
-`wave/storm-shore` moves to `anchor/surf-wave`, the beach prefab's designated
-wave cell, alongside the two waves that already rise there. The escape beat
-survives: at 48 blocks the drowned acquire the party partway down the switchbacks
-and come up to meet them, so the "do not stop to fight them" line still describes
-what happens, and the danger now stands between the party and the plank instead
-of behind them.
-
-**What was actually broken in play**, beyond the geometry: dying anywhere in the
-escape put the party back at `anchor/checkpoint-3`, 14.8 blocks from
-`polyphemus-walker` — an elite warden standing across the only way out — and
-6.4 blocks from the blind giant that `checkpoint-3`'s own `on_respawn` re-arms.
-
-Binding count after: `validation/respawn-safety.json` — `examined: 3`,
-`pairs: 8`, `unbound: false`. Unchanged from the 8 the widened proof found, so
-nothing was bought by narrowing what is measured.
