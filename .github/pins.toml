@@ -1,0 +1,188 @@
+# THE PIN REGISTRY — every literal in this repo that decides which version of an
+# external thing gets fetched, with the policy that says whether it may drift.
+#
+# `tools/check-pins.py` reads this file; its docstring is the full account of the
+# discovery, the policies, and why the reason lives here rather than in a comment
+# beside the value. The short form: a pin that has rotted and a pin that is frozen
+# on purpose look identical in a diff, and only a machine-checked policy tells
+# them apart.
+#
+# This repository is the one where that distinction was paid for. Its audit
+# workflow built its judge from a pinned pipeline commit and the pin sat while
+# the rule it enforced was settled upstream, so a zone was reported red for
+# failing a rule that no longer existed — and the repair a reader naturally
+# reaches for is to build the thing the stale gate asks for, which is the exact
+# vacuity the gate was written to catch.
+
+[[pin]]
+id = "admit-ref"
+value = "46abe8bf21921e5a48c0b477da707bae0b8e9b7c"
+sites = [".github/workflows/prefab-audit.yml"]
+repo = "stellarfeline/delvewright"
+policy = "track"
+judged_by = ".github/workflows/prefab-audit.yml"
+reviewed = "1847a333be33824515b35ecd913a2f8d7077a2e6"
+builds = ["delvewright-admit"]
+vendors = ["tools/check-pins.py"]
+why = """
+The pipeline commit `delve-admit` — the audit every piece in this repository must
+pass — is built from. It is an INSTRUMENT: its verdicts decide what enters the
+library, so it is pinned rather than floating, and so its currency is judged
+rather than assumed. `builds` names the package the workflow builds out of the
+pinned checkout; the drift check derives that package's sources from the pipeline
+tree itself and reds when they have moved since `reviewed`.
+
+WHAT A JUDGEMENT OF THIS PIN HAS TO LOOK AT, and it is much narrower than the red.
+The watch set is the package's path-dependency CLOSURE — today `crates/admit`,
+`crates/schem`, `crates/grammar`, `crates/orchestrator`, `crates/compiler`,
+`crates/dsl` — because `delvewright-admit` links the whole pipeline in order to
+serve its other subcommands. This gate builds that binary for ONE of them,
+`delve-admit audit`, and that subcommand reads the palette allowlist and the
+code-injection forbid out of `crates/schem`, the settling and spatial-contract
+checkers out of `crates/grammar`, and NOTHING out of `crates/compiler` — the
+compiler is reached only from the `gallery` subcommand's Brigadier validation,
+which this workflow never invokes. `crates/dsl` is reached only through
+`crates/schem`'s re-export of its `blocks`, `split`, `prefab` and `registry`
+modules. So a red naming commits that all landed in `crates/compiler` is a
+correct statement about the closure and says nothing yet about a verdict; the
+closure is deliberately not narrowed, because narrowing a watch to dodge a red is
+the defect, and a wide watch that is understood costs one reading.
+
+WHY `reviewed` IS AHEAD OF `value`, and what was read to put it there.
+`value` is the revision the tool is BUILT from; `reviewed` is the revision its
+upstream history has been JUDGED against. They answer different questions and
+they are allowed to differ. `value` sits at the newest commit touching
+`tools/check-pins.py`, because that file is the whole reason this pin moved.
+`reviewed` sits further along, at the upstream default branch, because the
+interval between them was read and none of it can move a verdict.
+
+The reading, so the next one does not have to repeat it. Across
+ff62355c..46abe8bf the `crates/` tree is byte-identical — same git tree object
+at both ends, and `Cargo.toml`, `Cargo.lock` and `rust-toolchain.toml` likewise
+— so the bump rebuilds the same `delve-admit` from the same sources and changes
+no audit behaviour whatsoever; that interval is registry and tooling only. After
+it, the commits reaching the watch closure land in `crates/compiler`, which the
+`audit` subcommand does not read at all, and in `crates/dsl`'s `diagnostic`,
+`gate` and `validate` modules. Confirmed from the other direction rather than
+assumed: the audit-path crates name `delvewright_dsl::prefab`, `::registry` and
+`::blocks` and nothing under `gate`, `validate` or `diagnostic`, so the linkage
+this entry already describes does not reach what moved.
+
+WHAT `vendors` DECLARES, and why it is a pin's business at all.
+`tools/check-pins.py` is ONE tool with two copies: the pipeline's is the source,
+this repository's is a verbatim copy. `vendors` names the paths here that are
+copies of the same paths in the pinned checkout, and `tools/check-vendored.py`
+holds them to it — byte-for-byte against `value`, plus a refusal when the source
+has moved upstream since `reviewed`. That second half is what keeps the guarantee
+alive between re-pins: byte-identity against a frozen revision is satisfied
+forever by never looking.
+
+The two copies once differed by one constant naming directories to skip. It
+matched zero tracked files in the pipeline repository, so it was inert and
+correct where it was written; carried here, where `campaigns/` IS the content, it
+removed 27 tracked files — every campaign stage document — from both pin
+discovery and the fetch-verb enumeration. Nothing was red, because a file the
+enumeration never lists cannot be reported as unexamined. The checker no longer
+carries a per-repository claim at all, which is what makes a verbatim copy
+possible; `vendors` is what stops one being edited back into existence here.
+
+The spatial-contract door is the one place in the audit path where a grammar
+change moves a verdict, and it opens only on a piece whose declaration document
+carries a `spatial_contract`. A piece that declares none is reported `undeclared`
+with `DW0783`, and no obligation runs over it.
+"""
+
+[[pin]]
+id = "engine-release"
+value = "91a9a843d2ad2f0c3b852ea5fa4178567b68f875"
+sites = ["versions.toml"]
+repo = "stellarfeline/delvewright"
+policy = "release"
+judged_by = ".github/workflows/prefab-audit.yml"
+why = """
+The tagged engine release a delve image is built and validated with
+(versions.toml [engine]). A released delve reproduces through its own pinned
+engine and through nothing else, so this pin must never move for the sake of
+newer behaviour — it moves only when a release deliberately adopts a newer
+engine. `release` is checked, not asserted: the value must be a commit a
+v<semver> tag points at, which a commit somebody merely stopped looking at
+cannot be.
+"""
+
+[[pin]]
+id = "actionlint-image"
+value = "sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667"
+sites = [".github/workflows/workflow-lint.yml"]
+policy = "immutable"
+why = """
+The actionlint container the workflow lint runs, held by digest so the gate is
+the same gate every time. Third-party bytes: its currency is a supply-chain
+question with a different owner, and this gate does not pretend to answer it.
+"""
+
+# ---------------------------------------------------------------------------
+# Refs that move on purpose
+# ---------------------------------------------------------------------------
+# Third-party actions held at their MAJOR tag, which the publisher advances.
+# Registered so the count of deliberately-unfrozen refs is visible rather than
+# habitual: six refs, all first-party GitHub or Docker, none reaching a
+# repository this project builds.
+
+[[pin]]
+id = "action-checkout"
+value = "actions/checkout@v4"
+sites = [
+    ".github/workflows/prefab-audit.yml",
+    ".github/workflows/release.yml",
+    ".github/workflows/workflow-lint.yml",
+]
+policy = "floating"
+why = "GitHub's own checkout action, held at its major tag."
+
+[[pin]]
+id = "action-rust-cache"
+value = "Swatinem/rust-cache@v2"
+sites = [
+    ".github/workflows/prefab-audit.yml",
+    ".github/workflows/release.yml",
+]
+policy = "floating"
+why = "Cargo cache action, held at its major tag. Affects build time, not output."
+
+[[pin]]
+id = "action-upload-artifact"
+value = "actions/upload-artifact@v4"
+sites = [
+    ".github/workflows/prefab-audit.yml",
+    ".github/workflows/release.yml",
+]
+policy = "floating"
+why = "GitHub's artifact upload action, held at its major tag."
+
+[[pin]]
+id = "action-docker-qemu"
+value = "docker/setup-qemu-action@v3"
+sites = [".github/workflows/release.yml"]
+policy = "floating"
+why = "arm64 emulation for the multi-arch delve image (ADR-0010)."
+
+[[pin]]
+id = "action-docker-buildx"
+value = "docker/setup-buildx-action@v3"
+sites = [".github/workflows/release.yml"]
+policy = "floating"
+why = "buildx setup, held at its major tag."
+
+[[pin]]
+id = "action-docker-login"
+value = "docker/login-action@v3"
+sites = [".github/workflows/release.yml"]
+policy = "floating"
+why = "GHCR login, held at its major tag."
+
+[[pin]]
+id = "action-docker-build-push"
+value = "docker/build-push-action@v6"
+sites = [".github/workflows/release.yml"]
+policy = "floating"
+why = "Image build/push, held at its major tag."
