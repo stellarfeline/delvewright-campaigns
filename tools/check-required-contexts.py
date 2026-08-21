@@ -53,12 +53,20 @@ and the checker judges in three ref-aware arms plus a live one:
   C. ELIGIBILITY (ref-independent). A job named as required must be ABLE to
      report on every pull request into the refs it guards: its workflow has a
      `pull_request:` trigger, that trigger carries no `paths`/`paths-ignore`/
-     `branches`/`branches-ignore` filter, the job has no `if:` (a skipped job
-     reports "skipped", which GitHub counts as a satisfied required check — a
-     hole that looks exactly like a pass), and no `strategy:` (a matrix job's
-     context is `name (value)`, not `name`). This arm is the one that would have
-     caught the path filter before it deadlocked the repository, and it is why
-     `actionlint` cannot simply be promoted today.
+     `branches`/`branches-ignore` filter, the job CANNOT BE SKIPPED (a skipped
+     job reports "skipped", which GitHub counts as a satisfied required check —
+     a hole that looks exactly like a pass), and it has no `strategy:` (a matrix
+     job's context is `name (value)`, not `name`). This arm is the one that
+     would have caught the path filter before it deadlocked the repository, and
+     it is why `actionlint` cannot simply be promoted today.
+
+     "Cannot be skipped" is asked of the job's effective condition and derived
+     from it, never declared by its author — see the derivation above
+     `skip_proof`. This arm used to ask instead whether the job HAD an `if:`,
+     which is the syntax that usually carries the property and not the property.
+     They invert on `if: always()`, which is not a condition but the absence of
+     one: the file was red on the version that cannot be skipped and green on
+     the version that can, so deleting the safety made the finding go away.
 
   D. LIVE (default on). The declaration equals the live rulesets: same ref
      patterns, same contexts, `enforcement = "active"`, and no live ruleset
@@ -246,11 +254,18 @@ class Workflow:
             if not m or len(m.group("indent")) != 2:
                 continue
             key = _unquote(m.group("key"))
-            attrs: dict[str, object] = {"if": False, "strategy": False, "uses": False}
+            # `if` holds the EXPRESSION, not a flag: whether a job can be
+            # skipped is a property of what the condition says, and a boolean
+            # here would throw that away before anything could ask. `None` is
+            # "no `if:` at all", which is a different state from an empty one.
+            attrs: dict[str, object] = {
+                "if": None, "needs": False, "strategy": False, "uses": False,
+            }
             # GitHub falls back to the job KEY when there is no `name:`, and so
             # does the status context. Defaulting to the key is not a guess.
             name = key
-            for _, sub in _block(lines, j, 2):
+            block = _block(lines, j, 2)
+            for bi, (_, sub) in enumerate(block):
                 sm = _KEY.match(sub)
                 if not sm or len(sm.group("indent")) != 4:
                     continue
@@ -265,7 +280,22 @@ class Workflow:
                         )
                     else:
                         name = _scalar(sm.group("rest"))
-                elif k in ("if", "strategy", "uses"):
+                elif k == "if":
+                    raw = sm.group("rest").strip()
+                    if raw in ("|", ">", "|-", ">-", "|+", ">+"):
+                        # A folded or literal condition. Gathering it is not a
+                        # nicety: refusing it would red a job whose safety is
+                        # written across two lines, which is a false red on the
+                        # exact shape this arm exists to protect.
+                        parts = []
+                        for _, cont in block[bi + 1:]:
+                            if len(cont) - len(cont.lstrip()) <= 4:
+                                break
+                            parts.append(cont.strip())
+                        attrs["if"] = " ".join(parts)
+                    else:
+                        attrs["if"] = _scalar(sm.group("rest"))
+                elif k in ("needs", "strategy", "uses"):
                     attrs[k] = True
             attrs["name"] = name
             self.jobs[key] = attrs
@@ -276,6 +306,268 @@ class Workflow:
         if "pull_request" not in self.triggers:
             return None
         return [f for f in DISQUALIFYING_PR_FILTERS if f in self.triggers["pull_request"]]
+
+
+# ---------------------------------------------------------------------------
+# CAN THIS JOB BE SKIPPED?
+#
+# The property this arm needs is *can this job be skipped*. The syntax that
+# usually carries it is *the job has an `if:`*. They agree on every condition
+# that can be false, and they INVERT on the one expression that cannot.
+#
+# `if: always()` is not a condition. It is the ABSENCE of one, and it is the
+# only thing standing between a job with `needs:` and the very skip the finding
+# warns about. Keying on the syntax made this file green on the version that can
+# be silently skipped and red on the version that cannot — a gate that rewards
+# removing the safety it exists to require. So the question is asked of the
+# EXPRESSION, and the answer is derived from it rather than declared by whoever
+# wrote it: there is no marker, no comment, no acknowledgement to reach for.
+#
+# ## Which expressions qualify, and why the derived set has one member
+#
+# A job's effective condition is its `if:` when it has one, and the implicit
+# `success()` over `needs:` when it does not. So:
+#
+#   no `if:` and no `needs:`   the job runs on every run of its workflow. Nothing
+#                              can skip it. SKIP-PROOF.
+#   no `if:` and `needs:`      the implicit condition is `success()`: a need that
+#                              fails or is skipped skips this job, which reports
+#                              `skipped`, which protection counts as satisfied.
+#                              SKIPPABLE — and this is the shape that is green
+#                              today, which is the whole defect.
+#   an `if:`                   decided below, by abstract evaluation.
+#
+# The evaluation is three-valued — TRUE / FALSE / UNKNOWN — over the operator
+# grammar GitHub's expression language actually has, and every atom is UNKNOWN
+# except one:
+#
+#   always()          TRUE. Documented to return true "even when canceled",
+#                     which is the only expression for which GitHub states a
+#                     guarantee that survives every state a run can reach.
+#   success()         UNKNOWN. False when a need failed — the default, spelled
+#                     out. Exactly the skip this arm is about.
+#   failure()         UNKNOWN. False on the ordinary path.
+#   cancelled()       UNKNOWN, and therefore `!cancelled()` is UNKNOWN too. It
+#                     survives a failed need and does NOT survive cancellation,
+#                     so it is a condition that can be false and is refused.
+#   any github.*,     UNKNOWN. Run-dependent by construction.
+#   needs.*, env.*,
+#   inputs.*, ...
+#   a comparison      UNKNOWN, whatever its operands.
+#   `true` / `false`  UNKNOWN. A truthy literal is true in every state the
+#     and every other  expression language can OBSERVE, and that is a weaker
+#     literal          claim than the one this arm needs: `always()` is singled
+#                     out in GitHub's own documentation precisely because
+#                     cancellation is handled outside the expression. Refusing
+#                     a literal costs nothing real — nobody writes `if: true` on
+#                     a required job — and the direction of the error matters:
+#                     wrongly refusing a safe job is a red somebody reads,
+#                     wrongly accepting a skippable one is the hole.
+#   anything this     UNKNOWN, by the same rule. A reader that cannot parse an
+#     reader cannot    expression has not proved anything about it, and the
+#     parse            unproved answer here is the refusing one.
+#
+# Composition is the ordinary lattice: `&&` is TRUE only if both sides are,
+# `||` is TRUE if either side is, `!` inverts TRUE and FALSE and leaves UNKNOWN
+# alone. Because `always()` is the only TRUE atom, every expression this
+# function accepts derives its truth from an `always()`, and so inherits the
+# guarantee that made `always()` the one member. That is not a coincidence to
+# rely on quietly — it is why a one-member atom set is enough, and why the set
+# is derived rather than remembered: `always() && success()` and
+# `always() && github.ref == 'refs/heads/main'` are refused by the same
+# machinery that accepts `always()`, without anybody having had to think of
+# them.
+# ---------------------------------------------------------------------------
+
+TRUE, FALSE, UNKNOWN = "TRUE", "FALSE", "UNKNOWN"
+
+_COMPARISONS = ("==", "!=", "<=", ">=", "<", ">")
+_TWO_CHAR = ("&&", "||", "==", "!=", "<=", ">=")
+_WORD = re.compile(r"[A-Za-z_0-9.*-]+")
+
+
+class ExprRefusal(Exception):
+    """This reader will not guess what an expression evaluates to."""
+
+
+def _tokens(src: str) -> list[str]:
+    out: list[str] = []
+    i, n = 0, len(src)
+    while i < n:
+        c = src[i]
+        if c.isspace():
+            i += 1
+            continue
+        if any(src.startswith(t, i) for t in _TWO_CHAR):
+            out.append(src[i:i + 2])
+            i += 2
+            continue
+        if c in "()[],<>!":
+            out.append(c)
+            i += 1
+            continue
+        if c == "'":
+            # GitHub escapes a single quote by doubling it.
+            j = i + 1
+            while j < n:
+                if src[j] == "'":
+                    if j + 1 < n and src[j + 1] == "'":
+                        j += 2
+                        continue
+                    break
+                j += 1
+            if j >= n:
+                raise ExprRefusal("unterminated string literal")
+            out.append(src[i:j + 1])
+            i = j + 1
+            continue
+        m = _WORD.match(src, i)
+        if not m:
+            raise ExprRefusal(f"unexpected character {c!r}")
+        out.append(m.group(0))
+        i = m.end()
+    if not out:
+        raise ExprRefusal("empty expression")
+    return out
+
+
+class _Eval:
+    """Abstract evaluation to TRUE / FALSE / UNKNOWN. Never to a value."""
+
+    def __init__(self, toks: list[str]):
+        self.t = toks
+        self.i = 0
+
+    def peek(self) -> str | None:
+        return self.t[self.i] if self.i < len(self.t) else None
+
+    def take(self) -> str:
+        tok = self.peek()
+        if tok is None:
+            raise ExprRefusal("expression ended early")
+        self.i += 1
+        return tok
+
+    def parse(self) -> str:
+        v = self.or_()
+        if self.peek() is not None:
+            raise ExprRefusal(f"trailing {self.peek()!r}")
+        return v
+
+    def or_(self) -> str:
+        v = self.and_()
+        while self.peek() == "||":
+            self.take()
+            r = self.and_()
+            v = TRUE if TRUE in (v, r) else (FALSE if v == r == FALSE else UNKNOWN)
+        return v
+
+    def and_(self) -> str:
+        v = self.not_()
+        while self.peek() == "&&":
+            self.take()
+            r = self.not_()
+            v = FALSE if FALSE in (v, r) else (TRUE if v == r == TRUE else UNKNOWN)
+        return v
+
+    def not_(self) -> str:
+        if self.peek() == "!":
+            self.take()
+            return {TRUE: FALSE, FALSE: TRUE}.get(self.not_(), UNKNOWN)
+        return self.cmp_()
+
+    def cmp_(self) -> str:
+        v = self.primary()
+        if self.peek() in _COMPARISONS:
+            self.take()
+            self.primary()
+            # Even `'a' == 'a'` is UNKNOWN here. Deciding constant comparisons
+            # would buy nothing a required job's condition ever needs, and every
+            # line of cleverness is a line that can be wrong in the direction
+            # that opens the hole.
+            return UNKNOWN
+        return v
+
+    def primary(self) -> str:
+        tok = self.take()
+        if tok == "(":
+            v = self.or_()
+            if self.take() != ")":
+                raise ExprRefusal("unbalanced `(`")
+            return self._suffix(v)
+        if tok in ("&&", "||", ")", ",", "]"):
+            raise ExprRefusal(f"unexpected {tok!r}")
+        if tok.startswith("'"):
+            return self._suffix(UNKNOWN)
+        if self.peek() == "(":
+            self._skip_balanced("(", ")")
+            # The one atom whose truth GitHub guarantees in every state.
+            return self._suffix(TRUE if tok == "always" else UNKNOWN)
+        return self._suffix(UNKNOWN)
+
+    def _suffix(self, v: str) -> str:
+        """`x['k']` and `x.*[0]` — an index never makes a value provable."""
+        while self.peek() == "[":
+            self._skip_balanced("[", "]")
+            v = UNKNOWN
+        return v
+
+    def _skip_balanced(self, opener: str, closer: str) -> None:
+        if self.take() != opener:
+            raise ExprRefusal(f"expected {opener!r}")
+        depth = 1
+        while depth:
+            tok = self.take()
+            if tok == opener:
+                depth += 1
+            elif tok == closer:
+                depth -= 1
+
+
+def evaluate_condition(expr: str) -> str:
+    """TRUE, FALSE or UNKNOWN for a job-level `if:`, refusing rather than guessing."""
+    s = expr.strip()
+    if s.startswith("${{") and s.endswith("}}") and "${{" not in s[3:]:
+        s = s[3:-2]
+    elif "${{" in s:
+        # A partly-interpolated condition. GitHub allows it; this reader will
+        # not pretend to know what the surrounding text does with the result.
+        raise ExprRefusal("`${{` appears other than as the whole expression")
+    return _Eval(_tokens(s)).parse()
+
+
+def skip_proof(attrs: dict) -> tuple[bool, str]:
+    """Can this job be skipped? Returns (cannot-be-skipped, why)."""
+    expr = attrs.get("if")
+    if expr is None:
+        if attrs.get("needs"):
+            return False, (
+                "it has no `if:`, so its condition is the implicit `success()` "
+                "over its `needs:` — a need that fails or is skipped skips THIS "
+                "job, and a skipped job reports `skipped`, which GitHub counts "
+                "as a SATISFIED required check. `if: always()` is what removes "
+                "that condition; without it the gate passes by not running"
+            )
+        return True, "it has no `if:` and no `needs:`, so nothing can skip it"
+    try:
+        verdict = evaluate_condition(str(expr))
+    except ExprRefusal as exc:
+        return False, (
+            f"its `if:` is {expr!r}, which this reader will not evaluate "
+            f"({exc}). An unproved condition is a condition that can be false, "
+            f"and a skipped job reports `skipped`, which GitHub counts as a "
+            f"SATISFIED required check"
+        )
+    if verdict == TRUE:
+        return True, f"its `if:` is {expr!r}, which is true in every state a run can reach"
+    return False, (
+        f"its `if:` is {expr!r}, which is not provably true in every state — a "
+        f"run in which it is false SKIPS the job, and a skipped job reports "
+        f"`skipped`, which GitHub counts as a SATISFIED required check. The "
+        f"gate would pass by not running. Only `always()` carries a guarantee "
+        f"that survives a failed `needs:` and a cancellation both; "
+        f"`!cancelled()`, `success()` and any `github.*` test do not"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -686,11 +978,10 @@ def main() -> int:
                     f"check that never ran is a silence protection cannot tell "
                     f"from a pass."
                 )
-            if attrs.get("if"):
+            proof, why = skip_proof(attrs)
+            if not proof:
                 findings.append(
-                    f"required context {ctx!r} ({wf.rel}) has a job-level `if:`. A "
-                    f"skipped job reports `skipped`, which GitHub counts as a "
-                    f"SATISFIED required check — the gate would pass by not running."
+                    f"required context {ctx!r} ({wf.rel}) can be SKIPPED: {why}."
                 )
             if attrs.get("strategy"):
                 findings.append(
