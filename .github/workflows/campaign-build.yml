@@ -1,0 +1,161 @@
+name: campaign build
+
+# Every campaign in this repo compiles, on every push and every pull request.
+#
+# Why this exists. The other workflows here are `prefab-audit.yml` (path-filtered
+# to `prefabs/**` / `catalog/**`), `release.yml` (tag-only) and `workflow-lint.yml`
+# (path-filtered to `.github/workflows/**`), so a push that touched nothing but
+# `campaigns/**` reported ZERO checks, and the only thing that ever compiled a
+# campaign was a release tag. A campaign sat un-buildable on `main` for days as a
+# result: the engine grew `DW0331` (dialogue option labels wider than the button
+# vanilla draws them on) and `DW0205` (a dialogue button that lets the party skip
+# a load-bearing beat) after the campaign was authored, and nothing anywhere went
+# red, because nothing anywhere built it. The engine repo does not close this
+# either: its CI compiles only its own `crates/dsl/fixtures/**` campaigns, never
+# a real one.
+#
+# What this gate is, and is not. The STATIC ladder — `delvec validate` (schema +
+# referential + text fit + l10n sidecars) and `delvec build` (placement,
+# reachability, emission) — per campaign, per push, in every language the
+# campaign declares. The RUNTIME ladder (PackTest, the bot playthrough, the
+# multi-arch image) stays where it is: `release.yml`, on a release tag. That is
+# the tiered-testing split applied to the repo where campaigns actually live.
+#
+# Which engine. `versions.toml` `[engine].ref` — the same pin `release.yml`
+# builds a release with, so "green here" means "this campaign compiles with the
+# engine that would ship it", and the answer is reproducible from two commit ids
+# (ADR-0006). Deliberately NOT the engine repo's `main`: this repo must not go
+# red for a change that has not been pinned yet. Re-pinning the engine is the
+# moment new compiler obligations arrive, and that pull request is where a
+# campaign's adoption round is scheduled — which is exactly what this gate makes
+# visible.
+#
+# Credentials. Both repos are public, so the cross-repo checkout needs no
+# credential of its own; the default GITHUB_TOKEN reaches the engine repo, same
+# as `prefab-audit.yml`. That is not cosmetic: GitHub withholds secrets from
+# fork-based pull requests, so a cross-repo PAT here would leave the community
+# contribution path as the one path this gate did not cover.
+
+on:
+  # NO PATH FILTER, and the reason is the one `prefab-audit.yml` records beside
+  # its own dropped filter. `every campaign builds` below is a REQUIRED status
+  # check, and branch protection matches a context by its NAME STRING: a pull
+  # request whose files matched none of the filters produces no run, the context
+  # never reports, and the merge blocks forever — including the pull request that
+  # would fix it. This repository has already shipped that deadlock once.
+  #
+  # A filter is the wrong instrument for the saving anyway. The driver states its
+  # binding count against a denominator and names what it excluded, so a change
+  # touching no campaign gets an honest "2 of 2 campaigns examined, 0 excluded"
+  # rather than a silence protection cannot tell from a pass.
+  #
+  # What the filter bought was measured rather than guessed, over the whole
+  # population: of 88 pull requests, 72 matched the filter and 16 produced no run
+  # and therefore no status. Those 16 are what a required context would have
+  # blocked forever — and two of them are the pull requests that added the
+  # never-reporting-check repair and the lockstep checker itself, so the deadlock
+  # would have blocked its own two repairs. The run costs about four minutes and
+  # nothing in money: this repository is public, so its Actions minutes are free.
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ONE JOB, and the name is the whole point of the shape.
+  #
+  # This job's name is the REQUIRED status check, and branch protection matches a
+  # context by its NAME STRING. That one fact rules out both shapes this workflow
+  # tried first. A matrix job reports as `name (value)`, so `build <campaign>`
+  # named contexts that appear and vanish as campaigns land — a required name no
+  # run reports blocks every pull request forever, including the one that would
+  # fix it. And a summary job over such a matrix needs `if: always()` to survive a
+  # failing leg, while a job-level `if:` is itself disqualifying, because a
+  # skipped job reports `skipped` and GitHub counts that as a SATISFIED required
+  # check. Neither can be held, and the enumeration was exhaustive rather than
+  # argued: three jobs across four declarable states, sixty-four combinations,
+  # none of them legal.
+  #
+  # One job walking the population itself can be held, which is the shape
+  # `prefab-audit.yml` next door already uses and for the same reason. The cost is
+  # real and was measured before it was paid: the campaigns no longer build
+  # concurrently, so the run goes from about 2m50s to about 4m, and the
+  # per-campaign check rows are gone — but those rows were never a thing branch
+  # protection could hold. The engine is built once instead of once per campaign,
+  # which the collapse gets back.
+  build:
+    name: every campaign builds
+    runs-on: ubuntu-latest
+    steps:
+      # With LFS: `delvec build` copies the prefab `.nbt` bodies into the
+      # datapack, and an LFS pointer is not an NBT file.
+      - name: check out content repo (with LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: read the pinned engine from versions.toml
+        id: engine
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import tomllib
+          e = tomllib.load(open("versions.toml", "rb"))["engine"]
+          print(f"repo={e['repo']}")
+          print(f"ref={e['ref']}")
+          PY
+
+      - name: check out the pinned engine
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.engine.outputs.repo }}
+          ref: ${{ steps.engine.outputs.ref }}
+          path: engine-src
+
+      - name: cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine-src
+          key: delvec-${{ steps.engine.outputs.ref }}
+
+      # ONCE, for every campaign — which is what collapsing the matrix gets back.
+      # Selected by BINARY name, never by package name: the engine's compiler
+      # package has been renamed once already, and a build command that names the
+      # package is a value that moves underneath a pin nobody re-tests. The same
+      # command spelled `-p <package>` was correct at one pin and a hard failure
+      # at the next, with nothing in between to say so. `[[bin]] name = "delvec"`
+      # spans that rename.
+      - name: build delvec
+        working-directory: engine-src
+        run: cargo build --release --bin delvec
+
+      - name: record the engine these campaigns are built with
+        env:
+          ENGINE_REPO: ${{ steps.engine.outputs.repo }}
+          ENGINE_REF: ${{ steps.engine.outputs.ref }}
+        run: |
+          set -euo pipefail
+          echo "engine ${ENGINE_REPO}@${ENGINE_REF}"
+          engine-src/target/release/delvec --version
+
+      # The whole of the check lives in the script, not in this YAML, so a
+      # creator runs exactly what CI runs with one command and no workflow
+      # runner. It discovers the population, names what it excluded and why,
+      # refuses a campaign that has lost its entry document, refuses a zero
+      # binding, and reconciles every discovered campaign against a result at the
+      # end — so a walk that stopped early cannot report on the part it reached
+      # and stay silent about the part it did not.
+      - name: every campaign builds, in every language it declares
+        run: |
+          set -euo pipefail
+          python3 tools/campaign-build.py \
+            --delvec engine-src/target/release/delvec \
+            --prefabs prefabs \
+            --out "${RUNNER_TEMP}/delves" \
+            --github
