@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "1e10fd630f76fda2ad57beb25e8cdc0ae0cb4f2d"
+value = "46abe8bf21921e5a48c0b477da707bae0b8e9b7c"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "1e10fd630f76fda2ad57beb25e8cdc0ae0cb4f2d"
+reviewed = "1847a333be33824515b35ecd913a2f8d7077a2e6"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -47,6 +47,26 @@ modules. So a red naming commits that all landed in `crates/compiler` is a
 correct statement about the closure and says nothing yet about a verdict; the
 closure is deliberately not narrowed, because narrowing a watch to dodge a red is
 the defect, and a wide watch that is understood costs one reading.
+
+WHY `reviewed` IS AHEAD OF `value`, and what was read to put it there.
+`value` is the revision the tool is BUILT from; `reviewed` is the revision its
+upstream history has been JUDGED against. They answer different questions and
+they are allowed to differ. `value` sits at the newest commit touching
+`tools/check-pins.py`, because that file is the whole reason this pin moved.
+`reviewed` sits further along, at the upstream default branch, because the
+interval between them was read and none of it can move a verdict.
+
+The reading, so the next one does not have to repeat it. Across
+ff62355c..46abe8bf the `crates/` tree is byte-identical — same git tree object
+at both ends, and `Cargo.toml`, `Cargo.lock` and `rust-toolchain.toml` likewise
+— so the bump rebuilds the same `delve-admit` from the same sources and changes
+no audit behaviour whatsoever; that interval is registry and tooling only. After
+it, the commits reaching the watch closure land in `crates/compiler`, which the
+`audit` subcommand does not read at all, and in `crates/dsl`'s `diagnostic`,
+`gate` and `validate` modules. Confirmed from the other direction rather than
+assumed: the audit-path crates name `delvewright_dsl::prefab`, `::registry` and
+`::blocks` and nothing under `gate`, `validate` or `diagnostic`, so the linkage
+this entry already describes does not reach what moved.
 
 WHAT `vendors` DECLARES, and why it is a pin's business at all.
 `tools/check-pins.py` is ONE tool with two copies: the pipeline's is the source,
