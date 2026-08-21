@@ -1,0 +1,427 @@
+{
+  "version": "1.0.0",
+  "name": "mill_race",
+  "start": "mill_race",
+  "params": {
+    "wall_head": 4
+  },
+  "palette": {
+    "subgrade": "minecraft:stone",
+    "paving": "minecraft:cobblestone",
+    "kerb": "minecraft:stone_brick_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+    "race_wall": "minecraft:stone_bricks",
+    "race_bed": "minecraft:mossy_cobblestone",
+    "water": "minecraft:water[level=0]",
+    "wheel_rim": "minecraft:oak_planks",
+    "wheel_hub": "minecraft:oak_log[axis=x]",
+    "mill_base": "minecraft:mossy_stone_bricks",
+    "timber": "minecraft:spruce_planks",
+    "window_bars": "minecraft:iron_bars[east=true,north=true,south=true,waterlogged=false,west=false]",
+    "roof_west": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+    "roof_east": "minecraft:spruce_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]"
+  },
+  "rules": {
+    "mill_race": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 5 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 4 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "call", "symbol": "yard" },
+            { "op": "call", "symbol": "race" },
+            { "op": "call", "symbol": "mill" }
+          ]
+        }
+      }
+    ],
+
+    "yard": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 4 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "call", "symbol": "yard_body" },
+            { "op": "call", "symbol": "yard_air" }
+          ]
+        }
+      }
+    ],
+    "yard_body": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "subgrade" } },
+            { "op": "fill", "material": { "role": "paving" } }
+          ]
+        }
+      }
+    ],
+    "yard_air": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 4 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "void" },
+            { "op": "call", "symbol": "kerb_line" }
+          ]
+        }
+      }
+    ],
+    "kerb_line": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "kerb" } },
+            { "op": "void" }
+          ]
+        }
+      }
+    ],
+
+    "race": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "call", "symbol": "race_wall_west" },
+            { "op": "call", "symbol": "channel_plain" },
+            { "op": "call", "symbol": "channel_wheel" },
+            { "op": "call", "symbol": "race_wall_east" }
+          ]
+        }
+      }
+    ],
+    "race_wall_west": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "param", "name": "wall_head" } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "race_wall" } },
+            { "op": "void" }
+          ]
+        }
+      }
+    ],
+    "race_wall_east": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 4 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "race_wall" } },
+            { "op": "void" }
+          ]
+        }
+      }
+    ],
+    "channel_plain": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "race_bed" } },
+            { "op": "fill", "material": { "role": "water" } },
+            { "op": "void" }
+          ]
+        }
+      }
+    ],
+    "channel_wheel": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "race_bed" } },
+            { "op": "fill", "material": { "role": "water" } },
+            { "op": "call", "symbol": "wheel_plane" }
+          ]
+        }
+      }
+    ],
+    "wheel_plane": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 5 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "void" },
+            { "op": "call", "symbol": "wheel" },
+            { "op": "void" }
+          ]
+        }
+      }
+    ],
+    "wheel": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "call", "symbol": "wheel_rim_row" },
+            { "op": "call", "symbol": "wheel_side_row" },
+            { "op": "call", "symbol": "wheel_hub_row" },
+            { "op": "call", "symbol": "wheel_side_row" },
+            { "op": "call", "symbol": "wheel_rim_row" }
+          ]
+        }
+      }
+    ],
+    "wheel_rim_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "void" },
+            { "op": "fill", "material": { "role": "wheel_rim" } },
+            { "op": "void" }
+          ]
+        }
+      }
+    ],
+    "wheel_side_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "wheel_rim" } },
+            { "op": "void" },
+            { "op": "fill", "material": { "role": "wheel_rim" } }
+          ]
+        }
+      }
+    ],
+    "wheel_hub_row": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "wheel_rim" } },
+            { "op": "void" },
+            { "op": "fill", "material": { "role": "wheel_hub" } },
+            { "op": "void" },
+            { "op": "fill", "material": { "role": "wheel_rim" } }
+          ]
+        }
+      }
+    ],
+
+    "mill": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 4 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "mill_base" } },
+            { "op": "call", "symbol": "mill_walls" },
+            { "op": "call", "symbol": "roof_eaves" },
+            { "op": "call", "symbol": "roof_ridge" }
+          ]
+        }
+      }
+    ],
+    "mill_walls": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 4 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 3 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "timber" } },
+            { "op": "call", "symbol": "window_band" },
+            { "op": "fill", "material": { "role": "timber" } }
+          ]
+        }
+      }
+    ],
+    "window_band": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "call", "symbol": "window_col" },
+            { "op": "fill", "material": { "role": "timber" } }
+          ]
+        }
+      }
+    ],
+    "window_col": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "timber" } },
+            { "op": "fill", "material": { "role": "window_bars" } },
+            { "op": "fill", "material": { "role": "timber" } }
+          ]
+        }
+      }
+    ],
+    "roof_eaves": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 2 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "fill", "material": { "role": "roof_west" } },
+            { "op": "fill", "material": { "role": "timber" } },
+            { "op": "fill", "material": { "role": "roof_east" } }
+          ]
+        }
+      }
+    ],
+    "roof_ridge": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "absolute", "blocks": { "expr": "int", "value": 1 } },
+            { "size": "relative", "weight": { "expr": "int", "value": 1 } }
+          ],
+          "children": [
+            { "op": "void" },
+            { "op": "fill", "material": { "role": "roof_west" } },
+            { "op": "fill", "material": { "role": "roof_east" } },
+            { "op": "void" }
+          ]
+        }
+      }
+    ]
+  }
+}
