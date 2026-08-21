@@ -44,9 +44,11 @@ delvec build campaigns/<id> -o out/
   `delvec validate` and a full `delvec build` (which implies `analyze`) for every
   campaign in this repo, in every language it declares, against the engine pinned
   in `versions.toml` — so a campaign that no longer compiles is red here, not
-  discovered at release time. The runtime half of the ladder (PackTest and a bot
-  playthrough against the shipped image) runs on a release tag; see *Releasing a
-  campaign* below.
+  discovered at release time. Run exactly what CI runs, before you push:
+  `python3 tools/campaign-build.py --delvec <path to delvec>`, or
+  `--discover-only` to see which campaigns it finds without building them. The
+  runtime half of the ladder (PackTest and a bot playthrough against the shipped
+  image) runs on a release tag; see *Releasing a campaign* below.
 - Only distributable-class prefabs (this repo's `prefabs/`, per-item CC0/CC BY/
   original with recorded provenance) may be referenced. Prefab additions pass a
   mechanical NBT audit in CI (block-palette allowlist; no command/structure
