@@ -1,0 +1,107 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 14,
+      "undecided": 0,
+      "detail": "14 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 14,
+      "undecided": 0,
+      "detail": "14 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 14,
+      "undecided": 0,
+      "detail": "14 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 30,
+      "undecided": 0,
+      "detail": "30 fill(s) examined, 9 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "stair-shape",
+      "state": "pass",
+      "bound": 55,
+      "undecided": 0,
+      "detail": "55 stair(s), every written `shape` the one vanilla derives from that stair's own neighbours"
+    },
+    {
+      "id": "fluid-contained",
+      "state": "pass",
+      "bound": 66,
+      "undecided": 0,
+      "detail": "66 fluid cell(s), every one a source with nothing open beside or below it; 12 run direction(s) leave the piece (from 6,1,0, 6,1,10, 6,2,0 and others) — what is beyond a face is not in these bytes, so this is counted and not judged. The placement decides it: `DW0318` refuses this water if the piece is placed against nothing under a void horizon"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 1287,
+      "undecided": 0,
+      "detail": "794 filled cell(s) of 1287 in the region"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 794,
+    "region_cells": 1287,
+    "distinct_states": 14,
+    "standable_cells": 96,
+    "footprint_area": 143,
+    "footprint_perimeter": 48,
+    "silhouette_complexity": 1.0034904120085089,
+    "top_blocks": [
+      [
+        "minecraft:mossy_stone_bricks",
+        0.2216624685138539
+      ],
+      [
+        "minecraft:stone",
+        0.20780856423173805
+      ],
+      [
+        "minecraft:spruce_planks",
+        0.190176322418136
+      ],
+      [
+        "minecraft:stone_bricks",
+        0.11083123425692695
+      ],
+      [
+        "minecraft:water[level=0]",
+        0.08312342569269521
+      ]
+    ],
+    "stairs": 55,
+    "fluid_cells": 66,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 12,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 96,
+      "sheltered": 2,
+      "entry_cells": 27,
+      "reachable": 96,
+      "reachable_share": 1.0,
+      "unreachable_sheltered": 0,
+      "unreachable_open": 0,
+      "pockets": 0,
+      "largest_pockets": []
+    }
+  },
+  "anchors": {},
+  "findings": [
+    "this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours",
+    "a body of fluid reaches this piece's own outer face in 12 run direction(s) (from 6,1,0, 6,1,10, 6,2,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon",
+    "the program declared no anchors: nothing in a campaign can name a place inside this piece"
+  ]
+}

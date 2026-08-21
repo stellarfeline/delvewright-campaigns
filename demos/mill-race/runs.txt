@@ -1,0 +1,107 @@
+The four runs, as the tool prints them. Every one is the same program file,
+the same region and the same seed; the overrides are the only inputs that differ.
+
+================================================================================
+1. the yard the server keeps  —  no overrides
+================================================================================
+$ delve-grammar expand --file mill-race.program.json --region 13x9x11 --seed 1 --id mill-race -o .
+mill-race: pass
+  blocks-exist    pass  bound 14     14 block state(s), all present in Minecraft 1.21.11
+  shape-complete  pass  bound 14     14 placed block state(s), every shape-carrying (multipart) property written
+  states-complete pass  bound 14     14 placed block state(s), every property of every block written
+  oriented-fills  pass  bound 30     30 fill(s) examined, 9 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients
+  stair-shape     pass  bound 55     55 stair(s), every written `shape` the one vanilla derives from that stair's own neighbours
+  fluid-contained pass  bound 66     66 fluid cell(s), every one a source with nothing open beside or below it; 12 run direction(s) leave the piece (from 6,1,0, 6,1,10, 6,2,0 and others) — what is beyond a face is not in these bytes, so this is counted and not judged. The placement decides it: `DW0318` refuses this water if the piece is placed against nothing under a void horizon
+  non-empty       pass  bound 1287   794 filled cell(s) of 1287 in the region
+  measurements   filled 794 / 1287 cells · 14 distinct states · 96 standable · footprint 143 cols, perimeter 48 (complexity 1.00)
+       22.2%  minecraft:mossy_stone_bricks
+       20.8%  minecraft:stone
+       19.0%  minecraft:spruce_planks
+       11.1%  minecraft:stone_bricks
+        8.3%  minecraft:water[level=0]
+  settling       55 stair(s) · 66 fluid cell(s), 0 still (waterlogged), 12 run direction(s) leaving the piece
+  reachability   96 of 96 standable cell(s) reachable on foot from 27 grade entry cell(s) (100.0%) · 2 sheltered · unreachable 0 sheltered + 0 open to the sky, in 0 pocket(s)
+  finding: this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours
+  finding: a body of fluid reaches this piece's own outer face in 12 run direction(s) (from 6,1,0, 6,1,10, 6,2,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon
+  finding: the program declared no anchors: nothing in a campaign can name a place inside this piece
+./mill-race.nbt + mill-race.json + mill-race.report.json — 13x9x11, seed 1, 794 filled cell(s), 0 anchor(s)
+exit 0
+
+================================================================================
+2. the one property  —  the kerb claims a mitre
+================================================================================
+$ delve-grammar expand --file mill-race.program.json --region 13x9x11 --seed 1 --id mill-race-kerb-only --role kerb=minecraft:stone_brick_stairs[facing=west,half=bottom,shape=outer_left,waterlogged=false] -o .
+mill-race-kerb-only: fail
+  blocks-exist    pass  bound 14     14 block state(s), all present in Minecraft 1.21.11
+  shape-complete  pass  bound 14     14 placed block state(s), every shape-carrying (multipart) property written
+  states-complete pass  bound 14     14 placed block state(s), every property of every block written
+  oriented-fills  pass  bound 30     30 fill(s) examined, 9 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients
+  stair-shape     FAIL  bound 55     DW0801: 11 of 55 stair(s) claim a `shape` the game does not derive at their cell — 4,4,0 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,1 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,2 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,3 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,4 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,5 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight (+5 more). A stair's shape is NOT stored: vanilla recomputes it from the stair's neighbours on every horizontal block update, so this piece renders one way in every tool here and resets in the world. Build the neighbours the shape needs, or write the shape the neighbours give
+  fluid-contained pass  bound 66     66 fluid cell(s), every one a source with nothing open beside or below it; 12 run direction(s) leave the piece (from 6,1,0, 6,1,10, 6,2,0 and others) — what is beyond a face is not in these bytes, so this is counted and not judged. The placement decides it: `DW0318` refuses this water if the piece is placed against nothing under a void horizon
+  non-empty       pass  bound 1287   794 filled cell(s) of 1287 in the region
+  measurements   filled 794 / 1287 cells · 14 distinct states · 96 standable · footprint 143 cols, perimeter 48 (complexity 1.00)
+       22.2%  minecraft:mossy_stone_bricks
+       20.8%  minecraft:stone
+       19.0%  minecraft:spruce_planks
+       11.1%  minecraft:stone_bricks
+        8.3%  minecraft:water[level=0]
+  settling       55 stair(s) · 66 fluid cell(s), 0 still (waterlogged), 12 run direction(s) leaving the piece
+  reachability   96 of 96 standable cell(s) reachable on foot from 27 grade entry cell(s) (100.0%) · 2 sheltered · unreachable 0 sheltered + 0 open to the sky, in 0 pocket(s)
+  finding: this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours
+  finding: a body of fluid reaches this piece's own outer face in 12 run direction(s) (from 6,1,0, 6,1,10, 6,2,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon
+  finding: the program declared no anchors: nothing in a campaign can name a place inside this piece
+error: mill-race-kerb-only: a machine gate went red; no prefab was written. The report is at ./mill-race-kerb-only.report.json.
+exit 4
+
+================================================================================
+3. the one course  —  the west race wall is three courses, not four
+================================================================================
+$ delve-grammar expand --file mill-race.program.json --region 13x9x11 --seed 1 --id mill-race-wall-only --param wall_head=3 -o .
+mill-race-wall-only: fail
+  blocks-exist    pass  bound 14     14 block state(s), all present in Minecraft 1.21.11
+  shape-complete  pass  bound 14     14 placed block state(s), every shape-carrying (multipart) property written
+  states-complete pass  bound 14     14 placed block state(s), every property of every block written
+  oriented-fills  pass  bound 30     30 fill(s) examined, 9 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients
+  stair-shape     pass  bound 55     55 stair(s), every written `shape` the one vanilla derives from that stair's own neighbours
+  fluid-contained FAIL  bound 66     DW0800: 11 way(s) out of a body of 66 fluid cell(s) — 6,3,0 runs into 5,3,0 (minecraft:air); 6,3,1 runs into 5,3,1 (minecraft:air); 6,3,2 runs into 5,3,2 (minecraft:air); 6,3,3 runs into 5,3,3 (minecraft:air); 6,3,4 runs into 5,3,4 (minecraft:air); 6,3,5 runs into 5,3,5 (minecraft:air) (+5 more). A body of fluid is saturated and walled by construction: every cell a source, and nothing open beside or below it. This piece renders as still water in every tool here and runs on the first tick in the world
+  non-empty       pass  bound 1287   783 filled cell(s) of 1287 in the region
+  measurements   filled 783 / 1287 cells · 14 distinct states · 96 standable · footprint 143 cols, perimeter 48 (complexity 1.00)
+       22.5%  minecraft:mossy_stone_bricks
+       21.1%  minecraft:stone
+       19.3%  minecraft:spruce_planks
+        9.8%  minecraft:stone_bricks
+        8.4%  minecraft:water[level=0]
+  settling       55 stair(s) · 66 fluid cell(s), 0 still (waterlogged), 12 run direction(s) leaving the piece
+  reachability   96 of 96 standable cell(s) reachable on foot from 25 grade entry cell(s) (100.0%) · 2 sheltered · unreachable 0 sheltered + 0 open to the sky, in 0 pocket(s)
+  finding: this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours
+  finding: a body of fluid reaches this piece's own outer face in 12 run direction(s) (from 6,1,0, 6,1,10, 6,2,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon
+  finding: the program declared no anchors: nothing in a campaign can name a place inside this piece
+error: mill-race-wall-only: a machine gate went red; no prefab was written. The report is at ./mill-race-wall-only.report.json.
+exit 4
+
+================================================================================
+4. the yard as drawn  —  both
+================================================================================
+$ delve-grammar expand --file mill-race.program.json --region 13x9x11 --seed 1 --id mill-race-as-drawn --role kerb=minecraft:stone_brick_stairs[facing=west,half=bottom,shape=outer_left,waterlogged=false] --param wall_head=3 -o .
+mill-race-as-drawn: fail
+  blocks-exist    pass  bound 14     14 block state(s), all present in Minecraft 1.21.11
+  shape-complete  pass  bound 14     14 placed block state(s), every shape-carrying (multipart) property written
+  states-complete pass  bound 14     14 placed block state(s), every property of every block written
+  oriented-fills  pass  bound 30     30 fill(s) examined, 9 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients
+  stair-shape     FAIL  bound 55     DW0801: 11 of 55 stair(s) claim a `shape` the game does not derive at their cell — 4,4,0 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,1 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,2 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,3 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,4 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,5 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight (+5 more). A stair's shape is NOT stored: vanilla recomputes it from the stair's neighbours on every horizontal block update, so this piece renders one way in every tool here and resets in the world. Build the neighbours the shape needs, or write the shape the neighbours give
+  fluid-contained FAIL  bound 66     DW0800: 11 way(s) out of a body of 66 fluid cell(s) — 6,3,0 runs into 5,3,0 (minecraft:air); 6,3,1 runs into 5,3,1 (minecraft:air); 6,3,2 runs into 5,3,2 (minecraft:air); 6,3,3 runs into 5,3,3 (minecraft:air); 6,3,4 runs into 5,3,4 (minecraft:air); 6,3,5 runs into 5,3,5 (minecraft:air) (+5 more). A body of fluid is saturated and walled by construction: every cell a source, and nothing open beside or below it. This piece renders as still water in every tool here and runs on the first tick in the world
+  non-empty       pass  bound 1287   783 filled cell(s) of 1287 in the region
+  measurements   filled 783 / 1287 cells · 14 distinct states · 96 standable · footprint 143 cols, perimeter 48 (complexity 1.00)
+       22.5%  minecraft:mossy_stone_bricks
+       21.1%  minecraft:stone
+       19.3%  minecraft:spruce_planks
+        9.8%  minecraft:stone_bricks
+        8.4%  minecraft:water[level=0]
+  settling       55 stair(s) · 66 fluid cell(s), 0 still (waterlogged), 12 run direction(s) leaving the piece
+  reachability   96 of 96 standable cell(s) reachable on foot from 25 grade entry cell(s) (100.0%) · 2 sheltered · unreachable 0 sheltered + 0 open to the sky, in 0 pocket(s)
+  finding: this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours
+  finding: a body of fluid reaches this piece's own outer face in 12 run direction(s) (from 6,1,0, 6,1,10, 6,2,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon
+  finding: the program declared no anchors: nothing in a campaign can name a place inside this piece
+error: mill-race-as-drawn: a machine gate went red; no prefab was written. The report is at ./mill-race-as-drawn.report.json.
+exit 4
+

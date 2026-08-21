@@ -1,0 +1,107 @@
+{
+  "verdict": "fail",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 14,
+      "undecided": 0,
+      "detail": "14 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 14,
+      "undecided": 0,
+      "detail": "14 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 14,
+      "undecided": 0,
+      "detail": "14 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 30,
+      "undecided": 0,
+      "detail": "30 fill(s) examined, 9 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "stair-shape",
+      "state": "fail",
+      "bound": 55,
+      "undecided": 0,
+      "detail": "DW0801: 11 of 55 stair(s) claim a `shape` the game does not derive at their cell — 4,4,0 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,1 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,2 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,3 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,4 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight; 4,4,5 minecraft:stone_brick_stairs facing=west half=bottom is written shape=outer_left and derives shape=straight (+5 more). A stair's shape is NOT stored: vanilla recomputes it from the stair's neighbours on every horizontal block update, so this piece renders one way in every tool here and resets in the world. Build the neighbours the shape needs, or write the shape the neighbours give"
+    },
+    {
+      "id": "fluid-contained",
+      "state": "fail",
+      "bound": 66,
+      "undecided": 0,
+      "detail": "DW0800: 11 way(s) out of a body of 66 fluid cell(s) — 6,3,0 runs into 5,3,0 (minecraft:air); 6,3,1 runs into 5,3,1 (minecraft:air); 6,3,2 runs into 5,3,2 (minecraft:air); 6,3,3 runs into 5,3,3 (minecraft:air); 6,3,4 runs into 5,3,4 (minecraft:air); 6,3,5 runs into 5,3,5 (minecraft:air) (+5 more). A body of fluid is saturated and walled by construction: every cell a source, and nothing open beside or below it. This piece renders as still water in every tool here and runs on the first tick in the world"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 1287,
+      "undecided": 0,
+      "detail": "783 filled cell(s) of 1287 in the region"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 783,
+    "region_cells": 1287,
+    "distinct_states": 14,
+    "standable_cells": 96,
+    "footprint_area": 143,
+    "footprint_perimeter": 48,
+    "silhouette_complexity": 1.0034904120085089,
+    "top_blocks": [
+      [
+        "minecraft:mossy_stone_bricks",
+        0.2247765006385696
+      ],
+      [
+        "minecraft:stone",
+        0.210727969348659
+      ],
+      [
+        "minecraft:spruce_planks",
+        0.19284802043422733
+      ],
+      [
+        "minecraft:stone_bricks",
+        0.0983397190293742
+      ],
+      [
+        "minecraft:water[level=0]",
+        0.0842911877394636
+      ]
+    ],
+    "stairs": 55,
+    "fluid_cells": 66,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 12,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 96,
+      "sheltered": 2,
+      "entry_cells": 25,
+      "reachable": 96,
+      "reachable_share": 1.0,
+      "unreachable_sheltered": 0,
+      "unreachable_open": 0,
+      "pockets": 0,
+      "largest_pockets": []
+    }
+  },
+  "anchors": {},
+  "findings": [
+    "this piece declares no spatial contract: no space, edge or envelope is claimed, so every contract obligation examined nothing. What the building IS remains unstated, and nothing downstream can check that a placed piece fits its neighbours",
+    "a body of fluid reaches this piece's own outer face in 12 run direction(s) (from 6,1,0, 6,1,10, 6,2,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon",
+    "the program declared no anchors: nothing in a campaign can name a place inside this piece"
+  ]
+}
