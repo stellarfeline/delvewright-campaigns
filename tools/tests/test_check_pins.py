@@ -96,7 +96,16 @@ class Fixture(unittest.TestCase):
 
     def setUp(self) -> None:
         self._tmp = tempfile.TemporaryDirectory()
-        self.repo = Path(self._tmp.name)
+        # The repo is a SUBDIRECTORY of this run's temp dir, never the temp dir
+        # itself. One test needs a path outside the examined tree, and if the
+        # tree is the temp dir root then "outside" can only mean the system temp
+        # directory — a location shared by every concurrent run on the machine.
+        # It was, under a fixed filename: two suites running at once raced, one
+        # deleted the other's file, and the loser raised FileNotFoundError. That
+        # is a deterministic collision on a shared constant, not flakiness.
+        # Nesting keeps "outside the tree" and "inside this run" compatible.
+        self.tmp = Path(self._tmp.name)
+        self.repo = self.tmp / "repo"
         (self.repo / ".github" / "workflows").mkdir(parents=True)
         (self.repo / ".github" / "workflows" / "audit.yml").write_text(
             WORKFLOW, encoding="utf-8"
@@ -273,12 +282,16 @@ class TheEnumerationStatesItsOwnBinding(Fixture):
         Every tracked file is either a fetch site or prose, so nothing is left
         for the enumeration to read -- the state in which a new kind of fetch
         site would escape unseen. The registry is held outside the tree so that
-        it is not itself the one file being examined.
+        it is not itself the one file being examined -- and inside this run's own
+        temp dir, so that "outside the tree" is not a path shared with every
+        other run on the machine.
         """
         (self.repo / ".github" / "pins.toml").unlink()
         (self.repo / "README.md").write_text("prose\n", encoding="utf-8")
         self._track()
-        registry = self.repo.parent / "outside-pins.toml"
+        # Beside the tree, inside this run's temp dir: outside what is examined,
+        # and unique per run. See setUp for what a fixed shared path cost.
+        registry = self.tmp / "outside-pins.toml"
         registry.write_text(
             f'[[pin]]\nid = "fetcher"\nvalue = "{ACTION}"\n'
             'sites = [".github/workflows/audit.yml"]\n'
@@ -288,13 +301,10 @@ class TheEnumerationStatesItsOwnBinding(Fixture):
             'policy = "immutable"\nwhy = "third-party bytes"\n',
             encoding="utf-8",
         )
-        try:
-            r = run(self.repo, "--registry", str(registry))
-            self.assertIn("binding: 2 pin(s)", r.stdout)
-            self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
-            self.assertIn("applied no verb to any file", r.stderr)
-        finally:
-            registry.unlink()
+        r = run(self.repo, "--registry", str(registry))
+        self.assertIn("binding: 2 pin(s)", r.stdout)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("applied no verb to any file", r.stderr)
 
 
 class ThisRepositorysOwnRegistry(unittest.TestCase):
@@ -318,24 +328,54 @@ class ThisRepositorysOwnRegistry(unittest.TestCase):
         self.assertGreater(int(line.split("over ")[1].split()[0]), 0, line)
 
     def test_the_campaign_tree_is_inside_the_gate(self) -> None:
-        """`campaigns/` is this repository's content, not a vendored directory.
+        """Every tracked file is examined, whatever directory it sits in.
 
-        The pipeline repository reaches this one through a gitignored `campaigns`
-        symlink, so its skip list names that directory — inertly, since a
-        gitignored path is never listed. Carried across, the same entry took
+        `campaigns/` is this repository's content. The pipeline repository
+        reaches this one through a gitignored `campaigns` symlink, so its skip
+        list once named that directory — inertly there, since a gitignored path
+        is never listed by `git ls-files`. Carried across, the same entry took
         every campaign document out of both pin discovery and the fetch-verb
         enumeration while every count stayed green, because a file that is never
         listed cannot be reported as unexamined.
+
+        Asserted as an EXACT population rather than as the absence of one name
+        from one constant. Naming the constant would be vacuous twice over: the
+        name can be renamed out from under the test, and `campaigns` not being
+        in a list of build-output directories is true whether or not the tracked
+        enumeration is filtered at all. Set equality against `git ls-files` is
+        the property itself — any skip list reaching this population reds here,
+        and the diff names the files it dropped.
         """
-        spec = importlib.util.spec_from_file_location("check_pins_skip", CHECKER)
+        spec = importlib.util.spec_from_file_location("check_pins_pop", CHECKER)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        self.assertNotIn("campaigns", module.SKIP_DIRS)
-        tracked = module.tracked_files(REPO)
-        self.assertTrue(
-            [rel for rel in tracked if rel.startswith("campaigns/")],
-            "no campaign document reached the gate",
+
+        listed = subprocess.run(
+            ["git", "-C", str(REPO), "ls-files", "-z"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+        # The function documents two exclusions and no others: it wants real
+        # files, so a symlink and a gitlink are out. Everything else is in.
+        expected = sorted(
+            rel
+            for rel in listed.split("\0")
+            if rel
+            and not (REPO / rel).is_symlink()
+            and (REPO / rel).is_file()
         )
+        examined = sorted(module.tracked_files(REPO))
+        dropped = sorted(set(expected) - set(examined))
+        self.assertEqual(
+            examined,
+            expected,
+            f"{len(dropped)} of {len(expected)} tracked file(s) never reached "
+            f"the enumeration: {dropped[:10]}",
+        )
+
+        campaigns = [rel for rel in examined if rel.startswith("campaigns/")]
+        self.assertTrue(campaigns, "no campaign document reached the gate")
 
     def test_it_reds_when_a_pin_leaves_it(self) -> None:
         """Which entry is read from the registry rather than named here.
