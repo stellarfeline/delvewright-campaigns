@@ -127,7 +127,18 @@ FETCH_SITES = (
 # it, and which no human edits.
 NON_EXECUTING = ("*.md", "**/Cargo.lock", "**/package-lock.json", "*.json.txt")
 
-SKIP_DIRS = {".git", "target", "node_modules", "dist", "campaigns", "content-repo"}
+# Build output and vendored trees: things this repository does not author, whose
+# contents are decided somewhere else.
+#
+# `campaigns` is deliberately NOT here, and the omission is the whole point. In
+# the pipeline repository that name is a gitignored dev symlink onto THIS one, so
+# skipping it there costs nothing — `git ls-files` never yields it, and the entry
+# is inert. Here `campaigns/` is the repository's own content: the stage documents
+# every delve is built from. Carried across, that entry took 27 tracked files —
+# every campaign document in the repository — out of both pin discovery and the
+# fetch-verb enumeration, and no count anywhere said so, because a file that is
+# never listed cannot be reported as unexamined.
+SKIP_DIRS = {".git", "target", "node_modules", "dist", "content-repo"}
 
 # The language a file is written in, which is what decides how to READ a verb
 # found in it. A basename wins over a suffix, since the file kinds named by
