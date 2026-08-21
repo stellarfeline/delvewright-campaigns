@@ -63,6 +63,15 @@ name = "protect-main"
 include = ["~DEFAULT_BRANCH"]
 contexts = [
   "NBT palette audit (allowlist + code-injection forbid)",
+  # A campaign nothing compiles is a campaign nothing checks. `every campaign
+  # builds` is the fixed name: the build job itself reports as `build <campaign>
+  # (…)`, which moves with the campaign set, and protection matches by name
+  # string. Required on `main` only — `refs/heads/campaign/*` cannot carry it
+  # until `campaign-build.yml` reaches those trees, and a context required on a
+  # ref whose tree does not produce it is the permanent deadlock this file opens
+  # by naming.
+  "discover campaigns",
+  "every campaign builds",
 ]
 
 # Which workflow file produces each context. This is not bookkeeping: it is what
@@ -72,6 +81,8 @@ contexts = [
 # request can ever merge into.
 [ruleset.provided_by]
 "NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
+"discover campaigns" = ".github/workflows/campaign-build.yml"
+"every campaign builds" = ".github/workflows/campaign-build.yml"
 
 [[ruleset]]
 name = "protect-campaign-branches"

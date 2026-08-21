@@ -37,21 +37,23 @@ name: campaign build
 # contribution path as the one path this gate did not cover.
 
 on:
+  # NO PATH FILTER, and the reason is the one `prefab-audit.yml` records beside
+  # its own dropped filter. `every campaign builds` below is a REQUIRED status
+  # check, and branch protection matches a context by its NAME STRING: a pull
+  # request whose files matched none of the filters produces no run, the context
+  # never reports, and the merge blocks forever — including the pull request that
+  # would fix it. This repository has already shipped that deadlock once.
+  #
+  # A filter is the wrong instrument for the saving anyway. The `discover` job
+  # states its binding count and names what it excluded, so a change touching no
+  # campaign gets an honest "2 campaigns, 0 excluded" rather than a silence that
+  # protection cannot tell from a pass. What the filter bought is measured rather
+  # than guessed: the two build legs are the whole cost, they run concurrently,
+  # and the cargo cache is keyed on the engine pin, so a run that changes nothing
+  # about the engine reuses it.
   pull_request:
-    paths:
-      - "campaigns/**"
-      - "prefabs/**"
-      - "catalog/**"
-      - "versions.toml"
-      - ".github/workflows/campaign-build.yml"
   push:
     branches: ["main"]
-    paths:
-      - "campaigns/**"
-      - "prefabs/**"
-      - "catalog/**"
-      - "versions.toml"
-      - ".github/workflows/campaign-build.yml"
 
 permissions:
   contents: read
@@ -255,3 +257,90 @@ jobs:
             fi
           done
           exit "${fail}"
+
+  # THE CONTEXT BRANCH PROTECTION HOLDS, and the only one in this workflow that
+  # can be held. `build` above reports as `build <campaign> (validate + analyze
+  # + emit)` — a name that changes with the campaign set, while protection
+  # matches by NAME STRING, so requiring it would name contexts that appear and
+  # vanish as campaigns land. This job's name does not move.
+  #
+  # `if: always()` is not a condition, it is the ABSENCE of one, and it is what
+  # makes this a gate rather than a green square. A summary job without it is
+  # SKIPPED the moment a need fails — and GitHub counts a skipped required check
+  # as SATISFIED, so the gate would report green exactly when it should report
+  # red. That is why the assertion below reads `result` for every need instead of
+  # relying on the dependency edge: `failure`, `cancelled` and `skipped` are all
+  # reds here, and `skipped` is the one that matters, because it is what a matrix
+  # leg reports when it was never scheduled at all.
+  #
+  # It also refuses an EMPTY matrix. A summary over zero legs would find no
+  # non-success result and pass, which is a gate examining nothing — the vacuity
+  # this workflow's discovery step already refuses at its own end. Both ends
+  # refuse, because the count travels between them as a string and a summary that
+  # trusted its producer would be believing a value rather than checking one.
+  gate:
+    name: every campaign builds
+    needs: [discover, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: every campaign that exists was built
+        env:
+          # One value carrying every need's result and outputs, so the assertion
+          # reads what GitHub reports rather than what this file assumes.
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys
+
+          needs = json.loads(os.environ["NEEDS"])
+          errors = []
+
+          # 1. Every leg reached `success`. A leg that failed, was cancelled, or
+          #    never ran is a red — and the last is the one a naive summary calls
+          #    a pass, because a job nothing scheduled has nothing to report.
+          for job in sorted(needs):
+              result = needs[job].get("result")
+              if result != "success":
+                  errors.append(
+                      f"job `{job}` reported `{result}`, not `success`. A leg "
+                      f"that failed, was cancelled, or never ran is not a leg "
+                      f"that passed — a matrix that was never scheduled reports "
+                      f"`skipped`, which is what an unguarded summary would let "
+                      f"through as green")
+
+          # 2. The matrix was not empty. Read from the producer's own stated
+          #    count rather than inferred from the legs, because zero legs is
+          #    exactly the state that leaves nothing to infer from.
+          out = needs.get("discover", {}).get("outputs", {})
+          try:
+              count = int(out.get("count", ""))
+          except ValueError:
+              count = -1
+          if count <= 0:
+              errors.append(
+                  f"the discovery job reported {out.get('count')!r} campaigns, so "
+                  f"this gate examined nothing. A summary over zero legs that "
+                  f"reports success is a gate that binds to nothing, which is not "
+                  f"a pass")
+
+          # 3. The count and the list agree. They are emitted by one step, so a
+          #    disagreement means the output file was written by something other
+          #    than that step.
+          try:
+              ids = json.loads(out.get("campaigns", "[]"))
+          except json.JSONDecodeError:
+              ids = None
+          if ids is None or (count >= 0 and len(ids) != count):
+              errors.append(
+                  f"the discovery job reported count={out.get('count')!r} and "
+                  f"campaigns={out.get('campaigns')!r}, which do not agree")
+
+          for e in errors:
+              print(f"::error::{e}")
+          if errors:
+              sys.exit(1)
+          print(f"every campaign builds: {count} campaign(s) — {', '.join(ids)}")
+          print(f"excluded and counted: {out.get('excluded')}")
+          PY
