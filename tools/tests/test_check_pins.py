@@ -428,14 +428,31 @@ class TheLanguageMapIsAPositiveClaim(unittest.TestCase):
 
         It would be a verb applied everywhere wearing the keying's clothes --
         green, bound, and doing exactly what the defect did.
+
+        A verb may belong to more than one language, so the keying is a SET of
+        them, and the set shape is itself asserted. The checker asks `lang in
+        verb_langs`, and `in` over a bare string is SUBSTRING matching: a verb
+        keyed to the string "yaml" would silently answer for a language named
+        "ya", which is the right question about the wrong key. An empty set is
+        refused for the mirror reason -- it drops the verb for every file whose
+        language is known, which is the defect this guard exists to catch,
+        arriving from the other side.
         """
         checker = self._checker()
         producible = set(checker.LANGUAGE_BY_NAME.values()) | set(
             checker.LANGUAGE_BY_SUFFIX.values()
         )
-        for verb, language in checker.FETCH_VERBS:
-            if language is not None:
+        keyed = 0
+        for verb, languages in checker.FETCH_VERBS:
+            if languages is None:
+                continue
+            keyed += 1
+            self.assertIsInstance(languages, (set, frozenset), verb.pattern)
+            self.assertTrue(languages, verb.pattern)
+            for language in sorted(languages):
                 self.assertIn(language, producible, verb.pattern)
+        # A binding of zero would pass every assertion above without making one.
+        self.assertGreater(keyed, 0, "no directive in FETCH_VERBS is language-keyed")
 
 
 if __name__ == "__main__":
