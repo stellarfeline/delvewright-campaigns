@@ -44,13 +44,18 @@ on:
   # never reports, and the merge blocks forever — including the pull request that
   # would fix it. This repository has already shipped that deadlock once.
   #
-  # A filter is the wrong instrument for the saving anyway. The `discover` job
-  # states its binding count and names what it excluded, so a change touching no
-  # campaign gets an honest "2 campaigns, 0 excluded" rather than a silence that
-  # protection cannot tell from a pass. What the filter bought is measured rather
-  # than guessed: the two build legs are the whole cost, they run concurrently,
-  # and the cargo cache is keyed on the engine pin, so a run that changes nothing
-  # about the engine reuses it.
+  # A filter is the wrong instrument for the saving anyway. The driver states its
+  # binding count against a denominator and names what it excluded, so a change
+  # touching no campaign gets an honest "2 of 2 campaigns examined, 0 excluded"
+  # rather than a silence protection cannot tell from a pass.
+  #
+  # What the filter bought was measured rather than guessed, over the whole
+  # population: of 88 pull requests, 72 matched the filter and 16 produced no run
+  # and therefore no status. Those 16 are what a required context would have
+  # blocked forever — and two of them are the pull requests that added the
+  # never-reporting-check repair and the lockstep checker itself, so the deadlock
+  # would have blocked its own two repairs. The run costs about four minutes and
+  # nothing in money: this repository is public, so its Actions minutes are free.
   pull_request:
   push:
     branches: ["main"]
@@ -63,111 +68,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Which campaigns exist, as a matrix. A campaign directory is one holding a
-  # `world.json`, and `release.yml` says the same thing in its own words:
-  # "`campaigns/<id>/` is not proof of a campaign" — it has already met a
-  # directory here that carried media and build output and no stage documents at
-  # all. So the rule is the entry DOCUMENT, never the directory, and the two
-  # cannot disagree about what a campaign is.
+  # ONE JOB, and the name is the whole point of the shape.
   #
-  # Which makes the rule an EXCLUSION, and an exclusion nobody counts is how a
-  # count stays honest about a smaller world than the tool claims to cover. This
-  # repository has paid for that exact shape once: a constant naming directories
-  # to skip removed 27 tracked files — every campaign stage document — from a
-  # tool's enumeration while every stated number remained truthful about what it
-  # had been handed. A campaign whose `world.json` is renamed, moved or lost
-  # would drop out of this matrix the same way, and the binding count would go on
-  # reading as a pass. So the discovery states what it EXCLUDED as well as what
-  # it found, and refuses on the one exclusion that cannot be innocent.
-  discover:
-    name: discover campaigns
-    runs-on: ubuntu-latest
-    outputs:
-      campaigns: ${{ steps.list.outputs.campaigns }}
-      count: ${{ steps.list.outputs.count }}
-      excluded: ${{ steps.list.outputs.excluded }}
-      headless: ${{ steps.list.outputs.headless }}
-    steps:
-      # Text only — no LFS. The prefab bodies are not read here.
-      - uses: actions/checkout@v4
-
-      - name: list campaign directories
-        id: list
-        run: |
-          set -euo pipefail
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import json, pathlib, sys
-
-          # Every document a campaign is authored out of. A directory carrying
-          # one of these is a campaign whatever else is true of it.
-          STAGE = ("world.json", "quest-plan.json", "quests.json", "npcs.json",
-                   "classes.json", "dialogue.json", "world-edits.json")
-
-          root = pathlib.Path("campaigns")
-          ids, media, headless = [], [], []
-          for p in sorted(root.iterdir()):
-              if not p.is_dir():
-                  continue
-              if (p / "world.json").is_file():
-                  ids.append(p.name)
-                  continue
-              # Excluded. Which kind is decided by the OBJECT, not by whoever
-              # wrote the directory: one carrying no stage document at all is
-              # media or build output and is nothing this gate can build; one
-              # carrying any OTHER stage document is a campaign that has lost
-              # its entry document, and silently dropping it is the defect.
-              others = [s for s in STAGE if (p / s).is_file()]
-              (headless if others else media).append(
-                  {"dir": p.name, "carries": others})
-
-          print("campaigns=" + json.dumps(ids))
-          print("count=" + str(len(ids)))
-          print("excluded=" + json.dumps(media + headless))
-          print("headless=" + json.dumps(headless))
-          print(f"discovered {len(ids)} campaign(s): {', '.join(ids) or '(none)'}",
-                file=sys.stderr)
-          PY
-
-      # A gate that binds to nothing is vacuous, not a pass — and a gate that
-      # binds to FEWER than the tree holds is the same defect with a plausible
-      # number on it. Both are stated here, in the step whose stdout is not
-      # redirected into `$GITHUB_OUTPUT`, so a workflow command is a workflow
-      # command rather than a line in an outputs file.
-      - name: the matrix binds to every campaign, and every exclusion is counted
-        env:
-          COUNT: ${{ steps.list.outputs.count }}
-          CAMPAIGNS: ${{ steps.list.outputs.campaigns }}
-          EXCLUDED: ${{ steps.list.outputs.excluded }}
-          HEADLESS: ${{ steps.list.outputs.headless }}
-        run: |
-          set -euo pipefail
-          if [ "$COUNT" -eq 0 ]; then
-            echo "::error::no campaign directory found under campaigns/ (a campaign is a directory holding world.json) — this gate would pass vacuously"
-            exit 1
-          fi
-          echo "campaign build gate binds to $COUNT campaign(s): ${CAMPAIGNS}"
-          echo "excluded from the matrix: ${EXCLUDED}"
-          python3 - <<'PY'
-          import json, os, sys
-          headless = json.loads(os.environ["HEADLESS"])
-          for h in headless:
-              print(f"::error::campaigns/{h['dir']} carries "
-                    f"{', '.join(h['carries'])} but no world.json, so it is a "
-                    f"campaign the matrix would drop while still reporting a "
-                    f"binding count — an honest number about a smaller world "
-                    f"than this gate claims to cover")
-          sys.exit(1 if headless else 0)
-          PY
-
+  # This job's name is the REQUIRED status check, and branch protection matches a
+  # context by its NAME STRING. That one fact rules out both shapes this workflow
+  # tried first. A matrix job reports as `name (value)`, so `build <campaign>`
+  # named contexts that appear and vanish as campaigns land — a required name no
+  # run reports blocks every pull request forever, including the one that would
+  # fix it. And a summary job over such a matrix needs `if: always()` to survive a
+  # failing leg, while a job-level `if:` is itself disqualifying, because a
+  # skipped job reports `skipped` and GitHub counts that as a SATISFIED required
+  # check. Neither can be held, and the enumeration was exhaustive rather than
+  # argued: three jobs across four declarable states, sixty-four combinations,
+  # none of them legal.
+  #
+  # One job walking the population itself can be held, which is the shape
+  # `prefab-audit.yml` next door already uses and for the same reason. The cost is
+  # real and was measured before it was paid: the campaigns no longer build
+  # concurrently, so the run goes from about 2m50s to about 4m, and the
+  # per-campaign check rows are gone — but those rows were never a thing branch
+  # protection could hold. The engine is built once instead of once per campaign,
+  # which the collapse gets back.
   build:
-    name: build ${{ matrix.campaign }} (validate + analyze + emit)
-    needs: discover
+    name: every campaign builds
     runs-on: ubuntu-latest
-    strategy:
-      # One red campaign must not hide the state of the others.
-      fail-fast: false
-      matrix:
-        campaign: ${{ fromJson(needs.discover.outputs.campaigns) }}
     steps:
       # With LFS: `delvec build` copies the prefab `.nbt` bodies into the
       # datapack, and an LFS pointer is not an NBT file.
@@ -200,17 +124,18 @@ jobs:
           workspaces: engine-src
           key: delvec-${{ steps.engine.outputs.ref }}
 
-      # Selected by BINARY name, never by package name. The engine's compiler
+      # ONCE, for every campaign — which is what collapsing the matrix gets back.
+      # Selected by BINARY name, never by package name: the engine's compiler
       # package has been renamed once already, and a build command that names the
-      # package is a value that moves underneath a pin nobody re-tests: the same
+      # package is a value that moves underneath a pin nobody re-tests. The same
       # command spelled `-p <package>` was correct at one pin and a hard failure
       # at the next, with nothing in between to say so. `[[bin]] name = "delvec"`
-      # is stable across that rename and is the name ADR-0016 gives the engine.
+      # spans that rename.
       - name: build delvec
         working-directory: engine-src
         run: cargo build --release --bin delvec
 
-      - name: record the engine this campaign is built with
+      - name: record the engine these campaigns are built with
         env:
           ENGINE_REPO: ${{ steps.engine.outputs.repo }}
           ENGINE_REF: ${{ steps.engine.outputs.ref }}
@@ -219,128 +144,18 @@ jobs:
           echo "engine ${ENGINE_REPO}@${ENGINE_REF}"
           engine-src/target/release/delvec --version
 
-      # Static ladder, stage one: schema + referential + text fit + l10n sidecar
-      # coverage. Language-independent apart from the sidecar checks, so it runs
-      # once for the whole campaign.
-      - name: validate
-        env:
-          CAMPAIGN: ${{ matrix.campaign }}
+      # The whole of the check lives in the script, not in this YAML, so a
+      # creator runs exactly what CI runs with one command and no workflow
+      # runner. It discovers the population, names what it excluded and why,
+      # refuses a campaign that has lost its entry document, refuses a zero
+      # binding, and reconciles every discovered campaign against a result at the
+      # end — so a walk that stopped early cannot report on the part it reached
+      # and stay silent about the part it did not.
+      - name: every campaign builds, in every language it declares
         run: |
           set -euo pipefail
-          engine-src/target/release/delvec validate \
-            "campaigns/${CAMPAIGN}" --prefabs prefabs
-
-      # Stage two: the full deterministic build (implies validate + analyze), in
-      # the canonical English and in every language the campaign declares — an
-      # emission defect can be language-specific, and a localized build is what
-      # a playtest is run on.
-      - name: build every declared language
-        env:
-          CAMPAIGN: ${{ matrix.campaign }}
-        run: |
-          set -euo pipefail
-          langs=$(python3 -c '
-          import json, sys
-          w = json.load(open(sys.argv[1]))
-          print(" ".join(["en", *w["content"].get("languages", [])]))
-          ' "campaigns/${CAMPAIGN}/world.json")
-          echo "languages: ${langs}"
-          fail=0
-          for lang in ${langs}; do
-            echo "--- building ${CAMPAIGN} (--lang ${lang}) ---"
-            if ! engine-src/target/release/delvec build \
-                 "campaigns/${CAMPAIGN}" \
-                 -o "${RUNNER_TEMP}/delve-${CAMPAIGN}-${lang}" \
-                 --prefabs prefabs --lang "${lang}"; then
-              echo "::error::${CAMPAIGN} does not build at --lang ${lang}"
-              fail=1
-            fi
-          done
-          exit "${fail}"
-
-  # THE CONTEXT BRANCH PROTECTION HOLDS, and the only one in this workflow that
-  # can be held. `build` above reports as `build <campaign> (validate + analyze
-  # + emit)` — a name that changes with the campaign set, while protection
-  # matches by NAME STRING, so requiring it would name contexts that appear and
-  # vanish as campaigns land. This job's name does not move.
-  #
-  # `if: always()` is not a condition, it is the ABSENCE of one, and it is what
-  # makes this a gate rather than a green square. A summary job without it is
-  # SKIPPED the moment a need fails — and GitHub counts a skipped required check
-  # as SATISFIED, so the gate would report green exactly when it should report
-  # red. That is why the assertion below reads `result` for every need instead of
-  # relying on the dependency edge: `failure`, `cancelled` and `skipped` are all
-  # reds here, and `skipped` is the one that matters, because it is what a matrix
-  # leg reports when it was never scheduled at all.
-  #
-  # It also refuses an EMPTY matrix. A summary over zero legs would find no
-  # non-success result and pass, which is a gate examining nothing — the vacuity
-  # this workflow's discovery step already refuses at its own end. Both ends
-  # refuse, because the count travels between them as a string and a summary that
-  # trusted its producer would be believing a value rather than checking one.
-  gate:
-    name: every campaign builds
-    needs: [discover, build]
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: every campaign that exists was built
-        env:
-          # One value carrying every need's result and outputs, so the assertion
-          # reads what GitHub reports rather than what this file assumes.
-          NEEDS: ${{ toJSON(needs) }}
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json, os, sys
-
-          needs = json.loads(os.environ["NEEDS"])
-          errors = []
-
-          # 1. Every leg reached `success`. A leg that failed, was cancelled, or
-          #    never ran is a red — and the last is the one a naive summary calls
-          #    a pass, because a job nothing scheduled has nothing to report.
-          for job in sorted(needs):
-              result = needs[job].get("result")
-              if result != "success":
-                  errors.append(
-                      f"job `{job}` reported `{result}`, not `success`. A leg "
-                      f"that failed, was cancelled, or never ran is not a leg "
-                      f"that passed — a matrix that was never scheduled reports "
-                      f"`skipped`, which is what an unguarded summary would let "
-                      f"through as green")
-
-          # 2. The matrix was not empty. Read from the producer's own stated
-          #    count rather than inferred from the legs, because zero legs is
-          #    exactly the state that leaves nothing to infer from.
-          out = needs.get("discover", {}).get("outputs", {})
-          try:
-              count = int(out.get("count", ""))
-          except ValueError:
-              count = -1
-          if count <= 0:
-              errors.append(
-                  f"the discovery job reported {out.get('count')!r} campaigns, so "
-                  f"this gate examined nothing. A summary over zero legs that "
-                  f"reports success is a gate that binds to nothing, which is not "
-                  f"a pass")
-
-          # 3. The count and the list agree. They are emitted by one step, so a
-          #    disagreement means the output file was written by something other
-          #    than that step.
-          try:
-              ids = json.loads(out.get("campaigns", "[]"))
-          except json.JSONDecodeError:
-              ids = None
-          if ids is None or (count >= 0 and len(ids) != count):
-              errors.append(
-                  f"the discovery job reported count={out.get('count')!r} and "
-                  f"campaigns={out.get('campaigns')!r}, which do not agree")
-
-          for e in errors:
-              print(f"::error::{e}")
-          if errors:
-              sys.exit(1)
-          print(f"every campaign builds: {count} campaign(s) — {', '.join(ids)}")
-          print(f"excluded and counted: {out.get('excluded')}")
-          PY
+          python3 tools/campaign-build.py \
+            --delvec engine-src/target/release/delvec \
+            --prefabs prefabs \
+            --out "${RUNNER_TEMP}/delves" \
+            --github

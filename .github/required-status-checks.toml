@@ -63,14 +63,15 @@ name = "protect-main"
 include = ["~DEFAULT_BRANCH"]
 contexts = [
   "NBT palette audit (allowlist + code-injection forbid)",
-  # A campaign nothing compiles is a campaign nothing checks. `every campaign
-  # builds` is the fixed name: the build job itself reports as `build <campaign>
-  # (…)`, which moves with the campaign set, and protection matches by name
-  # string. Required on `main` only — `refs/heads/campaign/*` cannot carry it
+  # A campaign nothing compiles is a campaign nothing checks. One job walks every
+  # campaign in the tree, so the name is fixed and stays fixed as campaigns land
+  # — which is the property protection needs, since it matches by name string.
+  #
+  # Required on `main` only. `refs/heads/campaign/*` cannot produce this context
   # until `campaign-build.yml` reaches those trees, and a context required on a
   # ref whose tree does not produce it is the permanent deadlock this file opens
-  # by naming.
-  "discover campaigns",
+  # by naming. Those branches gain it when they next merge `main` forward, and
+  # arm E reds here if this line moves before they do.
   "every campaign builds",
 ]
 
@@ -81,7 +82,6 @@ contexts = [
 # request can ever merge into.
 [ruleset.provided_by]
 "NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
-"discover campaigns" = ".github/workflows/campaign-build.yml"
 "every campaign builds" = ".github/workflows/campaign-build.yml"
 
 [[ruleset]]
