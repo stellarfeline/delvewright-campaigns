@@ -81,18 +81,31 @@ name = "protect-campaign-branches"
 include = ["refs/heads/campaign/*"]
 contexts = [
   "NBT palette audit (allowlist + code-injection forbid)",
-  # Provided by `.github/workflows/zone-audit.yml`, which exists ONLY on the
-  # campaign branches and their descendants — deliberately, because it builds a
-  # pinned engine to expand and judge zone programs, which only campaign work
-  # has. It is therefore required exactly where it exists, and the checker
-  # resolves it on pull requests into these refs, where the head checkout
-  # carries it. A tree that does not serve these refs cannot see it, and the
-  # checker says so rather than passing over it in silence.
-  "zone programs (expand + judge every gate)",
 ]
 
 [ruleset.provided_by]
 "NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
+
+[[ruleset]]
+name = "protect-zone-audited-campaign-branches"
+# The zone check is required exactly where it can report, and nowhere else.
+#
+# `.github/workflows/zone-audit.yml` exists on ONE campaign branch, deliberately:
+# it builds a pinned engine to expand and judge zone programs, which only that
+# branch has. Requiring it across `refs/heads/campaign/*` would name a context
+# eight branches cannot produce, and a required context no job reports blocks
+# every pull request into that ref forever — including the one that would fix
+# it. So the pattern is the single ref, not the family.
+#
+# The checker resolves this context on pull requests into that ref, where the
+# head checkout carries the workflow; a tree that does not serve it says so
+# rather than passing over it in silence.
+include = ["refs/heads/campaign/bell-r2"]
+contexts = [
+  "zone programs (expand + judge every gate)",
+]
+
+[ruleset.provided_by]
 "zone programs (expand + judge every gate)" = ".github/workflows/zone-audit.yml"
 
 # ---------------------------------------------------------------------------
