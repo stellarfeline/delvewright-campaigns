@@ -71,7 +71,23 @@ and the checker judges in three ref-aware arms plus a live one:
   D. LIVE (default on). The declaration equals the live rulesets: same ref
      patterns, same contexts, `enforcement = "active"`, and no live ruleset
      undeclared. This is what catches a ruleset edited in the web UI, which no
-     file-to-file comparison can see.
+     file-to-file comparison can see. It owns BOTH halves of a half-done
+     promotion: a context declared and not granted, and a context granted and
+     not written down.
+
+  E. COVERED REFS (default on). Every ref a LIVE ruleset covers can satisfy it —
+     the deadlock this repository has already sprung, found on refs no tree here
+     knows about. Its premise is "protection requires C on this ref and nothing
+     there can report C", so `contexts` and `include` come from live protection
+     and never from the declaration: a context written down and not yet granted
+     blocks nothing, and claiming otherwise made the prescribed
+     merge-then-protect order unrepresentable. For the ref being JUDGED the
+     tree in hand answers "can report", exactly as in arm B, because that tree
+     is what will be on the ref after the merge — reading the API there reds the
+     pull request that would fix the deadlock. Every other covered ref is read
+     from the API. `provided_by` still comes from the declaration, and from this
+     tree's own jobs when the declaration is silent, because which file produces
+     a context is this repository's knowledge and not GitHub's.
 
 ## Why the live arm gates instead of merely reporting
 
@@ -1117,39 +1133,102 @@ def main() -> int:
             # tree they are handed, and this failure lives on refs that tree
             # knows nothing about. It is the reason arm B alone would have been
             # an existence check that only looks where someone pointed.
+            #
+            # ## Its premise is about LIVE protection, and both halves of it
+            #
+            # The claim this arm makes is "protection REQUIRES C on this ref and
+            # nothing there can report C". Each half has a source, and this arm
+            # used to get both of them wrong in the same direction.
+            #
+            # REQUIRES came from the declaration. A file is not protection: a
+            # context written down and not yet granted blocks nothing, because
+            # nothing requires it. So the same run held one context to be
+            # unrequired (arm D: "declared and NOT required live — the file
+            # claims a gate that does not gate") and to be blocking every pull
+            # request forever (arm E). Both cannot be true, and the second is
+            # the false one. It made a promotion UNREPRESENTABLE: the order this
+            # repository prescribes is merge-then-protect precisely because
+            # granting first names a context the base cannot report, and a pull
+            # request carrying a workflow and its declaration was red purely for
+            # being in the state the prescribed order requires it to pass
+            # through. `contexts` and `include` therefore come from the live
+            # ruleset. `provided_by` does not: it is a fact about which file
+            # produces a context, which is this repository's knowledge and not
+            # GitHub's.
+            #
+            # CANNOT REPORT came from the API for every covered ref, including
+            # the ref being judged. That reds the pull request that would FIX a
+            # deadlock — the exact shape in this arm's own message, "including
+            # one that would fix it" — because the branch does not carry the
+            # workflow yet and the pull request adding it is what would put it
+            # there. Arm B already resolved this for itself: on a pull request
+            # the ref judged is the BASE and the tree is the MERGE, which is
+            # what will be on that ref once it merges. Arm E now answers for the
+            # judged ref from the tree in hand for the same reason. Every OTHER
+            # covered ref is still read from the API, which is the whole point
+            # of the arm — those refs are the ones no tree here knows about.
+            #
+            # Keying on live also lets this arm see something it could not see
+            # at all before: a context required LIVE that the declaration does
+            # not mention. Iterating declarations made such a context invisible
+            # here. It is now judged like any other, resolved through the tree
+            # when the declaration has nothing to say; if neither can name the
+            # workflow that produces it, this arm says so rather than passing
+            # over it, and arm D is what reds about the context being unwritten.
             try:
                 branches = list_branches(args.timeout)
-                for rs in rulesets:
-                    provided = rs.get("provided_by", {})
-                    needed = {provided[c] for c in rs.get("contexts", []) if c in provided}
-                    if not needed:
+                in_hand = {wf.rel for wf in parsed}
+                unresolved: list[tuple[str, str]] = []
+                for rs_name in sorted(live):
+                    obs = live[rs_name]
+                    declared = next(
+                        (r for r in rulesets if r.get("name") == rs_name), None
+                    )
+                    provided = declared.get("provided_by", {}) if declared else {}
+                    # context -> the workflow file that produces it. The
+                    # declaration first; the tree in hand second, which is how a
+                    # context nobody wrote down is still judged here.
+                    produces: dict[str, str] = {}
+                    for ctx in obs["contexts"]:
+                        path = provided.get(ctx)
+                        if path is None and ctx in jobs:
+                            path = jobs[ctx][0].rel
+                        if path is None:
+                            unresolved.append((rs_name, ctx))
+                        else:
+                            produces[ctx] = path
+                    if not produces:
                         continue
+                    needed = set(produces.values())
                     covered = [
                         b for b in branches
-                        if any(ref_matches(p, b, default_branch) for p in rs.get("include", []))
+                        if any(ref_matches(p, b, default_branch) for p in obs["include"])
                     ]
                     if not covered:
                         notes.append(
-                            f"ruleset {rs['name']!r} covers "
-                            f"{', '.join(rs.get('include', []))}, which no branch "
+                            f"ruleset {rs_name!r} covers "
+                            f"{', '.join(obs['include'])}, which no branch "
                             f"currently matches. It gates nothing today."
                         )
                     for branch in covered:
                         covered_refs += 1
-                        present = workflows_on_ref(branch, args.timeout)
-                        have = present or set()
+                        if ref is not None and branch == ref:
+                            # The tree in hand IS this ref after the merge.
+                            have, source = in_hand, "the tree in hand"
+                        else:
+                            have = workflows_on_ref(branch, args.timeout) or set()
+                            source = "that ref"
                         missing = sorted(needed - have)
                         if not missing:
                             continue
                         blocked = sorted(
-                            c for c in rs.get("contexts", [])
-                            if provided.get(c) in missing
+                            c for c in obs["contexts"] if produces.get(c) in missing
                         )
                         findings.append(
                             f"branch {branch!r} is covered by ruleset "
-                            f"{rs['name']!r}, which requires "
-                            f"{', '.join(repr(c) for c in blocked)} — and the "
-                            f"branch does not carry "
+                            f"{rs_name!r}, which requires LIVE "
+                            f"{', '.join(repr(c) for c in blocked)} — and "
+                            f"{source} does not carry "
                             f"{', '.join(missing)}.\n"
                             f"    No workflow on that ref can report those "
                             f"contexts, so EVERY pull request into it is blocked "
@@ -1157,6 +1236,15 @@ def main() -> int:
                             f"narrow the ruleset's pattern to the refs that can "
                             f"satisfy it, or put the workflow on the branch."
                         )
+                for rs_name, ctx in unresolved:
+                    notes.append(
+                        f"context {ctx!r} is required LIVE by ruleset "
+                        f"{rs_name!r} and neither {MANIFEST.name} nor this tree "
+                        f"says which workflow produces it, so arm E could not "
+                        f"ask whether the refs it covers can satisfy it. The "
+                        f"live arm above is what reds about a required context "
+                        f"nobody wrote down."
+                    )
             except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError) as exc:
                 findings.append(
                     f"the covered-ref comparison did not run "
