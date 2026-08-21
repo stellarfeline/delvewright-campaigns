@@ -1,0 +1,159 @@
+# Which CI jobs gate a merge, and on which refs.
+#
+# THIS FILE IS A DEADLOCK TRIPWIRE, and it is also the opposite one. Protection
+# here lives in RULESETS, and a ruleset matches a required status check by its
+# NAME STRING, exactly as classic branch protection does. Two things follow, and
+# this repository has shipped both of them:
+#
+#   - A required context that no job produces never reports, so EVERY pull
+#     request into that ref blocks forever — including the pull request that
+#     would fix it. That happened here: a path filter on `prefab-audit.yml` meant
+#     a campaign-only change produced no run, the required context never
+#     reported, and the merge was blocked with nothing to click.
+#
+#   - A job that runs but is not required gates NOTHING. Its red is a colour on
+#     a page. `actionlint` runs on every workflow-touching pull request into
+#     `main` today and stops no merge at all.
+#
+# `tools/check-required-contexts.py` holds this file, the workflow files, and the
+# LIVE rulesets in lockstep, in every direction, and it runs inside the `NBT
+# palette audit` job — the one context required by both rulesets below — so no
+# pull request into a protected ref can avoid it.
+#
+# CHANGING A JOB NAME is a three-part change, in this order:
+#   1. add the NEW context to the ruleset (both names required for a moment)
+#   2. merge the rename together with this file's update
+#   3. drop the OLD context from the ruleset
+# Doing 2 first is the deadlock. The checker turns that into an ordinary red on
+# the pull request that would have caused it.
+#
+# ADDING A JOB that should gate is two parts: merge it advisory (declared below
+# with a reason the checker can evaluate), then add it to the ruleset and move
+# its line up here. The repository half and the GitHub half are one act, in the
+# order merge-then-protect, performed by whoever does the merge — and where the
+# ruleset edit can be refused by a permission boundary, the merge WAITS for the
+# grant. A half-done promotion is worse than an unmerged one, because the file
+# claims a gate that does not gate and nothing anywhere reds about it.
+
+# The default branch, as `~DEFAULT_BRANCH` expands to it. Verified against the
+# live repository by the checker, so it cannot quietly go stale.
+default_branch = "main"
+
+# How many advisory jobs this repository may hold. Declared HERE, above the
+# tables, because a bare key after them belongs to the last table rather than to
+# the file — TOML's own quiet wrong answer.
+#
+# The budget is the point: a comment saying "nothing else on this precedent" is
+# a doc line, and a doc line is not an invocation — a third entry would slip in
+# beside the declared ones and leave the checker green, which is precisely how a
+# gate sits unenforced while everyone believes it is blocking. Raising this is a
+# one-line diff to a constant whose name says what it is, which a reviewer sees;
+# one more key in a table of keys is something nobody counts.
+max_advisory = 2
+
+# ---------------------------------------------------------------------------
+# Rulesets. One table per live ruleset that carries required status checks.
+# `include` and `contexts` are compared to the live ruleset exactly, as sets;
+# `enforcement` must be `active`, because a ruleset in `evaluate` mode reports
+# its verdict and merges the pull request anyway.
+# ---------------------------------------------------------------------------
+
+[[ruleset]]
+name = "protect-main"
+include = ["~DEFAULT_BRANCH"]
+contexts = [
+  "NBT palette audit (allowlist + code-injection forbid)",
+]
+
+# Which workflow file produces each context. This is not bookkeeping: it is what
+# lets the checker ask whether EVERY ref a ruleset covers can actually satisfy
+# it. A ruleset's pattern is a promise about a set of branches, and a branch in
+# that set that does not carry the producing workflow is a branch no pull
+# request can ever merge into.
+[ruleset.provided_by]
+"NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
+
+[[ruleset]]
+name = "protect-campaign-branches"
+# A campaign in progress lives on its own branch and everything of it lands
+# there, so the branch accumulates for weeks before it reaches `main` once. It
+# needs its own floor, and it needs one gate `main` does not have.
+include = ["refs/heads/campaign/*"]
+contexts = [
+  "NBT palette audit (allowlist + code-injection forbid)",
+]
+
+[ruleset.provided_by]
+"NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
+
+[[ruleset]]
+name = "protect-zone-audited-campaign-branches"
+# The zone check is required exactly where it can report, and nowhere else.
+#
+# `.github/workflows/zone-audit.yml` exists on ONE campaign branch, deliberately:
+# it builds a pinned engine to expand and judge zone programs, which only that
+# branch has. Requiring it across `refs/heads/campaign/*` would name a context
+# eight branches cannot produce, and a required context no job reports blocks
+# every pull request into that ref forever — including the one that would fix
+# it. So the pattern is the single ref, not the family.
+#
+# The checker resolves this context on pull requests into that ref, where the
+# head checkout carries the workflow; a tree that does not serve it says so
+# rather than passing over it in silence.
+include = ["refs/heads/campaign/bell-r2"]
+contexts = [
+  "zone programs (expand + judge every gate)",
+]
+
+[ruleset.provided_by]
+"zone programs (expand + judge every gate)" = ".github/workflows/zone-audit.yml"
+
+# ---------------------------------------------------------------------------
+# Deliberately advisory jobs.
+#
+# An advisory gate is one nobody has to obey, so an entry here is a decision to
+# let something fail without consequence. A free-text justification would be
+# worthless: the holder of a gate that SHOULD be required writes the same
+# sentence as the holder of one that genuinely cannot be. So the reason is an
+# enumerated condition the checker EVALUATES against the workflow file, and it
+# is a property of the object rather than a claim by its author:
+#
+#   no-pull-request-trigger    the workflow has no `pull_request:` trigger, so it
+#                              can never produce a status on a pull request, so
+#                              requiring it is the permanent-deadlock shape.
+#   pull-request-path-filtered the workflow's `pull_request:` carries a
+#                              `paths`/`paths-ignore` filter, so it produces no
+#                              run — and therefore no status — on a pull request
+#                              that matches none of the paths. Same deadlock.
+#
+# Neither condition can be produced by the defect this file exists to catch. A
+# gate that quietly stopped gating because somebody forgot to require it still
+# has a `pull_request:` trigger and still runs on every pull request; it cannot
+# present either proof. And when a condition stops holding, the entry has
+# outlived its reason and the checker reds saying so — an exemption cannot rot
+# quietly into a hole.
+# ---------------------------------------------------------------------------
+
+[advisory."release-tier ladder → GHCR image + GitHub Release"]
+workflow = ".github/workflows/release.yml"
+because = "no-pull-request-trigger"
+note = """
+Runs on a `release/*/v*` tag and on manual dispatch. A release is built from a
+frozen approved tree, not from a pull request, so there is no pull request for
+this to gate. Structurally advisory: it is not a decision anybody is free to
+revisit while the trigger stays as it is."""
+
+[advisory."actionlint (+ shellcheck over every run block)"]
+workflow = ".github/workflows/workflow-lint.yml"
+because = "pull-request-path-filtered"
+note = """
+Should gate and does not — but requiring it TODAY would reproduce the exact
+deadlock this repository already paid for. Its `pull_request:` is filtered to
+`.github/workflows/**`, so a pull request touching no workflow produces no run,
+the context never reports, and the merge blocks with nothing to click.
+
+The repair is the one `prefab-audit.yml` already made: drop the path filter and
+let the job run on every pull request — it is a ~20s docker lint with no build,
+so the saving the filter buys is not worth a class of permanent deadlock. When
+the filter goes, this entry's condition stops holding and the checker reds,
+asking for the promotion rather than waiting to be remembered."""
