@@ -53,17 +53,41 @@ and the checker judges in three ref-aware arms plus a live one:
   C. ELIGIBILITY (ref-independent). A job named as required must be ABLE to
      report on every pull request into the refs it guards: its workflow has a
      `pull_request:` trigger, that trigger carries no `paths`/`paths-ignore`/
-     `branches`/`branches-ignore` filter, the job has no `if:` (a skipped job
-     reports "skipped", which GitHub counts as a satisfied required check — a
-     hole that looks exactly like a pass), and no `strategy:` (a matrix job's
-     context is `name (value)`, not `name`). This arm is the one that would have
-     caught the path filter before it deadlocked the repository, and it is why
-     `actionlint` cannot simply be promoted today.
+     `branches`/`branches-ignore` filter, the job CANNOT BE SKIPPED (a skipped
+     job reports "skipped", which GitHub counts as a satisfied required check —
+     a hole that looks exactly like a pass), and it has no `strategy:` (a matrix
+     job's context is `name (value)`, not `name`). This arm is the one that
+     would have caught the path filter before it deadlocked the repository, and
+     it is why `actionlint` cannot simply be promoted today.
+
+     "Cannot be skipped" is asked of the job's effective condition and derived
+     from it, never declared by its author — see the derivation above
+     `skip_proof`. This arm used to ask instead whether the job HAD an `if:`,
+     which is the syntax that usually carries the property and not the property.
+     They invert on `if: always()`, which is not a condition but the absence of
+     one: the file was red on the version that cannot be skipped and green on
+     the version that can, so deleting the safety made the finding go away.
 
   D. LIVE (default on). The declaration equals the live rulesets: same ref
      patterns, same contexts, `enforcement = "active"`, and no live ruleset
      undeclared. This is what catches a ruleset edited in the web UI, which no
-     file-to-file comparison can see.
+     file-to-file comparison can see. It owns BOTH halves of a half-done
+     promotion: a context declared and not granted, and a context granted and
+     not written down.
+
+  E. COVERED REFS (default on). Every ref a LIVE ruleset covers can satisfy it —
+     the deadlock this repository has already sprung, found on refs no tree here
+     knows about. Its premise is "protection requires C on this ref and nothing
+     there can report C", so `contexts` and `include` come from live protection
+     and never from the declaration: a context written down and not yet granted
+     blocks nothing, and claiming otherwise made the prescribed
+     merge-then-protect order unrepresentable. For the ref being JUDGED the
+     tree in hand answers "can report", exactly as in arm B, because that tree
+     is what will be on the ref after the merge — reading the API there reds the
+     pull request that would fix the deadlock. Every other covered ref is read
+     from the API. `provided_by` still comes from the declaration, and from this
+     tree's own jobs when the declaration is silent, because which file produces
+     a context is this repository's knowledge and not GitHub's.
 
 ## Why the live arm gates instead of merely reporting
 
@@ -246,11 +270,18 @@ class Workflow:
             if not m or len(m.group("indent")) != 2:
                 continue
             key = _unquote(m.group("key"))
-            attrs: dict[str, object] = {"if": False, "strategy": False, "uses": False}
+            # `if` holds the EXPRESSION, not a flag: whether a job can be
+            # skipped is a property of what the condition says, and a boolean
+            # here would throw that away before anything could ask. `None` is
+            # "no `if:` at all", which is a different state from an empty one.
+            attrs: dict[str, object] = {
+                "if": None, "needs": False, "strategy": False, "uses": False,
+            }
             # GitHub falls back to the job KEY when there is no `name:`, and so
             # does the status context. Defaulting to the key is not a guess.
             name = key
-            for _, sub in _block(lines, j, 2):
+            block = _block(lines, j, 2)
+            for bi, (_, sub) in enumerate(block):
                 sm = _KEY.match(sub)
                 if not sm or len(sm.group("indent")) != 4:
                     continue
@@ -265,7 +296,22 @@ class Workflow:
                         )
                     else:
                         name = _scalar(sm.group("rest"))
-                elif k in ("if", "strategy", "uses"):
+                elif k == "if":
+                    raw = sm.group("rest").strip()
+                    if raw in ("|", ">", "|-", ">-", "|+", ">+"):
+                        # A folded or literal condition. Gathering it is not a
+                        # nicety: refusing it would red a job whose safety is
+                        # written across two lines, which is a false red on the
+                        # exact shape this arm exists to protect.
+                        parts = []
+                        for _, cont in block[bi + 1:]:
+                            if len(cont) - len(cont.lstrip()) <= 4:
+                                break
+                            parts.append(cont.strip())
+                        attrs["if"] = " ".join(parts)
+                    else:
+                        attrs["if"] = _scalar(sm.group("rest"))
+                elif k in ("needs", "strategy", "uses"):
                     attrs[k] = True
             attrs["name"] = name
             self.jobs[key] = attrs
@@ -276,6 +322,268 @@ class Workflow:
         if "pull_request" not in self.triggers:
             return None
         return [f for f in DISQUALIFYING_PR_FILTERS if f in self.triggers["pull_request"]]
+
+
+# ---------------------------------------------------------------------------
+# CAN THIS JOB BE SKIPPED?
+#
+# The property this arm needs is *can this job be skipped*. The syntax that
+# usually carries it is *the job has an `if:`*. They agree on every condition
+# that can be false, and they INVERT on the one expression that cannot.
+#
+# `if: always()` is not a condition. It is the ABSENCE of one, and it is the
+# only thing standing between a job with `needs:` and the very skip the finding
+# warns about. Keying on the syntax made this file green on the version that can
+# be silently skipped and red on the version that cannot — a gate that rewards
+# removing the safety it exists to require. So the question is asked of the
+# EXPRESSION, and the answer is derived from it rather than declared by whoever
+# wrote it: there is no marker, no comment, no acknowledgement to reach for.
+#
+# ## Which expressions qualify, and why the derived set has one member
+#
+# A job's effective condition is its `if:` when it has one, and the implicit
+# `success()` over `needs:` when it does not. So:
+#
+#   no `if:` and no `needs:`   the job runs on every run of its workflow. Nothing
+#                              can skip it. SKIP-PROOF.
+#   no `if:` and `needs:`      the implicit condition is `success()`: a need that
+#                              fails or is skipped skips this job, which reports
+#                              `skipped`, which protection counts as satisfied.
+#                              SKIPPABLE — and this is the shape that is green
+#                              today, which is the whole defect.
+#   an `if:`                   decided below, by abstract evaluation.
+#
+# The evaluation is three-valued — TRUE / FALSE / UNKNOWN — over the operator
+# grammar GitHub's expression language actually has, and every atom is UNKNOWN
+# except one:
+#
+#   always()          TRUE. Documented to return true "even when canceled",
+#                     which is the only expression for which GitHub states a
+#                     guarantee that survives every state a run can reach.
+#   success()         UNKNOWN. False when a need failed — the default, spelled
+#                     out. Exactly the skip this arm is about.
+#   failure()         UNKNOWN. False on the ordinary path.
+#   cancelled()       UNKNOWN, and therefore `!cancelled()` is UNKNOWN too. It
+#                     survives a failed need and does NOT survive cancellation,
+#                     so it is a condition that can be false and is refused.
+#   any github.*,     UNKNOWN. Run-dependent by construction.
+#   needs.*, env.*,
+#   inputs.*, ...
+#   a comparison      UNKNOWN, whatever its operands.
+#   `true` / `false`  UNKNOWN. A truthy literal is true in every state the
+#     and every other  expression language can OBSERVE, and that is a weaker
+#     literal          claim than the one this arm needs: `always()` is singled
+#                     out in GitHub's own documentation precisely because
+#                     cancellation is handled outside the expression. Refusing
+#                     a literal costs nothing real — nobody writes `if: true` on
+#                     a required job — and the direction of the error matters:
+#                     wrongly refusing a safe job is a red somebody reads,
+#                     wrongly accepting a skippable one is the hole.
+#   anything this     UNKNOWN, by the same rule. A reader that cannot parse an
+#     reader cannot    expression has not proved anything about it, and the
+#     parse            unproved answer here is the refusing one.
+#
+# Composition is the ordinary lattice: `&&` is TRUE only if both sides are,
+# `||` is TRUE if either side is, `!` inverts TRUE and FALSE and leaves UNKNOWN
+# alone. Because `always()` is the only TRUE atom, every expression this
+# function accepts derives its truth from an `always()`, and so inherits the
+# guarantee that made `always()` the one member. That is not a coincidence to
+# rely on quietly — it is why a one-member atom set is enough, and why the set
+# is derived rather than remembered: `always() && success()` and
+# `always() && github.ref == 'refs/heads/main'` are refused by the same
+# machinery that accepts `always()`, without anybody having had to think of
+# them.
+# ---------------------------------------------------------------------------
+
+TRUE, FALSE, UNKNOWN = "TRUE", "FALSE", "UNKNOWN"
+
+_COMPARISONS = ("==", "!=", "<=", ">=", "<", ">")
+_TWO_CHAR = ("&&", "||", "==", "!=", "<=", ">=")
+_WORD = re.compile(r"[A-Za-z_0-9.*-]+")
+
+
+class ExprRefusal(Exception):
+    """This reader will not guess what an expression evaluates to."""
+
+
+def _tokens(src: str) -> list[str]:
+    out: list[str] = []
+    i, n = 0, len(src)
+    while i < n:
+        c = src[i]
+        if c.isspace():
+            i += 1
+            continue
+        if any(src.startswith(t, i) for t in _TWO_CHAR):
+            out.append(src[i:i + 2])
+            i += 2
+            continue
+        if c in "()[],<>!":
+            out.append(c)
+            i += 1
+            continue
+        if c == "'":
+            # GitHub escapes a single quote by doubling it.
+            j = i + 1
+            while j < n:
+                if src[j] == "'":
+                    if j + 1 < n and src[j + 1] == "'":
+                        j += 2
+                        continue
+                    break
+                j += 1
+            if j >= n:
+                raise ExprRefusal("unterminated string literal")
+            out.append(src[i:j + 1])
+            i = j + 1
+            continue
+        m = _WORD.match(src, i)
+        if not m:
+            raise ExprRefusal(f"unexpected character {c!r}")
+        out.append(m.group(0))
+        i = m.end()
+    if not out:
+        raise ExprRefusal("empty expression")
+    return out
+
+
+class _Eval:
+    """Abstract evaluation to TRUE / FALSE / UNKNOWN. Never to a value."""
+
+    def __init__(self, toks: list[str]):
+        self.t = toks
+        self.i = 0
+
+    def peek(self) -> str | None:
+        return self.t[self.i] if self.i < len(self.t) else None
+
+    def take(self) -> str:
+        tok = self.peek()
+        if tok is None:
+            raise ExprRefusal("expression ended early")
+        self.i += 1
+        return tok
+
+    def parse(self) -> str:
+        v = self.or_()
+        if self.peek() is not None:
+            raise ExprRefusal(f"trailing {self.peek()!r}")
+        return v
+
+    def or_(self) -> str:
+        v = self.and_()
+        while self.peek() == "||":
+            self.take()
+            r = self.and_()
+            v = TRUE if TRUE in (v, r) else (FALSE if v == r == FALSE else UNKNOWN)
+        return v
+
+    def and_(self) -> str:
+        v = self.not_()
+        while self.peek() == "&&":
+            self.take()
+            r = self.not_()
+            v = FALSE if FALSE in (v, r) else (TRUE if v == r == TRUE else UNKNOWN)
+        return v
+
+    def not_(self) -> str:
+        if self.peek() == "!":
+            self.take()
+            return {TRUE: FALSE, FALSE: TRUE}.get(self.not_(), UNKNOWN)
+        return self.cmp_()
+
+    def cmp_(self) -> str:
+        v = self.primary()
+        if self.peek() in _COMPARISONS:
+            self.take()
+            self.primary()
+            # Even `'a' == 'a'` is UNKNOWN here. Deciding constant comparisons
+            # would buy nothing a required job's condition ever needs, and every
+            # line of cleverness is a line that can be wrong in the direction
+            # that opens the hole.
+            return UNKNOWN
+        return v
+
+    def primary(self) -> str:
+        tok = self.take()
+        if tok == "(":
+            v = self.or_()
+            if self.take() != ")":
+                raise ExprRefusal("unbalanced `(`")
+            return self._suffix(v)
+        if tok in ("&&", "||", ")", ",", "]"):
+            raise ExprRefusal(f"unexpected {tok!r}")
+        if tok.startswith("'"):
+            return self._suffix(UNKNOWN)
+        if self.peek() == "(":
+            self._skip_balanced("(", ")")
+            # The one atom whose truth GitHub guarantees in every state.
+            return self._suffix(TRUE if tok == "always" else UNKNOWN)
+        return self._suffix(UNKNOWN)
+
+    def _suffix(self, v: str) -> str:
+        """`x['k']` and `x.*[0]` — an index never makes a value provable."""
+        while self.peek() == "[":
+            self._skip_balanced("[", "]")
+            v = UNKNOWN
+        return v
+
+    def _skip_balanced(self, opener: str, closer: str) -> None:
+        if self.take() != opener:
+            raise ExprRefusal(f"expected {opener!r}")
+        depth = 1
+        while depth:
+            tok = self.take()
+            if tok == opener:
+                depth += 1
+            elif tok == closer:
+                depth -= 1
+
+
+def evaluate_condition(expr: str) -> str:
+    """TRUE, FALSE or UNKNOWN for a job-level `if:`, refusing rather than guessing."""
+    s = expr.strip()
+    if s.startswith("${{") and s.endswith("}}") and "${{" not in s[3:]:
+        s = s[3:-2]
+    elif "${{" in s:
+        # A partly-interpolated condition. GitHub allows it; this reader will
+        # not pretend to know what the surrounding text does with the result.
+        raise ExprRefusal("`${{` appears other than as the whole expression")
+    return _Eval(_tokens(s)).parse()
+
+
+def skip_proof(attrs: dict) -> tuple[bool, str]:
+    """Can this job be skipped? Returns (cannot-be-skipped, why)."""
+    expr = attrs.get("if")
+    if expr is None:
+        if attrs.get("needs"):
+            return False, (
+                "it has no `if:`, so its condition is the implicit `success()` "
+                "over its `needs:` — a need that fails or is skipped skips THIS "
+                "job, and a skipped job reports `skipped`, which GitHub counts "
+                "as a SATISFIED required check. `if: always()` is what removes "
+                "that condition; without it the gate passes by not running"
+            )
+        return True, "it has no `if:` and no `needs:`, so nothing can skip it"
+    try:
+        verdict = evaluate_condition(str(expr))
+    except ExprRefusal as exc:
+        return False, (
+            f"its `if:` is {expr!r}, which this reader will not evaluate "
+            f"({exc}). An unproved condition is a condition that can be false, "
+            f"and a skipped job reports `skipped`, which GitHub counts as a "
+            f"SATISFIED required check"
+        )
+    if verdict == TRUE:
+        return True, f"its `if:` is {expr!r}, which is true in every state a run can reach"
+    return False, (
+        f"its `if:` is {expr!r}, which is not provably true in every state — a "
+        f"run in which it is false SKIPS the job, and a skipped job reports "
+        f"`skipped`, which GitHub counts as a SATISFIED required check. The "
+        f"gate would pass by not running. Only `always()` carries a guarantee "
+        f"that survives a failed `needs:` and a cancellation both; "
+        f"`!cancelled()`, `success()` and any `github.*` test do not"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -686,11 +994,10 @@ def main() -> int:
                     f"check that never ran is a silence protection cannot tell "
                     f"from a pass."
                 )
-            if attrs.get("if"):
+            proof, why = skip_proof(attrs)
+            if not proof:
                 findings.append(
-                    f"required context {ctx!r} ({wf.rel}) has a job-level `if:`. A "
-                    f"skipped job reports `skipped`, which GitHub counts as a "
-                    f"SATISFIED required check — the gate would pass by not running."
+                    f"required context {ctx!r} ({wf.rel}) can be SKIPPED: {why}."
                 )
             if attrs.get("strategy"):
                 findings.append(
@@ -826,39 +1133,102 @@ def main() -> int:
             # tree they are handed, and this failure lives on refs that tree
             # knows nothing about. It is the reason arm B alone would have been
             # an existence check that only looks where someone pointed.
+            #
+            # ## Its premise is about LIVE protection, and both halves of it
+            #
+            # The claim this arm makes is "protection REQUIRES C on this ref and
+            # nothing there can report C". Each half has a source, and this arm
+            # used to get both of them wrong in the same direction.
+            #
+            # REQUIRES came from the declaration. A file is not protection: a
+            # context written down and not yet granted blocks nothing, because
+            # nothing requires it. So the same run held one context to be
+            # unrequired (arm D: "declared and NOT required live — the file
+            # claims a gate that does not gate") and to be blocking every pull
+            # request forever (arm E). Both cannot be true, and the second is
+            # the false one. It made a promotion UNREPRESENTABLE: the order this
+            # repository prescribes is merge-then-protect precisely because
+            # granting first names a context the base cannot report, and a pull
+            # request carrying a workflow and its declaration was red purely for
+            # being in the state the prescribed order requires it to pass
+            # through. `contexts` and `include` therefore come from the live
+            # ruleset. `provided_by` does not: it is a fact about which file
+            # produces a context, which is this repository's knowledge and not
+            # GitHub's.
+            #
+            # CANNOT REPORT came from the API for every covered ref, including
+            # the ref being judged. That reds the pull request that would FIX a
+            # deadlock — the exact shape in this arm's own message, "including
+            # one that would fix it" — because the branch does not carry the
+            # workflow yet and the pull request adding it is what would put it
+            # there. Arm B already resolved this for itself: on a pull request
+            # the ref judged is the BASE and the tree is the MERGE, which is
+            # what will be on that ref once it merges. Arm E now answers for the
+            # judged ref from the tree in hand for the same reason. Every OTHER
+            # covered ref is still read from the API, which is the whole point
+            # of the arm — those refs are the ones no tree here knows about.
+            #
+            # Keying on live also lets this arm see something it could not see
+            # at all before: a context required LIVE that the declaration does
+            # not mention. Iterating declarations made such a context invisible
+            # here. It is now judged like any other, resolved through the tree
+            # when the declaration has nothing to say; if neither can name the
+            # workflow that produces it, this arm says so rather than passing
+            # over it, and arm D is what reds about the context being unwritten.
             try:
                 branches = list_branches(args.timeout)
-                for rs in rulesets:
-                    provided = rs.get("provided_by", {})
-                    needed = {provided[c] for c in rs.get("contexts", []) if c in provided}
-                    if not needed:
+                in_hand = {wf.rel for wf in parsed}
+                unresolved: list[tuple[str, str]] = []
+                for rs_name in sorted(live):
+                    obs = live[rs_name]
+                    declared = next(
+                        (r for r in rulesets if r.get("name") == rs_name), None
+                    )
+                    provided = declared.get("provided_by", {}) if declared else {}
+                    # context -> the workflow file that produces it. The
+                    # declaration first; the tree in hand second, which is how a
+                    # context nobody wrote down is still judged here.
+                    produces: dict[str, str] = {}
+                    for ctx in obs["contexts"]:
+                        path = provided.get(ctx)
+                        if path is None and ctx in jobs:
+                            path = jobs[ctx][0].rel
+                        if path is None:
+                            unresolved.append((rs_name, ctx))
+                        else:
+                            produces[ctx] = path
+                    if not produces:
                         continue
+                    needed = set(produces.values())
                     covered = [
                         b for b in branches
-                        if any(ref_matches(p, b, default_branch) for p in rs.get("include", []))
+                        if any(ref_matches(p, b, default_branch) for p in obs["include"])
                     ]
                     if not covered:
                         notes.append(
-                            f"ruleset {rs['name']!r} covers "
-                            f"{', '.join(rs.get('include', []))}, which no branch "
+                            f"ruleset {rs_name!r} covers "
+                            f"{', '.join(obs['include'])}, which no branch "
                             f"currently matches. It gates nothing today."
                         )
                     for branch in covered:
                         covered_refs += 1
-                        present = workflows_on_ref(branch, args.timeout)
-                        have = present or set()
+                        if ref is not None and branch == ref:
+                            # The tree in hand IS this ref after the merge.
+                            have, source = in_hand, "the tree in hand"
+                        else:
+                            have = workflows_on_ref(branch, args.timeout) or set()
+                            source = "that ref"
                         missing = sorted(needed - have)
                         if not missing:
                             continue
                         blocked = sorted(
-                            c for c in rs.get("contexts", [])
-                            if provided.get(c) in missing
+                            c for c in obs["contexts"] if produces.get(c) in missing
                         )
                         findings.append(
                             f"branch {branch!r} is covered by ruleset "
-                            f"{rs['name']!r}, which requires "
-                            f"{', '.join(repr(c) for c in blocked)} — and the "
-                            f"branch does not carry "
+                            f"{rs_name!r}, which requires LIVE "
+                            f"{', '.join(repr(c) for c in blocked)} — and "
+                            f"{source} does not carry "
                             f"{', '.join(missing)}.\n"
                             f"    No workflow on that ref can report those "
                             f"contexts, so EVERY pull request into it is blocked "
@@ -866,6 +1236,15 @@ def main() -> int:
                             f"narrow the ruleset's pattern to the refs that can "
                             f"satisfy it, or put the workflow on the branch."
                         )
+                for rs_name, ctx in unresolved:
+                    notes.append(
+                        f"context {ctx!r} is required LIVE by ruleset "
+                        f"{rs_name!r} and neither {MANIFEST.name} nor this tree "
+                        f"says which workflow produces it, so arm E could not "
+                        f"ask whether the refs it covers can satisfy it. The "
+                        f"live arm above is what reds about a required context "
+                        f"nobody wrote down."
+                    )
             except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError) as exc:
                 findings.append(
                     f"the covered-ref comparison did not run "
