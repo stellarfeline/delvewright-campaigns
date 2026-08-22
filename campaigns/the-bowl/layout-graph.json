@@ -1,0 +1,102 @@
+{
+  "campaign_id": "the-bowl",
+  "content": {
+    "beats": [
+      {
+        "node": "node/court",
+        "objective": "obj/hear-the-warden",
+        "quest": "quest/walk-the-bowl"
+      },
+      {
+        "node": "node/ledge",
+        "objective": "obj/climb-the-ledge",
+        "quest": "quest/walk-the-bowl"
+      },
+      {
+        "node": "node/lip",
+        "objective": "obj/reach-the-lip",
+        "quest": "quest/walk-the-bowl"
+      }
+    ],
+    "critical_path": [
+      "node/mouth",
+      "node/court",
+      "node/gallery",
+      "node/ledge",
+      "node/gallery",
+      "node/lip"
+    ],
+    "edges": [
+      {
+        "a": "node/mouth",
+        "b": "node/court",
+        "class": "walk",
+        "id": "edge/mouth-arch"
+      },
+      {
+        "a": "node/court",
+        "b": "node/gallery",
+        "class": "walk",
+        "id": "edge/court-arch"
+      },
+      {
+        "a": "node/gallery",
+        "b": "node/ledge",
+        "class": "stair",
+        "id": "edge/ledge-stair"
+      },
+      {
+        "a": "node/cistern",
+        "b": "node/gallery",
+        "class": "stair",
+        "id": "edge/cistern-stair"
+      },
+      {
+        "a": "node/gallery",
+        "b": "node/lip",
+        "class": "walk",
+        "id": "edge/lip-arch"
+      }
+    ],
+    "entry": "node/mouth",
+    "goal": "node/lip",
+    "nodes": [
+      {
+        "id": "node/mouth",
+        "intent": "threshold",
+        "note": "Sky-open on purpose: the first thing a body sees is not the room, it is what is above the room.",
+        "size_class": "alcove"
+      },
+      {
+        "id": "node/court",
+        "intent": "hub",
+        "note": "The one place a body returns to, and the only one wide enough to stand in the middle of.",
+        "size_class": "hall"
+      },
+      {
+        "id": "node/gallery",
+        "intent": "covered-hall",
+        "note": "Roofed, so the walk goes under cover between two open places and the sky is something you come back out into.",
+        "size_class": "hall"
+      },
+      {
+        "id": "node/ledge",
+        "intent": "vista",
+        "size_class": "alcove"
+      },
+      {
+        "id": "node/cistern",
+        "intent": "cache",
+        "note": "No beat happens here, which is deliberate: a place off the spine is what makes the critical path say something.",
+        "size_class": "alcove"
+      },
+      {
+        "id": "node/lip",
+        "intent": "goal-chamber",
+        "size_class": "alcove"
+      }
+    ]
+  },
+  "dsl_version": "0.13.0",
+  "stage": "layout-graph"
+}

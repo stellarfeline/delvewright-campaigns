@@ -1,0 +1,328 @@
+{
+  "campaign_id": "the-bowl",
+  "content": {
+    "boxes": [
+      {
+        "ceiling": "open",
+        "extent": [
+          8,
+          8
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          4,
+          4
+        ],
+        "node": "node/mouth"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          16,
+          16
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          4,
+          13
+        ],
+        "node": "node/court"
+      },
+      {
+        "ceiling": {
+          "clearance": 8
+        },
+        "extent": [
+          16,
+          16
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          21,
+          13
+        ],
+        "node": "node/gallery"
+      },
+      {
+        "ceiling": {
+          "clearance": 3
+        },
+        "extent": [
+          8,
+          8
+        ],
+        "floor": {
+          "datum": "datum/ledge"
+        },
+        "min": [
+          24,
+          4
+        ],
+        "node": "node/ledge"
+      },
+      {
+        "ceiling": {
+          "clearance": 3
+        },
+        "extent": [
+          8,
+          8
+        ],
+        "floor": {
+          "datum": "datum/cistern"
+        },
+        "min": [
+          24,
+          17
+        ],
+        "node": "node/cistern"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          8,
+          8
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          38,
+          13
+        ],
+        "node": "node/lip"
+      }
+    ],
+    "datums": [
+      {
+        "id": "datum/grade",
+        "note": "The valley floor the delve opens on, and the plane four of the six places stand at.",
+        "y": 64
+      },
+      {
+        "id": "datum/ledge",
+        "y": 69
+      },
+      {
+        "id": "datum/cistern",
+        "y": 60
+      }
+    ],
+    "identities": [
+      {
+        "cmp": "eq",
+        "fact": "fact/site-span",
+        "measure": {
+          "axis": "x",
+          "of": "region-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/site-depth",
+        "measure": {
+          "axis": "z",
+          "of": "region-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/site-height",
+        "measure": {
+          "axis": "y",
+          "of": "region-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/court-span",
+        "measure": {
+          "axis": "x",
+          "node": "node/court",
+          "of": "box-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/gallery-headroom",
+        "measure": {
+          "node": "node/gallery",
+          "of": "box-height"
+        }
+      },
+      {
+        "cmp": "ge",
+        "fact": "fact/mouth-to-lip",
+        "measure": {
+          "from": "node/mouth",
+          "of": "distance-xz",
+          "to": "node/lip"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/ledge-datum",
+        "measure": {
+          "datum": "datum/ledge",
+          "of": "datum-y"
+        }
+      }
+    ],
+    "lighting": {
+      "fixture": "torch",
+      "min_light": 7
+    },
+    "region": {
+      "extent": [
+        48,
+        48,
+        40
+      ],
+      "min": [
+        0,
+        48,
+        0
+      ]
+    },
+    "seams": [
+      {
+        "at": [
+          6,
+          64
+        ],
+        "edge": "edge/mouth-arch",
+        "face": "south",
+        "opening": "arch"
+      },
+      {
+        "at": [
+          15,
+          64
+        ],
+        "edge": "edge/court-arch",
+        "face": "east",
+        "opening": "arch"
+      },
+      {
+        "at": [
+          26,
+          69
+        ],
+        "edge": "edge/ledge-stair",
+        "face": "north",
+        "opening": "passage",
+        "stair_in": "node/gallery"
+      },
+      {
+        "at": [
+          26,
+          18
+        ],
+        "edge": "edge/cistern-stair",
+        "face": "up",
+        "opening": "passage",
+        "stair_in": "node/cistern"
+      },
+      {
+        "at": [
+          15,
+          64
+        ],
+        "edge": "edge/lip-arch",
+        "face": "east",
+        "opening": "arch"
+      }
+    ],
+    "sightlines": [],
+    "views": [
+      {
+        "eye": [
+          24,
+          92,
+          38
+        ],
+        "id": "view/the-approach",
+        "look_at": [
+          24,
+          66,
+          12
+        ],
+        "note": "The whole map from inside its own region, which is the view the rim is judged against."
+      },
+      {
+        "eye": [
+          4,
+          88,
+          4
+        ],
+        "id": "view/over-the-mouth",
+        "look_at": [
+          30,
+          66,
+          20
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "id": "volume/valley-rock",
+        "note": "The rock the cistern is cut into.",
+        "region": {
+          "extent": [
+            44,
+            10,
+            36
+          ],
+          "min": [
+            2,
+            48,
+            2
+          ]
+        },
+        "role": "massif"
+      },
+      {
+        "id": "volume/valley-ground",
+        "note": "Two courses of ground under the whole site, stopping short of the cistern that is cut into it.",
+        "region": {
+          "extent": [
+            44,
+            2,
+            36
+          ],
+          "min": [
+            2,
+            58,
+            2
+          ]
+        },
+        "role": "ground"
+      },
+      {
+        "id": "volume/sky-over-the-court",
+        "note": "The air the court keeps empty, so the rim is what closes the view and not a roof.",
+        "region": {
+          "extent": [
+            16,
+            20,
+            16
+          ],
+          "min": [
+            4,
+            72,
+            13
+          ]
+        },
+        "role": "clearance"
+      }
+    ]
+  },
+  "dsl_version": "0.14.0",
+  "stage": "site-plan"
+}
