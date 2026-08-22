@@ -1,0 +1,199 @@
+{
+ "dsl_version": "0.8.0",
+ "campaign_id": "tide-mill",
+ "stage": "quests",
+ "content": {
+  "timed_gates": [
+   {
+    "id": "timed-gate/grate",
+    "gate": "anchor/l1a-gate-timed",
+    "open_ticks": 120,
+    "closed_ticks": 40,
+    "phase": 0
+   },
+   {
+    "id": "timed-gate/wheel",
+    "gate": "anchor/l3-shortcut-a",
+    "open_ticks": 60,
+    "closed_ticks": 80,
+    "phase": 25
+   },
+   {
+    "id": "timed-gate/tide",
+    "gate": "anchor/gate",
+    "open_ticks": 36,
+    "closed_ticks": 84,
+    "phase": 55,
+    "crush": true
+   }
+  ],
+  "quests": [
+   {
+    "id": "quest/the-count",
+    "trigger": {
+     "type": "campaign-start"
+    },
+    "happening": {
+     "verb": "learns",
+     "text": "The party takes the miller's count and runs the first two sluices of the race.",
+     "subject": "npc/miller"
+    },
+    "cast": {
+     "npc/miller": {
+      "at": "anchor/l0-tide-line",
+      "doing": "Standing at the tide line watching his wheel run free, counting the sluices aloud out of habit — six and two, three and four — because his hands can no longer do anything else with the number.",
+      "dialogue": "dlg/sedge-hail"
+     }
+    },
+    "objectives": [
+     {
+      "type": "talk-to",
+      "id": "obj/hail",
+      "npc": "npc/miller",
+      "happening": {
+       "verb": "learns",
+       "text": "The party learns the count: three gates, and how long each one gives.",
+       "subject": "npc/miller"
+      }
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/grate",
+      "anchor": "anchor/l1a-ward",
+      "radius": 2,
+      "after": [
+       "obj/hail"
+      ],
+      "title": "Through the Grate",
+      "hint": "North from the tide line, into the sluice house. The iron grate lifts and drops on a count — stand off, watch it once, then walk.",
+      "happening": {
+       "verb": "arrives",
+       "text": "The party clears the first sluice and stands inside the sluice house.",
+       "subject": "anchor/l1a-ward"
+      }
+     },
+     {
+      "type": "reach-anchor",
+      "id": "obj/wheelpit",
+      "anchor": "anchor/l3-landing",
+      "radius": 2,
+      "after": [
+       "obj/grate"
+      ],
+      "title": "Down to the Wheel Pit",
+      "hint": "Follow the falling water out of the sluice house down to the pit where the wheel is turning. The sluice above it keeps half the count the grate did.",
+      "happening": {
+       "verb": "arrives",
+       "text": "The party clears the wheel sluice and drops into the pit, where the undertow takes them under the sea wall.",
+       "subject": "anchor/l3-landing"
+      }
+     }
+    ],
+    "on_objective_complete": {
+     "obj/hail": [
+      {
+       "type": "narrate",
+       "text": "Somewhere below the yard the wheel is running free — no load, no brake, a hollow knocking that comes faster every turn."
+      }
+     ],
+     "obj/grate": [
+      {
+       "type": "set-checkpoint",
+       "anchor": "anchor/l1a-ward"
+      },
+      {
+       "type": "narrate",
+       "text": "You did not guess that gate. You read it. The next one gives you half the window."
+      }
+     ],
+     "obj/wheelpit": [
+      {
+       "type": "set-checkpoint",
+       "anchor": "anchor/keeper-stand"
+      },
+      {
+       "type": "narrate",
+       "text": "The pit floor gives way to open water and the undertow takes you, out under the sea wall and down. Nobody swims back up a mill race."
+      }
+     ]
+    },
+    "on_complete": []
+   },
+   {
+    "id": "quest/the-brake",
+    "trigger": {
+     "type": "quest-complete",
+     "quest": "quest/the-count"
+    },
+    "happening": {
+     "verb": "seals",
+     "text": "The party crosses the tide gate and throws the brake; the wheel is stilled and the mill stands.",
+     "subject": "anchor/gate"
+    },
+    "cast": {
+     "npc/miller": {
+      "at": "anchor/l0-tide-line",
+      "doing": "Left far behind and above, still on the tide line with the sea between him and the party, calling the count down a race nobody can hear him from any more.",
+      "dialogue": {
+       "barks": [
+        "Six and two. Three and four. Under two — go.",
+        "I'd run it myself if these knees were worth their keep.",
+        "Grain's in there. Whole village's winter, in there.",
+        "Count it. Don't guess it."
+       ]
+      }
+     }
+    },
+    "objectives": [
+     {
+      "type": "reach-anchor",
+      "id": "obj/read",
+      "anchor": "anchor/keeper-stand",
+      "radius": 2,
+      "title": "The Keeper's Mark",
+      "hint": "Wade out of the spill room and stand on the worn flagstone facing the last gate — the mark the keepers stood on to count it.",
+      "happening": {
+       "verb": "learns",
+       "text": "The party reads the keeper's mark and learns what the last gate costs a slow crossing.",
+       "subject": "anchor/gate"
+      }
+     },
+     {
+      "type": "interact",
+      "id": "obj/brake",
+      "anchor": "anchor/objective",
+      "after": [
+       "obj/read"
+      ],
+      "title": "Throw the Brake",
+      "hint": "Through the last gate and up into the loft beyond it; the brake lever stands at the head of the room.",
+      "happening": {
+       "verb": "arrives",
+       "text": "The party reaches the brake loft past the tide gate and hauls the lever over.",
+       "subject": "anchor/objective"
+      }
+     }
+    ],
+    "on_objective_complete": {
+     "obj/read": [
+      {
+       "type": "narrate",
+       "text": "The last gate is not the grate. It stands open under two seconds, and it does not shove — it comes down through whatever is standing in it. Count it from here. Do not count it from inside."
+      }
+     ]
+    },
+    "on_complete": [
+     {
+      "type": "campaign-complete",
+      "ending": "ending/wheel-stilled",
+      "happening": {
+       "verb": "seals",
+       "text": "The brake bites, the wheel stops, and the mill is still standing over the village's grain.",
+       "subject": "anchor/objective"
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
