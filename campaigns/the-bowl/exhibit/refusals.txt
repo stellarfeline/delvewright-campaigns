@@ -1,0 +1,21 @@
+=== DW0855: a horizon that builds terrain, on a campaign with no map
+    perturbation: site-plan.json, layout-graph.json and geometry-brief.json deleted; areas[] restored with two rooms; horizon untouched
+    exit 1, error code(s): ['DW0855']
+    DW0855 [error] world /content/horizon/base: `horizon` base `valley` builds terrain around the map, and this campaign never says how big the map is. A surround rings a DECLARED extent — the `region` of a site plan — and this campaign has no site plan, so its only statement of where anything is is `areas[]`. The union of whatever those place is not a substitute: areas sit on the compiler's fixed stride with void between them, so that union is mostly nothing and the horizon would be a mountain range built around empty space. Give the campaign a site plan, or set `horizon` to `void` or `ocean`, which need no map to be a horizon of.
+    under `horizon: void` the SAME document builds, and the compiler seats its areas at:
+        area/near    origin [0, 64, 0]  size [11, 6, 11]  (prefab/hello-room)
+        area/far     origin [256, 64, 0]  size [9, 5, 9]  (prefab/keep-shrine)
+    the union of what `areas[]` places is 265 x 11 = 2915 column(s), of which 202 carry a room — 6.9% of it. That rectangle is the extent a surround would have had to ring, and the rest of it is nothing.
+
+=== DW0854: the surround's inner slope has grown a standable staircase
+    perturbation: a stage-7 batch on `area/site` carving 27 treads from the gap floor at y 64 out past the crest
+    exit 1, error code(s): ['DW0112']
+    DW0112 [error] world-edits /batches/0/area: batch `batch/a-way-out` targets area `area/site` which stage 1 does not declare — use one of the world stage's area ids
+
+    control: the SAME batch with zero edit verbs, so nothing is carved
+        error code(s): ['DW0112']
+    control: the same empty batch on an `areas[]` campaign under `void`
+        error code(s): none
+        so the blocker is the batch's AREA, not the staircase: a site-plan campaign has no `areas[]` by construction (DW0839) and the edit script's area check reads `areas[]` alone.
+
+FINDING: DW0854 was not reached: the build came back ['DW0112']. A refusal nobody tripped is not a demonstration — see README.md
