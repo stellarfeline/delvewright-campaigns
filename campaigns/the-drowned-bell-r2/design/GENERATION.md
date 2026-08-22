@@ -2469,3 +2469,82 @@ and this campaign's world box spans all eight areas: 1833 × 48 × 125 =
 **10 998 000 cells, of which 134 031 — 1.22% — hold a block.** The areas are 256
 blocks apart in x, so almost everything scanned on every pass is the empty air
 between zones.
+
+### `DW0851` is closed, and the two zones now stand on the rock
+
+The check named `z5-hall-keep` and `z7-bell-tower`, and the design refuses one of
+its three repairs outright for both of them. `tide.md` says of Z5 that the hall
+"is the highest, driest, most intact room on the rock and the sea has never been
+in it", and that "the delve should say so by leaving this zone completely alone";
+of Z7 it says "the tower is above every level" and that the climb "must not be
+re-cut around it". `map-zones.md` puts their floors at +12 and at +14 against a
+sea whose highest state is `T-FLOOD`, +2.0. Neither room is meant to hold water,
+so authoring the water is not available.
+
+Closing the face is not available either. The open cells are the pieces' own
+declared walk connectors — Z5's `duct/landing` north face, which `map-zones.md`
+names as the descent to the cistern, and Z7's `approach/foot` west and north
+faces, which are the entrance from the cloister at the foot of the cobbled ramp.
+Walling a declared route to keep the sea out puts a wall where the design has a
+door.
+
+So the floor is raised. Each program's root rule now splits **two courses of its
+own `margin` role** — deepslate, the inert mass both programs already use — under
+the zone's existing body, and `zones.json` grows the region by the same two, so
+the body receives exactly the height it received before. The building is
+unchanged and translated +2: the same building on a taller footing. Z5 is
+`11 x 13 x 76` and Z7 is `41 x 50 x 125`; Z7 crosses the 48-per-axis template cap
+in y and now ships as a **1x2x3 tile set** instead of 1x1x3.
+
+This is the shape `z0-barrow-shore` and `z6-cistern-deep` already had — watertight
+through their bottom courses, zero open contact face. Measured over the shipped
+bytes by the same independent method that re-derived the 1 248, the two repaired
+pieces now match them exactly: **zero standable cells and zero open contact face
+in the sea band**, where Z5 had 18 face cells and Z7 had 86.
+
+**What the compiler says, and how each figure was established.** The check runs at
+stage 10 and passes, so it prints nothing; its binding ledger
+(`validation/sea-seepage.json`) is written only at emission, and this campaign
+still stops at stage 10. The figures below therefore come from three builds — the
+unrepaired one, and two in which exactly one of the two zones was left unrepaired,
+which is what makes the attribution a measurement rather than a subtraction.
+
+| world | violating cells | open contact face | sea reaches | walk region | wading |
+|---|---|---|---|---|---|
+| both unrepaired | 271 | 1248 | 6195 | 15212 | 279 |
+| Z5 unrepaired only | 47, all Z5 | 1162 | 5586 | 15212 | 126 |
+| Z7 unrepaired only | 224, all Z7 | 1230 | 6101 | 15212 | 279 |
+| both repaired | **0** | **1144** | not stated | **15212** | **126** |
+
+47 + 224 = 271, so the attribution is exact and additive. 1162 = 1248 − 86 and
+1230 = 1248 − 18, and the two routes to the repaired figure agree: 1162 − 18 =
+1230 − 86 = 1144.
+
+**The walk region is 15 212 in all four worlds**, so the repair removes no
+walkable cell: Z5's 47 cells are still 47, two blocks higher.
+
+**Wading falls from 279 to 126, and all 153 of the difference are Z7's** — the
+row where only Z5 is unrepaired still reads 279, so Z5's repair removes none. The
+153 were cells of the tower approach standing at exactly y=62 with a dry head:
+legal to walk, and ankle-deep in sea on a ramp `tide.md` puts at +14. They are now
+dry rather than gone.
+
+`cells_the_sea_reaches` is the one figure with no value for the repaired world.
+A flood is not additive, so it cannot be derived from the rows above, and the
+ledger that would state it is never written. It is recorded as absent rather than
+estimated.
+
+**A note about the check's own binding.** `DW0851` states its binding in its
+failure message and, on a pass, only in `validation/sea-seepage.json` — which
+`emit` writes at stage 12. A build that stops anywhere in stage 10 for another
+reason therefore gets a *silent* pass from the sea proof, which is the one thing
+the ledger exists to prevent. That is why the table above needed two deliberately
+half-repaired builds to fill in.
+
+**Where the build stops now.** Past the ambient-sea proof, at `DW0307`:
+`npc/odo-ferrier` cannot walk from `anchor/boss` to `anchor/belfry-stairhead`.
+Both anchors are inside Z7, which this repair translates rigidly, so the path is
+exactly the path it was; the flight between them is the broken first flight the
+design breaks on purpose, and the zone's own contract records those cells as
+reachable only once `stair/broken-flight` is laid. It is a content finding about
+when that way is opened, and it is not this repair's.
