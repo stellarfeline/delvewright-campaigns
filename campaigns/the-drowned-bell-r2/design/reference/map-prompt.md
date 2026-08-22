@@ -10,24 +10,42 @@ is [`map-zones.md`](map-zones.md).
 
 ## The method, and what it does and does not guarantee
 
-**One view per image.** A view is worth the detail it is drawn at, and four views
-divided into one canvas each get a quarter of it. One view per image also makes
-the unit of judgement right: a view that comes out wrong is re-drawn on its own,
-and the other four are untouched.
+**One view per image.** A view is worth the detail it is drawn at, and five views
+divided into one canvas each get a fifth of it. One view per image also makes the
+unit of judgement right: a view that comes out wrong is re-drawn on its own, and
+the other four are untouched.
 
-**View 1 is drawn from the prompt alone and is then confirmed for style. Views 2
-to 5 are drawn from their own prompt PLUS view 1 as a reference image.** These
-models anchor on images, and `--style-ref` is the anchor.
+**The aerial is the anchor, and it is drawn first from its prompt alone.** Before
+anything else is drawn it is gated against `map-brief.md` and `map-zones.md` —
+the compass frame and every zone's position, fact by fact. An anchor carries into
+all four of the others, so an anchor that is wrong is four wrong images, and a
+failing anchor is re-drawn by itself until it passes.
 
-**Every later view anchors on view 1, never on the view before it.** Chaining
-view to view compounds drift; anchoring all four on one image bounds it.
+**It is the anchor because it is the only view that carries both layout and
+light.** A plan has the layout and no material to match a hand against; an
+elevation has the hand and almost none of the layout. A series anchored on an
+elevation gives its other views nothing to inherit about where things sit, so
+each invents it, and they disagree about the compass.
 
-The trade is stated here so it is checked rather than discovered. Drawing four
-views inside one canvas is what makes them agree about the subject's *geometry*.
-Drawing them one at a time guarantees only *style*. So **the geometry lives in
-the written brief**, and every view is checked line by line against that text
-rather than by eye. The check is the table in *What each view agrees with, and
-where it does not*, and a view that disagrees is recorded disagreeing.
+**Every later view anchors on one image, never on the view before it.** Chaining
+view to view compounds drift; anchoring on one image bounds it.
+
+**A reference image fixes layout and hand. It does not fix projection, and it
+overrides a view type when the two conflict.** With the aerial attached, the west
+elevation, the site plan and the section each came back as the aerial. So each of
+those prompts states in its own terms what it is not — a plan carrying a horizon
+is wrong, a section showing the island's skin is wrong — and the two orthographic
+views anchor on the **front elevation**, which is itself anchored on the aerial.
+The layout still descends from the anchor; it descends one step further, through
+a view whose projection does not fight theirs.
+
+The trade is stated here so it is checked rather than discovered. Drawing views
+inside one canvas is what makes them agree about the subject's *geometry*.
+Drawing them one at a time against an anchor guarantees *style*, and as much
+*layout* as the anchor shows. So the geometry still lives in the written brief,
+and every view is checked line by line against that text rather than by eye. The
+check is the table in *What each view agrees with, and where it does not*, and a
+view that disagrees is recorded disagreeing.
 
 ## Files
 
@@ -57,24 +75,32 @@ Run from the **pipeline repo root** (that is where `tools/refimg.py` and
 `delvewright.local.toml` live). `$C` is this content repo and `$R` is
 `$C/campaigns/the-drowned-bell-r2/design/reference`.
 
-View 1 — the prompt alone, plus the campaign's three exterior concept images as
-the style anchor. The concept set is the campaign's only inherited material and
-the style of record, so the whole-map reference is drawn in its hand:
+The aerial — its prompt alone, with nothing attached:
 
 ```sh
 python3 tools/refimg.py \
-  --prompt-file "$R/map-prompt-v1-front-elevation.txt" \
-  --style-ref "$C/campaigns/the-drowned-bell-r2/design/concept/z7-bell-tower.jpg" \
-  --style-ref "$C/campaigns/the-drowned-bell-r2/design/concept/z0-barrow-shore.jpg" \
-  --style-ref "$C/campaigns/the-drowned-bell-r2/design/concept/z3-drowned-ward.jpg" \
-  --style-note "$(cat "$R/map-style-note.txt") The three attached images are approved concept art of parts of this same place. Match their painted hand exactly: visible brushwork, soft atmospheric depth, cool blue-grey cast, painterly edges. Do not draw in a flat graphic or vector-illustration style." \
-  --out .refimg/bell-map-v1-front-elevation
+  --prompt-file "$R/map-prompt-v4-aerial.txt" \
+  --style-note "$(cat "$R/map-style-note.txt")" \
+  --out .refimg/bell-map-v4-aerial
 ```
 
-Views 2 to 5 — the same command shape, anchored on view 1 and on nothing else:
+The two elevations — anchored on the aerial and on nothing else:
 
 ```sh
-for v in v2-west-elevation v3-site-plan v4-aerial v5-section; do
+for v in v1-front-elevation v2-west-elevation; do
+  python3 tools/refimg.py \
+    --prompt-file "$R/map-prompt-$v.txt" \
+    --style-ref "$R/map-v4-aerial.jpg" \
+    --style-note "$(cat "$R/map-style-note.txt")" \
+    --out ".refimg/bell-map-$v"
+done
+```
+
+The plan and the section — anchored on the front elevation, whose projection does
+not fight theirs:
+
+```sh
+for v in v3-site-plan v5-section; do
   python3 tools/refimg.py \
     --prompt-file "$R/map-prompt-$v.txt" \
     --style-ref "$R/map-v1-front-elevation.jpg" \
@@ -92,41 +118,26 @@ plan and a section equally.
 Each interaction id is recorded in that view's `.json`, so any view can be
 extended later with `--chain-from` without re-deriving the anchor.
 
-## The style confirmation, and why view 1 was drawn twice
-
-The first view 1 was drawn from the prompt and the style note with no image at
-all. It obeyed the brief and it was in the right palette, and it was in the wrong
-*hand*: flat, graphic, hard-edged, next to a concept set that is painted, soft
-and atmospheric. That is what confirming a view for style is for. View 1 is
-therefore drawn a second time with the three exterior concept images as its
-anchor, and the second is the view of record and the anchor for views 2 to 5.
-
-The two exterior facts the first drawing carries and the second drops — the
-sea-torn breach in the gatehouse's outer wall, and the collapse hole in the upper
-ward's paving — are both drawn by views 4 and 5, so nothing is lost by preferring
-the hand.
-
 ## What each view agrees with, and where it does not
 
 Checked against `map-brief.md` and `map-zones.md` as text, not by eye.
 
 | view | agrees | disagrees with the written geometry |
 |---|---|---|
-| 1 front elevation | five bands stacked; gate front squat, wide, pale, one arched opening; drowned ward's broken toothed wall with the water-gate tower's peaked roof over it; cloister arcading with open arch-heads; hall roof the one solid dark shape; tower clear of everything, square, unbuttressed, belfry open with the bell nearly filling it; one sea plane; fog closing the frame | **the cut road does not appear on the west cliff**, though the prompt asks for it in full — the same omission the earlier four-panel sheets have. The gatehouse sits on the sand rather than 3.7 m above it, so the portcullis shortcut has no drop in it. The collapse hole is not drawn |
-| 2 west elevation | **the cliff road is drawn, and drawn as a route**: a continuous cut ledge crossing the whole face, one body wide, with the bracket line above it, the two rope-store mouths, and its north end turning into the rock at a broken wall-head — which is what the brief needed and what no earlier image had | the K2 gap — the fallen section of shelf at a blind bend — is not drawn, and the brackets are merely irregular. The road's south end fades into the rock instead of meeting the sand. The cliff's foot is drawn as dry sand rather than surf and rock teeth |
-| 3 site plan | a true straight-down plan, no horizon and no perspective; the route as one line, solid in the open and dashed under the rock, running the arrival order; large sand flat with cairns and the stake line; cloister as an open court with four ranges; **the ward's east wall torn open so the ward and the sea are visibly one body of water**; causeway to the water-gate tower; collapse hole; tower clear at the crown | two of the nine numbered discs are duplicated (`3` and `9`); none is skipped. A branch of the route line runs from the wake point straight to the gate front, which is the shortcut and not the arrival |
-| 4 aerial | the compact stepped mass, every step readable above the last; gatehouse low at the south foot; **the ward as a sunken basin below the gate sill, its curtain wall broken and its east side open to the sea**, arcade in the water, sunk boats, water-gate tower; upper ward with the collapse hole; tower clear on the crown; the cliff road as a line on the west face; fog on every edge | the cloister reads as an L of terraces rather than four ranges round a garth. The cobbled ramp between the collapsed low buildings is not drawn. The sand flat is a band at one corner rather than the flat the brief sizes |
-| 5 section | one sea line straight across the frame; sand at −1.2; gatehouse cut open with the passage, its floor channel and its portcullis; **ward floor below the gate sill, filled to the line, causeway just above it**; cloister at +9 roofless; hall at +12 under timber trusses; upper ward at +14 holed; belfry at +30 with the bell built in and a stair climbing the whole tower, broken low down; **the cistern beneath the upper half of the rock, brick barrel vaults on ranked piers, the collapse shaft rising to the hole above it, the well going down to its silt bed** | the tower is drawn between the hall and the cloister rather than set back north of the hall on the crown. The cistern's supply channel is not drawn. The view carries level annotations the prompt forbids; they are correct against `tide.md` except a `+11.0` that names nothing in this campaign |
+| 4 aerial (the anchor) | the compact stepped mass, every step readable above the last, with the flat, the gatehouse, the ward, the cloister, the hall, the upper ward, the tower and the collapse shaft all inside one downward look; **the flat awash at the standing tide**, cairns and stakes standing up out of shallow water; **the ward a sunken basin below the gate sill**, its curtain wall broken and its east side open to the sea; **the raised causeway ending at the water-gate tower**, which is square, three-storeyed and pyramid-roofed; the cloister roofless with four ranges round an open court; the upper ward's cobbles holed; the tower clear on the crown, one square belfry opening per face with the bell nearly filling it; the cliff road with its rope-store mouths; fog on every edge | the causeway of wet sand running off south to the mainland is not drawn — only the ward's own raised spine is. One free-standing arcade stands in the water where the brief has two. The grille in the ward's rock face is not drawn |
+| 1 front elevation | five bands stacked; the flat awash, cairns and stakes standing in shallow water; gate front squat, wide, pale, one arched opening, roof flat; the ward's broken toothed wall with the water-gate tower's peaked roof over it at the far side; cloister arcading with open arch-heads; the hall's roof the one solid dark shape; the tower clear of everything, far higher than the rest, belfry a square opening with the bell nearly filling it; one sea plane; fog closing the frame | the tower's shaft reads round-shouldered rather than square below the belfry. The gate floor sits at the sand rather than nearly four metres above it, so the portcullis shortcut has no drop in it. The cut road on the west cliff is faint |
+| 2 west elevation | **the cliff road is drawn as a route**: a continuous cut ledge crossing the whole face, beginning at the tidal sand at its south foot and ending at a broken sea-torn hole in the gatehouse's outer wall high above the sand, with the bracket line and the two rope-store mouths on it. That is what `map-brief.md` calls a stage of the route rather than a detail of the gatehouse, and this is the view that carries it. Sheer undercut cliff to surf and rock teeth; the flat awash to the south; the water-gate tower's peaked roof over the curtain wall | the bell tower is drawn between the hall and the cloister rather than set back north of the hall on the crown. The K2 gap — the fallen section of shelf at a blind bend — is not drawn |
+| 3 site plan | north at the top, the cliff west, the breach east; the arrival route as one line running the arrival order, solid in the open and dashed under the rock; the flat awash with its cairns and its stake line; the cloister an open court with four ranges; **the ward's east wall torn open so the ward and the sea are visibly one body of water**; the causeway ending at the water-gate tower; the collapse hole in the upper ward; the tower clear at the crown with the bell seen down through it | the rock is still drawn with some of its side faces showing rather than as a true straight-down projection. The water-gate tower sits at the ward's south-east, where the aerial puts it at the ward's far side away from the gatehouse |
+| 5 section | one sea line straight across the whole frame; the flat at −1.2, awash; the gatehouse cut open with its passage, its floor channel and its portcullis; **the ward floor below the gate sill, filled to the line, the causeway just above it** with sunk boats in the water; the cloister at +9 roofless; the hall at +12 under open timber trusses; the upper ward at +14 holed, with the shaft falling from that hole; the belfry at +30 with the bell built into it and a stair climbing the whole tower; **the cistern beneath the upper half of the rock, brick barrel vaults on ranked piers, and the well going down below the silt line**. All three of the massing's *facts a plan drawn from boxes loses* are carried in this one drawing | the view carries no level annotations, so every height is read from the massing table rather than off the picture. The cistern's supply channel is not drawn |
 
-**The site plan is drawn twice, and the second prompt is the one of record.** The
-first asked for thirteen numbered stops and got a plan whose numbering skipped
-two and repeated three, a sand flat reduced to a margin, and a drowned ward
-drawn as an enclosed pond — which `tide.md` forbids outright, since nothing on
-this rock holds a level of its own. The second prompt is a different request, not
-the same request run again: nine stops instead of thirteen, an explicit demand
-that each number appear exactly once, an explicit size for the flat, and an
-explicit statement that the ward's east wall is torn open. All three defects are
-answered and the numbering defect is reduced rather than removed.
+**The aerial passed its gate on its first drawing; the west elevation, the plan
+and the section are each re-drawn alone.** The west elevation is re-drawn because
+its frame handedness was inverted: a viewer facing east has north on the left,
+which is the same rotation the front elevation applies facing north, and until
+that agreed the two elevations could not be read side by side against the same
+heights. The plan and the section are re-drawn because, with the aerial attached,
+each returned the aerial; a stated refusal naming the wrong answer moved neither,
+and what moved them was changing which image they attach.
 
 ## What the reference asks for that the grammar plainly cannot build
 
