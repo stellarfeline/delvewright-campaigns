@@ -4312,15 +4312,44 @@
       {
         "weight": 1,
         "body": {
-          "op": "reorient",
-          "orient": {
-            "y": "world_y",
-            "z": "largest"
-          },
-          "body": {
-            "op": "call",
-            "symbol": "zone_plan"
-          }
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "rounding": "start",
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "margin"
+              }
+            },
+            {
+              "op": "reorient",
+              "orient": {
+                "y": "world_y",
+                "z": "largest"
+              },
+              "body": {
+                "op": "call",
+                "symbol": "zone_plan"
+              }
+            }
+          ]
         }
       }
     ],
