@@ -130,3 +130,36 @@ identically, and the same empty batch on an `areas[]` campaign is accepted.
 
 Until that is closed, `refusals.py` exits 1 and says which case did not land.
 That is the state of the level, stated where it cannot be missed.
+
+## What this campaign needs from the engine it is built with
+
+The horizon's surround is a `dsl_version` 0.16 surface, and this campaign's
+`world.json` declares it. The engine every campaign here is built with is
+`versions.toml` `[engine].ref`, whose pin policy is `release`: the value must be
+a commit a `v<semver>` tag points at, and `tools/check-pins.py` enforces that
+rather than assuming it. So **this campaign builds green only once an engine
+release carries the surround** — the gate is not something a pin bump can
+satisfy early.
+
+Run against an engine that does carry it, the repository's own gate is green
+over everything, this campaign included:
+
+```
+campaign build gate: 3 of 3 campaign(s) examined, 5 language build(s),
+0 directory/ies excluded and named, 0 finding(s)
+```
+
+## Walking it
+
+`delvec build` emits a complete joinable delve: the datapack, the server
+configuration, and a world generated on first boot with nothing baked into
+region bytes. The compiler's own walk proofs are green over the built bytes —
+six places proven reached, five critical-path legs measured, and
+`validation/critical-path-waypoints.json` showing the climb to the ledge taken
+one block at a time.
+
+Joining it, or running the critical-path bot over it, needs a Minecraft server,
+and a Minecraft server needs the Mojang EULA accepted. That acceptance belongs
+to whoever is running the delve and is read from the environment, never
+hardcoded — so it is the one step this campaign's own tooling does not take for
+you.
