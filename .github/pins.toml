@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "11cd7c4c43ebcde21de0051bcc177532c10c8d77"
+value = "800c958e0e582e553ee4057237312d90ca87e56e"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "11cd7c4c43ebcde21de0051bcc177532c10c8d77"
+reviewed = "800c958e0e582e553ee4057237312d90ca87e56e"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -53,10 +53,26 @@ is the old one. `crates/schem` re-exports its `blocks`, `split`, `prefab` and
 `registry` modules, and that is the indirect door. `crates/admit` ALSO names it
 directly, as a path dependency, for `delvewright_dsl::prefab::check_footprint_class`
 and the `delvewright_dsl::metrics` read ledger that rule takes — a re-export of a
-ledger through a third crate would be a second path to one authority. Confirmed
-from the source rather than assumed: the audit-path crates name
-`delvewright_dsl::prefab`, `::metrics`, `::registry` and `::blocks`, and nothing
-under `gate`, `validate` or `diagnostic`.
+ledger through a third crate would be a second path to one authority.
+
+The reach is stated as MODULES and not as crates, because a crate is too coarse
+to say anything and the difference is where a judgement is actually made. Read
+from the source rather than assumed, the `audit` subcommand reaches
+`delvewright_dsl`'s `prefab`, `metrics`, `registry`, `blocks`, `split`, `ids`
+and — through `metrics`, which takes `Diagnostic` and `DwCode` from it —
+`diagnostic`. It reaches nothing under `stages`, `validate`, `gate`, `layout`,
+`siteplan`, `detailplan`, `effects`, `fmt`, `l10n` or `mclang`. Two of those
+absences are load-bearing rather than incidental: `stages` and `validate` are
+where a campaign document is judged, and a commit that moves them moves the
+watch closure while reaching no rule this gate applies.
+
+`crates/admit`'s OTHER subcommands reach further than `audit` does, and the
+`lighting` probe is the one that reaches furthest — `crate::light` names
+`delvewright_dsl::{WorldTime, WorldWeather}`, which are defined in `stages`, and
+floods with `delvewright_compiler::light`. Neither is on the audit path. A
+judgement that reads this entry must therefore ask which SUBCOMMAND a moved file
+is reached from, because "the crate changed" and "the gate changed" are different
+facts and the watch closure can only tell you the first.
 
 WHY `value` AND `reviewed` NAME THE SAME REVISION. `value` is the revision the
 tool is BUILT from; `reviewed` is the revision its upstream history has been
@@ -66,32 +82,81 @@ instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
 
 THE READING, so the next one does not have to repeat it. Across
-1847a333..11cd7c4c, 33 commits landed upstream and 15 of them touch the watch
-closure. Fourteen reach only `crates/compiler` and `crates/dsl`, which the
-`audit` subcommand consults for no rule it applies. The fifteenth, `237ddd1b`
-(spec-0050), is the whole of the audit path's movement — `crates/admit`,
-`crates/schem` and `crates/grammar` are byte-identical across the interval apart
-from it — and it adds `DW0848`, the footprint-class door, to `delve-admit audit`.
-That is a NEW REFUSAL rather than a refinement of an old one: the admission now
-fails on the contract door's verdict OR the footprint door's. An admission rule
-the library's own gate does not carry is the vacuity this registry exists to
-catch, which is why the answer here was to move `value` rather than to hold it
-and record a clearance — a clearance that is true only while no piece declares a
-class would expire silently on the first piece that does.
+11cd7c4c..800c958e, 4 commits landed upstream and all 4 touch the watch closure —
+which is why the red names every commit in the interval and still says nothing
+about a verdict. Bucketed by crate, over a denominator of 4: `579fd070` reaches
+`crates/compiler` only. `32b19a1b` reaches `crates/compiler` and `crates/dsl`,
+and its `dsl` half is `stages.rs` and `validate.rs`, which the `audit` subcommand
+does not reach. `89e5297e` reaches `crates/compiler` and `crates/admit` — the
+audit binary's own crate. `800c958e` reaches `crates/compiler`, `crates/grammar`,
+`crates/schem` and `crates/dsl`, and is the only one of the four that touches a
+file the `audit` path compiles.
+
+`crates/admit` MOVING IS NOT `audit` MOVING, and this interval is the one that
+makes the distinction pay. `89e5297e` replaces the `lighting` probe's private
+copy of the light model with the compiler's, deletes its private emitter and
+opacity tables, removes the `roofed` filter, and rewrites what a lighting verdict
+reports — every changed line in `crate::light`, `crate::meta`, `crate::fixtures`
+and `run_lighting`. Established rather than argued: `main.rs` with `run_lighting`
+excised is byte-identical at both ends of the interval, 724 lines, sha256
+189b2125, and `run_audit` itself is identical at sha256 c8c968e2.
+
+WHAT THE `audit` PATH ACTUALLY GAINED, which is the whole of it. Of the 29 source
+files that path compiles and that exist at both ends, 26 are byte-identical and 3
+moved: `crates/admit/src/main.rs` for the reason above; `crates/schem/src/prefab.rs`,
+whose re-export list gains one name; and `crates/dsl/src/prefab.rs`, which adds an
+optional `role` key to an anchor (`AnchorRole`, one legal value `entry`, spec-0046).
+It is additive and it opens no door: `Anchor` carries no `deny_unknown_fields` at
+either end, so the key was silently ignored before and is read now; nothing touches
+`check_footprint_class` or the metrics ledger; and the grammar modules a verdict is
+actually made in — `block`, `contract`, `geom`, `model`, `settle`, `gates`, `nav` —
+are byte-identical. `crates/orchestrator` is identical as a whole tree.
+
+SO THE RULE SET DID NOT MOVE EITHER, which is a different question from whether a
+verdict moved and is the one that decides a HOLD. The previous interval moved the
+rule set — it added `DW0848` — so holding `value` there would have recorded a
+clearance true only until the first piece declared a class. Nothing of that kind
+happens here: no refusal is added, none is relaxed, and the three judges carry the
+identical set of 22 `DW` codes, read out of the BUILT BINARIES rather than out of
+the source that produced them. The one new surface is a metadata key a piece may
+declare, and moving the pin is what makes the library's instrument able to read it
+— so here the hold, not the bump, is the option that would expire silently.
+
+The other reason `value` moved is the OTHER subcommand: this pin is the library's
+only instrument for `lighting` as well as for `audit`, and holding it would freeze
+a probe with no sky term at all, one that reads `dark` over any roofed-but-open
+piece. A pin held at a known-wrong instrument to avoid a bump that provably changes
+no verdict is the worse of the two states.
 
 MEASURED RATHER THAN ARGUED, because a linkage read off imports is a claim and a
-verdict is a fact. Both judges were built from their own trees under the pinned
-1.97.1 toolchain and run over the whole library by `tools/prefab-audit.py`: 39
-audited units, 39 report files, and all 39 byte-identical between 46abe8bf and
-11cd7c4c. The move therefore changes no verdict this library currently receives.
-The newer judge additionally states, on every piece, `footprint class binding: 0
-declared class(es) judged over 1 declaration document(s) read` — a stated zero
-over 39 declaration documents actually read, not an unexamined silence.
+verdict is a fact. Three judges were built from their own detached worktrees under
+the pinned 1.97.1 toolchain — sha256 40c8804d at 11cd7c4c, 3e53c682 at 89e5297e,
+a85d5c67 at 800c958e, so they are demonstrably different binaries — and each run
+over the whole library by `tools/prefab-audit.py`: 39 audited units, 39 report
+files, all 39 byte-identical across all three, and each run's entire 130-line
+diagnostic stream identical line for line. The move changes no verdict this
+library currently receives.
+
+AND THE COMPARISON IS NOT VACUOUS, which a byte-identical result always has to
+answer for. The same binaries over the same piece disagree on `lighting`:
+`prefabs/keep-stair.nbt` gains `assumed_sky`, gains `min_light_daylight`, and
+loses the `reachable_cells` rung. The instruments differ, the difference is
+observable, and it does not reach `audit`.
 
 A `reviewed` VALUE IS A DATE, NOT A CLEARANCE. It says this pin was judged
 against upstream as of that revision and says nothing about any commit after it;
 upstream moving reds this check again, which is the mechanism working rather than
 failing.
+
+That is not hypothetical and it is worth the sentence, because it decides how the
+next judgement is run. This one began against a head of 89e5297e and the pipeline's
+default branch fast-forwarded to 800c958e WHILE it was in progress — so the first
+answer was already stale when it was written, and the commit that arrived was the
+only one in the interval that touched a file the `audit` path compiles. The check
+caught it, which is what it is for. The habit that follows: re-run the drift check
+against a freshly-read head immediately before committing a bump, and take every
+figure at a named revision rather than at "the head", because the head is a value
+that moves.
 
 THE DOORS in the audit path where a change moves a verdict, and each opens only
 on a declaration the piece itself makes. The spatial contract opens on a piece
@@ -103,6 +168,21 @@ none. Because that rule consults the metrics table, `crates/dsl`'s `metrics`
 module is a live input to a verdict for any piece that declares a class. No piece
 in this repository declares one today, which is a fact about the library and not
 a property of the gate.
+
+WHAT THIS PIN CARRIES THAT NOTHING RUNS, stated because the next reader of this
+entry is the one who needs it. `audit` is the only subcommand any job here
+invokes; `delve-admit lighting` is invoked by no workflow, no tool and no test,
+so every `lighting` block in a prefab's metadata is written by hand or by a run
+somebody chose to make, and a hand-written number over a measured one reds
+nothing. Measured against the instrument this pin now names: all 39 units carry a
+`lighting` block, and the probe's own verdict disagrees with 9 of them — five
+pieces whose `method` says in so many words that a block-light estimate is "not
+applicable to a roofless structure" and each asserting a minimum of 15, one
+carrying a measured minimum of 8 over a piece the probe binds to zero cells, and
+three declaring `unmeasured`, two of which the probe now answers. Those
+disagreements are older
+than this pin and are not caused by it; what the bump changes is that a probe
+capable of judging them now exists on the pinned side.
 
 WHAT `vendors` DECLARES, and why it is a pin's business at all.
 `tools/check-pins.py` is ONE tool with two copies: the pipeline's is the source,
