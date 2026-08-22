@@ -2216,3 +2216,256 @@ byte anywhere.
   closure is a `DW0734` warning on two hero prefabs that carry the pre-rename
   `minecraft:chain` at a DataVersion of 2975 and rely on load-time datafixing;
   those are not this zone and not this campaign.
+
+## The build tier, and what it says about these eight pieces
+
+Everything above is about producing the zones. This section is about what the
+compiler says when it assembles them into one world, because until now **nothing
+at build tier had ever judged this campaign**. `delvec validate` returned exit 0
+and `delvec build` stopped at stage 9 (`DW0210`), so stage 10 — the ambient-sea
+proof, boundary safety, the walk proofs, the checkpoint proofs and the respawn
+safe zone — had never run on it. That silence was never a pass.
+
+**The instrument, stated because every number below depends on it.** Engine
+`4137cfaeb1f0b440f96e1433152e0cf214172b83`, `delvec 1.1.0, dsl 0.15.0, mc
+1.21.11`, built from source in a worktree detached at that revision. The campaign
+has no `dialogue.json`, and the loader exits 10 without diagnosing when it is
+absent, so every build below ran against a **scratch copy carrying a placeholder
+dialogue tree** — five roots, the three `talk-to` completions, and the three
+ending flags on a node reached behind `flag/mercy-can-speak`. It is not committed
+and it is not this campaign's dialogue; `cast.md` holds the written dialogue and
+nothing has yet moved it into a stage document. Where a measurement needed to see
+past `DW0210`, `mitigation: "night-vision"` was applied in that same scratch copy
+as an instrument, and is likewise not committed.
+
+### The water was running out of the world, and the sea it belongs to is now declared
+
+With no `horizon` — which means `void` — stage 10 refused with `DW0318`: 17 760
+fluid cells in 8 255 columns lying outside every placed piece, attributed to
+`prefab/z3-drowned-ward`, against a binding of 21 488 fluid cells across 8 placed
+pieces. A void column is bottomless, so that is a waterfall running on the
+server's own clock before any player arrives.
+
+Measured independently, out of the shipped `.nbt` bytes rather than from the
+compiler: **`z3-drowned-ward` is the only one of the eight pieces that authors any
+fluid at all** — 3 728 cells, every one at piece-local y=1 and y=2. The two
+figures close exactly: 3 728 authored + 17 760 escaped = 21 488 examined.
+
+That water is the sea. `tide.md`'s first rule says the rock has exactly one water
+level and everything wet on it is that sea, reached through a broken wall, a gate
+or a well; and `DW0318`'s own prescription for water meant to be a sea is to
+declare `horizon: ocean` rather than delete it. `world.json` now does. `DW0318`
+is vacuous by premise under an ocean and is gone. No version moves — `horizon`
+landed at `dsl_version 0.6.0` and the world stage already declares 0.6.0 — and
+`DW0320` is satisfied without any change, because a `boundary` was already there.
+
+**The datum this puts the campaign on, which nothing in the design records.** An
+ocean area's origin is y=60 and sea level is y=62, where a void area's origin is
+y=64: every piece drops four blocks and its local y=2 becomes the sea plane. The
+ambient sea is water from y=55 to y=62 over stone, so a piece's local y=0, 1 and 2
+stand in it. Local y=2 is exactly where `z3-drowned-ward`'s authored waterline
+already sits — the piece meets the sea it depicts, precisely, by a coincidence
+nobody planned.
+
+### Does declaring the ocean now conflict with a moving sea later
+
+No, and two of this campaign's own records say why. `tide.md`'s first rule is
+*one plane, whole-world, moved all at once*, with no bounded basin anywhere on the
+rock; and `review/z2/README.md` states the consequence as built:
+
+> `tide.md` forbids both a bounded basin and flowing water: the sea is one
+> whole-world plane, so this zone paints no water at all … At the ebbs it is a dry
+> gutter and at the flood the plane fills it. The zone contains zero water blocks,
+> and that is checked rather than asserted.
+
+*Author the geometry, let the plane bring the water* is therefore already this
+campaign's rule, written before there was a plane to bring it. `horizon: ocean` is
+the only surface today that makes a whole-world plane exist at all, so declaring
+it is that rule with the set of levels at size one — the level the delve boots at.
+A sea that later moves generalises this rather than undoing it.
+
+What a moving sea **would** have to undo is not the declaration but one piece:
+`z3-drowned-ward` authors 3 728 water cells of its own, and the rule those two
+documents state says it should author none. That is prefab work, and it is owed
+whether or not the sea ever moves.
+
+One thing that is visible from here and will have to be settled. `tide.md`'s
+levels are metres — `T-EBB1` −2.0, `T-STAND` 0.0, `T-FLOOD` +2.0, `T-DEAD` −2.5 —
+and the world is built in whole blocks. At integer resolution the first ebb and
+the Dead Ebb are the same block or one apart, while the delve's premise is the
+difference between them: the well's silt bed clears the Dead Ebb by 0.2. The table
+is not yet expressed in the units the rock is built in.
+
+### `DW0344` — eight pieces stand in the sea and not one declares a waterline
+
+The ocean-datum check states its binding, and here the binding is zero:
+
+> the ocean-datum check examined ZERO of 8 placed piece(s): this world declares
+> `horizon: ocean` and 8 of those piece(s) stand at or below the sea plane (y=62),
+> but not one declares a `waterline_y` in its prefab metadata.
+
+It is a warning rather than a refusal only because no lever yet lifts a piece
+clear of the sea. The finding for this campaign is the one the message names:
+`z3-drowned-ward`'s top authored water block is at local y=2, which is the island
+convention exactly, and its metadata does not say so — so the check that exists to
+catch a mis-datumed piece has nothing to bind to on the one piece that would bind
+it.
+
+Declaring `waterline_y: 2` on that piece would bind the check and pass it
+(60 + 2 = 62). It is deliberately **not** declared here, because it would ratify
+the water the two records above say the piece should not author. The repair is to
+take the water out and let the plane bring it, and then no piece of this campaign
+authors a shore at all.
+
+A detail worth writing down, because it is easy to mistake for a defect: this
+warning does **not** appear in a `delvec build` that fails later. It is raised at
+stage 7 and a stage-10 refusal takes the whole run with it. `delvec snapshot`,
+which stops after assembly, prints it — and prints `DW0781` beside it, which
+behaves the same way.
+
+### `DW0851` — the sea is over 271 cells this build proves a body stands on
+
+This is the check that had never run. It reds:
+
+> 271 reachable standable cell(s) across 271 column(s), in placed piece(s)
+> `prefab/z5-hall-keep`, `prefab/z7-bell-tower`, have their HEAD cell under water
+> once the world loads. Examined 1248 cell(s) of open contact face and 6195
+> cell(s) the sea reaches inside 8 placed piece(s), against a walk region of 15212
+> cell(s), of which a further 279 are wet to the feet only.
+
+The two pieces it names are **the two highest zones in the design**. `map-zones.md`
+puts the hall floor at +12 and the tower foot at +14 against a single sea plane,
+and `tide.md` says of Z5 that the sea has never been in it and that the absence is
+the point. Under the engine's placement they share an origin with the barrow flat,
+because **every area of a campaign is placed at one `base_y` and each piece's own
+local y=0 is its own floor.** Z5's `duct/landing` starts at local y=0 and Z7's
+`approach/foot` at local y=1, so under an ocean they are one and two blocks below
+the waterline, and `approach/foot` is declared `open`.
+
+The 1 248-cell binding was re-derived independently, from the shipped `.nbt` bytes
+and the rule as published, sharing no code with the compiler — a non-blocking cell
+inside a placed piece, in the sea band, six-adjacent to a cell outside the piece.
+It comes to **1 248 exactly**, and it gives the per-piece breakdown the aggregate
+does not:
+
+| piece | open contact face, cells |
+|---|---|
+| `z1-cliff-road` | 706 |
+| `z3-drowned-ward` | 336 |
+| `z7-bell-tower` | 86 |
+| `z4-chapel-ward` | 81 |
+| `z2-gate-ward` | 21 |
+| `z5-hall-keep` | 18 |
+| `z0-barrow-shore` | 0 |
+| `z6-cistern-deep` | 0 |
+
+Two of the eight are watertight through their bottom three courses and two are
+wide open, and the two `DW0851` names are neither the leakiest nor the tightest —
+because the code asks whether a cell the sea reaches is one a body was proved to
+stand on, which is a different question from how leaky a piece is.
+
+Read the other spaces that reach the plane and the picture is consistent rather
+than random. Z6's `channel-invert` (local y 1..5) and `well-bed` (y 2..3) sit at or
+below it — and those are exactly the two features `tide.md` says are under water at
+every state of the tide, the Dead Ebb included. They are not named by `DW0851`
+because they are enclosed and the sea has no contact face to reach them through:
+the design wants them wet, the piece authors them dry, and the ambient plane cannot
+get in. Z4's `crypt-foot` and `vault` are the same shape.
+
+So the ocean plane is right for one zone, wrong for two, and unreachable for the
+rest — which is one fact stated three ways: **the eight zones are placed as a row
+at one height, and the design is a stepped rock at heights from −2.6 to +30 on one
+sea.** `DW0781` measures the same thing from another side: of 8 placed pieces, 8
+carrying a spatial contract and 21 declared faces, **not one touches another placed
+piece.** Eight islands, not a rock. None of the eight declares a connector either.
+
+Nothing here is caused by declaring the ocean. Declaring it is what made the sea
+real enough to measure the mismatch.
+
+### The order of the blockers, which is the practical finding
+
+Reaching the checkpoint and respawn proofs is not one more fix away. In stage
+order:
+
+1. **Stage 9, `DW0210`** — a reachable walkable cell below light 3 under the
+   darkest reachable sky (effective 4, the campaign being `night`).
+2. **Stage 10, `DW0851`** — above. Nothing in the six stage documents moves it,
+   short of a stage-7 edit script that walls those faces, which is building
+   geometry in the campaign instead of in the piece. The repair is in the two
+   pieces whose faces are open below the waterline, or in a placement that puts
+   those zones at the heights the design gives them.
+3. Only then `DW0322`, the walk proofs, `DW0315`, `DW0316` and `DW0478`.
+
+So `DW0315`, `DW0316` and `DW0478` have **still** never examined this campaign's
+five bonfires (`anchor/ledge-foot`, `anchor/yard`, `anchor/stoop`, `anchor/shaft`,
+`anchor/tower-foot` — there is no plain `set-checkpoint`), its four waves or its
+two lethal volumes. That is a statement about what has not been proved.
+
+### Which areas are dark, and why no lighting declaration was added
+
+`DW0210` returns **one area per build** — the light pass collects a diagnostic for
+every dark area and the caller takes the first — so the set below was walked one
+run at a time, silencing each named area with the night-vision instrument and
+letting the next report. Under `horizon: ocean`, at engine `4137cfae`:
+
+| area | first cell `DW0210` names (world) | piece-local | where that is in the piece's contract |
+|---|---|---|---|
+| `area/bell-tower` | `[1804, 67, 95]` | `[12, 7, 95]` | outside every declared space (a gap in `ward`'s boxes) |
+| `area/chapel-ward` | `[1026, 61, 8]` | `[2, 1, 8]` | `vault`, enclosed |
+| `area/cistern-deep` | `[1538, 64, 2]` | `[2, 4, 2]` | `cistern`, enclosed |
+| `area/drowned-ward` | `[782, 67, 49]` | `[14, 7, 49]` | `tower/upper`, enclosed |
+| `area/gatehouse` | `[515, 64, 29]` | `[3, 4, 29]` | outside every declared space |
+| `area/hall-keep` | `[1281, 61, 0]` | `[1, 1, 0]` | `duct/landing`, enclosed |
+
+Six of the eight. `area/barrow-shore` and `area/cliff-road` are not dark anywhere:
+an effective sky of 4 at night clears the threshold of 3 wherever a cell can see
+it, and those two are open. Every cell above is measured at light 0.
+
+Two of the six are worth a second look for reasons of their own. `area/hall-keep`'s
+dark cell is `[1281, 61, 0]` — **the same cell `DW0851` names first**, so it is
+both unlit and under the sea. And two of the six fall outside every space their
+piece's spatial contract declares, while the light pass proves a player reaches
+and stands on them.
+
+The lighting the campaign actually has, measured over the shipped `.nbt` bytes:
+`z0`, `z1` and `z2` carry **one `minecraft:lantern` each, and that is the whole
+lighting of the delve**; `z3` through `z7` contain no light-emitting block at all.
+Nothing else supplies any. A bonfire's hardware is a glowing `item_display`
+holding a campfire *item*, not a placed campfire block, so the five rest points
+light nothing; and the Mourner's *Coffin Lantern* is one class kit's item, which
+emits no light while it is carried.
+
+`DW0210` offers three answers and each is refused here for its own reason, so the
+error is left standing rather than bought off.
+
+- **`mitigation: "night-vision"`** is a real answer with a precedent — the
+  released `nobodys-cave-island` declares it on its cave interior — but it is an
+  opt-out, and it is only honest if the delve means it. That campaign is
+  `time: noon` and its dark area is a cave; this one is `time: night` and its
+  darkness is the subject. Nothing in `story.md`, `beats.md` or `encounters.md`
+  says the party sees in the dark, and granting it to five of eight areas changes
+  what the whole delve looks like. It is used above as a declared instrument and
+  is not committed; whether the delve means it is a design decision, not a
+  compiler one.
+- **Brightening the scene** contradicts the premise: the delve is one night of two
+  ebbs, and `world.time` is `night` because of the tide table.
+- **`areas[].lighting`** relights a whole area to a `min_light`, and this delve is
+  written to be dark in places — `encounters.md` gives the stairhead fight an
+  arena that is *tight, dark*, and `beats.md` 7.4 has the player passing the
+  drowned on the stair *in the dark*. Declaring it on `area/bell-tower` would light
+  that climb to buy a cell somewhere else in the same area.
+
+`reconciliation.md` already says where the answer belongs: light is part of the
+made-by-hands layer, no zone's palette contains anything that was *put there*
+rather than *cut from* the rock, and its own correction records that the rooms are
+wrong before the ornament is. The lighting of this delve is prefab work, owed by
+the same rounds that owe the absent beats.
+
+One measured cost for whoever does reach for `areas[].lighting`. A single
+declaration on `area/bell-tower` ran the relight pass for **thirty minutes, and was stopped there** without
+finishing, on a machine where the same build without it completes in 148 s.
+`relight_area` re-floods the **whole assembled world** once per fixture it places,
+and this campaign's world box spans all eight areas: 1833 × 48 × 125 =
+**10 998 000 cells, of which 134 031 — 1.22% — hold a block.** The areas are 256
+blocks apart in x, so almost everything scanned on every pass is the empty air
+between zones.
