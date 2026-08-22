@@ -2541,10 +2541,59 @@ reason therefore gets a *silent* pass from the sea proof, which is the one thing
 the ledger exists to prevent. That is why the table above needed two deliberately
 half-repaired builds to fill in.
 
-**Where the build stops now.** Past the ambient-sea proof, at `DW0307`:
-`npc/odo-ferrier` cannot walk from `anchor/boss` to `anchor/belfry-stairhead`.
-Both anchors are inside Z7, which this repair translates rigidly, so the path is
-exactly the path it was; the flight between them is the broken first flight the
-design breaks on purpose, and the zone's own contract records those cells as
-reachable only once `stair/broken-flight` is laid. It is a content finding about
-when that way is opened, and it is not this repair's.
+**Where the build stops now.** On the committed tree, at stage 9: `DW0210`,
+`area/bell-tower`. `DW0307` is one stage further and is reached only behind the
+night-vision instrument above, which is why the sea proof's silence must not be
+read as a pass.
+
+Behind that instrument the build stops at `DW0307`: `npc/odo-ferrier` cannot
+walk from `anchor/boss` to `anchor/belfry-stairhead`.
+
+**That leg does not cross the broken flight, and the tower's last flight is
+severed unconditionally.** The way `stair/broken-flight` lies on the
+`tower/foot --stair--> tower/ringing` edge at `y 13..14`; the failing leg runs
+from `anchor/boss` at `y 27` to a target the compiler snaps to `anchor/stair-head-4`
+at `[15, 32, 99]`. Nothing the way lays is on it, and the edge that is —
+`tower/stairhead --stair--> tower/belfry`, via `tower/stair-upper` — declares no
+way at all, so nothing in the campaign is meant to open it and nothing does.
+
+The break is the run's **last step-up**, `[15, 31, 95]` to `[15, 32, 96]`: a
+full-block rise, which is a jump rather than a walk-up, and the belfry deck at
+`[15, 33, 95]` occupies the cell the jumping body's head sweeps through. The
+highest cell a body reaches from the ramp foot is `y 31`, three courses under the
+belfry floor. This is the failure the deck's own sizing rule is written against —
+*sized to the pier alone it roofs the last treads and severs the climb one course
+below the bell* — and the opening `deck/stair_strip` cuts, `stair_bay + tread` at
+`z 96..102`, begins exactly one cell past the cell that step is taken from.
+
+**So the belfry is unreachable, and the finale stands in it.**
+`quest/hang-the-tongue` and all three endings hold their objectives at
+`anchor/bell-mouth`, `anchor/bell-walk` and `anchor/belfry-bay`. The compiler
+routes a `move-npc` over the player footprint, so its refusal is the player's
+answer too.
+
+**The piece's own gate passes because it walks a different rule**, and the two
+rules differ by one term. The contract's reachability gate proves its claim over
+the grammar's walk, which steps one block up with no headroom condition and whose
+own module records that this is *the generous one for a reachability claim*; the
+compiler treats a full-block rise as a jump and requires the swept head cell
+clear. Flooding the shipped bytes from `anchor/ramp-foot`, varying one thing at a
+time:
+
+| world | standable cells reached | highest y | belfry anchors reached |
+|---|---|---|---|
+| way shut, jump headroom enforced | 4259 | 13 | 0 of 4 |
+| way laid, jump headroom enforced | 4968 | 31 | 0 of 4 |
+| way laid, jump headroom enforced, deck course `y 33, z 95` cleared | 5357 | 35 | 4 of 4 |
+| way laid, jump headroom **not** enforced (the grammar's rule) | 5361 | 35 | 4 of 4 |
+
+The first and last rows reproduce this record's own published figures exactly, so
+the walk model is calibrated against both authorities; the gap between rows two
+and four is 393 cells — the belfry's 381 standable cells plus 12 in
+`tower/stair-upper` at `y >= 32` — and it is entirely the head-sweep term.
+Clearing one deck course closes it.
+
+Measured on the pre-repair bytes as well: the same step is head-blocked there,
+two courses lower. This repair translates the tower rigidly and neither caused
+the severance nor touches it. The finding is prefab work on `z7-bell-tower`, and
+the two disagreeing walk rules are an engine finding beside it.
