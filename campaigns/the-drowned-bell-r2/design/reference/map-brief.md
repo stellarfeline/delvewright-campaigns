@@ -11,7 +11,7 @@ produced pieces actually are. It adjudicates nothing. Where a fact forced a
 judgement, the fact is written down and the judgement is left out.
 
 Heights are metres against the **standing tide**, `0.0`, the datum `tide.md`
-fixes. The sheet and every elevation below are drawn at that level.
+fixes. The reference views and every elevation below are drawn at that level.
 
 ---
 
@@ -138,7 +138,7 @@ collapse shaft must all fall inside one downward view from the tower's top. A
 layout that strings the zones end to end satisfies every route in `quests.md` and
 loses this.
 
-## The state the sheet is drawn at
+## The state the reference is drawn at
 
 The **standing tide**, `0.0`. One plane, whole-world, at the same height in the
 ward, around the rock and over the sand, because it is one sea and not a set of
@@ -188,31 +188,31 @@ meant to spill.
 **This brief describes Halgrave, not the produced pieces.** The four notes above
 are what a reader needs in order to know which of the two they are looking at.
 
-## The sheet
+## The reference
 
-`map-sheet.jpg` is the whole-map reference this brief was written for, and
-`map-prompt.md` holds the prompt, the exact command, the three concept images
-used as style anchors, and the provider response kept beside the image.
+This brief is drawn as **four separate full-frame views**, each generated on its
+own so that a view which comes back wrong is re-rolled by itself:
 
-**Which sheet was kept, and why.** Two sheets came back from the same series and
-both hold the four-panel separation — the model neither merged the views nor drew
-four unrelated buildings. `map-sheet.jpg` is the one of record because it is the
-only one that returned a genuine straight-down site plan: a flat map with no
-horizon and no perspective, showing the sand and its cairn field, the gatehouse
-at the flat's head, the flooded ward as a ring of water inside a broken wall with
-the causeway crossing it, the cloister's open court, the hall's roof, the tower,
-and the black collapse hole in the ground beside the tower. That panel is the
-view a composition program is written from, and the first sheet drew a second
-aerial oblique in its place.
+| view | what it fixes |
+|---|---|
+| `map-view1-front.jpg` | the front elevation from the causeway head — the five-band silhouette above, and the recognition |
+| `map-view2-west.jpg` | the west seaward face: sheer undercut cliff to surf, and the one cut road-ledge across it |
+| `map-view3-plan.jpg` | the straight-down site plan, north at the top — the view a composition program is written from |
+| `map-view4-aerial.jpg` | the compact stepped mass as one object, and the ward read as a basin sunk below the gate |
 
-`map-sheet-alt.jpg` is kept beside it for the one thing the sheet of record
-loses: the belfry. In the alternate the belfry is a square opening on every face
-and the bell nearly fills it, which is what *built, not hung as an ornament*
-means; the sheet of record draws a single arched opening with a smaller bell.
-**Between the two images, the alternate's belfry is the one to build from, and
-the paragraph above on Mercy is the binding statement of its scale.**
+`map-prompt.md` holds how they are made, the exact commands, the frame each view
+is given and why, and the places where the four disagree. The prompt of record
+for each view, the shared text and the provider responses are committed beside
+them.
 
-Both sheets draw the crag as natural rock with a curved shoreline, an undercut
+**Mercy's scale is fixed by the paragraph above and not by any picture.** The
+belfry is drawn as a square opening on every face with the sky through it and the
+bell hung in the middle of it, which is what *built, not hung as an ornament*
+means; how much of that opening the bell fills in a given view is a drawing, and
+the clear internal size set by the bell plus a walking ring around it is the
+binding statement.
+
+All four views draw the crag as natural rock with a curved shoreline, an undercut
 cliff and sloping turf, and draw the ward's ring wall as a curve. The grammar
 back end has no smooth curve, no diagonal and no terrain. That is named in
 `map-prompt.md` as a triage item rather than quietly redrawn out of the

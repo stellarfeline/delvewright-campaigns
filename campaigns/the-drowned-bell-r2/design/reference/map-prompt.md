@@ -1,137 +1,152 @@
-# The whole-map reference sheet — prompt and command
+# The whole-map reference — how the four views are made
 
-The sheet is a **multi-view reference**: four views of one place, separated
-inside one image — front elevation, side elevation, top-down site plan, and a
-three-quarter aerial. It is a prompt, not a feature; `tools/refimg.py` runs it
-unchanged.
+Halgrave's whole-map reference is **four separate images**, each one full-frame:
+a front elevation from the causeway head, a side elevation of the west seaward
+face, a straight-down site plan, and a three-quarter aerial. Each is generated on
+its own, at the whole of the image budget, so a view that comes back wrong is
+re-rolled by itself and its three neighbours are untouched.
 
-The prose it draws is `map-brief.md`. The prompt text is
-[`map-prompt.txt`](map-prompt.txt), a plain file so `--prompt-file` reproduces
-the sheet exactly.
+The prose the four draw is [`map-brief.md`](map-brief.md), and the zone-by-zone
+placement is [`map-zones.md`](map-zones.md). It is a prompt, not a feature:
+`tools/refimg.py` runs it unchanged.
 
 ## Files
 
 | file | what it is |
 |---|---|
-| `map-prompt.txt` | the prompt of record — the text that produced `map-sheet.jpg` |
-| `map-sheet.jpg` | **the sheet of record** |
-| `map-sheet.json` | its full provider response, kept beside it |
-| `map-sheet-alt.jpg` | a second sheet from the same series, kept for one thing it carries better |
-| `map-sheet-alt.json` | its provider response — and the anchor id the sheet of record chains from |
+| `map-view1-front.jpg` | **front elevation**, from the south, from the tidal flat at the causeway head |
+| `map-view2-west.jpg` | **side elevation**, the west seaward face, from open water |
+| `map-view3-plan.jpg` | **site plan**, straight down, north at the top |
+| `map-view4-aerial.jpg` | **three-quarter aerial**, from high to the south-west |
+| `map-viewN-*.txt` | the complete prompt of record for that view — `--prompt-file` reproduces it exactly |
+| `map-viewN-*.json` | the provider response kept beside the image, and where that view's interaction id is read back from |
+| `map-prompt.txt` | the text common to all four: the subject, the six ground planes, the silhouette, the drawing contract |
+| `map-style-note.txt` | the system instruction, held constant across the series |
+
+Each `map-viewN-*.txt` is its own camera paragraph followed by the whole of
+`map-prompt.txt`, so it stands alone. A fifth view is written by putting a new
+camera paragraph in front of that same shared text.
 
 An approved reference that lives only in `.refimg/` is invisible to every later
-round, which is how the previous round of this campaign went blind. These are
+round, which is how a previous round of this campaign went blind. These are
 committed for that reason.
 
-## The command
+## The order the four are generated in, and why it is not free choice
+
+**View 1 is generated from the prompt alone.** Nothing anchors it: no reference
+image, no chained interaction. It is confirmed for style first, because it is
+what the other three will be drawn to match.
+
+**Views 2, 3 and 4 are each generated from the prompt plus view 1**, by chaining
+on view 1's interaction id — every one of them on *view 1*, never on the view
+generated before it. Chaining view to view compounds drift; chaining all three to
+one anchor bounds it.
+
+The trade this makes is named rather than discovered. Views co-generated inside a
+single canvas agree about the **geometry** of the subject because they are drawn
+in one act; views generated in sequence agree only about **style**. So every
+geometric fact lives in the written text of every view — the compass, the six
+floor heights against the standing tide, the ward's four-metre drop below the
+gate, the sixteen metres of blank tower wall — and each returned image is checked
+against `map-brief.md` fact by fact, in text, rather than eyeballed against its
+neighbours.
+
+## The commands
 
 Run from the **pipeline repo root** (that is where `tools/refimg.py` and
-`delvewright.local.toml` live); `$C` is this content repo.
+`delvewright.local.toml` live); `$C` is this content repo and `$R` is
+`$C/campaigns/the-drowned-bell-r2/design/reference`.
+
+View 1, unanchored:
 
 ```sh
 python3 tools/refimg.py \
-  --prompt-file "$C/campaigns/the-drowned-bell-r2/design/reference/map-prompt.txt" \
-  --chain-from "v1_Chd5Z1NBYXBuNktxR0FfdU1QeHV2bi1BTRIXeWdTQWFwbjZLcUdBX3VNUHh1dm4tQU0" \
-  --style-note "Every image in this series is one place drawn in the same hand: muted grey and grey-green desaturated painted concept art, flat cold overcast North Sea light, sea fog, no sun, no cast shadows, massing and silhouette over detail. Obey the requested panel layout exactly, including any panel that is a flat overhead map rather than a view." \
-  --out .refimg/bell-map-sheet
+  --prompt-file "$R/map-view1-front.txt" \
+  --style-note "$(cat "$R/map-style-note.txt")" \
+  --out .refimg/bell-map-view1
 ```
 
-The `--chain-from` id is the series anchor and it is recoverable only from
-`map-sheet-alt.json`, where the provider returned it. The interaction that
-started the series was anchored on images instead:
+Views 2, 3 and 4, each anchored on view 1 — the id is `id` in
+`map-view1-front.json`:
 
 ```sh
 python3 tools/refimg.py \
-  --prompt-file <the same text, with the plan bullet in its first form> \
-  --style-ref "$C/campaigns/the-drowned-bell-r2/design/concept/z7-bell-tower.jpg" \
-  --style-ref "$C/campaigns/the-drowned-bell-r2/design/concept/z0-barrow-shore.jpg" \
-  --style-ref "$C/campaigns/the-drowned-bell-r2/design/concept/z3-drowned-ward.jpg" \
-  --style-note "…massing and silhouette over detail. Obey the requested panel layout exactly." \
-  --out .refimg/bell-map-sheet-alt
+  --prompt-file "$R/map-view2-west.txt" \
+  --chain-from "v1_ChdXdTJJYXJhakVvLXYxTWtQd2JPYXlRaxIXV3UySWFyYWpFby12MU1rUHdiT2F5UWs" \
+  --style-note "$(cat "$R/map-style-note.txt")" \
+  --out .refimg/bell-map-view2
 ```
 
-and its plan bullet read, in full:
-
-> `- BOTTOM LEFT: top-down site plan, a bird's-eye map of the whole island from directly above, north at the top.`
+`--prompt-file` strips the file's trailing newline, so a prompt file is one
+character longer than the string the provider records; nothing else differs.
 
 **No `--seed`.** The configured provider is `gemini-native`, which anchors on
-reference images and has no seed; the tool refuses the flag rather than silently
-dropping it, which is correct and costs a run. `--style-code` is likewise not
-available on this provider and is mutually exclusive with `--style-ref` anyway.
-Config is `[refimg]` in the gitignored `delvewright.local.toml`; the key is read
-from the env var that block names, at call time.
+reference images and interaction ids and has no seed; the tool refuses the flag
+rather than silently dropping it, which is correct and costs a run.
+`--style-code` is likewise not available on this provider.
 
-Aspect ratio and image size come from that config (`16:9`, `2K`) and are right
-for a 2 x 2 sheet — each panel lands near 8:9, which suits an elevation.
+## The frame each view gets
 
-## The three style anchors, and why those three
+One image per view exists so that each view gets the frame its subject wants
+instead of a quarter of somebody else's. The aspect ratio comes from
+`[refimg].aspect_ratio` in the gitignored `delvewright.local.toml` — the tool has
+no flag for it — so reproducing a view means setting that key to the value in the
+table before the call. `image_size` is `2K` for all four.
 
-`--style-ref` takes at most three. The eight concept images are not
-interchangeable for this job, because five of them are interiors or close
-studies and an interior anchor teaches the model to draw an interior.
+| view | aspect | pixels | why this frame |
+|---|---|---|---|
+| front elevation | `16:9` | 2752 x 1536 | the recognition view is five horizontal bands stacked; a wide frame is what lets them separate, and the tower carries its dominance by being twice the height of the rest rather than by frame headroom |
+| west elevation | `16:9` | 2752 x 1536 | the same frame as the front on purpose: the seaward face is the crag's long face, and holding the ratio equal lets the two elevations be read side by side against the same heights |
+| site plan | `1:1` | 2048 x 2048 | the crag is an oval whose long axis runs diagonally south-west to north-east, so no rectangle favours it; a square spends the least frame on empty sand and open sea, and the plan is the view a composition program is written from, so pixels on the island matter most here |
+| three-quarter aerial | `4:3` | 2400 x 1792 | an oblique of a compact mass needs ground extent and the tower's full height at once; a wider frame either crops the tower or shrinks the whole rock into the middle third |
 
-| anchor | what it is there to carry |
-|---|---|
-| `z7-bell-tower.jpg` | the tower, the open belfry, the bell inside it, the cobbled ramp and the collapsed low buildings — the crown of the silhouette and the object the campaign is named after. The only concept that shows a whole building from outside. |
-| `z0-barrow-shore.jpg` | the sea, the wet sand, the cairns, the stakes, the fog and the flat overcast light — and the one standpoint the elevations are drawn from, which is the shore looking at the rock. |
-| `z3-drowned-ward.jpg` | standing sea water against pale wet ashlar, ruined arcading, and the water-gate tower's peaked metal roof — the drowned band at the foot of the massing. |
+Four views at 16.95 megapixels together, against 4.23 for a whole four-panel
+canvas: each view carries four times the resolution it would as a quarter.
 
-Excluded, with the reason: `z1` is a close texture study of a rock face; `z2`,
-`z5` and `z6` are interiors; `z4` is an enclosed court seen from inside it.
-
-## What came back
-
-Both sheets returned four panels with clean gutters, one place drawn four ways.
-**The multi-view separation survived**: the model did not merge the views and did
-not draw four unrelated buildings. That failure mode is not a live risk on this
-provider with this prompt, so the queued second-provider answer is not needed
-here.
-
-`map-sheet.jpg` is the sheet of record. It carries all four requested view types:
-two flat elevations against a sea horizon, a genuine straight-down site plan with
-no horizon and no perspective, and a three-quarter aerial. The plan panel is why
-it is the one of record — it is the view a composition program would be written
-from, and it reads: the sand flat and its cairn field and stake lines to the
-south-west, the gatehouse block at the flat's head, the flooded ward as a ring of
-water inside a broken wall with the causeway crossing it and the water-gate tower
-at its far side, the cloister's open court, the hall's dark roof, the tower, and
-the black collapse hole in the ground beside the tower.
-
-`map-sheet-alt.jpg` is kept for one thing the sheet of record loses: **the bell.**
-In the alternate the belfry is a square opening on every face and the bell nearly
-fills it, which is what `story.md` means by *built, not hung as an ornament*. The
-sheet of record draws the belfry as a single arched opening with a smaller bell in
-it, and to that extent it under-draws the campaign's central object. The prose in
-`map-brief.md` is the binding statement of the bell's scale; between the two
-images, the alternate's belfry is the one to build from.
-
-## What the sheet asks for that the grammar plainly cannot build
+## What the reference asks for that the grammar plainly cannot build
 
 Named, not redrawn out. A reference that asks for the impossible is a triage
 item, and quietly simplifying it is how over-simplification arrives through the
 front door.
 
-- **The rock itself.** Both sheets draw a natural crag: a curved shoreline, an
+- **The rock itself.** All four views draw a natural crag: a curved shoreline, an
   undercut cliff, sloping turf shoulders. The box-split grammar has no smooth
   curve, no diagonal, no noise and no terrain, by design — so the crag is either
   in-house generator work or a surround layer, and it is not a grammar program.
-  This is the largest single thing on the sheet and it belongs to no zone.
-- **Curved walls.** In the plan panel the ward's ring wall and the outer sea-wall
-  arm are drawn as curves, and the causeway meets them at an angle. Curves and
-  diagonals are outside the grammar in the same way the crag is.
+  This is the largest single thing in the reference and it belongs to no zone.
+- **Curved walls.** In the plan the ward's ring wall and the outer sea-wall arm
+  are curves, and the causeway meets them at an angle. Curves and diagonals are
+  outside the grammar in the same way the crag is.
 - **Arch heads.** The cloister and ward arcades are drawn with smooth pointed
   arches. A stepped arch is one recursion in the grammar and reads correctly at
   playable scale, so this is a note about how it will look, not a blocker.
 - The hall's steep pitched roof and the water-gate tower's pyramid roof are a
   gable and a spire, and both are expressible.
 
-## What the sheet does not draw
+## Where the four views disagree, and what is not drawn
 
-- **Z1's cut road-ledge does not appear on the west cliff in any panel of either
-  sheet**, although the prompt asks for it in both. The west face is drawn as
-  unbroken cliff.
-- The tidal sand wraps most of the island in the plan panel. `story.md` and
-  `tide.md` put the causeway to the mainland on one side only.
-- The cistern is deliberately not asked for and is not drawn: it has no exterior.
-  Its only above-ground evidence is the collapse hole, which both sheets draw,
-  and the grille in the ward's rock face, which neither does.
+Four independently generated views of one crag disagree somewhere, and naming
+where is worth more than a set that looks tidy. `map-brief.md` and `map-zones.md`
+are the authority wherever they do.
+
+- **The water-gate tower is absent from the aerial.** The front elevation, the
+  west elevation and the site plan all carry it; the aerial does not draw it at
+  all. The plan is the view its position is taken from.
+- **The tower's compass position on the crown differs.** The plan puts the bell
+  tower on the north-west of the crown with the ramp running to it from the
+  east-north-east; the aerial puts it east of the hall with the ramp climbing
+  north-east. `map-zones.md` fixes the ramp as climbing north-east and the tower
+  as standing north of the hall.
+- **The water-gate tower sits on the ward's south-east corner** in the plan;
+  `map-zones.md` puts it at the far north-east.
+- **The aerial is drawn at a lower water state** than the other three. The
+  elevations and the plan are at the standing tide, `0.0`, where the flat is
+  awash; the aerial's sand is out of the water.
+- **Heights in the elevations are not to scale.** They are silhouette drawings:
+  the west cliff reads two to three times taller against the tower than the
+  massing table's floors allow. The table in `map-brief.md` is the authority for
+  every height; nothing is measured off these images.
+- **The cistern is not drawn**, and is not asked for: it has no exterior. Its
+  above-ground evidence is the collapse hole in the upper ward's paving, which
+  the plan and the aerial both carry, and the grille in the ward's rock face,
+  which the aerial carries.
