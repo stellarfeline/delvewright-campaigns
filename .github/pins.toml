@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "46abe8bf21921e5a48c0b477da707bae0b8e9b7c"
+value = "11cd7c4c43ebcde21de0051bcc177532c10c8d77"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "1847a333be33824515b35ecd913a2f8d7077a2e6"
+reviewed = "11cd7c4c43ebcde21de0051bcc177532c10c8d77"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -39,34 +39,70 @@ The watch set is the package's path-dependency CLOSURE — today `crates/admit`,
 serve its other subcommands. This gate builds that binary for ONE of them,
 `delve-admit audit`, and that subcommand reads the palette allowlist and the
 code-injection forbid out of `crates/schem`, the settling and spatial-contract
-checkers out of `crates/grammar`, and NOTHING out of `crates/compiler` — the
+checkers out of `crates/grammar`, the footprint-class rule and the metrics table
+it consults out of `crates/dsl`, and NOTHING out of `crates/compiler` — the
 compiler is reached only from the `gallery` subcommand's Brigadier validation,
-which this workflow never invokes. `crates/dsl` is reached only through
-`crates/schem`'s re-export of its `blocks`, `split`, `prefab` and `registry`
-modules. So a red naming commits that all landed in `crates/compiler` is a
-correct statement about the closure and says nothing yet about a verdict; the
-closure is deliberately not narrowed, because narrowing a watch to dodge a red is
-the defect, and a wide watch that is understood costs one reading.
+which this workflow never invokes. So a red naming commits that all landed in
+`crates/compiler` is a correct statement about the closure and says nothing yet
+about a verdict; the closure is deliberately not narrowed, because narrowing a
+watch to dodge a red is the defect, and a wide watch that is understood costs one
+reading.
 
-WHY `reviewed` IS AHEAD OF `value`, and what was read to put it there.
-`value` is the revision the tool is BUILT from; `reviewed` is the revision its
-upstream history has been JUDGED against. They answer different questions and
-they are allowed to differ. `value` sits at the newest commit touching
-`tools/check-pins.py`, because that file is the whole reason this pin moved.
-`reviewed` sits further along, at the upstream default branch, because the
-interval between them was read and none of it can move a verdict.
+HOW `crates/dsl` IS REACHED, because it is reached two ways and only one of them
+is the old one. `crates/schem` re-exports its `blocks`, `split`, `prefab` and
+`registry` modules, and that is the indirect door. `crates/admit` ALSO names it
+directly, as a path dependency, for `delvewright_dsl::prefab::check_footprint_class`
+and the `delvewright_dsl::metrics` read ledger that rule takes — a re-export of a
+ledger through a third crate would be a second path to one authority. Confirmed
+from the source rather than assumed: the audit-path crates name
+`delvewright_dsl::prefab`, `::metrics`, `::registry` and `::blocks`, and nothing
+under `gate`, `validate` or `diagnostic`.
 
-The reading, so the next one does not have to repeat it. Across
-ff62355c..46abe8bf the `crates/` tree is byte-identical — same git tree object
-at both ends, and `Cargo.toml`, `Cargo.lock` and `rust-toolchain.toml` likewise
-— so the bump rebuilds the same `delve-admit` from the same sources and changes
-no audit behaviour whatsoever; that interval is registry and tooling only. After
-it, the commits reaching the watch closure land in `crates/compiler`, which the
-`audit` subcommand does not read at all, and in `crates/dsl`'s `diagnostic`,
-`gate` and `validate` modules. Confirmed from the other direction rather than
-assumed: the audit-path crates name `delvewright_dsl::prefab`, `::registry` and
-`::blocks` and nothing under `gate`, `validate` or `diagnostic`, so the linkage
-this entry already describes does not reach what moved.
+WHY `value` AND `reviewed` NAME THE SAME REVISION. `value` is the revision the
+tool is BUILT from; `reviewed` is the revision its upstream history has been
+JUDGED against. They answer different questions and they are allowed to differ.
+They do not differ here, because the judgement's conclusion was that the newer
+instrument is the one this library should be held to — so the pin moved to it
+rather than being held behind it.
+
+THE READING, so the next one does not have to repeat it. Across
+1847a333..11cd7c4c, 33 commits landed upstream and 15 of them touch the watch
+closure. Fourteen reach only `crates/compiler` and `crates/dsl`, which the
+`audit` subcommand consults for no rule it applies. The fifteenth, `237ddd1b`
+(spec-0050), is the whole of the audit path's movement — `crates/admit`,
+`crates/schem` and `crates/grammar` are byte-identical across the interval apart
+from it — and it adds `DW0848`, the footprint-class door, to `delve-admit audit`.
+That is a NEW REFUSAL rather than a refinement of an old one: the admission now
+fails on the contract door's verdict OR the footprint door's. An admission rule
+the library's own gate does not carry is the vacuity this registry exists to
+catch, which is why the answer here was to move `value` rather than to hold it
+and record a clearance — a clearance that is true only while no piece declares a
+class would expire silently on the first piece that does.
+
+MEASURED RATHER THAN ARGUED, because a linkage read off imports is a claim and a
+verdict is a fact. Both judges were built from their own trees under the pinned
+1.97.1 toolchain and run over the whole library by `tools/prefab-audit.py`: 39
+audited units, 39 report files, and all 39 byte-identical between 46abe8bf and
+11cd7c4c. The move therefore changes no verdict this library currently receives.
+The newer judge additionally states, on every piece, `footprint class binding: 0
+declared class(es) judged over 1 declaration document(s) read` — a stated zero
+over 39 declaration documents actually read, not an unexamined silence.
+
+A `reviewed` VALUE IS A DATE, NOT A CLEARANCE. It says this pin was judged
+against upstream as of that revision and says nothing about any commit after it;
+upstream moving reds this check again, which is the mechanism working rather than
+failing.
+
+THE DOORS in the audit path where a change moves a verdict, and each opens only
+on a declaration the piece itself makes. The spatial contract opens on a piece
+whose declaration document carries a `spatial_contract`; a piece that declares
+none is reported `undeclared` with `DW0783`, and no obligation runs over it. The
+footprint class opens on a piece whose declaration document carries a
+`footprint_class`, and is silent with a stated zero on a piece that declares
+none. Because that rule consults the metrics table, `crates/dsl`'s `metrics`
+module is a live input to a verdict for any piece that declares a class. No piece
+in this repository declares one today, which is a fact about the library and not
+a property of the gate.
 
 WHAT `vendors` DECLARES, and why it is a pin's business at all.
 `tools/check-pins.py` is ONE tool with two copies: the pipeline's is the source,
@@ -85,11 +121,6 @@ discovery and the fetch-verb enumeration. Nothing was red, because a file the
 enumeration never lists cannot be reported as unexamined. The checker no longer
 carries a per-repository claim at all, which is what makes a verbatim copy
 possible; `vendors` is what stops one being edited back into existence here.
-
-The spatial-contract door is the one place in the audit path where a grammar
-change moves a verdict, and it opens only on a piece whose declaration document
-carries a `spatial_contract`. A piece that declares none is reported `undeclared`
-with `DW0783`, and no obligation runs over it.
 """
 
 [[pin]]
