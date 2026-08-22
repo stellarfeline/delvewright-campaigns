@@ -2572,6 +2572,17 @@ below the bell* — and the opening `deck/stair_strip` cuts, `stair_bay + tread`
 routes a `move-npc` over the player footprint, so its refusal is the player's
 answer too.
 
+**The design breaks one flight and it is not this one**, which is what makes the
+severance a defect rather than a beat. `story.md` names the break the household
+made: *"They cut the rope. They broke the first flight of the belfry stair."*
+`beats.md` 5.7 has Ancel give up the same fact — *"the belfry stair is broken at
+the first flight"* — and `encounters.md` gives the stairhead arena *"one exit up
+and one down"*, so the way up is meant to be open while the fight happens on it.
+`beats.md` 7.6 then walks the loser of that fight up it: Odo *"stands aside — his
+passenger goes first — and follows the player up"*, which is the very leg
+`DW0307` refuses. The beat is where the design puts it, the contract records the
+one contingent edge correctly, and the walk proof is asking the right question.
+
 **The piece's own gate passes because it walks a different rule**, and the two
 rules differ by one term. The contract's reachability gate proves its claim over
 the grammar's walk, which steps one block up with no headroom condition and whose
