@@ -14,6 +14,7 @@
     "frame_beam": 2,
     "frame_period": 5,
     "head_run": 2,
+    "head_sweep": 1,
     "landing_run": 2,
     "pier": 3,
     "ramp_step": 9,
@@ -1578,13 +1579,21 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "stair_bay"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "stair_bay"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "tread"
+                  }
                 },
                 "op": "add",
                 "rhs": {
                   "expr": "param",
-                  "name": "tread"
+                  "name": "head_sweep"
                 }
               }
             },
