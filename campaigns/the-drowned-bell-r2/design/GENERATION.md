@@ -113,9 +113,9 @@ the zone set is complete).
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares a spatial contract, so it is judged by 16 gates where this zone without one carries 7. Review set in `review/z3/` — see below |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
-| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
+| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x13x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
-| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x48x125 into a 3-tile set; declares a spatial contract at document version `1.7.0`, and its broken flight is a contingent edge, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z7/` — see below |
+| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x50x125 into a 3-tile set; declares a spatial contract at document version `1.8.0`, and its broken flight is a contingent edge, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z7/` — see below |
 
 Zone order of production is by complexity, hardest first (owner decision,
 2026-08-12): the most complex zone is produced and owner-reviewed before the
@@ -170,7 +170,7 @@ non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified, 0 findings),
 with a per-tile verdict for both tiles.
 
 **Provenance** — program
-`sha256:be06fc468d1b5fafa15bba95a649cdaa96d3e93d46cf1249ca312c88363b17c9`, seed
+`sha256:283d8e136ba326e29018a8ce2079c01d292cb82ef6c0d475232b52c007fa756b`, seed
 1, region 40x18x80. Every tuned value lives in the program's own `params`, so the
 file plus the manifest row is the whole recipe and no remembered flag is part of
 it.
@@ -481,7 +481,7 @@ foot from 3 grade entry cells, and the 32 it does not reach are the teeth — 8 
 them sheltered, which is the overhang doing exactly what an overhang does.
 
 **Provenance** — program
-`sha256:017d2b4bae8652e61faee8a933b4cddbc52a39a96e39250d44b8b36f43a411c0`, seed 1,
+`sha256:5714975eb79c1119084acbed1d5b78554c2349d9616f14ac1400374750055e3d`, seed 1,
 region 16x24x72. Reproduction was checked from a **second instrument sharing no
 working directory and no build tree with the first**: a separate checkout of the
 pinned engine, built on its own, run from a different directory and writing to a
@@ -768,7 +768,7 @@ here for a second reason as well: the porter's lodge is sheltered floor that is
 opens.
 
 **Provenance** — program
-`sha256:1475b3303cb13af33f8b10dde74acb8524561decabb9e9b2d14f43ae662a0888`, seed
+`sha256:d67136e98da1c3d6d37e6cd2b84f86db6c8da58d5408f7b0de546e30510f6639`, seed
 1, region 25×18×56. Every tuned value lives in the program's own `params`, so
 the file plus the manifest row is the whole recipe and no remembered flag is
 part of it.
@@ -1011,7 +1011,7 @@ water goes. Below the waterline the zone holds no air at all, which is
 `tide.md`'s rule stated as a property of the blocks rather than as an intention.
 
 **Provenance** — program
-`sha256:e6c6e37debed79135cc10c8249834da926b68e0ae07ec7549eba0fa32e769264`, seed
+`sha256:5d3ec653b2398f33d798e1df1519543aa46324515d6caa203b953dce56b1bab9`, seed
 1, region 40x10x60; re-expanding those inputs reproduces all four files byte for
 byte. Verified twice over, by `cmp` and by sha256 taken over each file's
 **content** alone — hashing a listing of `shasum` output would have hashed the
@@ -1326,7 +1326,7 @@ sheltered cells it cannot reach are one pocket, `x 2..24 y 1..1 z 7..17`, which 
 the hour-vault.
 
 **Provenance** — program
-`sha256:67b2323217aba1008904c7bcf1b3c5c0f7f30c9d776139ed661eb71c8719bd59`, seed 1,
+`sha256:e2a7f3065323def7dfb778ba3a99eaf027641ecc91e2ea9c30951cf04a2d5bf2`, seed 1,
 region 27x12x33. Reproduction was checked from a **second instrument sharing no
 working directory and no build tree with the first**: a separate checkout of the
 pinned engine, built on its own, run from a different directory and writing to a
@@ -1466,7 +1466,7 @@ unreachable sheltered pocket. **That pocket is the descent, not a room with no w
 in**, and this sentence is what tells a later reader which it is.
 
 **Expansion** — `delve-grammar expand --file design/programs/z5-hall-keep.json
---region 11x11x76 --seed 1 --traversable --allow-falls`. All six gates pass with a
+--region 11x13x76 --seed 1 --traversable --allow-falls`. All six gates pass with a
 non-zero binding: `blocks-exist` 11, `shape-complete` 11, `states-complete` 11,
 `oriented-fills` 106, `non-empty` 9196, `traversable` 18 (9 standable cells at the
 approach end, 9 at the exit end). 6126 filled cells, 11 distinct states, 697
@@ -1488,8 +1488,8 @@ write a second metadata document describing one slice of the building, which is 
 number about nothing; the tiles are left alone.
 
 **Provenance** — program
-`sha256:3db9ce6916603b68d3bde669e2c67cc601c978a283b753f7f3108e261a715a2d`, seed 1,
-region 11x11x76; re-expanding those inputs reproduces both tiles and the manifest
+`sha256:224de111667fefdfdc499493d1374c6e4d8fb4595c2e0765d72590ae12e6ee2b`, seed 1,
+region 11x13x76; re-expanding those inputs reproduces both tiles and the manifest
 byte for byte (verified by direct comparison against the shipped files, and again
 by hashing each file's contents alone — a hash taken over a listing would have
 compared the file paths as well as the bytes). The hash is over the **effective**
@@ -1539,7 +1539,7 @@ sheet and this hall is explicitly not one.
 
 **Every orientation-carrying role is written in the scope's own axis frame.** The
 six roles that carry a direction — both timbers, the margin, the curtain and both
-barrel roles — are `{"local": …}` paints, and the program declares `1.4.0`, the
+barrel roles — are `{"local": …}` paints, and the program declares `1.8.0`, above the
 version the local frame is fenced behind. 29 of 29 orientation-carrying fills now
 resolve through the scope that fills them, where **0 did before**.
 
@@ -1657,7 +1657,7 @@ template and refuse a manifest — so this piece carries `"profile": "unmeasured
 and means it.
 
 **Provenance** — program
-`sha256:104d2ccaf8372410db42f77aa6d2f6df44c8f7ab3b8b658c980f12b38f5f74b6`, seed
+`sha256:51d80acc8a7f5bb340530d8f6fbe8a090863011dac6df084d944ef2d883a2316`, seed
 1, region 40x10x100. The hash is over the effective program, and it binds: the
 same expansion with `--param hole=9` reports
 `sha256:d60f6d00e5a84555a73e7e9b54a6e26fc5b8b189ca8f6618382d4fe7acd09416`, so a
@@ -1838,12 +1838,12 @@ production.** The row read `41x14x125`. Fourteen courses is one storey: it canno
 hold a stair, a ringing floor, a stairhead and a belfry above them, and a bell
 that a body stands under needs eleven of the fourteen by itself. The scene needs
 41 courses above grade — 7 of foundation, 4 storeys of 6, and 17 of belfry — so
-the row now reads `41x48x125`. The footprint the campaign chose is untouched, and
+the row read `41x48x125`. The footprint the campaign chose is untouched, and
 48 is still one tile on the vertical axis. A bell tower fourteen blocks tall would
 have been the block that shares the object's name, laid where the object goes.
 
 **Expansion** — `delve-grammar expand --file design/programs/z7-bell-tower.json
---region 41x48x125 --seed 1 --traversable --id z7-bell-tower`. Fifteen gates pass,
+--region 41x50x125 --seed 1 --traversable --id z7-bell-tower`. Fifteen gates pass,
 every one with a non-zero binding: `blocks-exist` 25, `shape-complete` 25,
 `states-complete` 25, `oriented-fills` 272, `non-empty` 246000, `traversable` 6,
 `contract-well-formed` 25, `contract-coverage` 6248, `contract-closure` 4876,
@@ -1863,12 +1863,12 @@ two are the inside of the bell. `delve-admit audit` passes over 246000 blocks (0
 forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified);
 the block-state set is the same 25 it has always been.
 
-**Provenance** — program `sha256:c0e0a23554cb9e30a237f57e8747eec39cef59d507a7acd8650a9cff2ec2238a`
+**Provenance** — program `sha256:914638de71e998d24b024b7d94fd764ec0295c7457c7d2bf30499985caee90a9`
 (the hash of the *effective* program, which is what regenerates the bytes and is
 carried in the manifest's own `generated_by.program_hash`; the sha256 of the
 committed file itself is
 `08e595eb00c7deb0a314f458c36efb8aaac94caaad602674a39abc111f0449bf`), seed 1,
-region 41x48x125. Re-expanding those inputs reproduces every shipped file byte for
+region 41x50x125. Re-expanding those inputs reproduces every shipped file byte for
 byte — verified by comparing file **contents** on stdin, never a path, since
 hashing a `shasum` line hashes the filename with it. The tile contents are
 `0ad4f90e67495b9c6b472cf4e575be2fcd50c5d45589c6e6ebcc427fd039b333`,
