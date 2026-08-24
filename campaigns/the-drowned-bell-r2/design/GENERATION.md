@@ -2410,23 +2410,25 @@ two lethal volumes. That is a statement about what has not been proved.
 `DW0210` returns **one area per build** — the light pass collects a diagnostic for
 every dark area and the caller takes the first — so the set below was walked one
 run at a time, silencing each named area with the night-vision instrument and
-letting the next report. Under `horizon: ocean`, at engine `4137cfae`:
+letting the next report. Under `horizon: ocean`, re-measured at engine
+`800c958e` on the committed tree — the same six areas, in the same order, with
+only the two zones that rose two courses moving, by exactly those two courses:
 
 | area | first cell `DW0210` names (world) | piece-local | where that is in the piece's contract |
 |---|---|---|---|
-| `area/bell-tower` | `[1804, 67, 95]` | `[12, 7, 95]` | outside every declared space (a gap in `ward`'s boxes) |
+| `area/bell-tower` | `[1804, 69, 95]` | `[12, 9, 95]` | outside every declared space (a gap in `ward`'s boxes) |
 | `area/chapel-ward` | `[1026, 61, 8]` | `[2, 1, 8]` | `vault`, enclosed |
 | `area/cistern-deep` | `[1538, 64, 2]` | `[2, 4, 2]` | `cistern`, enclosed |
 | `area/drowned-ward` | `[782, 67, 49]` | `[14, 7, 49]` | `tower/upper`, enclosed |
 | `area/gatehouse` | `[515, 64, 29]` | `[3, 4, 29]` | outside every declared space |
-| `area/hall-keep` | `[1281, 61, 0]` | `[1, 1, 0]` | `duct/landing`, enclosed |
+| `area/hall-keep` | `[1281, 63, 0]` | `[1, 3, 0]` | `duct/landing`, enclosed |
 
 Six of the eight. `area/barrow-shore` and `area/cliff-road` are not dark anywhere:
 an effective sky of 4 at night clears the threshold of 3 wherever a cell can see
 it, and those two are open. Every cell above is measured at light 0.
 
 Two of the six are worth a second look for reasons of their own. `area/hall-keep`'s
-dark cell is `[1281, 61, 0]` — **the same cell `DW0851` names first**, so it is
+dark cell is `[1281, 63, 0]` — **the same cell `DW0851` names first**, so it is
 both unlit and under the sea. And two of the six fall outside every space their
 piece's spatial contract declares, while the light pass proves a player reaches
 and stands on them.
@@ -2447,10 +2449,35 @@ error is left standing rather than bought off.
   opt-out, and it is only honest if the delve means it. That campaign is
   `time: noon` and its dark area is a cave; this one is `time: night` and its
   darkness is the subject. Nothing in `story.md`, `beats.md` or `encounters.md`
-  says the party sees in the dark, and granting it to five of eight areas changes
-  what the whole delve looks like. It is used above as a declared instrument and
-  is not committed; whether the delve means it is a design decision, not a
-  compiler one.
+  says the party sees in the dark — measured over every one of the 20 other
+  markdown records under `design/`, 212 KB read, with a positive control so that
+  a zero cannot be a search that opened nothing — and granting it to six of
+  eight areas changes what the whole delve looks like. It is used above as a
+  declared instrument and is not committed.
+
+  **The decision the sentence above used to defer is taken, and it is no.** The
+  general argument stands for four of the six, where the honest answer is a
+  placed light and the darkness is only unlit rather than meant. For the other
+  two it is not a matter of taste, because night-vision would delete authored
+  content:
+
+  - `area/cistern-deep` holds `beats.md` 6.3, the 初见杀 **K5**, whose entire
+    tell is a light contrast on water — *the light lies flat on shallow water and
+    goes black over the channel*, and *the channel's bed is below every tide
+    level including the Dead Ebb, so the tell is never withdrawn*. Night-vision
+    flattens the contrast the beat is built on. The encounter does not survive
+    it, and 6.4's *receding dark vaults* go with it.
+  - `area/bell-tower` holds the stairhead arena `encounters.md` gives as *tight,
+    dark* and the climb `beats.md` 7.4 calls the delve's clearest statement that
+    the player is one of the drowned — *passes the drowned going the same way in
+    the dark*. Its `DW0210` cell is also, measured against the piece's own
+    spatial contract, **outside every space that contract declares**, so
+    night-vision would grant a whole area the ability to see in the dark in order
+    to buy one cell the piece does not claim as a place at all.
+
+  So the error is left standing. `reconciliation.md` already says where the
+  answer belongs — light is part of the made-by-hands layer — and that remains
+  prefab work, owed by the same rounds that owe the absent beats.
 - **Brightening the scene** contradicts the premise: the delve is one night of two
   ebbs, and `world.time` is `night` because of the tide table.
 - **`areas[].lighting`** relights a whole area to a `min_light`, and this delve is
