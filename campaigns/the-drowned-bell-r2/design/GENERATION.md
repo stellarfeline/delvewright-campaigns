@@ -2228,15 +2228,19 @@ safe zone — had never run on it. That silence was never a pass.
 
 **The instrument, stated because every number below depends on it.** Engine
 `4137cfaeb1f0b440f96e1433152e0cf214172b83`, `delvec 1.1.0, dsl 0.15.0, mc
-1.21.11`, built from source in a worktree detached at that revision. The campaign
-has no `dialogue.json`, and the loader exits 10 without diagnosing when it is
-absent, so every build below ran against a **scratch copy carrying a placeholder
-dialogue tree** — five roots, the three `talk-to` completions, and the three
-ending flags on a node reached behind `flag/mercy-can-speak`. It is not committed
-and it is not this campaign's dialogue; `cast.md` holds the written dialogue and
-nothing has yet moved it into a stage document. Where a measurement needed to see
-past `DW0210`, `mitigation: "night-vision"` was applied in that same scratch copy
-as an instrument, and is likewise not committed.
+1.21.11`, built from source in a worktree detached at that revision. Every build
+in this section ran against a **scratch copy carrying a placeholder dialogue
+tree** — five roots, the three `talk-to` completions, and the three ending flags
+on a node reached behind `flag/mercy-can-speak` — because the campaign had no
+`dialogue.json` and the loader exits 10 without diagnosing when it is absent.
+**That half of the instrument is retired**: the campaign carries a committed
+`dialogue.json`, and loads as it stands. Where a measurement needed to see past
+`DW0210`, `mitigation: "night-vision"` was applied in that same scratch copy as
+an instrument. **It was never committed, and it is refused** — the judgement it
+stood in for is recorded under "Which areas are dark" below. So every figure in
+this section taken past `DW0210` was taken behind an instrument that exists on
+no tree, and the stop the committed tree actually reaches is the one recorded at
+the end of this section.
 
 ### The water was running out of the world, and the sea it belongs to is now declared
 
@@ -2541,10 +2545,31 @@ reason therefore gets a *silent* pass from the sea proof, which is the one thing
 the ledger exists to prevent. That is why the table above needed two deliberately
 half-repaired builds to fill in.
 
-**Where the build stops now.** On the committed tree, at stage 9: `DW0210`,
-`area/bell-tower`. `DW0307` is one stage further and is reached only behind the
-night-vision instrument above, which is why the sea proof's silence must not be
-read as a pass.
+**Where the build stops now.** At engine
+`800c958e0e582e553ee4057237312d90ca87e56e`, `delvec 1.1.0, dsl 0.16.0, mc
+1.21.11`: on the committed tree, with no scratch edit anywhere, at stage 9 —
+`DW0210`, `area/bell-tower`, a reachable walkable cell at `[1804, 69, 95]`
+measured at light 0, exit 2. Reproduced twice by instruments that share no
+configuration: once from the working tree, and once from a `git archive` export
+of the same commit into a directory the build had never seen.
+
+**`--prefabs` must name this repository's own `prefabs/`.** Its default resolves
+through the engine's gitignored `campaigns/` symlink to a shared checkout that
+sits on `main`, where this campaign's pieces do not exist — so the default
+reports the eight zones as absent from the library, which is an artifact of the
+symlink and not a fact about the campaign.
+
+**What changed since the measurements above.** The eight pieces now declare
+`role: entry` (spec-0046), so `DW0345` no longer fires. It is raised before any
+model is built, and this campaign could not have satisfied it: every zone is
+grammar-generated, so every anchor key is `anchor/<stem>` and no piece can carry
+the `spawn`/`entry` fallback spelling at all. Before that adoption the build
+stopped there rather than at `DW0210`.
+
+`DW0307` is one stage further and is reached **only** behind the night-vision
+instrument, which is refused above and committed nowhere. It is therefore not a
+stop this tree can reach, and the sea proof's silence must still not be read as
+a pass.
 
 Behind that instrument the build stops at `DW0307`: `npc/odo-ferrier` cannot
 walk from `anchor/boss` to `anchor/belfry-stairhead`.
