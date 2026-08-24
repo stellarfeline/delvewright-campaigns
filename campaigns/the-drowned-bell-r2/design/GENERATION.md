@@ -113,9 +113,9 @@ the zone set is complete).
 | Z2 gate ward | `concept/z2-gatehouse.jpg` | `programs/z2-gate-ward.json` | **produced, awaiting owner review** — expands at 25x18x56 as a 2-tile set; review set in `review/z2/` — see below |
 | Z3 drowned ward | `concept/z3-drowned-ward.jpg` | `programs/z3-drowned-ward.json` | **produced, awaiting owner review** — expands at 40x10x60 and ships as 2 tiles; declares a spatial contract, so it is judged by 16 gates where this zone without one carries 7. Review set in `review/z3/` — see below |
 | Z4 chapel ward | `concept/z4-chapel-ward.jpg` | `programs/z4-chapel-ward.json` | **produced, awaiting owner review** — expands at 27x12x33; the campaign's first zone with a spatial contract, so it is judged by 14 gates where a zone without one carries 6; review set in `review/z4/` — see below |
-| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x11x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
+| Z5 hall keep | `concept/z5-hall-keep.jpg` | `programs/z5-hall-keep.json` | **produced, awaiting owner review** — expands at 11x13x76 and ships as 2 tiles; declares a spatial contract, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z5/` — see below |
 | Z6 cistern deep | `concept/z6-cistern-deep.jpg` | `programs/z6-cistern-deep.json` | **produced, awaiting owner review** — expands at 40x10x100 into a 3-tile set; declares a spatial contract, so it is judged by 14 gates where a zone without one carries 6 — the fifteenth is withheld by name, every cell of this building being play space; review set in `review/z6/` — see below |
-| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x48x125 into a 3-tile set; declares a spatial contract at document version `1.7.0`, and its broken flight is a contingent edge, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z7/` — see below |
+| Z7 bell tower | `concept/z7-bell-tower.jpg` | `programs/z7-bell-tower.json` | **produced, awaiting owner review** — expands at 41x50x125 into a 3-tile set; declares a spatial contract at document version `1.8.0`, and its broken flight is a contingent edge, so it is judged by 15 gates where a zone without one carries 6; review set in `review/z7/` — see below |
 
 Zone order of production is by complexity, hardest first (owner decision,
 2026-08-12): the most complex zone is produced and owner-reviewed before the
@@ -170,7 +170,7 @@ non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified, 0 findings),
 with a per-tile verdict for both tiles.
 
 **Provenance** — program
-`sha256:be06fc468d1b5fafa15bba95a649cdaa96d3e93d46cf1249ca312c88363b17c9`, seed
+`sha256:283d8e136ba326e29018a8ce2079c01d292cb82ef6c0d475232b52c007fa756b`, seed
 1, region 40x18x80. Every tuned value lives in the program's own `params`, so the
 file plus the manifest row is the whole recipe and no remembered flag is part of
 it.
@@ -481,7 +481,7 @@ foot from 3 grade entry cells, and the 32 it does not reach are the teeth — 8 
 them sheltered, which is the overhang doing exactly what an overhang does.
 
 **Provenance** — program
-`sha256:017d2b4bae8652e61faee8a933b4cddbc52a39a96e39250d44b8b36f43a411c0`, seed 1,
+`sha256:5714975eb79c1119084acbed1d5b78554c2349d9616f14ac1400374750055e3d`, seed 1,
 region 16x24x72. Reproduction was checked from a **second instrument sharing no
 working directory and no build tree with the first**: a separate checkout of the
 pinned engine, built on its own, run from a different directory and writing to a
@@ -768,7 +768,7 @@ here for a second reason as well: the porter's lodge is sheltered floor that is
 opens.
 
 **Provenance** — program
-`sha256:1475b3303cb13af33f8b10dde74acb8524561decabb9e9b2d14f43ae662a0888`, seed
+`sha256:d67136e98da1c3d6d37e6cd2b84f86db6c8da58d5408f7b0de546e30510f6639`, seed
 1, region 25×18×56. Every tuned value lives in the program's own `params`, so
 the file plus the manifest row is the whole recipe and no remembered flag is
 part of it.
@@ -1011,7 +1011,7 @@ water goes. Below the waterline the zone holds no air at all, which is
 `tide.md`'s rule stated as a property of the blocks rather than as an intention.
 
 **Provenance** — program
-`sha256:e6c6e37debed79135cc10c8249834da926b68e0ae07ec7549eba0fa32e769264`, seed
+`sha256:5d3ec653b2398f33d798e1df1519543aa46324515d6caa203b953dce56b1bab9`, seed
 1, region 40x10x60; re-expanding those inputs reproduces all four files byte for
 byte. Verified twice over, by `cmp` and by sha256 taken over each file's
 **content** alone — hashing a listing of `shasum` output would have hashed the
@@ -1326,7 +1326,7 @@ sheltered cells it cannot reach are one pocket, `x 2..24 y 1..1 z 7..17`, which 
 the hour-vault.
 
 **Provenance** — program
-`sha256:67b2323217aba1008904c7bcf1b3c5c0f7f30c9d776139ed661eb71c8719bd59`, seed 1,
+`sha256:e2a7f3065323def7dfb778ba3a99eaf027641ecc91e2ea9c30951cf04a2d5bf2`, seed 1,
 region 27x12x33. Reproduction was checked from a **second instrument sharing no
 working directory and no build tree with the first**: a separate checkout of the
 pinned engine, built on its own, run from a different directory and writing to a
@@ -1466,7 +1466,7 @@ unreachable sheltered pocket. **That pocket is the descent, not a room with no w
 in**, and this sentence is what tells a later reader which it is.
 
 **Expansion** — `delve-grammar expand --file design/programs/z5-hall-keep.json
---region 11x11x76 --seed 1 --traversable --allow-falls`. All six gates pass with a
+--region 11x13x76 --seed 1 --traversable --allow-falls`. All six gates pass with a
 non-zero binding: `blocks-exist` 11, `shape-complete` 11, `states-complete` 11,
 `oriented-fills` 106, `non-empty` 9196, `traversable` 18 (9 standable cells at the
 approach end, 9 at the exit end). 6126 filled cells, 11 distinct states, 697
@@ -1488,8 +1488,8 @@ write a second metadata document describing one slice of the building, which is 
 number about nothing; the tiles are left alone.
 
 **Provenance** — program
-`sha256:3db9ce6916603b68d3bde669e2c67cc601c978a283b753f7f3108e261a715a2d`, seed 1,
-region 11x11x76; re-expanding those inputs reproduces both tiles and the manifest
+`sha256:224de111667fefdfdc499493d1374c6e4d8fb4595c2e0765d72590ae12e6ee2b`, seed 1,
+region 11x13x76; re-expanding those inputs reproduces both tiles and the manifest
 byte for byte (verified by direct comparison against the shipped files, and again
 by hashing each file's contents alone — a hash taken over a listing would have
 compared the file paths as well as the bytes). The hash is over the **effective**
@@ -1539,7 +1539,7 @@ sheet and this hall is explicitly not one.
 
 **Every orientation-carrying role is written in the scope's own axis frame.** The
 six roles that carry a direction — both timbers, the margin, the curtain and both
-barrel roles — are `{"local": …}` paints, and the program declares `1.4.0`, the
+barrel roles — are `{"local": …}` paints, and the program declares `1.8.0`, above the
 version the local frame is fenced behind. 29 of 29 orientation-carrying fills now
 resolve through the scope that fills them, where **0 did before**.
 
@@ -1657,7 +1657,7 @@ template and refuse a manifest — so this piece carries `"profile": "unmeasured
 and means it.
 
 **Provenance** — program
-`sha256:104d2ccaf8372410db42f77aa6d2f6df44c8f7ab3b8b658c980f12b38f5f74b6`, seed
+`sha256:51d80acc8a7f5bb340530d8f6fbe8a090863011dac6df084d944ef2d883a2316`, seed
 1, region 40x10x100. The hash is over the effective program, and it binds: the
 same expansion with `--param hole=9` reports
 `sha256:d60f6d00e5a84555a73e7e9b54a6e26fc5b8b189ca8f6618382d4fe7acd09416`, so a
@@ -1838,12 +1838,12 @@ production.** The row read `41x14x125`. Fourteen courses is one storey: it canno
 hold a stair, a ringing floor, a stairhead and a belfry above them, and a bell
 that a body stands under needs eleven of the fourteen by itself. The scene needs
 41 courses above grade — 7 of foundation, 4 storeys of 6, and 17 of belfry — so
-the row now reads `41x48x125`. The footprint the campaign chose is untouched, and
+the row read `41x48x125`. The footprint the campaign chose is untouched, and
 48 is still one tile on the vertical axis. A bell tower fourteen blocks tall would
 have been the block that shares the object's name, laid where the object goes.
 
 **Expansion** — `delve-grammar expand --file design/programs/z7-bell-tower.json
---region 41x48x125 --seed 1 --traversable --id z7-bell-tower`. Fifteen gates pass,
+--region 41x50x125 --seed 1 --traversable --id z7-bell-tower`. Fifteen gates pass,
 every one with a non-zero binding: `blocks-exist` 25, `shape-complete` 25,
 `states-complete` 25, `oriented-fills` 272, `non-empty` 246000, `traversable` 6,
 `contract-well-formed` 25, `contract-coverage` 6248, `contract-closure` 4876,
@@ -1863,12 +1863,12 @@ two are the inside of the bell. `delve-admit audit` passes over 246000 blocks (0
 forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified);
 the block-state set is the same 25 it has always been.
 
-**Provenance** — program `sha256:c0e0a23554cb9e30a237f57e8747eec39cef59d507a7acd8650a9cff2ec2238a`
+**Provenance** — program `sha256:914638de71e998d24b024b7d94fd764ec0295c7457c7d2bf30499985caee90a9`
 (the hash of the *effective* program, which is what regenerates the bytes and is
 carried in the manifest's own `generated_by.program_hash`; the sha256 of the
 committed file itself is
 `08e595eb00c7deb0a314f458c36efb8aaac94caaad602674a39abc111f0449bf`), seed 1,
-region 41x48x125. Re-expanding those inputs reproduces every shipped file byte for
+region 41x50x125. Re-expanding those inputs reproduces every shipped file byte for
 byte — verified by comparing file **contents** on stdin, never a path, since
 hashing a `shasum` line hashes the filename with it. The tile contents are
 `0ad4f90e67495b9c6b472cf4e575be2fcd50c5d45589c6e6ebcc427fd039b333`,
@@ -2228,15 +2228,19 @@ safe zone — had never run on it. That silence was never a pass.
 
 **The instrument, stated because every number below depends on it.** Engine
 `4137cfaeb1f0b440f96e1433152e0cf214172b83`, `delvec 1.1.0, dsl 0.15.0, mc
-1.21.11`, built from source in a worktree detached at that revision. The campaign
-has no `dialogue.json`, and the loader exits 10 without diagnosing when it is
-absent, so every build below ran against a **scratch copy carrying a placeholder
-dialogue tree** — five roots, the three `talk-to` completions, and the three
-ending flags on a node reached behind `flag/mercy-can-speak`. It is not committed
-and it is not this campaign's dialogue; `cast.md` holds the written dialogue and
-nothing has yet moved it into a stage document. Where a measurement needed to see
-past `DW0210`, `mitigation: "night-vision"` was applied in that same scratch copy
-as an instrument, and is likewise not committed.
+1.21.11`, built from source in a worktree detached at that revision. Every build
+in this section ran against a **scratch copy carrying a placeholder dialogue
+tree** — five roots, the three `talk-to` completions, and the three ending flags
+on a node reached behind `flag/mercy-can-speak` — because the campaign had no
+`dialogue.json` and the loader exits 10 without diagnosing when it is absent.
+**That half of the instrument is retired**: the campaign carries a committed
+`dialogue.json`, and loads as it stands. Where a measurement needed to see past
+`DW0210`, `mitigation: "night-vision"` was applied in that same scratch copy as
+an instrument. **It was never committed, and it is refused** — the judgement it
+stood in for is recorded under "Which areas are dark" below. So every figure in
+this section taken past `DW0210` was taken behind an instrument that exists on
+no tree, and the stop the committed tree actually reaches is the one recorded at
+the end of this section.
 
 ### The water was running out of the world, and the sea it belongs to is now declared
 
@@ -2406,23 +2410,25 @@ two lethal volumes. That is a statement about what has not been proved.
 `DW0210` returns **one area per build** — the light pass collects a diagnostic for
 every dark area and the caller takes the first — so the set below was walked one
 run at a time, silencing each named area with the night-vision instrument and
-letting the next report. Under `horizon: ocean`, at engine `4137cfae`:
+letting the next report. Under `horizon: ocean`, re-measured at engine
+`800c958e` on the committed tree — the same six areas, in the same order, with
+only the two zones that rose two courses moving, by exactly those two courses:
 
 | area | first cell `DW0210` names (world) | piece-local | where that is in the piece's contract |
 |---|---|---|---|
-| `area/bell-tower` | `[1804, 67, 95]` | `[12, 7, 95]` | outside every declared space (a gap in `ward`'s boxes) |
+| `area/bell-tower` | `[1804, 69, 95]` | `[12, 9, 95]` | outside every declared space (a gap in `ward`'s boxes) |
 | `area/chapel-ward` | `[1026, 61, 8]` | `[2, 1, 8]` | `vault`, enclosed |
 | `area/cistern-deep` | `[1538, 64, 2]` | `[2, 4, 2]` | `cistern`, enclosed |
 | `area/drowned-ward` | `[782, 67, 49]` | `[14, 7, 49]` | `tower/upper`, enclosed |
 | `area/gatehouse` | `[515, 64, 29]` | `[3, 4, 29]` | outside every declared space |
-| `area/hall-keep` | `[1281, 61, 0]` | `[1, 1, 0]` | `duct/landing`, enclosed |
+| `area/hall-keep` | `[1281, 63, 0]` | `[1, 3, 0]` | `duct/landing`, enclosed |
 
 Six of the eight. `area/barrow-shore` and `area/cliff-road` are not dark anywhere:
 an effective sky of 4 at night clears the threshold of 3 wherever a cell can see
 it, and those two are open. Every cell above is measured at light 0.
 
 Two of the six are worth a second look for reasons of their own. `area/hall-keep`'s
-dark cell is `[1281, 61, 0]` — **the same cell `DW0851` names first**, so it is
+dark cell is `[1281, 63, 0]` — **the same cell `DW0851` names first**, so it is
 both unlit and under the sea. And two of the six fall outside every space their
 piece's spatial contract declares, while the light pass proves a player reaches
 and stands on them.
@@ -2443,10 +2449,35 @@ error is left standing rather than bought off.
   opt-out, and it is only honest if the delve means it. That campaign is
   `time: noon` and its dark area is a cave; this one is `time: night` and its
   darkness is the subject. Nothing in `story.md`, `beats.md` or `encounters.md`
-  says the party sees in the dark, and granting it to five of eight areas changes
-  what the whole delve looks like. It is used above as a declared instrument and
-  is not committed; whether the delve means it is a design decision, not a
-  compiler one.
+  says the party sees in the dark — measured over every one of the 20 other
+  markdown records under `design/`, 212 KB read, with a positive control so that
+  a zero cannot be a search that opened nothing — and granting it to six of
+  eight areas changes what the whole delve looks like. It is used above as a
+  declared instrument and is not committed.
+
+  **The decision the sentence above used to defer is taken, and it is no.** The
+  general argument stands for four of the six, where the honest answer is a
+  placed light and the darkness is only unlit rather than meant. For the other
+  two it is not a matter of taste, because night-vision would delete authored
+  content:
+
+  - `area/cistern-deep` holds `beats.md` 6.3, the 初见杀 **K5**, whose entire
+    tell is a light contrast on water — *the light lies flat on shallow water and
+    goes black over the channel*, and *the channel's bed is below every tide
+    level including the Dead Ebb, so the tell is never withdrawn*. Night-vision
+    flattens the contrast the beat is built on. The encounter does not survive
+    it, and 6.4's *receding dark vaults* go with it.
+  - `area/bell-tower` holds the stairhead arena `encounters.md` gives as *tight,
+    dark* and the climb `beats.md` 7.4 calls the delve's clearest statement that
+    the player is one of the drowned — *passes the drowned going the same way in
+    the dark*. Its `DW0210` cell is also, measured against the piece's own
+    spatial contract, **outside every space that contract declares**, so
+    night-vision would grant a whole area the ability to see in the dark in order
+    to buy one cell the piece does not claim as a place at all.
+
+  So the error is left standing. `reconciliation.md` already says where the
+  answer belongs — light is part of the made-by-hands layer — and that remains
+  prefab work, owed by the same rounds that owe the absent beats.
 - **Brightening the scene** contradicts the premise: the delve is one night of two
   ebbs, and `world.time` is `night` because of the tide table.
 - **`areas[].lighting`** relights a whole area to a `min_light`, and this delve is
@@ -2541,10 +2572,31 @@ reason therefore gets a *silent* pass from the sea proof, which is the one thing
 the ledger exists to prevent. That is why the table above needed two deliberately
 half-repaired builds to fill in.
 
-**Where the build stops now.** On the committed tree, at stage 9: `DW0210`,
-`area/bell-tower`. `DW0307` is one stage further and is reached only behind the
-night-vision instrument above, which is why the sea proof's silence must not be
-read as a pass.
+**Where the build stops now.** At engine
+`800c958e0e582e553ee4057237312d90ca87e56e`, `delvec 1.1.0, dsl 0.16.0, mc
+1.21.11`: on the committed tree, with no scratch edit anywhere, at stage 9 —
+`DW0210`, `area/bell-tower`, a reachable walkable cell at `[1804, 69, 95]`
+measured at light 0, exit 2. Reproduced twice by instruments that share no
+configuration: once from the working tree, and once from a `git archive` export
+of the same commit into a directory the build had never seen.
+
+**`--prefabs` must name this repository's own `prefabs/`.** Its default resolves
+through the engine's gitignored `campaigns/` symlink to a shared checkout that
+sits on `main`, where this campaign's pieces do not exist — so the default
+reports the eight zones as absent from the library, which is an artifact of the
+symlink and not a fact about the campaign.
+
+**What changed since the measurements above.** The eight pieces now declare
+`role: entry` (spec-0046), so `DW0345` no longer fires. It is raised before any
+model is built, and this campaign could not have satisfied it: every zone is
+grammar-generated, so every anchor key is `anchor/<stem>` and no piece can carry
+the `spawn`/`entry` fallback spelling at all. Before that adoption the build
+stopped there rather than at `DW0210`.
+
+`DW0307` is one stage further and is reached **only** behind the night-vision
+instrument, which is refused above and committed nowhere. It is therefore not a
+stop this tree can reach, and the sea proof's silence must still not be read as
+a pass.
 
 Behind that instrument the build stops at `DW0307`: `npc/odo-ferrier` cannot
 walk from `anchor/boss` to `anchor/belfry-stairhead`.
