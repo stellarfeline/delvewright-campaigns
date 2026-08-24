@@ -46,14 +46,18 @@ env:
   # value below; no machinery in this repository moves with it.
   #
   # It is chosen for what the engine at it can READ and for what it can JUDGE,
-  # never for what it makes green. Two floors any later bump holds:
+  # never for what it makes green. Three floors any later bump holds:
   #
-  # Document version. Every zone program here declares `1.4.0`, and a whole-map
-  # program that composes them declares `1.5.0` — the `include` list, which
-  # names another program file and the prefix its vocabulary arrives under. A
-  # `Program` schema without that field refuses a composed document at parse, by
-  # field name, before any gate runs; so an engine that cannot read `1.5.0` is
-  # not a stricter judge of the map, it is no judge of it at all.
+  # Document version. Every zone program here declares `1.8.0` — the `role` a
+  # mark carries, which is the only way a GENERATED zone can declare the cell a
+  # party arrives at, every anchor key it exports being `anchor/<stem>`
+  # (spec-0046). A whole-map program that composes them declares `1.5.0`, the
+  # `include` list, which names another program file and the prefix its
+  # vocabulary arrives under. A schema without either field refuses the document
+  # at parse, by field name, before any gate runs — measured, not supposed: an
+  # engine below this floor reports `unknown field role, expected one of x, y,
+  # z` and judges nothing. So an engine that cannot read `1.8.0` is not a
+  # stricter judge of the map, it is no judge of it at all.
   #
   # One authority on a zero binding. A gate that examined nothing has proved
   # nothing, so it fails — and the rule lives in one function that every door
@@ -81,7 +85,7 @@ env:
   # nineteen commits behind and failed a zone whose every cell is play space,
   # where the repair a reader reaches for — inventing the region the old gate
   # asks for — is the vacuity the gate exists to catch.
-  GRAMMAR_REF: 5e0ad7fd46d3855796e1963ad2eb54269ec76622
+  GRAMMAR_REF: 800c958e0e582e553ee4057237312d90ca87e56e
 
 jobs:
   zones:
