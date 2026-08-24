@@ -2608,3 +2608,80 @@ Measured on the pre-repair bytes as well: the same step is head-blocked there,
 two courses lower. This repair translates the tower rigidly and neither caused
 the severance nor touches it. The finding is prefab work on `z7-bell-tower`, and
 the two disagreeing walk rules are an engine finding beside it.
+
+### The belfry deck stops roofing the cell the last step-up is taken from
+
+The severed last flight is repaired in the building. `deck/stair_strip` sized the
+opening it cuts in the belfry deck at `stair_bay + tread`, which lands it at
+`z 96..102` — starting one cell past `z 95`, the cell the climber takes the last
+step-up from. The deck course above that cell therefore filled the space the
+jumping body's head sweeps through, and it is the only thing that did.
+
+The opening is now `stair_bay + tread + head_sweep`, `z 95..102`. `head_sweep`
+is declared beside the knobs it is measured against and is `1`: one cell, the
+one the rise sweeps. The trailing `wall_thick` does not move, so the opening
+grows at the head of the climb and nowhere else.
+
+**What the change does to the piece, measured cell by cell out of the two
+expansions rather than reasoned from the rule.** Of 256 250 cells, 96 change
+solidity:
+
+| cells | where | what |
+|---|---|---|
+| 5 | `x 12..16, y 33, z 95` | the repair — the deck course over the stair bay |
+| 91 | `y 9..11`, rear ward, **0 inside the tower footprint** | rubble scatter that re-draws |
+
+A further 7 298 cells keep their solidity and draw a different member of the same
+mix. Mix membership is unchanged at 24 states and the largest per-state count
+moves by 5 cells in 48 000. Every moved cell lies at `z >= 84`: the ramp, the
+approach and the ruined street at `z < 84` are byte-identical.
+
+The re-draw is the geometry, not the new knob. Declaring `head_sweep` and leaving
+the size expression alone reproduces all six tiles **byte-identical** to the
+committed piece, so the param is inert and the whole re-tile follows from five
+fewer cells shifting the mix draw. Any repair that removes a block does this.
+
+**Anchors hold.** 40 before, 40 after, same names. One moves:
+`anchor/belfry-stairhead`, `[14, 33, 99]` to `[14, 33, 98]`, because it is the
+floor centre of an opening that is now one cell longer. The other 39 are
+identical, and the four the finale stands on — `anchor/bell-mouth`,
+`anchor/bell-walk`, `anchor/belfry-bay`, `anchor/boss` — do not move at all.
+
+**The proof, and it is the compiler rather than the piece's own gate.** Two
+`delvec build` runs whose inputs differ in exactly the `z7-bell-tower` piece and
+in nothing else — verified by comparing the two prefab directories, which report
+that one metadata document and four tiles differ and no other file does:
+
+| z7 piece | `delvec build` | first error |
+|---|---|---|
+| as committed | exit 3 | `DW0307` — `npc/odo-ferrier` cannot walk from `anchor/boss` to `anchor/belfry-stairhead` |
+| repaired | exit 3 | `DW0307` **gone**; the build reaches `DW0311` on a different leg |
+
+`DW0311` is a **separate blocker that `DW0307` was standing in front of**, not a
+consequence of this change: it names `[8, 65, 11]` and `[261, 68, 69]`, and the
+bell tower stands near `x 1800`, so neither cell is in this piece. It is a
+`close-gate` sealing a region the forced path must re-cross. It has never
+appeared in this record before, because no build had ever got this far.
+
+**The instrument, stated because both figures depend on it.** Engine
+`800c958e0e582e553ee4057237312d90ca87e56e`, `delvec` sha256 `c39ebf11…`, built
+from source in a worktree detached at that revision and confirmed deterministic
+by forcing a second compile to the same hash. On the committed tree at that
+engine `delvec build` stops **earlier than this record has said since it was
+written** — at `DW0345`, no area places a piece declaring an anchor with
+`"role": "entry"`, which is a stage-10 obligation that arrived with the engine's
+own tip commit. Both builds above therefore ran against a scratch copy carrying
+`"role": "entry"` on `anchor/wake` and `mitigation: "night-vision"` on all eight
+areas. Neither is committed, both are instruments, and the entry role is an
+adoption item this campaign owes: it has never been released, so an obligation
+reaching it is adoption rather than a fence defect.
+
+**What this does not prove.** The piece's own gates are green both before and
+after and cannot see either state. `delve-grammar audit` at the pin the content
+repository's zone-audit job actually builds — `5e0ad7fd`, 66 commits behind the
+engine above — returns exit 0 on both, `z7-bell-tower pass 15 gate(s)` either
+way, over 43 programs. The only figure that moves is `contract-reachability`,
+14 509 to 14 505 bound, which is the four belfry-floor cells the opening now
+takes. That gate walks the grammar's rule, which has no headroom condition; it
+passed over a severed tower and it passes over a joined one. **The compiler is
+the only thing here that can tell the two apart.**

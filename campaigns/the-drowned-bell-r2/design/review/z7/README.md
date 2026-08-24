@@ -2,6 +2,71 @@
 
 Judged against `../../concept/z7-bell-tower.jpg`.
 
+## What this set no longer depicts
+
+**Every image here was rendered from a 41x48x125 expansion, and the program
+refuses that region.** `shots.json` records `size: [41, 48, 125]`; `zones.json`
+declares `[41, 50, 125]`, and expanding the current program at 48 courses fails
+outright — `no alternative of rule "zone_plan" applies`, because the tower needs
+`base_height + storeys + belfry_run = 48` courses of shaft with the ground split
+under them. So the reproduce command at the foot of this page reproduces
+nothing, and no image here can be re-taken as it stands.
+
+The zone rose two courses so its foot stands on the rock rather than in the sea.
+Every eye camera in the set moved with it, and the set was taken before it:
+
+| image | camera when taken | the same anchor now |
+|---|---|---|
+| `eye-belfry_bay` | `11,33,94` | `11,35,94` |
+| `eye-bell_mouth` | `20,32,94` | `20,34,94` |
+| `eye-bell_walk` | `14,32,94` | `14,34,94` |
+| `eye-boss` | `22,25,94` | `22,27,94` |
+| `eye-broken_flight` | `14,7,97` | `13,9,97` |
+| `eye-louvre_1` | `22,19,86` | `22,21,86` |
+| `eye-ramp_foot` | `20,1,0` | `20,3,0` |
+| `eye-ramp_head` | `20,7,65` | `20,9,65` |
+| `eye-ringing_floor` | `22,13,94` | `22,15,94` |
+| `eye-ruin_cell_4` | `35,2,14` | `35,4,14` |
+| `eye-shortcut_foot` | `20,7,84` | `20,9,84` |
+| `eye-stair_landing_1` | `14,8,101` | `13,10,101` |
+| `eye-tower_foot` | `22,7,94` | `22,9,94` |
+
+Thirteen of thirteen. `ext-nw`, `ext-se`, `ext-sw`, `top` and
+`anchor-bell_mouth` frame the whole zone, so all five are two courses out too.
+
+## What the belfry-deck repair adds on top of that
+
+The deck stopped roofing the cell the last step-up is taken from, which is what
+joined the belfry to the tower (`../../GENERATION.md`, Z7). It removes five floor
+cells — `x 12..16, y 33, z 95` — so the stair opening is one cell longer at the
+head of the climb. **It moves no camera**: all thirteen anchors above are
+identical before and after it. The one anchor it does move,
+`anchor/belfry-stairhead`, is the one this set deliberately carries no shot for.
+
+Shot by shot, and the last column separates what is measured from what is read
+off the geometry:
+
+| image | the repair in frame | why |
+|---|---|---|
+| `eye-bell_walk` | **yes, and it is the change this shot is about** | stands `14,34,94` facing south with 30 cells clear; the five removed cells are the floor at `z 95`, one cell ahead and one below the feet. The lane now begins at the lip of the stair opening |
+| `eye-belfry_bay` | **yes** | stands `11,35,94` facing east across the room; the opening lies one cell south of the sight line and two below the eye, in the lower right of a 70 degree frame |
+| `anchor-bell_mouth` | **yes** | a downward oblique whose subject is the belfry in section, so the deck and its opening are the floor of the picture |
+| `top` | **yes, if the cutaway band takes the deck** | a plan of the tower draws the opening as a hole; it is now one cell longer |
+| `eye-bell_mouth` | no | stands `20,34,94` facing **north**; the opening is at `z >= 95`, behind the camera |
+| `ext-nw`, `ext-se`, `ext-sw` | a sliver at most | the belfry is arcaded, so a slant view sees some deck through the openings; the silhouette does not move |
+| the nine climb shots | no | every one stands below `y 33`, and none of them looks at the deck from underneath |
+
+**The stone re-tiles, and that is not a geometry change.** Five fewer cells
+shift the mix draw, so 7 298 cells keep their solidity and take a different
+member of the same mix, plus 91 cells of rubble scatter at `y 9..11` re-draw in
+the rear ward — **none of it inside the tower footprint**. All of it lies at
+`z >= 84`, so `eye-ruin_cell_4`, `eye-ramp_foot` and `eye-ramp_head` stand in
+untouched ground, and the nine interior shots see the same stone in a different
+order. Mix membership, proportions and every wall line are unchanged.
+
+**So this set is owed a re-render for the two-course rise regardless, and the
+repair does not add a shot to that list — it changes what four of them show.**
+
 **A camera in this set is a declared anchor.** The shot plan is the instrument's:
 four exterior three-quarters, a plan cutaway, one surroundings view per anchor,
 and one eye-level view per anchor, looking the way that anchor faces. Nothing
