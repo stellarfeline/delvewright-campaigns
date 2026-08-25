@@ -111,25 +111,31 @@ surround would have had to ring, and the rest of it is nothing.
 
 **`DW0854` — a bowl with a way out of it.** The same valley with a staircase
 carved up its inner slope by a stage-7 edit: 27 treads, three cells wide, two
-cells of air over each, climbing from the gap floor past the crest.
-
-**This half of the exhibit does not reach its code, and it is not the
-staircase's fault.** The build comes back `DW0854`'s blocker instead:
+cells of air over each, climbing from the gap floor past the crest. The build
+comes back:
 
 ```
-DW0112 [error] world-edits /batches/0/area: batch `batch/a-way-out` targets
-area `area/site` which stage 1 does not declare
+DW0854 [error] build: the surround's inner slope has grown a standable
+staircase: a walk starting on the gap floor stands at [-27, 91, 6], outward of
+the crest line, so the landform no longer bounds the map.
 ```
 
-A valley surround requires a site plan, and a campaign carrying a site plan must
-have an empty `areas[]` — so its one place is the synthetic `area/site`. The
-edit script's area check does not accept it, so **no site-plan campaign can
-carry a stage-7 edit script at all.** The exhibit proves that is the blocker
-rather than assuming it: the SAME batch with zero edit verbs is refused
-identically, and the same empty batch on an `areas[]` campaign is accepted.
+A valley surround requires a site plan, and a campaign carrying a site plan
+declares an empty `areas[]` — so its one place is the synthetic `area/site`, and
+a stage-7 batch names it the way a batch names any other area. That is what lets
+this case be tripped at all: the staircase is carved by an edit script on a
+site-plan campaign, and the refusal that answers it is the surround's own.
 
-Until that is closed, `refusals.py` exits 1 and says which case did not land.
-That is the state of the level, stated where it cannot be missed.
+`refusals.py` exits 0 when both cases reach their own code, and 1 naming the case
+that did not — a refusal nobody tripped is not a demonstration.
+
+### What the transcripts beside the scripts are
+
+`three-builds.txt`, `refusals.txt` and `campaign-build-gate.txt` are the output
+of those runs at engine revision `4ee0c0e10741cd018e2ba83c93d3ba5af563bc00`.
+They are measurements, not specifications: re-running them against another engine
+is how you find out whether they still hold, and a difference is a finding about
+that engine rather than about this campaign.
 
 ## What this campaign needs from the engine it is built with
 

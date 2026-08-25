@@ -9,13 +9,7 @@
 
 === DW0854: the surround's inner slope has grown a standable staircase
     perturbation: a stage-7 batch on `area/site` carving 27 treads from the gap floor at y 64 out past the crest
-    exit 1, error code(s): ['DW0112']
-    DW0112 [error] world-edits /batches/0/area: batch `batch/a-way-out` targets area `area/site` which stage 1 does not declare — use one of the world stage's area ids
+    exit 3, error code(s): ['DW0854']
+    DW0854 [error] build: the surround's inner slope has grown a standable staircase: a walk starting on the gap floor stands at [-27, 91, 6], outward of the crest line, so the landform no longer bounds the map. The generator leaves nothing standing one block over the gap floor and keeps trees off the inner wall, so a step up from the floor was put back by something later — an edit batch, a gravity settle, or a palette whose blocks are a different height. It flooded from 2742 standable gap-floor cells
 
-    control: the SAME batch with zero edit verbs, so nothing is carved
-        error code(s): ['DW0112']
-    control: the same empty batch on an `areas[]` campaign under `void`
-        error code(s): none
-        so the blocker is the batch's AREA, not the staircase: a site-plan campaign has no `areas[]` by construction (DW0839) and the edit script's area check reads `areas[]` alone.
-
-FINDING: DW0854 was not reached: the build came back ['DW0112']. A refusal nobody tripped is not a demonstration — see README.md
+both refusals tripped, each by its own code.

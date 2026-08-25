@@ -19,10 +19,12 @@ the compiler actually put the two rooms — which is what makes the refusal read
 as obvious instead of odd.
 
 `DW0854` — the same valley with a staircase carved up its inner slope by a
-stage-7 edit. **This case does not reach its code at this engine revision**, and
-the exhibit says so rather than passing. See `README.md`; the control below is
-what establishes that the blocker is the edit script's area check and has
-nothing to do with the staircase.
+stage-7 edit on `area/site`, the one place a site-plan campaign has. A case that
+does not reach its own code is a finding, not a pass: when the build comes back
+with anything other than `DW0854`, the controls below run and isolate what
+blocked it — the same batch with zero edit verbs, and the same empty batch on an
+`areas[]` campaign — so the report says whether the blocker is the staircase or
+the machinery around it.
 
 Exit 0 = every case reached its code. 1 = a case did not. 2 = could not run.
 """
