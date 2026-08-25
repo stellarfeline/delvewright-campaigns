@@ -15,6 +15,7 @@
     "frame_period": 5,
     "head_run": 2,
     "head_sweep": 1,
+    "lamp_period": 8,
     "landing_run": 2,
     "pier": 3,
     "ramp_step": 9,
@@ -206,7 +207,8 @@
         "block": "minecraft:tuff"
       }
     ],
-    "stair/tread": "minecraft:andesite"
+    "stair/tread": "minecraft:andesite",
+    "tower/lamp": "minecraft:glowstone"
   },
   "rules": {
     "approach": [
@@ -497,20 +499,16 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/floor"
-              }
+              "op": "call",
+              "symbol": "floor/seam"
             },
             {
               "op": "call",
               "symbol": "deck/stair_strip"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/floor"
-              }
+              "op": "call",
+              "symbol": "floor/seam"
             }
           ],
           "rounding": "start"
@@ -3258,10 +3256,8 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "stair/rock"
-              }
+              "op": "call",
+              "symbol": "stair_seam/seam"
             },
             {
               "op": "mark",
@@ -3474,10 +3470,8 @@
               "symbol": "room/foot"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/floor"
-              }
+              "op": "call",
+              "symbol": "floor/seam"
             }
           ],
           "rounding": "end"
@@ -3512,10 +3506,8 @@
               "symbol": "room/louvre"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/floor"
-              }
+              "op": "call",
+              "symbol": "floor/seam"
             }
           ],
           "rounding": "end"
@@ -3550,10 +3542,8 @@
               "symbol": "room/ringing"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/floor"
-              }
+              "op": "call",
+              "symbol": "floor/seam"
             }
           ],
           "rounding": "end"
@@ -3588,10 +3578,8 @@
               "symbol": "room/stairhead"
             },
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/floor"
-              }
+              "op": "call",
+              "symbol": "floor/seam"
             }
           ],
           "rounding": "end"
@@ -3622,10 +3610,8 @@
           ],
           "children": [
             {
-              "op": "fill",
-              "material": {
-                "role": "tower/base"
-              }
+              "op": "call",
+              "symbol": "base/cap"
             },
             {
               "op": "call",
@@ -5091,6 +5077,653 @@
         },
         "when": {
           "cond": "otherwise"
+        }
+      }
+    ],
+    "floor/seam": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "lamp_period"
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "lamp_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "floor/seam_row"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/floor"
+              }
+            }
+          ],
+          "repeat": true
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "lamp_period"
+            },
+            "op": "sub",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        },
+        "body": {
+          "op": "call",
+          "symbol": "floor/seam_row"
+        }
+      }
+    ],
+    "floor/seam_row": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "lamp_period"
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "lamp_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/lamp"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/floor"
+              }
+            }
+          ],
+          "repeat": true
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "lamp_period"
+            },
+            "op": "sub",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/lamp"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/floor"
+              }
+            }
+          ],
+          "rounding": "start"
+        }
+      }
+    ],
+    "stair_seam/seam": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "lamp_period"
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "lamp_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "stair_seam/seam_row"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "stair/rock"
+              }
+            }
+          ],
+          "repeat": true
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "lamp_period"
+            },
+            "op": "sub",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        },
+        "body": {
+          "op": "call",
+          "symbol": "stair_seam/seam_row"
+        }
+      }
+    ],
+    "stair_seam/seam_row": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "lamp_period"
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "lamp_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/lamp"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "stair/rock"
+              }
+            }
+          ],
+          "repeat": true
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "lamp_period"
+            },
+            "op": "sub",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/lamp"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "stair/rock"
+              }
+            }
+          ],
+          "rounding": "start"
+        }
+      }
+    ],
+    "base/seam": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "lamp_period"
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "z",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "lamp_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "call",
+              "symbol": "base/seam_row"
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/base"
+              }
+            }
+          ],
+          "repeat": true
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "z"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "lamp_period"
+            },
+            "op": "sub",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        },
+        "body": {
+          "op": "call",
+          "symbol": "base/seam_row"
+        }
+      }
+    ],
+    "base/seam_row": [
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "lamp_period"
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "lamp_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/lamp"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/base"
+              }
+            }
+          ],
+          "repeat": true
+        }
+      },
+      {
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "dim",
+            "dim": "x"
+          },
+          "op": "le",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "lamp_period"
+            },
+            "op": "sub",
+            "rhs": {
+              "expr": "int",
+              "value": 1
+            }
+          }
+        },
+        "body": {
+          "op": "split",
+          "axis": "x",
+          "sizes": [
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/lamp"
+              }
+            },
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/base"
+              }
+            }
+          ],
+          "rounding": "start"
+        }
+      }
+    ],
+    "base/cap": [
+      {
+        "weight": 1,
+        "body": {
+          "op": "split",
+          "axis": "y",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "absolute",
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ],
+          "children": [
+            {
+              "op": "fill",
+              "material": {
+                "role": "tower/base"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "base/seam"
+            }
+          ],
+          "rounding": "end"
         }
       }
     ]
