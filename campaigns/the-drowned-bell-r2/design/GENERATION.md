@@ -1843,37 +1843,44 @@ the row read `41x48x125`. The footprint the campaign chose is untouched, and
 have been the block that shares the object's name, laid where the object goes.
 
 **Expansion** — `delve-grammar expand --file design/programs/z7-bell-tower.json
---region 41x50x125 --seed 1 --traversable --id z7-bell-tower`. Fifteen gates pass,
-every one with a non-zero binding: `blocks-exist` 25, `shape-complete` 25,
-`states-complete` 25, `oriented-fills` 272, `non-empty` 246000, `traversable` 6,
-`contract-well-formed` 25, `contract-coverage` 6248, `contract-closure` 4876,
-`contract-edge-proof` 8, `contract-no-body` 6, `contract-reachability` 5187,
-`contract-anchors` 40, `contract-exterior-faces` 2, `contract-no-body-majority`
-6248. `traversable` counts declared doors rather than standable cells on two
-region faces, which is what having a contract buys it: 6 where the contractless
-reading said 82. `contract-anchors` splits its 40 as 13 in a space, 25 in a via
-and 2 in a way — the way pair being the two treads CP-20 lays, which is the
-engine saying in the manifest that those anchors are the declared opening rather
-than a private copy of it. 38317 filled cells, 25 distinct
-states, 6248 standable, footprint 5125 columns, perimeter 332, silhouette
-complexity 1.16, 40 anchors. Reachability: 4259 of 6248 standable cells reachable
-on foot from 41 grade entries (68.2%), 1212 unreachable sheltered in 43 pockets —
-the largest by far is the whole tower over the break at 1102 cells, and the next
-two are the inside of the bell. `delve-admit audit` passes over 246000 blocks (0
-forbidden, 0 non-allowlisted, 0 unknown, 0 pre-pin unknown, 0 under-specified);
-the block-state set is the same 25 it has always been.
+--region 41x50x125 --seed 1 --traversable --id z7-bell-tower`, at engine
+`800c958e0e582e553ee4057237312d90ca87e56e` — the revision `zone-audit.yml` pins
+as `GRAMMAR_REF`, so this record and the gate that judges it read the same
+instrument. Fifteen gates pass, every one with a non-zero binding:
+`blocks-exist` 26, `shape-complete` 26, `states-complete` 26, `oriented-fills`
+372, `non-empty` 256250, `traversable` 6, `contract-well-formed` 25,
+`contract-coverage` 6245, `contract-closure` 4876, `contract-edge-proof` 8,
+`contract-no-body` 6, `contract-reachability` 5183, `contract-anchors` 40,
+`contract-exterior-faces` 2, `contract-no-body-majority` 6245. `traversable`
+counts declared doors rather than standable cells on two region faces, which is
+what having a contract buys it: 6 where the contractless reading said 82.
+`contract-anchors` splits its 40 as 13 in a space, 25 in a via and 2 in a way —
+the way pair being the two treads CP-20 lays, which is the engine saying in the
+manifest that those anchors are the declared opening rather than a private copy
+of it. 48561 filled cells, 26 distinct states, 6245 standable, footprint 5125
+columns, perimeter 332, silhouette complexity 1.16, 40 anchors. Reachability:
+4260 of 6245 standable cells reachable on foot from 41 grade entries (68.2%),
+1208 unreachable sheltered plus 777 open to the sky in 43 pockets — the largest
+by far is the whole tower over the break, and the next two are the inside of the
+bell.
 
-**Provenance** — program `sha256:914638de71e998d24b024b7d94fd764ec0295c7457c7d2bf30499985caee90a9`
+**Provenance** — program
+`sha256:80f65e5dc08f5ff518eac24e3654c513f12625008ae1b45998112ece8bb89730`
 (the hash of the *effective* program, which is what regenerates the bytes and is
 carried in the manifest's own `generated_by.program_hash`; the sha256 of the
 committed file itself is
-`08e595eb00c7deb0a314f458c36efb8aaac94caaad602674a39abc111f0449bf`), seed 1,
-region 41x50x125. Re-expanding those inputs reproduces every shipped file byte for
-byte — verified by comparing file **contents** on stdin, never a path, since
-hashing a `shasum` line hashes the filename with it. The tile contents are
-`0ad4f90e67495b9c6b472cf4e575be2fcd50c5d45589c6e6ebcc427fd039b333`,
-`607a8e442993832ee2596023970a32bab2ad2d399c9904d0af855db5aef73ee3` and
-`bf50ce1d43f2d7cff73c4cbf2d30fbd00f6bffd29f54347aab9c93ccbd3cc967`.
+`c9e6d67ce9d59ce6c3a2b4adecb7aed4cdeb30f64bb9c4b619f9c9e5548cba67`), seed 1,
+region 41x50x125. Re-expanding those inputs reproduces every shipped file byte
+for byte — verified by comparing file **contents** on stdin, never a path, since
+hashing a `shasum` line hashes the filename with it, and separately against the
+`oid` each pointer records, `git show` on a tracked `.nbt` returning a 131-byte
+LFS pointer rather than the tile. The six tile contents are
+`3fd7757e98c15e0725cbafe8bc1f908bd5b177428bf15e00d450a6c477830cbc`,
+`adf9300482c3783ccb43cc6f0383cfe08e4b13365bc8e090a35e3f941da2b518`,
+`b812e6e8772f65b506432b4331964ac6746742d4feb5e139c3bbda30c5e9e115`,
+`c28b92aef043b74085a53c1f988c5b52b95451e18bd11b8eadc989bd2adac011`,
+`1f71273f2e79b7dd40a03ca313e50fd832ff4c451b3102dc40a58780e9079212` and
+`755284df1941bad1f4d111cf5563b6abb3c111a2ed1b71b861a2ff7b72175e3c`.
 
 **The program hash moves and the building does not.** Declaring the three beat
 anchors and renaming `stair/foot_flat` changes the effective program, so the
@@ -2405,18 +2412,20 @@ five bonfires (`anchor/ledge-foot`, `anchor/yard`, `anchor/stoop`, `anchor/shaft
 `anchor/tower-foot` — there is no plain `set-checkpoint`), its four waves or its
 two lethal volumes. That is a statement about what has not been proved.
 
-### Which areas are dark, and why no lighting declaration was added
+### Which areas were dark, and why no lighting declaration was added
 
 `DW0210` returns **one area per build** — the light pass collects a diagnostic for
 every dark area and the caller takes the first — so the set below was walked one
 run at a time, silencing each named area with the night-vision instrument and
-letting the next report. Under `horizon: ocean`, re-measured at engine
+letting the next report. It also names only the **darkest single cell** of the
+area it reports, which is why the cells below read as isolated and are not: the
+bell tower's column stood for 1335 of its 5359 reachable cells. Under `horizon: ocean`, re-measured at engine
 `800c958e` on the committed tree — the same six areas, in the same order, with
 only the two zones that rose two courses moving, by exactly those two courses:
 
 | area | first cell `DW0210` names (world) | piece-local | where that is in the piece's contract |
 |---|---|---|---|
-| `area/bell-tower` | `[1804, 69, 95]` | `[12, 9, 95]` | outside every declared space (a gap in `ward`'s boxes) |
+| `area/bell-tower` | `[1804, 69, 95]` | `[12, 9, 95]` | the stair-well floor at the foot of the broken flight — **since lit, see below** |
 | `area/chapel-ward` | `[1026, 61, 8]` | `[2, 1, 8]` | `vault`, enclosed |
 | `area/cistern-deep` | `[1538, 64, 2]` | `[2, 4, 2]` | `cistern`, enclosed |
 | `area/drowned-ward` | `[782, 67, 49]` | `[14, 7, 49]` | `tower/upper`, enclosed |
@@ -2434,8 +2443,9 @@ piece's spatial contract declares, while the light pass proves a player reaches
 and stands on them.
 
 The lighting the campaign actually has, measured over the shipped `.nbt` bytes:
-`z0`, `z1` and `z2` carry **one `minecraft:lantern` each, and that is the whole
-lighting of the delve**; `z3` through `z7` contain no light-emitting block at all.
+`z0`, `z1` and `z2` carry **one `minecraft:lantern` each**; `z7` carries the 50
+glowing stones seamed into its masonry (below); `z3` through `z6` contain no
+light-emitting block at all.
 Nothing else supplies any. A bonfire's hardware is a glowing `item_display`
 holding a campfire *item*, not a placed campfire block, so the five rest points
 light nothing; and the Mourner's *Coffin Lantern* is one class kit's item, which
@@ -2470,10 +2480,14 @@ error is left standing rather than bought off.
   - `area/bell-tower` holds the stairhead arena `encounters.md` gives as *tight,
     dark* and the climb `beats.md` 7.4 calls the delve's clearest statement that
     the player is one of the drowned — *passes the drowned going the same way in
-    the dark*. Its `DW0210` cell is also, measured against the piece's own
-    spatial contract, **outside every space that contract declares**, so
-    night-vision would grant a whole area the ability to see in the dark in order
-    to buy one cell the piece does not claim as a place at all.
+    the dark*. Night-vision would trade that for the ability to see in the dark
+    everywhere in the zone. The refusal stands; what replaced it is a placed
+    light dim enough to keep the reading, and the section below records it. The
+    reason first written here — that the cell was *one* cell, outside every
+    declared space — was an artifact of the diagnostic naming only the darkest
+    cell: the cell it named is the stair-well floor at the foot of the broken
+    flight, inside the `tower/stair-well` transit volume and two blocks from
+    `anchor/broken-flight`, and 1334 more stood behind it.
 
   So the error is left standing. `reconciliation.md` already says where the
   answer belongs — light is part of the made-by-hands layer — and that remains
@@ -2500,6 +2514,109 @@ and this campaign's world box spans all eight areas: 1833 × 48 × 125 =
 **10 998 000 cells, of which 134 031 — 1.22% — hold a block.** The areas are 256
 blocks apart in x, so almost everything scanned on every pass is the empty air
 between zones.
+
+### The tower is lit, and the darkness was 1335 cells rather than one
+
+`DW0210` names **one cell per area, and one area per build** — `measure_undeclared`
+returns the single darkest reachable cell and `emit` takes `diagnostics.first()`
+after sorting by message, so the area reported is the alphabetically first of the
+dark ones. Read as a cell count it is an undercount by three orders of magnitude,
+and read as an area count it hides five more.
+
+Measured on the engine's own light model over the assembled world, at engine
+`800c958e`, before this change:
+
+| area | reachable cells | below light 3 |
+|---|---:|---:|
+| `area/barrow-shore` | 2764 | 0 |
+| `area/cliff-road` | 129 | 0 |
+| `area/bell-tower` | 5359 | **1335** |
+| `area/chapel-ward` | 932 | 221 |
+| `area/cistern-deep` | 3100 | 3031 |
+| `area/drowned-ward` | 662 | 201 |
+| `area/gatehouse` | 1721 | 567 |
+| `area/hall-keep` | 697 | 517 |
+
+In the bell tower those 1335 are the whole interior — 204 on each of the foot,
+ringing and stairhead floors, 188 on the louvre stage, 317 in the belfry, 202 in
+the stair well, and the remainder in the door and the slits.
+
+**Sky cannot answer it, so the light has to be placed.** The darkest reachable
+sky is 4 and the threshold is 3, so only a cell within one step of open sky
+clears the bar. The belfry — an open arcade at the top of a tower, the most open
+room in the building — is 317 dark cells, which is the measurement that settles
+it: no opening, louvre or oculus reaches a room's middle at night.
+
+**The light is placed in the SOLID fabric, and that is forced rather than
+chosen.** The grammar layer's collision model is
+`passable = is_air() || name.ends_with("_skull")` (`crates/grammar/src/nav.rs`),
+so every non-air block is a full solid there — while the compiler's model knows
+`glow_lichen` has zero collision and is walked through. Glow lichen is the game's
+one dim source at emission 7, and a lichen bed on a room floor is therefore read
+by the expander as a **new floor level**: measured, it broke
+`contract-well-formed` (three spaces reporting three floor levels each),
+`contract-edge-proof` (three stair edges no longer connecting through their own
+treads) and `contract-reachability` (1120 cells cut off). A lamp substituted into
+masonry is solid before and after, so not one walk proof moves.
+
+**The scheme.** Palette role `tower/lamp` is `minecraft:glowstone`; parameter
+`lamp_period` is 8. Rules `floor/seam`, `stair_seam/seam` and `base/seam` take a
+slab of a masonry role and lay one glowing stone every `lamp_period` courses in
+x and in z, each with two mutually exclusive `dim` guards so a scope narrower or
+shallower than one period carries a seam instead of refusing. They are called
+from the four storey caps, the belfry deck, each stair landing, and — through
+`base/cap` — the **top course only** of the plinth, a seam through all seven
+courses being a glowing column in the masonry.
+
+Placement is periodic, never a weighted mix. A scatter that happened to cover
+every cell would be green by luck, and the repair for an unlucky seed would be to
+fiddle the weight.
+
+**50 glowing stones in 48561 filled cells**, at y 8, 9, 14, 15, 20, 21, 26, 27,
+32 and 33. A room therefore runs bright at the ceiling and falls away to 3 at its
+far corners rather than sitting at one level — the darkest state the gate
+permits, which is what `encounters.md` asks the stairhead arena to read as and
+what `beats.md` 7.4 asks of the climb.
+
+The last two cells to clear named the one structural asymmetry in the tower.
+Every storey but the foot stands on a seamed cap and is lit from underfoot; the
+foot stands on the plinth. They sat at light 2, at the exact midpoint between
+four lamps. Seaming the plinth's top course closes them by making the foot like
+every other storey, rather than by shortening the period until the number came
+out.
+
+    area/bell-tower cells below light 3   1335 → 212 → 7 → 2 → 0
+
+**What moved, and what did not.** 13096 cells differ from the expansion before
+this change, of which 50 are the lamps; the rest are the same role drawing a
+different member, because inserting rules into the seeded traversal re-rolls
+every weighted mix downstream of them. 102 cells change whether they are solid,
+and **every one is `ruin/rubble` against its own declared 5% air member** — no id
+outside that mix appears among them — confined to y 9..11 in the ruined low walls
+of the ward, net −2 cells. Tiles `x0y0z0` and `x0y1z0`, which carry z 0..47 of
+the approach, are byte-identical to the expansion before the change. The external
+interface is untouched: `connectors`, all 40 `anchors`, and every part of the
+spatial contract — `entry`, `spaces`, `no_body`, `edges`, `faces` — compare equal
+object for object. Only the manifest's `program_hash` and provenance line move
+with the program.
+
+**The review set does not depict this.** It is stale for an older reason too —
+every image was drawn at a tower height the current program refuses, the zone
+having risen two courses. Regenerating it is a separate act with its own
+judgement and is not done here. Per shot, counting changed cells within 20 blocks
+of the camera's standing cell: `eye-ramp_foot` and `eye-ruin_cell_4` are
+untouched (0), `eye-ramp_head` barely (851 cells, 3 lamps), and every other eye
+shot is between 4666 and 9331 with 35 to 50 lamps in view — `eye-ringing_floor`
+9331, `eye-tower_foot` 8340, `eye-stair_landing_1` 8906, `eye-broken_flight`
+8132, `eye-louvre_1` 8024, `eye-boss` 7712, `eye-shortcut_foot` 6149,
+`eye-bell_mouth` and `eye-bell_walk` 4765, `eye-belfry_bay` 4666. The four whole-
+piece shots — `ext-nw`, `ext-se`, `ext-sw` and `top`, plus `anchor-bell_mouth` —
+see all 13096.
+
+**Five areas remain dark and the build now stops on the first of them,
+`area/chapel-ward` at `[1026, 61, 8]`.** That is the cell this record's own table
+predicted for it. The tower is not the campaign's lighting; it is one eighth of
+it, and the other five areas are unchanged by this round.
 
 ### `DW0851` is closed, and the two zones now stand on the rock
 
