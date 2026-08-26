@@ -65,6 +65,13 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   every `.nbt` in the repository by walking it, so a piece in a directory nobody
   anticipated is audited too, and it prints what it examined. Campaigns using
   user-local assets are for private play and don't belong here.
+- **The engine you author with is named, not assumed.** `versions.toml`
+  `[engine].authoring_ref` is the engine revision `/new-delve` Init builds your
+  toolchain from; the page reads it from there and never restates it, so the
+  revision has exactly one copy. Editing it means editing its entry in
+  `.github/pins.toml` too. Run the check yourself with the same command CI runs:
+  `python3 tools/check-authoring-pin.py`. It needs no network and nothing
+  installed.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
 - **Touching a workflow means saying what it gates.**

@@ -26,13 +26,23 @@ engine's text.
   world than the tool claimed to cover (`.github/pins.toml` `admit-ref` and
   `tools/check-vendored.py` both record it).
 
-- **This repository holds no engine code; the engine revisions it is judged and
-  built by are pins.** Both live in the registry `.github/pins.toml`, held to
-  their policies by `tools/check-pins.py`: `admit-ref` (site:
-  `.github/workflows/prefab-audit.yml`) names the engine commit the NBT audit is
-  built from, and `engine-release` (site: `versions.toml` `[engine].ref`) names
-  the tagged engine release a delve image is built and validated with. They are
-  deliberately different and are never collapsed. When judging a red, ask which
+- **This repository holds no engine code; the engine revisions it is judged,
+  built and AUTHORED by are pins.** All three live in the registry
+  `.github/pins.toml`, held to their policies by `tools/check-pins.py`:
+  `admit-ref` (site: `.github/workflows/prefab-audit.yml`) names the engine
+  commit the NBT audit is built from; `engine-release` (site: `versions.toml`
+  `[engine].ref`) names the tagged engine release a delve image is built and
+  validated with; and `engine-authoring` (site: `versions.toml`
+  `[engine].authoring_ref`) names the engine a creator builds their own
+  toolchain from at `/new-delve` Init step 2. They are deliberately different
+  and are never collapsed — a released delve must reproduce through an engine
+  that never moves, while an author needs the engine the pipeline was last
+  walked against, which is neither the newest release nor the default branch.
+  `tools/check-authoring-pin.py` holds the last of the three to the two things
+  pin discovery structurally cannot see: that the skill page READS the pin, and
+  that the revision string lives in `versions.toml` and nowhere else (markdown
+  is prose to pin discovery, and a skill page is not prose — it is a procedure
+  somebody executes). When judging a red, ask which
   revision the **job** builds, not only which tree you were handed — a stale pin
   manufactures false reds that look exactly like content defects, and this
   repository has produced one: a zone reported red against a rule that no longer

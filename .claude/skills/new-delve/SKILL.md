@@ -119,7 +119,7 @@ and nothing downstream reports that.
 | `git` | both checkouts | `git --version` |
 | `git-lfs` | **this repository's `.nbt` prefabs are LFS objects** (`.gitattributes`). A clone without it materialises text pointers, and every tool that reads a piece fails on a file that looks present | `git lfs version` |
 | Rust (stable) | every binary is built from source | `cargo --version` |
-| Python 3.10+ | the checkers, the reference-image tool, the staging gate | `python3 --version` |
+| **Python 3.11+** | the checkers, the reference-image tool, the staging gate. 3.11 and not 3.10: `tomllib` is stdlib from 3.11, and reading `versions.toml` at step 2 needs it, as do three of this repository's five checkers | `python3 --version` |
 | **Java 21+** | **the pinned game's own requirement** — 1.21.11 declares `javaVersion.majorVersion: 21` in Mojang's version manifest, and every jar-reading checker runs under it. Chunky is not where this number comes from: its launcher and `--update snapshot` both run under 17 | `java -version` |
 | Docker | the machine ladder and the play server | `docker info` |
 | A 1.21.11 Minecraft client jar | textures. **How it arrives is the user's choice**, put to them at step 4: downloaded, or copied out of their own installation. Never redistributed by this toolchain | see step 4 |
@@ -148,15 +148,36 @@ Confirm: `file prefabs/hello-room.nbt` says `gzip compressed data`, not
 
 The compiler is not in this repository and never will be — this repository is
 content. Clone it **next to** this one and build it. It is a public repository,
-so the clone needs no credential:
+so the clone needs no credential.
+
+**Which revision is not yours to choose, and it is not the default branch.**
+`versions.toml` here names it, at `[engine].authoring_ref`: the engine this
+pipeline was last walked against end to end. Read it from there — this page
+never restates it, because a revision written on a page goes stale the first
+time the pin moves and nothing reports it.
 
 ```sh
+ENGINE_REF="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml","rb"))["engine"]["authoring_ref"])')"
 git clone https://github.com/stellarfeline/delvewright.git ../delvewright
+git -C ../delvewright checkout --detach "$ENGINE_REF"
 export DELVEWRIGHT_ENGINE="$(cd ../delvewright && pwd)"
 cargo build --release --manifest-path "$DELVEWRIGHT_ENGINE/Cargo.toml" --workspace
 cargo build --release --manifest-path "$DELVEWRIGHT_ENGINE/crates/render/Cargo.toml"
 export PATH="$DELVEWRIGHT_ENGINE/target/release:$DELVEWRIGHT_ENGINE/crates/render/target/release:$PATH"
 ```
+
+Confirm the checkout landed where it was told, before the build is trusted:
+
+```sh
+[ "$(git -C "$DELVEWRIGHT_ENGINE" rev-parse HEAD)" = "$ENGINE_REF" ] \
+  && echo "engine at $ENGINE_REF"
+```
+
+A plain clone fetches every branch and tag, so any revision the engine still
+publishes is already in the tree and the `checkout` is local. If it fails with
+`unable to read tree`, the pin names a revision the engine no longer carries:
+say so and stop — do not fall back to the default branch, which is the moving
+toolchain this step exists to replace.
 
 There are **six** binaries and this page uses all of them. Five come from the
 engine workspace; `delve-render` is its own cargo workspace and lands in a
@@ -445,15 +466,22 @@ Nothing on this page needs `pytest`. This repository's own checks are stdlib
 ### Where output goes, and the one place it cannot go
 
 `.out/` and `out/` are gitignored here; put scratch output there. **One tree is
-different: the build output the machine ladder boots.** The two ladder entries
-that take `--output <tree>` — `packtest-run.sh` and `bot-run.sh` — hand the
-compose rig an absolute path to its own Dockerfile, so those two boot a tree
-anywhere, this repository's `.out/` included. Three other paths resolve
-`../Dockerfile.delve` against the build tree and therefore need it one level
-inside the engine's `validation/`: `branch-runs.sh`, and a bare
-`docker compose … --profile play` or `--profile playtest`. Anywhere else they
-fail with `failed to read dockerfile`, which reads as a broken harness and is
-not one. So every step below that names a build output writes to
+different: the build output the machine ladder boots.** Three ladder entries can
+boot a tree anywhere, this repository's `.out/` included: `bot-run.sh` and
+`packtest-run.sh` take `--output <tree>`, and `branch-runs.sh` takes the same
+tree from `DELVE_OUTPUT` — give that one an absolute path, because
+`branch-runs.sh` resolves a relative value against the engine root while compose
+resolves it against `validation/`, so one relative value names two trees.
+
+**Two paths still need the tree one level inside the engine's `validation/`,**
+and for two different reasons. A bare `docker compose … --profile play` sets no
+`DELVE_DOCKERFILE`, so `../Dockerfile.delve` is resolved against the build
+context and only a tree beside `validation/` finds it. `--profile playtest` is
+narrower still: that service's build block hardcodes `context: ./delve-output`,
+so it cannot be pointed outside `validation/` at all. Anywhere else they fail
+with `failed to read dockerfile`, which reads as a broken harness and is not one.
+
+So every step below that names a build output writes to
 `"$DELVEWRIGHT_ENGINE/validation/delve-output"` — the one tree every path can
 boot. It is gitignored there and no campaign file goes near it.
 

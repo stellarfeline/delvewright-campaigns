@@ -221,6 +221,100 @@ cannot be.
 """
 
 [[pin]]
+id = "engine-authoring"
+value = "5fa8f49a0315e4fc92ed01d4e73c54ac43564923"
+sites = ["versions.toml"]
+repo = "stellarfeline/delvewright"
+policy = "track"
+judged_by = ".github/workflows/prefab-audit.yml"
+reviewed = "5fa8f49a0315e4fc92ed01d4e73c54ac43564923"
+builds = []
+why = """
+The engine an AUTHOR builds their own toolchain from (versions.toml
+`[engine].authoring_ref`) — the revision `/new-delve` Init step 2 checks out and
+builds, and therefore the revision every picture, refusal and diagnostic in a
+generation run comes from. Its reader is the skill page, which extracts it from
+`versions.toml` and never restates it.
+
+WHY IT IS NOT THE RELEASE PIN, since both name the same repository. `ref` answers
+"which engine would ship this content", and a released delve reproduces through
+that engine and nothing else, so it must never move for the sake of newer
+behaviour. This answers "which engine does somebody author with", and it moves
+whenever the authoring pipeline has been walked against a newer one. Pointing an
+author at the release pin would hand them the newest RELEASED engine — months of
+authoring fixes behind whatever the skill was last walked with — and pointing
+them at neither is what was happening before this pin existed: the page told the
+author to clone the engine and named no revision at all, so the toolchain moved
+under them while they worked.
+
+THE TERM, and it is `track`'s and not a new one. The value must be a commit the
+engine's DEFAULT BRANCH carries. That is not an accident of the vocabulary
+fitting; it is the property the pin actually needs. The reader of this pin is a
+stranger with a clone and no other context, and their Init has to FETCH the
+revision from the public remote. A commit reachable only from a topic branch can
+be force-pushed away or deleted with the branch, and the author's fetch then
+fails with `not our ref <sha>` before a single binary is built — a failure that
+names a hash and no cause. The default branch is the one ref this project does
+not rewrite, so "a commit the default branch carries" is exactly the demand that
+makes the revision fetchable by anybody, indefinitely. The defect cannot supply
+it: a sha somebody typed, truncated, or took from a local-only clone is not on
+that branch, and neither is a revision whose branch was thrown away.
+
+`release` WOULD BE THE WRONG TERM, not a stricter one. It demands a v<semver> tag
+at the value, and an authoring engine is deliberately AHEAD of the newest
+release — that lag is the thing this pin exists to remove. `immutable` and
+`floating` are refused outright for a repository this project builds, and
+correctly: a pin onto our own history is judged, or it is a published tag, and it
+is not exempt by being renamed.
+
+`builds` IS EMPTY, AND THE EMPTY WATCH IS THE DESIGN. The drift half of `track`
+derives its watch set from the packages the SITE builds out of the pinned
+checkout, and the site is `versions.toml`, which builds nothing. The alternative
+is not a narrower watch but an absurd one: an author builds the whole engine
+workspace, so a watch derived from what they build would be the entire `crates/`
+tree and would red on every upstream commit forever. A gate that is always red is
+one a reader learns to wave through, which is the opposite of a gate. So drift
+from the default branch is deliberately NOT a finding for this pin, for the same
+reason it is not one for `release`: what an author needs is the engine the
+pipeline was WALKED against, not the newest one.
+
+WHAT WOULD MAKE IT STALE, then, and what would make staleness a finding. It is
+stale when the engine has fixed an obstacle an author hits — a refusal with no
+reachable remedy, a step that cannot be completed — and this pin still names the
+tree without the fix; and equally when the skill gains a step written against a
+newer engine while the pin stays behind, which is the same defect pointed the
+other way. Neither is machine-detectable from this repository, and saying so is
+the honest half: staleness here is established by WALKING `/new-delve` Init end
+to end against a candidate revision, which is what produces a new `reviewed`, and
+no job in this repository can perform that walk. `reviewed` and `value` name the
+same revision because this pin was created by such a walk rather than inherited
+from an older one.
+
+WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line. Four
+readers, each catching a different bad edit, none of them able to substitute for
+another:
+
+  - `tools/check-pins.py` (offline, required job): the value is discovered in
+    `versions.toml` and must carry an entry here; editing the pin without editing
+    this file reds as an unregistered pin, and this entry keeping a value the file
+    no longer holds reds as a registry that drifted from its site.
+  - `.github/workflows/prefab-audit.yml` fetches the revision by sha into the
+    pinned engine checkout, which is the author's own fetch performed in CI: a
+    revision the remote will not serve fails there with `not our ref`, in the same
+    words the author would have seen.
+  - `tools/check-pins.py --online` (same job): a value naming no commit reds as
+    "the pin names nothing", and a value the default branch does not carry reds by
+    name. That is the term above, enforced.
+  - `tools/check-authoring-pin.py` (same job): the value is a full 40-hex
+    revision rather than a branch or tag name, the skill page really READS
+    `authoring_ref`, and the revision string appears in no other tracked file.
+    That last is not reachable from `check-pins.py` by design — markdown is prose
+    to it, and is deliberately outside pin discovery — yet the skill page is
+    executed by a person and is exactly where a second copy of the revision would
+    be pasted.
+"""
+
+[[pin]]
 id = "actionlint-image"
 value = "sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667"
 sites = [".github/workflows/workflow-lint.yml"]

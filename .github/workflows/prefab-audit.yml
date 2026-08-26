@@ -141,6 +141,22 @@ jobs:
       - name: every pin is declared
         run: python3 tools/check-pins.py
 
+      # The two things `check-pins.py` structurally cannot ask about the
+      # authoring pin, in the same job as the rest of the pin gate rather than
+      # in one of its own — a separate job would need a new required context,
+      # and this repository has already shipped the deadlock that creates.
+      #
+      # Pin discovery scans FETCH_SITES, and markdown is deliberately not one:
+      # in any other repository a revision literal in prose fetches nothing.
+      # A skill page is the exception, because it is not prose — it is a
+      # procedure a person executes, and it is exactly where somebody would
+      # paste the revision so the reader need not look it up. This holds the
+      # page to reading `authoring_ref` and holds the revision to living in
+      # `versions.toml` alone. It is this repository's own script and is never
+      # vendored.
+      - name: the authoring pin has a reader and exactly one copy
+        run: python3 tools/check-authoring-pin.py
+
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
       #
@@ -157,6 +173,35 @@ jobs:
       - name: fetch the pipeline's default branch so the pin has something to be behind
         run: |
           git -C admit-src fetch origin main:refs/remotes/origin/main
+
+      # The authoring revision, fetched BY SHA into the same checkout, which is
+      # the author's own Init step performed in CI. This checkout is at
+      # ADMIT_REF, so the authoring revision is not in it unless it happens to
+      # be an ancestor — fetching it is what lets the online check below judge
+      # it at all, and the fetch is itself the first half of the term: a
+      # revision the remote will not serve fails here with `not our ref <sha>`,
+      # in the same words an author would see, before anything is built.
+      #
+      # The sha is READ from the manifest and never written here. A second
+      # literal in this file would be a pin held in two places, which moves in
+      # one — `check-pins.py` reds on exactly that, and it is the shape this
+      # whole pin exists to remove from the skill page.
+      - name: read the authoring engine revision from versions.toml
+        id: authoring
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import tomllib
+          v = tomllib.load(open("versions.toml", "rb"))["engine"]["authoring_ref"]
+          print(f"ref={v}")
+          PY
+
+      - name: fetch the authoring revision, the way an author's Init fetches it
+        env:
+          AUTHORING_REF: ${{ steps.authoring.outputs.ref }}
+        run: |
+          set -euo pipefail
+          git -C admit-src fetch --quiet origin "$AUTHORING_REF"
 
       # `tools/check-pins.py` is not maintained here. It is ONE tool with two
       # copies — the pipeline's is the source, this one is a verbatim vendored
@@ -199,7 +244,8 @@ jobs:
         run: |
           python3 tools/check-pins.py --online \
             --checkout admit-ref=admit-src \
-            --checkout engine-release=admit-src
+            --checkout engine-release=admit-src \
+            --checkout engine-authoring=admit-src
 
       # Cache cargo + build artifacts, keyed on the pinned SHA and the admit
       # crate's lockfile so a pin bump busts the cache cleanly.
