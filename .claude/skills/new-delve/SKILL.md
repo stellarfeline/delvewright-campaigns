@@ -445,14 +445,17 @@ Nothing on this page needs `pytest`. This repository's own checks are stdlib
 ### Where output goes, and the one place it cannot go
 
 `.out/` and `out/` are gitignored here; put scratch output there. **One tree is
-different: the build output the machine ladder boots.** The compose rig builds a
-container image out of the build tree with `dockerfile: ../Dockerfile.delve`, a
-path relative to that tree, so the tree must sit one level inside the engine's
-`validation/` directory and nowhere else. Every step below that names a build
-output therefore writes to `"$DELVEWRIGHT_ENGINE/validation/delve-output"`. It
-is gitignored there, no campaign file goes near it, and a tree built anywhere
-else fails at the ladder with `failed to read dockerfile`, which reads as a
-broken harness and is not one.
+different: the build output the machine ladder boots.** The two ladder entries
+that take `--output <tree>` — `packtest-run.sh` and `bot-run.sh` — hand the
+compose rig an absolute path to its own Dockerfile, so those two boot a tree
+anywhere, this repository's `.out/` included. Three other paths resolve
+`../Dockerfile.delve` against the build tree and therefore need it one level
+inside the engine's `validation/`: `branch-runs.sh`, and a bare
+`docker compose … --profile play` or `--profile playtest`. Anywhere else they
+fail with `failed to read dockerfile`, which reads as a broken harness and is
+not one. So every step below that names a build output writes to
+`"$DELVEWRIGHT_ENGINE/validation/delve-output"` — the one tree every path can
+boot. It is gitignored there and no campaign file goes near it.
 
 ## Which placement model
 
@@ -924,9 +927,11 @@ delvec --prefabs prefabs build campaigns/<id> \
 ```
 
 Must exit 0. **Build into `$DELVEWRIGHT_ENGINE/validation/delve-output`** (or copy the tree there
-afterwards): the ladder at step 10 builds a container image from that directory,
-so a build tree outside the engine's `validation/` fails there with
-`failed to read dockerfile`, which reads as a broken harness and is not one.
+afterwards): it is the one tree every later step on this page can boot.
+`packtest-run.sh` and `bot-run.sh` take `--output <tree>` and boot a tree
+anywhere; `branch-runs.sh` and the play server's compose pair read
+`validation/delve-output` and fail elsewhere with `failed to read dockerfile`,
+which reads as a broken harness and is not one.
 
 The build writes more than a datapack. Three things to read every time:
 
@@ -2517,9 +2522,12 @@ and re-run before believing the content is at fault. *The server never
 answered …* means the command never got there and the failure is the harness's,
 not the delve's.
 
-**`failed to read dockerfile: open Dockerfile.delve` from a ladder script.** The
-build tree is outside the engine's `validation/`. Build into `$DELVEWRIGHT_ENGINE/validation/delve-output`, or
-copy the tree there — see step 8.
+**`failed to read dockerfile: open Dockerfile.delve`.** The build tree is
+outside the engine's `validation/`, on one of the paths that resolves the
+Dockerfile against the tree: `branch-runs.sh`, or a bare `docker compose` on the
+`play` or `playtest` profile. `packtest-run.sh` and `bot-run.sh` pass an
+absolute path and never raise it. Build into
+`$DELVEWRIGHT_ENGINE/validation/delve-output`, or copy the tree there — see step 8.
 
 **`refimg: no delvewright.local.toml` (exit 2).** Init step 6, path B. The file
 belongs at `"$DELVEWRIGHT_ENGINE/delvewright.local.toml"`, not here — the tool
