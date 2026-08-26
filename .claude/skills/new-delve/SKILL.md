@@ -19,12 +19,14 @@ and their prompt is a constraint set — what it pins down is honoured verbatim,
 what it leaves open is yours to invent.
 
 Every command below is yours to run and every document below is yours to write.
-**Two things are not**, because they need a body in the game or a judgement that
-is the user's to make. At each one you stop, hand over exactly what is needed,
-and **wait for an answer**:
+**Three things are not**, because they need a body in the game, a judgement that
+is the user's to make, or their permission to touch something outside this
+project. At each one you stop, hand over exactly what is needed, and **wait for
+an answer**:
 
 | where | what you hand the user | what you wait for |
 |---|---|---|
+| **Init 4** the client jar | the two ways it can reach the machine, download named as the default | which one — or the directory to copy from |
 | **§4** the design gate | the design walkthrough — every scene, near view and far | an explicit yes |
 | **§9** the walk | a running server, the connect line, and what to look for item by item | what they saw |
 
@@ -118,9 +120,9 @@ and nothing downstream reports that.
 | `git-lfs` | **this repository's `.nbt` prefabs are LFS objects** (`.gitattributes`). A clone without it materialises text pointers, and every tool that reads a piece fails on a file that looks present | `git lfs version` |
 | Rust (stable) | every binary is built from source | `cargo --version` |
 | Python 3.10+ | the checkers, the reference-image tool, the staging gate | `python3 --version` |
-| **Java 21+** | **the pinned game's own requirement** — 1.21.11 declares `javaVersion.majorVersion: 21` in Mojang's version manifest. Chunky and every jar-reading checker run under it | `java -version` |
+| **Java 21+** | **the pinned game's own requirement** — 1.21.11 declares `javaVersion.majorVersion: 21` in Mojang's version manifest, and every jar-reading checker runs under it. Chunky is not where this number comes from: its launcher and `--update snapshot` both run under 17 | `java -version` |
 | Docker | the machine ladder and the play server | `docker info` |
-| A 1.21.11 Minecraft client jar | textures — never downloaded or redistributed by this toolchain | see step 4 |
+| A 1.21.11 Minecraft client jar | textures. **How it arrives is the user's choice**, put to them at step 4: downloaded, or copied out of their own installation. Never redistributed by this toolchain | see step 4 |
 
 **Java is a stop, not a warning.** If `java -version` answers below 21, say so
 and halt: installing a JDK is the user's action on their own machine, not
@@ -224,23 +226,84 @@ delvec --prefabs prefabs analyze campaigns/<id>
 `fmt`, `schema` and `metrics` read no piece and do not need it; passing it
 anyway is harmless. When in doubt, pass it.
 
-### 4. The 1.21.11 client jar
+### 4. The 1.21.11 client jar — the user picks how it arrives
 
-Every picture in this pipeline is drawn with Minecraft's own textures, and this
-toolchain never downloads, bundles or redistributes them. The jar comes from a
-Minecraft installation, and that installation is **the user's** — if none of the
-three paths below already answers, ask them where their Minecraft directory is
-rather than searching the machine for it:
+Every picture in this pipeline is drawn with Minecraft's own textures. The jar
+is in neither repository and this toolchain never redistributes it, so it has to
+reach the machine one of two ways — and **which way is the user's decision, not
+yours.** Reading files outside the project is not something you do because it
+happened to be convenient; it is something they asked for.
+
+**This is a hand-over: present both, and wait.** Say it in this form, then end
+your turn:
+
+> The renders need Minecraft 1.21.11's own textures — a 31 MB jar. By default I
+> **download it from Mojang**, and it lands in `~/.chunky/resources/` and
+> nowhere else. If you would rather not download, **tell me your Minecraft
+> directory** and I will copy the jar out of it instead. Which?
+
+Take **A, the download,** on a plain yes and on any answer that names no
+directory. Take **B** only when they name one — never go looking for it
+yourself, and never widen a directory they named into a search.
+
+**A — download (the default).** There is **no client-jar pin in either
+repository**, so there is no URL for this page to print and you must not invent
+one. Resolve it instead, exactly the way
+`"$DELVEWRIGHT_ENGINE/tools/check-patrol-types.py"` resolves the *server* jar:
+Mojang's version manifest, the version `versions.toml` pins, and the bytes
+checked against the sha1 that same metadata publishes.
 
 ```sh
 mkdir -p ~/.chunky/resources
-cp "<your minecraft dir>/versions/1.21.11/1.21.11.jar" ~/.chunky/resources/minecraft.jar
+python3 - <<'PY'
+import hashlib, json, pathlib, sys, urllib.request
+MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json"
+VERSION = "1.21.11"      # $DELVEWRIGHT_ENGINE/versions.toml, [minecraft] version
+def get(url):
+    with urllib.request.urlopen(url, timeout=180) as r:
+        return r.read()
+entry = next((v for v in json.loads(get(MANIFEST))["versions"]
+              if v["id"] == VERSION), None)
+if entry is None:
+    sys.exit(f"{VERSION} is not in Mojang's manifest")
+dl = json.loads(get(entry["url"]))["downloads"]["client"]
+raw = get(dl["url"])
+got = hashlib.sha1(raw).hexdigest()
+if got != dl["sha1"]:
+    sys.exit(f"sha1 {got} is not {dl['sha1']} — refusing")
+out = pathlib.Path.home() / ".chunky" / "resources" / "minecraft.jar"
+out.parent.mkdir(parents=True, exist_ok=True)   # or 31 MB dies on the last line
+out.write_bytes(raw)
+print(f"{out}  {len(raw)} bytes  sha1 {got}")
+PY
 ```
 
-On macOS the launcher's directory is `~/Library/Application Support/minecraft`;
-on Linux `~/.minecraft`. Any of three paths works and they are tried in this
-order: `--textures <jar>` on the command, `$DELVEWRIGHT_CLIENT_JAR`, then
-`~/.chunky/resources/minecraft.jar`.
+Nothing there is a constant this page made up. The manifest URL is the one
+`tools/check-patrol-types.py` and `tools/derive-client-langs.py` both already
+carry, and the version is the `versions.toml` pin. Point the same walk at
+`downloads.server` instead and it reproduces `versions.toml`'s committed
+`server_jar_url` and `server_jar_sha1` exactly — which is how you know the walk
+lands on the right game rather than merely on *a* jar. **The client half has no
+committed pin to agree with**, so the sha1 checked above is Mojang's own,
+verified on the bytes as they arrive: it proves the transfer and the version, and
+nothing in either repository would notice if Mojang republished. Say that when
+you report, rather than writing a pin of your own onto this page.
+
+**B — copy, from the directory they named.**
+
+```sh
+mkdir -p ~/.chunky/resources
+cp "<the directory they named>/versions/1.21.11/1.21.11.jar" ~/.chunky/resources/minecraft.jar
+```
+
+If they ask where it usually is: `~/Library/Application Support/minecraft` on
+macOS, `~/.minecraft` on Linux. Offer those for them to confirm — do not `find`
+the disk for them.
+
+Either way the jar ends at `~/.chunky/resources/minecraft.jar`, the last of the
+three paths every texture-reading tool tries, in this order: `--textures <jar>`
+on the command, `$DELVEWRIGHT_CLIENT_JAR`, then that file. Chunky reads the same
+jar when it renders at step 12, which is why one copy serves both.
 
 Confirm the whole ladder answers, rather than discovering it at the review step:
 
@@ -254,30 +317,31 @@ create its parent, so a missing directory comes back as `DW0722 … No such file
 or directory` at exit 3 — a write error that reads like a missing prefab.
 (`delve-render` does create its output tree; the two are not consistent.)
 
-### 5. Chunky
+### 5. Chunky — named here, fetched at step 12
 
 Chunky renders every frame that has to *look* like Minecraft: the player-POV
 review shots, the storybook art, the whole-map panorama. It is a separate
-program — `delvec` writes the scene, Chunky renders it — and it is not
-installed by anything above. Two commands, once per machine:
+program — `delvec` writes the scene, Chunky renders it — and **Init does not
+install it.** Step 12 does, at the moment the first frame is wanted, and step 14
+reuses that install.
+
+It is named here anyway, because Init's job is that nothing later stops on a
+missing tool without having said so. A creator who is about to lose their
+network needs to learn *now* that a download is still owed, not four hours
+later at the review step. So Init confirms the source answers, and installs
+nothing:
 
 ```sh
-curl -LO https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
-java -jar ChunkyLauncher.jar --update snapshot
+curl -sSfIL https://chunkyupdate.lemaik.de/ChunkyLauncher.jar -o /dev/null
 ```
 
-The launcher self-installs the pinned core into `~/.chunky/lib`. A snapshot
-core is required — the stable line does not read 1.21.x worlds.
+Exit 0 means step 12 will be able to fetch it. A non-zero is not a stop — it
+does not block a single authoring step — but say it out loud here, because it
+*is* a stop at step 12.
 
-`curl -LO` drops the jar in the current directory, which is this repository's
-root, and `java -jar ChunkyLauncher.jar` only resolves from there. `*.jar` is
-not ignored here, so put it somewhere outside the tree or under `.out/` and
-**write down the absolute path** — steps 12 and 14 both invoke it, quite
-possibly in a later session, and this page prints the bare form for
-readability.
-
-Confirm: `java -jar ChunkyLauncher.jar --version` prints a launcher version, and
-`--update snapshot` ends in either an install or "No updates found".
+**Chunky needs no Java 21.** Its launcher and its `--update snapshot` both run
+under 17. The 21 in step 0 is the pinned game's own number and belongs to the
+jar-reading checkers, never to Chunky.
 
 ### 6. Reference images — read the two paths before you spend anything
 
@@ -361,7 +425,8 @@ delve-grammar list                       # the workspace's other binaries are on
 delve-render fidelity-gate               # the GPU arms, in their own target dir
 mkdir -p .out && delvec --prefabs prefabs palette prefabs/hello-room.nbt \
     -o .out/palette.json                 # the client jar
-java -jar ChunkyLauncher.jar --version   # Chunky
+curl -sSfIL https://chunkyupdate.lemaik.de/ChunkyLauncher.jar \
+    -o /dev/null                         # Chunky's source — fetched at step 12
 docker info                              # the ladder and the play server
 ```
 
@@ -1098,8 +1163,28 @@ finding, not a pass.
 ```
 
 That writes **Chunky scenes, not images** — one per shot, plus the shot index.
-Turn the ones you want into pictures with the Chunky you installed at Init step
-5, one process per scene, in parallel:
+Turning them into pictures needs Chunky, and **this is the step that installs
+it**: Init named it and deliberately did not fetch it. Two commands, once per
+machine, and they need the network:
+
+```sh
+curl -LO https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
+java -jar ChunkyLauncher.jar --update snapshot
+```
+
+The launcher self-installs the pinned core into `~/.chunky/lib`. A snapshot core
+is required — the stable line does not read 1.21.x worlds. Confirm before
+rendering: `java -jar ChunkyLauncher.jar --version` prints a launcher version,
+and `--update snapshot` ends in either an install or "No updates found".
+
+`curl -LO` drops the jar in the current directory, which is this repository's
+root, and `java -jar ChunkyLauncher.jar` only resolves from there. `*.jar` is
+not ignored here, so put it somewhere outside the tree or under `.out/` and
+**write down the absolute path** — step 14 invokes it again, quite possibly in a
+later session, and this page prints the bare form for readability.
+
+Chunky reads the client jar placed at Init step 4; it needs no Java 21 of its
+own. Then, one process per scene, in parallel:
 
 ```sh
 java -jar ChunkyLauncher.jar -scene-dir "$DELVEWRIGHT_ENGINE/validation/delve-output/shots/scenes" \
@@ -1218,9 +1303,10 @@ relative links into `media/`, small JPEGs, exterior or starting-scene shots
 only, picked from the visual-review set — never interiors or late-game
 locations. A localized `README.<code>.md` per declared language.
 
-Storybook art is Chunky, in two passes. Draft with `delvec snapshot` — fast,
-disposable, for judging *layout*: is the right thing in frame, from the right
-side, at the right distance. Then produce the shipped image with Chunky from
+Storybook art is Chunky — the install from step 12 — in two passes. Draft with
+`delvec snapshot` — fast, disposable, for judging *layout*: is the right thing in
+frame, from the right side, at the right distance. Then produce the shipped
+image with Chunky from
 `$DELVEWRIGHT_ENGINE/validation/render-shots.sh`'s scene set, plus `delvec panorama <build-dir> -o
 <dir>` for the whole-map hero shot every release owes (`--bearing` picks the
 corner). Never hand-edit a scene JSON: if the frame you want is not emittable,
