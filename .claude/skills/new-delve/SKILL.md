@@ -896,7 +896,7 @@ verifies over rcon that the datapack actually loaded before it says READY:
 
 ```sh
 "$DELVEWRIGHT_ENGINE/tools/playtest-server.sh" up campaigns/<id> \
-    --prefabs prefabs --out .out/delve
+    --prefabs prefabs --out "$PWD/.out/delve"
 ```
 
 It writes its own build tree wherever `--out` says, so nothing about this path
@@ -1263,7 +1263,7 @@ actually use.
 
 # play — one command: build, gate, serve, and print the connect line
 "$DELVEWRIGHT_ENGINE/tools/playtest-server.sh" up campaigns/<id> \
-    --prefabs prefabs --out .out/delve
+    --prefabs prefabs --out "$PWD/.out/delve"
 
 # playtest, with in-game notes
 EULA=TRUE CREATOR_NAME=<mc name> docker compose -f "$DELVEWRIGHT_ENGINE/validation/compose.yaml" \
