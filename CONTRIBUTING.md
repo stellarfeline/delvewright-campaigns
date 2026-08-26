@@ -14,6 +14,7 @@ in the main repo (GPL). Licensing is directory-scoped: `campaigns/` is
 
 ```
 versions.toml          # which main-repo commit a release of this content is built with
+.claude/skills/new-delve/SKILL.md   # the authoring procedure, run from this directory
 campaigns/<campaign-id>/
   world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
   GENERATION.md        # prompt, date, dsl_version, notable decisions
@@ -28,10 +29,16 @@ those pieces stay in the main repo (GPL code), and their outputs are committed
 here. `.nbt` files are tracked with git-lfs (see `.gitattributes`) — clone with
 git-lfs installed.
 
-Build any campaign with the main repo's `delvec`:
+Build any campaign with the main repo's `delvec`. **`--prefabs prefabs` is not
+optional here.** The flag defaults to `campaigns/prefabs`, which is where the
+library sits when the compiler is run from a main-repo checkout; standing in
+this repository that path resolves to nothing and the run exits 10 with
+`internal error: cannot read prefabs dir campaigns/prefabs` — which reads as a
+broken compiler and is not one. It is a global option, so it goes before the
+subcommand:
 
 ```
-delvec build campaigns/<id> -o out/
+delvec --prefabs prefabs build campaigns/<id> -o out/
 ```
 
 ## Contribution rules (the community contract)

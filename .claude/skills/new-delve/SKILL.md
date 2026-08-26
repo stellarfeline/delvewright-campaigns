@@ -89,8 +89,8 @@ Two branches change what you do, and both are decided before step 1:
   changed later without redoing step 2.
 - **Do you already have approved reference art?** A campaign being re-made from
   an approved design carries its images in `campaigns/<id>/design/`. If that
-  directory exists, you need no image provider and Init step 5 is a read rather
-  than a setup. See Init step 5.
+  directory exists, you need no image provider and Init step 6 is a read rather
+  than a setup. See Init step 6.
 
 ## Init — build the toolchain before you author anything
 
@@ -245,8 +245,14 @@ order: `--textures <jar>` on the command, `$DELVEWRIGHT_CLIENT_JAR`, then
 Confirm the whole ladder answers, rather than discovering it at the review step:
 
 ```sh
+mkdir -p .out
 delvec --prefabs prefabs palette prefabs/hello-room.nbt -o .out/palette.json
 ```
+
+`mkdir -p .out` is not decoration: `delvec … -o` writes the file and does **not**
+create its parent, so a missing directory comes back as `DW0722 … No such file
+or directory` at exit 3 — a write error that reads like a missing prefab.
+(`delve-render` does create its output tree; the two are not consistent.)
 
 ### 5. Chunky
 
@@ -353,7 +359,8 @@ echo "$DELVEWRIGHT_ENGINE"               # the engine checkout, non-empty
 delvec --version                         # the compiler, and the dsl number
 delve-grammar list                       # the workspace's other binaries are on PATH
 delve-render fidelity-gate               # the GPU arms, in their own target dir
-delvec --prefabs prefabs palette prefabs/hello-room.nbt -o .out/palette.json   # the client jar
+mkdir -p .out && delvec --prefabs prefabs palette prefabs/hello-room.nbt \
+    -o .out/palette.json                 # the client jar
 java -jar ChunkyLauncher.jar --version   # Chunky
 docker info                              # the ladder and the play server
 ```
@@ -566,7 +573,7 @@ author early, so no later document can reach green first.
 
 **Before any of them: the whole map gets a reference of its own.** A composition
 written without one is free invention with no criterion. On path A of Init step
-5 it is already in `design/reference/` — read it. On path B, draw it now; the
+6 it is already in `design/reference/` — read it. On path B, draw it now; the
 form and the commands are in *Reference: drawing the map's reference*.
 
 1. **`geometry-brief.json`** — the whole's written design reduced to *numbers*:
@@ -739,7 +746,7 @@ is confirmed is the design, not a build. A **render** is a candidate prefab
 imaged by `delve-render`, and belongs to curation later. Two stages, two
 producers; building prefabs first and rendering them inverts the gate.
 
-- On path A of Init step 5, the images are already in
+- On path A of Init step 6, the images are already in
   `campaigns/<id>/design/concept/` and already approved, with `design/README.md`
   carrying the date and the approved names. The gate is: present the design
   beside them and confirm the design still is what they show.
@@ -883,15 +890,38 @@ was designed.
 It happens **now**, before the ladder and before any review — every step after
 this costs more to redo than to defer.
 
-Run the gate, then start the server:
+Start the server. **One command does all of it** — it builds the campaign,
+runs the staging gate against that exact tree, starts the container, and
+verifies over rcon that the datapack actually loaded before it says READY:
+
+```sh
+"$DELVEWRIGHT_ENGINE/tools/playtest-server.sh" up campaigns/<id> \
+    --prefabs prefabs --out .out/delve
+```
+
+It writes its own build tree wherever `--out` says, so nothing about this path
+touches the engine's `validation/` directory, and it daemonizes — it prints the
+connect line and gives you your shell back. `up` also TAKES the host-25565
+mutex and holds it until `down`, so no automation can bind the port under the
+user's feet.
+
+The **second path** is the compose pair, and it is the one to take when step
+8's tree is already sitting at `"$DELVEWRIGHT_ENGINE/validation/delve-output"`
+and the ladder is coming next anyway — it serves that tree instead of building
+a fresh one:
 
 ```sh
 python3 "$DELVEWRIGHT_ENGINE/tools/staging-gate.py" --campaign campaigns/<id> \
     --build "$DELVEWRIGHT_ENGINE/validation/delve-output" \
-    --report round-1-gate.md
-EULA=TRUE docker compose -f "$DELVEWRIGHT_ENGINE/validation/compose.yaml" -f "$DELVEWRIGHT_ENGINE/validation/owner-play.yaml" \
-    --profile play up
+    --report .out/round-1-gate.md
+EULA=TRUE docker compose -f "$DELVEWRIGHT_ENGINE/validation/compose.yaml" \
+    -f "$DELVEWRIGHT_ENGINE/validation/owner-play.yaml" --profile play up
 ```
+
+That form runs in the FOREGROUND and holds the terminal until you stop it.
+Either way the gate runs first — `owner-play.yaml` refuses to start without an
+admission token minted for that exact build tree, and `playtest-server.sh`
+calls the gate itself rather than trusting anyone to remember.
 
 Then hand the user, in one message:
 
@@ -906,7 +936,9 @@ Then hand the user, in one message:
 
 **Then end your turn and wait.** Do not run the ladder, do not start step 12,
 and do not write `walk-record.json`. When they report back, their words are the
-finding — record them, and take the server down: `$DELVEWRIGHT_ENGINE/tools/playtest-server.sh down`.
+finding — record them, and take the server down:
+`$DELVEWRIGHT_ENGINE/tools/playtest-server.sh down --name <name>` — which also frees
+the 25565 mutex. `--name` defaults to `dw-playtest`; pass the one you brought up.
 
 The staging gate is not optional here and not skippable by going around it:
 `owner-play.yaml` is the only file that publishes 25565, and it refuses to start
@@ -1067,7 +1099,7 @@ finding, not a pass.
 
 That writes **Chunky scenes, not images** — one per shot, plus the shot index.
 Turn the ones you want into pictures with the Chunky you installed at Init step
-4, one process per scene, in parallel:
+5, one process per scene, in parallel:
 
 ```sh
 java -jar ChunkyLauncher.jar -scene-dir "$DELVEWRIGHT_ENGINE/validation/delve-output/shots/scenes" \
@@ -1229,9 +1261,9 @@ actually use.
 
 ```sh
 
-# play
-EULA=TRUE docker compose -f "$DELVEWRIGHT_ENGINE/validation/compose.yaml" -f "$DELVEWRIGHT_ENGINE/validation/owner-play.yaml" \
-    --profile play up
+# play — one command: build, gate, serve, and print the connect line
+"$DELVEWRIGHT_ENGINE/tools/playtest-server.sh" up campaigns/<id> \
+    --prefabs prefabs --out .out/delve
 
 # playtest, with in-game notes
 EULA=TRUE CREATOR_NAME=<mc name> docker compose -f "$DELVEWRIGHT_ENGINE/validation/compose.yaml" \
@@ -1842,7 +1874,7 @@ Concision is not the same as flatness. Cut the padding, keep the beat.
 
 ## Reference: drawing the map's reference
 
-Needed at step 2B on path B of Init step 5. On path A the views are already in
+Needed at step 2B on path B of Init step 6. On path A the views are already in
 `design/reference/` and this section is how to *extend* the series, not how to
 start one.
 
@@ -1919,7 +1951,7 @@ and the anchor id.
 
 ## Reference: when the prefab library has no piece you need
 
-Follow `docs/reference/prefab-procedure.md` — it is the procedure, and these are
+Follow `$DELVEWRIGHT_ENGINE/docs/reference/prefab-procedure.md` — it is the procedure, and these are
 its mandatory steps, in order. Do not improvise around them. All four binaries
 this needs were built at Init step 2.
 
@@ -1957,7 +1989,7 @@ this needs were built at Init step 2.
    hand you blocks that are right on every measured axis and wrong for the job (a
    light source, a gravity block, wool). Record the measured hex beside each role.
 
-   The tool needs the pinned block registry from `crates/dsl/data/` **and** a
+   The tool needs the pinned block registry from `$DELVEWRIGHT_ENGINE/crates/dsl/data/` **and** a
    1.21.11 client jar, and refuses by name when either is absent. That does not
    make the step optional: take role names from the corpus instead
    (`delve-grammar list`, then `delve-grammar show --program <nearest>`), which is
@@ -1966,7 +1998,7 @@ this needs were built at Init step 2.
    that exists but looks nothing like its name is caught only by eye at 5 below.
 
 3. **Author a grammar program.** Read the **idiom index** first
-   (`docs/reference/grammar.md` §2c): ten techniques with a runnable program each
+   (`$DELVEWRIGHT_ENGINE/docs/reference/grammar.md` §2c): ten techniques with a runnable program each
    — repetition, `otherwise`, taper/arch/gable (one recursion), air-in-a-mix
    erosion, graded erosion, surface detail, symmetry without reflection, `skip`,
    light, and arguments (`bind` — one rule called with different content). It is
@@ -2021,7 +2053,7 @@ this needs were built at Init step 2.
    blocks stand where; they never say which voids are rooms, where the doors are,
    or what a neighbour may mate with. That is a `claim` node per body of space
    plus one `contract` block classifying the names, written in the same document.
-   **The authoring surface is `docs/reference/grammar.md` §2d** — that section is
+   **The authoring surface is `$DELVEWRIGHT_ENGINE/docs/reference/grammar.md` §2d** — that section is
    the only place that says how, and `delve-grammar show --program
    spatial-contract` prints a runnable one. Write one whenever the piece has more
    than one way in and out. Step 4's `traversable` judges a piece that has none —
@@ -2242,7 +2274,7 @@ languages are delivered as sidecars.
    the compiler can map to a Minecraft lang-file name (`zh-cn` → `zh_cn`); an
    unmapped code is `DW0184` at validate time, never a language quietly missing
    from the shipped pack.
-2. **Who translates.** If `delvewright.toml`/`delvewright.local.toml` has an
+2. **Who translates.** If `"$DELVEWRIGHT_ENGINE/delvewright.toml"` or its `.local` sibling has an
    `[i18n]` section AND the environment variable it names (`api_key_env`) is set:
 
    ```sh
@@ -2341,7 +2373,7 @@ The full inventory — every binary, script and flag that exists today — is
   JSON to get one.
 - **An NPC needs a look no vanilla mob gives you**: the skin toolchain,
   `PYTHONPATH="$DELVEWRIGHT_ENGINE/tools/skin" .venv-skin/bin/python -m delve_skin all <cast.json>
-  --skins-dir … --preview-dir … --catalog-dir …`, in the venv from Init step 6. **Look at the previews**, and
+  --skins-dir … --preview-dir … --catalog-dir …`, in the venv from Init step 7. **Look at the previews**, and
   always set `model` (`wide`/`slim`) — an omitted model renders slim and distorts
   a wide skin. The compiler bakes the PNG into the delve's resource pack from
   `campaigns/<id>/skins/`.
@@ -2403,7 +2435,9 @@ not the delve's.
 build tree is outside the engine's `validation/`. Build into `$DELVEWRIGHT_ENGINE/validation/delve-output`, or
 copy the tree there — see step 8.
 
-**`refimg: no delvewright.local.toml` (exit 2).** Init step 5, path B. It names
+**`refimg: no delvewright.local.toml` (exit 2).** Init step 6, path B. The file
+belongs at `"$DELVEWRIGHT_ENGINE/delvewright.local.toml"`, not here — the tool
+resolves it against its own checkout and takes no `--config`. It names
 the file, the section, and where the template is. If the campaign already has an
 approved `design/` directory you are on path A and do not need this at all.
 
