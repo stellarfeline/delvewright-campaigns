@@ -22,6 +22,14 @@ closed:
 - a run that examined no file, which would be the gate going dark rather than a
   clean tree.
 
+IDENTITY is asserted in all three directions, because it is where this gate
+answered honestly about the wrong object. A pin is an ENTRY AT A SITE and never
+a bare revision: two entries may hold one revision at their own sites, which for
+two pins that both track the engine's tip is the normal state and not an
+exception; a copy at a file no holder declared still reds; and two entries
+claiming the manifest itself reds, because that literal would then carry two
+decisions about when it may move.
+
 Both directions throughout: a correct tree passes. A checker that only ever
 fails proves as little as one that only ever passes.
 
@@ -81,8 +89,18 @@ def manifest(value: str | None, *, key: str = "authoring_ref") -> str:
 
 def registry(*values: str, sites: str = f'"{MANIFEST}"') -> str:
     """One `[[pin]]` per value, so duplication and absence are both expressible."""
+    return registry_pairs(*((v, sites) for v in values))
+
+
+def registry_pairs(*pairs: tuple[str, str]) -> str:
+    """One `[[pin]]` per (value, sites) pair.
+
+    Sites are per-entry because identity is (entry, site): two pins holding one
+    revision at their OWN sites is a legitimate state, and two holding it at the
+    SAME site is not. Only a per-entry site list can express both.
+    """
     out = []
-    for i, v in enumerate(values):
+    for i, (v, sites) in enumerate(pairs):
         out.append(
             "[[pin]]\n"
             f'id = "engine-authoring-{i}"\n'
@@ -240,12 +258,78 @@ class TheAllowedCopyIsTheCheckedCopy(Fixture):
         self.assertEqual(r.returncode, 1, r.stdout)
         self.assertIn("no entry in", r.stderr)
 
-    def test_two_entries_for_one_revision_are_a_finding(self) -> None:
-        """Discovery is keyed by the value; the loser stops being checked."""
+    def test_two_entries_claiming_the_manifest_are_a_finding(self) -> None:
+        """One literal, two decisions about when it may move.
+
+        The effective obligation becomes the disjunction of the two policies,
+        only as strong as the weaker and chosen by whoever wrote the second
+        entry rather than by the object.
+        """
         self.lay(pins=registry(REV, REV))
         r = self.run_check()
         self.assertEqual(r.returncode, 1, r.stdout)
         self.assertIn("2 entries", r.stderr)
+        self.assertIn("among their sites", r.stderr)
+
+    def test_two_pins_may_hold_one_revision_at_their_own_sites(self) -> None:
+        """The newly permitted case, and it is the normal state of two tips.
+
+        `admit-ref` names which engine's rules judge a prefab; this pin names
+        which engine an author builds from. Both follow the engine's default
+        branch, so the day both were last re-pinned at the same tip they agree,
+        and neither value is wrong. Asking the question of the bare revision
+        reported the other pin's own declared site as this pin's stray second
+        copy — a true sentence about a different object, and a refusal with no
+        honest repair.
+        """
+        self.lay(
+            extra={"other.yml": f"ADMIT_REF: {REV}\n"},
+            pins=registry_pairs(
+                (REV, f'"{MANIFEST}"'), (REV, '"other.yml"')
+            ),
+        )
+        r = self.run_check()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("also held, at its own site(s)", r.stdout)
+        self.assertIn("other.yml", r.stdout)
+
+    def test_a_copy_no_holder_declared_is_still_a_finding(self) -> None:
+        """A shared revision is not a licence, and this is the guarded half.
+
+        Two entries hold the revision at their own sites and a third file
+        carries it that neither declares. That is the drift the scan exists for
+        and it still reds, so the accounting cannot be widened into an escape.
+        """
+        self.lay(
+            extra={
+                "other.yml": f"ADMIT_REF: {REV}\n",
+                "docs/toolchain.md": f"engine {REV}\n",
+            },
+            pins=registry_pairs(
+                (REV, f'"{MANIFEST}"'), (REV, '"other.yml"')
+            ),
+        )
+        r = self.run_check()
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("docs/toolchain.md", r.stderr)
+        self.assertNotIn("other.yml", r.stderr)
+
+    def test_the_accounted_paths_are_named_on_the_run(self) -> None:
+        """An exemption nobody can see is one nobody can audit."""
+        self.lay(
+            extra={"other.yml": f"ADMIT_REF: {REV}\n"},
+            pins=registry_pairs(
+                (REV, f'"{MANIFEST}"'), (REV, '"other.yml"')
+            ),
+        )
+        r = self.run_check()
+        line = next(
+            ln for ln in r.stdout.splitlines() if ln.startswith("-- second-copy")
+        )
+        self.assertIn("the registry accounts this revision to", line)
+        self.assertIn(REGISTRY, line)
+        self.assertIn(MANIFEST, line)
+        self.assertIn("other.yml", line)
 
     def test_an_entry_naming_another_site_is_a_finding(self) -> None:
         self.lay(pins=registry(REV, sites='"somewhere/else.yml"'))
@@ -296,14 +380,19 @@ class ThisRepositorysOwnTree(unittest.TestCase):
         with (REPO / ".github" / "pins.toml").open("rb") as fh:
             pins = tomllib.load(fh).get("pin", [])
         entries = [p for p in pins if p.get("value") == value]
+        owners = [p for p in entries if MANIFEST in p.get("sites", [])]
         self.assertEqual(
-            len(entries),
+            len(owners),
             1,
-            "the authoring revision must carry exactly one registry entry — "
-            "unregistered, nothing says on what terms it may move; twice, and "
-            "discovery merges them and one stops being checked at all",
+            f"the authoring revision must carry exactly one registry entry "
+            f"NAMING {MANIFEST} as a site — unregistered, nothing says on what "
+            f"terms it may move; claimed twice at this one manifest, one "
+            f"literal carries two decisions and the effective obligation is "
+            f"the disjunction of their policies. Other entries may hold the "
+            f"same revision at their own sites: two pins that both track the "
+            f"engine's tip agree as their normal state. Holders here: "
+            f"{[p.get('id') for p in entries]}",
         )
-        self.assertIn(MANIFEST, entries[0].get("sites", []))
 
     def test_the_guard_itself_is_not_vendored(self) -> None:
         """It must not be removable by the act it exists to catch.

@@ -46,7 +46,7 @@ refused here by shape, before any question of history arises.
   that clones the engine without consulting the manifest is the state this pin
   was written to end.
 
-## The one place a second copy is allowed, and why that is not an exemption
+## Which copies are allowed, and why that is not an exemption
 
 `.github/pins.toml` necessarily carries the value — it is the registry, and the
 entry's `value` IS the declaration. So the second-copy scan skips it, and an
@@ -54,11 +54,32 @@ exemption that stopped there would be the escape hatch the defect can supply: a
 registry gone stale looks exactly like a registry deliberately unchanged.
 
 It is replaced by a stronger demand rather than waived. The registry must parse,
-exactly ONE entry must carry the manifest's revision, and that entry must name
-`versions.toml` among its sites. Unregistered, nothing says on what terms the pin
-may move; registered twice, `check-pins.py`'s discovery merges the two entries
-into whichever the registry lists last and the other stops being checked at all.
-The copy that is allowed is the copy that is checked.
+exactly ONE entry must carry the manifest's revision AND name `versions.toml`
+among its sites, and that entry is the authoring pin. Unregistered, nothing says
+on what terms the pin may move; registered twice AT THIS MANIFEST, one literal
+carries two decisions about when it may move and the effective obligation is the
+disjunction of their policies — as strong as the weaker, and picked by whoever
+wrote the second entry. The copy that is allowed is the copy that is checked.
+
+A REVISION IS NOT A PIN — an occurrence of it at a declared site is. Two pins
+answering different questions may hold the same revision, and where both track
+the engine's moving tip, coinciding is their normal state rather than an
+exception: `admit-ref` names which engine's rules judge a prefab, this one names
+which engine an author builds from, and the day both were last re-pinned at the
+same tip they agree. So the second-copy scan accounts an occurrence against the
+sites the REGISTRY declares for that revision, and reports only what no entry
+holding it declared. Asking the question of the bare value instead reported
+`admit-ref`'s own correctly-declared site as this pin's stray second copy — an
+honest, affirmative answer about a different object, and a refusal with no
+truthful repair, since neither pin's value was wrong.
+
+That accounting cannot become the hatch, because a declared site is not free.
+`check-pins.py` holds every entry to its sites in the other direction: a shaped
+value declared at a site pin discovery cannot see there — a markdown page, which
+is prose to it — reds as a registry that drifted from its file. So a duplicate
+pasted into the skill page cannot be silenced by adding that page to an entry's
+`sites`; the escape route reds one gate over. Every exempted path is printed with
+the run, so the accounting is visible rather than assumed.
 
 Every count printed carries its DENOMINATOR — examined against what population —
 because a truthful count over a truncated input is the failure this repository
@@ -143,13 +164,28 @@ def manifest_value(root: pathlib.Path) -> tuple[str | None, str | None]:
     return node, None
 
 
-def registry_entry(root: pathlib.Path, value: str) -> list[str]:
-    """Exactly one registry entry declares this revision, at this manifest.
+def registry_entry(
+    root: pathlib.Path, value: str
+) -> tuple[list[str], set[str]]:
+    """Exactly one registry entry declares this revision AT THIS MANIFEST.
 
-    This is what makes skipping `REGISTRY` in the second-copy scan a demand
-    rather than an exemption. A stale registry and a deliberately-unchanged one
-    read identically, so the skip is paid for by asking the registry a question
-    only a current entry can answer.
+    Returns the findings and the set of paths the registry accounts this
+    revision to — every site declared by every entry holding it. That set is
+    what the second-copy scan reads: an occurrence at a declared site belongs to
+    a pin somebody registered, and only an occurrence nobody declared is a stray
+    copy.
+
+    Identity is (entry, site) and never the bare value, because two pins that
+    both track the engine's moving tip hold the same revision as their normal
+    state. What may not happen is two entries claiming the SAME occurrence:
+    `versions.toml` is this pin's site, and a second entry naming it would put
+    two decisions on one literal, with the effective obligation the disjunction
+    of their policies.
+
+    This is also what makes skipping `REGISTRY` in the scan a demand rather than
+    an exemption. A stale registry and a deliberately-unchanged one read
+    identically, so the skip is paid for by asking the registry a question only
+    a current entry can answer.
     """
     text = read_text(root / REGISTRY)
     if text is None:
@@ -157,35 +193,57 @@ def registry_entry(root: pathlib.Path, value: str) -> list[str]:
             f"{REGISTRY} is not a readable file in this repo, so nothing "
             f"registers the authoring pin and nothing says on what terms it may "
             f"move"
-        ]
+        ], set()
     try:
         pins = tomllib.loads(text).get("pin", [])
     except tomllib.TOMLDecodeError as exc:
-        return [f"{REGISTRY} is not parseable TOML ({exc})"]
+        return [f"{REGISTRY} is not parseable TOML ({exc})"], set()
     entries = [p for p in pins if p.get("value") == value]
+    accounted = {
+        s
+        for p in entries
+        for s in p.get("sites", [])
+        if isinstance(s, str)
+    }
     if not entries:
         return [
             f"no entry in {REGISTRY} declares {value}. The revision in "
             f"`{MANIFEST}` moved and the registry did not, so the terms on "
             f"record describe a revision nobody builds with."
-        ]
-    if len(entries) > 1:
-        ids = ", ".join(str(p.get("id", "<unnamed>")) for p in entries)
+        ], accounted
+    owners = [p for p in entries if MANIFEST in p.get("sites", [])]
+    ids = ", ".join(str(p.get("id", "<unnamed>")) for p in entries)
+    if not owners:
         return [
-            f"{len(entries)} entries in {REGISTRY} declare {value} ({ids}). "
-            f"Pin discovery is keyed by the value, so two entries sharing one "
-            f"merge into whichever the registry lists last and the other stops "
-            f"being checked at all."
-        ]
-    sites = entries[0].get("sites", [])
-    if MANIFEST not in sites:
-        return [
-            f"{REGISTRY} entry {entries[0].get('id', '<unnamed>')!r} declares "
-            f"the authoring revision but does not name {MANIFEST} among its "
+            f"{len(entries)} entr{'y' if len(entries) == 1 else 'ies'} in "
+            f"{REGISTRY} declare{'s' if len(entries) == 1 else ''} the "
+            f"authoring revision ({ids}) and none names {MANIFEST} among its "
             f"sites, so the registry is describing some other file"
-        ]
-    print(f"  ok   {REGISTRY} registers it once, with {MANIFEST} as its site")
-    return []
+        ], accounted
+    if len(owners) > 1:
+        owner_ids = ", ".join(str(p.get("id", "<unnamed>")) for p in owners)
+        return [
+            f"{len(owners)} entries in {REGISTRY} declare {value} with "
+            f"{MANIFEST} among their sites ({owner_ids}). One literal cannot "
+            f"carry two decisions about when it may move: the effective "
+            f"obligation becomes the disjunction of their policies, only as "
+            f"strong as the weakest, chosen by whoever wrote the second entry "
+            f"rather than by the object."
+        ], accounted
+    others = [p for p in entries if p not in owners]
+    also = (
+        ""
+        if not others
+        else (
+            f"; the same revision is also held, at its own site(s), by "
+            f"{', '.join(str(p.get('id', '<unnamed>')) for p in others)}"
+        )
+    )
+    print(
+        f"  ok   {REGISTRY} registers it once at {MANIFEST} "
+        f"({owners[0].get('id', '<unnamed>')}){also}"
+    )
+    return [], accounted
 
 
 def check(root: pathlib.Path) -> tuple[int, list[str]]:
@@ -204,13 +262,20 @@ def check(root: pathlib.Path) -> tuple[int, list[str]]:
             f"ran — which is the defect this pin replaced. Name the revision."
         )
 
-    errors.extend(registry_entry(root, value))
+    reg_errors, accounted = registry_entry(root, value)
+    errors.extend(reg_errors)
 
     files = tracked_files(root)
-    # `REGISTRY` is skipped because the registry's own `value` IS the
-    # declaration; `registry_entry` above replaces the skip with a stricter
-    # demand, so the copy that is allowed is the copy that is checked.
-    others = [f for f in files if f not in (MANIFEST, REGISTRY)]
+    # An occurrence is accounted for when the REGISTRY declares this revision at
+    # that file — which covers `MANIFEST` (this pin's own site, demanded above)
+    # and every site of every other entry holding the same revision. `REGISTRY`
+    # itself is skipped because its `value` IS the declaration; `registry_entry`
+    # replaces that skip with a stricter demand, so the copy that is allowed is
+    # the copy that is checked. `MANIFEST` is named here as well as derived, so
+    # a registry that has stopped declaring it produces the one finding above
+    # rather than a second, louder one about a file that is doing its job.
+    accounted = accounted | {MANIFEST, REGISTRY}
+    others = [f for f in files if f not in accounted]
     examined = 0
     if not shaped:
         # An unshaped value is an ordinary WORD, and searching the tree for it
@@ -238,10 +303,12 @@ def check(root: pathlib.Path) -> tuple[int, list[str]]:
                     f"nothing reports it, because pin discovery does not read "
                     f"prose."
                 )
+        held = sorted(p for p in accounted if p in set(files))
         print(
             f"-- second-copy scan: {examined} readable tracked file(s) "
-            f"examined, out of {len(others)} tracked beside {MANIFEST} "
-            f"({len(files)} tracked in all)"
+            f"examined, out of {len(others)} tracked beside the "
+            f"{len(held)} the registry accounts this revision to "
+            f"({', '.join(held)}) — {len(files)} tracked in all"
         )
         if examined == 0:
             errors.append(
