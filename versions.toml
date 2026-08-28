@@ -16,10 +16,11 @@
 # compiler a release ships. Do not collapse the two — one must never move and the
 # other must not be allowed to sit still unexamined.
 #
-# Neither pin's terms live in a comment. Both are registered in
-# `.github/pins.toml`, and `tools/check-pins.py` is what holds them to those
-# terms: the release pin must be a commit a release tag points at, and the audit
-# pin is measured against the sources it builds, in the job that builds them.
+# No pin's terms live in a comment. Every one is registered in
+# `.github/pins.toml`, and `tools/check-pins.py` is what holds it to those
+# terms: the release pin must be a commit a release tag points at, the audit
+# pin is measured against the sources it builds, in the job that builds them,
+# and the authoring pin must be a commit the engine's default branch carries.
 
 [engine]
 # The main repo and the commit `release.yml` checks out to build + validate a
@@ -43,6 +44,26 @@ repo = "stellarfeline/delvewright"
 # checks out is older than the version the campaign's storybook says it was
 # verified with.
 ref = "91a9a843d2ad2f0c3b852ea5fa4178567b68f875"
+# The commit an AUTHOR builds their own toolchain from: the engine `/new-delve`
+# Init step 2 checks out and builds, and therefore the engine every picture,
+# refusal and diagnostic in a generation run comes from.
+#
+# A DIFFERENT QUESTION FROM `ref` ABOVE, with a different lifetime, which is why
+# it is a second key and not a second use of the first. `ref` names the engine a
+# RELEASE ships and must never move for the sake of newer behaviour; a released
+# delve reproduces through it and through nothing else. This one names the engine
+# an author WORKS with, and it moves whenever the authoring pipeline has been
+# walked against a newer one. Pointing an author at `ref` would hand them the
+# newest RELEASED engine, which is months of authoring fixes behind whatever the
+# skill was last walked with.
+#
+# Before this key existed the skill told the author to clone the engine and named
+# no revision at all, so the toolchain they authored with was whatever the default
+# branch happened to be that hour — a moving instrument, under them, while they
+# worked. The skill reads the revision from here and never restates it: a literal
+# on the page goes stale, an indirection stays true, and
+# `tools/check-authoring-pin.py` is what holds the page to that.
+authoring_ref = "b65783e8a0ee65e3308c67b52b1e1922dc0b1638"
 
 [registry]
 # Where a released delve image is published. `delve-<campaign>` per campaign,

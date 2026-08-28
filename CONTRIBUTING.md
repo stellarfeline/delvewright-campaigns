@@ -14,6 +14,7 @@ in the main repo (GPL). Licensing is directory-scoped: `campaigns/` is
 
 ```
 versions.toml          # which main-repo commit a release of this content is built with
+.claude/skills/new-delve/SKILL.md   # the authoring procedure, run from this directory
 campaigns/<campaign-id>/
   world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
   GENERATION.md        # prompt, date, dsl_version, notable decisions
@@ -28,10 +29,16 @@ those pieces stay in the main repo (GPL code), and their outputs are committed
 here. `.nbt` files are tracked with git-lfs (see `.gitattributes`) — clone with
 git-lfs installed.
 
-Build any campaign with the main repo's `delvec`:
+Build any campaign with the main repo's `delvec`. **`--prefabs prefabs` is not
+optional here.** The flag defaults to `campaigns/prefabs`, which is where the
+library sits when the compiler is run from a main-repo checkout; standing in
+this repository that path resolves to nothing and the run exits 10 with
+`internal error: cannot read prefabs dir campaigns/prefabs` — which reads as a
+broken compiler and is not one. It is a global option, so it goes before the
+subcommand:
 
 ```
-delvec build campaigns/<id> -o out/
+delvec --prefabs prefabs build campaigns/<id> -o out/
 ```
 
 ## Contribution rules (the community contract)
@@ -58,6 +65,16 @@ delvec build campaigns/<id> -o out/
   every `.nbt` in the repository by walking it, so a piece in a directory nobody
   anticipated is audited too, and it prints what it examined. Campaigns using
   user-local assets are for private play and don't belong here.
+- **The engine you author with is named, not assumed.** `versions.toml`
+  `[engine].authoring_ref` is the engine revision `/new-delve` Init builds your
+  toolchain from; the page reads it from there and never restates it, so
+  `versions.toml` is where that revision is written. Anywhere else it stands has
+  to be a file `.github/pins.toml` declares as some pin's site — a revision
+  pasted into a page or a script drifts the first time the pin moves, and
+  nothing would report it. Editing the pin means editing its entry in
+  `.github/pins.toml` too. Run the check yourself with the same command CI runs:
+  `python3 tools/check-authoring-pin.py`. It needs no network and nothing
+  installed.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
 - **Touching a workflow means saying what it gates.**
