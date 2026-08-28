@@ -67,8 +67,11 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   user-local assets are for private play and don't belong here.
 - **The engine you author with is named, not assumed.** `versions.toml`
   `[engine].authoring_ref` is the engine revision `/new-delve` Init builds your
-  toolchain from; the page reads it from there and never restates it, so the
-  revision has exactly one copy. Editing it means editing its entry in
+  toolchain from; the page reads it from there and never restates it, so
+  `versions.toml` is where that revision is written. Anywhere else it stands has
+  to be a file `.github/pins.toml` declares as some pin's site — a revision
+  pasted into a page or a script drifts the first time the pin moves, and
+  nothing would report it. Editing the pin means editing its entry in
   `.github/pins.toml` too. Run the check yourself with the same command CI runs:
   `python3 tools/check-authoring-pin.py`. It needs no network and nothing
   installed.

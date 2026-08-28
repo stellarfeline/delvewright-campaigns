@@ -38,11 +38,19 @@ engine's text.
   and are never collapsed — a released delve must reproduce through an engine
   that never moves, while an author needs the engine the pipeline was last
   walked against, which is neither the newest release nor the default branch.
+  Two of them nonetheless track the engine's default branch, so holding the same
+  revision is their NORMAL state and not a defect: **a pin is identified by its
+  entry and its site, never by its value.** An occurrence of a revision is
+  accounted for when some entry holding it declares that file as a site; what
+  no entry declared is a stray copy, and two entries claiming one site for one
+  value is a red, because that literal would carry two decisions about when it
+  may move.
   `tools/check-authoring-pin.py` holds the last of the three to the two things
   pin discovery structurally cannot see: that the skill page READS the pin, and
-  that the revision string lives in `versions.toml` and nowhere else (markdown
-  is prose to pin discovery, and a skill page is not prose — it is a procedure
-  somebody executes). When judging a red, ask which
+  that the revision string stands only in `versions.toml` and in the sites the
+  registry declares for a pin holding it (markdown is prose to pin discovery,
+  and a skill page is not prose — it is a procedure somebody executes). When
+  judging a red, ask which
   revision the **job** builds, not only which tree you were handed — a stale pin
   manufactures false reds that look exactly like content defects, and this
   repository has produced one: a zone reported red against a rule that no longer
