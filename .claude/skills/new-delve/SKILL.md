@@ -124,11 +124,48 @@ and nothing downstream reports that.
 | Docker | the machine ladder and the play server | `docker info` |
 | A 1.21.11 Minecraft client jar | textures. **How it arrives is the user's choice**, put to them at step 4: downloaded, or copied out of their own installation. Never redistributed by this toolchain | see step 4 |
 
-**Java is a stop, not a warning.** If `java -version` answers below 21, say so
-and halt: installing a JDK is the user's action on their own machine, not
-yours. The failure you avoid by stopping here is silent — a jar-reading tool
-whose Java is too old exits non-zero with a traceback that never names the
-version, several hours into the run, and reads as a broken gate.
+**Java is a stop — but look before you halt.** A machine whose default `java`
+answers below 21 very often *has* a 21 sitting beside it, unselected. Installing
+a JDK is the user's action; **choosing among the ones already on their disk is
+yours**, and halting for something already present spends the user's session on a
+`PATH` line. So when `java -version` answers below 21, enumerate first:
+
+```sh
+# `find` and not a glob anywhere: zsh makes an unmatched pattern a hard error,
+# and it expands the pattern before the command sees it, so quoting the tool
+# does not help. /usr/lib/jvm is absent on macOS and that must not be an error.
+for c in $(/usr/libexec/java_home -V 2>&1 | sed -n 's/.* \(\/.*\)$/\1/p') \
+         $(find /opt/homebrew/opt /usr/lib/jvm -maxdepth 1 -mindepth 1 \
+                 \( -name 'openjdk*' -o -name 'jdk*' -o -name 'temurin*' \
+                    -o -name 'zulu*' -o -name 'java*' \) 2>/dev/null) ; do
+  [ -x "$c/bin/java" ] || continue
+  # `[^"]*` and not `.*`: a greedy match runs to the CLOSING quote and captures
+  # the empty string, so every JDK silently reads as version "" and is skipped.
+  v="$("$c/bin/java" -version 2>&1 | sed -n '1s/^[^"]*"\([0-9]*\).*/\1/p')"
+  [ -n "$v" ] && [ "$v" -ge 21 ] && echo "$v $c"
+done | sort -n | head -1
+```
+
+**Ask each binary its own version; never read it off the directory name.** On a
+Homebrew machine `openjdk@20`, `@22` and `@23` are all symlinks to whatever
+`openjdk` currently is, so the name says 20 and the binary answers 26 — and
+`openjdk@21`, the one that is genuinely 21, is keg-only and does not appear in
+`/usr/libexec/java_home -V` at all. A search that trusts the path both rejects
+the right JDK and accepts the wrong one, and neither failure announces itself.
+
+Found one, export it for the session and say which you took:
+
+```sh
+export JAVA_HOME=<the path the loop printed>
+export PATH="$JAVA_HOME/bin:$PATH"
+java -version                            # confirm it, do not assume it
+```
+
+**Only if the loop prints nothing, halt** and tell the user a JDK 21 has to be
+installed — that, and not the selection, is their action on their own machine.
+The failure you avoid by stopping is silent: a jar-reading tool whose Java is too
+old exits non-zero with a traceback that never names the version, several hours
+into the run, and reads as a broken gate.
 
 ### 1. Materialise this repository's prefabs
 
