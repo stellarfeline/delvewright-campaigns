@@ -97,6 +97,22 @@ such files — the admit modules `main`, `lib`, `cli`, `allowlist`, `audit`,
 `blocks`, `blockshape`, `split`, `prefab`, `metrics`, `registry`, `ids`,
 `diagnostic` — 22 are byte-identical, 10 moved and 1 (`blockshape`) is new.
 
+BUCKETED BY COMMIT, because the red names sixteen and the next reader will be
+holding that list. Seven of the sixteen touch no file the `audit` path compiles
+at all — `7e8f52c0`, `02e5edf2`, `7a7a91ff`, `dac05918`, `ecf1b8d4`, `01f80a51`,
+`39d2f3dd` — and each reaches only `crates/compiler`, or `crates/dsl`'s `stages`
+and `validate`, which is where a campaign document is judged. Of the nine that
+do, five touch only `crates/dsl`'s `lib` (module declarations and re-exports,
+nothing removed): `dd287282`, `8b9c253c`, and the `lib` half of `c215012c`,
+`86944766`, `b65783e8`. Four touch the door-gated modules and nothing else this
+library opens — `b18d7564` and `41f629a1` (`grammar`'s `contract`, `gates`,
+`nav`), `18206ebe` (`grammar/nav`), and the `metrics`/`diagnostic`/`registry`
+halves of `c215012c`, `86944766`, `41f629a1` and `b65783e8`. Exactly ONE commit,
+`90cf2051`, changes a rule this library executes: the collision table it adds as
+`dsl/blockshape`, the `schem/fluid` delegation onto it, the `schem/lib`
+re-export that lets `fluid` spell it, and the `classes` vector on
+`grammar/model`. That is the commit the comparison below is really about.
+
 THE ELEVEN THAT MOVED, sorted by whether this library can reach them, because
 that is the whole of the judgement. FIVE are executed on every piece here and
 are what the comparison below actually tests: `dsl/blockshape` is the new
