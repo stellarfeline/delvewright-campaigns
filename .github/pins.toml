@@ -89,13 +89,13 @@ THE READING, so the next one does not have to repeat it. Across
 800c958e..b65783e8, 32 commits landed upstream and 16 of them touch the watch
 closure, which is why the red names sixteen and still says nothing about a
 verdict. The question the closure cannot answer is answered one level down, by
-asking of every file the `audit` path compiles whether it moved at all. Of 33
+asking of every file the `audit` path compiles whether it moved at all. Of 34
 such files — the admit modules `main`, `lib`, `cli`, `allowlist`, `audit`,
 `diag`, `settling`, `spatial`, `structure`; the schem modules `lib`, `convert`,
-`diag`, `fluid`, `nbt`, `prefab`, `stairs`; the grammar modules `lib`, `block`,
+`diag`, `fluid`, `nav`, `nbt`, `prefab`, `stairs`; the grammar modules `lib`, `block`,
 `geom`, `model`, `settle`, `contract`, `gates`, `nav`; the dsl modules `lib`,
 `blocks`, `blockshape`, `split`, `prefab`, `metrics`, `registry`, `ids`,
-`diagnostic` — 22 are byte-identical, 10 moved and 1 (`blockshape`) is new.
+`diagnostic` — 22 are byte-identical, 11 moved and 1 (`blockshape`) is new.
 
 BUCKETED BY COMMIT, because the red names sixteen and the next reader will be
 holding that list. Seven of the sixteen touch no file the `audit` path compiles
@@ -113,7 +113,7 @@ halves of `c215012c`, `86944766`, `41f629a1` and `b65783e8`. Exactly ONE commit,
 re-export that lets `fluid` spell it, and the `classes` vector on
 `grammar/model`. That is the commit the comparison below is really about.
 
-THE ELEVEN THAT MOVED, sorted by whether this library can reach them, because
+THE TWELVE THAT MOVED, sorted by whether this library can reach them, because
 that is the whole of the judgement. FIVE are executed on every piece here and
 are what the comparison below actually tests: `dsl/blockshape` is the new
 collision authority; `schem/fluid`'s `is_fluid` and `is_air` stop carrying their
@@ -121,11 +121,12 @@ own lists and delegate to it; `schem/lib` gains the one `pub use` that lets them
 `grammar/model` gains a `classes` vector written beside the palette and a
 `collision()` reader for it, additive, with a hand-written `PartialEq` over the
 same fields the derive covered; `dsl/lib` gains module declarations and
-re-exports and removes none. SIX cannot be reached from this library at all, and
+re-exports and removes none. SEVEN cannot be reached from this library at all, and
 each is stopped by a door this repository does not open: `grammar/contract`,
 `grammar/gates` and `grammar/nav` are entered only from `contract::check`, which
 `Door::open` calls only after it has found a `spatial_contract` in a piece's
-declaration document; `dsl/metrics` and `dsl/diagnostic` are entered only from
+declaration document, and `schem/nav` — where the walk itself lives — is entered
+only from `grammar/nav`, so it sits behind that same door; `dsl/metrics` and `dsl/diagnostic` are entered only from
 `audit::footprint_class`, which returns before either when the document declares
 no `footprint_class`; and `dsl/registry` gains a vanilla entity-tag table that
 nothing on this path asks for — the audit path takes only the `Lighting` and
