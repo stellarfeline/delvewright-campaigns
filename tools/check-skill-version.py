@@ -126,6 +126,28 @@ and is checked for internal consistency, while the field a reader can actually
 rely on states which single engine anybody has run. Do not read a green here as
 "the whole 1.x line was tested" — nothing tested it.
 
+THE ONE COPY THIS FILE STILL CARRIES, AND WHAT CLOSES IT
+
+The clap parser below (`parse_cli` and the regexes around it) is a SECOND COPY
+of the engine's, and it is the one thing here that is not held to its source by
+a machine. The engine has the same parser at `tools/lib/clap_surface.py`, where
+`tools/build-release-binaries.sh` uses it to hold a released binary's `--help`
+to its sources; this file cannot vendor it yet, because a vendored path must
+exist at the revision `[engine].authoring_ref` names and that extraction landed
+after it. Moving the pin to reach it is not a repair available here: this pin
+moves only when somebody has WALKED `/new-delve` Init end to end against a
+candidate revision, which is a decision with a different owner.
+
+So it is recorded rather than hidden, with the exact condition that ends it:
+**when `authoring_ref` next moves to a revision carrying
+`tools/lib/clap_surface.py`, add that path to the `engine-authoring` entry's
+`vendors`, import it here, and delete the copy below.** Until then the risk is
+bounded and worth naming: the two parsers agree today, and a drift between them
+makes THIS gate wrong about the engine's command surface — check 4 would go on
+believing in a subcommand the engine had renamed. Nothing in either repository
+would say so, which is precisely why the sentence is here instead of in a
+planner's note.
+
 WHY THE GATE LIVES HERE AND NOT IN THE ENGINE
 
 It used to live in the engine repository, beside a copy of the skill page. The
