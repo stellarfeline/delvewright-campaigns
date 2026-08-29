@@ -591,7 +591,7 @@ with its own schema:
 
 ```json
 {
-  "dsl_version": "0.17.0",
+  "dsl_version": "0.19.0",
   "campaign_id": "the-weighbridge",
   "stage": "world",
   "content": { }
