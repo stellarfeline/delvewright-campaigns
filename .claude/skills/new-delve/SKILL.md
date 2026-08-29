@@ -569,9 +569,10 @@ there — the documents, the design record, the generation record, the storybook
 Build output goes beside them and is ignored by git there.
 
 **The document names, all of them.** `delvec validate` reads a whole campaign
-and hard-errors on the first one it cannot find, naming it — so if you do not
-know the names it will spell them out one run at a time, but you should not have
-to. Six are always required:
+and refuses one that is missing any of them with `DW0874`, which names **every**
+document that is absent in a single run, gives the whole required set, and
+prints what a stub looks like — so you never have to guess the names. Six are
+always required:
 
 ```
 world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
@@ -637,9 +638,26 @@ of record: the delve must rebuild byte-identically from them with no model in
 the loop.
 
 **While you are authoring incrementally, stub the later documents** and mark the
-stubs clearly, so `delvec validate` can run at all. Remember that every stage-2
-NPC needs a stage-6 dialogue tree (`DW0152`) and a declared language needs a
-covering sidecar (`DW0180`) even at the stub phase.
+stubs clearly, so `delvec validate` can run at all. A stub is the envelope plus
+a `content` carrying only what its schema requires — `DW0874` prints the recipe.
+Two things to expect while stubbing:
+
+- **`quest-plan.json` is the one document the recipe cannot be followed for
+  literally.** Its schema requires `finale` as well as `quests`, and `finale`
+  has to name a member of `quests`, so an empty `quests` is `DW0131`. Its
+  smallest stub is one planned quest with `finale` naming it.
+- **Stubs owe things, and the diagnostics name them**: every stage-2 NPC needs
+  a stage-6 dialogue tree (`DW0152`), a declared language needs a covering
+  sidecar (`DW0180`), and a planned quest with no stage-5 expansion is
+  `DW0150` — which is the ordinary state between step 3 and step 5 and is
+  discussed there.
+
+**`world.json` is written here, before placement**, because five of its six
+required fields are not about placement at all: `title`, `theme`, `premise`,
+`seed` and `target_minutes`. Run `delvec schema --stage world` and write them
+now. The sixth is `areas`, and which of the two ways it is filled is step 2's
+whole question: `areas[]` on path 2A, and **empty** on a site-plan campaign,
+where the plan is the placement authority and declaring both is `DW0839`.
 
 ## 2. Placement — where everything is
 
@@ -831,6 +849,11 @@ Write them in that order; each conditions the next. Get each one's shape from
 after each, fixing by diagnostic code. **Three failed repairs on the same code
 means stop and look at the design**, not at the syntax.
 
+**That loop does not end on a green run, and it is not supposed to** — read
+*Where step 3 ends*, below, before you start it. Once the quest plan is on disk
+the campaign carries refusals that are correct and that only step 5 can clear,
+and looping against them is the one way to spend an afternoon here.
+
 - **NPCs**: personas per the schema — `archetype`, `speech_style` and
   `motivation` are required, and step 5 honours them in every line.
 - **Classes**: pre-provided gear, no grind. If the campaign places a bonfire,
@@ -849,6 +872,38 @@ means stop and look at the design**, not at the syntax.
   must reach an ending (`DW0482`) and must be exclusive: no sibling's flag may
   be producible on it (`DW0484`).
 
+### Where step 3 ends
+
+**The campaign does not validate when this step is done, and no amount of
+looping will make it.** The quest plan names quests, stage 5 is step 5, and the
+compiler is right to refuse a campaign that plans a quest nothing expands. So
+the finish line for this step is not a green run — it is a run whose only
+remaining errors are the ones below.
+
+Run `delvec --prefabs prefabs validate <campaign-dir>` and read the codes:
+
+| code | what it is saying | clears at |
+|---|---|---|
+| `DW0150` | the plan is written and stage 5 is not. One diagnostic naming every planned quest — it says so itself: *an authoring state, not a fault*. | step 5 |
+| `DW0152` | one per NPC whose dialogue tree is still a stub | step 5 |
+| `DW0818` | site-plan campaigns only: every layout-graph beat and quest-gated way names a quest stage 5 has not written. The message says so and points at `DW0150`. | step 5 |
+
+**Those three are the expected state and are not repairs you owe. Every other
+code is.** That is the whole rule for this step: sort the output into those
+three and everything else, fix everything else, and go to step 4 holding the
+three.
+
+**Do not try to clear `DW0150` by writing empty stage-5 quests.** It is the
+obvious move and it is strictly worse: a quest carrying only what the schema
+requires is refused again by `DW0481`, because every quest must say what it does
+to the story, and by `DW0460` once for every NPC live in it. Measured on a
+five-quest plan, writing the five minimal expansions took the campaign from 5
+errors to 15. `DW0150` says this in its own message; believe it.
+
+**And the "three failed repairs" rule does not fire on these**, because there is
+nothing to repair. It fires on a code you have genuinely tried three times to
+fix.
+
 If someone else gave you the brief, show them a 3–6 line summary of each
 document — the summary, not the JSON — and wait, unless they asked for an
 uninterrupted run.
@@ -859,6 +914,11 @@ uninterrupted run.
 yes.** Steps 1–3 settle
 *what the delve is*; step 5 is where the expensive authoring happens, and every
 problem this gate would have caught gets paid for twice once it is written.
+
+You arrive here holding a campaign that does not validate, carrying exactly the
+codes *Where step 3 ends* lists and nothing else. That is the correct state to
+be at this gate in, and it is not something to mention, apologise for, or try to
+fix before asking. What is being confirmed is the design.
 
 Deliver a **walkthrough of the whole design**: the complete story, every scene's
 design, and each scene carrying **both a near view and a far view**. Near view is
@@ -946,6 +1006,13 @@ Then `dialogue.json`. Two rules that are not style preferences:
   an option list forward from an earlier node.
 
 Loop `delvec --prefabs prefabs validate <campaign-dir>` until clean after each.
+**This is the step where clean is reachable**, and it is where the three codes
+step 3 ended holding — `DW0150`, `DW0152` and `DW0818` — go away: writing the
+expansions clears `DW0150` for every quest at once, and the dialogue trees clear
+the rest. If any of them survives a written stage 5, it has stopped being the
+expected state and is a real finding: a `DW0150` here means an id in the plan and
+an id in `quests.json` do not match, and the message says how many quests stage 5
+declares so you can tell the two apart.
 
 If the campaign declares other languages, the localization stage is a **final
 document stage after `dialogue`** — see *Reference: other languages*. It does
@@ -2544,10 +2611,21 @@ The full inventory — every binary, script and flag that exists today — is
 
 The symptoms most likely to stop you, and what they actually mean.
 
-**`internal error: cannot read campaign dir: <name>.json` (exit 10).** Not a
-compiler fault — a document is missing. `delvec validate` is whole-campaign and
-needs all six required documents to exist; stub the ones you have not written
-yet. The names are in step 1.
+**`DW0874`: "this campaign directory is missing N of the 6 stage documents"
+(exit 1).** Not a fault — `delvec validate` is whole-campaign and needs all six
+required documents on disk. The refusal names every one that is absent, the
+whole set of six, and what a stub is; stub the ones you have not written yet.
+Step 1 has the names and the one document whose stub is not empty.
+
+**`internal error: cannot read campaign dir: …` (exit 10) instead.** That is a
+different finding and it is not an authoring state: either the path is not a
+campaign directory at all, or a document is there and cannot be opened. Check
+the path first.
+
+**Step 3 ends red and nothing you do clears it.** Expected — read *Where step 3
+ends*. `DW0150`, `DW0152` and `DW0818` are the state of a campaign whose plan is
+written and whose quests are not, and they clear at step 5. Writing empty
+stage-5 quests to get past them makes it worse, and `DW0150` says so.
 
 **`DW0311`: "the player cannot walk from [x] to [y] … no collision-free path",
 and the two points are hundreds of blocks apart.** They are in different areas,
@@ -2604,7 +2682,7 @@ approved `design/` directory you are on path A and do not need this at all.
 step 9. Read it item by item into the round summary; override deliberately if
 the session needs a red build.
 
-**`delvec metrics` "prints 333 lines of JSON, not a table".** It prints the
+**`delvec metrics` "prints 341 lines of JSON, not a table".** It prints the
 table as JSON on stdout and its human summary and binding counts on stderr.
 Redirect them separately: `delvec metrics > table.json`.
 
