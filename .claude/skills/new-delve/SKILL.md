@@ -1058,12 +1058,32 @@ delvec --prefabs prefabs build campaigns/<id> \
     -o "$DELVEWRIGHT_ENGINE/validation/delve-output"
 ```
 
-Must exit 0. **Build into `$DELVEWRIGHT_ENGINE/validation/delve-output`** (or copy the tree there
-afterwards): it is the one tree every later step on this page can boot.
-`packtest-run.sh` and `bot-run.sh` take `--output <tree>` and boot a tree
-anywhere; `branch-runs.sh` and the play server's compose pair read
-`validation/delve-output` and fail elsewhere with `failed to read dockerfile`,
-which reads as a broken harness and is not one.
+Must exit 0. `$DELVEWRIGHT_ENGINE/validation/delve-output` is the
+**zero-configuration** tree: every later step on this page boots it with no
+variables set, which is why the command above names it.
+
+**It is not the only place the tree may live.** `packtest-run.sh`,
+`bot-run.sh` and `branch-runs.sh` all boot a tree anywhere, and so does the
+play server — walked from a tree inside the campaign repository: build,
+PackTest, the bot ladder, and `branch-runs.sh` resolving that tree and refusing
+for its own reason rather than a path one.
+
+**If you put the tree in your own repository, TWO variables travel together.**
+`dockerfile` is resolved relative to the build CONTEXT, so moving the context
+without moving the dockerfile gives `failed to read dockerfile`, which reads as
+a broken harness and is not one — it is the tree being somewhere the dockerfile
+is not. The entry scripts export both for you; a hand-written
+`docker compose … --profile play` does not:
+
+```sh
+export DELVE_OUTPUT="$PWD/.out/delve"                       # absolute
+export DELVE_DOCKERFILE="$DELVEWRIGHT_ENGINE/validation/Dockerfile.delve"
+delvec --prefabs prefabs build campaigns/<id> -o "$DELVE_OUTPUT"
+```
+
+Compose cannot compute an absolute default, so this is a real pair and not
+something a better default removes. Set neither and everything above is
+unchanged.
 
 The build writes more than a datapack. Three things to read every time:
 
