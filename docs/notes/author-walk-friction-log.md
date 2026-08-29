@@ -74,8 +74,16 @@ quest — five of five here — and the two remedies it names are:
   the design gate in between; or
 * drop it from the stage-4 plan, which is deleting the document just authored.
 
-There is no stub available: a stage-5 quest requires `trigger`, `objectives` and
-`on_complete`. So §3's loop terminates on an error count equal to the campaign's
+There is no stub available. A stage-5 quest requires `trigger`, `objectives` and
+`on_complete`, and the schema-minimal one — a `campaign-start` trigger with both
+arrays empty — is refused twice over: `DW0460` once per live NPC per quest,
+because a quest must account for every NPC in its `cast`, and `DW0481` once per
+quest, because a quest must say what it does to the story. **Measured: writing
+the five minimal stage-5 quests moved the error count from 5 to 15** — ten
+`DW0460` and five `DW0481` — so the cheapest route past §3's red is
+three times worse than the red it was trying to clear.
+
+So §3's loop terminates on an error count equal to the campaign's
 quest count, the "three failed repairs" rule fires on a document that is
 correct, and the author arrives at §4 — the gate they are told never to fake —
 holding a campaign that does not validate. Nothing on the page says that is the
