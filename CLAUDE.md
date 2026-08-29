@@ -49,7 +49,14 @@ engine's text.
   pin discovery structurally cannot see: that the skill page READS the pin, and
   that the revision string stands only in `versions.toml` and in the sites the
   registry declares for a pin holding it (markdown is prose to pin discovery,
-  and a skill page is not prose — it is a procedure somebody executes). When
+  and a skill page is not prose — it is a procedure somebody executes).
+  `engine-authoring` is also the one pin that decides a VERDICT rather than
+  being judged: `tools/check-skill-version.py` materialises the engine at that
+  revision and holds the skill page's whole declaration to it — the `requires:`
+  window, `verified_with`, every `delvec` subcommand and flag the page names,
+  every campaign stage document the engine defines, and every number the page
+  states about the idiom index. So moving that pin can red the page, which is
+  the point: it reds here rather than under an author at Init step 2. When
   judging a red, ask which
   revision the **job** builds, not only which tree you were handed — a stale pin
   manufactures false reds that look exactly like content defects, and this
@@ -58,11 +65,16 @@ engine's text.
   gate asked for.
 
 - **Vendored files are byte-for-byte copies of engine files and are never edited
-  here.** The registry's `vendors` keys name them — today `tools/check-pins.py` —
-  and `tools/check-vendored.py` holds each to the bytes at the pinned revision,
-  plus a refusal when the upstream source has moved since review. A local fix to
-  a vendored file is the drift the checker exists to catch: fix it in the engine
-  and re-pin.
+  here.** The registry's `vendors` keys name them, and `tools/check-vendored.py`
+  holds each to the bytes at the pinned revision, plus a refusal when the
+  upstream source has moved since review. A local fix to a vendored file is the
+  drift the checker exists to catch: fix it in the engine and re-pin. Read the
+  `vendors` keys for the list rather than a sentence here — a list restated in
+  prose is a measurement that goes stale, and this one already did.
+  Why anything is vendored at all: a rule with two implementations has two
+  authorities, and the one a given gate happens to read decides its verdict. A
+  copy is only worth more than a re-implementation while something proves it is
+  still the same file, which is exactly what `check-vendored.py` is.
 
 - **A released or accepted campaign is never edited to satisfy a new engine** —
   when it stops building, the finding is a fence defect in the engine. The

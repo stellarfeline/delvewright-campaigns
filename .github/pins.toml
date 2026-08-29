@@ -270,6 +270,15 @@ policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
 reviewed = "b65783e8a0ee65e3308c67b52b1e1922dc0b1638"
 builds = []
+# `tools/check-skill-version.py` holds the skill page's frontmatter and prose to
+# this engine, and two of the things it asks are questions the engine already
+# answers in code: how the §2c idiom index table is parsed, and every prose
+# phrasing that states its size. Those are copied rather than re-implemented,
+# because a markdown parse rule re-written per gate is the private-copy defect
+# CLAUDE.md names — and a copy is only worth more than a re-implementation while
+# something proves it is still the same file, which is what `check-vendored.py`
+# does with these two.
+vendors = ["tools/check-stated-counts.py", "tools/lib/mdtable.py"]
 why = """
 The engine an AUTHOR builds their own toolchain from (versions.toml
 `[engine].authoring_ref`) — the revision `/new-delve` Init step 2 checks out and
@@ -331,7 +340,7 @@ no job in this repository can perform that walk. `reviewed` and `value` name the
 same revision because this pin was created by such a walk rather than inherited
 from an older one.
 
-WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line. Four
+WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line. Six
 readers, each catching a different bad edit, none of them able to substitute for
 another:
 
@@ -353,6 +362,20 @@ another:
     to it, and is deliberately outside pin discovery — yet the skill page is
     executed by a person and is exactly where a second copy of the revision would
     be pasted.
+  - `tools/check-skill-version.py` (same job): the first reader that uses the
+    revision as an INSTRUMENT rather than judging the literal. It materialises
+    the engine at this value and holds the skill page's `requires:` window,
+    `verified_with`, every `delvec` subcommand and flag the page names, every
+    campaign stage document the engine defines, and every number the page states
+    about the idiom index, against that one engine. So this pin now decides a
+    verdict: move it to an engine whose CLI has dropped a subcommand the page
+    drives, and the page reds — which is the point, because that is exactly what
+    an author would hit at Init step 2, and the alternative was finding out
+    during their run.
+  - `tools/check-vendored.py` (same job): the two files this entry declares in
+    `vendors` are byte-identical to the engine's at this revision. They are the
+    idiom-index oracle and the markdown-table parser the reader above imports —
+    not maintained here, so an edit in place is a red rather than a fork.
 """
 
 [[pin]]
