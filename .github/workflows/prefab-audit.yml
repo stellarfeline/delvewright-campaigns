@@ -233,7 +233,8 @@ jobs:
       - name: a vendored file is the upstream file, byte for byte
         run: |
           python3 tools/check-vendored.py \
-            --checkout admit-ref=admit-src
+            --checkout admit-ref=admit-src \
+            --checkout engine-authoring=admit-src
 
       # The pin is judged HERE, in the job that uses it, immediately before the
       # tool is built out of it. There is no arrangement in which this job builds
@@ -246,6 +247,34 @@ jobs:
             --checkout admit-ref=admit-src \
             --checkout engine-release=admit-src \
             --checkout engine-authoring=admit-src
+
+      # ADR-0016's third version line: the `/new-delve` skill (the product,
+      # ADR-0012) declares its own version and the `delvec` range it drives. All
+      # hand-typed frontmatter, so without this they are a `requires:` nobody
+      # reads — the unbound declaration this project keeps being bitten by.
+      #
+      # THIS GATE USED TO LIVE IN THE ENGINE REPOSITORY, beside a copy of the
+      # page. The page moved here (ADR-0014: a creator clones this repository and
+      # no other) and the gate did not, so the page an author executes was checked
+      # by nothing while the gate went on holding a copy nobody ran. That is the
+      # very shape it was written to prevent, and it is why the gate is HERE: a
+      # gate must fire on the event it guards, and the event is an edit to the
+      # page, which happens in this repository and nowhere else.
+      #
+      # It judges against the engine at `authoring_ref` — the one Init step 2
+      # tells the author to build, which is what the page's `requires:` and
+      # `verified_with` are claims ABOUT. Not this checkout's working tree, which
+      # is at ADMIT_REF and is a different engine: the revision is fetched two
+      # steps above and the gate materialises what it reads out of git at that
+      # sha. It names the revision in its own output, so a moved pin cannot
+      # silently re-read the verdict against a different instrument.
+      #
+      # A STEP, not a job. Every job name here is a required status context and
+      # adding one is a two-part change that blocks every pull request if it is
+      # done in the wrong order; riding this job costs no new name and cannot be
+      # skipped, because this context is the one both rulesets require.
+      - name: the /new-delve skill's declared delvec range is true
+        run: python3 tools/check-skill-version.py --engine admit-src
 
       # Cache cargo + build artifacts, keyed on the pinned SHA and the admit
       # crate's lockfile so a pin bump busts the cache cleanly.
