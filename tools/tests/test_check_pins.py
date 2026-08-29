@@ -397,7 +397,18 @@ class ThisRepositorysOwnRegistry(unittest.TestCase):
             thinned.write_text(head + "\n".join(kept), encoding="utf-8")
             r = run(REPO, "--registry", str(thinned))
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
-        self.assertIn("unregistered pin", r.stderr)
+        # Assert the refusal NAMES the dropped pin's site, not one particular
+        # phrasing. Which phrasing appears depends on whether the dropped pin's
+        # value was unique to it: unique, and the value becomes an unregistered
+        # pin; shared with another entry at a different site, and it becomes an
+        # occurrence no holder declared. Both are refusals and both name the
+        # file, but the earlier assertion picked the phrase that only exists
+        # while every registered value is unique -- which stopped being true the
+        # first time two pins legitimately tracked the same engine revision.
+        dropped = pins[0]
+        self.assertTrue(dropped.get("sites"), "the dropped pin declares no site")
+        for site in dropped["sites"]:
+            self.assertIn(site, r.stderr, r.stdout + r.stderr)
 
 
 class TheLanguageMapIsAPositiveClaim(unittest.TestCase):
