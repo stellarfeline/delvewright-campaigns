@@ -1033,12 +1033,24 @@ def check(engine_root: Path, rev: str) -> int:
     # `delvec --version` printed. It also PRINTS a filled-in envelope, and an
     # author copies the example far more readily than they re-read the prose.
     # A literal on a page goes stale; the indirection stays true -- so the
-    # literal is held to the engine rather than trusted. Measured before this
-    # existed: the page printed 0.17.0 against an engine at 0.19.0, and a
-    # document declaring 0.17.0 validates GREEN with no diagnostic, because the
-    # fences are per-feature minimums. So nothing downstream would ever say the
-    # example was stale; the author only finds out later, through a fence error
-    # naming a version, about a document they wrote from this page.
+    # literal is held to the engine rather than trusted.
+    #
+    # WHAT THE FENCES DO AND DO NOT CATCH, corrected by measurement after this
+    # check was first written. The fences are per-feature minimums, so a stale
+    # `dsl_version` is caught only when the document happens to use a surface
+    # newer than the number it declares. Measured both ways on the same
+    # campaign: the number planted in `world.json` alone validates GREEN, exit
+    # 0, no diagnostic -- while the same number across all nine documents is
+    # refused, exit 1, with five DW0141 fences on `way_class` and a seam
+    # `contact`. So the fences are a real backstop and this check is not the
+    # only thing standing between an author and a stale number.
+    #
+    # It is still worth having, for what the fences cannot do: they fire late,
+    # they fire about a SURFACE rather than about the example, and they never
+    # say the page is wrong. An author who copies the envelope and writes a
+    # document simple enough to pass gets no signal at all; one who writes a
+    # richer document gets a version error whose actual cause is this page. The
+    # check names the page.
     supported = supported_dsl_version(envelope_rs)
     if supported is None:
         print(

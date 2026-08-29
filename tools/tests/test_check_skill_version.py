@@ -397,10 +397,14 @@ class GateTest(unittest.TestCase):
         """The envelope an author COPIES is held to the engine, not trusted.
 
         Measured on the live page before this check existed: it printed 0.17.0
-        against an engine supporting 0.19.0. Nothing downstream said so -- a
-        document declaring the older number validates green, because the fences
-        are per-feature minimums -- so the author meets it much later, as a
-        fence error about a document this page told them how to write.
+        against an engine supporting 0.19.0.
+
+        The per-feature fences are a real backstop and catch this WHEN the
+        document uses a surface newer than the number it declares -- the same
+        campaign gives exit 0 with the number in `world.json` alone and exit 1
+        with five DW0141 fences with it across all nine. What they cannot do is
+        say the PAGE is wrong: they fire late, about a surface, and a document
+        simple enough to pass gets no signal at all.
         """
         self.write_skill(
             GOOD_FRONTMATTER,
