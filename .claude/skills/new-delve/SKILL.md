@@ -1063,10 +1063,8 @@ Must exit 0. `$DELVEWRIGHT_ENGINE/validation/delve-output` is the
 variables set, which is why the command above names it.
 
 **It is not the only place the tree may live.** `packtest-run.sh`,
-`bot-run.sh` and `branch-runs.sh` all boot a tree anywhere, and so does the
-play server — walked from a tree inside the campaign repository: build,
-PackTest, the bot ladder, and `branch-runs.sh` resolving that tree and refusing
-for its own reason rather than a path one.
+`bot-run.sh`, `branch-runs.sh` and the play server all boot a tree anywhere,
+including one inside this repository.
 
 **If you put the tree in your own repository, TWO variables travel together.**
 `dockerfile` is resolved relative to the build CONTEXT, so moving the context
