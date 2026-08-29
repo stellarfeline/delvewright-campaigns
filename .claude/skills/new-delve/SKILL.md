@@ -882,16 +882,16 @@ remaining errors are the ones below.
 
 Run `delvec --prefabs prefabs validate <campaign-dir>` and read the codes:
 
-| code | what it is saying | clears at |
+| code | what it is saying | what to do |
 |---|---|---|
-| `DW0150` | the plan is written and stage 5 is not. One diagnostic naming every planned quest — it says so itself: *an authoring state, not a fault*. | step 5 |
-| `DW0152` | one per NPC whose dialogue tree is still a stub | step 5 |
-| `DW0818` | site-plan campaigns only: every layout-graph beat and quest-gated way names a quest stage 5 has not written. The message says so and points at `DW0150`. | step 5 |
+| `DW0150` | the plan is written and stage 5 is not. **One** diagnostic naming every planned quest — it says so itself: *an authoring state, not a fault*. | nothing. It clears at step 5, for every quest at once. |
+| `DW0818` | site-plan campaigns only: every layout-graph beat and quest-gated way names a quest stage 5 has not written. The message says so and points at `DW0150`. | nothing. Same state, same clearing. |
+| `DW0152` | one per NPC with no dialogue tree | **stubbable, unlike the other two.** A tree of one node with an empty `options` is accepted and raises nothing new, so clear it here if you want a shorter list to read at step 4; leaving it is equally fine. Step 5 replaces the stub either way. |
 
-**Those three are the expected state and are not repairs you owe. Every other
-code is.** That is the whole rule for this step: sort the output into those
-three and everything else, fix everything else, and go to step 4 holding the
-three.
+**`DW0150` and `DW0818` are the expected state and are not repairs you owe.
+Every other code is.** That is the whole rule for this step: sort the output
+into those two and everything else, fix everything else, and go to step 4
+holding what is left.
 
 **Do not try to clear `DW0150` by writing empty stage-5 quests.** It is the
 obvious move and it is strictly worse: a quest carrying only what the schema
@@ -1006,13 +1006,13 @@ Then `dialogue.json`. Two rules that are not style preferences:
   an option list forward from an earlier node.
 
 Loop `delvec --prefabs prefabs validate <campaign-dir>` until clean after each.
-**This is the step where clean is reachable**, and it is where the three codes
-step 3 ended holding — `DW0150`, `DW0152` and `DW0818` — go away: writing the
-expansions clears `DW0150` for every quest at once, and the dialogue trees clear
-the rest. If any of them survives a written stage 5, it has stopped being the
-expected state and is a real finding: a `DW0150` here means an id in the plan and
-an id in `quests.json` do not match, and the message says how many quests stage 5
-declares so you can tell the two apart.
+**This is the step where clean is reachable**, and it is where the codes step 3
+ended holding go away: writing `quests.json` clears `DW0150` for every quest at
+once and `DW0818` with it, and `dialogue.json` clears `DW0152`. If any of them
+survives a written stage 5 it has stopped being the expected state and is a real
+finding — a `DW0150` here means an id in the plan and an id in `quests.json` do
+not match, and the message says how many quests stage 5 declares, which is how
+you tell that apart from the step-3 state.
 
 If the campaign declares other languages, the localization stage is a **final
 document stage after `dialogue`** — see *Reference: other languages*. It does
@@ -2623,9 +2623,9 @@ campaign directory at all, or a document is there and cannot be opened. Check
 the path first.
 
 **Step 3 ends red and nothing you do clears it.** Expected — read *Where step 3
-ends*. `DW0150`, `DW0152` and `DW0818` are the state of a campaign whose plan is
-written and whose quests are not, and they clear at step 5. Writing empty
-stage-5 quests to get past them makes it worse, and `DW0150` says so.
+ends*. `DW0150` and `DW0818` are the state of a campaign whose plan is written
+and whose quests are not, and they clear at step 5. Writing empty stage-5 quests
+to get past them makes it worse, and `DW0150` says so.
 
 **`DW0311`: "the player cannot walk from [x] to [y] … no collision-free path",
 and the two points are hundreds of blocks apart.** They are in different areas,
