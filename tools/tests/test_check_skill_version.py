@@ -115,6 +115,12 @@ enum EditAction {
 '''
 
 ENVELOPE_RS = """
+// A real engine carries this beside the stage names, and the gate reads
+// both out of this one file. The fixture carries it for the same reason it
+// carries `Stage::name`: a synthetic engine that omits what a real one has
+// makes the gate fail for a reason no real tree would produce.
+pub const SUPPORTED_DSL_VERSION: &str = "0.19.0";
+
 impl Stage {
     pub fn name(self) -> &'static str {
         match self {
@@ -146,6 +152,16 @@ Three techniques, one minimal program each:
 """
 
 SKILL_BODY = """
+## The envelope
+
+```json
+{
+  "dsl_version": "0.19.0",
+  "campaign_id": "the-weighbridge",
+  "stage": "world"
+}
+```
+
 ## The loop
 
 Stages: `world`, `npcs`, and — for a campaign whose map is planned as a whole —
@@ -376,6 +392,59 @@ class GateTest(unittest.TestCase):
         code, _, err = self.run_check()
         self.assertEqual(code, 1)
         self.assertIn("claims there are 8", err)
+
+    def test_a_stale_printed_dsl_version_is_refused(self) -> None:
+        """The envelope an author COPIES is held to the engine, not trusted.
+
+        Measured on the live page before this check existed: it printed 0.17.0
+        against an engine supporting 0.19.0. Nothing downstream said so -- a
+        document declaring the older number validates green, because the fences
+        are per-feature minimums -- so the author meets it much later, as a
+        fence error about a document this page told them how to write.
+        """
+        self.write_skill(
+            GOOD_FRONTMATTER,
+            SKILL_BODY.replace('"dsl_version": "0.19.0"', '"dsl_version": "0.17.0"'),
+        )
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("0.17.0", err)
+        self.assertIn("0.19.0", err)
+
+    def test_a_page_printing_no_dsl_version_is_a_failure_not_a_pass(self) -> None:
+        """The vacuity direction, and it is the one worth testing.
+
+        A page that stopped printing the envelope and a pattern that stopped
+        matching are indistinguishable from the outside, and both leave the
+        example unchecked. A gate that went GREEN there would reward deleting
+        the thing it exists to check.
+        """
+        self.write_skill(
+            GOOD_FRONTMATTER,
+            SKILL_BODY.replace('  "dsl_version": "0.19.0",\n', ""),
+        )
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("0 `dsl_version` literals", err)
+
+    def test_an_engine_without_the_constant_is_a_refusal_not_a_skip(self) -> None:
+        """A reader whose constant has moved refuses; it does not quietly pass.
+
+        The number is a fact about the engine at the authoring revision. If it
+        cannot be read, this check has no authority to compare against and says
+        so, rather than skipping and reporting a binding it did not measure.
+        """
+        self.write_skill(GOOD_FRONTMATTER)
+        envelope = self.engine / "crates" / "dsl" / "src" / "envelope.rs"
+        envelope.write_text(
+            envelope.read_text(encoding="utf-8").replace(
+                'pub const SUPPORTED_DSL_VERSION: &str = "0.19.0";', ""
+            ),
+            encoding="utf-8",
+        )
+        code, _, err = self.run_check()
+        self.assertNotEqual(code, 0)
+        self.assertIn("SUPPORTED_DSL_VERSION", err)
 
     def test_a_page_that_states_no_idiom_count_is_a_failure_not_a_pass(self) -> None:
         body = SKILL_BODY.replace(

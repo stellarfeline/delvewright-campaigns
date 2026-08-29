@@ -732,6 +732,31 @@ def main(argv: list[str] | None = None) -> int:
         return check(engine_root, rev)
 
 
+def supported_dsl_version(envelope_rs: Path) -> str | None:
+    """The engine's own `SUPPORTED_DSL_VERSION`, read from the crate that owns it.
+
+    Read rather than assumed: the number is a fact about the engine at the
+    authoring revision, and taking it from anywhere else -- a manifest, a
+    remembered literal -- would make this check compare the page against
+    something other than the engine it claims to be checked against.
+    """
+    m = re.search(
+        r'pub const SUPPORTED_DSL_VERSION:\s*&str\s*=\s*"([^"]+)"',
+        envelope_rs.read_text(encoding="utf-8"),
+    )
+    # Returns None rather than raising: this file's idiom for "a thing this gate
+    # reads has moved" is a printed refusal and a non-zero return, and a reader
+    # that exits the process instead cannot be exercised by the tests beside it.
+    return m.group(1) if m else None
+
+
+def printed_dsl_versions(skill: Path) -> list[str]:
+    """Every `dsl_version` literal the page prints, in order."""
+    return re.findall(
+        r'"dsl_version"\s*:\s*"([^"]+)"', skill.read_text(encoding="utf-8")
+    )
+
+
 def check(engine_root: Path, rev: str) -> int:
     compiler_cargo_toml = engine_root / "crates" / "compiler" / "Cargo.toml"
     compiler_main_rs = engine_root / "crates" / "compiler" / "src" / "main.rs"
@@ -1003,6 +1028,42 @@ def check(engine_root: Path, rev: str) -> int:
             file=sys.stderr,
         )
         return 1
+    # -- 7. every dsl_version the page PRINTS is the engine's own ------------
+    # The page tells the author (once, in prose) to write the number
+    # `delvec --version` printed. It also PRINTS a filled-in envelope, and an
+    # author copies the example far more readily than they re-read the prose.
+    # A literal on a page goes stale; the indirection stays true -- so the
+    # literal is held to the engine rather than trusted. Measured before this
+    # existed: the page printed 0.17.0 against an engine at 0.19.0, and a
+    # document declaring 0.17.0 validates GREEN with no diagnostic, because the
+    # fences are per-feature minimums. So nothing downstream would ever say the
+    # example was stale; the author only finds out later, through a fence error
+    # naming a version, about a document they wrote from this page.
+    supported = supported_dsl_version(envelope_rs)
+    if supported is None:
+        print(
+            f"check-skill-version: FAIL — the engine at {rev[:8]} has no "
+            "`SUPPORTED_DSL_VERSION` literal in crates/dsl/src/envelope.rs. The "
+            "constant this check compares the page against has moved or been "
+            "renamed; fix the reader, do not drop the check — skipping here would "
+            "report a binding this gate never measured.",
+            file=sys.stderr,
+        )
+        return 2
+    printed = printed_dsl_versions(SKILL)
+    wrong = sorted({v for v in printed if v != supported})
+    if wrong:
+        findings.append(
+            f"the page prints `dsl_version` "
+            f"{', '.join(repr(v) for v in wrong)} while the engine at "
+            f"{rev[:8]} supports {supported!r} "
+            f"(crates/dsl/src/envelope.rs `SUPPORTED_DSL_VERSION`). An author "
+            f"copies the envelope example, and a stale number there validates "
+            f"green -- the fences are per-feature minimums -- so it surfaces "
+            f"much later as a fence error about a document this page told them "
+            f"how to write. Update the literal(s) to {supported!r}"
+        )
+
     if sub_refs == 0:
         print(
             "check-skill-version: FAIL — extracted 0 delvec subcommand references "
@@ -1010,6 +1071,17 @@ def check(engine_root: Path, rev: str) -> int:
             f"about a "
             "CLI surface nothing in this gate ever touched; a green that binds to "
             "nothing is vacuous, not a pass (CLAUDE.md).",
+            file=sys.stderr,
+        )
+        return 1
+    if not printed:
+        print(
+            "check-skill-version: FAIL — the page prints 0 `dsl_version` literals. "
+            "It carried one when this check was written, and a page that stopped "
+            "printing the envelope is indistinguishable from a pattern that stopped "
+            "matching -- both leave the example unchecked, which is the state this "
+            "check ended. If the page genuinely no longer shows an envelope, delete "
+            "this check and say so; do not leave it binding to nothing (CLAUDE.md).",
             file=sys.stderr,
         )
         return 1
@@ -1031,7 +1103,7 @@ def check(engine_root: Path, rev: str) -> int:
         f"({', '.join(sorted(seen))}), {flag_refs} long-flag reference(s), "
         f"{len(stages) - len(unmentioned)} of the engine's {len(stages)} campaign "
         f"stage document(s) named in the skill, and {count_refs} stated "
-        f"idiom-index count(s)"
+        f"idiom-index count(s), and {len(printed)} printed `dsl_version` literal(s)"
     )
     # The instrument, named by revision rather than by "the pinned engine": a
     # frozen measurement that names its instrument through an indirection
