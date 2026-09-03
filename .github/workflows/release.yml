@@ -254,38 +254,14 @@ jobs:
           workspaces: engine
 
       # ---- 3. build --------------------------------------------------------
-      # `delvec` stamps the build's `content_sha` into manifest.json by reading
-      # the engine's `versions.toml` `[content].sha` — never git state, so the
-      # compiler stays deterministic and offline. For a CONTENT release that pin
-      # is the wrong way round: the content commit being released is this tag,
-      # not whatever the engine last pinned. Point it at the truth before
-      # building, so the manifest inside the shipped image names the commit the
-      # image was actually built from. Still fully deterministic: the value is
-      # fixed by the tag.
-      - name: point the engine's content pin at the commit being released
-        run: |
-          set -euo pipefail
-          python3 - "$GITHUB_SHA" <<'PY'
-          import re, sys
-          sha = sys.argv[1]
-          path = "engine/versions.toml"
-          text = open(path, encoding="utf-8").read()
-          # Rewrite the `sha = "..."` line inside [content] ONLY — other sections
-          # carry their own digests/checksums that must not be touched.
-          out, section, hits = [], None, 0
-          for line in text.splitlines(keepends=True):
-              s = line.strip()
-              if s.startswith("[") and s.endswith("]"):
-                  section = s
-              if section == "[content]" and re.match(r'^sha\s*=', s):
-                  line = f'sha = "{sha}"\n'
-                  hits += 1
-              out.append(line)
-          if hits != 1:
-              raise SystemExit(f"expected exactly one [content].sha line, found {hits}")
-          open(path, "w", encoding="utf-8").write("".join(out))
-          print(f"engine versions.toml [content].sha -> {sha}")
-          PY
+      # The build is a function of the campaign directory, the prefab directory
+      # and the flags below it, and of nothing else — no file above the working
+      # directory, no environment (ADR-0006, `docs/reference/compiler.md`
+      # Determinism). So the engine checkout is used exactly as it was pinned and
+      # this job writes nothing into it. Which content commit the delve was built
+      # from is stated where the party that knows it can state it: the image's
+      # `org.opencontainers.image.revision` and
+      # `ca.stellarfeline.delvewright.campaign-commit` labels, both `github.sha`.
 
       # The PACKAGE is `delvec`, not `delvewright-compiler` (ADR-0017 §1): a
       # crate is installed by package name, so the compiler had to BE `delvec`
@@ -318,20 +294,11 @@ jobs:
         id: build
         run: |
           set -euo pipefail
-          python3 - "$GITHUB_SHA" <<'PY' >> "$GITHUB_OUTPUT"
-          import hashlib, json, pathlib, sys
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib, json, pathlib
 
           out = pathlib.Path("engine/validation/delve-output")
           m = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
-
-          # The re-pin two steps up must have reached the compiler: if it did not,
-          # the manifest travelling inside the image names some other content
-          # commit, and the release's provenance is a lie no one would notice.
-          if m.get("content_sha") != sys.argv[1]:
-              raise SystemExit(
-                  f"::error::manifest content_sha {m.get('content_sha')!r} != "
-                  f"released commit {sys.argv[1]!r} — the engine content pin did not take"
-              )
 
           # A single digest standing for the whole emitted datapack: sha256 over
           # the manifest's own per-file hashes for `datapack/`, in sorted order.
@@ -347,7 +314,6 @@ jobs:
               "delvec_version": m.get("delvec_version", ""),
               "dsl_version": m.get("dsl_version", ""),
               "mc_version": m.get("mc_version", ""),
-              "content_sha": m.get("content_sha", ""),
               "datapack_sha256": digest,
           }
 
