@@ -76,16 +76,15 @@ engine's text.
   copy is only worth more than a re-implementation while something proves it is
   still the same file, which is exactly what `check-vendored.py` is.
 
-- **A released or accepted campaign is never edited to satisfy a new engine** —
-  when it stops building, the finding is a fence defect in the engine. The
-  complement is an obligation: **a campaign that has not been released adopts**
-  the current engine, and its red under a new obligation is an adoption item on
-  the campaign. So the triage question comes before the diagnostic is read: has
-  this campaign been released or accepted? Engine surfaces are tested against the
-  engine's own gallery, which lives in the engine repository and is never
-  released or staged — a campaign here is never the engine's test surface.
-  (Engine constitution, "A released campaign is never the engine's test
-  surface".)
+- **A campaign that stops building under a new engine adopts, or it is
+  deleted** — there is no released-versus-in-development distinction to triage,
+  because nothing is released and nothing is owed compatibility. A red under a
+  new obligation is an adoption item on the campaign, never a fence defect in
+  the engine, and no campaign here is owed a compatibility shim, an opt-in flag
+  or a migration path. Engine surfaces are tested against the engine's own
+  gallery, which lives in the engine repository and is never released or staged
+  — a campaign here is never the engine's test surface. (Engine constitution,
+  "A campaign is never the engine's test surface".)
 
 - **An in-progress campaign lives on its own `campaign/<id>` branch and
   everything of it lands there** — design of record, prefabs, stage documents,

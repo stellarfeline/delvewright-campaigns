@@ -52,6 +52,15 @@ Read `CLAUDE.md` first if you have not — this repository's, and the engine
 constitution it names at `$DELVEWRIGHT_ENGINE/CLAUDE.md`. The forbidden
 zones apply in full.
 
+The engine constitution names its own other half, `CLAUDE.local.md`, and tells
+whoever lacks it to say so and ask "before improvising anything about dispatch,
+review, merge or staging". **You will not have it** — it is gitignored on the
+operator's machine, so no clone can produce it — **and this page improvises none
+of those four.** It stops at §4 and §9 and hands those to the user; §14 hands
+over and ends. So record the absence in one line and carry on with the run.
+Do not stop to ask for it: the answer is the same every time, and the turn spent
+asking comes out of the user's.
+
 ## The shape of the run
 
 Everything below happens in this order, and the order is not a suggestion — each
