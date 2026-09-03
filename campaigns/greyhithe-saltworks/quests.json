@@ -1,7 +1,1136 @@
 {
   "campaign_id": "greyhithe-saltworks",
   "content": {
-    "quests": []
+    "on_death": [
+      {
+        "style": "actionbar",
+        "text": "The lamp is still burning. It does not appear to have noticed.",
+        "type": "narrate"
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "offstage"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": "dlg/teague-landing",
+            "doing": "holding the painter, waiting to be paid and gone"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": {
+              "barks": [
+                "SHE RUNS SWEET IF YOU KEEP THE GREASE UP.",
+                "NO COAL SINCE THE WATER CAME. I STILL TURN HER.",
+                "SPEAK UP. I HAVE FURNACES IN MY EARS."
+              ]
+            },
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": {
+              "barks": [
+                "Nothing worth taking below the wall. Nothing.",
+                "You want dry, this is the only dry room left.",
+                "I have not been up the headland. Not once."
+              ]
+            },
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": {
+              "barks": [
+                "I am the last one and I am not the best one.",
+                "The bell rope is still on its hook.",
+                "Sit if you like. Nothing here is in a hurry."
+              ]
+            },
+            "doing": "keeping the one fire in the precinct alight"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party is landed on the shingle under the works.",
+          "verb": "arrives"
+        },
+        "id": "quest/put-ashore",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/goodwife-teague",
+              "text": "Teague says what she will and will not do.",
+              "verb": "learns"
+            },
+            "hint": "She is on the shingle by the boat.",
+            "id": "obj/hear-teague-out",
+            "npc": "npc/goodwife-teague",
+            "title": "Hear Teague out",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-teague-out"
+            ],
+            "anchor": "anchor/node-drowned-pans",
+            "happening": {
+              "text": "The party crosses what the sea took.",
+              "verb": "arrives"
+            },
+            "hint": "South off the shingle, through the broken pan walls.",
+            "id": "obj/cross-the-pans",
+            "radius": 6,
+            "title": "Cross the drowned pans",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/cross-the-pans"
+            ],
+            "anchor": "anchor/node-pan-house",
+            "count": 1,
+            "happening": {
+              "text": "The party takes the tide ledger off the pan-house bench.",
+              "verb": "gains"
+            },
+            "hint": "The shed on the last dry pan, east across the water.",
+            "id": "obj/shelter-in-the-pan-house",
+            "item": "minecraft:paper",
+            "item_name": "Tide Ledger",
+            "title": "Take the tide ledger",
+            "type": "collect"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "Every reading in the book is a foot higher than the one before it.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "offstage"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": {
+              "barks": [
+                "SHE RUNS SWEET IF YOU KEEP THE GREASE UP.",
+                "NO COAL SINCE THE WATER CAME. I STILL TURN HER.",
+                "SPEAK UP. I HAVE FURNACES IN MY EARS."
+              ]
+            },
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": {
+              "barks": [
+                "Nothing worth taking below the wall. Nothing.",
+                "You want dry, this is the only dry room left.",
+                "I have not been up the headland. Not once."
+              ]
+            },
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": {
+              "barks": [
+                "I am the last one and I am not the best one.",
+                "The bell rope is still on its hook.",
+                "Sit if you like. Nothing here is in a hurry."
+              ]
+            },
+            "doing": "keeping the one fire in the precinct alight"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party climbs off the pans into the works.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-brine-road",
+        "objectives": [
+          {
+            "anchor": "anchor/node-wreck-stair",
+            "happening": {
+              "text": "The party climbs the cut stair off the pans.",
+              "verb": "arrives"
+            },
+            "hint": "East out of the pan house, up the stair in the cliff.",
+            "id": "obj/climb-the-cut",
+            "radius": 5,
+            "title": "Climb the cut",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/climb-the-cut"
+            ],
+            "anchor": "anchor/node-brine-gallery",
+            "happening": {
+              "text": "The party follows the works' own throat inland.",
+              "verb": "arrives"
+            },
+            "hint": "At the head of the stair, the tunnel with the pipe cradles.",
+            "id": "obj/follow-the-brine",
+            "radius": 3,
+            "title": "Follow the brine gallery",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/follow-the-brine"
+            ],
+            "anchor": "anchor/first-pan",
+            "happening": {
+              "text": "The party stands under the boiling house's clerestory.",
+              "verb": "arrives"
+            },
+            "hint": "The gallery ends in the boiling house. The first pan is nearest the door.",
+            "id": "obj/stand-under-the-clerestory",
+            "radius": 4,
+            "title": "Stand at the first pan",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "Four pans. Four fires. Nothing has been lit here in twenty years.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/put-ashore",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "offstage"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "dlg/hask-hoist",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": {
+              "barks": [
+                "Nothing worth taking below the wall. Nothing.",
+                "You want dry, this is the only dry room left.",
+                "I have not been up the headland. Not once."
+              ]
+            },
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": {
+              "barks": [
+                "I am the last one and I am not the best one.",
+                "The bell rope is still on its hook.",
+                "Sit if you like. Nothing here is in a hurry."
+              ]
+            },
+            "doing": "keeping the one fire in the precinct alight"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party works round behind the fires.",
+          "verb": "arrives"
+        },
+        "id": "quest/what-the-fires-left",
+        "objectives": [
+          {
+            "anchor": "anchor/node-furnace-walk",
+            "happening": {
+              "text": "The party gets behind the furnaces.",
+              "verb": "arrives"
+            },
+            "hint": "The low door in the boiling house's north wall.",
+            "id": "obj/behind-the-furnaces",
+            "radius": 3,
+            "title": "Get behind the furnaces",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/behind-the-furnaces"
+            ],
+            "anchor": "anchor/node-coal-yard",
+            "happening": {
+              "text": "The party crosses the coal yard.",
+              "verb": "arrives"
+            },
+            "hint": "North out of the stoking walk, into the open.",
+            "id": "obj/cross-the-coal-yard",
+            "radius": 6,
+            "title": "Cross the coal yard",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/cross-the-coal-yard"
+            ],
+            "happening": {
+              "subject": "npc/hask",
+              "text": "Hask says what is still running and what is not.",
+              "verb": "learns"
+            },
+            "hint": "East side of the coal yard, at the foot of the hoist tower.",
+            "id": "obj/wake-the-hoist",
+            "npc": "npc/hask",
+            "title": "Speak to the engineman",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "He has been greasing that wheel for twenty years and it lifts nothing.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/cross-the-coal-yard": [
+            {
+              "flag": "flag/in-the-coal-yard",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-brine-road",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "offstage"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "unchanged",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": "dlg/pyke-store",
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": {
+              "barks": [
+                "I am the last one and I am not the best one.",
+                "The bell rope is still on its hook.",
+                "Sit if you like. Nothing here is in a hurry."
+              ]
+            },
+            "doing": "keeping the one fire in the precinct alight"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party gets the abbey gate open.",
+          "verb": "opens"
+        },
+        "id": "quest/the-gate-that-holds",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/pyke",
+              "text": "Pyke says what he will admit to.",
+              "verb": "learns"
+            },
+            "hint": "East past the hoist, in the long dry store.",
+            "id": "obj/find-pyke",
+            "npc": "npc/pyke",
+            "title": "Find the wrecker",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/find-pyke"
+            ],
+            "anchor": "anchor/node-cooperage",
+            "count": 1,
+            "happening": {
+              "text": "The party takes a length of hoop iron off the cooper's bench.",
+              "verb": "gains"
+            },
+            "hint": "South out of the store, in the barrel shop.",
+            "id": "obj/take-the-hoop-iron",
+            "item": "minecraft:iron_ingot",
+            "item_name": "Cooper's Hoop Iron",
+            "title": "Take the hoop iron",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/take-the-hoop-iron"
+            ],
+            "anchor": "anchor/gate-bar",
+            "happening": {
+              "text": "The party lifts the bar on the abbey gate.",
+              "verb": "opens"
+            },
+            "hint": "South out of the barrel shop into the yard, then the gatehouse across it.",
+            "id": "obj/unbar-the-abbey-gate",
+            "missing_item_hint": "The bar sits deep and there is nothing here to reach it with.",
+            "requires_item": "minecraft:iron_ingot",
+            "title": "Unbar the abbey gate",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "The bar was on the inside. Somebody shut it from in there.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/unbar-the-abbey-gate": [
+            {
+              "anchor": "anchor/seam-works-yard-to-abbey-gate",
+              "happening": {
+                "text": "The abbey gate stands open for the first time in twenty years.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/what-the-fires-left",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "offstage"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "unchanged",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": "unchanged",
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": "dlg/elent-chapter",
+            "doing": "keeping the one fire in the precinct alight"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party crosses the precinct and finds it occupied.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-precinct",
+        "objectives": [
+          {
+            "anchor": "anchor/node-abbey-gate",
+            "happening": {
+              "text": "The party passes into the precinct.",
+              "verb": "arrives"
+            },
+            "hint": "The open gate, east across the works yard.",
+            "id": "obj/through-the-gatehouse",
+            "radius": 3,
+            "title": "Go through the gatehouse",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/through-the-gatehouse"
+            ],
+            "anchor": "anchor/node-cloister-garth",
+            "happening": {
+              "text": "The party crosses the garth.",
+              "verb": "arrives"
+            },
+            "hint": "Up the steps out of the gatehouse, into the open square.",
+            "id": "obj/cross-the-garth",
+            "radius": 6,
+            "title": "Cross the cloister garth",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/cross-the-garth"
+            ],
+            "anchor": "anchor/node-cloister-walk",
+            "happening": {
+              "text": "The party takes the north walk.",
+              "verb": "arrives"
+            },
+            "hint": "The covered arcade along the far side of the garth.",
+            "id": "obj/walk-the-north-arcade",
+            "radius": 3,
+            "title": "Take the north walk",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/walk-the-north-arcade"
+            ],
+            "happening": {
+              "subject": "npc/sister-elent",
+              "text": "Elent says how many of them are left.",
+              "verb": "learns"
+            },
+            "hint": "The lit doorway off the north walk.",
+            "id": "obj/speak-with-elent",
+            "npc": "npc/sister-elent",
+            "title": "Speak to Sister Elent",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/brother-ivo",
+              "text": "Somebody is already at the high table, counting.",
+              "verb": "arrives"
+            },
+            "npc": "npc/brother-ivo",
+            "type": "spawn-npc"
+          },
+          {
+            "style": "actionbar",
+            "text": "One of them. There is supposed to be a community here.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/speak-with-elent": [
+            {
+              "anchor": "anchor/hearth",
+              "on_rest": [
+                {
+                  "style": "actionbar",
+                  "text": "Elent puts another board on and says nothing.",
+                  "type": "narrate"
+                }
+              ],
+              "prompt": "The chapter house fire.",
+              "rest_label": "Rest and keep watch",
+              "save_label": "Mark the place",
+              "type": "bonfire"
+            }
+          ],
+          "obj/walk-the-north-arcade": [
+            {
+              "flag": "flag/on-the-north-walk",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-gate-that-holds",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "anchor/high-table",
+            "dialogue": "dlg/ivo-table",
+            "doing": "counting the bowls on a table nobody cleared"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "unchanged",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": "unchanged",
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": "dlg/elent-refectory",
+            "doing": "not going into the refectory, and saying why"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party finds out the community did not leave.",
+          "verb": "learns"
+        },
+        "id": "quest/the-table-still-laid",
+        "objectives": [
+          {
+            "anchor": "anchor/high-table",
+            "happening": {
+              "text": "The table is laid for a meal nobody came to.",
+              "verb": "learns"
+            },
+            "hint": "East off the north walk, past the chapter house.",
+            "id": "obj/read-the-table",
+            "title": "Read the high table",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/read-the-table"
+            ],
+            "happening": {
+              "subject": "npc/brother-ivo",
+              "text": "Ivo gives the count, and the count is one.",
+              "verb": "learns"
+            },
+            "hint": "He is at the high table, and he was not there a moment ago.",
+            "id": "obj/count-with-ivo",
+            "npc": "npc/brother-ivo",
+            "title": "Hear the count",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "Sent away in one night, and the bowls left out.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/read-the-table": [
+            {
+              "flag": "flag/table-read",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-precinct",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "anchor/high-table",
+            "dialogue": "dlg/ivo-under",
+            "doing": "waiting to be told what the ledger says"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "unchanged",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": "unchanged",
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": "dlg/elent-chapter",
+            "doing": "waiting at the fire for the party to come back up"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party opens the abbey's own record of the sea office.",
+          "verb": "learns"
+        },
+        "id": "quest/under-the-choir",
+        "objectives": [
+          {
+            "anchor": "anchor/node-abbey-church",
+            "happening": {
+              "text": "The party goes into the church.",
+              "verb": "arrives"
+            },
+            "hint": "East out of the refectory, through the nave door.",
+            "id": "obj/into-the-nave",
+            "radius": 6,
+            "title": "Go into the church",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/into-the-nave"
+            ],
+            "anchor": "anchor/ledger-chest",
+            "count": 1,
+            "happening": {
+              "text": "The party takes the sea office's ledger out of the undercroft.",
+              "verb": "gains"
+            },
+            "hint": "The stair down through the church floor, then the far end of the vault.",
+            "id": "obj/open-the-abbey-ledger",
+            "item": "minecraft:book",
+            "item_name": "Sea Office Ledger",
+            "title": "Open the sea office ledger",
+            "type": "collect"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "The sluice was opened. It is in the ledger, in a hand that signed it.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-table-still-laid",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "anchor/high-table",
+            "dialogue": "unchanged",
+            "doing": "counting the bowls on a table nobody cleared"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "unchanged",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": "unchanged",
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": "dlg/elent-chapter",
+            "doing": "waiting at the fire to be told what the party found"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "none",
+            "doing": "trimming a lamp nobody asked her to keep"
+          }
+        },
+        "happening": {
+          "text": "The party finds the prior, and settles what the record is for.",
+          "verb": "learns"
+        },
+        "id": "quest/the-priors-room",
+        "objectives": [
+          {
+            "anchor": "anchor/prior-desk",
+            "happening": {
+              "text": "The prior stayed, and is still at the desk.",
+              "verb": "learns"
+            },
+            "hint": "East out of the church, the last room before the wall.",
+            "id": "obj/find-the-prior",
+            "title": "Look at the desk",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/find-the-prior"
+            ],
+            "happening": {
+              "subject": "npc/sister-elent",
+              "text": "Elent hears what is in the ledger and asks what it is for.",
+              "verb": "learns"
+            },
+            "hint": "West through the precinct to the chapter house.",
+            "id": "obj/decide-the-ledger",
+            "npc": "npc/sister-elent",
+            "title": "Take it back to the fire",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "Whatever else is true, somebody has been keeping that lamp.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/find-the-prior": [
+            {
+              "flag": "flag/prior-found",
+              "type": "set-flag"
+            },
+            {
+              "style": "actionbar",
+              "text": "He has been at that desk longer than the works has been shut.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/under-the-choir",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/brother-ivo": {
+            "at": "anchor/high-table",
+            "dialogue": "unchanged",
+            "doing": "counting the bowls on a table nobody cleared"
+          },
+          "npc/goodwife-teague": {
+            "at": "anchor/teague-stand",
+            "dialogue": {
+              "barks": [
+                "The tide turns at dusk whether you are on the boat or not.",
+                "I land people. I do not go up.",
+                "Forty years and I have never seen that lamp out."
+              ]
+            },
+            "doing": "sitting in the boat with the painter round her wrist"
+          },
+          "npc/hask": {
+            "at": "anchor/hask-bench",
+            "dialogue": "unchanged",
+            "doing": "greasing a wheel that lifts nothing"
+          },
+          "npc/pyke": {
+            "at": "anchor/pyke-camp",
+            "dialogue": "unchanged",
+            "doing": "sorting salvage he cannot sell"
+          },
+          "npc/sister-elent": {
+            "at": "anchor/node-chapter-house",
+            "dialogue": "unchanged",
+            "doing": "keeping the fire, and the count"
+          },
+          "npc/warden-aumery": {
+            "at": "anchor/lantern",
+            "dialogue": "dlg/aumery-root",
+            "doing": "trimming the lamp, and not surprised that somebody came up"
+          }
+        },
+        "happening": {
+          "text": "The party goes out to the light.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-light",
+        "objectives": [
+          {
+            "anchor": "anchor/node-night-stair",
+            "happening": {
+              "text": "The party climbs out of the precinct.",
+              "verb": "arrives"
+            },
+            "hint": "East out of the prior's room, up through the precinct wall.",
+            "id": "obj/take-the-night-stair",
+            "radius": 3,
+            "title": "Take the night stair",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/take-the-night-stair"
+            ],
+            "anchor": "anchor/node-headland-path",
+            "happening": {
+              "text": "The party drops onto the headland and the abbey is behind them.",
+              "verb": "arrives"
+            },
+            "hint": "Off the head of the stair. There is no way back up it.",
+            "id": "obj/walk-the-headland",
+            "radius": 5,
+            "title": "Walk the headland",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/walk-the-headland"
+            ],
+            "happening": {
+              "subject": "wave/the-keepers-watch",
+              "text": "What holds the court for the keeper goes down.",
+              "verb": "dies"
+            },
+            "hint": "The walled square at the end of the headland. Something is standing in the gate.",
+            "id": "obj/face-the-keeper",
+            "title": "Get into the light court",
+            "type": "kill",
+            "wave": "wave/the-keepers-watch"
+          },
+          {
+            "after": [
+              "obj/face-the-keeper"
+            ],
+            "anchor": "anchor/lantern",
+            "happening": {
+              "text": "The party comes up into the lantern room.",
+              "verb": "arrives"
+            },
+            "hint": "The tower door is open. She is at the top of it.",
+            "id": "obj/reach-the-lantern",
+            "radius": 3,
+            "title": "Go up to the lamp",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/reach-the-lantern"
+            ],
+            "happening": {
+              "subject": "npc/warden-aumery",
+              "text": "The party settles who keeps the light.",
+              "verb": "learns"
+            },
+            "hint": "She is at the lamp with her back to the glass.",
+            "id": "obj/settle-the-light",
+            "npc": "npc/warden-aumery",
+            "title": "Settle the watch",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "The lamp wants trimming in an hour, whoever is here to do it.",
+            "type": "narrate"
+          },
+          {
+            "ending": "ending/the-headland",
+            "happening": {
+              "subject": "npc/warden-aumery",
+              "text": "The party goes back down to the boat.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/reach-the-lantern": [
+            {
+              "flag": "flag/at-the-lamp",
+              "type": "set-flag"
+            }
+          ],
+          "obj/walk-the-headland": [
+            {
+              "happening": {
+                "subject": "wave/the-keepers-watch",
+                "text": "The court's watch comes out to the wall.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/the-keepers-watch"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-priors-room",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "shortcuts": [
+      {
+        "gate": "anchor/seam-boiling-house-to-works-yard",
+        "id": "shortcut/the-pan-door",
+        "on_unlock": [
+          {
+            "flag": "flag/pan-door-unbarred",
+            "type": "set-flag"
+          },
+          {
+            "style": "actionbar",
+            "text": "The bar comes up on the second try and the works is one room again.",
+            "type": "narrate"
+          }
+        ],
+        "unlock": "anchor/unlock-boiling-house-to-works-yard"
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/seam-boiling-house-to-works-yard",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The door is barred from the yard side and will not shift.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/pan-door-far-side",
+        "on": {
+          "on": "use"
+        },
+        "once": false
+      },
+      {
+        "at": "anchor/seam-works-yard-to-abbey-gate",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The gate holds. The bar is on the far side of it.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/abbey-gate-barred",
+        "on": {
+          "on": "use"
+        },
+        "once": false
+      }
+    ],
+    "waves": [
+      {
+        "anchor": "anchor/keeper-stand",
+        "id": "wave/the-keepers-watch",
+        "mobs": [
+          {
+            "attributes": {
+              "attack_damage": 7.0,
+              "follow_range": 28.0,
+              "max_health": 90.0,
+              "movement_speed": 0.26
+            },
+            "count": 1,
+            "entity": "minecraft:vindicator",
+            "equipment": {
+              "chest": "minecraft:iron_chestplate",
+              "head": "minecraft:iron_helmet",
+              "main_hand": "minecraft:iron_axe"
+            },
+            "name": "The Court Watch"
+          }
+        ],
+        "tier": "boss"
+      }
+    ]
   },
   "dsl_version": "0.19.0",
   "stage": "quests"

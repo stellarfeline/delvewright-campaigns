@@ -1,7 +1,503 @@
 {
   "campaign_id": "greyhithe-saltworks",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/teague-landing",
+            "options": [
+              {
+                "label": "Who keeps it lit?",
+                "next": "dlg/teague-lamp"
+              },
+              {
+                "label": "Who else lands here?",
+                "next": "dlg/teague-others"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-teague-out",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We will walk up."
+              }
+            ],
+            "text": "There is your shore. I will be here until the tide turns and then I will not. The works is up the wall, the abbey is behind the works, and the lamp is at the end of the headland where it has been every night of my life."
+          },
+          {
+            "id": "dlg/teague-lamp",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/teague-landing"
+              }
+            ],
+            "text": "Nobody. That is the whole of the trouble, and it is why somebody is paying you and not me."
+          },
+          {
+            "id": "dlg/teague-others",
+            "options": [
+              {
+                "label": "Did you take her off?",
+                "next": "dlg/teague-others-2"
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/teague-landing"
+              }
+            ],
+            "text": "A woman, a month back. Paid the same as you and asked fewer questions."
+          },
+          {
+            "id": "dlg/teague-others-2",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/teague-landing"
+              }
+            ],
+            "text": "No."
+          }
+        ],
+        "npc": "npc/goodwife-teague",
+        "root": "dlg/teague-landing"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/hask-hoist",
+            "options": [
+              {
+                "label": "Where is everyone?",
+                "next": "dlg/hask-everyone"
+              },
+              {
+                "label": "The abbey gate?",
+                "next": "dlg/hask-gate"
+              },
+              {
+                "label": "About the wheel.",
+                "next": "dlg/hask-done",
+                "requires_flags": [
+                  "flag/in-the-coal-yard"
+                ]
+              }
+            ],
+            "text": "SHE IS SOUND! ROPE IS SOUND, WHEEL IS SOUND, PAWL IS SOUND! THERE IS NO COAL TO LIFT BUT SHE IS SOUND!"
+          },
+          {
+            "id": "dlg/hask-done",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/wake-the-hoist",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Keep her greased."
+              }
+            ],
+            "text": "YOU CAME ACROSS THE YARD! NOBODY COMES ACROSS THE YARD! THERE IS NOTHING IN IT!"
+          },
+          {
+            "id": "dlg/hask-everyone",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hask-hoist"
+              }
+            ],
+            "text": "THE BEARINGS WENT ONCE. NINETY-TWO. I HAD HER BACK IN A DAY."
+          },
+          {
+            "id": "dlg/hask-gate",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hask-hoist"
+              }
+            ],
+            "text": "BARRED! FROM THE INSIDE! I SAW THE LAY BROTHER DO IT AND HE DID NOT COME OUT AGAIN!"
+          }
+        ],
+        "npc": "npc/hask",
+        "root": "dlg/hask-hoist"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/pyke-store",
+            "options": [
+              {
+                "label": "The gate is barred.",
+                "next": "dlg/pyke-gate"
+              },
+              {
+                "label": "Been up the headland?",
+                "next": "dlg/pyke-headland"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-pyke",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We will manage."
+              }
+            ],
+            "text": "You are not here for salvage, then. Nobody is. Take what you like off that heap, there is nothing in it, I have said so to three people and it was true every time."
+          },
+          {
+            "id": "dlg/pyke-gate",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/pyke-store"
+              }
+            ],
+            "text": "Barred, and the bar is a hand deep. You want flat iron, and there is flat iron in the barrel shop, hoops of it, hung up in sizes. That is not stealing, that is a hoop."
+          },
+          {
+            "id": "dlg/pyke-headland",
+            "options": [
+              {
+                "label": "Why not?",
+                "next": "dlg/pyke-headland-2"
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/pyke-store"
+              }
+            ],
+            "text": "No. And I would not, and you should not, and that is the most useful thing you will get out of me."
+          },
+          {
+            "id": "dlg/pyke-headland-2",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/pyke-store"
+              }
+            ],
+            "text": "Because the lamp is lit and I did not light it, and I have been on this coast long enough to leave that alone."
+          }
+        ],
+        "npc": "npc/pyke",
+        "root": "dlg/pyke-store"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/elent-chapter",
+            "options": [
+              {
+                "label": "Where did they go?",
+                "next": "dlg/elent-where"
+              },
+              {
+                "label": "Who keeps the lamp?",
+                "next": "dlg/elent-lamp"
+              },
+              {
+                "label": "You are the last one?",
+                "next": "dlg/elent-look",
+                "requires_flags": [
+                  "flag/on-the-north-walk"
+                ]
+              },
+              {
+                "label": "About the prior.",
+                "next": "dlg/elent-decide",
+                "requires_flags": [
+                  "flag/prior-found"
+                ]
+              }
+            ],
+            "text": "You came up through the works, so you have already seen most of it. I am Elent. I was novice-mistress. There were sixty of us and now the count is me, and I am afraid of the dark on the night stair, which I say out loud because there is nobody left to say it quietly to."
+          },
+          {
+            "id": "dlg/elent-decide",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/ledger-kept",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/decide-the-ledger",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/sister-elent",
+                  "text": "The party keeps the sea office's record.",
+                  "verb": "gains"
+                },
+                "label": "It should be known.",
+                "tooltip": "The record leaves the headland with us, and whoever opened the sea answers for it."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/ledger-burned",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/decide-the-ledger",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/sister-elent",
+                  "text": "The party burns the sea office's record on Elent's fire.",
+                  "verb": "loses"
+                },
+                "label": "It should burn.",
+                "tooltip": "Nothing is proved and nobody is blamed. Your fire is right there."
+              }
+            ],
+            "text": "I do not know what he waited for, and I have had twenty years. He wrote the sluice order and he signed it and he stayed. There is a fire in this room and there is a boat on that beach, and I am not going to tell you which of them the book is for."
+          },
+          {
+            "id": "dlg/elent-look",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/speak-with-elent",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We will look."
+              }
+            ],
+            "text": "I am. You will want to see the refectory before you believe any of it, and I do not go in there."
+          },
+          {
+            "id": "dlg/elent-where",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/elent-chapter"
+              }
+            ],
+            "text": "The prior sent them. One night, all of them, down to the boats. He did not go and he did not say why, and I did not go because I did not believe he was right."
+          },
+          {
+            "id": "dlg/elent-lamp",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/elent-chapter"
+              }
+            ],
+            "text": "It burns. I have never gone out to look and I am not going to pretend that is anything but fear."
+          },
+          {
+            "id": "dlg/elent-refectory",
+            "options": [
+              {
+                "label": "Somebody is in there.",
+                "next": "dlg/elent-ivo"
+              },
+              {
+                "label": "We will read it.",
+                "next": "dlg/elent-refectory"
+              }
+            ],
+            "text": "I do not go in there. The tables were laid for that night's meal and nobody ate it, and clearing them would be saying it was over."
+          },
+          {
+            "id": "dlg/elent-ivo",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/elent-refectory"
+              }
+            ],
+            "text": "Ivo. He counts. He has counted every day for twenty years and he has never once come out to the fire."
+          }
+        ],
+        "npc": "npc/sister-elent",
+        "root": "dlg/elent-chapter"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/ivo-table",
+            "options": [
+              {
+                "label": "Sixty went where?",
+                "next": "dlg/ivo-sixty"
+              },
+              {
+                "label": "What did you last write?",
+                "next": "dlg/ivo-last"
+              },
+              {
+                "label": "The table is laid.",
+                "next": "dlg/ivo-count",
+                "requires_flags": [
+                  "flag/table-read"
+                ]
+              }
+            ],
+            "text": "Bowls, sixty. Cups, sixty. Places laid, sixty. Present, one, and now five, which is an increase and I will want it in writing."
+          },
+          {
+            "id": "dlg/ivo-count",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/count-with-ivo",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We will look below."
+              }
+            ],
+            "text": "It is. It has been laid since the night the count went wrong, and I do not clear a table on a count I have not reconciled."
+          },
+          {
+            "id": "dlg/ivo-sixty",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/ivo-table"
+              }
+            ],
+            "text": "Out. Struck out in one line, which is not how a count is meant to go."
+          },
+          {
+            "id": "dlg/ivo-last",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/ivo-table"
+              }
+            ],
+            "text": "Sea office, one order. Sluice, one, opened. Pans, six, lost. That is the real ledger and it is under the choir where the sea office kept it."
+          },
+          {
+            "id": "dlg/ivo-under",
+            "options": [
+              {
+                "label": "Understood.",
+                "next": "dlg/ivo-under"
+              }
+            ],
+            "text": "The chest at the far bay. Do not move it, read it where it stands, it is entered as being there."
+          }
+        ],
+        "npc": "npc/brother-ivo",
+        "root": "dlg/ivo-table"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/aumery-root",
+            "options": [
+              {
+                "label": "You starved them.",
+                "next": "dlg/aumery-starved"
+              },
+              {
+                "label": "Who else knows?",
+                "next": "dlg/aumery-knows"
+              },
+              {
+                "label": "Show her the book.",
+                "next": "dlg/aumery-relief",
+                "requires_flags": [
+                  "flag/at-the-lamp",
+                  "flag/ledger-kept"
+                ]
+              },
+              {
+                "label": "We burned it.",
+                "next": "dlg/aumery-watch",
+                "requires_flags": [
+                  "flag/at-the-lamp",
+                  "flag/ledger-burned"
+                ]
+              }
+            ],
+            "text": "You came the long way, so somebody down there has told you most of it. My name is on the sluice order. The lower pans were being cut a foot deeper every season and the cliff under this whole headland is one seam of clay, and I opened the sea on them myself, and the works drowned, and the works would have taken the headland with it inside two years. I have kept the lamp every night since because somebody has to and nobody would."
+          },
+          {
+            "id": "dlg/aumery-starved",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/aumery-root"
+              }
+            ],
+            "text": "Yes. Both things are true and I have had twenty years to find a way of saying them that is not both, and there is not one."
+          },
+          {
+            "id": "dlg/aumery-knows",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/aumery-root"
+              }
+            ],
+            "text": "The prior knew. He sent them down to the boats the same night so that they would be off the headland when it went, and he did not tell them why, and then he stayed where I could not argue with him."
+          },
+          {
+            "id": "dlg/aumery-relief",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/settle-the-light",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/warden-aumery",
+                  "text": "Aumery leaves the light to whoever comes next.",
+                  "verb": "departs"
+                },
+                "label": "Come down with us.",
+                "tooltip": "The record is enough. Somebody else can keep the light now."
+              }
+            ],
+            "text": "That is my hand. I have not seen it in twenty years and it has not improved. Take it down with you, then, and I will come and answer for it, and somebody else can trim this lamp at the turn of the hour."
+          },
+          {
+            "id": "dlg/aumery-watch",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/settle-the-light",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/warden-aumery",
+                  "text": "Aumery keeps the light, and the party goes down.",
+                  "verb": "survives"
+                },
+                "label": "We will leave you.",
+                "tooltip": "Nothing is proved, nobody is blamed, and the watch goes on exactly as it was."
+              }
+            ],
+            "text": "Then there is nothing on this headland that says any of it, and nothing to be done about that either. The hour is nearly up. Mind the stair on the way down, it is worse than it looks."
+          }
+        ],
+        "npc": "npc/warden-aumery",
+        "root": "dlg/aumery-root"
+      }
+    ]
   },
   "dsl_version": "0.19.0",
   "stage": "dialogue"
