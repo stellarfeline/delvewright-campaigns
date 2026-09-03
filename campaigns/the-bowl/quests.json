@@ -1,0 +1,80 @@
+{
+  "campaign_id": "the-bowl",
+  "content": {
+    "quests": [
+      {
+        "cast": {
+          "npc/warden": {
+            "at": "anchor/node-court",
+            "dialogue": "dlg/greeting",
+            "doing": "standing in the open court with her back to the wall, watching the rim"
+          }
+        },
+        "happening": {
+          "subject": "npc/warden",
+          "text": "The party comes in through the mouth and the Warden looks round.",
+          "verb": "arrives"
+        },
+        "id": "quest/walk-the-bowl",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/warden",
+              "text": "The Warden tells them how little of this place is rooms.",
+              "verb": "learns"
+            },
+            "hint": "The Warden stands in the open court.",
+            "id": "obj/hear-the-warden",
+            "npc": "npc/warden",
+            "title": "Hear the Warden",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-the-warden"
+            ],
+            "anchor": "anchor/node-ledge",
+            "happening": {
+              "text": "The party climbs to the ledge and, for the first time, is above the floor of the bowl.",
+              "verb": "gains"
+            },
+            "hint": "The stair up out of the gallery is on its north wall.",
+            "id": "obj/climb-the-ledge",
+            "radius": 3,
+            "title": "Climb to the ledge",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/climb-the-ledge"
+            ],
+            "anchor": "anchor/node-lip",
+            "happening": {
+              "text": "The party steps out onto the lip and the whole walk is behind them at once.",
+              "verb": "arrives"
+            },
+            "hint": "Out of the gallery by its east arch.",
+            "id": "obj/reach-the-lip",
+            "radius": 3,
+            "title": "Reach the lip",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The walk is done, and it was shorter than the sky over it.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.14.0",
+  "stage": "quests"
+}
