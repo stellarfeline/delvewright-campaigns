@@ -1,16 +1,147 @@
 {
   "campaign_id": "greyhithe-saltworks",
   "content": {
-    "finale": "quest/stub",
+    "branch_points": [
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/ledger-kept"
+            ],
+            "id": "branch/ledger-kept",
+            "leads_to": "ending/the-relief"
+          },
+          {
+            "flags": [
+              "flag/ledger-burned"
+            ],
+            "id": "branch/ledger-burned",
+            "leads_to": "ending/the-watch"
+          }
+        ],
+        "forks_on": [
+          "flag/ledger-kept",
+          "flag/ledger-burned"
+        ],
+        "id": "branch-point/the-ledger",
+        "opens_at": "quest/the-priors-room"
+      }
+    ],
+    "finale": "quest/the-light",
     "quests": [
       {
         "act": 1,
         "area": "area/site",
         "depends_on": [],
-        "goal": "STUB",
-        "id": "quest/stub",
+        "goal": "Get off the boat, cross the drowned pans while the tide is out, and reach the only shed still standing on them.",
+        "id": "quest/put-ashore",
+        "mandatory": true,
+        "npcs": [
+          "npc/goodwife-teague"
+        ]
+      },
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [
+          "quest/put-ashore"
+        ],
+        "goal": "Climb the cut off the pans and follow the brine gallery into the boiling house.",
+        "id": "quest/the-brine-road",
         "mandatory": true,
         "npcs": []
+      },
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-brine-road"
+        ],
+        "goal": "Get behind the furnaces, cross the coal yard, and find out from the engineman what is still running here.",
+        "id": "quest/what-the-fires-left",
+        "mandatory": true,
+        "npcs": [
+          "npc/hask"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/what-the-fires-left"
+        ],
+        "goal": "Find the wrecker in the salt store, take what will lift a bar, and open the abbey gate from the works yard.",
+        "id": "quest/the-gate-that-holds",
+        "mandatory": true,
+        "npcs": [
+          "npc/pyke"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-gate-that-holds"
+        ],
+        "goal": "Cross the precinct to the chapter house and speak to the last of the community.",
+        "id": "quest/the-precinct",
+        "mandatory": true,
+        "npcs": [
+          "npc/sister-elent"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-precinct"
+        ],
+        "goal": "Read the refectory: the community did not leave, they were sent, and the cellarer is still counting.",
+        "id": "quest/the-table-still-laid",
+        "mandatory": true,
+        "npcs": [
+          "npc/brother-ivo",
+          "npc/sister-elent"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-table-still-laid"
+        ],
+        "goal": "Go down under the choir and open the abbey's own ledger of the sea office.",
+        "id": "quest/under-the-choir",
+        "mandatory": true,
+        "npcs": [
+          "npc/brother-ivo"
+        ]
+      },
+      {
+        "act": 3,
+        "area": "area/site",
+        "depends_on": [
+          "quest/under-the-choir"
+        ],
+        "goal": "The prior stayed. Find out what he was waiting for, and decide what leaves this room with you.",
+        "id": "quest/the-priors-room",
+        "mandatory": true,
+        "npcs": [
+          "npc/sister-elent"
+        ]
+      },
+      {
+        "act": 3,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-priors-room"
+        ],
+        "goal": "Take the night stair out to the headland, cross to the light, and settle who keeps it.",
+        "id": "quest/the-light",
+        "mandatory": true,
+        "npcs": [
+          "npc/warden-aumery"
+        ]
       }
     ]
   },
