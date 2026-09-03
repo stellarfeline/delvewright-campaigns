@@ -891,8 +891,8 @@ and looping against them is the one way to spend an afternoon here.
 **The campaign does not validate when this step is done, and no amount of
 looping will make it.** The quest plan names quests, stage 5 is step 5, and the
 compiler is right to refuse a campaign that plans a quest nothing expands. So
-the finish line for this step is not a green run — it is a run whose only
-remaining errors are the ones below.
+the finish line for this step is not a green run — it is a run whose every
+remaining error the rule below accounts for.
 
 Run `delvec --prefabs prefabs validate <campaign-dir>` and sort the output by
 **one rule, which is the whole of this step**:
