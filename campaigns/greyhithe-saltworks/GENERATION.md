@@ -45,7 +45,10 @@ twenty-area campaign would be twenty teleports.
   headland. The engine refuses `ocean` without a boundary (`DW0320`).
 - **`time: "dusk"`, `weather: "clear"`.** The one beat the prompt insists on is
   a lamp that is still burning, and a burning lamp does not read at noon.
-  Recorded as a risk for the walk: the open half of this map is most of it.
+  **The walk at step 9 judges a dusk blockout**, and most of this map is open to
+  the sky: whether the shore, the pans, the yards and the headland are legible
+  at that hour is a question only the walk answers, and it is the first thing to
+  look at.
 - **`difficulty: "hard"`.** The page: absent, a wave campaign derives `easy`,
   which halves incoming damage. A souls-adjacent brief wants the real number.
 - **One branch point, at the prior's lodging.** The prompt does not ask for a
