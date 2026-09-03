@@ -765,9 +765,14 @@ form and the commands are in *Reference: drawing the map's reference*.
    - `size_class`, `way_class` and every seam `opening` name an entry in the
      **metrics table**. `delvec metrics` prints it — 341 lines of JSON on stdout,
      and a summary plus its binding counts on stderr, so read them separately:
-     `delvec metrics > table.json`. The keys are the names to write
-     (`size-class.hall`, `way-class.road`, `opening.arch`); a name the table does
-     not define is `DW0812`.
+     `delvec metrics > table.json`. **Write the BARE name** — `"size_class":
+     "hall"`, `"way_class": "road"`, `"opening": "arch"` — and a name the table
+     does not define is `DW0812`, which lists the defined set for that kind.
+     The table's own JSON keys carry a namespace the document never writes:
+     the entry is at `building["size-class.hall"]`, and the compiler puts the
+     `size-class.` / `way-class.` / `opening.` in front of what you wrote to
+     look it up, so `"size_class": "size-class.hall"` is `DW0812` and not a
+     synonym. Strip the prefix when you read a key out of `table.json`.
    - The graph is checked as a graph, cheaply, before geometry exists to make
      it expensive: every place reachable under gating (`DW0816`), the authored
      critical path actually a quest-legal path (`DW0817`), no one-way edge that
@@ -886,21 +891,43 @@ and looping against them is the one way to spend an afternoon here.
 **The campaign does not validate when this step is done, and no amount of
 looping will make it.** The quest plan names quests, stage 5 is step 5, and the
 compiler is right to refuse a campaign that plans a quest nothing expands. So
-the finish line for this step is not a green run — it is a run whose only
-remaining errors are the ones below.
+the finish line for this step is not a green run — it is a run whose every
+remaining error the rule below accounts for.
 
-Run `delvec --prefabs prefabs validate <campaign-dir>` and read the codes:
+Run `delvec --prefabs prefabs validate <campaign-dir>` and sort the output by
+**one rule, which is the whole of this step**:
+
+> A refusal whose message names something only `quests.json` or `dialogue.json`
+> can supply is the step-3 state, and is not a repair you owe. Every other code
+> is a repair you owe now.
+
+Those two documents are step 5, so nothing you write here can produce what they
+hold. **Read the message, not the code.** Each of these says in its own words
+what is missing and where it comes from — a flag no `set-flag` produces, an
+ending no `campaign-complete` declares, a body no `spawn-npc` summons. Every one
+of them is a stage-5 effect or a stage-6 dialogue option, every one of them
+clears at step 5, and looping on any of them here is the way to lose an
+afternoon.
+
+The codes below are the **instances a campaign hits today**, not the rule. A
+code that is not in this list is judged by the rule above — by what its message
+says is missing — never by its absence here.
 
 | code | what it is saying | what to do |
 |---|---|---|
 | `DW0150` | the plan is written and stage 5 is not. **One** diagnostic naming every planned quest — it says so itself: *an authoring state, not a fault*. | nothing. It clears at step 5, for every quest at once. |
 | `DW0818` | site-plan campaigns only: every layout-graph beat and quest-gated way names a quest stage 5 has not written. The message says so and points at `DW0150`. | nothing. Same state, same clearing. |
-| `DW0152` | one per NPC with no dialogue tree | **stubbable, unlike the other two.** A tree of one node with an empty `options` is accepted and raises nothing new, so clear it here if you want a shorter list to read at step 4; leaving it is equally fine. Step 5 replaces the stub either way. |
+| `DW0152` | one per NPC with no dialogue tree. | **stubbable, unlike the rest.** A tree of one node with an empty `options` is accepted and raises nothing new, so clear it here if you want a shorter list to read at step 4; leaving it is equally fine. Step 5 replaces the stub either way. |
+| `DW0172` | an objective gate, or a `branch_points` `forks_on`, names a flag no `set-flag` produces — and every `set-flag` lives in a stage-5 quest effect or a stage-6 dialogue option. | nothing, once you have checked the flag is one step 5 is going to set. A flag no beat in the plan is ever going to produce is a plan defect and you fix it here. |
+| `DW0112` | a branch's `leads_to` names an `ending/…` no `campaign-complete` declares, and `campaign-complete` is a stage-5 effect. | nothing. **But `DW0112` is the generic unresolved-reference code** — on any other path (an npc's `area`, a `datum`, a trigger's target) it is a genuinely broken reference and you fix it now. The path in the message is what tells the two apart. |
+| `DW0482` | a declared branch reaches no ending, because nothing sets its flags yet. The same absence `DW0172` names, one diagnostic per branch. | nothing. It clears with the `set-flag`s at step 5. |
+| `DW0197` | a `deferred: true` NPC that no `spawn-npc` summons, and `spawn-npc` is a stage-5 effect. | nothing, if the character is meant to walk in at a beat step 5 will write. If it was never meant to be deferred, drop `deferred` now — that is a stage-2 repair, not a stage-5 one. |
 
-**`DW0150` and `DW0818` are the expected state and are not repairs you owe.
-Every other code is.** That is the whole rule for this step: sort the output
-into those two and everything else, fix everything else, and go to step 4
-holding what is left.
+Measured on a twenty-four-place site-plan campaign at the end of this step: 42
+errors over those seven codes — `DW0818` ×28, `DW0152` ×6, `DW0482` ×2,
+`DW0172` ×2, `DW0112` ×2, `DW0197` ×1, `DW0150` ×1 — plus the two ordinary
+warnings (`DW0813`, `DW0822`) that stand on every site-plan campaign. A list
+that long is the expected shape here, not evidence that something went wrong.
 
 **Do not try to clear `DW0150` by writing empty stage-5 quests.** It is the
 obvious move and it is strictly worse: a quest carrying only what the schema
@@ -924,10 +951,12 @@ yes.** Steps 1–3 settle
 *what the delve is*; step 5 is where the expensive authoring happens, and every
 problem this gate would have caught gets paid for twice once it is written.
 
-You arrive here holding a campaign that does not validate, carrying exactly the
-codes *Where step 3 ends* lists and nothing else. That is the correct state to
-be at this gate in, and it is not something to mention, apologise for, or try to
-fix before asking. What is being confirmed is the design.
+You arrive here holding a campaign that does not validate, carrying only
+refusals whose messages name something `quests.json` or `dialogue.json` will
+supply — the rule *Where step 3 ends* states, whether or not the code is one it
+lists. That is the correct state to be at this gate in, and it is not something
+to mention, apologise for, or try to fix before asking. What is being confirmed
+is the design.
 
 Deliver a **walkthrough of the whole design**: the complete story, every scene's
 design, and each scene carrying **both a near view and a far view**. Near view is
@@ -1017,7 +1046,9 @@ Then `dialogue.json`. Two rules that are not style preferences:
 Loop `delvec --prefabs prefabs validate <campaign-dir>` until clean after each.
 **This is the step where clean is reachable**, and it is where the codes step 3
 ended holding go away: writing `quests.json` clears `DW0150` for every quest at
-once and `DW0818` with it, and `dialogue.json` clears `DW0152`. If any of them
+once and `DW0818` with it, and the effects it carries clear `DW0172`, `DW0112`
+on a branch's `leads_to`, `DW0482` and `DW0197`; `dialogue.json` clears
+`DW0152`. If any of them
 survives a written stage 5 it has stopped being the expected state and is a real
 finding — a `DW0150` here means an id in the plan and an id in `quests.json` do
 not match, and the message says how many quests stage 5 declares, which is how
@@ -2650,9 +2681,13 @@ campaign directory at all, or a document is there and cannot be opened. Check
 the path first.
 
 **Step 3 ends red and nothing you do clears it.** Expected — read *Where step 3
-ends*. `DW0150` and `DW0818` are the state of a campaign whose plan is written
-and whose quests are not, and they clear at step 5. Writing empty stage-5 quests
-to get past them makes it worse, and `DW0150` says so.
+ends*, which gives the rule: a refusal whose message names something only
+`quests.json` or `dialogue.json` can supply is the state of a campaign whose
+plan is written and whose quests are not, and it clears at step 5. It is a list
+of codes, not two, and the list is longer than it looks — `DW0172`, `DW0482`
+and `DW0197` are the same absence seen from the branch, the fork and the cast.
+Writing empty stage-5 quests to get past them makes it worse, and `DW0150` says
+so.
 
 **`DW0311`: "the player cannot walk from [x] to [y] … no collision-free path",
 and the two points are hundreds of blocks apart.** They are in different areas,
