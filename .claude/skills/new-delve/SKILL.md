@@ -991,7 +991,11 @@ their `.json` sidecars** to `campaigns/<id>/design/concept/`, one per scene,
 named for the scene, and write `campaigns/<id>/design/README.md` carrying the
 approval date, the approved names, and the sentence every later round is held
 to: *author from the image, judge against it, present every choice beside it.*
-Commit them with the campaign. `$DELVEWRIGHT_ENGINE/tools/refimg.py` writes to a gitignored working
+Commit them with the campaign. Everything under `design/` is tracked with
+git-lfs (`.gitattributes`), so an approved image commits as a small pointer and
+its bytes travel out of band — the `git lfs install` from Init step 1 is all this
+needs, and it is why carrying a campaign's whole design set in the repository
+does not make the next person's clone of it a several-hundred-megabyte download. `$DELVEWRIGHT_ENGINE/tools/refimg.py` writes to a gitignored working
 directory, which is right for a draft and wrong for an approved one — **an
 approval that lives only in a published page is bound to nothing.** The sidecar
 travels with the image because it is what makes the image re-issuable with one
@@ -2176,6 +2180,9 @@ re-rolled, where one unusable view is re-rolled alone for the cost of one image.
    anything else is drawn. Frame it for what it shows.
 3. **Every later view is generated from the prompt plus VIEW 1** — pass view 1's
    interaction id to `--chain-from`, read out of view 1's sidecar (`.id`).
+   `.id` names the whole INTERACTION, and a chained call joins the one it was
+   chained from — so every sidecar in the series carries the same `.id`, and
+   reading it out of view 1's is how you name the series rather than a view.
    **Anchor every one of them on the FIRST image, never on the one before it**:
    chaining view to view compounds the drift instead of bounding it. Frame each
    for what it shows — a straight-down site plan is `--aspect-ratio 1:1`, an
