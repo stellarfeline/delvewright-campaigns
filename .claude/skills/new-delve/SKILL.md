@@ -1382,6 +1382,30 @@ render, and treat it as the primary evidence.** A scene that photographs well
 from outside and reads as a corridor of grey stone from the doorway is a
 finding, not a pass.
 
+**Save the world first — `delvec build` does not write one.** A delve's geometry
+is stamped by the datapack over the first ticks of a server boot, so a build tree
+carries no world save, and a Chunky scene names the world it loads. This boots
+the tree once, waits over rcon until the datapack reports it has finished
+placing, stops it, and writes `<build-dir>/world/`:
+
+```sh
+EULA=TRUE "$DELVEWRIGHT_ENGINE/validation/world-save.sh" \
+    "$DELVEWRIGHT_ENGINE/validation/delve-output" --project dw-<id>
+```
+
+Docker, as for every other boot. `--project` is required and has no default —
+it is the compose project this boot owns, so two of them run side by side
+instead of tearing each other's volumes down; `--timeout` is the wait on the
+datapack and defaults to 600 seconds. Nothing else in either repository produces
+a world save, and the world it writes is server-written and not byte-reproducible
+— which is why nothing hashes it and why re-running it is free.
+
+`render-shots.sh` refuses without it, by name, rather than emitting scenes over
+a world that is not there. That refusal is the whole reason this step is
+separate: Chunky renders a missing world as an empty sky at exit 0, with the
+reason buried in a Java stack trace, so the alternative is hundreds of plausible,
+identical pictures of nothing and every command in the recipe green.
+
 ```sh
 "$DELVEWRIGHT_ENGINE/validation/render-shots.sh" "$DELVEWRIGHT_ENGINE/validation/delve-output"
 ```
