@@ -52,10 +52,37 @@ carrying a plan.
   the void: there is no landform for the whole to own and no silhouette to judge
   from outside. Both zeros are stated in the plan's binding lines rather than
   passed over.
-- **`lighting` is declared** (`lantern`, `min_light` 7). A derived map has no
+- **`lighting` is declared** (`torch`, `min_light` 7). A derived map has no
   night-vision mitigation — that surface lives on an `areas[]` entry, and
   `DW0839` requires that list to be empty — so a blockout either lights itself or
-  is refused by `DW0210`.
+  is refused by `DW0210`. The fixture was `lantern` first and the build refused
+  it: `DW0211` named the darkest reachable cell, `[28, 64, 24]`, on the hub's
+  floor. A lantern hangs from the ceiling, the hub is a hall with fourteen cells
+  of headroom, and fifteen of block light fourteen blocks up arrives as one.
+  `torch` stands ON the floor, so its distance to a walkable cell is horizontal,
+  and the pass finds sites. **The repair is the fixture, not the number**: the
+  threshold stayed at 7.
+- **This campaign lives in `campaigns/`, not `demos/`.** `tools/campaign-build.py`
+  — the CI build gate — hard-codes `CAMPAIGN_ROOT = "campaigns"` with no flag,
+  and its population is every directory under it holding a `world.json`. A
+  campaign-shaped level under `demos/` would be built by nothing. `demos/` holds
+  tool exhibits — a program, a piece, its reports — and the exhibit for this
+  level lives at `demos/the-derived-whole/` and points here.
+- **`target_minutes` stays 15, and the fifteen minutes is the session** — the
+  walk, the plan-edit exhibit and the observer pairs — not the route. Recorded as
+  a deviation from the prompt, which pinned both the five places and the fifteen
+  minutes: `DW0822` projects about 2 minutes over the graph and MEASURES 126
+  blocks over 5 legs, about 3 minutes, over the built blockout. The README says
+  so in the reader's own terms.
+- **No reference imagery was drawn, and none is owed.** The step-4 design gate is
+  confirmed on pictures because a picture is where a design's appearance and its
+  scale are judged. On a derived blockout neither authority is the image's: the
+  geometry comes from the plan and the metrics table, and the appearance comes
+  from `compiler::blockout::palette`, which the module's own comment calls fixed
+  rather than authored. A painting of a place here would show a room nobody can
+  build in a palette nobody can choose. The gate was taken on a to-scale plan
+  sheet drawn from the plan's own numbers — one character per block — and the
+  appearance is judged at step 12 on POV frames rendered out of the built bytes.
 
 ## Posture note
 
@@ -79,13 +106,46 @@ Four axes pushed off the machine default for this campaign:
 
 ## Round record
 
-Round 1 (generation), stopped at the step-4 design gate.
+Round 1, generation.
 
-Validation-loop iterations to the step-3 state: 1.
+Validation-loop iterations to the step-3 state: 1. Iterations from there to a
+clean `validate`: 1 — writing `quests.json` and `dialogue.json` cleared all 13
+refusals at once. Iterations from a clean `validate` to a green `build`: 1, the
+`DW0211` fixture repair above.
 
-DW codes at the step-3 state, with counts, over
-`delvec --prefabs prefabs validate campaigns/the-derived-whole`:
-`DW0150 x1, DW0152 x1, DW0816 x2, DW0817 x1, DW0818 x8` (13 refusals), plus
-`DW0822 x1` advisory and `DW0813 x1` engine notice. Every refusal is accounted
-for by the rule under *Where step 3 ends*: each names something only
-`quests.json` or `dialogue.json` can supply.
+DW codes the round hit, with counts:
+
+| where | codes |
+|---|---|
+| `validate`, step-3 state | `DW0150` x1, `DW0152` x1, `DW0816` x2, `DW0817` x1, `DW0818` x8 (13 refusals); `DW0822` x1, `DW0813` x1 |
+| `validate`, after stage 5 | none; `DW0822` x1, `DW0813` x1 |
+| `analyze` | none; `DW0822` x1, `DW0813` x1 |
+| `build`, first attempt | `DW0211` x1 |
+| `build`, green | none; `DW0781` x1, `DW0813` x1, `DW0822` x2 |
+
+Every step-3 refusal is accounted for by the rule under *Where step 3 ends*:
+each names something only `quests.json` or `dialogue.json` can supply.
+
+The build's own two binding lines, which are half of what this level exists to
+show — a green that examined nothing would look exactly like this one:
+
+```
+blockout binding: 5 place(s) massed (0 detailed, so 5 massed by the
+derivation), 5 seam(s) cut (1 stair, 1 barred), 0 whole-owned volume(s), 7
+anchor(s) synthesized, 67 region write(s) over 12325 cell(s).
+
+blockout battery binding: 5 seam(s) proven over 5 shared wall(s) (of them 0
+contact(s), 0 crossable column(s) measured), 5 place(s) proven reached, 1808
+standable cell(s) classified over 10 place pair(s), 0 sightline(s) walked, 3
+identity(ies) re-measured (0 declaration-only), 5 critical-path leg(s)
+measured.
+```
+
+The three hashes and the engine they were taken with:
+
+```
+site plan sha256:    a5ba25932126576a98bb6707c524d94475aaf73cc932852fd54c9d75acb4d8de
+layout graph sha256: 4cb7d99e17fa978b8afa8cbde465bd00e9a2ac4f6f28b0b2172c2b01b91cd3e9
+blockout sha256:     fe61d6dad75c3447b6d76c3556f6948baa57539764ea7ba2775b3af1e546efde
+engine revision:     417e12663330d70efb63ff65893b594a3847f310 (delvec 1.1.0)
+```

@@ -1,7 +1,196 @@
 {
   "campaign_id": "the-derived-whole",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "cast": {
+          "npc/the-keeper": {
+            "at": "anchor/node-upper-walk",
+            "dialogue": "dlg/keeper-waiting",
+            "doing": "standing on the walk beside a barred door, keeping a survey nobody has asked her for"
+          }
+        },
+        "happening": {
+          "text": "The surveyor is put down in the hub, on a floor whose colour is the only thing naming it.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-way-in",
+        "objectives": [
+          {
+            "anchor": "anchor/node-long-gallery",
+            "happening": {
+              "text": "The surveyor crosses the seam the plan cut into the hub's east wall.",
+              "verb": "arrives"
+            },
+            "hint": "The hub's east wall is cut through once, and the doorway is framed in a darker block than the wall around it.",
+            "id": "obj/cross-the-seam",
+            "radius": 4,
+            "title": "Cross the seam",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/cross-the-seam"
+            ],
+            "anchor": "anchor/node-upper-walk",
+            "happening": {
+              "text": "The surveyor climbs a run nobody drew and comes out on the upper walk.",
+              "verb": "arrives"
+            },
+            "hint": "The gallery's north wall opens at the top of a run of pale steps.",
+            "id": "obj/climb-the-run",
+            "radius": 4,
+            "title": "Climb out of the gallery",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/the-keeper": {
+            "at": "anchor/node-upper-walk",
+            "dialogue": "dlg/keeper-yields",
+            "doing": "deciding, out loud and without hurrying, to hand over the only copy she has"
+          }
+        },
+        "happening": {
+          "subject": "npc/the-keeper",
+          "text": "The keeper gives up the survey.",
+          "verb": "loses"
+        },
+        "id": "quest/the-keeper",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/the-keeper",
+              "text": "The keeper says what is behind the door and why she has kept it shut.",
+              "verb": "learns"
+            },
+            "id": "obj/ask-the-keeper",
+            "npc": "npc/the-keeper",
+            "title": "Ask the keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/ask-the-keeper"
+            ],
+            "anchor": "anchor/node-vault",
+            "happening": {
+              "text": "The surveyor reads the plan of the place they are standing in.",
+              "verb": "learns"
+            },
+            "hint": "Past the door in the walk's north wall, on the black floor.",
+            "id": "obj/read-the-plan",
+            "title": "Read the survey",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/ask-the-keeper": [
+            {
+              "flag": "flag/keeper-yielded",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-the-bar",
+              "happening": {
+                "subject": "anchor/seam-the-bar",
+                "text": "The bar comes off the vault door.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-way-in",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/the-keeper": {
+            "at": "anchor/node-upper-walk",
+            "dialogue": "dlg/keeper-after",
+            "doing": "correcting herself, too late, about how old the survey is"
+          }
+        },
+        "happening": {
+          "text": "The circuit closes: the surveyor comes back into the hub through the wall above it.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-hole-home",
+        "objectives": [
+          {
+            "anchor": "anchor/node-lip",
+            "happening": {
+              "text": "The surveyor walks out of the vault onto the ledge over the hub.",
+              "verb": "arrives"
+            },
+            "hint": "West out of the vault, through the arch, onto the ledge.",
+            "id": "obj/stand-on-the-lip",
+            "radius": 4,
+            "title": "Walk the lip",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/stand-on-the-lip"
+            ],
+            "anchor": "anchor/node-hub",
+            "happening": {
+              "text": "The surveyor drops five blocks onto the floor they started on.",
+              "verb": "arrives"
+            },
+            "hint": "The ledge ends over the hub. Step off, and walk to the middle of the floor you started on.",
+            "id": "obj/come-home",
+            "radius": 4,
+            "title": "Take the hole home",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The circuit is walked, and the survey of it is out of date.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-keeper",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/seam-the-bar",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "Barred. It is not the door that decides.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/keeper-yielded"
+        ],
+        "id": "trigger/the-bar-holds",
+        "on": {
+          "on": "use"
+        },
+        "once": false
+      }
+    ]
   },
   "dsl_version": "0.19.0",
   "stage": "quests"

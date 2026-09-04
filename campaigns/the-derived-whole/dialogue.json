@@ -1,7 +1,112 @@
 {
   "campaign_id": "the-derived-whole",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/keeper-waiting",
+            "options": [
+              {
+                "label": "What survey?",
+                "next": "dlg/keeper-what"
+              },
+              {
+                "label": "Who are you?",
+                "next": "dlg/keeper-who"
+              }
+            ],
+            "text": "I keep the survey. There is nothing to keep it from and nobody to give it to, so I keep it."
+          },
+          {
+            "id": "dlg/keeper-what",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/keeper-waiting"
+              }
+            ],
+            "text": "The plan of this place. Every wall you have walked past is in it, and not one of them is in it as a wall. They are numbers. The numbers are behind that door."
+          },
+          {
+            "id": "dlg/keeper-who",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/keeper-waiting"
+              }
+            ],
+            "text": "A clerk. The office closed. I am afraid that if I read the plan out loud there will be nothing left of it, and I have been afraid of that for a long time."
+          },
+          {
+            "id": "dlg/keeper-yields",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/ask-the-keeper",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Open the door.",
+                "tooltip": "Then let me read it, and stop being the only one who has."
+              },
+              {
+                "label": "Aren't you coming?",
+                "next": "dlg/keeper-stays"
+              }
+            ],
+            "text": "You came up the run. Nobody comes up the run. Go and read it."
+          },
+          {
+            "id": "dlg/keeper-stays",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/keeper-yields"
+              }
+            ],
+            "text": "I have read it and you have not. That is the whole of the difference between us, and I would rather keep it."
+          },
+          {
+            "id": "dlg/keeper-after",
+            "options": [
+              {
+                "label": "Then what moved?",
+                "next": "dlg/keeper-plan"
+              },
+              {
+                "label": "Where do I go?",
+                "next": "dlg/keeper-way"
+              }
+            ],
+            "text": "It is out of date. I should have said. The ledge you are about to walk was two blocks further west when that was drawn, and nobody moved the ledge."
+          },
+          {
+            "id": "dlg/keeper-plan",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/keeper-after"
+              }
+            ],
+            "text": "The plan moved. That is what moving is, here."
+          },
+          {
+            "id": "dlg/keeper-way",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/keeper-after"
+              }
+            ],
+            "text": "West out of the vault and along the ledge. It ends over the hub, and it does not end in a wall."
+          }
+        ],
+        "npc": "npc/the-keeper",
+        "root": "dlg/keeper-waiting"
+      }
+    ]
   },
   "dsl_version": "0.19.0",
   "stage": "dialogue"
