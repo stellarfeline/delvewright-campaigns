@@ -1,0 +1,99 @@
+# the-derived-whole — plan, one character per block
+# region x 16..55  z 0..43  y 60..83
+
+          2    2    3    3    4    4    5    5
+z  0 |                                        |
+z  1 |                                        |
+z  2 |                                        |
+z  3 |                                        |
+z  4 |                                        |
+z  5 |       ##############                   |
+z  6 |  ######dddddddddddd#                   |
+z  7 |  #eeee#dddddddddddd#                   |
+z  8 |  #eeee#dddddddddddd#                   |
+z  9 |  #eeee#dddddddddddd#                   |
+z 10 |  #eeee=dddddddddddd#                   |
+z 11 |  #eeee=dddddddddddd#                   |
+z 12 |  #eeee#dddddddddddd#                   |
+z 13 |  #eeee#dddddddddddd#                   |
+z 14 |  #eeee#dddddddddddd#                   |
+z 15 |  #eeee#dddddddddddd#                   |
+z 16 |  #eeee#dddddddddddd#                   |
+z 17 |  #eeee#dddddddddddd#                   |
+z 18 |  #eeee#######X##############           |
+z 19 |  #eeee#cccccccccccccccccccc#           |
+z 20 |  #eeee#cccccccccccccccccccc#           |
+z 21 |  #eeee#cccccccccccccccccccc#           |
+z 22 |  #eeee#cccccccccccccccccccc#           |
+z 23 |  ##vv##################//############  |
+z 24 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 25 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 26 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 27 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 28 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 29 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 30 |   #aaaaaaaaaaaaaaaa=bbbbbbbbbbbbbbbb#  |
+z 31 |   #aaaaaaaaaaaaaaaa=bbbbbbbbbbbbbbbb#  |
+z 32 |   #aaaaaaaaaaaaaaaa=bbbbbbbbbbbbbbbb#  |
+z 33 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 34 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 35 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 36 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 37 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 38 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 39 |   #aaaaaaaaaaaaaaaa#bbbbbbbbbbbbbbbb#  |
+z 40 |   ###################################  |
+z 41 |                                        |
+z 42 |                                        |
+z 43 |                                        |
+
+places (letter = its floor, in the plan's own document order,
+which is the order the derivation cycles its floor accents in):
+  A  node/hub             size_class=hall       16 x 16  floor y=64  clearance=14
+  B  node/long-gallery    size_class=room       16 x 16  floor y=64  clearance=8
+  C  node/upper-walk      way_class=road       20 x 4   floor y=69  clearance=6
+  D  node/vault           size_class=room       12 x 12  floor y=69  clearance=8
+  E  node/lip             way_class=corridor    4 x 16  floor y=69  clearance=5
+
+seams (# = shell wall, = walk, / stair, X barred, v drop):
+  edge/hub-to-gallery    walk    node/hub -> node/long-gallery  face=east  at=[30, 64] passage 3x3 rise=0
+  edge/gallery-climb     stair   node/long-gallery -> node/upper-walk  face=north at=[40, 69] arch 2x3 rise=5
+  edge/the-bar           barred  node/upper-walk -> node/vault  face=north at=[30, 69] door 1x2 rise=0
+  edge/vault-to-lip      walk    node/vault -> node/lip  face=west  at=[10, 69] arch 2x3 rise=0
+  edge/the-hole          drop    node/lip -> node/hub  face=south at=[20, 69] arch 2x3 rise=5
+
+section, north-south through x=30 (the bar) and x=20 (the hole):
+  x=30:
+   y 78 |                        ----------------    |
+   y 77 |      ------------      aaaaaaaaaaaaaaaa    |
+   y 76 |      dddddddddddd      aaaaaaaaaaaaaaaa    |
+   y 75 |      dddddddddddd ---- aaaaaaaaaaaaaaaa    |
+   y 74 |      dddddddddddd cccc aaaaaaaaaaaaaaaa    |
+   y 73 |      dddddddddddd cccc aaaaaaaaaaaaaaaa    |
+   y 72 |      dddddddddddd cccc aaaaaaaaaaaaaaaa    |
+   y 71 |      dddddddddddd cccc aaaaaaaaaaaaaaaa    |
+   y 70 |      dddddddddddd cccc aaaaaaaaaaaaaaaa    |
+   y 69 |      dddddddddddd cccc aaaaaaaaaaaaaaaa    |
+   y 68 |      ____________ ____ aaaaaaaaaaaaaaaa    |
+   y 67 |                        aaaaaaaaaaaaaaaa    |
+   y 66 |                        aaaaaaaaaaaaaaaa    |
+   y 65 |                        aaaaaaaaaaaaaaaa    |
+   y 64 |                        aaaaaaaaaaaaaaaa    |
+   y 63 |                        ________________    |
+  x=20:
+   y 78 |                        ----------------    |
+   y 77 |                        aaaaaaaaaaaaaaaa    |
+   y 76 |                        aaaaaaaaaaaaaaaa    |
+   y 75 |                        aaaaaaaaaaaaaaaa    |
+   y 74 |       ---------------- aaaaaaaaaaaaaaaa    |
+   y 73 |       eeeeeeeeeeeeeeee aaaaaaaaaaaaaaaa    |
+   y 72 |       eeeeeeeeeeeeeeee aaaaaaaaaaaaaaaa    |
+   y 71 |       eeeeeeeeeeeeeeee aaaaaaaaaaaaaaaa    |
+   y 70 |       eeeeeeeeeeeeeeee aaaaaaaaaaaaaaaa    |
+   y 69 |       eeeeeeeeeeeeeeee aaaaaaaaaaaaaaaa    |
+   y 68 |       ________________ aaaaaaaaaaaaaaaa    |
+   y 67 |                        aaaaaaaaaaaaaaaa    |
+   y 66 |                        aaaaaaaaaaaaaaaa    |
+   y 65 |                        aaaaaaaaaaaaaaaa    |
+   y 64 |                        aaaaaaaaaaaaaaaa    |
+   y 63 |                        ________________    |
