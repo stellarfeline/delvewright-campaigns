@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "b1d79b071023d47cba9eb9ed000d61b8dd6ea898"
+value = "d3b7b436a20343ac192ab381b367df498f791308"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "b1d79b071023d47cba9eb9ed000d61b8dd6ea898"
+reviewed = "d3b7b436a20343ac192ab381b367df498f791308"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -85,7 +85,66 @@ They do not differ here, because the judgement's conclusion was that the newer
 instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
 
-THIS INTERVAL, `fe068c90..b1d79b07`, and it is the first one where a file the
+THIS INTERVAL, `b1d79b07..d3b7b436`, and it is the one where FOUR of the 34 files
+the `audit` path compiles moved — the most yet, and every one of them in
+`crates/dsl`. Six commits landed; two reach no crate at all (`63bfe51b`,
+`e283c744`, in `validation/` and `harness/`), and `1eaa5a72` likewise. Of the
+three that reach the closure, `43196f28` and `25e6675f` and `d3b7b436` between
+them move 50 files in `crates/compiler` and 8 in `crates/dsl`. `crates/admit`,
+`crates/schem`, `crates/grammar` and `crates/orchestrator` have no `src` change at
+all. Of the 34, 30 are byte-identical; the four that moved are `dsl`'s `lib`,
+`prefab`, `metrics` and `diagnostic`.
+
+WHAT THE TIER DID, since it is the change that looks most like it should reach
+this gate and does not. `d3b7b436` gives `DwCode` two new fields — `tier:
+ExitTier` and `subject: Subject` — with no `Default` and no constructor that
+leaves them unsaid, so every declaration site in the workspace had to answer.
+That is why three of the four moved files moved: `dsl/prefab`'s
+`DW_FOOTPRINT_CLASS` and `dsl/metrics`'s `DW_METRIC_UNKNOWN` and
+`DW_METRIC_PROVISIONAL` each gained an `ExitTier::Build` argument to
+`every_version`, with their id string and their `Binds` untouched, and `dsl/lib`
+gained four names on two `pub use` lines and lost none.
+
+`crates/admit` CONSTRUCTS NO `DwCode` AT ALL, which is the fact that settles the
+question rather than the byte comparison. Grepped over the whole crate,
+`crates/admit/src` contains not one occurrence of the type: its own codes are
+plain `&'static str` constants in `crates/admit/src/diag.rs`, so a mandatory field
+on `DwCode` is structurally unreachable from this binary's own error paths. The
+only two `DwCode`-typed codes it carries are `DW0848` (`dsl::prefab`) and `DW0812`
+(`dsl::metrics`), which travel with the finding from the footprint-class door
+rather than being restamped here — and that door is shut on every piece in this
+library. Both binaries carry the identical set of 22 `DW` codes, read out of the
+BUILT BINARIES: the codes gained a property and did not change identity.
+
+ONE MESSAGE TEXT DID MOVE, and it is named because "additive" would otherwise be
+too strong a word for this interval. `DW0813`'s provisional-metrics sentence was
+shortened. `DW0813` is not among this binary's 22 codes, and the module that
+raises it is entered only from `audit::footprint_class`, which returns first on a
+document declaring no `footprint_class` — all 39 units print `0 declared class(es)
+judged over 1 declaration document(s) read`, and all 39 report `"state":
+"undeclared"` for the contract.
+
+MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
+pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each. The judge
+built at `b1d79b07` here hashes identically to the one built at `b1d79b07` in the
+previous judgement from a different worktree — the third consecutive cross-tree
+reproduction, so the build is reproducible and the two sides of the comparison are
+the instruments. `tools/prefab-audit.py` with each over the whole repository: 39
+audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39 of
+39 under both; all 39 report files, both stdouts and both 82-line diagnostic
+streams byte-identical, with no line stripped. The move changes no verdict this
+library receives.
+
+AND THE COMPARISON IS NOT VACUOUS. `delve-admit lighting` agrees on all 39 this
+interval, so unlike the last one it supplies no anchor of its own and one was
+built: a third worktree at the new revision, with a single suffix deleted from the
+`audit` path's own allowlist and the binary rebuilt, reds 9 of the 39 units and
+moves 9 report files. The comparison can register a change in the judge; the
+perturbed tree was discarded. Re-derived rather than carried: all 39 units carry a
+`lighting` block and the probe disagrees with 5 of them, identically under both
+instruments, and reds nothing because nothing asks.
+
+THE INTERVAL BEFORE IT, `fe068c90..b1d79b07`, the first one where a file the
 `audit` path COMPILES actually moved, so it is the one worth reading closely.
 Three commits landed and all three touch the watch closure. `b1d79b07` reaches
 only `crates/compiler`'s `branch` and `flow`. `8eaa868d` reaches `crates/compiler`
@@ -153,7 +212,7 @@ than carried: all 39 units carry a `lighting` block and the probe's own profile
 disagrees with 5 of them, identically under both instruments, and reds nothing
 because nothing asks.
 
-THE INTERVAL BEFORE IT, `ca7eee59..fe068c90`, and it is the shortest reading
+AND THE ONE BEFORE THAT, `ca7eee59..fe068c90`, the shortest reading
 this entry has recorded. Six commits landed upstream and three touch the watch closure —
 `2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
 files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
