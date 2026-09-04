@@ -207,10 +207,40 @@ ENGINE_REF="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml
 git clone https://github.com/stellarfeline/delvewright.git ../delvewright
 git -C ../delvewright checkout --detach "$ENGINE_REF"
 export DELVEWRIGHT_ENGINE="$(cd ../delvewright && pwd)"
-cargo build --release --manifest-path "$DELVEWRIGHT_ENGINE/Cargo.toml" --workspace
-cargo build --release --manifest-path "$DELVEWRIGHT_ENGINE/crates/render/Cargo.toml"
+
+# Both builds run INSIDE the clone. The subshell is what keeps your own working
+# directory where it was.
+( cd "$DELVEWRIGHT_ENGINE" \
+  && cargo --version && rustc --version \
+  && cargo build --release --workspace \
+  && cargo build --release --manifest-path crates/render/Cargo.toml )
+
 export PATH="$DELVEWRIGHT_ENGINE/target/release:$DELVEWRIGHT_ENGINE/crates/render/target/release:$PATH"
 ```
+
+**Build from inside the clone, and read the two version lines it prints.** The
+engine pins its compiler in `rust-toolchain.toml` at its own root, and rustup
+finds that file by walking up from the **working directory** — never from a
+`--manifest-path`. Build the engine from a directory outside it and rustup never
+sees the pin: your default toolchain compiles the engine, at exit 0, with nothing
+anywhere saying so. Standing in the clone is what makes the pin apply, which is
+why the `cd` is not tidiness.
+
+So the two lines above are the step's evidence, and they must agree with the
+engine's own file:
+
+```sh
+grep channel "$DELVEWRIGHT_ENGINE/rust-toolchain.toml"
+```
+
+At the pinned engine that reads `channel = "1.97.1"`, and `cargo --version` and
+`rustc --version` inside the clone both answer `1.97.1`. Compare them against
+that file rather than against this page — the page can go stale, the file cannot.
+**A different number means the `cd` did not take effect**, and everything built
+after it was built with the wrong compiler. Step 0's `cargo --version`, run from
+*this* repository, legitimately answers something else: that check asks whether
+you have Rust at all, and rustup installs the pinned toolchain on demand the
+first time you build in the clone.
 
 Confirm the checkout landed where it was told, before the build is trusted:
 
@@ -317,8 +347,10 @@ yourself, and never widen a directory they named into a search.
 repository**, so there is no URL for this page to print and you must not invent
 one. Resolve it instead, exactly the way
 `"$DELVEWRIGHT_ENGINE/tools/check-patrol-types.py"` resolves the *server* jar:
-Mojang's version manifest, the version `versions.toml` pins, and the bytes
-checked against the sha1 that same metadata publishes.
+Mojang's version manifest, the version `"$DELVEWRIGHT_ENGINE/versions.toml"` pins
+under `[minecraft]`, and the bytes checked against the sha1 that same metadata
+publishes. **That file is the ENGINE's**, not this repository's: this
+repository's `versions.toml` names engine revisions and nothing about the game.
 
 ```sh
 mkdir -p ~/.chunky/resources
@@ -346,9 +378,10 @@ PY
 ```
 
 Nothing there is a constant this page made up. The manifest URL is the one
-`tools/check-patrol-types.py` and `tools/derive-client-langs.py` both already
-carry, and the version is the `versions.toml` pin. Point the same walk at
-`downloads.server` instead and it reproduces `versions.toml`'s committed
+`"$DELVEWRIGHT_ENGINE/tools/check-patrol-types.py"` and
+`"$DELVEWRIGHT_ENGINE/tools/derive-client-langs.py"` both already carry, and the
+version is the `"$DELVEWRIGHT_ENGINE/versions.toml"` pin. Point the same walk at
+`downloads.server` instead and it reproduces that same file's committed
 `server_jar_url` and `server_jar_sha1` exactly — which is how you know the walk
 lands on the right game rather than merely on *a* jar. **The client half has no
 committed pin to agree with**, so the sha1 checked above is Mojang's own,
@@ -930,9 +963,11 @@ says is missing — never by its absence here.
 | `DW0112` | a branch's `leads_to` names an `ending/…` no `campaign-complete` declares, and `campaign-complete` is a stage-5 effect. | nothing. **But `DW0112` is the generic unresolved-reference code** — on any other path (an npc's `area`, a `datum`, a trigger's target) it is a genuinely broken reference and you fix it now. The path in the message is what tells the two apart. |
 | `DW0482` | a declared branch reaches no ending, because nothing sets its flags yet. The same absence `DW0172` names, one diagnostic per branch. | nothing. It clears with the `set-flag`s at step 5. |
 | `DW0197` | a `deferred: true` NPC that no `spawn-npc` summons, and `spawn-npc` is a stage-5 effect. | nothing, if the character is meant to walk in at a beat step 5 will write. If it was never meant to be deferred, drop `deferred` now — that is a stage-2 repair, not a stage-5 one. |
+| `DW0816` | site-plan campaigns only: a place the graph's closure never reaches from `entry` under gating and one-way direction. The message names the place, the nearest place a body can stand, and how many of the graph's places are reachable at all. | **read the caveat before you decide.** Where the graph gates on a flag and stage 5 declares no quests, the message says so and points at `DW0150` — the way may be one a stage-5 `set-flag` opens, and the check is the same as `DW0172`'s: is a beat in the plan going to produce that flag? Where the message carries no such caveat, the place is unreached for a reason the mission has nothing to do with, and it is a graph repair you owe now. |
+| `DW0817` | site-plan campaigns only: the authored `critical_path[]` does not hold — four faults under one code. It does not run `entry` → `goal`; a step names two places no connection joins, or joins them the other way; a step crosses a connection not open yet at that point in the walk; or it never visits a place where a beat of the mandatory quest spine happens. | **three of the four are yours now.** Only the *not-open-yet* fault carries the unwritten-mission caveat, and only when that connection waits on a flag — the other three are judgements about the graph by itself, which an absent mission has nothing to say about, so they are repairs to the graph or the path here. Read which fault the message names. |
 
 Measured on a twenty-four-place site-plan campaign at the end of this step: 42
-errors over those seven codes — `DW0818` ×28, `DW0152` ×6, `DW0482` ×2,
+errors over seven of those codes — `DW0818` ×28, `DW0152` ×6, `DW0482` ×2,
 `DW0172` ×2, `DW0112` ×2, `DW0197` ×1, `DW0150` ×1 — plus the two ordinary
 warnings (`DW0813`, `DW0822`) that stand on every site-plan campaign. A list
 that long is the expected shape here, not evidence that something went wrong.
@@ -984,6 +1019,19 @@ concept art drawn from the scene description *before any prefab exists*, so what
 is confirmed is the design, not a build. A **render** is a candidate prefab
 imaged by `delve-render`, and belongs to curation later. Two stages, two
 producers; building prefabs first and rendering them inverts the gate.
+
+**A derived blockout has no reference image to judge.** On a site-plan campaign
+the pictures at this gate are still design art — the map's own reference views
+from step 2B, and the scene concept art anchored on view 1 — and what they show
+is the design. **None of them shows the blockout**, and none is drawn to: the
+massing is not authored, it is derived from the plan and the metrics table at
+step 8, so a picture of it could only be made by inventing what the derivation is
+going to do, and it would carry a picture's authority while doing it. So this
+gate confirms the design and stops there. **The blockout is judged at step 9, in
+the walk** — a site-plan campaign's first real gate, where scale, pacing, route
+legibility and the silhouette from the declared `views[]` are settled by somebody
+standing in it. Never send anyone to compare the built map against a reference
+image of the built map; there is not one.
 
 - On path A of Init step 6, the images are already in
   `campaigns/<id>/design/concept/` and already approved, with `design/README.md`
@@ -1168,6 +1216,16 @@ command, which then runs the battery over the bytes it laid: every seam built
 where it was allocated (`DW0836`), every place reached from the entry
 (`DW0837`), and no crossing between places anywhere a seam was not allocated
 (`DW0838`).
+
+**`--perturb <knob>` asks the derivation for a named defect and shows you the
+observer catching it** — `slide-openings`, `sink`, `short-walls`, `brick-up`,
+`low-ceiling`, `wall-contacts`, one per run, each printing which code it expects
+(`sink`, `brick-up` and `low-ceiling` also take `--perturb-place`, and it is
+refused for the others). It writes nothing — `--out` is refused beside it and the
+exit is always non-zero — so a perturbed tree does not exist to be shipped,
+walked or admitted. Reach for it when a battery has been green on this campaign
+from the first build and you want to know it is looking at the bytes rather than
+replaying the arithmetic that laid them.
 
 ## 9. The walk — STOP, this one is the user's
 
@@ -1382,6 +1440,30 @@ render, and treat it as the primary evidence.** A scene that photographs well
 from outside and reads as a corridor of grey stone from the doorway is a
 finding, not a pass.
 
+**Save the world first — `delvec build` does not write one.** A delve's geometry
+is stamped by the datapack over the first ticks of a server boot, so a build tree
+carries no world save, and a Chunky scene names the world it loads. This boots
+the tree once, waits over rcon until the datapack reports it has finished
+placing, stops it, and writes `<build-dir>/world/`:
+
+```sh
+EULA=TRUE "$DELVEWRIGHT_ENGINE/validation/world-save.sh" \
+    "$DELVEWRIGHT_ENGINE/validation/delve-output" --project dw-<id>
+```
+
+Docker, as for every other boot. `--project` is required and has no default —
+it is the compose project this boot owns, so two of them run side by side
+instead of tearing each other's volumes down; `--timeout` is the wait on the
+datapack and defaults to 600 seconds. Nothing else in either repository produces
+a world save, and the world it writes is server-written and not byte-reproducible
+— which is why nothing hashes it and why re-running it is free.
+
+`render-shots.sh` refuses without it, by name, rather than emitting scenes over
+a world that is not there. That refusal is the whole reason this step is
+separate: Chunky renders a missing world as an empty sky at exit 0, with the
+reason buried in a Java stack trace, so the alternative is hundreds of plausible,
+identical pictures of nothing and every command in the recipe green.
+
 ```sh
 "$DELVEWRIGHT_ENGINE/validation/render-shots.sh" "$DELVEWRIGHT_ENGINE/validation/delve-output"
 ```
@@ -1412,14 +1494,27 @@ own. Then, one process per scene, in parallel:
 
 ```sh
 java -jar ChunkyLauncher.jar -scene-dir "$DELVEWRIGHT_ENGINE/validation/delve-output/shots/scenes" \
-    -render <scene-name> -f -target 64
+    -render <scene-name> -f -threads <n>
 java -jar ChunkyLauncher.jar -scene-dir "$DELVEWRIGHT_ENGINE/validation/delve-output/shots/scenes" \
     -snapshot <scene-name> <out>.png
 ```
 
-`<scene-name>` is the file stem without `.json`. `-target 64` is a look;
-about 300 is a shipped frame. This step does not skip — a visual channel that
-fails soft is a review that passed without looking.
+`<scene-name>` is the file stem without `.json`. **`-target` is the sample
+budget** — how many samples per pixel the path tracer accumulates before it
+stops — and it is the one knob that trades render time against noise; it is not
+a lighting, framing or quality setting, and nothing about the picture's content
+changes with it. The command above passes none, so each scene renders to the
+budget `delvec scene` already wrote into it — `sppTarget: 500`, the review tier.
+Add `-target <n>` only to go somewhere else on the ladder: ~64 for a draft you
+only need to judge framing on, ~300 for final art (`delvec panorama --spp`'s own
+default), 500 for a review frame. A POV frame you are reading as primary
+evidence is rendered at the scene's own number, and 64 is for deciding whether
+the camera is pointed at the right thing. Chunky's progress counter
+reads `(N of <image height>)` and counts scanlines rather than samples, so watch
+`spp` against the target and not that number. The core is CPU-only, so the way
+to go faster is one process per scene in parallel with `-threads <n>` each, never
+a smaller budget on the frame you are about to judge. This step does not skip —
+a visual channel that fails soft is a review that passed without looking.
 
 Every camera in `render-plan.json` is proven to stand in open air (`DW0724`);
 read `camera_eye_proof` for how many were examined and how many had to be pulled
@@ -1542,11 +1637,15 @@ under the title. This is the one piece of internal machinery a storybook carries
 exact form and nothing else internal joins it:
 
 ```
-> **Requires delve engine <max per-stage dsl_version> or newer** — last verified with delvec <version>.
+> **Requires delve engine <max per-stage dsl_version> or newer** — last verified with delvec <version> on Minecraft Java <mc version>.
 ```
 
 The first number is the MAX `dsl_version` over the campaign's documents; the
-second is `delvec --version`'s, from the build that just went green. The line is
+second is `delvec --version`'s, from the build that just went green; the third
+is the game version that same line prints, which is the one number a host needs
+before they can join at all. The check parses the line anchored and whole, so a
+marker missing the Minecraft clause is reported as MALFORMED rather than as
+missing, and the expected line is printed back verbatim. The line is
 byte-identical in every localized edition — it is a version stamp, not prose. A
 translated gloss may follow on the next line but may not restate the numbers.
 
@@ -2545,8 +2644,27 @@ this needs were built at Init step 2.
    A grammar prefab has **no connectors and no lighting** until this step, so it
    cannot enter a `prefab_pool` and will be dark, until you do it. `lighting`
    measures the darkest standable floor cell a body can walk to from a
-   ground-level entrance — roofed or not, there is no roofedness filter — and
-   reports the count it bound to. Two refusals to expect and not work around: `DW0752` means the
+   ground-level entrance, and reports the count it bound to.
+
+   **Which sky the piece is measured under is the piece's own claim**, read off
+   its `spatial_contract`. A piece that declares no contract, or one declaring
+   any space `open` or `open_top`, is modelled standing in open air: sky light
+   enters through its openings from the side, which is the only way a roof over
+   open ground is ever lit, and without it a colonnade, a portico or a pier under
+   a deck reads as pitch black. A piece whose contract declares **every** space
+   `enclosed` claims no floor of its own stands under the sky, so it is measured
+   with no sky at all and its figure is its own block light. That is the honest
+   measurement for a piece a `detail-plan` row binds — its frame is the play
+   space plus one floor course and the roof over it belongs to the whole — and it
+   is why a `lit` verdict borrowed from open sky is worth nothing there: the same
+   emitterless piece reds `DW0210` at the first build. The report says which sky
+   was applied and why, in `assumed_sky.admits_sky` and `assumed_sky.why`, and the
+   written `method` sentence says it again. Read them; a figure taken under the
+   wrong sky is a number, not a verdict. Every piece a `details[]` row can bind
+   declares a contract, because one that declares none is refused outright
+   (`DW0843`).
+
+   Two refusals to expect and not work around: `DW0752` means the
    probe bound to **zero** cells — usually a piece whose only way in is a socket
    that has not been carved yet, so run `socket` first; `DW0753` means there is no
    metadata to write into, and the fix is to create it, never to let the tool

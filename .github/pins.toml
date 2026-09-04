@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "417e12663330d70efb63ff65893b594a3847f310"
+value = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "417e12663330d70efb63ff65893b594a3847f310"
+reviewed = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -85,8 +85,68 @@ They do not differ here, because the judgement's conclusion was that the newer
 instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
 
-THIS INTERVAL, `d3b7b436..417e1266`, and it is the cleanest of the four on the
-audit side and the first to move the VENDORED file. Eight commits landed. Five
+THIS INTERVAL, `417e1266..c5b7105f`, and on the audit side there is nothing to
+read at all. Seven commits landed. Five reach no crate: they are `gallery/`,
+`harness/`, `tools/` and `docs/` and nothing else. The two that reach the watch
+closure — `a60f1ca9` and `2fa40449` — are `crates/compiler` and nothing else, and
+between them they move six of its `src` files: `blockout`, `emit`, `flow`, `lib`,
+`main`, `statepath`. Across the whole interval `crates/admit`, `crates/schem`,
+`crates/grammar`, `crates/orchestrator` and `crates/dsl` have ZERO changes of any
+kind — not merely zero `src` changes: all 315 tracked files in those five crates,
+112 of them `src/*.rs`, are byte-identical at both ends and none moved. Every file
+the `audit` path compiles lives in those five, so the audit-path file set is
+byte-identical by containment rather than by enumeration, and the count is stated
+against the container: 315 of 315.
+
+NOR DOES THE OTHER SUBCOMMAND'S MODULE MOVE. `delve-admit lighting` is the
+subcommand that reaches `delvewright_compiler::light`, and that is the module the
+interval before this one rewrote. `crates/compiler/src/light.rs` is byte-identical
+here. What `crates/compiler/src/lib.rs` gained is one `pub mod statepath;` and the
+doc line above it. Measured anyway rather than argued from the diff: run over all
+39 pieces with both binaries, every stdout, every stderr and every exit status is
+identical, 37 at exit 0 and 2 at `DW0752` — `demos/guard-exhaustion/signal-station`
+and `prefabs/hello-room`, both unsocketed, both refusing identically under both
+instruments and so not a fact about this interval.
+
+MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
+pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each; the judge
+built at `417e1266` hashes identically to one built at the same revision in an
+independent CLONE of the repository — a different object store and a different
+build cache, so the reproduction crosses more than a worktree boundary.
+`tools/prefab-audit.py` with each over the whole repository: 39 audited units over
+39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39 of 39 under both; all
+39 report files, both 48-line stdouts and both 82-line diagnostic streams
+byte-identical, no line stripped. Both binaries carry the identical set of 22 `DW`
+codes read out of the built binaries. The move changes no verdict this library
+receives.
+
+A CORRECTION TO THIS ENTRY'S OWN METHOD, found by performing it. "Two judges from
+two detached worktrees" is not sufficient for the hash half of the reproduction,
+because `tools/worktree-new.sh` CLONES a donor's `target/` by default, and a judge
+built on top of cloned artifacts does not hash-reproduce against one built from
+scratch. Measured at `417e1266`: the clone-donor worktree produced
+`5565785457cca108`, and two independently cold trees — a `--no-clone` worktree and
+a separate clone of the repository — both produced `feb1e36eb822d788`, same size,
+234115 bytes differing. So the judges here are built COLD, both of them, and a
+hash-reproduction claim taken from two clone-donor worktrees of one donor is a
+claim about the donor. The previous judgements' verdicts are untouched by this:
+what they compared was output, and output is what this comparison rests on.
+
+AND THE COMPARISON IS NOT VACUOUS. `lighting` agrees on all 39 this interval, so it
+supplies no anchor of its own and one was built: a third cold worktree at the new
+revision with a single suffix deleted from the `audit` path's own allowlist
+(`_stairs`, one row, the deletion asserted at exactly one match) reds 9 of the 39
+units and moves 9 report files, exit 1 against exit 0. The perturbed source was
+restored and the perturbed binary deleted.
+
+THE VENDORED COPY DOES NOT MOVE THIS TIME, and that is stated rather than left
+silent because last interval it did. `tools/check-pins.py` is byte-identical
+upstream across `417e1266..c5b7105f` (`d2529bf18d25` at both ends, and the copy
+here already carries it), so the bump is the pin alone and `check-vendored` is
+green without an edit.
+
+THE INTERVAL BEFORE IT, `d3b7b436..417e1266`, the cleanest of the four judged
+before this one on the audit side and the first to move the VENDORED file. Eight commits landed. Five
 reach no crate at all. The three that do — `bb4cc98b`, `bba5bcb3`, `4851360c` —
 are `crates/compiler` and nothing else: across the whole interval `crates/admit`,
 `crates/schem`, `crates/grammar`, `crates/orchestrator` and `crates/dsl` have ZERO
@@ -145,7 +205,7 @@ here after the re-vendor, the offline half reports 11 pins discovered against 11
 registry entries, unchanged, so the widening discovers nothing in this repository
 that was not already declared.
 
-THE INTERVAL BEFORE IT, `b1d79b07..d3b7b436`, the one where FOUR of the 34 files
+AND THE ONE BEFORE THAT, `b1d79b07..d3b7b436`, the one where FOUR of the 34 files
 the `audit` path compiles moved — the most yet, and every one of them in
 `crates/dsl`. Six commits landed; two reach no crate at all (`63bfe51b`,
 `e283c744`, in `validation/` and `harness/`), and `1eaa5a72` likewise. Of the
@@ -204,7 +264,7 @@ perturbed tree was discarded. Re-derived rather than carried: all 39 units carry
 `lighting` block and the probe disagrees with 5 of them, identically under both
 instruments, and reds nothing because nothing asks.
 
-AND THE ONE BEFORE THAT, `fe068c90..b1d79b07`, the first one where a file the
+AND EARLIER STILL, `fe068c90..b1d79b07`, the first one where a file the
 `audit` path COMPILES actually moved, so it is the one worth reading closely.
 Three commits landed and all three touch the watch closure. `b1d79b07` reaches
 only `crates/compiler`'s `branch` and `flow`. `8eaa868d` reaches `crates/compiler`
@@ -272,7 +332,7 @@ than carried: all 39 units carry a `lighting` block and the probe's own profile
 disagrees with 5 of them, identically under both instruments, and reds nothing
 because nothing asks.
 
-AND EARLIER STILL, `ca7eee59..fe068c90`, the shortest reading
+AND EARLIEST OF ALL, `ca7eee59..fe068c90`, the shortest reading
 this entry has recorded. Six commits landed upstream and three touch the watch closure —
 `2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
 files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
@@ -500,12 +560,12 @@ cannot be.
 
 [[pin]]
 id = "engine-authoring"
-value = "0c5f45ee4a9d29ac332175a49d517d52f1210fbe"
+value = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "0c5f45ee4a9d29ac332175a49d517d52f1210fbe"
+reviewed = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
 builds = []
 # `tools/check-skill-version.py` holds the skill page's frontmatter and prose to
 # this engine, and two of the things it asks are questions the engine already
