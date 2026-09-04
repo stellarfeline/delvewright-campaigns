@@ -827,6 +827,14 @@ form and the commands are in *Reference: drawing the map's reference*.
      floors the plan already chose — and its `stair_in` names which box pays for
      the run (`DW0830`). Treads rise off a walk plane, so `stair_in` is always
      the LOWER place.
+     - **The run is spent on ONE axis, and the seam's face picks which.** For
+       a seam on a wall face the host affords its extent along that face's
+       normal — an east or west face spends x, a north or south face spends z
+       — so a 4 × 40 host with the stair on its east face affords **4**, and
+       `DW0830` says so in those words ("affords 4 on x"). Only a seam
+       through a floor or ceiling gets the host's longer horizontal axis.
+       Give the host its length on the axis the face points along, or host
+       the stair in the other place.
 
 **A site-plan campaign has one area, `area/site`.** Quests, NPCs and waves name
 it; `world.json`'s `areas[]` is empty, and declaring both authorities is
