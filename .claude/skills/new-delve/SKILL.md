@@ -1568,11 +1568,15 @@ under the title. This is the one piece of internal machinery a storybook carries
 exact form and nothing else internal joins it:
 
 ```
-> **Requires delve engine <max per-stage dsl_version> or newer** — last verified with delvec <version>.
+> **Requires delve engine <max per-stage dsl_version> or newer** — last verified with delvec <version> on Minecraft Java <mc version>.
 ```
 
 The first number is the MAX `dsl_version` over the campaign's documents; the
-second is `delvec --version`'s, from the build that just went green. The line is
+second is `delvec --version`'s, from the build that just went green; the third
+is the game version that same line prints, which is the one number a host needs
+before they can join at all. The check parses the line anchored and whole, so a
+marker missing the Minecraft clause is reported as MALFORMED rather than as
+missing, and the expected line is printed back verbatim. The line is
 byte-identical in every localized edition — it is a version stamp, not prose. A
 translated gloss may follow on the next line but may not restate the numbers.
 
