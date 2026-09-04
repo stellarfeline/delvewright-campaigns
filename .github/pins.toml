@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "ca7eee59e3a57ddca80a951ff9e56bc4a7c8b56d"
+value = "fe068c90c4f8f3346bdce6bcda3d8e5a52f2e734"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "ca7eee59e3a57ddca80a951ff9e56bc4a7c8b56d"
+reviewed = "fe068c90c4f8f3346bdce6bcda3d8e5a52f2e734"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -84,6 +84,53 @@ JUDGED against. They answer different questions and they are allowed to differ.
 They do not differ here, because the judgement's conclusion was that the newer
 instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
+
+THIS INTERVAL, `ca7eee59..fe068c90`, and it is the shortest reading this entry
+has recorded. Six commits landed upstream and three touch the watch closure —
+`2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
+files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
+`crates/dsl`'s `layout`, which is where a campaign document's layout graph is
+judged and which this gate has never opened. `crates/admit`, `crates/schem`,
+`crates/grammar` and `crates/orchestrator` have no `src` change at all across the
+interval, so of the 34 files the `audit` path compiles, 34 are byte-identical and
+none moved. The reach itself therefore cannot have moved either: nothing that
+does the reaching was edited.
+
+MEASURED RATHER THAN ARGUED, on the same terms as the reading below. Two judges
+were built from two detached worktrees under the pinned 1.97.1 toolchain, cargo's
+exit status asserted on its own line for each, and the two binaries differ in
+size and hash, so they are two objects rather than one. `tools/prefab-audit.py`
+then ran each over the whole repository: 39 audited units over 39 in-scope `.nbt`
+files, 4 roots, 0 disowned by git, PASS 39 of 39 under both. All 39 report files
+are byte-identical across the two, and so is each run's stdout and its 82-line
+diagnostic stream — with NO line stripped, because nothing in the output names a
+revision and the one path it names is the content checkout, which is the same for
+both runs. The pinned judge was run a second time into a third directory and
+reproduced itself byte-for-byte, so `identical` is a statement about the two
+instruments and not about a tool that varies. Both binaries carry the identical
+set of 22 `DW` codes, read out of the BUILT BINARIES: the rule set gained and
+lost no refusal on this path. The move changes no verdict this library receives.
+
+AND THE COMPARISON IS NOT VACUOUS, which this entry demands of a byte-identical
+result and which this interval makes harder than the last one. The previous
+judgement's anchor was `delve-admit lighting`, and it is exactly the subcommand
+that reaches the one module this interval rewrote — `delvewright_compiler::light`,
+which `5792e5bf` reworked for speed while claiming its output unchanged. Run over
+all 39 pieces with both binaries, `lighting` agrees on all 39, which is that
+commit's claim measured on this library rather than accepted; it is also the loss
+of the anchor. So one was built instead. A third worktree at the new revision,
+with a single suffix deleted from the `audit` path's own allowlist and the binary
+rebuilt, reds 9 of the 39 units and moves 9 report files — the comparison above is
+demonstrably able to register a change in the judge, and the perturbed tree was
+discarded rather than kept. Re-derived rather than carried, since it is a
+measurement of a library that moves: all 39 units carry a `lighting` block and the
+probe's own profile disagrees with 5 of them, identically under both instruments,
+and reds nothing because nothing asks.
+
+The reading below is the PREVIOUS interval's, `800c958e..b65783e8`. It is kept
+because its module-level account of what the `audit` path actually reaches, and
+of which doors this library never opens, is the whole reason this judgement was
+cheap; its figures are that interval's and not this one's.
 
 THE READING, so the next one does not have to repeat it. Across
 800c958e..b65783e8, 32 commits landed upstream and 16 of them touch the watch
