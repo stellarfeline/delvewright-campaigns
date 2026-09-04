@@ -2537,8 +2537,9 @@ this needs were built at Init step 2.
 
    A grammar prefab has **no connectors and no lighting** until this step, so it
    cannot enter a `prefab_pool` and will be dark, until you do it. `lighting`
-   measures the roofed floor a body can walk to from outside and reports the count
-   it bound to. Two refusals to expect and not work around: `DW0752` means the
+   measures the darkest standable floor cell a body can walk to from a
+   ground-level entrance — roofed or not, there is no roofedness filter — and
+   reports the count it bound to. Two refusals to expect and not work around: `DW0752` means the
    probe bound to **zero** cells — usually a piece whose only way in is a socket
    that has not been carved yet, so run `socket` first; `DW0753` means there is no
    metadata to write into, and the fix is to create it, never to let the tool
