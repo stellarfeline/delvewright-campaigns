@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "d3b7b436a20343ac192ab381b367df498f791308"
+value = "417e12663330d70efb63ff65893b594a3847f310"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "d3b7b436a20343ac192ab381b367df498f791308"
+reviewed = "417e12663330d70efb63ff65893b594a3847f310"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -85,7 +85,67 @@ They do not differ here, because the judgement's conclusion was that the newer
 instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
 
-THIS INTERVAL, `b1d79b07..d3b7b436`, and it is the one where FOUR of the 34 files
+THIS INTERVAL, `d3b7b436..417e1266`, and it is the cleanest of the four on the
+audit side and the first to move the VENDORED file. Eight commits landed. Five
+reach no crate at all. The three that do — `bb4cc98b`, `bba5bcb3`, `4851360c` —
+are `crates/compiler` and nothing else: across the whole interval `crates/admit`,
+`crates/schem`, `crates/grammar`, `crates/orchestrator` and `crates/dsl` have ZERO
+`src` changes, and of the 34 files the `audit` path compiles, 34 are byte-identical
+and none moved. This is the shape the closure was always going to produce most
+often, stated plainly: the watch is wide because `delvewright-admit` links the
+whole pipeline for its other subcommands, and `crates/compiler` is the crate that
+moves.
+
+ONE MODULE THIS REPOSITORY CAN REACH DID MOVE, and it is worth the sentence
+because it is not on the `audit` path and is on another. `4851360c` rewrites
+`crates/compiler`'s `light` (among ten compiler modules) to carry `nav::Premises`
+through its constructors, and `delve-admit lighting` is the subcommand that reaches
+`delvewright_compiler::light`. Run over all 39 pieces with both binaries it agrees
+on all 39, so the rewrite is behaviour-preserving on this library — measured, not
+accepted.
+
+MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
+pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each; the judge
+built at `d3b7b436` here hashes identically to the one built at `d3b7b436` in the
+previous judgement from a different worktree — the fourth consecutive cross-tree
+reproduction. `tools/prefab-audit.py` with each over the whole repository: 39
+audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39 of
+39 under both; all 39 report files, both stdouts and both 82-line diagnostic
+streams byte-identical, with no line stripped. Both binaries carry the identical
+set of 22 `DW` codes read out of the built binaries. All 39 units print `0 declared
+class(es) judged over 1 declaration document(s) read` and all 39 report `"state":
+"undeclared"`, so both doors are shut. The move changes no verdict this library
+receives.
+
+AND THE COMPARISON IS NOT VACUOUS. `lighting` agrees on all 39 this interval, so it
+supplies no anchor of its own and one was built: a third worktree at the new
+revision, with a single suffix deleted from the `audit` path's own allowlist and
+the binary rebuilt, reds 9 of the 39 units and moves 9 report files. The perturbed
+tree was discarded. Re-derived rather than carried: all 39 units carry a `lighting`
+block and the probe disagrees with 5 of them, identically under both instruments,
+and reds nothing because nothing asks.
+
+THE VENDORED COPY MOVED WITH THE PIN, which is the half of this interval that is
+not about verdicts at all. `417e1266` rewrote `tools/check-pins.py` upstream — the
+file `vendors` declares — so `check-vendored.py`'s second half red by design: byte
+identity against a frozen revision is satisfied forever by never looking, and this
+is the mechanism refusing to let that happen. The copy here was re-vendored
+byte-for-byte from the engine at the new `value` in the same commit as the bump,
+because the two are one act: a pin bump that leaves the vendored copy behind
+claims a verbatim copy of a file that no longer exists.
+
+WHAT THE RE-VENDOR BROUGHT IN, since this repository now RUNS the new file and a
+vendored gate is still a gate here. Upstream widened pin discovery from `pip
+install` to INSTALLING as an object class, so `cargo install` is now discovered
+with the same two verdicts — a named version is a pin that must be registered, an
+argument naming none is a finding. It also stopped reading prose as commands: a
+`#` comment tail is dropped, an install's arguments end at the shell operator that
+ends the command, and a verb inside a quotation in a shell script is data. Run
+here after the re-vendor, the offline half reports 11 pins discovered against 11
+registry entries, unchanged, so the widening discovers nothing in this repository
+that was not already declared.
+
+THE INTERVAL BEFORE IT, `b1d79b07..d3b7b436`, the one where FOUR of the 34 files
 the `audit` path compiles moved — the most yet, and every one of them in
 `crates/dsl`. Six commits landed; two reach no crate at all (`63bfe51b`,
 `e283c744`, in `validation/` and `harness/`), and `1eaa5a72` likewise. Of the
@@ -144,7 +204,7 @@ perturbed tree was discarded. Re-derived rather than carried: all 39 units carry
 `lighting` block and the probe disagrees with 5 of them, identically under both
 instruments, and reds nothing because nothing asks.
 
-THE INTERVAL BEFORE IT, `fe068c90..b1d79b07`, the first one where a file the
+AND THE ONE BEFORE THAT, `fe068c90..b1d79b07`, the first one where a file the
 `audit` path COMPILES actually moved, so it is the one worth reading closely.
 Three commits landed and all three touch the watch closure. `b1d79b07` reaches
 only `crates/compiler`'s `branch` and `flow`. `8eaa868d` reaches `crates/compiler`
@@ -212,7 +272,7 @@ than carried: all 39 units carry a `lighting` block and the probe's own profile
 disagrees with 5 of them, identically under both instruments, and reds nothing
 because nothing asks.
 
-AND THE ONE BEFORE THAT, `ca7eee59..fe068c90`, the shortest reading
+AND EARLIER STILL, `ca7eee59..fe068c90`, the shortest reading
 this entry has recorded. Six commits landed upstream and three touch the watch closure —
 `2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
 files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
@@ -405,8 +465,11 @@ copies of the same paths in the pinned checkout, and `tools/check-vendored.py`
 holds them to it — byte-for-byte against `value`, plus a refusal when the source
 has moved upstream since `reviewed`. That second half is what keeps the guarantee
 alive between re-pins: byte-identity against a frozen revision is satisfied
-forever by never looking. No commit in this interval touched it, and the copy
-here is byte-identical to the file at both ends.
+forever by never looking. That half has now fired once and been answered: the
+current reading's interval rewrote the file upstream, and the copy here was
+re-vendored byte-for-byte from the engine at the new `value` in the same commit
+as the bump, because a bump that leaves the copy behind claims a verbatim copy
+of a file that no longer exists.
 
 The two copies once differed by one constant naming directories to skip. It
 matched zero tracked files in the pipeline repository, so it was inert and
