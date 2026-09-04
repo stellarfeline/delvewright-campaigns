@@ -1174,6 +1174,16 @@ where it was allocated (`DW0836`), every place reached from the entry
 (`DW0837`), and no crossing between places anywhere a seam was not allocated
 (`DW0838`).
 
+**`--perturb <knob>` asks the derivation for a named defect and shows you the
+observer catching it** — `slide-openings`, `sink`, `short-walls`, `brick-up`,
+`low-ceiling`, `wall-contacts`, one per run, each printing which code it expects
+(`sink`, `brick-up` and `low-ceiling` also take `--perturb-place`, and it is
+refused for the others). It writes nothing — `--out` is refused beside it and the
+exit is always non-zero — so a perturbed tree does not exist to be shipped,
+walked or admitted. Reach for it when a battery has been green on this campaign
+from the first build and you want to know it is looking at the bytes rather than
+replaying the arithmetic that laid them.
+
 ## 9. The walk — STOP, this one is the user's
 
 **You have no body in the game.** You bring the world up and the user walks it;
