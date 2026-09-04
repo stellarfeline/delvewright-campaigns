@@ -317,8 +317,10 @@ yourself, and never widen a directory they named into a search.
 repository**, so there is no URL for this page to print and you must not invent
 one. Resolve it instead, exactly the way
 `"$DELVEWRIGHT_ENGINE/tools/check-patrol-types.py"` resolves the *server* jar:
-Mojang's version manifest, the version `versions.toml` pins, and the bytes
-checked against the sha1 that same metadata publishes.
+Mojang's version manifest, the version `"$DELVEWRIGHT_ENGINE/versions.toml"` pins
+under `[minecraft]`, and the bytes checked against the sha1 that same metadata
+publishes. **That file is the ENGINE's**, not this repository's: this
+repository's `versions.toml` names engine revisions and nothing about the game.
 
 ```sh
 mkdir -p ~/.chunky/resources
@@ -346,9 +348,10 @@ PY
 ```
 
 Nothing there is a constant this page made up. The manifest URL is the one
-`tools/check-patrol-types.py` and `tools/derive-client-langs.py` both already
-carry, and the version is the `versions.toml` pin. Point the same walk at
-`downloads.server` instead and it reproduces `versions.toml`'s committed
+`"$DELVEWRIGHT_ENGINE/tools/check-patrol-types.py"` and
+`"$DELVEWRIGHT_ENGINE/tools/derive-client-langs.py"` both already carry, and the
+version is the `"$DELVEWRIGHT_ENGINE/versions.toml"` pin. Point the same walk at
+`downloads.server` instead and it reproduces that same file's committed
 `server_jar_url` and `server_jar_sha1` exactly — which is how you know the walk
 lands on the right game rather than merely on *a* jar. **The client half has no
 committed pin to agree with**, so the sha1 checked above is Mojang's own,
