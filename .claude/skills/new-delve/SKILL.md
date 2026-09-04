@@ -1451,14 +1451,27 @@ own. Then, one process per scene, in parallel:
 
 ```sh
 java -jar ChunkyLauncher.jar -scene-dir "$DELVEWRIGHT_ENGINE/validation/delve-output/shots/scenes" \
-    -render <scene-name> -f -target 64
+    -render <scene-name> -f -threads <n>
 java -jar ChunkyLauncher.jar -scene-dir "$DELVEWRIGHT_ENGINE/validation/delve-output/shots/scenes" \
     -snapshot <scene-name> <out>.png
 ```
 
-`<scene-name>` is the file stem without `.json`. `-target 64` is a look;
-about 300 is a shipped frame. This step does not skip — a visual channel that
-fails soft is a review that passed without looking.
+`<scene-name>` is the file stem without `.json`. **`-target` is the sample
+budget** — how many samples per pixel the path tracer accumulates before it
+stops — and it is the one knob that trades render time against noise; it is not
+a lighting, framing or quality setting, and nothing about the picture's content
+changes with it. The command above passes none, so each scene renders to the
+budget `delvec scene` already wrote into it — `sppTarget: 500`, the review tier.
+Add `-target <n>` only to go somewhere else on the ladder: ~64 for a draft you
+only need to judge framing on, ~300 for final art (`delvec panorama --spp`'s own
+default), 500 for a review frame. A POV frame you are reading as primary
+evidence is rendered at the scene's own number, and 64 is for deciding whether
+the camera is pointed at the right thing. Chunky's progress counter
+reads `(N of <image height>)` and counts scanlines rather than samples, so watch
+`spp` against the target and not that number. The core is CPU-only, so the way
+to go faster is one process per scene in parallel with `-threads <n>` each, never
+a smaller budget on the frame you are about to judge. This step does not skip —
+a visual channel that fails soft is a review that passed without looking.
 
 Every camera in `render-plan.json` is proven to stand in open air (`DW0724`);
 read `camera_eye_proof` for how many were examined and how many had to be pulled
