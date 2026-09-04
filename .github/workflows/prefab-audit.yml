@@ -81,7 +81,7 @@ jobs:
       # This repo — with git-lfs so the .nbt prefabs materialize (they are LFS
       # pointers otherwise and the audit would fail to parse them).
       - name: check out content repo (with LFS)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           lfs: true
 
@@ -163,7 +163,7 @@ jobs:
       # Full depth, because the next step asks what landed after this pin and a
       # shallow clone cannot answer it. The question is text-only.
       - name: check out delve-admit source (main repo, pinned)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: stellarfeline/delvewright
           ref: ${{ env.ADMIT_REF }}
@@ -311,7 +311,7 @@ jobs:
 
       - name: upload the audit reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: prefab-audit-reports
           path: ${{ runner.temp }}/prefab-audit-reports
