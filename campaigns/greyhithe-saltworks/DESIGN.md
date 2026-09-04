@@ -84,9 +84,12 @@ Nobody in the delve states its point, and the ending does not explain itself.
   closes the loop 6 → 7 → 8 → 9 → 10 → 11 → 12 → 6, so the whole works becomes
   one circuit once it is lifted. Pushed on from inside the boiling house it
   answers and does not open.
-- **Point of no return** — `edge/night-stair-to-headland-path`: a four-block
-  drop off the head of the night stair onto the headland. It falls one way and
-  there is no way back up. Everything past it is act 3.
+- **Point of no return** — **not built.** It was designed as a four-block drop
+  off the head of the night stair onto the headland, and a designed drop cannot
+  lie on the critical path: the completability proof requires every forced leg
+  to be a walk, and a fall is not one (`DW0311`). The seam is an ordinary
+  stair, walkable both ways, and act 3 is entered rather than committed to.
+  This is a capability gap, not a design change.
 - **Boss** — Warden Aumery, in the light court (23), staged and unleashed.
 
 ## Acts

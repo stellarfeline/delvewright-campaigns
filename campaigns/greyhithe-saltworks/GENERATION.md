@@ -80,6 +80,16 @@ fear in plain words** rather than clenching anything.
 Wave-name note for localization: this campaign reuses no mob name across
 waves; every stack that shares a fiction shares a byte-identical string.
 
+## Capability gaps found, and what they cost this campaign
+
+| gap | what the campaign lost |
+|---|---|
+| a designed `drop` cannot be a forced leg (`DW0311`) | the point of no return. The seam is a stair now, and act 3 is entered rather than committed to. |
+| a per-branch `campaign-complete` is unreachable | two endings. The branches converge and the delve has one ending id; the two outcomes survive as two scenes and two chronicles. |
+| `role: "boss"` is reserved at every version, and an actor's death is observable by no objective | the keeper is not the boss. The fight is `wave/the-keepers-watch` in the court, and she is met above it. |
+
+Nothing here was faked with an adjacent verb.
+
 ## Findings ledger
 
 Kept in `$R/findings.md` for this round rather than here, because the findings
