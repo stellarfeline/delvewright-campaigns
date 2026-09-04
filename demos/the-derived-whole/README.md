@@ -153,17 +153,37 @@ not a thing that can happen quietly.
 
 Green again. 58 region writes over 10,855 cells; blockout `dce6c572…`.
 
-And the climb is a different building. Count the tread fills the two builds
-emit:
+And the climb is a different building. Read the tread fills the two builds emit
+into `setup_finish.mcfunction`, which is the whole of what either build says
+about a step:
 
-| build | whole courses | bottom slabs | what that is |
-|---|---|---:|---|
-| gallery sixteen deep | 9 | 5 | the gentle pitch: one block of rise per two of run, so every second course lands on a half |
-| gallery eight deep | 5 | 0 | the steep pitch: one block of rise per block of run, whole courses only |
+```
+# gallery sixteen deep — ten courses, z 24..33, five of them carrying a half
+fill 40 64 24 41 68 24 minecraft:polished_diorite
+fill 40 64 25 41 67 25 minecraft:polished_diorite
+fill 40 68 25 41 68 25 minecraft:polished_diorite_slab[type=bottom]
+...
+fill 40 64 32 41 64 32 minecraft:polished_diorite
+fill 40 64 33 41 64 33 minecraft:polished_diorite_slab[type=bottom]
 
-Nobody wrote "ramp" and nobody wrote "stair". One number moved and the
-derivation chose the other standard, because ten blocks of run stopped being
-available. There is no hand edit to lose, because there was never a hand edit to
+# gallery eight deep — five courses, z 24..28, not one half among them
+fill 40 64 24 41 68 24 minecraft:polished_diorite
+fill 40 64 25 41 67 25 minecraft:polished_diorite
+fill 40 64 26 41 66 26 minecraft:polished_diorite
+fill 40 64 27 41 65 27 minecraft:polished_diorite
+fill 40 64 28 41 64 28 minecraft:polished_diorite
+```
+
+| build | run | courses | whole fills | slab fills |
+|---|---:|---:|---:|---:|
+| gallery sixteen deep | 10 blocks for 5 of rise | 10 | 9 | 5 |
+| gallery eight deep | 5 blocks for 5 of rise | 5 | 5 | 0 |
+
+That is the two standards, and it is arithmetic rather than a claim: one block
+of rise per **two** of run leaves a half on every second course, and one per one
+does not. Nobody wrote "ramp" and nobody wrote "stair". One number moved, ten
+blocks of run stopped being available, and the derivation took the other
+standard. There is no hand edit to lose, because there was never a hand edit to
 make.
 
 ## The observer, shown its own defect
