@@ -65,6 +65,17 @@ that pierces its wall, the run of the climb into it, the anchor a quest hangs
 on, the route the completability proof walks. There is no hand edit to lose,
 because there was never a hand edit to make.
 
+## Light
+
+The blockout's only lighting surface is one setting for the whole map:
+`{fixture, min_light}`. This map declares floor torches at `min_light` 12. Seven
+— the schema's default — is green to the brightness check and unreadable to a
+walker, which the POV frames settle and no check can. Twelve is legible, and it
+buys that legibility with a lattice of free-standing torches, because a relight
+pass is an algorithm and there is no per-room surface to place a lamp on
+instead. A blockout is massing, not a finished room; when a place is detailed,
+its light goes in with the rest of its decoration.
+
 ## The keeper
 
 One NPC, no combat. She is a clerk who has outlived the office, and she is

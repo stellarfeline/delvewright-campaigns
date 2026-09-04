@@ -60,8 +60,18 @@ carrying a plan.
   floor. A lantern hangs from the ceiling, the hub is a hall with fourteen cells
   of headroom, and fifteen of block light fourteen blocks up arrives as one.
   `torch` stands ON the floor, so its distance to a walkable cell is horizontal,
-  and the pass finds sites. **The repair is the fixture, not the number**: the
-  threshold stayed at 7.
+  and the pass finds sites. **The repair was the fixture, not the number.**
+- **`min_light` is 12, and the number was decided on frames rather than on
+  taste.** At the schema's own default of 7 the build was green — `DW0210` had
+  nothing to say — and the POV frames at 300 samples were very nearly black: the
+  hub, a hall sixteen across, showed one torch flame and a suggestion of wall
+  courses. At 12 the same frame shows the wall, the floor, the ceiling line and
+  seven torches. The engine's light model and a walker's eye disagreed, and only
+  the frame could say so. **What 12 costs is visible in the same frame**: the
+  torches stand in the open floor in a lattice, because the relight pass is an
+  algorithm and a blockout has no per-room lighting surface for a designer to
+  use instead. That is honest about what a blockout is, and it is on the list for
+  whoever walks this.
 - **This campaign lives in `campaigns/`, not `demos/`.** `tools/campaign-build.py`
   — the CI build gate — hard-codes `CAMPAIGN_ROOT = "campaigns"` with no flag,
   and its population is every directory under it holding a `world.json`. A
@@ -101,8 +111,18 @@ Four axes pushed off the machine default for this campaign:
 
 | # | finding, as reported | round | status |
 |---|---|---|---|
-| 1 | The demo's second half — the observer shown as three pairs — cannot be produced from a campaign document. `DW0836`/`DW0837`/`DW0838` compare the plan against the derivation, and the derivation is a pure function of the plan, so a plan edit moves both sides together. Reddening one needs `blockout::Perturb`, which is a Rust API with no command-line surface. | 1 | `engine` |
-| 2 | `DW0822` projects about 2 minutes of route against a `target_minutes` of 15. Five places is what the brief pins; the billing and the walking do not agree. | 1 | `open` |
+| 1 | The demo's second half — the observer shown as three pairs — cannot be produced from a campaign document. `DW0836`/`DW0837`/`DW0838` compare the plan against the derivation, and the derivation is a pure function of the plan, so a plan edit moves both sides together. Reddening one needs a perturbed derivation. | 1 | `fixed@r1` — `delvec build --perturb` now exists; see below |
+| 2 | `DW0822` projects about 2 minutes of route against a `target_minutes` of 15. Five places is what the prompt pins; the billing and the walking do not agree. | 1 | `ruled` — `target_minutes` stays; the fifteen minutes is the session, and the demo README says so |
+| 3 | At the schema's default `min_light` of 7 the interiors are green to `DW0210` and unreadable to the eye. Nothing in the engine compares the two. | 1 | `fixed@r1` — `min_light` 12, decided on before/after frames |
+| 4 | The relight pass puts free-standing torches in a lattice across open floor. A blockout has no per-room lighting surface, so there is no design act available instead of the algorithm. | 1 | `open` — for the walk to judge |
+| 5 | A POV frame of a torch-lit interior at `-target 64` is a picture of the sampler, not of the room. The same frame at 300 is legible. | 1 | `ruled` — 64 is for framing, 300 is for judging |
+
+**On finding 1.** `delvec build <dir> --perturb <knob> [--perturb-place <place>]`
+lands on the engine branch `feat/the-observer-can-be-shown-its-own-defect`, at
+`905a68dc406491ecc59d99304e9ea0016cab40de`, which is **not merged**. The
+`/new-delve` page at the authoring revision does not mention the flag. The three
+exhibits in `demos/the-derived-whole/README.md` were run against a `delvec`
+built from that revision, and the README's commands name it.
 
 ## Round record
 
