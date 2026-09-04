@@ -207,10 +207,40 @@ ENGINE_REF="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml
 git clone https://github.com/stellarfeline/delvewright.git ../delvewright
 git -C ../delvewright checkout --detach "$ENGINE_REF"
 export DELVEWRIGHT_ENGINE="$(cd ../delvewright && pwd)"
-cargo build --release --manifest-path "$DELVEWRIGHT_ENGINE/Cargo.toml" --workspace
-cargo build --release --manifest-path "$DELVEWRIGHT_ENGINE/crates/render/Cargo.toml"
+
+# Both builds run INSIDE the clone. The subshell is what keeps your own working
+# directory where it was.
+( cd "$DELVEWRIGHT_ENGINE" \
+  && cargo --version && rustc --version \
+  && cargo build --release --workspace \
+  && cargo build --release --manifest-path crates/render/Cargo.toml )
+
 export PATH="$DELVEWRIGHT_ENGINE/target/release:$DELVEWRIGHT_ENGINE/crates/render/target/release:$PATH"
 ```
+
+**Build from inside the clone, and read the two version lines it prints.** The
+engine pins its compiler in `rust-toolchain.toml` at its own root, and rustup
+finds that file by walking up from the **working directory** — never from a
+`--manifest-path`. Build the engine from a directory outside it and rustup never
+sees the pin: your default toolchain compiles the engine, at exit 0, with nothing
+anywhere saying so. Standing in the clone is what makes the pin apply, which is
+why the `cd` is not tidiness.
+
+So the two lines above are the step's evidence, and they must agree with the
+engine's own file:
+
+```sh
+grep channel "$DELVEWRIGHT_ENGINE/rust-toolchain.toml"
+```
+
+At the pinned engine that reads `channel = "1.97.1"`, and `cargo --version` and
+`rustc --version` inside the clone both answer `1.97.1`. Compare them against
+that file rather than against this page — the page can go stale, the file cannot.
+**A different number means the `cd` did not take effect**, and everything built
+after it was built with the wrong compiler. Step 0's `cargo --version`, run from
+*this* repository, legitimately answers something else: that check asks whether
+you have Rust at all, and rustup installs the pinned toolchain on demand the
+first time you build in the clone.
 
 Confirm the checkout landed where it was told, before the build is trusted:
 
