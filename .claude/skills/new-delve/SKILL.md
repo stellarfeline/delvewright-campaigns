@@ -2571,8 +2571,27 @@ this needs were built at Init step 2.
    A grammar prefab has **no connectors and no lighting** until this step, so it
    cannot enter a `prefab_pool` and will be dark, until you do it. `lighting`
    measures the darkest standable floor cell a body can walk to from a
-   ground-level entrance — roofed or not, there is no roofedness filter — and
-   reports the count it bound to. Two refusals to expect and not work around: `DW0752` means the
+   ground-level entrance, and reports the count it bound to.
+
+   **Which sky the piece is measured under is the piece's own claim**, read off
+   its `spatial_contract`. A piece that declares no contract, or one declaring
+   any space `open` or `open_top`, is modelled standing in open air: sky light
+   enters through its openings from the side, which is the only way a roof over
+   open ground is ever lit, and without it a colonnade, a portico or a pier under
+   a deck reads as pitch black. A piece whose contract declares **every** space
+   `enclosed` claims no floor of its own stands under the sky, so it is measured
+   with no sky at all and its figure is its own block light. That is the honest
+   measurement for a piece a `detail-plan` row binds — its frame is the play
+   space plus one floor course and the roof over it belongs to the whole — and it
+   is why a `lit` verdict borrowed from open sky is worth nothing there: the same
+   emitterless piece reds `DW0210` at the first build. The report says which sky
+   was applied and why, in `assumed_sky.admits_sky` and `assumed_sky.why`, and the
+   written `method` sentence says it again. Read them; a figure taken under the
+   wrong sky is a number, not a verdict. Every piece a `details[]` row can bind
+   declares a contract, because one that declares none is refused outright
+   (`DW0843`).
+
+   Two refusals to expect and not work around: `DW0752` means the
    probe bound to **zero** cells — usually a piece whose only way in is a socket
    that has not been carved yet, so run `socket` first; `DW0753` means there is no
    metadata to write into, and the fix is to create it, never to let the tool
