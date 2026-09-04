@@ -1,0 +1,121 @@
+{
+  "campaign_id": "the-derived-whole",
+  "content": {
+    "beats": [
+      {
+        "node": "node/long-gallery",
+        "objective": "obj/cross-the-seam",
+        "quest": "quest/the-way-in"
+      },
+      {
+        "node": "node/upper-walk",
+        "objective": "obj/climb-the-run",
+        "quest": "quest/the-way-in"
+      },
+      {
+        "node": "node/upper-walk",
+        "objective": "obj/ask-the-keeper",
+        "quest": "quest/the-keeper"
+      },
+      {
+        "node": "node/vault",
+        "objective": "obj/read-the-plan",
+        "quest": "quest/the-keeper"
+      },
+      {
+        "node": "node/lip",
+        "objective": "obj/stand-on-the-lip",
+        "quest": "quest/the-hole-home"
+      },
+      {
+        "node": "node/hub",
+        "objective": "obj/come-home",
+        "quest": "quest/the-hole-home"
+      }
+    ],
+    "critical_path": [
+      "node/hub",
+      "node/long-gallery",
+      "node/upper-walk",
+      "node/vault",
+      "node/lip",
+      "node/hub"
+    ],
+    "edges": [
+      {
+        "a": "node/hub",
+        "b": "node/long-gallery",
+        "class": "walk",
+        "id": "edge/hub-to-gallery"
+      },
+      {
+        "a": "node/long-gallery",
+        "b": "node/upper-walk",
+        "class": "stair",
+        "id": "edge/gallery-climb"
+      },
+      {
+        "a": "node/upper-walk",
+        "b": "node/vault",
+        "class": "barred",
+        "gating": {
+          "flags": [
+            "flag/keeper-yielded"
+          ]
+        },
+        "id": "edge/the-bar",
+        "opens_from": "either"
+      },
+      {
+        "a": "node/vault",
+        "b": "node/lip",
+        "class": "walk",
+        "id": "edge/vault-to-lip"
+      },
+      {
+        "a": "node/lip",
+        "b": "node/hub",
+        "class": "drop",
+        "falls": "a-to-b",
+        "id": "edge/the-hole",
+        "shortcut": true
+      }
+    ],
+    "entry": "node/hub",
+    "goal": "node/hub",
+    "nodes": [
+      {
+        "id": "node/hub",
+        "intent": "hub",
+        "note": "Where a body starts and where the circuit ends. The one place the walk sees twice — from its floor at the beginning, and from a hole in the world above it at the end.",
+        "size_class": "hall"
+      },
+      {
+        "id": "node/long-gallery",
+        "intent": "approach",
+        "note": "The place on the far side of the first seam, and the place that pays for the climb out of it. Its depth is the only number that decides the pitch.",
+        "size_class": "room"
+      },
+      {
+        "id": "node/upper-walk",
+        "intent": "way",
+        "note": "The upper circuit's spine: a route, bounded across and free along, which is what a way class is for. The keeper stands on it.",
+        "way_class": "road"
+      },
+      {
+        "id": "node/vault",
+        "intent": "reward",
+        "note": "Behind the bar. What is kept here is the plan the whole map was derived from.",
+        "size_class": "room"
+      },
+      {
+        "id": "node/lip",
+        "intent": "way",
+        "note": "A narrow ledge running back over the hub, ending at the hole.",
+        "way_class": "corridor"
+      }
+    ]
+  },
+  "dsl_version": "0.19.0",
+  "stage": "layout-graph"
+}
