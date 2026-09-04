@@ -1,7 +1,7 @@
 # 无人之岛
 
-> **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.1.0.
-> (上一行是版本印记,不翻译:它声明本战役需要的引擎版本,以及最近一次验证所用的 delvec 版本。)
+> **Requires delve engine 0.8.0 or newer** — last verified with delvec 1.1.0 on Minecraft Java 1.21.11.
+> (上一行是版本印记,不翻译:它声明本战役需要的引擎版本、最近一次验证所用的 delvec 版本,以及本秘境运行所需的 Minecraft Java 版本。)
 
 > *"客人?客人是走门进来的,小东西们。而门,是关着的。"*
 
