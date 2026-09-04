@@ -90,6 +90,42 @@ waves; every stack that shares a fiction shares a byte-identical string.
 
 Nothing here was faked with an adjacent verb.
 
+## Branch chronicle citation table (step 11)
+
+Read end to end, in order, in one pass, both branches, against `DESIGN.md` and
+against the dialogue reachable on each.
+
+**The two chronicles are byte-identical apart from their headers.** `diff` over
+`branch-chronicle-ledger-kept.md` and `branch-chronicle-ledger-burned.md`
+returns three lines: the title, the flag assignment, and "Entered by: option
+#5" versus "#6". All 40 storyline lines are the same on both.
+
+| branch | claim reviewed | chronicle line(s) | verdict |
+|---|---|---|---|
+| both | the party is landed and Teague will not follow | 1-2 | cleared |
+| both | the works is walked before the precinct is entered | 5-17 | cleared |
+| both | the abbey gate is opened from the works yard | 16, 17 `opens` | cleared |
+| both | Ivo is at the table before the party reads it | 23 `arrives` | cleared |
+| both | the sea office ledger comes out of the undercroft | 29 `gains` | cleared |
+| both | the prior stayed and is at the desk | 31 `learns` | cleared |
+| both | the party drops onto the headland and cannot go back | 35 | **FINDING** — the line said "drops" and the seam is a stair. No drop exists. Fixed in the documents. |
+| `branch/ledger-kept` | Elent: "It should be known." — the record leaves with the party | — | **FINDING** — no chronicle line licenses it |
+| `branch/ledger-burned` | Elent: "It should burn." — the record is destroyed | — | **FINDING** — no chronicle line licenses it |
+| `branch/ledger-kept` | Aumery: "That is my hand ... take it down with you" | — | **FINDING** — no chronicle line licenses it |
+| `branch/ledger-burned` | Aumery: "Then there is nothing on this headland that says any of it" | — | **FINDING** — no chronicle line licenses it |
+
+The four branch findings have one cause, and it is not this campaign's:
+**a dialogue option's `happening` does not reach the branch chronicle.** All
+four lines carry one (`gains` / `loses` / `departs` / `survives`), and not one
+of the eighty chronicle lines across the two files is any of them. The single
+place a fork's divergence lives in this campaign — and, given `DW0482`, the
+only place the engine permits it to live — is exactly the place the chronicle
+cannot see.
+
+Step 11's pass condition ("the pass fails if any branch-divergent dialogue line
+has no citation") is therefore failed, and no edit to this campaign can pass
+it. Recorded as a capability gap.
+
 ## Findings ledger
 
 Kept in `$R/findings.md` for this round rather than here, because the findings
