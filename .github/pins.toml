@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "fe068c90c4f8f3346bdce6bcda3d8e5a52f2e734"
+value = "b1d79b071023d47cba9eb9ed000d61b8dd6ea898"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "fe068c90c4f8f3346bdce6bcda3d8e5a52f2e734"
+reviewed = "b1d79b071023d47cba9eb9ed000d61b8dd6ea898"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -85,8 +85,76 @@ They do not differ here, because the judgement's conclusion was that the newer
 instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
 
-THIS INTERVAL, `ca7eee59..fe068c90`, and it is the shortest reading this entry
-has recorded. Six commits landed upstream and three touch the watch closure —
+THIS INTERVAL, `fe068c90..b1d79b07`, and it is the first one where a file the
+`audit` path COMPILES actually moved, so it is the one worth reading closely.
+Three commits landed and all three touch the watch closure. `b1d79b07` reaches
+only `crates/compiler`'s `branch` and `flow`. `8eaa868d` reaches `crates/compiler`
+and, in `crates/dsl`, `l10n`, `stages`, `validate` — which is where a campaign
+document is judged and not a prefab — and `prefab`. `815f32ec` reaches
+`crates/compiler`'s `detail` and `light` and, in `crates/admit`, `light`, `meta`
+and `main`. Of the 34 files the `audit` path compiles, 32 are byte-identical and
+TWO moved: `crates/admit/src/main.rs` and `crates/dsl/src/prefab.rs`.
+
+BOTH ARE LOCALISED, and localised by measurement rather than by reading the commit
+subjects. Every one of `main.rs`'s six hunks carries `fn run_lighting` as its
+context, and `run_audit` extracted from both revisions hashes identically
+(`a09e7f33…`), so the file moved and the subcommand this gate invokes did not.
+`prefab.rs` has exactly two hunks: one adds an `Anchor.note` field inside
+`pub struct Anchor`, `Option<String>` with `serde(default,
+skip_serializing_if = "Option::is_none")` so an anchor that says nothing still
+writes no key; the other adds a test, inside `mod tests` under `#[cfg(test)]`.
+
+`crates/admit/src/meta.rs` moved too and is deliberately NOT on the 34, which was
+re-derived here rather than carried. Read from the source, `crate::meta` has two
+callers: `run_lighting`, for `set_lighting_from_probe` under `--write`, and
+`socket.rs`. `run_audit` reaches `Allowlist`, `audit::audit_tile_set`,
+`settling::zone_grid`, `Door::open` and `audit::footprint_class`, and none of them
+names it.
+
+`Anchor.note` IS THE ONE CHANGE THAT COULD HAVE REACHED A VERDICT, and it is worth
+saying why it did not, because "additive" is not by itself an answer. The audit
+path reads a prefab's metadata document at exactly one place —
+`audit::footprint_class`, through `delvewright_schem::prefab::PrefabMeta`, which
+is the `crates/dsl` `prefab` module re-exported — and that reader returns before
+anything else when the document declares no `footprint_class`. All 39 units print
+`0 declared class(es) judged over 1 declaration document(s) read`, so the door is
+shut on every piece here. Independently of the door, the key binds to nothing in
+this library: the 39 metadata documents declare 109 anchors across 25 pieces, and
+ZERO of the 109 carry a `note`. The only `note` key anywhere in this library's
+prefab metadata is `license.note`, present in all 39, which is a different key on
+a different object and was already modelled. (Stated because the shape invites a
+wrong measurement: `anchors` is a MAPPING of name to object, not an array, and a
+census that tests for a list answers an honest zero about the wrong shape.)
+
+MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
+pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each; the
+binaries differ in size and hash, so they are two objects. The judge built at
+`fe068c90` in this round hashes identically to the one built at `fe068c90` in the
+previous round from a different worktree, so the build is reproducible across
+trees and the two sides of this comparison are the instruments and not the
+weather. `tools/prefab-audit.py` run with each over the whole repository: 39
+audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39
+of 39 under both. All 39 report files byte-identical, and so is each run's stdout
+and its 82-line diagnostic stream, with NO line stripped. Both binaries carry the
+identical set of 22 `DW` codes, read out of the built binaries: no refusal gained
+or lost on this path. The move changes no verdict this library receives.
+
+AND THE COMPARISON IS NOT VACUOUS — this interval supplies its own anchor, which
+the previous one had to construct. `delve-admit lighting`, run over all 39 pieces
+with both binaries, differs on 39 of 39: `815f32ec` makes the piece's own
+`spatial_contract` decide which sky it is graded under, and the report gains
+`assumed_sky.admits_sky` and `assumed_sky.why` on every unit. Read field by
+field, the difference is PURELY ADDITIVE — two keys present only on the new side,
+none removed, no value moved on any key both sides emit, no diagnostic moved, no
+exit status moved — and `admits_sky` is `true` on all 39 because no piece here
+declares a contract. So the instruments are demonstrably different, the difference
+is observable in this library, and it does not reach `audit`. Re-derived rather
+than carried: all 39 units carry a `lighting` block and the probe's own profile
+disagrees with 5 of them, identically under both instruments, and reds nothing
+because nothing asks.
+
+THE INTERVAL BEFORE IT, `ca7eee59..fe068c90`, and it is the shortest reading
+this entry has recorded. Six commits landed upstream and three touch the watch closure —
 `2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
 files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
 `crates/dsl`'s `layout`, which is where a campaign document's layout graph is
