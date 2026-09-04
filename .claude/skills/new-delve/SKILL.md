@@ -1140,7 +1140,7 @@ Compose cannot compute an absolute default, so this is a real pair and not
 something a better default removes. Set neither and everything above is
 unchanged.
 
-The build writes more than a datapack. Three things to read every time:
+The build writes more than a datapack. Four things to read every time:
 
 - `critical-path.json`, at the **root** of the output — the playthrough the
   proof found, step by step. A step that crosses areas carries a `transport`
@@ -1149,6 +1149,14 @@ The build writes more than a datapack. Three things to read every time:
   line step 12 checks it against.
 - For a site-plan campaign, the three hashes and the engine revision it prints
   at the end. Step 13 copies them.
+- `DW0822`, the pacing line. It measures the critical path over the built
+  blockout — so many blocks of route, and about so many minutes at the
+  metrics table's blocks-per-minute rate — and it carries **no threshold and
+  refuses nothing**, so nothing in the engine compares it to your
+  `target_minutes`. **You do that.** A map that measures twelve minutes
+  against a `target_minutes` of 150 is not a warning anyone will raise; it is
+  a map whose walking is a twelfth of its billing, and the gap is either
+  content you have not written yet or a design that is smaller than it says.
 
 **There is no blockout document and nothing to author early.** A site-plan
 campaign's geometry is derived from the plan and the metrics table by this
