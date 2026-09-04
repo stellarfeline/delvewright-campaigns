@@ -990,6 +990,19 @@ is confirmed is the design, not a build. A **render** is a candidate prefab
 imaged by `delve-render`, and belongs to curation later. Two stages, two
 producers; building prefabs first and rendering them inverts the gate.
 
+**A derived blockout has no reference image to judge.** On a site-plan campaign
+the pictures at this gate are still design art — the map's own reference views
+from step 2B, and the scene concept art anchored on view 1 — and what they show
+is the design. **None of them shows the blockout**, and none is drawn to: the
+massing is not authored, it is derived from the plan and the metrics table at
+step 8, so a picture of it could only be made by inventing what the derivation is
+going to do, and it would carry a picture's authority while doing it. So this
+gate confirms the design and stops there. **The blockout is judged at step 9, in
+the walk** — a site-plan campaign's first real gate, where scale, pacing, route
+legibility and the silhouette from the declared `views[]` are settled by somebody
+standing in it. Never send anyone to compare the built map against a reference
+image of the built map; there is not one.
+
 - On path A of Init step 6, the images are already in
   `campaigns/<id>/design/concept/` and already approved, with `design/README.md`
   carrying the date and the approved names. The gate is: present the design
