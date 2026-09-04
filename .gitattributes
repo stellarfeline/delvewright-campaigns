@@ -1,1 +1,33 @@
 *.nbt filter=lfs diff=lfs merge=lfs -text
+
+# Approved reference imagery — the design gate's artifact — travels through LFS.
+#
+# A confirmed image is a CAMPAIGN FILE (the skill page's §4: "the moment images
+# are confirmed they become campaign files"), so it has to be in the repository;
+# an approval that lives only in a gitignored working directory is bound to
+# nothing. But a 2K jpg is ~2.9 MB and does not delta-compress, so as a plain
+# blob it lands in the object database at full size and stays there for every
+# clone forever. Measured on one campaign's design set — 50 images, 138 MiB — a
+# fresh single-branch clone went from a 4.5 MiB `.git` to a 145 MiB one. The
+# owner's drill starts from a fresh clone, and two or three campaigns at that
+# scale make the first command of the run a several-hundred-megabyte download.
+#
+# Through LFS the object database keeps a ~130-byte pointer per image instead,
+# and the bytes are fetched for the revision you actually check out rather than
+# for every revision that ever existed. Nothing new appears in the toolchain:
+# `.nbt` already requires git-lfs, so the page's Init step 1 (`git lfs install`
+# && `git lfs pull`) already covers these.
+#
+# Keyed on `design/`, not on `campaigns/`: the directory is what means "approved
+# reference imagery", and a demo that grows one gets the same treatment without
+# anybody remembering to widen a glob. Renders (`views/`, `review/`) and skins
+# are deliberately NOT here — a skin is 4 KB and is read by tooling, and a
+# render is regenerable from the piece it images.
+#
+# This changes what future commits store. Images already committed elsewhere
+# stay exactly as they are: rewriting history to move them is a separate,
+# destructive act nobody has asked for.
+**/design/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+**/design/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+**/design/**/*.png filter=lfs diff=lfs merge=lfs -text
+**/design/**/*.webp filter=lfs diff=lfs merge=lfs -text
