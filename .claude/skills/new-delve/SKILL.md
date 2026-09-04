@@ -985,6 +985,15 @@ producers; building prefabs first and rendering them inverts the gate.
   subject needing more than one view is drawn as a **sequence of single
   full-frame views**, never one canvas cut into panels — the form is in
   *Reference: drawing the map's reference*.
+  - **Anchor every scene on the map's own view 1, under the map series'
+    style note.** The scenes are places in one map, so they are one series
+    with it: pass view 1's interaction id — read out of its sidecar's
+    `.id` — to `--chain-from` on every scene, with the same `--style-note`
+    string the map views were drawn under. Anchor each on view 1 itself,
+    never on the scene before it, for the reason the map series does it:
+    chaining picture to picture compounds the drift instead of bounding
+    it. Twenty scenes then come back in one hand, and a reviewer reads the
+    set as one place rather than twenty unrelated pictures.
 
 **The moment images are confirmed they become campaign files.** Copy them **and
 their `.json` sidecars** to `campaigns/<id>/design/concept/`, one per scene,
