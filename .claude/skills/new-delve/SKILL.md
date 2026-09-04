@@ -827,6 +827,14 @@ form and the commands are in *Reference: drawing the map's reference*.
      floors the plan already chose — and its `stair_in` names which box pays for
      the run (`DW0830`). Treads rise off a walk plane, so `stair_in` is always
      the LOWER place.
+     - **The run is spent on ONE axis, and the seam's face picks which.** For
+       a seam on a wall face the host affords its extent along that face's
+       normal — an east or west face spends x, a north or south face spends z
+       — so a 4 × 40 host with the stair on its east face affords **4**, and
+       `DW0830` says so in those words ("affords 4 on x"). Only a seam
+       through a floor or ceiling gets the host's longer horizontal axis.
+       Give the host its length on the axis the face points along, or host
+       the stair in the other place.
 
 **A site-plan campaign has one area, `area/site`.** Quests, NPCs and waves name
 it; `world.json`'s `areas[]` is empty, and declaring both authorities is
@@ -985,6 +993,15 @@ producers; building prefabs first and rendering them inverts the gate.
   subject needing more than one view is drawn as a **sequence of single
   full-frame views**, never one canvas cut into panels — the form is in
   *Reference: drawing the map's reference*.
+  - **Anchor every scene on the map's own view 1, under the map series'
+    style note.** The scenes are places in one map, so they are one series
+    with it: pass view 1's interaction id — read out of its sidecar's
+    `.id` — to `--chain-from` on every scene, with the same `--style-note`
+    string the map views were drawn under. Anchor each on view 1 itself,
+    never on the scene before it, for the reason the map series does it:
+    chaining picture to picture compounds the drift instead of bounding
+    it. Twenty scenes then come back in one hand, and a reviewer reads the
+    set as one place rather than twenty unrelated pictures.
 
 **The moment images are confirmed they become campaign files.** Copy them **and
 their `.json` sidecars** to `campaigns/<id>/design/concept/`, one per scene,
@@ -1127,7 +1144,7 @@ Compose cannot compute an absolute default, so this is a real pair and not
 something a better default removes. Set neither and everything above is
 unchanged.
 
-The build writes more than a datapack. Three things to read every time:
+The build writes more than a datapack. Four things to read every time:
 
 - `critical-path.json`, at the **root** of the output — the playthrough the
   proof found, step by step. A step that crosses areas carries a `transport`
@@ -1136,6 +1153,14 @@ The build writes more than a datapack. Three things to read every time:
   line step 12 checks it against.
 - For a site-plan campaign, the three hashes and the engine revision it prints
   at the end. Step 13 copies them.
+- `DW0822`, the pacing line. It measures the critical path over the built
+  blockout — so many blocks of route, and about so many minutes at the
+  metrics table's blocks-per-minute rate — and it carries **no threshold and
+  refuses nothing**, so nothing in the engine compares it to your
+  `target_minutes`. **You do that.** A map that measures twelve minutes
+  against a `target_minutes` of 150 is not a warning anyone will raise; it is
+  a map whose walking is a twelfth of its billing, and the gap is either
+  content you have not written yet or a design that is smaller than it says.
 
 **There is no blockout document and nothing to author early.** A site-plan
 campaign's geometry is derived from the plan and the metrics table by this
@@ -2519,8 +2544,9 @@ this needs were built at Init step 2.
 
    A grammar prefab has **no connectors and no lighting** until this step, so it
    cannot enter a `prefab_pool` and will be dark, until you do it. `lighting`
-   measures the roofed floor a body can walk to from outside and reports the count
-   it bound to. Two refusals to expect and not work around: `DW0752` means the
+   measures the darkest standable floor cell a body can walk to from a
+   ground-level entrance — roofed or not, there is no roofedness filter — and
+   reports the count it bound to. Two refusals to expect and not work around: `DW0752` means the
    probe bound to **zero** cells — usually a piece whose only way in is a socket
    that has not been carved yet, so run `socket` first; `DW0753` means there is no
    metadata to write into, and the fix is to create it, never to let the tool
