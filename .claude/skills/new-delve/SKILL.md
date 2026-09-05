@@ -2609,7 +2609,14 @@ this needs were built at Init step 2.
    `at: floor_center` takes the lowest **world** Y of the scope it sits on, so a
    mark wrapping a column that includes its own floor slab lands *in* the floor
    and reds `contract-anchors`; mark the void, or use `at: offset` with the
-   walkable Y.
+   walkable Y. A `mark` may also carry `role` (`grammar.md` §2b, one term today:
+   `entry`) — that is how a grammar-authored piece declares the 2A entry point
+   without needing to write a name it structurally cannot write; one anchor per
+   area may carry it (`DW0804`), and every other anchor still binds by name.
+   For a hand-built or ingested piece, where no `mark` ever ran, the same role
+   is given after the fact with `delve-admit anchor --role <term>` / `--no-role`
+   (step 6) — run `--help` on the authoring pin's own binary before trusting this
+   route name, since a later engine may fold it under a different command.
 
 4. **Expand and let the machine judge**:
 
