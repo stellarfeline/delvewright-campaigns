@@ -1,34 +1,42 @@
 name: campaign build
 
-# Every campaign in this repo compiles, on every push and every pull request.
+# Every UNRELEASED campaign in this repo compiles with the engine a creator
+# authors against, on every push and every pull request.
 #
-# Why this exists. The other workflows here are `prefab-audit.yml` (path-filtered
-# to `prefabs/**` / `catalog/**`), `release.yml` (tag-only) and `workflow-lint.yml`
-# (path-filtered to `.github/workflows/**`), so a push that touched nothing but
-# `campaigns/**` reported ZERO checks, and the only thing that ever compiled a
-# campaign was a release tag. A campaign sat un-buildable on `main` for days as a
-# result: the engine grew `DW0331` (dialogue option labels wider than the button
-# vanilla draws them on) and `DW0205` (a dialogue button that lets the party skip
-# a load-bearing beat) after the campaign was authored, and nothing anywhere went
-# red, because nothing anywhere built it. The engine repo does not close this
-# either: its CI compiles only its own `crates/dsl/fixtures/**` campaigns, never
-# a real one.
+# What this gate asserts. A campaign that is still being authored must compile
+# with the engine its author is using — `versions.toml` `[engine].authoring_ref`,
+# the revision `/new-delve` Init step 2 tells them to build. That is the only
+# claim this repository can make and keep: it is the engine every refusal,
+# picture and diagnostic in a generation run comes from, so a red here is a
+# defect the author would have met, in the words they would have read.
+#
+# What it does not assert, and must not. A RELEASED campaign carries a
+# `release/<id>/v*` tag. It is never edited again, and it is built only by the
+# engine it pins, at that tag, by `release.yml`. Building it here against an
+# engine that keeps moving would assert a compatibility nobody promises —
+# nothing owes compatibility to anything already built — and the red would name
+# the one campaign that cannot be repaired. So a released campaign is excluded
+# by name, with its tags printed, and `release/*/v*` tags are fetched before the
+# gate runs so the exclusion binds to what the repository has actually published.
+#
+# The engine's own direction is the mirror of this: it never builds old
+# campaigns to prove compatibility either. The two repositories keep one rule
+# between them and neither carries the other's job.
 #
 # What this gate is, and is not. The STATIC ladder — `delvec validate` (schema +
 # referential + text fit + l10n sidecars) and `delvec build` (placement,
-# reachability, emission) — per campaign, per push, in every language the
-# campaign declares. The RUNTIME ladder (PackTest, the bot playthrough, the
-# multi-arch image) stays where it is: `release.yml`, on a release tag. That is
-# the tiered-testing split applied to the repo where campaigns actually live.
+# reachability, emission) — per eligible campaign, per push, in every language
+# the campaign declares. The RUNTIME ladder (PackTest, the bot playthrough, the
+# multi-arch image) belongs to `release.yml`, on a release tag. That is the
+# tiered-testing split applied to the repository where campaigns live.
 #
-# Which engine. `versions.toml` `[engine].ref` — the same pin `release.yml`
-# builds a release with, so "green here" means "this campaign compiles with the
-# engine that would ship it", and the answer is reproducible from two commit ids
-# (ADR-0006). Deliberately NOT the engine repo's `main`: this repo must not go
-# red for a change that has not been pinned yet. Re-pinning the engine is the
-# moment new compiler obligations arrive, and that pull request is where a
-# campaign's adoption round is scheduled — which is exactly what this gate makes
-# visible.
+# Which pin, and what moving it costs. `[engine].authoring_ref` is registered in
+# `.github/pins.toml` as `engine-authoring`, and its policy is unchanged by this
+# job: `builds` stays empty, so upstream drift is not a finding for it, and it
+# moves only when somebody has walked `/new-delve` Init end to end against a
+# candidate. This job reads the revision out of `versions.toml` at run time and
+# writes no second copy of it — a literal here would be a pin held in two places,
+# which `tools/check-pins.py` and `tools/check-authoring-pin.py` both refuse.
 #
 # Credentials. Both repos are public, so the cross-repo checkout needs no
 # credential of its own; the default GITHUB_TOKEN reaches the engine repo, same
@@ -100,7 +108,21 @@ jobs:
         with:
           lfs: true
 
-      - name: read the pinned engine from versions.toml
+      # The release tags decide which campaigns this gate does NOT build, and
+      # `actions/checkout` does not bring them. A missing tag set excludes
+      # nothing and reads exactly like a repository that has published nothing,
+      # so the fetch is its own step and fails loudly rather than an option that
+      # can be silently dropped. The driver cross-checks the result against the
+      # remote anyway and refuses a local set that is short.
+      - name: fetch the release tags the exclusion is drawn from
+        run: git fetch --tags --force origin
+
+      # `[engine].authoring_ref`, never `[engine].ref`. The release pin names the
+      # engine a PUBLISHED delve reproduces through and must not move; this names
+      # the engine an author works with, and it is the one this gate's claim is
+      # about. Read from the manifest at run time so no second copy of the
+      # revision exists here.
+      - name: read the authoring engine from versions.toml
         id: engine
         run: |
           set -euo pipefail
@@ -108,10 +130,10 @@ jobs:
           import tomllib
           e = tomllib.load(open("versions.toml", "rb"))["engine"]
           print(f"repo={e['repo']}")
-          print(f"ref={e['ref']}")
+          print(f"ref={e['authoring_ref']}")
           PY
 
-      - name: check out the pinned engine
+      - name: check out the authoring engine
         uses: actions/checkout@v4
         with:
           repository: ${{ steps.engine.outputs.repo }}
@@ -135,7 +157,7 @@ jobs:
         working-directory: engine-src
         run: cargo build --release --bin delvec
 
-      - name: record the engine these campaigns are built with
+      - name: record the authoring engine these campaigns are built with
         env:
           ENGINE_REPO: ${{ steps.engine.outputs.repo }}
           ENGINE_REF: ${{ steps.engine.outputs.ref }}
@@ -146,23 +168,26 @@ jobs:
 
       # The whole of the check lives in the script, not in this YAML, so a
       # creator runs exactly what CI runs with one command and no workflow
-      # runner. It discovers the population, names what it excluded and why,
-      # refuses a campaign that has lost its entry document, refuses a zero
-      # binding, and reconciles every discovered campaign against a result at the
-      # end — so a walk that stopped early cannot report on the part it reached
-      # and stay silent about the part it did not.
+      # runner. It discovers the population, names every released campaign it
+      # excluded and the tags that released it, refuses a campaign that has lost
+      # its entry document, refuses a tag set the remote says is short, refuses a
+      # zero binding where anything was eligible, and reconciles every eligible
+      # campaign against a result at the end — so a walk that stopped early
+      # cannot report on the part it reached and stay silent about the part it
+      # did not.
       #
       # `--branch` is the ref this run's result LANDS ON — a pull request's base,
-      # or the branch being pushed — which is what tells a campaign on `main`
-      # from one still being authored. An in-progress campaign lives on its own
-      # `campaign/<id>` branch and does not build yet, because `/new-delve` stops
-      # at the design gate with `quests.json` unwritten; work landing on that
-      # branch reports its findings and does not count them, and every other
-      # campaign in the tree still must build. The BASE and not the head, because
-      # the acceptance pull request from `campaign/<id>` into `main` carries that
-      # head and is the one run where the campaign must build — reading the head
-      # would excuse the merge that ships it. Empty on a push, which excuses
-      # nothing, and `github.ref_name` then supplies `main`.
+      # or the branch being pushed — which is what tells an eligible campaign on
+      # `main` from one still being authored. An in-progress campaign lives on
+      # its own `campaign/<id>` branch and does not build yet, because
+      # `/new-delve` stops at the design gate with `quests.json` unwritten; work
+      # landing on that branch reports its findings and does not count them, and
+      # every other eligible campaign still must build. The BASE and not the
+      # head, because the acceptance pull request from `campaign/<id>` into
+      # `main` carries that head and is the one run where the campaign must
+      # build — reading the head would excuse the merge that ships it. Empty on
+      # a push, which excuses nothing, and `github.ref_name` then supplies
+      # `main`.
       - name: every campaign builds, in every language it declares
         env:
           LANDS_ON: ${{ github.base_ref || github.ref_name }}

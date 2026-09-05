@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
+value = "968f7d87bfbbef85456a7701ceeb14edb82d09fa"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
+reviewed = "968f7d87bfbbef85456a7701ceeb14edb82d09fa"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -85,7 +85,58 @@ They do not differ here, because the judgement's conclusion was that the newer
 instrument is the one this library should be held to — so the pin moved to it
 rather than being held behind it.
 
-THIS INTERVAL, `417e1266..c5b7105f`, and on the audit side there is nothing to
+THIS INTERVAL, `c5b7105f..968f7d87`, and the audit path does not move. Seven
+commits landed. Five reach `crates/` not at all — `dda7f5bf`, `0e637464`,
+`e099750c`, `248cb671` and `968f7d87` are `harness/`, `tools/`, `docs/` and
+`CLAUDE.md` and nothing else. The two that reach the watch closure are the two
+the check names: `f565d347` moves one file, `crates/grammar/tests/audit_cli.rs`,
+and `d506d765` moves four, `crates/compiler`'s `src/emit`, `src/nav`, `src/reach`
+and `tests/reach_completion`. Counted against the container at both ends:
+`crates/admit` 32 tracked files, `crates/schem` 16, `crates/orchestrator` 4,
+`crates/dsl` 178 — zero changes of any kind in all four — and `crates/grammar`
+85 with the one test. So of the 315 files in the five crates the `audit` path
+compiles out of, 314 are byte-identical and the single mover is a TEST the
+binary does not link. `crates/compiler` holds 422 at both ends with those four
+moved, and nothing on the audit path is reached from any of them.
+
+NOR DOES THE OTHER SUBCOMMAND'S MODULE MOVE. `delve-admit lighting` is the
+subcommand that reaches `delvewright_compiler::light`, and
+`crates/compiler/src/light.rs` is byte-identical across this interval; what
+moved in that crate's `src` is `emit`, `nav` and `reach`. Measured anyway
+rather than argued from the diff, below.
+
+MEASURED RATHER THAN ARGUED. Two judges from two `--no-clone` detached
+worktrees — cold, per the method correction below — under the pinned toolchain,
+`cargo 1.97.1` and `rustc 1.97.1` reported by each tree and each build's exit
+asserted on its own line, 0 and 0. `tools/prefab-audit.py` with each over the
+whole repository: 39 audited units over 39 in-scope `.nbt` files, 0 disowned by
+git, PASS 39 of 39 under both at exit 0; both 48-line stdouts, both 82-line
+diagnostic streams and all 39 report files byte-identical. Both binaries carry
+the identical set of 22 `DW` codes.
+
+A SECOND METHOD CORRECTION, and it is about how those codes are counted. Read
+with `strings`, each binary answers EIGHT codes — the code literals live in a
+packed string table and `strings` splits it on the bytes between them, so the
+instrument silently under-reports and the two binaries agree at the wrong
+number. Read straight out of the bytes (`grep -aoE 'DW[0-9]{4}'`) both answer
+22, which is the figure every earlier reading here states. A count that
+disagrees with the record is the measurement failing until it is reconciled,
+and this one was.
+
+AND THE COMPARISON IS NOT VACUOUS. `lighting` agrees on all 39 this interval, so
+it supplies no anchor of its own and one was built: a third cold worktree at the
+new revision with a single suffix deleted from the `audit` path's own allowlist
+(`_stairs`, one row in `crates/admit/src/allowlist.rs`, the deletion asserted at
+exactly one match) reds 9 of the 39 units and moves exactly 9 report files,
+exit 1 against exit 0. The perturbed tree was discarded.
+
+THE VENDORED COPY DOES NOT MOVE THIS TIME. `tools/check-pins.py` is
+byte-identical upstream across `c5b7105f..968f7d87` — blob
+`b9ad14e4e00fc8b5454e6dd1853b17b89ac11c44` at both ends, and the copy here
+already carries it — so the bump is the pin alone and `check-vendored` is green
+without an edit.
+
+THE INTERVAL BEFORE IT, `417e1266..c5b7105f`, and on the audit side there is nothing to
 read at all. Seven commits landed. Five reach no crate: they are `gallery/`,
 `harness/`, `tools/` and `docs/` and nothing else. The two that reach the watch
 closure — `a60f1ca9` and `2fa40449` — are `crates/compiler` and nothing else, and
@@ -145,7 +196,7 @@ upstream across `417e1266..c5b7105f` (`d2529bf18d25` at both ends, and the copy
 here already carries it), so the bump is the pin alone and `check-vendored` is
 green without an edit.
 
-THE INTERVAL BEFORE IT, `d3b7b436..417e1266`, the cleanest of the four judged
+AND `d3b7b436..417e1266`, the cleanest of the four judged
 before this one on the audit side and the first to move the VENDORED file. Eight commits landed. Five
 reach no crate at all. The three that do — `bb4cc98b`, `bba5bcb3`, `4851360c` —
 are `crates/compiler` and nothing else: across the whole interval `crates/admit`,
@@ -205,7 +256,7 @@ here after the re-vendor, the offline half reports 11 pins discovered against 11
 registry entries, unchanged, so the widening discovers nothing in this repository
 that was not already declared.
 
-AND THE ONE BEFORE THAT, `b1d79b07..d3b7b436`, the one where FOUR of the 34 files
+AND `b1d79b07..d3b7b436`, the one where FOUR of the 34 files
 the `audit` path compiles moved — the most yet, and every one of them in
 `crates/dsl`. Six commits landed; two reach no crate at all (`63bfe51b`,
 `e283c744`, in `validation/` and `harness/`), and `1eaa5a72` likewise. Of the
@@ -264,7 +315,7 @@ perturbed tree was discarded. Re-derived rather than carried: all 39 units carry
 `lighting` block and the probe disagrees with 5 of them, identically under both
 instruments, and reds nothing because nothing asks.
 
-AND EARLIER STILL, `fe068c90..b1d79b07`, the first one where a file the
+AND `fe068c90..b1d79b07`, the first one where a file the
 `audit` path COMPILES actually moved, so it is the one worth reading closely.
 Three commits landed and all three touch the watch closure. `b1d79b07` reaches
 only `crates/compiler`'s `branch` and `flow`. `8eaa868d` reaches `crates/compiler`
@@ -332,7 +383,7 @@ than carried: all 39 units carry a `lighting` block and the probe's own profile
 disagrees with 5 of them, identically under both instruments, and reds nothing
 because nothing asks.
 
-AND EARLIEST OF ALL, `ca7eee59..fe068c90`, the shortest reading
+AND `ca7eee59..fe068c90`, the shortest reading
 this entry has recorded. Six commits landed upstream and three touch the watch closure —
 `2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
 files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
@@ -625,6 +676,19 @@ from the default branch is deliberately NOT a finding for this pin, for the same
 reason it is not one for `release`: what an author needs is the engine the
 pipeline was WALKED against, not the newest one.
 
+A JOB NOW BUILDS `delvec` OUT OF THIS REVISION AND `builds` STILL STAYS EMPTY.
+`.github/workflows/campaign-build.yml` checks the engine out at this value and
+builds the compiler to compile every unreleased campaign, which is the author's
+own toolchain step performed in CI. That does not make it a site and does not
+earn a watch set: the package it builds is the compiler, whose path-dependency
+closure is the entire `crates/` tree, so a watch derived from it would red on
+every upstream commit — the absurd watch above, arriving by another door. The
+job takes the revision by READING `versions.toml` at run time and writes no
+literal of its own, so the value still stands in exactly one file and the two
+checkers below still hold it there. What that job asserts is unchanged by this
+entry: an unreleased campaign compiles with the engine its author uses, and a
+red there is an adoption item on the campaign.
+
 WHAT WOULD MAKE IT STALE, then, and what would make staleness a finding. It is
 stale when the engine has fixed an obstacle an author hits — a refusal with no
 reachable remedy, a step that cannot be completed — and this pin still names the
@@ -637,9 +701,9 @@ no job in this repository can perform that walk. `reviewed` and `value` name the
 same revision because this pin was created by such a walk rather than inherited
 from an older one.
 
-WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line. Six
-readers, each catching a different bad edit, none of them able to substitute for
-another:
+WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line.
+Seven readers, each catching a different bad edit, none of them able to
+substitute for another:
 
   - `tools/check-pins.py` (offline, required job): the value is discovered in
     `versions.toml` and must carry an entry here; editing the pin without editing
@@ -673,6 +737,13 @@ another:
     `vendors` are byte-identical to the engine's at this revision. They are the
     idiom-index oracle and the markdown-table parser the reader above imports —
     not maintained here, so an edit in place is a red rather than a fork.
+  - `.github/workflows/campaign-build.yml` (the `every campaign builds` required
+    job): the second reader that uses the revision as an INSTRUMENT. It checks
+    the engine out here, builds `delvec`, and compiles every unreleased campaign
+    with it — so this pin decides whether the campaigns a creator is still
+    authoring are held to the engine that creator is using. A revision the remote
+    will not serve fails there too, in the author's own words, before anything is
+    built.
 """
 
 [[pin]]
