@@ -157,7 +157,7 @@ sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "c5b7105fdf4a262b479e2f9bf114813bd77dee19"
+reviewed = "66906e395eb7517a8b5f7b104223877c4aa7e8ba"
 builds = []
 # `tools/check-skill-version.py` holds the skill page's frontmatter and prose to
 # this engine, and two of the things it asks are questions the engine already
@@ -239,8 +239,16 @@ other way. Neither is machine-detectable from this repository, and saying so is
 the honest half: staleness here is established by WALKING `/new-delve` Init end
 to end against a candidate revision, which is what produces a new `reviewed`, and
 no job in this repository can perform that walk. `reviewed` and `value` name the
-same revision because this pin was created by such a walk rather than inherited
-from an older one.
+same revision because each was set by such a walk rather than inherited from an
+older one. The walk that moved them to `66906e39` built the engine from source
+at that revision from inside the clone, so its own `rust-toolchain.toml` pin
+applied and `cargo` and `rustc` both answered `1.97.1`; `delvec --version` then
+answered `1.1.0`, inside the skill's declared `requires.delvec` window; and the
+run carried on through the page and authored a campaign against that toolchain
+as far as the design gate. What that walk did NOT do is hold the gate, which is
+the user's and had no user present. So this `reviewed` attests that Init
+completes and that the authoring steps BEFORE the gate run at this engine, and
+attests nothing about the steps after it.
 
 WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line.
 Seven readers, each catching a different bad edit, none of them able to
