@@ -1,0 +1,686 @@
+{
+  "name": "toll_road_pass",
+  "palette": {
+    "lamp": "minecraft:glowstone",
+    "rough": "minecraft:tuff",
+    "smooth": "minecraft:stone_bricks"
+  },
+  "params": {
+    "head": 5,
+    "pocket_height": 2,
+    "pocket_period": 6,
+    "road_width": 3,
+    "sconce_period": 8
+  },
+  "rules": {
+    "boulder_stair": [
+      {
+        "body": {
+          "body": {
+            "op": "call",
+            "symbol": "stair_plan"
+          },
+          "op": "reorient",
+          "orient": {
+            "y": "world_y",
+            "z": "largest"
+          }
+        },
+        "weight": 1
+      }
+    ],
+    "pocket_backing": [
+      {
+        "body": {
+          "material": {
+            "role": "rough"
+          },
+          "op": "fill"
+        },
+        "weight": 1
+      }
+    ],
+    "pocket_column": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "pocket_niche"
+            },
+            {
+              "op": "call",
+              "symbol": "pocket_wall"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "pocket_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "pocket_period"
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "pocket_wall"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "lt",
+          "rhs": {
+            "expr": "param",
+            "name": "pocket_period"
+          }
+        }
+      }
+    ],
+    "pocket_niche": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "body": {
+                  "op": "void"
+                },
+                "mark": {
+                  "anchor": "pocket",
+                  "at": "corner_min",
+                  "index": "auto"
+                },
+                "op": "mark"
+              },
+              "op": "reorient",
+              "orient": {
+                "z": "local_x"
+              }
+            },
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "pocket_height"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "pocket_wall": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "sconce_course"
+            },
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "y",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "head"
+            },
+            "op": "add",
+            "rhs": {
+              "expr": "int",
+              "value": 2
+            }
+          }
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "rough"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "rough_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "sconce_course"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "head"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "sconce_course": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "sconce_period"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "param",
+            "name": "sconce_period"
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "rough"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "lt",
+              "rhs": {
+                "expr": "param",
+                "name": "sconce_period"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "rough"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "smooth_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "material": {
+                  "role": "smooth"
+                },
+                "op": "fill"
+              },
+              "mark": {
+                "anchor": "stair-run",
+                "at": "floor_center"
+              },
+              "op": "mark"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "rough"
+                },
+                "op": "fill"
+              },
+              "mark": {
+                "anchor": "volley-slot",
+                "at": "floor_center"
+              },
+              "op": "mark"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "head"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "stair_plan": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "rough_column"
+            },
+            {
+              "op": "call",
+              "symbol": "smooth_column"
+            },
+            {
+              "op": "call",
+              "symbol": "rough_column"
+            },
+            {
+              "op": "call",
+              "symbol": "pocket_column"
+            },
+            {
+              "op": "call",
+              "symbol": "pocket_backing"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "road_width"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "road_width"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "head"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "pocket_height"
+              },
+              "op": "le",
+              "rhs": {
+                "expr": "param",
+                "name": "head"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "pocket_period"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "start": "boulder_stair",
+  "version": "1.8.0"
+}
