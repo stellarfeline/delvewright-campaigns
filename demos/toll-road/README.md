@@ -33,5 +33,5 @@ nothing; not reading it costs a hit and shows where the lever was.
 `DW0345` requires the piece the party spawns in to declare an anchor with
 `"role": "entry"`, and nothing in the documented pipeline can write one: a grammar
 `mark` cannot declare it, and `delve-admit anchor` writes only `pos`, `facing`,
-`region` and `block`. The piece, the placement and the story documents are all
+`region` and `block`. Nor does a spawn antechamber help: crossing into the pass from another area is refused by `DW0872`, which asks the destination area for the same anchor. The piece, the placement and the story documents are all
 authored and the campaign is at the skill page's design gate.

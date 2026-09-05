@@ -61,7 +61,7 @@ Three axes pushed off the machine default for this campaign:
 
 | # | finding | status |
 |---|---|---|
-| 1 | **No producer writes an anchor `role`.** `DW0345` requires the spawn area's piece to declare an anchor with `"role": "entry"` (or the legacy names `spawn`/`entry`, which its own message calls a compatibility path for pieces admitted before the role existed). `delve-grammar`'s `mark` cannot declare one — `grammar.md` §7 — and `delve-admit anchor` writes only `pos`, `facing`, `region` and `block`, which `prefab-procedure.md` states outright. So a piece authored today cannot be the piece a party spawns in, and this campaign is blocked at `delvec build` with `DW0345` (exit 3), reproduced on `prefab/toll-road-pass` itself. | **engine** |
+| 1 | **No producer writes an anchor `role`.** `DW0345` requires the spawn area's piece to declare an anchor with `"role": "entry"` (or the legacy names `spawn`/`entry`, which its own message calls a compatibility path for pieces admitted before the role existed). `delve-grammar`'s `mark` cannot declare one — `grammar.md` §7 — and `delve-admit anchor` writes only `pos`, `facing`, `region` and `block`, which `prefab-procedure.md` states outright. So a piece authored today cannot be the piece a party spawns in, and this campaign is blocked at `delvec build` with `DW0345` (exit 3), reproduced on `prefab/toll-road-pass` itself. The obvious escape does not escape: binding a first area to a shipped entry-bearing piece and crossing into the pass on an objective is refused by `DW0872`, which asks the DESTINATION area for the same anchor. Both routes were built and both red. | **engine** |
 | 2 | **The same gap closes two more anchor keys.** `dispenser` and `trigger_block` have no producer either. `dispenser` is what a spec-0011 `dispense` trap fills; `trigger_block` is what `DW0363` requires before a trap may carry a flag gate. So a flag-gated trap and a legacy dispense trap are both unauthorable on any piece this toolchain can make. | **engine** |
 | 3 | **A grammar expansion's provenance omits `--param` and `--role`** while claiming the recorded inputs reproduce the bytes. Measured above; worked around here by baking both into a committed program file. | **engine** |
 | 4 | **The alcoves are one cell deep.** They are the corpus rule's dodge pockets, which is the right shape for a body stepping out of a volley and a poor one for an alcove of loot. A loot alcove wants two or three cells of depth and its own back wall. | open |
@@ -76,5 +76,5 @@ there: a campaign that does not validate, carrying only refusals that
 
 DW codes this round hit, with counts:
 `DW0150` x1, `DW0152` x1 (both the expected step-3 state);
-`DW0345` x1 and `DW0751` x1 (the two real refusals);
+`DW0345` x1, `DW0872` x1 and `DW0751` x1 (the real refusals);
 `DW0727` x2 and `DW0781` x1 (advisories).
