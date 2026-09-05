@@ -1,7 +1,7 @@
 ---
 name: new-delve
 description: Generate a complete playable Minecraft delve from a creative prompt — staged DSL authoring with validation-loop self-repair, deterministic compile, machine validation, joinable output. Use when the user asks to create/generate a new delve or campaign. Args = the creative prompt (theme one-liner or detailed brief).
-version: 1.9.0
+version: 1.10.0
 requires:
   delvec: ">=1.0.0 <2.0.0"
 verified_with: 1.1.0
@@ -455,8 +455,8 @@ needs a paid third-party account and the other needs nothing at all.
 ls campaigns/<campaign-id>/design/
 ```
 
-A campaign being re-made carries `design/README.md` (the approval date and the
-approved names), `design/concept/` (one image per scene) and, when the map was
+A campaign being re-made carries `design/README.md` (the approved names),
+`design/concept/` (one image per scene) and, when the map was
 designed as a whole, `design/reference/` (the map views, their prompts, their
 style note and their sidecars). **If that directory exists, the reference
 exists.** Read it, author from it, judge against it, and present every later
@@ -472,13 +472,25 @@ the gate:
 
 - a `[refimg]` section in `delvewright.local.toml` **at the engine checkout's
   root**, i.e. `"$DELVEWRIGHT_ENGINE/delvewright.local.toml"`. The tool reads
-  that one file and takes no `--config`; the file is gitignored there. Copy the
-  commented convention block out of `"$DELVEWRIGHT_ENGINE/delvewright.toml"`;
-- the API key present in **the environment your shell sees**, in the variable
-  that section's `api_key_env` names. The key never enters a file, so it is never
-  in either repository and never in the config — which also means nothing carries
-  it over from a previous session, and if it is not there, **ask the user for it
-  rather than guessing at a provider**;
+  that one file and takes no `--config`.
+  **Expect it to be absent, and write it — that is this bullet's whole
+  instruction.** `delvewright.local.toml*` is gitignored in the engine, so no
+  clone carries one and the checkout Init step 2 just made has none. It is owed
+  **once per checkout**, which means again the next time step 2 clones the
+  engine, however many times you have set one up before; a machine that already
+  ran this page still starts a new checkout without it. Where the section comes
+  from: the committed `"$DELVEWRIGHT_ENGINE/delvewright.toml"`, which documents
+  the shape and stays inert. Copy its commented `[refimg]` block out, strip the
+  `# `, and fill in `provider`, `model`, `api_key_env` and the frame keys that
+  provider takes. `.local` overrides the committed file section by section, so
+  `[refimg]` is the only section this file needs;
+- **the key never enters that file, and there is nothing to paste into it.**
+  `api_key_env` is the NAME of an environment variable, read at call time and
+  never stored or logged, and an inline `api_key =` is refused outright. So the
+  key lives in **the environment your shell sees**, under the name that section
+  gives — which also means nothing carries it over from a previous session, and
+  if it is not there, **ask the user for it rather than guessing at a
+  provider**;
 - a confirmation that costs no call:
 
 ```sh
@@ -610,6 +622,19 @@ Create `campaigns/<campaign-id>/`. Everything of the campaign lives
 there — the documents, the design record, the generation record, the storybook.
 Build output goes beside them and is ignored by git there.
 
+**`campaigns/` is the only place a campaign lives, and a demo level is a
+campaign.** A level off the engine's `docs/demo-levels.md` queue — one mechanic
+in the spotlight, ten to twenty minutes, minimum cast — is authored through this
+page like any other and goes to `campaigns/<id>/`. It has to: a delve is what
+somebody plays, and `tools/campaign-build.py` discovers a campaign by finding
+`world.json` under `campaigns/` and nowhere else. **`demos/` is not a second
+home for one.** What lives there is a demonstration of a *generation-time*
+surface — a grammar program, the piece it exports, its reports, its refusal
+transcripts — and it carries no campaign document because no delve is built from
+it. The gate holds the same line from the other side: a stage document anywhere
+outside `campaigns/` is a campaign nothing would ever compile, and it reds
+naming the directory. One place each, and no pointer file in either.
+
 **The document names, all of them.** `delvec validate` reads a whole campaign
 and refuses one that is missing any of them with `DW0874`, which names **every**
 document that is absent in a single run, gives the whole required set, and
@@ -670,14 +695,38 @@ reads:
 
 - **`DESIGN.md`** — the authoritative design record: layout, dramaturgy beats,
   the branch/ending table. Every later round is judged against it.
-- **`GENERATION.md`** — the prompt verbatim, the date, the `dsl_version`, the
-  decisions you made, this campaign's **posture note** (see *Reference: writing
-  craft* §B), and later the findings ledger and the chronicle citation table.
+- **`GENERATION.md`** — the campaign's own decisions, in your words as their
+  author: what the brief pinned down and what you invented, the `dsl_version`,
+  this campaign's **posture note** (see *Reference: writing craft* §B), and later
+  the findings ledger and the chronicle citation table. **Not the prompt
+  verbatim and not a date.** Every artifact in this repository is
+  English-first and carries no personal information, no verbatim personal
+  speech, and no record of who decided something or when — the engine
+  constitution's Conventions name these generation logs explicitly. So write the
+  constraint ("the brief pinned the tide as a story beat, never a clock"), never
+  the sentence somebody typed; write the decision, never its date or its author.
+  The record is for whoever authors the next round of this campaign, and a date
+  tells them nothing a `git log` does not.
 
-Commit the campaign here once validation passes.
-Conventional message; do not push unless asked. The documents are the artifact
-of record: the delve must rebuild byte-identically from them with no model in
-the loop.
+**Commit the campaign onto its own `campaign/<campaign-id>` branch**, as soon
+as the documents are on disk — not onto `main`, and not held back until
+everything is green. A campaign is in progress until somebody has walked it, and
+everything of it lands on that branch: the documents, the design record, any
+prefab it needs, the generation record, the storybook. Sort a file by which
+artifact it belongs to: if abandoning the campaign would delete it, it is the
+campaign. Conventional message; do not push unless asked. The documents are the
+artifact of record: the delve must rebuild byte-identically from them with no
+model in the loop.
+
+**That branch is also what tells the build gate what it is looking at.** A
+campaign correctly stopped at the design gate does not build, and that is not a
+defect — so `python3 tools/campaign-build.py --branch campaign/<id> …` reports
+that one campaign's findings and does not count them, while every other campaign
+in the tree still must build. The excuse is the branch name and nothing else: it
+names exactly one campaign, every run prints what it excused, and the flag is
+the branch the work **lands on** — so the pull request that finally merges the
+campaign to `main` is judged strictly, which is the run that decides whether it
+ships. **A campaign on `main` must build.**
 
 **While you are authoring incrementally, stub the later documents** and mark the
 stubs clearly, so `delvec validate` can run at all. A stub is the envelope plus
@@ -757,6 +806,37 @@ And if the jigsaw can seat a pool piece twice, the build says so at the pool
 declaration (`DW0498`, advisory) and names every anchor that repeat makes
 ambiguous — read that line before hanging an objective, NPC stand, gate or wave
 spawn on one, because it is a hard `DW0305` the moment you do.
+
+**When the library has no piece the design needs, decide which of two things you
+are looking at.** Neither answer is "make a prefab now".
+
+- **The missing piece is the building the story is about** — the keep, the mill,
+  the tower the delve is named after. Then `areas[]` was never the right
+  placement model: go back to *Which placement model* and take the site plan,
+  where the geometry is derived from your own plan and there is no prefab left to
+  be missing. This is the one decision that cannot be changed later without
+  redoing step 2, so change it here and not at step 5.
+- **The missing piece is a room `areas[]` still wants** — a second area's entry
+  point, a room whose chest a `collect` has to adopt, a shape the pools do not
+  hold. Then you owe a piece, and you build it **after the design gate at step 4
+  and before step 5**, entering *Reference: when the prefab library has no piece
+  you need* at that point. That is the section's second entrance; step 13.3 is
+  the other.
+
+**After the gate, for the gate's own reason.** Step 4 confirms the design on
+concept art drawn *before any prefab exists*; a piece built first and rendered
+for the gate is a build being approved as a design, which is the inversion step
+4 names. And before step 5, because step 5 binds anchors and the anchors are the
+piece's own — there is no `cast` block to write against a piece that has not
+declared its marks.
+
+**Until then, do not carry a name for a piece that does not exist.** An
+`areas[]` entry naming a piece the library does not have is `DW0856`, and the
+refusal is not the expensive part: an area whose piece is absent contributes no
+anchor set at all, so every per-area anchor proof over it is SKIPPED rather than
+failed, and steps 3 and 4 then read quieter than they are. Write the area entry
+when the piece is admitted; at the gate, say which pieces the design still owes
+and what each one is for.
 
 ### 2B. The site plan
 
@@ -1035,7 +1115,7 @@ image of the built map; there is not one.
 
 - On path A of Init step 6, the images are already in
   `campaigns/<id>/design/concept/` and already approved, with `design/README.md`
-  carrying the date and the approved names. The gate is: present the design
+  naming the approved set. The gate is: present the design
   beside them and confirm the design still is what they show.
 - On path B, `$DELVEWRIGHT_ENGINE/tools/refimg.py` draws them; prompt iteration is the work, and a
   subject needing more than one view is drawn as a **sequence of single
@@ -1054,8 +1134,11 @@ image of the built map; there is not one.
 **The moment images are confirmed they become campaign files.** Copy them **and
 their `.json` sidecars** to `campaigns/<id>/design/concept/`, one per scene,
 named for the scene, and write `campaigns/<id>/design/README.md` carrying the
-approval date, the approved names, and the sentence every later round is held
+approved names, what each one shows, and the sentence every later round is held
 to: *author from the image, judge against it, present every choice beside it.*
+**No date and no approver** — this file is a repository artifact under the same
+rule `GENERATION.md` is; what it records is that this set is the approved one,
+not when or by whom.
 Commit them with the campaign. Everything under `design/` is tracked with
 git-lfs (`.gitattributes`), so an approved image commits as a small pointer and
 its bytes travel out of band — the `git lfs install` from Init step 1 is all this
@@ -1950,6 +2033,44 @@ this section is what they are *for* and the traps in each.
 
 ### Danger, death and money
 
+- **A trap is a trigger plus a payload, and the payload is ordinary effects.**
+  `traps[] {id, at, trigger, payload, lethality?, disarm?, reset?, + the
+  ordinary gate}`. `trigger` is `pressure-plate` / `tripwire` /
+  `trapped-chest` — the one job redstone keeps, because it is the part the
+  player sees, suspects and learns to read. The consequence is `payload`: an
+  ordered effect list in the **same vocabulary a quest uses**, plus two trap
+  verbs — `volley {from_anchor, kill_zone, projectile?, salvos?, interval?}`,
+  which blankets every standable cell of its zone rather than sniping (escaping
+  is a decision to leave, never a lucky strafe; the line of fire to every cell
+  is proven at build time, `DW0442`), and `collapse {region_anchor,
+  falling_block?, then_floor?}`, which deletes a region and buries whoever is
+  under it, with the settled world re-run through the completability proof
+  (`DW0445`). A trap that declares no consequence at all is `DW0440`.
+- **`at` is an ORDINARY POINT ANCHOR and the piece needs no hardware.** The
+  compiler owns the detection tick for a command payload: a plate or a tripwire
+  is a position test on that anchor's cell, and a trapped chest is the same
+  interaction-entity `use` a disarm lever rides. So any anchor carrying a `pos`
+  that some area's prefab provides will hold a trap — and on a site-plan
+  campaign that is `anchor/node-<place>`, which is exactly what a derived map
+  has. `volley`'s `from_anchor` is another one, and all it owes is a clear cell.
+  **The name `anchor/trap` is a convention from the redstone era and the check
+  does not read it**: what is required is a point anchor that resolves, not one
+  called that. Read any text telling you to "bind the trap to an `anchor/trap`
+  marker" — the refusal's remedy line and the schema's own field description
+  both say it — as saying *that anchor does not resolve*, and answer it with an
+  anchor that does. Measured over the shipped library: **0 of 36 prefabs
+  declares an `anchor/trap`**, or any anchor carrying `dispenser` or
+  `trigger_block` metadata, out of 103 anchors in all — so the piece that
+  reading asks for does not exist here, and a command payload never wanted one.
+- **Two things do want hardware in the piece, and neither of them is the
+  payload.** The superseded `effect: {dispense: {…}}` fills a dispenser socket
+  the prefab pre-wired, so it needs that metadata; and a trap carrying a gate
+  (`requires_flags` / `forbids_flags` / `requires_state`) is gated *physically* —
+  the compiler takes the trigger block out of the world while the gate is shut
+  and puts it back verbatim — so it needs the anchor's declared `trigger_block`,
+  and a `trapped-chest` can never be gated because removal would destroy its
+  inventory (`DW0363`). Against this library neither is authorable at all. Write
+  an ungated `payload` trap, and gate the story beat that arms it instead.
 - **A place that kills is DECLARED, never faked with the art.** A cliff whose
   fall must be fatal, a lava pit, an acid pool, an out-of-bounds plane: all one
   declaration, `lethal_volumes[] {id, region{anchor,extent}, message,
@@ -2885,9 +3006,13 @@ Dockerfile against the tree: `branch-runs.sh`, or a bare `docker compose` on the
 absolute path and never raise it. Build into
 `$DELVEWRIGHT_ENGINE/validation/delve-output`, or copy the tree there — see step 8.
 
-**`refimg: no delvewright.local.toml` (exit 2).** Init step 6, path B. The file
-belongs at `"$DELVEWRIGHT_ENGINE/delvewright.local.toml"`, not here — the tool
-resolves it against its own checkout and takes no `--config`. It names
+**`refimg: no delvewright.local.toml` (exit 2).** Init step 6, path B — and it
+is the state **every** fresh engine checkout is in, not a file that went
+missing. The name is gitignored in the engine, so nothing ever shipped one and
+nobody deleted it: writing it is the step, and it is owed again for every new
+checkout. The file belongs at
+`"$DELVEWRIGHT_ENGINE/delvewright.local.toml"`, not here — the tool resolves it
+against its own checkout and takes no `--config`. It names
 the file, the section, and where the template is. If the campaign already has an
 approved `design/` directory you are on path A and do not need this at all.
 
