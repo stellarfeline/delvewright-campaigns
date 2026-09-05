@@ -21,23 +21,36 @@ sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "968f7d87bfbbef85456a7701ceeb14edb82d09fa"
+reviewed = "8abcd1acf203000804b4be6602906b8a157e42ab"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
-The pipeline commit `delve-admit` — the audit every piece in this repository must
-pass — is built from. It is an INSTRUMENT: its verdicts decide what enters the
-library, so it is pinned rather than floating, and so its currency is judged
-rather than assumed. `builds` names the package the workflow builds out of the
-pinned checkout; the drift check derives that package's sources from the pipeline
-tree itself and reds when they have moved since `reviewed`.
+WHAT THIS PIN IS. The pipeline commit `delve-admit` — the audit every piece in
+this repository must pass — is built from. It is an INSTRUMENT: its verdicts
+decide what enters the library, so it is pinned rather than floating, and its
+currency is judged rather than assumed.
 
-WHAT A JUDGEMENT OF THIS PIN HAS TO LOOK AT, and it is much narrower than the red.
-The watch set is the package's path-dependency CLOSURE — `crates/admit`,
+HOW IT MOVES. Deliberately, and only in a change that says what interval it
+judged. `value` is the revision the tool is BUILT from; `reviewed` is the
+revision its upstream history has been JUDGED against. They answer different
+questions and are allowed to differ: they differ when the newer instrument is
+one this library cannot adopt yet, and they agree when the judgement's
+conclusion is that the newer instrument is the one this library should be held
+to.
+
+WHY DRIFT IS A FINDING HERE, and is not one for `engine-authoring` next door.
+`builds` names the package the site builds out of the pinned checkout, and this
+site really does build one, so the drift half derives a watch set and reds when
+those sources move since `reviewed`. That is not friction to be removed: this
+interval is the demonstration. The newer instrument REFUSES three of this
+library's audited units, and had drift been silent the repository would have
+carried three unauditable pieces with nothing anywhere saying so.
+
+WHAT A JUDGEMENT OF THIS PIN LOOKS AT, and it is much narrower than the red. The
+watch set is the package's path-dependency CLOSURE — `crates/admit`,
 `crates/schem`, `crates/grammar`, `crates/orchestrator`, `crates/compiler`,
-`crates/dsl`, derived from the pipeline tree at both ends of the interval and
-identical there — because `delvewright-admit` links the whole pipeline in order
-to serve its other subcommands. This gate builds that binary for ONE of them,
+`crates/dsl` — because `delvewright-admit` links the whole pipeline in order to
+serve its other subcommands. This gate builds that binary for ONE of them,
 `delve-admit audit`, and that subcommand reads the palette allowlist and the
 code-injection forbid out of `crates/schem`, the settling and spatial-contract
 checkers out of `crates/grammar`, the footprint-class rule and the metrics table
@@ -46,550 +59,78 @@ compiler is reached only from the `gallery` subcommand's Brigadier validation,
 which this workflow never invokes. So a red naming commits that all landed in
 `crates/compiler` is a correct statement about the closure and says nothing yet
 about a verdict; the closure is deliberately not narrowed, because narrowing a
-watch to dodge a red is the defect, and a wide watch that is understood costs one
-reading.
+watch to dodge a red is the defect, and a wide watch that is understood costs
+one reading. `crates/admit`'s OTHER subcommands reach further than `audit` does,
+and `lighting` reaches furthest — `crate::light` names `delvewright_schem::nav`
+and `delvewright_compiler::light`, neither on the audit path — so a judgement
+asks which SUBCOMMAND a moved file is reached from: "the crate changed" and "the
+gate changed" are different facts.
 
-HOW `crates/dsl` IS REACHED, because it is reached three ways and only one of them
-is the old one. `crates/schem` re-exports its `blocks`, `split`, `prefab` and
-`registry` modules, and that is the indirect door. `crates/admit` ALSO names it
-directly, as a path dependency, for `delvewright_dsl::prefab::check_footprint_class`
-and the `delvewright_dsl::metrics` read ledger that rule takes — a re-export of a
-ledger through a third crate would be a second path to one authority. The third
-door is new: `crates/grammar` now takes `delvewright-dsl` as a path dependency of
-its own, for the one collision table, and `crates/schem` re-exports that table as
-`blockshape` so `fluid` can spell it `super::blockshape`.
+THE METHOD, which two corrections have shaped. Judges are built COLD, both of
+them: `tools/worktree-new.sh` clones a donor's `target/` by default, and a judge
+built on cloned artifacts does not hash-reproduce against one built from
+scratch, so a reproduction claim taken from two clone-donor worktrees of one
+donor is a claim about the donor. And the binaries' `DW` codes are read straight
+out of the bytes (`grep -aoE 'DW[0-9]{4}'`), never with `strings`: the literals
+live in a packed string table that `strings` splits between them, so it
+under-reports and both binaries agree at the wrong number.
 
-The reach is stated as MODULES and not as crates, because a crate is too coarse
-to say anything and the difference is where a judgement is actually made. Read
-from the source rather than assumed, the `audit` subcommand reaches
-`delvewright_dsl`'s `prefab`, `metrics`, `registry`, `blocks`, `blockshape`,
-`split`, `ids` and — through `metrics`, which takes `Diagnostic` and `DwCode`
-from it — `diagnostic`. It reaches nothing under `stages`, `validate`, `gate`,
-`layout`, `siteplan`, `detailplan`, `effects`, `fmt`, `l10n`, `mclang` or
-`placement`. Two of those absences are load-bearing rather than incidental:
-`stages` and `validate` are where a campaign document is judged, and a commit
-that moves them moves the watch closure while reaching no rule this gate applies.
+THIS INTERVAL, `968f7d87..8abcd1ac`, and the instrument really moved. Three
+commits landed. `8c0485f7` reaches `crates/` not at all. `d95ecdd6` and
+`8abcd1ac` move 14 source files ON the audit path — `crates/admit`'s `cli`,
+`light`, `main` and `meta`, six of `crates/dsl`'s and four of
+`crates/grammar`'s — plus 13 in `crates/compiler`. `crates/schem` and
+`crates/orchestrator` are byte-identical. This is the shape the closure was NOT
+going to produce most often: the tool itself changed.
 
-`crates/admit`'s OTHER subcommands reach further than `audit` does, and the
-`lighting` probe is the one that reaches furthest — `crate::light` names
-`delvewright_schem::nav` for its walk and `delvewright_compiler::light` for its
-flood, and neither is on the audit path. A judgement that reads this entry must
-therefore ask which SUBCOMMAND a moved file is reached from, because "the crate
-changed" and "the gate changed" are different facts and the watch closure can
-only tell you the first.
+MEASURED RATHER THAN ARGUED, and the measurement is why this pin is held.
+Two judges from two `--no-clone` detached worktrees, cold, under the pinned
+toolchain — `cargo 1.97.1` and `rustc 1.97.1` reported by each tree, each
+build's exit asserted on its own line, 0 and 0. `tools/prefab-audit.py` with
+each over the whole repository: 39 audited units over 39 in-scope `.nbt` files
+under both, and there the two part company. The judge at `968f7d87` passes 39 of
+39 at exit 0. The judge at `8abcd1ac` FAILS 3 of 39 at exit 1 —
+`demos/gatehouse-elevations/gatehouse.nbt`,
+`demos/guard-exhaustion/signal-station.nbt` and `demos/mill-race/mill-race.nbt`
+— and moves those three report files' verdict from `pass` to `fail` and their
+contract state from `undeclared` to `refused`. `DW0783` changes tier from
+warning to error on exactly those three, and the new binary carries 23 `DW`
+codes against 22, the addition being `DW0804`.
 
-WHY `value` AND `reviewed` NAME THE SAME REVISION. `value` is the revision the
-tool is BUILT from; `reviewed` is the revision its upstream history has been
-JUDGED against. They answer different questions and they are allowed to differ.
-They do not differ here, because the judgement's conclusion was that the newer
-instrument is the one this library should be held to — so the pin moved to it
-rather than being held behind it.
+THE CAUSE, localised rather than guessed. `license.generated_by` gained a
+required `region` field — `[x, y, z]`, the box the program was expanded over,
+an independent input because the same program at the same seed over a different
+box is a different building. The three refused documents are the only ones in
+this repository that carry a `generated_by` block at all, which is why nothing
+else moved: no `prefabs/*.json` declares one.
 
-THIS INTERVAL, `c5b7105f..968f7d87`, and the audit path does not move. Seven
-commits landed. Five reach `crates/` not at all — `dda7f5bf`, `0e637464`,
-`e099750c`, `248cb671` and `968f7d87` are `harness/`, `tools/`, `docs/` and
-`CLAUDE.md` and nothing else. The two that reach the watch closure are the two
-the check names: `f565d347` moves one file, `crates/grammar/tests/audit_cli.rs`,
-and `d506d765` moves four, `crates/compiler`'s `src/emit`, `src/nav`, `src/reach`
-and `tests/reach_completion`. Counted against the container at both ends:
-`crates/admit` 32 tracked files, `crates/schem` 16, `crates/orchestrator` 4,
-`crates/dsl` 178 — zero changes of any kind in all four — and `crates/grammar`
-85 with the one test. So of the 315 files in the five crates the `audit` path
-compiles out of, 314 are byte-identical and the single mover is a TEST the
-binary does not link. `crates/compiler` holds 422 at both ends with those four
-moved, and nothing on the audit path is reached from any of them.
+SO THE PIN IS HELD AT `968f7d87`, and this is the property it is held for: it is
+the newest instrument every piece in this library can still be audited by.
+`reviewed` names `8abcd1ac` because that history HAS been judged — the judgement
+concluded that the library adopts first and the pin follows, not that nobody
+looked.
 
-NOR DOES THE OTHER SUBCOMMAND'S MODULE MOVE. `delve-admit lighting` is the
-subcommand that reaches `delvewright_compiler::light`, and
-`crates/compiler/src/light.rs` is byte-identical across this interval; what
-moved in that crate's `src` is `emit`, `nav` and `reach`. Measured anyway
-rather than argued from the diff, below.
+THE ADOPTION ITEM the pin waits on, stated so it can be scheduled rather than
+rediscovered: add `"region": [x, y, z]` to `license.generated_by` in
+`demos/gatehouse-elevations/gatehouse.json`,
+`demos/guard-exhaustion/signal-station.json` and
+`demos/mill-race/mill-race.json`. The numbers are already in each file — its
+`provenance` sentence states the region the program was expanded over — so the
+edit adds no fact the document does not already assert; it moves one from prose
+into the field a checker reads. When those three audit clean under a judge built
+at the candidate revision, the pin moves with the reading that proves it.
 
-MEASURED RATHER THAN ARGUED. Two judges from two `--no-clone` detached
-worktrees — cold, per the method correction below — under the pinned toolchain,
-`cargo 1.97.1` and `rustc 1.97.1` reported by each tree and each build's exit
-asserted on its own line, 0 and 0. `tools/prefab-audit.py` with each over the
-whole repository: 39 audited units over 39 in-scope `.nbt` files, 0 disowned by
-git, PASS 39 of 39 under both at exit 0; both 48-line stdouts, both 82-line
-diagnostic streams and all 39 report files byte-identical. Both binaries carry
-the identical set of 22 `DW` codes.
-
-A SECOND METHOD CORRECTION, and it is about how those codes are counted. Read
-with `strings`, each binary answers EIGHT codes — the code literals live in a
-packed string table and `strings` splits it on the bytes between them, so the
-instrument silently under-reports and the two binaries agree at the wrong
-number. Read straight out of the bytes (`grep -aoE 'DW[0-9]{4}'`) both answer
-22, which is the figure every earlier reading here states. A count that
-disagrees with the record is the measurement failing until it is reconciled,
-and this one was.
-
-AND THE COMPARISON IS NOT VACUOUS. `lighting` agrees on all 39 this interval, so
-it supplies no anchor of its own and one was built: a third cold worktree at the
-new revision with a single suffix deleted from the `audit` path's own allowlist
-(`_stairs`, one row in `crates/admit/src/allowlist.rs`, the deletion asserted at
-exactly one match) reds 9 of the 39 units and moves exactly 9 report files,
-exit 1 against exit 0. The perturbed tree was discarded.
-
-THE VENDORED COPY DOES NOT MOVE THIS TIME. `tools/check-pins.py` is
-byte-identical upstream across `c5b7105f..968f7d87` — blob
-`b9ad14e4e00fc8b5454e6dd1853b17b89ac11c44` at both ends, and the copy here
-already carries it — so the bump is the pin alone and `check-vendored` is green
-without an edit.
-
-THE INTERVAL BEFORE IT, `417e1266..c5b7105f`, and on the audit side there is nothing to
-read at all. Seven commits landed. Five reach no crate: they are `gallery/`,
-`harness/`, `tools/` and `docs/` and nothing else. The two that reach the watch
-closure — `a60f1ca9` and `2fa40449` — are `crates/compiler` and nothing else, and
-between them they move six of its `src` files: `blockout`, `emit`, `flow`, `lib`,
-`main`, `statepath`. Across the whole interval `crates/admit`, `crates/schem`,
-`crates/grammar`, `crates/orchestrator` and `crates/dsl` have ZERO changes of any
-kind — not merely zero `src` changes: all 315 tracked files in those five crates,
-112 of them `src/*.rs`, are byte-identical at both ends and none moved. Every file
-the `audit` path compiles lives in those five, so the audit-path file set is
-byte-identical by containment rather than by enumeration, and the count is stated
-against the container: 315 of 315.
-
-NOR DOES THE OTHER SUBCOMMAND'S MODULE MOVE. `delve-admit lighting` is the
-subcommand that reaches `delvewright_compiler::light`, and that is the module the
-interval before this one rewrote. `crates/compiler/src/light.rs` is byte-identical
-here. What `crates/compiler/src/lib.rs` gained is one `pub mod statepath;` and the
-doc line above it. Measured anyway rather than argued from the diff: run over all
-39 pieces with both binaries, every stdout, every stderr and every exit status is
-identical, 37 at exit 0 and 2 at `DW0752` — `demos/guard-exhaustion/signal-station`
-and `prefabs/hello-room`, both unsocketed, both refusing identically under both
-instruments and so not a fact about this interval.
-
-MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
-pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each; the judge
-built at `417e1266` hashes identically to one built at the same revision in an
-independent CLONE of the repository — a different object store and a different
-build cache, so the reproduction crosses more than a worktree boundary.
-`tools/prefab-audit.py` with each over the whole repository: 39 audited units over
-39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39 of 39 under both; all
-39 report files, both 48-line stdouts and both 82-line diagnostic streams
-byte-identical, no line stripped. Both binaries carry the identical set of 22 `DW`
-codes read out of the built binaries. The move changes no verdict this library
-receives.
-
-A CORRECTION TO THIS ENTRY'S OWN METHOD, found by performing it. "Two judges from
-two detached worktrees" is not sufficient for the hash half of the reproduction,
-because `tools/worktree-new.sh` CLONES a donor's `target/` by default, and a judge
-built on top of cloned artifacts does not hash-reproduce against one built from
-scratch. Measured at `417e1266`: the clone-donor worktree produced
-`5565785457cca108`, and two independently cold trees — a `--no-clone` worktree and
-a separate clone of the repository — both produced `feb1e36eb822d788`, same size,
-234115 bytes differing. So the judges here are built COLD, both of them, and a
-hash-reproduction claim taken from two clone-donor worktrees of one donor is a
-claim about the donor. The previous judgements' verdicts are untouched by this:
-what they compared was output, and output is what this comparison rests on.
-
-AND THE COMPARISON IS NOT VACUOUS. `lighting` agrees on all 39 this interval, so it
-supplies no anchor of its own and one was built: a third cold worktree at the new
-revision with a single suffix deleted from the `audit` path's own allowlist
-(`_stairs`, one row, the deletion asserted at exactly one match) reds 9 of the 39
-units and moves 9 report files, exit 1 against exit 0. The perturbed source was
-restored and the perturbed binary deleted.
-
-THE VENDORED COPY DOES NOT MOVE THIS TIME, and that is stated rather than left
-silent because last interval it did. `tools/check-pins.py` is byte-identical
-upstream across `417e1266..c5b7105f` (`d2529bf18d25` at both ends, and the copy
-here already carries it), so the bump is the pin alone and `check-vendored` is
-green without an edit.
-
-AND `d3b7b436..417e1266`, the cleanest of the four judged
-before this one on the audit side and the first to move the VENDORED file. Eight commits landed. Five
-reach no crate at all. The three that do — `bb4cc98b`, `bba5bcb3`, `4851360c` —
-are `crates/compiler` and nothing else: across the whole interval `crates/admit`,
-`crates/schem`, `crates/grammar`, `crates/orchestrator` and `crates/dsl` have ZERO
-`src` changes, and of the 34 files the `audit` path compiles, 34 are byte-identical
-and none moved. This is the shape the closure was always going to produce most
-often, stated plainly: the watch is wide because `delvewright-admit` links the
-whole pipeline for its other subcommands, and `crates/compiler` is the crate that
-moves.
-
-ONE MODULE THIS REPOSITORY CAN REACH DID MOVE, and it is worth the sentence
-because it is not on the `audit` path and is on another. `4851360c` rewrites
-`crates/compiler`'s `light` (among ten compiler modules) to carry `nav::Premises`
-through its constructors, and `delve-admit lighting` is the subcommand that reaches
-`delvewright_compiler::light`. Run over all 39 pieces with both binaries it agrees
-on all 39, so the rewrite is behaviour-preserving on this library — measured, not
-accepted.
-
-MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
-pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each; the judge
-built at `d3b7b436` here hashes identically to the one built at `d3b7b436` in the
-previous judgement from a different worktree — the fourth consecutive cross-tree
-reproduction. `tools/prefab-audit.py` with each over the whole repository: 39
-audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39 of
-39 under both; all 39 report files, both stdouts and both 82-line diagnostic
-streams byte-identical, with no line stripped. Both binaries carry the identical
-set of 22 `DW` codes read out of the built binaries. All 39 units print `0 declared
-class(es) judged over 1 declaration document(s) read` and all 39 report `"state":
-"undeclared"`, so both doors are shut. The move changes no verdict this library
-receives.
-
-AND THE COMPARISON IS NOT VACUOUS. `lighting` agrees on all 39 this interval, so it
-supplies no anchor of its own and one was built: a third worktree at the new
-revision, with a single suffix deleted from the `audit` path's own allowlist and
-the binary rebuilt, reds 9 of the 39 units and moves 9 report files. The perturbed
-tree was discarded. Re-derived rather than carried: all 39 units carry a `lighting`
-block and the probe disagrees with 5 of them, identically under both instruments,
-and reds nothing because nothing asks.
-
-THE VENDORED COPY MOVED WITH THE PIN, which is the half of this interval that is
-not about verdicts at all. `417e1266` rewrote `tools/check-pins.py` upstream — the
-file `vendors` declares — so `check-vendored.py`'s second half red by design: byte
-identity against a frozen revision is satisfied forever by never looking, and this
-is the mechanism refusing to let that happen. The copy here was re-vendored
-byte-for-byte from the engine at the new `value` in the same commit as the bump,
-because the two are one act: a pin bump that leaves the vendored copy behind
-claims a verbatim copy of a file that no longer exists.
-
-WHAT THE RE-VENDOR BROUGHT IN, since this repository now RUNS the new file and a
-vendored gate is still a gate here. Upstream widened pin discovery from `pip
-install` to INSTALLING as an object class, so `cargo install` is now discovered
-with the same two verdicts — a named version is a pin that must be registered, an
-argument naming none is a finding. It also stopped reading prose as commands: a
-`#` comment tail is dropped, an install's arguments end at the shell operator that
-ends the command, and a verb inside a quotation in a shell script is data. Run
-here after the re-vendor, the offline half reports 11 pins discovered against 11
-registry entries, unchanged, so the widening discovers nothing in this repository
-that was not already declared.
-
-AND `b1d79b07..d3b7b436`, the one where FOUR of the 34 files
-the `audit` path compiles moved — the most yet, and every one of them in
-`crates/dsl`. Six commits landed; two reach no crate at all (`63bfe51b`,
-`e283c744`, in `validation/` and `harness/`), and `1eaa5a72` likewise. Of the
-three that reach the closure, `43196f28` and `25e6675f` and `d3b7b436` between
-them move 50 files in `crates/compiler` and 8 in `crates/dsl`. `crates/admit`,
-`crates/schem`, `crates/grammar` and `crates/orchestrator` have no `src` change at
-all. Of the 34, 30 are byte-identical; the four that moved are `dsl`'s `lib`,
-`prefab`, `metrics` and `diagnostic`.
-
-WHAT THE TIER DID, since it is the change that looks most like it should reach
-this gate and does not. `d3b7b436` gives `DwCode` two new fields — `tier:
-ExitTier` and `subject: Subject` — with no `Default` and no constructor that
-leaves them unsaid, so every declaration site in the workspace had to answer.
-That is why three of the four moved files moved: `dsl/prefab`'s
-`DW_FOOTPRINT_CLASS` and `dsl/metrics`'s `DW_METRIC_UNKNOWN` and
-`DW_METRIC_PROVISIONAL` each gained an `ExitTier::Build` argument to
-`every_version`, with their id string and their `Binds` untouched, and `dsl/lib`
-gained four names on two `pub use` lines and lost none.
-
-`crates/admit` CONSTRUCTS NO `DwCode` AT ALL, which is the fact that settles the
-question rather than the byte comparison. Grepped over the whole crate,
-`crates/admit/src` contains not one occurrence of the type: its own codes are
-plain `&'static str` constants in `crates/admit/src/diag.rs`, so a mandatory field
-on `DwCode` is structurally unreachable from this binary's own error paths. The
-only two `DwCode`-typed codes it carries are `DW0848` (`dsl::prefab`) and `DW0812`
-(`dsl::metrics`), which travel with the finding from the footprint-class door
-rather than being restamped here — and that door is shut on every piece in this
-library. Both binaries carry the identical set of 22 `DW` codes, read out of the
-BUILT BINARIES: the codes gained a property and did not change identity.
-
-ONE MESSAGE TEXT DID MOVE, and it is named because "additive" would otherwise be
-too strong a word for this interval. `DW0813`'s provisional-metrics sentence was
-shortened. `DW0813` is not among this binary's 22 codes, and the module that
-raises it is entered only from `audit::footprint_class`, which returns first on a
-document declaring no `footprint_class` — all 39 units print `0 declared class(es)
-judged over 1 declaration document(s) read`, and all 39 report `"state":
-"undeclared"` for the contract.
-
-MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
-pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each. The judge
-built at `b1d79b07` here hashes identically to the one built at `b1d79b07` in the
-previous judgement from a different worktree — the third consecutive cross-tree
-reproduction, so the build is reproducible and the two sides of the comparison are
-the instruments. `tools/prefab-audit.py` with each over the whole repository: 39
-audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39 of
-39 under both; all 39 report files, both stdouts and both 82-line diagnostic
-streams byte-identical, with no line stripped. The move changes no verdict this
-library receives.
-
-AND THE COMPARISON IS NOT VACUOUS. `delve-admit lighting` agrees on all 39 this
-interval, so unlike the last one it supplies no anchor of its own and one was
-built: a third worktree at the new revision, with a single suffix deleted from the
-`audit` path's own allowlist and the binary rebuilt, reds 9 of the 39 units and
-moves 9 report files. The comparison can register a change in the judge; the
-perturbed tree was discarded. Re-derived rather than carried: all 39 units carry a
-`lighting` block and the probe disagrees with 5 of them, identically under both
-instruments, and reds nothing because nothing asks.
-
-AND `fe068c90..b1d79b07`, the first one where a file the
-`audit` path COMPILES actually moved, so it is the one worth reading closely.
-Three commits landed and all three touch the watch closure. `b1d79b07` reaches
-only `crates/compiler`'s `branch` and `flow`. `8eaa868d` reaches `crates/compiler`
-and, in `crates/dsl`, `l10n`, `stages`, `validate` — which is where a campaign
-document is judged and not a prefab — and `prefab`. `815f32ec` reaches
-`crates/compiler`'s `detail` and `light` and, in `crates/admit`, `light`, `meta`
-and `main`. Of the 34 files the `audit` path compiles, 32 are byte-identical and
-TWO moved: `crates/admit/src/main.rs` and `crates/dsl/src/prefab.rs`.
-
-BOTH ARE LOCALISED, and localised by measurement rather than by reading the commit
-subjects. Every one of `main.rs`'s six hunks carries `fn run_lighting` as its
-context, and `run_audit` extracted from both revisions hashes identically
-(`a09e7f33…`), so the file moved and the subcommand this gate invokes did not.
-`prefab.rs` has exactly two hunks: one adds an `Anchor.note` field inside
-`pub struct Anchor`, `Option<String>` with `serde(default,
-skip_serializing_if = "Option::is_none")` so an anchor that says nothing still
-writes no key; the other adds a test, inside `mod tests` under `#[cfg(test)]`.
-
-`crates/admit/src/meta.rs` moved too and is deliberately NOT on the 34, which was
-re-derived here rather than carried. Read from the source, `crate::meta` has two
-callers: `run_lighting`, for `set_lighting_from_probe` under `--write`, and
-`socket.rs`. `run_audit` reaches `Allowlist`, `audit::audit_tile_set`,
-`settling::zone_grid`, `Door::open` and `audit::footprint_class`, and none of them
-names it.
-
-`Anchor.note` IS THE ONE CHANGE THAT COULD HAVE REACHED A VERDICT, and it is worth
-saying why it did not, because "additive" is not by itself an answer. The audit
-path reads a prefab's metadata document at exactly one place —
-`audit::footprint_class`, through `delvewright_schem::prefab::PrefabMeta`, which
-is the `crates/dsl` `prefab` module re-exported — and that reader returns before
-anything else when the document declares no `footprint_class`. All 39 units print
-`0 declared class(es) judged over 1 declaration document(s) read`, so the door is
-shut on every piece here. Independently of the door, the key binds to nothing in
-this library: the 39 metadata documents declare 109 anchors across 25 pieces, and
-ZERO of the 109 carry a `note`. The only `note` key anywhere in this library's
-prefab metadata is `license.note`, present in all 39, which is a different key on
-a different object and was already modelled. (Stated because the shape invites a
-wrong measurement: `anchors` is a MAPPING of name to object, not an array, and a
-census that tests for a list answers an honest zero about the wrong shape.)
-
-MEASURED RATHER THAN ARGUED. Two judges from two detached worktrees under the
-pinned 1.97.1 toolchain, cargo's exit asserted on its own line for each; the
-binaries differ in size and hash, so they are two objects. The judge built at
-`fe068c90` in this round hashes identically to the one built at `fe068c90` in the
-previous round from a different worktree, so the build is reproducible across
-trees and the two sides of this comparison are the instruments and not the
-weather. `tools/prefab-audit.py` run with each over the whole repository: 39
-audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39
-of 39 under both. All 39 report files byte-identical, and so is each run's stdout
-and its 82-line diagnostic stream, with NO line stripped. Both binaries carry the
-identical set of 22 `DW` codes, read out of the built binaries: no refusal gained
-or lost on this path. The move changes no verdict this library receives.
-
-AND THE COMPARISON IS NOT VACUOUS — this interval supplies its own anchor, which
-the previous one had to construct. `delve-admit lighting`, run over all 39 pieces
-with both binaries, differs on 39 of 39: `815f32ec` makes the piece's own
-`spatial_contract` decide which sky it is graded under, and the report gains
-`assumed_sky.admits_sky` and `assumed_sky.why` on every unit. Read field by
-field, the difference is PURELY ADDITIVE — two keys present only on the new side,
-none removed, no value moved on any key both sides emit, no diagnostic moved, no
-exit status moved — and `admits_sky` is `true` on all 39 because no piece here
-declares a contract. So the instruments are demonstrably different, the difference
-is observable in this library, and it does not reach `audit`. Re-derived rather
-than carried: all 39 units carry a `lighting` block and the probe's own profile
-disagrees with 5 of them, identically under both instruments, and reds nothing
-because nothing asks.
-
-AND `ca7eee59..fe068c90`, the shortest reading
-this entry has recorded. Six commits landed upstream and three touch the watch closure —
-`2d85370a`, `5792e5bf`, `fe068c90` — and between them they move five source
-files: `crates/compiler`'s `analyze`, `light`, `emit` and `main`, and
-`crates/dsl`'s `layout`, which is where a campaign document's layout graph is
-judged and which this gate has never opened. `crates/admit`, `crates/schem`,
-`crates/grammar` and `crates/orchestrator` have no `src` change at all across the
-interval, so of the 34 files the `audit` path compiles, 34 are byte-identical and
-none moved. The reach itself therefore cannot have moved either: nothing that
-does the reaching was edited.
-
-MEASURED RATHER THAN ARGUED, on the same terms as the reading below. Two judges
-were built from two detached worktrees under the pinned 1.97.1 toolchain, cargo's
-exit status asserted on its own line for each, and the two binaries differ in
-size and hash, so they are two objects rather than one. `tools/prefab-audit.py`
-then ran each over the whole repository: 39 audited units over 39 in-scope `.nbt`
-files, 4 roots, 0 disowned by git, PASS 39 of 39 under both. All 39 report files
-are byte-identical across the two, and so is each run's stdout and its 82-line
-diagnostic stream — with NO line stripped, because nothing in the output names a
-revision and the one path it names is the content checkout, which is the same for
-both runs. The pinned judge was run a second time into a third directory and
-reproduced itself byte-for-byte, so `identical` is a statement about the two
-instruments and not about a tool that varies. Both binaries carry the identical
-set of 22 `DW` codes, read out of the BUILT BINARIES: the rule set gained and
-lost no refusal on this path. The move changes no verdict this library receives.
-
-AND THE COMPARISON IS NOT VACUOUS, which this entry demands of a byte-identical
-result and which this interval makes harder than the last one. The previous
-judgement's anchor was `delve-admit lighting`, and it is exactly the subcommand
-that reaches the one module this interval rewrote — `delvewright_compiler::light`,
-which `5792e5bf` reworked for speed while claiming its output unchanged. Run over
-all 39 pieces with both binaries, `lighting` agrees on all 39, which is that
-commit's claim measured on this library rather than accepted; it is also the loss
-of the anchor. So one was built instead. A third worktree at the new revision,
-with a single suffix deleted from the `audit` path's own allowlist and the binary
-rebuilt, reds 9 of the 39 units and moves 9 report files — the comparison above is
-demonstrably able to register a change in the judge, and the perturbed tree was
-discarded rather than kept. Re-derived rather than carried, since it is a
-measurement of a library that moves: all 39 units carry a `lighting` block and the
-probe's own profile disagrees with 5 of them, identically under both instruments,
-and reds nothing because nothing asks.
-
-The reading below is the PREVIOUS interval's, `800c958e..b65783e8`. It is kept
-because its module-level account of what the `audit` path actually reaches, and
-of which doors this library never opens, is the whole reason this judgement was
-cheap; its figures are that interval's and not this one's.
-
-THE READING, so the next one does not have to repeat it. Across
-800c958e..b65783e8, 32 commits landed upstream and 16 of them touch the watch
-closure, which is why the red names sixteen and still says nothing about a
-verdict. The question the closure cannot answer is answered one level down, by
-asking of every file the `audit` path compiles whether it moved at all. Of 34
-such files — the admit modules `main`, `lib`, `cli`, `allowlist`, `audit`,
-`diag`, `settling`, `spatial`, `structure`; the schem modules `lib`, `convert`,
-`diag`, `fluid`, `nav`, `nbt`, `prefab`, `stairs`; the grammar modules `lib`, `block`,
-`geom`, `model`, `settle`, `contract`, `gates`, `nav`; the dsl modules `lib`,
-`blocks`, `blockshape`, `split`, `prefab`, `metrics`, `registry`, `ids`,
-`diagnostic` — 22 are byte-identical, 11 moved and 1 (`blockshape`) is new.
-
-BUCKETED BY COMMIT, because the red names sixteen and the next reader will be
-holding that list. Seven of the sixteen touch no file the `audit` path compiles
-at all — `7e8f52c0`, `02e5edf2`, `7a7a91ff`, `dac05918`, `ecf1b8d4`, `01f80a51`,
-`39d2f3dd` — and each reaches only `crates/compiler`, or `crates/dsl`'s `stages`
-and `validate`, which is where a campaign document is judged. Of the nine that
-do, five touch only `crates/dsl`'s `lib` (module declarations and re-exports,
-nothing removed): `dd287282`, `8b9c253c`, and the `lib` half of `c215012c`,
-`86944766`, `b65783e8`. Four touch the door-gated modules and nothing else this
-library opens — `b18d7564` and `41f629a1` (`grammar`'s `contract`, `gates`,
-`nav`), `18206ebe` (`grammar/nav`), and the `metrics`/`diagnostic`/`registry`
-halves of `c215012c`, `86944766`, `41f629a1` and `b65783e8`. Exactly ONE commit,
-`90cf2051`, changes a rule this library executes: the collision table it adds as
-`dsl/blockshape`, the `schem/fluid` delegation onto it, the `schem/lib`
-re-export that lets `fluid` spell it, and the `classes` vector on
-`grammar/model`. That is the commit the comparison below is really about.
-
-THE TWELVE THAT MOVED, sorted by whether this library can reach them, because
-that is the whole of the judgement. FIVE are executed on every piece here and
-are what the comparison below actually tests: `dsl/blockshape` is the new
-collision authority; `schem/fluid`'s `is_fluid` and `is_air` stop carrying their
-own lists and delegate to it; `schem/lib` gains the one `pub use` that lets them;
-`grammar/model` gains a `classes` vector written beside the palette and a
-`collision()` reader for it, additive, with a hand-written `PartialEq` over the
-same fields the derive covered; `dsl/lib` gains module declarations and
-re-exports and removes none. SEVEN cannot be reached from this library at all, and
-each is stopped by a door this repository does not open: `grammar/contract`,
-`grammar/gates` and `grammar/nav` are entered only from `contract::check`, which
-`Door::open` calls only after it has found a `spatial_contract` in a piece's
-declaration document, and `schem/nav` — where the walk itself lives — is entered
-only from `grammar/nav`, so it sits behind that same door; `dsl/metrics` and `dsl/diagnostic` are entered only from
-`audit::footprint_class`, which returns before either when the document declares
-no `footprint_class`; and `dsl/registry` gains a vanilla entity-tag table that
-nothing on this path asks for — the audit path takes only the `Lighting` and
-`LightingProfile` types from it.
-
-MEASURED RATHER THAN ARGUED, because a linkage read off imports is a claim and a
-verdict is a fact. Two judges were built from two detached worktrees of two
-separate checkouts, each with its own `target/`, under the pinned 1.97.1
-toolchain that both revisions name, cargo's exit status asserted on its own line
-for each. `tools/prefab-audit.py` then ran each over the whole repository: 39
-audited units over 39 in-scope `.nbt` files, 4 roots, 0 disowned by git, PASS 39
-of 39 under both. All 39 report files are byte-identical across the two, and so
-is the whole of each run's stdout and its 82-line diagnostic stream. The pinned
-judge was run a second time into a third directory and reproduced itself
-byte-for-byte, so "identical" is a statement about the two instruments and not
-about a tool that varies. The move changes no verdict this library receives.
-
-WHAT THAT ZERO IS A ZERO OVER, since a byte-identical result has to say what it
-examined: 94,113 blocks, a 76-entry union of distinct block ids, 482 stairs put
-through the derived-shape rule, 1,954 fluid cells put through the containment
-rule, 672 run directions counted at a piece's own face, 109 anchors. The one
-changed rule those numbers run through is the fluid/air delegation, and it was
-cross-checked by a second method with an unrelated failure mode: both
-predicates re-derived from their source and evaluated over the 76 ids the
-library actually contains, where they disagree on 0. They cannot disagree here —
-the old pair normalised a bare id up to `minecraft:` and the new pair normalises
-`minecraft:` away, which is the same partition; the new pair also strips a block
-state, and no input carries one, because `spatial::grid` puts the state in
-`BlockState::properties` and `settle` passes `name`.
-
-AND THE COMPARISON IS NOT VACUOUS, which a byte-identical result always has to
-answer for. The same two binaries over the same 39 pieces disagree on `lighting`
-for 11 of them — `prefabs/cave-cavern.nbt` alone moves from 94 standable cells
-to 92 — so the instruments are demonstrably different, the difference is
-observable in this library, and it does not reach `audit`.
-
-WHAT THE RULE SET DID, which is a different question from whether a verdict moved
-and is the one that decides a HOLD. It did not gain or lose a refusal on this
-path: every audit-path module that raises one is byte-identical, and the two
-built binaries carry the identical set of 22 `DW` codes, read out of the BUILT
-BINARIES rather than out of the source that produced them. What DID move is the
-behaviour behind the spatial-contract door — the walk, the gates and the
-contract checker are substantially rewritten — and this library opens that door
-zero times. That is a clearance with a scope, and the scope is stated here
-rather than left to be discovered: it is true for pieces that declare no
-`spatial_contract`, which is all 39 today, and the first piece that declares one
-is judged by rules this reading did not compare.
-
-Holding the pin is nonetheless the worse of the two states, for the reason the
-previous judgement gave and this interval sharpens. The old instrument's
-navigation model credits a body with standing on open water and treats a torch,
-a candle, a carpet and a pressure plate as walls; both are corrected upstream in
-this interval. A pin held at a known-wrong instrument to avoid a bump that
-provably changes no verdict is not caution.
-
-THE DOORS in the audit path where a change moves a verdict, and each opens only
-on a declaration the piece itself makes. The spatial contract opens on a piece
-whose declaration document carries a `spatial_contract`; a piece that declares
-none is reported `undeclared` with `DW0783`, and no obligation runs over it — all
-39 report `"state": "undeclared"`. The footprint class opens on a piece whose
-declaration document carries a `footprint_class`, and is silent with a stated
-zero on a piece that declares none — all 39 print `0 declared class(es) judged
-over 1 declaration document(s) read`. Because that rule consults the metrics
-table, `crates/dsl`'s `metrics` module is a live input to a verdict for any piece
-that declares a class. No piece in this repository declares either today, which
-is a fact about the library and not a property of the gate.
-
-A `reviewed` VALUE IS A DATE, NOT A CLEARANCE. It says this pin was judged
-against upstream as of that revision and says nothing about any commit after it;
-upstream moving reds this check again, which is the mechanism working rather than
-failing.
-
-That is not hypothetical and it is worth the sentence, because it decides how the
-next judgement is run. An earlier judgement began against a head of 89e5297e and
-the pipeline's default branch fast-forwarded to 800c958e WHILE it was in
-progress — so the first answer was already stale when it was written, and the
-commit that arrived was the only one in the interval that touched a file the
-`audit` path compiles. The check caught it, which is what it is for. The habit
-that follows, and that this judgement kept: re-read the pipeline's head
-immediately before committing a bump, and take every figure at a named revision
-rather than at "the head", because the head is a value that moves.
-
-WHAT THIS PIN CARRIES THAT NOTHING RUNS, stated because the next reader of this
-entry is the one who needs it. `audit` is the only subcommand any job here
-invokes; `delve-admit lighting` is invoked by no workflow, no tool and no test,
-so every `lighting` block in a prefab's metadata is written by hand or by a run
-somebody chose to make, and a hand-written number over a measured one reds
-nothing. Measured against the instrument this pin now names: all 39 units carry a
-`lighting` block, and the probe's own profile disagrees with 5 of them —
-`hello-room` declares `lit` where the probe binds no cell at all, three demo
-pieces declare `unmeasured` and the probe answers `dark`, `unbound` and `lit`,
-and `hero-galleon-oak` declares `lit` where the probe now answers `dark`. Four of
-those five disagree under the old instrument too; the fifth is the bump's own
-doing, and it reds nothing because nothing asks. A figure of this kind is a
-measurement of a library that moves, so it is re-derived at each judgement rather
-than carried.
-
-WHAT `vendors` DECLARES, and why it is a pin's business at all.
-`tools/check-pins.py` is ONE tool with two copies: the pipeline's is the source,
-this repository's is a verbatim copy. `vendors` names the paths here that are
-copies of the same paths in the pinned checkout, and `tools/check-vendored.py`
-holds them to it — byte-for-byte against `value`, plus a refusal when the source
-has moved upstream since `reviewed`. That second half is what keeps the guarantee
-alive between re-pins: byte-identity against a frozen revision is satisfied
-forever by never looking. That half has now fired once and been answered: the
-current reading's interval rewrote the file upstream, and the copy here was
-re-vendored byte-for-byte from the engine at the new `value` in the same commit
-as the bump, because a bump that leaves the copy behind claims a verbatim copy
-of a file that no longer exists.
-
-The two copies once differed by one constant naming directories to skip. It
-matched zero tracked files in the pipeline repository, so it was inert and
-correct where it was written; carried here, where `campaigns/` IS the content, it
-removed 27 tracked files — every campaign stage document — from both pin
-discovery and the fetch-verb enumeration. Nothing was red, because a file the
-enumeration never lists cannot be reported as unexamined. The checker no longer
-carries a per-repository claim at all, which is what makes a verbatim copy
-possible; `vendors` is what stops one being edited back into existence here.
+WHAT WOULD END THE RE-READING, and it is not available in this repository. The
+compiler-only case — a `crates/compiler` commit moving the watch closure while
+reaching no rule this gate applies — costs a full interval reading every time
+and never changes a verdict. Expressing "this pin moves deliberately and
+upstream drift is not a finding" needs a policy value that does not exist:
+`builds = []` is refused by name here, because the site really builds
+`delvewright-admit` and silencing that guard would mean rewording the build
+command, which is narrowing a watch to dodge a red. The vocabulary lives in
+`tools/check-pins.py`, which this entry's own `vendors` key declares a verbatim
+copy of the engine's — `tools/check-vendored.py` reds on a local edit — so the
+line is written in the engine and arrives here as a re-vendor and a re-pin.
 """
 
 [[pin]]
