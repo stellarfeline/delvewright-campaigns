@@ -38,8 +38,11 @@ spec.loader.exec_module(cb)
 WORLD = {"content": {"title": "t", "languages": ["zh-cn"]}}
 
 
-def make_repo(campaigns, media=(), headless=(), released=()):
+def make_repo(campaigns, media=(), headless=(), released=(), outside=()):
     """A tree shaped like the content repository, with nothing else in it.
+
+    `outside` plants stage documents where discovery does not look — the shape a
+    campaign authored under `demos/` has.
 
     `released` names campaigns that get a real `release/<id>/v1.0.0` tag, which
     is the only thing that makes a campaign released. A git repository with no
@@ -59,6 +62,11 @@ def make_repo(campaigns, media=(), headless=(), released=()):
     for name, carries in headless:
         d = root / "campaigns" / name
         d.mkdir()
+        for doc in carries:
+            (d / doc).write_text("{}", encoding="utf-8")
+    for where, carries in outside:
+        d = root / where
+        d.mkdir(parents=True, exist_ok=True)
         for doc in carries:
             (d / doc).write_text("{}", encoding="utf-8")
     _git(root, "init", "-q", str(root))
@@ -360,6 +368,118 @@ class TheAuthoringEngineIsWhatBuildsThem(unittest.TestCase):
         self.assertEqual(entry["builds"], [])
         self.assertEqual(entry["policy"], "track")
         self.assertEqual(entry["sites"], ["versions.toml"])
+
+
+class ACampaignOutsideCampaigns(unittest.TestCase):
+    """Discovery reads one directory, so a campaign anywhere else is invisible."""
+
+    def test_a_stage_document_outside_campaigns_reds_naming_the_directory(self):
+        root = make_repo(["alpha"], outside=[("demos/toll-road", ["world.json"])])
+        code, out = run_gate(root, make_stub(root))
+        self.assertEqual(code, 1, out)
+        self.assertIn("demos/toll-road carries world.json", out)
+        self.assertIn("campaigns/<id>/", out)
+
+    def test_a_demo_that_is_not_a_campaign_does_not_red(self):
+        """The three demos this repository holds are exactly this shape."""
+        root = make_repo(["alpha"], outside=[("demos/mill-race", ["mill-race.json"])])
+        code, out = run_gate(root, make_stub(root))
+        self.assertEqual(code, 0, out)
+        self.assertIn("0 stage document site(s) outside campaigns/", out)
+
+    def test_the_scan_states_its_denominator(self):
+        root = make_repo(["alpha"])
+        code, out = run_gate(root, make_stub(root))
+        self.assertEqual(code, 0, out)
+        self.assertIn("tracked file(s)", out)
+
+    def test_every_stage_document_is_watched_not_just_the_entry_one(self):
+        """`world.json` is what discovery keys on; a lost entry document is the
+        shape that would otherwise slip past the scan as well."""
+        root = make_repo(["alpha"], outside=[("demos/x", ["quests.json"])])
+        code, out = run_gate(root, make_stub(root))
+        self.assertEqual(code, 1, out)
+        self.assertIn("demos/x carries quests.json", out)
+
+    def test_an_untracked_tree_refuses_rather_than_scanning_nothing(self):
+        root = make_repo(["alpha"])
+        for path in sorted(
+            (root / ".git").rglob("*"), key=lambda p: len(p.parts), reverse=True
+        ):
+            path.unlink() if path.is_file() or path.is_symlink() else path.rmdir()
+        (root / ".git").rmdir()
+        code, out = run_gate(root, make_stub(root))
+        self.assertEqual(code, 2, out)
+        self.assertIn("ls-files", out)
+
+
+class AnInProgressCampaignIsNotABuildFailure(unittest.TestCase):
+    """The branch is what tells a campaign on `main` from one still being made."""
+
+    def test_the_named_campaign_is_reported_and_not_counted(self):
+        root = make_repo(["alpha", "beta"])
+        code, out = run_gate(
+            root,
+            make_stub(root, fail_for=["alpha"]),
+            extra=["--branch", "campaign/alpha"],
+        )
+        self.assertEqual(code, 0, out)
+        self.assertIn("in progress on campaign/alpha: alpha", out)
+        self.assertIn("not counted: alpha does not validate", out)
+        self.assertIn("0 finding(s)", out)
+
+    def test_it_excuses_that_campaign_and_no_other(self):
+        root = make_repo(["alpha", "beta"])
+        code, out = run_gate(
+            root,
+            make_stub(root, fail_for=["alpha", "beta"]),
+            extra=["--branch", "campaign/alpha"],
+        )
+        self.assertEqual(code, 1, out)
+        self.assertIn("beta does not validate", out)
+        self.assertNotIn("error: alpha does not validate", out)
+
+    def test_without_a_branch_nothing_is_excused(self):
+        root = make_repo(["alpha"])
+        code, out = run_gate(root, make_stub(root, fail_for=["alpha"]))
+        self.assertEqual(code, 1, out)
+        self.assertIn("no campaign excused", out)
+
+    def test_a_branch_that_is_not_a_campaign_branch_excuses_nothing(self):
+        root = make_repo(["alpha"])
+        code, out = run_gate(
+            root, make_stub(root, fail_for=["alpha"]), extra=["--branch", "main"]
+        )
+        self.assertEqual(code, 1, out)
+        self.assertIn("no campaign excused", out)
+
+    def test_a_branch_naming_a_campaign_the_tree_lacks_is_a_refusal(self):
+        """The property the defect cannot supply: the excuse must name a campaign
+        the walk also discovered, so `campaign/anything` is not a free pass."""
+        root = make_repo(["alpha"])
+        code, out = run_gate(
+            root,
+            make_stub(root, fail_for=["alpha"]),
+            extra=["--branch", "campaign/ghost"],
+        )
+        self.assertEqual(code, 2, out)
+        self.assertIn("does not carry", out)
+
+    def test_an_excused_campaign_that_builds_clean_says_so(self):
+        root = make_repo(["alpha"])
+        code, out = run_gate(
+            root, make_stub(root), extra=["--branch", "campaign/alpha"]
+        )
+        self.assertEqual(code, 0, out)
+        self.assertIn("already builds clean", out)
+
+    def test_an_excused_campaign_is_still_reconciled(self):
+        """Excused from COUNTING, never from being accounted for."""
+        root = make_repo(["alpha"])
+        code, out = run_gate(
+            root, make_stub(root), extra=["--branch", "campaign/alpha"]
+        )
+        self.assertIn("1 of 1 eligible campaign(s) examined", out)
 
 
 class ItRefusesRatherThanPassing(unittest.TestCase):

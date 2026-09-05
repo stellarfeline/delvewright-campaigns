@@ -175,11 +175,27 @@ jobs:
       # campaign against a result at the end — so a walk that stopped early
       # cannot report on the part it reached and stay silent about the part it
       # did not.
+      #
+      # `--branch` is the ref this run's result LANDS ON — a pull request's base,
+      # or the branch being pushed — which is what tells an eligible campaign on
+      # `main` from one still being authored. An in-progress campaign lives on
+      # its own `campaign/<id>` branch and does not build yet, because
+      # `/new-delve` stops at the design gate with `quests.json` unwritten; work
+      # landing on that branch reports its findings and does not count them, and
+      # every other eligible campaign still must build. The BASE and not the
+      # head, because the acceptance pull request from `campaign/<id>` into
+      # `main` carries that head and is the one run where the campaign must
+      # build — reading the head would excuse the merge that ships it. Empty on
+      # a push, which excuses nothing, and `github.ref_name` then supplies
+      # `main`.
       - name: every campaign builds, in every language it declares
+        env:
+          LANDS_ON: ${{ github.base_ref || github.ref_name }}
         run: |
           set -euo pipefail
           python3 tools/campaign-build.py \
             --delvec engine-src/target/release/delvec \
             --prefabs prefabs \
             --out "${RUNNER_TEMP}/delves" \
+            --branch "${LANDS_ON}" \
             --github

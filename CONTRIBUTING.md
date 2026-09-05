@@ -15,10 +15,15 @@ in the main repo (GPL). Licensing is directory-scoped: `campaigns/` is
 ```
 versions.toml          # which main-repo commit a release of this content is built with
 .claude/skills/new-delve/SKILL.md   # the authoring procedure, run from this directory
-campaigns/<campaign-id>/
+campaigns/<campaign-id>/               # every campaign, demo levels included
   world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
-  GENERATION.md        # prompt, date, dsl_version, notable decisions
+  GENERATION.md        # dsl_version and the campaign's own decisions, no dates
 prefabs/               # the shared building-block library (.nbt + metadata, git-lfs)
+demos/<demo>/          # a generation-time surface demonstrated: a grammar
+                       #   program, the piece it exports, its reports and its
+                       #   refusal transcripts. Never a campaign — a directory
+                       #   here holding a stage document is a campaign the build
+                       #   gate would never compile, and it reds naming it
 ```
 
 Clone this repo and you have the complete authoring environment: every existing
@@ -53,7 +58,12 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   in `versions.toml` — so a campaign that no longer compiles is red here, not
   discovered at release time. Run exactly what CI runs, before you push:
   `python3 tools/campaign-build.py --delvec <path to delvec>`, or
-  `--discover-only` to see which campaigns it finds without building them. The
+  `--discover-only` to see which campaigns it finds without building them. A
+  campaign still being authored lives on its own `campaign/<id>` branch and does
+  not build yet; `--branch campaign/<id>` reports its findings without counting
+  them, while every other campaign in the tree still must build. The flag names
+  the branch the work lands on, so the pull request that merges the campaign to
+  `main` is judged strictly. The
   runtime half of the ladder (PackTest and a bot playthrough against the shipped
   image) runs on a release tag; see *Releasing a campaign* below.
 - Only distributable-class prefabs (this repo's `prefabs/`, per-item CC0/CC BY/
