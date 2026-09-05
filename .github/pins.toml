@@ -676,6 +676,19 @@ from the default branch is deliberately NOT a finding for this pin, for the same
 reason it is not one for `release`: what an author needs is the engine the
 pipeline was WALKED against, not the newest one.
 
+A JOB NOW BUILDS `delvec` OUT OF THIS REVISION AND `builds` STILL STAYS EMPTY.
+`.github/workflows/campaign-build.yml` checks the engine out at this value and
+builds the compiler to compile every unreleased campaign, which is the author's
+own toolchain step performed in CI. That does not make it a site and does not
+earn a watch set: the package it builds is the compiler, whose path-dependency
+closure is the entire `crates/` tree, so a watch derived from it would red on
+every upstream commit — the absurd watch above, arriving by another door. The
+job takes the revision by READING `versions.toml` at run time and writes no
+literal of its own, so the value still stands in exactly one file and the two
+checkers below still hold it there. What that job asserts is unchanged by this
+entry: an unreleased campaign compiles with the engine its author uses, and a
+red there is an adoption item on the campaign.
+
 WHAT WOULD MAKE IT STALE, then, and what would make staleness a finding. It is
 stale when the engine has fixed an obstacle an author hits — a refusal with no
 reachable remedy, a step that cannot be completed — and this pin still names the
@@ -688,9 +701,9 @@ no job in this repository can perform that walk. `reviewed` and `value` name the
 same revision because this pin was created by such a walk rather than inherited
 from an older one.
 
-WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line. Six
-readers, each catching a different bad edit, none of them able to substitute for
-another:
+WHAT ACTUALLY RUNS, because a pin whose only reader is prose is a doc line.
+Seven readers, each catching a different bad edit, none of them able to
+substitute for another:
 
   - `tools/check-pins.py` (offline, required job): the value is discovered in
     `versions.toml` and must carry an entry here; editing the pin without editing
@@ -724,6 +737,13 @@ another:
     `vendors` are byte-identical to the engine's at this revision. They are the
     idiom-index oracle and the markdown-table parser the reader above imports —
     not maintained here, so an edit in place is a red rather than a fork.
+  - `.github/workflows/campaign-build.yml` (the `every campaign builds` required
+    job): the second reader that uses the revision as an INSTRUMENT. It checks
+    the engine out here, builds `delvec`, and compiles every unreleased campaign
+    with it — so this pin decides whether the campaigns a creator is still
+    authoring are held to the engine that creator is using. A revision the remote
+    will not serve fails there too, in the author's own words, before anything is
+    built.
 """
 
 [[pin]]

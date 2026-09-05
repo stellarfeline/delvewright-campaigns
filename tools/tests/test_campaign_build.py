@@ -20,6 +20,7 @@ import json
 import contextlib
 import pathlib
 import stat
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -37,8 +38,14 @@ spec.loader.exec_module(cb)
 WORLD = {"content": {"title": "t", "languages": ["zh-cn"]}}
 
 
-def make_repo(campaigns, media=(), headless=()):
-    """A tree shaped like the content repository, with nothing else in it."""
+def make_repo(campaigns, media=(), headless=(), released=()):
+    """A tree shaped like the content repository, with nothing else in it.
+
+    `released` names campaigns that get a real `release/<id>/v1.0.0` tag, which
+    is the only thing that makes a campaign released. A git repository with no
+    remote: `git ls-remote origin` then fails, the cross-check does not run, and
+    the driver says so — which is the offline creator's case as well.
+    """
     root = pathlib.Path(tempfile.mkdtemp())
     (root / "campaigns").mkdir()
     for name in campaigns:
@@ -54,16 +61,29 @@ def make_repo(campaigns, media=(), headless=()):
         d.mkdir()
         for doc in carries:
             (d / doc).write_text("{}", encoding="utf-8")
+    _git(root, "init", "-q", str(root))
+    _git(root, "add", "-A", "-f")
+    _git(root, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "--allow-empty", "-m", "t")
+    for name in released:
+        _git(root, "tag", f"release/{name}/v1.0.0")
     return root
+
+
+def _git(root: pathlib.Path, *argv):
+    subprocess.run(["git", "-C", str(root), *argv], check=True, capture_output=True)
 
 
 def make_stub(root: pathlib.Path, fail_for=()):
     """An engine stub that fails for the campaigns named and succeeds otherwise."""
     path = root / "delvec-stub"
-    names = " ".join(f'"{n}"' for n in fail_for)
+    # Built OUTSIDE the f-string. A same-quote nesting inside one
+    # (`f"… {x or \'""\'} …"`) is a syntax error before Python 3.12, and this
+    # repository's floor is 3.11 — where the whole module then fails to import
+    # and its tests are reported as one error rather than run.
+    names = " ".join(f'"{n}"' for n in fail_for) or '""'
     path.write_text(
         "#!/usr/bin/env bash\n"
-        f"for bad in {names or '""'}; do\n"
+        f"for bad in {names}; do\n"
         '  for arg in "$@"; do\n'
         '    if [ "$arg" = "campaigns/$bad" ]; then exit 1; fi\n'
         "  done\n"
@@ -93,7 +113,7 @@ class GreenPath(unittest.TestCase):
         self.assertEqual(code, 0, out)
         # The binding count carries its denominator, and the language count is
         # the population times the languages each campaign declares.
-        self.assertIn("2 of 2 campaign(s) examined", out)
+        self.assertIn("2 of 2 eligible campaign(s) examined", out)
         self.assertIn("4 language build(s)", out)
         self.assertIn("0 finding(s)", out)
 
@@ -114,7 +134,7 @@ class AFailingCampaign(unittest.TestCase):
         root = make_repo(["alpha", "beta"])
         code, out = run_gate(root, make_stub(root, fail_for=["alpha"]))
         self.assertEqual(code, 1, out)
-        self.assertIn("2 of 2 campaign(s) examined", out)
+        self.assertIn("2 of 2 eligible campaign(s) examined", out)
         self.assertNotIn("beta does not", out)
 
 
@@ -139,7 +159,7 @@ class ACampaignThatNeverRan(unittest.TestCase):
         self.assertIn("the walk stopped on an unhandled RuntimeError", out)
         self.assertIn("beta, gamma was never examined", out)
         # And it says how much of the tree it actually got through.
-        self.assertIn("1 of 3 campaign(s) examined", out)
+        self.assertIn("1 of 3 eligible campaign(s) examined", out)
 
     def test_the_reconciliation_names_every_campaign_with_no_result(self):
         errors = cb.reconcile(["alpha", "beta", "gamma"], ["alpha"])
@@ -163,7 +183,7 @@ class AnEmptyPopulation(unittest.TestCase):
         code, out = run_gate(root, make_stub(root))
         self.assertEqual(code, 1, out)
         self.assertIn("A zero binding is a finding", out)
-        self.assertIn("0 of 0 campaign(s) examined", out)
+        self.assertIn("0 of 0 eligible campaign(s) examined", out)
 
     def test_a_tree_with_only_media_directories_is_still_empty(self):
         """Exclusions do not fill a population — they are counted beside it."""
@@ -197,6 +217,149 @@ class TheExclusionIsCounted(unittest.TestCase):
         self.assertEqual(campaigns, [])
         self.assertEqual([d["dir"] for d in media], ["m"])
         self.assertEqual([d["dir"] for d in headless], ["h"])
+
+
+class AReleasedCampaignIsNotThisGatesBusiness(unittest.TestCase):
+    """A `release/<id>/v*` tag is the whole of what makes a campaign released.
+
+    It is verified at that tag by `release.yml` with the engine it pins, and is
+    never edited again — so building it here against a moving engine would assert
+    a compatibility nobody promises, and the red would name the one campaign that
+    cannot be repaired.
+    """
+
+    def test_a_tagged_campaign_is_excluded_and_an_untagged_one_is_built(self):
+        root = make_repo(["alpha", "beta"], released=["beta"])
+        # The stub fails for beta, so a run that built it would be RED. It is not.
+        code, out = run_gate(root, make_stub(root, fail_for=["beta"]))
+        self.assertEqual(code, 0, out)
+        self.assertIn("released, not built here: beta — release/beta/v1.0.0", out)
+        self.assertIn("1 released and excluded by tag [beta (release/beta/v1.0.0)]", out)
+        self.assertIn("1 of 1 eligible campaign(s) examined", out)
+        self.assertNotIn("beta does not", out)
+
+    def test_an_untagged_campaign_is_still_judged(self):
+        """The other half: the exclusion excludes exactly what carries a tag."""
+        root = make_repo(["alpha", "beta"], released=["beta"])
+        code, out = run_gate(root, make_stub(root, fail_for=["alpha"]))
+        self.assertEqual(code, 1, out)
+        self.assertIn("alpha does not validate", out)
+
+    def test_the_reason_and_the_tag_are_printed_not_just_the_count(self):
+        root = make_repo(["beta"], released=["beta"])
+        code, out = run_gate(root, make_stub(root))
+        self.assertIn("verified at its tag by release.yml", out)
+        self.assertIn("release/beta/v1.0.0", out)
+
+    def test_a_tag_of_another_shape_releases_nothing(self):
+        root = make_repo(["alpha"])
+        _git(root, "tag", "archive/alpha-abandoned")
+        _git(root, "tag", "v1.0.0")
+        code, out = run_gate(root, make_stub(root, fail_for=["alpha"]))
+        self.assertEqual(code, 1, out)
+        self.assertIn("release tags examined: 0", out)
+        self.assertIn("alpha does not validate", out)
+
+    def test_the_binding_line_carries_discovered_released_and_built(self):
+        root = make_repo(["alpha", "beta"], released=["beta"])
+        code, out = run_gate(root, make_stub(root))
+        line = [l for l in out.splitlines() if l.startswith("campaign build gate:")]
+        self.assertEqual(len(line), 1, out)
+        self.assertIn("2 campaign(s) discovered", line[0])
+        self.assertIn("1 released and excluded by tag", line[0])
+        self.assertIn("1 eligible", line[0])
+        self.assertIn("1 of 1 eligible campaign(s) examined", line[0])
+
+    def test_everything_released_is_not_a_finding(self):
+        """A repository whose every campaign is published has nothing to build,
+        and that is the population's shape rather than a failure."""
+        root = make_repo(["alpha"], released=["alpha"])
+        code, out = run_gate(root, make_stub(root, fail_for=["alpha"]))
+        self.assertEqual(code, 0, out)
+        self.assertIn("nothing is eligible", out)
+        self.assertIn("0 finding(s)", out)
+
+    def test_no_campaign_at_all_is_still_a_finding(self):
+        """The distinction the rule above rests on: nothing eligible is a shape,
+        nothing discovered is a broken discovery rule."""
+        root = make_repo([])
+        code, out = run_gate(root, make_stub(root))
+        self.assertEqual(code, 1, out)
+        self.assertIn("A zero binding is a finding", out)
+        self.assertNotIn("nothing is eligible", out)
+
+    def test_a_checkout_short_of_the_remotes_tags_is_a_refusal(self):
+        """The silent failure this cross-check exists for: a checkout without
+        tags excludes nothing and reads exactly like a repository that has
+        published nothing. The remote shares no configuration with it."""
+        origin = make_repo(["alpha"], released=["alpha"])
+        clone = pathlib.Path(tempfile.mkdtemp()) / "clone"
+        subprocess.run(
+            ["git", "clone", "-q", "--no-tags", str(origin), str(clone)],
+            check=True, capture_output=True,
+        )
+        code, out = run_gate(clone, make_stub(clone))
+        self.assertEqual(code, 2, out)
+        self.assertIn("release/alpha/v1.0.0", out)
+        self.assertIn("git fetch --tags", out)
+
+    def test_a_checkout_carrying_them_passes_the_cross_check(self):
+        origin = make_repo(["alpha", "beta"], released=["beta"])
+        clone = pathlib.Path(tempfile.mkdtemp()) / "clone"
+        subprocess.run(
+            ["git", "clone", "-q", str(origin), str(clone)],
+            check=True, capture_output=True,
+        )
+        code, out = run_gate(clone, make_stub(clone))
+        self.assertEqual(code, 0, out)
+        self.assertIn("the remote agrees", out)
+
+    def test_an_unreachable_remote_says_so_rather_than_claiming_the_check_ran(self):
+        root = make_repo(["alpha"], released=["alpha"])
+        code, out = run_gate(root, make_stub(root))
+        self.assertIn("the remote cross-check did NOT run", out)
+
+
+class TheAuthoringEngineIsWhatBuildsThem(unittest.TestCase):
+    """The gate's claim: an UNRELEASED campaign compiles with the engine its
+    author uses. That is `[engine].authoring_ref`, never the release pin."""
+
+    WORKFLOW = TOOLS.parent / ".github/workflows/campaign-build.yml"
+
+    def test_the_workflow_reads_the_authoring_pin(self):
+        text = self.WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("e['authoring_ref']", text)
+        self.assertNotIn("e['ref']", text)
+
+    def test_it_writes_no_second_copy_of_the_revision(self):
+        """A literal here would be a pin held in two places, which
+        `check-authoring-pin.py` refuses by name."""
+        import tomllib
+        text = self.WORKFLOW.read_text(encoding="utf-8")
+        manifest = tomllib.load(
+            open(TOOLS.parent / "versions.toml", "rb")
+        )["engine"]
+        self.assertNotIn(manifest["authoring_ref"], text)
+        self.assertNotIn(manifest["ref"], text)
+
+    def test_the_release_tags_are_fetched_before_the_gate_runs(self):
+        """Without them the exclusion binds to nothing and the gate builds the
+        published campaign after all — the defect wearing the shape of a pass."""
+        text = self.WORKFLOW.read_text(encoding="utf-8")
+        fetch = text.index("git fetch --tags")
+        gate = text.index("python3 tools/campaign-build.py")
+        self.assertLess(fetch, gate)
+
+    def test_the_pin_policy_is_untouched_by_this_job(self):
+        """`builds` stays empty: the package this job builds is the compiler,
+        whose closure is the whole engine, so a watch derived from it would red
+        on every upstream commit."""
+        import tomllib
+        pins = tomllib.load(open(TOOLS.parent / ".github/pins.toml", "rb"))
+        entry = next(p for p in pins["pin"] if p["id"] == "engine-authoring")
+        self.assertEqual(entry["builds"], [])
+        self.assertEqual(entry["policy"], "track")
+        self.assertEqual(entry["sites"], ["versions.toml"])
 
 
 class ItRefusesRatherThanPassing(unittest.TestCase):
