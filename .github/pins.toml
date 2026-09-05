@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "968f7d87bfbbef85456a7701ceeb14edb82d09fa"
+value = "66906e395eb7517a8b5f7b104223877c4aa7e8ba"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "track"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "8abcd1acf203000804b4be6602906b8a157e42ab"
+reviewed = "66906e395eb7517a8b5f7b104223877c4aa7e8ba"
 builds = ["delvewright-admit"]
 vendors = ["tools/check-pins.py"]
 why = """
@@ -75,50 +75,64 @@ out of the bytes (`grep -aoE 'DW[0-9]{4}'`), never with `strings`: the literals
 live in a packed string table that `strings` splits between them, so it
 under-reports and both binaries agree at the wrong number.
 
-THIS INTERVAL, `968f7d87..8abcd1ac`, and the instrument really moved. Three
-commits landed. `8c0485f7` reaches `crates/` not at all. `d95ecdd6` and
+THE PRIOR INTERVAL, `968f7d87..8abcd1ac`, and the instrument really moved.
+Three commits landed. `8c0485f7` reaches `crates/` not at all. `d95ecdd6` and
 `8abcd1ac` move 14 source files ON the audit path — `crates/admit`'s `cli`,
 `light`, `main` and `meta`, six of `crates/dsl`'s and four of
 `crates/grammar`'s — plus 13 in `crates/compiler`. `crates/schem` and
 `crates/orchestrator` are byte-identical. This is the shape the closure was NOT
-going to produce most often: the tool itself changed.
+going to produce most often: the tool itself changed. That interval's judgement
+found the newer instrument REFUSING three of this library's audited units —
+`demos/gatehouse-elevations/gatehouse.nbt`,
+`demos/guard-exhaustion/signal-station.nbt` and
+`demos/mill-race/mill-race.nbt` — moving those three report files' verdict from
+`pass` to `fail` and their contract state from `undeclared` to `refused`, with
+`DW0783` changing tier from warning to error on exactly those three. THE CAUSE,
+localised rather than guessed: `license.generated_by` gained a required
+`region` field — `[x, y, z]`, the box the program was expanded over, an
+independent input because the same program at the same seed over a different
+box is a different building. The three refused documents were the only ones in
+this repository that carried a `generated_by` block at all, which is why
+nothing else moved: no `prefabs/*.json` declares one. The pin was held at
+`968f7d87` while `reviewed` recorded `8abcd1ac` as judged but not yet adoptable
+— the library adopts first and the pin follows, not that nobody looked.
 
-MEASURED RATHER THAN ARGUED, and the measurement is why this pin is held.
+THE ADOPTION, performed against the candidate `66906e39` (one commit past
+`8abcd1ac`, `fix(tools): a worktree whose branch holds no work is reclaimed`,
+which touches no file in the watch closure and so changes nothing this pin
+judges): each of the three programs — `gatehouse_elevations`,
+`signal_station`, `mill_race` — was re-expanded from its own
+`*.program.json` at the region its `provenance` sentence already named (`delve-
+grammar expand --file … --region … --seed 1 --id …`, the successful invocation
+`demos/guard-exhaustion/boundary.txt` and `demos/mill-race/runs.txt` already
+record for the other two), built against `delve-grammar`/`delve-admit` at
+`66906e39`. All three `.nbt` files came back gunzip-identical, sha256 for
+sha256, to the committed bytes — ADR-0006 held, nothing about the buildings
+changed. The metadata regained the `region` field the newer `GeneratedBy`
+struct now requires (`params` and `roles` stayed absent: no override was passed
+to any of the three), and only that field plus the auto-written provenance
+sentence differ in each `<id>.json`.
+
+MEASURED RATHER THAN ARGUED, and the measurement is why this pin now moves.
 Two judges from two `--no-clone` detached worktrees, cold, under the pinned
 toolchain — `cargo 1.97.1` and `rustc 1.97.1` reported by each tree, each
-build's exit asserted on its own line, 0 and 0. `tools/prefab-audit.py` with
-each over the whole repository: 39 audited units over 39 in-scope `.nbt` files
-under both, and there the two part company. The judge at `968f7d87` passes 39 of
-39 at exit 0. The judge at `8abcd1ac` FAILS 3 of 39 at exit 1 —
-`demos/gatehouse-elevations/gatehouse.nbt`,
-`demos/guard-exhaustion/signal-station.nbt` and `demos/mill-race/mill-race.nbt`
-— and moves those three report files' verdict from `pass` to `fail` and their
-contract state from `undeclared` to `refused`. `DW0783` changes tier from
-warning to error on exactly those three, and the new binary carries 23 `DW`
-codes against 22, the addition being `DW0804`.
+build's exit asserted on its own line, 0 and 0 — one at `968f7d87` (the old
+`value`), one at `66906e39` (the candidate). `tools/prefab-audit.py` with each
+over the whole repository, post-adoption: 39 audited units over 39 in-scope
+`.nbt` files under both, and both PASS 39 of 39 at exit 0 — the three
+previously-refused units audit clean under the candidate now that their
+metadata carries what it requires. The binary-level facts from the prior
+judgement still hold and were re-checked directly against `66906e39` rather
+than assumed forward: `grep -aoE 'DW[0-9]{4}'` over the built bytes finds 22
+distinct codes in the `968f7d87` binary and 23 in the `66906e39` binary, the
+addition being `DW0804`; `crates/schem` and `crates/orchestrator` remain
+byte-identical between the two revisions.
 
-THE CAUSE, localised rather than guessed. `license.generated_by` gained a
-required `region` field — `[x, y, z]`, the box the program was expanded over,
-an independent input because the same program at the same seed over a different
-box is a different building. The three refused documents are the only ones in
-this repository that carry a `generated_by` block at all, which is why nothing
-else moved: no `prefabs/*.json` declares one.
-
-SO THE PIN IS HELD AT `968f7d87`, and this is the property it is held for: it is
-the newest instrument every piece in this library can still be audited by.
-`reviewed` names `8abcd1ac` because that history HAS been judged — the judgement
-concluded that the library adopts first and the pin follows, not that nobody
-looked.
-
-THE ADOPTION ITEM the pin waits on, stated so it can be scheduled rather than
-rediscovered: add `"region": [x, y, z]` to `license.generated_by` in
-`demos/gatehouse-elevations/gatehouse.json`,
-`demos/guard-exhaustion/signal-station.json` and
-`demos/mill-race/mill-race.json`. The numbers are already in each file — its
-`provenance` sentence states the region the program was expanded over — so the
-edit adds no fact the document does not already assert; it moves one from prose
-into the field a checker reads. When those three audit clean under a judge built
-at the candidate revision, the pin moves with the reading that proves it.
+SO THE PIN MOVES TO `66906e39` for both `value` and `reviewed`: the judgement's
+conclusion is that the newer instrument is the one this library should be held
+to, now that the library adopts what it requires. This is the property the pin
+is held for: it is the newest instrument every piece in this library audits
+clean by, and the newest reviewed history agrees with it.
 
 WHAT WOULD END THE RE-READING, and it is not available in this repository. The
 compiler-only case — a `crates/compiler` commit moving the watch closure while
