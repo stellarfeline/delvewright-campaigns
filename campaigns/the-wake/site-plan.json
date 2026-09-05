@@ -1,0 +1,318 @@
+{
+  "campaign_id": "the-wake",
+  "content": {
+    "boxes": [
+      {
+        "ceiling": {
+          "clearance": 5
+        },
+        "extent": [
+          12,
+          12
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          4,
+          90
+        ],
+        "node": "node/wake-house"
+      },
+      {
+        "ceiling": {
+          "clearance": 5
+        },
+        "extent": [
+          8,
+          8
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          17,
+          92
+        ],
+        "node": "node/lych-gate"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          96,
+          8
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          26,
+          92
+        ],
+        "node": "node/coast-road"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          16,
+          16
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          123,
+          88
+        ],
+        "node": "node/fork-stone"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          8,
+          40
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          122,
+          47
+        ],
+        "node": "node/high-road"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          8,
+          40
+        ],
+        "floor": {
+          "datum": "datum/drowned"
+        },
+        "min": [
+          132,
+          47
+        ],
+        "node": "node/drowned-road"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          20,
+          16
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          121,
+          30
+        ],
+        "node": "node/barrow-shoulder"
+      },
+      {
+        "ceiling": "open",
+        "extent": [
+          20,
+          20
+        ],
+        "floor": {
+          "datum": "datum/headland"
+        },
+        "min": [
+          121,
+          9
+        ],
+        "node": "node/cliff-barrow"
+      }
+    ],
+    "datums": [
+      {
+        "id": "datum/grade",
+        "note": "The coast road, the village and the fork: the ground the sea wall keeps dry.",
+        "y": 64
+      },
+      {
+        "id": "datum/drowned",
+        "note": "The sunken lane, below the fields the sluice let go.",
+        "y": 61
+      },
+      {
+        "id": "datum/headland",
+        "note": "The headland the keepers are buried on.",
+        "y": 69
+      }
+    ],
+    "identities": [
+      {
+        "cmp": "eq",
+        "fact": "fact/coast-road-run",
+        "measure": {
+          "axis": "x",
+          "node": "node/coast-road",
+          "of": "box-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/branch-run",
+        "measure": {
+          "axis": "z",
+          "node": "node/high-road",
+          "of": "box-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/drowned-datum",
+        "measure": {
+          "datum": "datum/drowned",
+          "of": "datum-y"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/headland-datum",
+        "measure": {
+          "datum": "datum/headland",
+          "of": "datum-y"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/barrow-span",
+        "measure": {
+          "axis": "x",
+          "node": "node/cliff-barrow",
+          "of": "box-extent"
+        }
+      }
+    ],
+    "lighting": {
+      "fixture": "lantern",
+      "min_light": 7
+    },
+    "region": {
+      "extent": [
+        152,
+        48,
+        112
+      ],
+      "min": [
+        0,
+        48,
+        0
+      ]
+    },
+    "seams": [
+      {
+        "at": [
+          95,
+          64
+        ],
+        "edge": "edge/house-to-gate",
+        "face": "east",
+        "opening": "passage"
+      },
+      {
+        "at": [
+          93,
+          64
+        ],
+        "edge": "edge/gate-to-road",
+        "face": "east",
+        "opening": "gateway"
+      },
+      {
+        "at": [
+          92,
+          64
+        ],
+        "contact": {},
+        "edge": "edge/road-to-fork",
+        "face": "east"
+      },
+      {
+        "at": [
+          123,
+          64
+        ],
+        "contact": {},
+        "edge": "edge/fork-to-high",
+        "face": "north"
+      },
+      {
+        "at": [
+          132,
+          64
+        ],
+        "edge": "edge/fork-to-drowned",
+        "face": "north",
+        "opening": "passage",
+        "stair_in": "node/drowned-road"
+      },
+      {
+        "at": [
+          122,
+          64
+        ],
+        "contact": {},
+        "edge": "edge/high-to-shoulder",
+        "face": "north"
+      },
+      {
+        "at": [
+          132,
+          64
+        ],
+        "edge": "edge/drowned-to-shoulder",
+        "face": "north",
+        "opening": "passage",
+        "stair_in": "node/drowned-road"
+      },
+      {
+        "at": [
+          128,
+          69
+        ],
+        "edge": "edge/shoulder-to-barrow",
+        "face": "north",
+        "opening": "passage",
+        "stair_in": "node/barrow-shoulder"
+      }
+    ],
+    "views": [
+      {
+        "eye": [
+          130,
+          68,
+          96
+        ],
+        "id": "view/from-the-fork",
+        "look_at": [
+          130,
+          71,
+          19
+        ],
+        "note": "At the fork stone, looking north up both roads at once. The walk judges whether the two ways read as a real choice from the one place the choice is made."
+      },
+      {
+        "eye": [
+          130,
+          73,
+          16
+        ],
+        "id": "view/from-the-barrow",
+        "look_at": [
+          136,
+          62,
+          66
+        ],
+        "note": "From the cut grave looking back over the shoulder and down the drowned lane. The one vantage where what he did and where he is being buried are in the same frame."
+      }
+    ]
+  },
+  "dsl_version": "0.19.0",
+  "stage": "site-plan"
+}

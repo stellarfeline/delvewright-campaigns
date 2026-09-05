@@ -1,0 +1,216 @@
+{
+  "campaign_id": "the-wake",
+  "content": {
+    "beats": [
+      {
+        "node": "node/wake-house",
+        "objective": "obj/hear-halda",
+        "quest": "quest/take-up-the-bier"
+      },
+      {
+        "node": "node/wake-house",
+        "objective": "obj/take-the-bier",
+        "quest": "quest/take-up-the-bier"
+      },
+      {
+        "node": "node/lych-gate",
+        "objective": "obj/rest-at-the-gate",
+        "quest": "quest/the-lych-gate"
+      },
+      {
+        "node": "node/coast-road",
+        "objective": "obj/hear-ceren",
+        "quest": "quest/the-coast-road"
+      },
+      {
+        "node": "node/fork-stone",
+        "objective": "obj/choose-the-road",
+        "quest": "quest/the-fork-stone"
+      },
+      {
+        "node": "node/cliff-barrow",
+        "objective": "obj/lay-him-down",
+        "quest": "quest/lay-him-down"
+      }
+    ],
+    "critical_path": [
+      "node/wake-house",
+      "node/lych-gate",
+      "node/coast-road",
+      "node/fork-stone",
+      "node/high-road",
+      "node/barrow-shoulder",
+      "node/cliff-barrow"
+    ],
+    "edges": [
+      {
+        "a": "node/wake-house",
+        "b": "node/lych-gate",
+        "class": "walk",
+        "id": "edge/house-to-gate"
+      },
+      {
+        "a": "node/lych-gate",
+        "b": "node/coast-road",
+        "class": "walk",
+        "id": "edge/gate-to-road"
+      },
+      {
+        "a": "node/coast-road",
+        "b": "node/fork-stone",
+        "class": "walk",
+        "id": "edge/road-to-fork"
+      },
+      {
+        "a": "node/fork-stone",
+        "b": "node/high-road",
+        "class": "walk",
+        "id": "edge/fork-to-high"
+      },
+      {
+        "a": "node/fork-stone",
+        "b": "node/drowned-road",
+        "class": "stair",
+        "id": "edge/fork-to-drowned"
+      },
+      {
+        "a": "node/high-road",
+        "b": "node/barrow-shoulder",
+        "class": "walk",
+        "id": "edge/high-to-shoulder"
+      },
+      {
+        "a": "node/drowned-road",
+        "b": "node/barrow-shoulder",
+        "class": "stair",
+        "id": "edge/drowned-to-shoulder"
+      },
+      {
+        "a": "node/barrow-shoulder",
+        "b": "node/cliff-barrow",
+        "class": "stair",
+        "id": "edge/shoulder-to-barrow"
+      }
+    ],
+    "entry": "node/wake-house",
+    "goal": "node/cliff-barrow",
+    "nodes": [
+      {
+        "id": "node/wake-house",
+        "intent": "where the body lies and the party is hired",
+        "note": "A low room with the bier already made up. Halda is at her brother's head and has been for a while.",
+        "size_class": "room",
+        "stations": [
+          {
+            "anchor": "anchor/bier-rest",
+            "kind": "point",
+            "note": "The trestles the bier stands on. The body's first mark, and the first cutscene subject."
+          },
+          {
+            "anchor": "anchor/halda-stand",
+            "kind": "point",
+            "note": "Halda's station. She does not move until the bier does."
+          }
+        ]
+      },
+      {
+        "id": "node/lych-gate",
+        "intent": "the roofed gate where a procession rests the bier before the road",
+        "note": "The one enclosed place on the route, which is why the eulogy is spoken here and not in the open.",
+        "size_class": "alcove",
+        "stations": [
+          {
+            "anchor": "anchor/gate-rest",
+            "kind": "point",
+            "note": "The gate stone. The bier stands on it through the eulogy sequence."
+          }
+        ]
+      },
+      {
+        "id": "node/coast-road",
+        "intent": "the open carry, where the argument catches up with the procession",
+        "note": "Straight, sea on one hand, nothing to look at. Long enough that the party is walking rather than arriving.",
+        "stations": [
+          {
+            "anchor": "anchor/road-halt",
+            "kind": "point",
+            "note": "Where the bearers change hands and Ceren steps up out of the field onto the road."
+          }
+        ],
+        "way_class": "road"
+      },
+      {
+        "id": "node/fork-stone",
+        "intent": "where the road divides and the party decides",
+        "note": "A clearing with a cut stone carrying both names. The whole delve is built to arrive here.",
+        "size_class": "room",
+        "stations": [
+          {
+            "anchor": "anchor/fork-marker",
+            "kind": "point",
+            "note": "The fork stone. The bier is set down beside it while the party chooses."
+          },
+          {
+            "anchor": "anchor/wick-stand",
+            "kind": "point",
+            "note": "Wick waits here with his spade because nobody has told him which hole to finish."
+          }
+        ]
+      },
+      {
+        "id": "node/high-road",
+        "intent": "the level honour road the keepers are carried on",
+        "note": "Dry, straight and easy. Choosing it costs the procession nothing, which is the point of offering it.",
+        "stations": [
+          {
+            "anchor": "anchor/high-halt",
+            "kind": "point",
+            "note": "A breath partway along, where the drowned lane is visible below and to the east."
+          }
+        ],
+        "way_class": "road"
+      },
+      {
+        "id": "node/drowned-road",
+        "intent": "the sunken lane through the water the sluice made",
+        "note": "It drops below the fields and the water stands in it. The bearers go in to the knee and come back up.",
+        "stations": [
+          {
+            "anchor": "anchor/low-halt",
+            "kind": "point",
+            "note": "The lowest point of the lane, where the water is deepest and the procession has to keep going."
+          }
+        ],
+        "way_class": "road"
+      },
+      {
+        "id": "node/barrow-shoulder",
+        "intent": "the shoulder below the barrow where both roads meet",
+        "note": "Whichever way the bier came, it is set down here once before the last climb. Both endings are staged from this ground.",
+        "size_class": "hall",
+        "stations": [
+          {
+            "anchor": "anchor/shoulder-halt",
+            "kind": "point",
+            "note": "The last rest. The two-shot of Halda and Ceren is framed here."
+          }
+        ]
+      },
+      {
+        "id": "node/cliff-barrow",
+        "intent": "the keepers' burial ground on the headland",
+        "note": "Open to the sky and the sea, one grave already cut. Everything ends standing around it.",
+        "size_class": "hall",
+        "stations": [
+          {
+            "anchor": "anchor/keepers-grave",
+            "kind": "point",
+            "note": "The cut grave. Where the bier is laid down and the campaign ends."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.19.0",
+  "stage": "layout-graph"
+}
