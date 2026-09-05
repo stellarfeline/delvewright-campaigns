@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Every campaign in this repository compiles, and the count says against what.
+"""Every UNRELEASED campaign compiles with the authoring engine, and the count says so.
 
 A campaign nothing compiles is a campaign nothing checks. The other workflows
 here audit pieces, lint workflows, and ship a release from a tag; none of them
@@ -44,7 +44,26 @@ document at all is media, and one carrying any OTHER stage document is a campaig
 that has lost its entry document and is a refusal. The innocent case cannot
 present the second proof.
 
-EVERY DISCOVERED CAMPAIGN IS ACCOUNTED FOR AT THE END. The population is fixed
+A RELEASED CAMPAIGN IS NOT THIS GATE'S BUSINESS, AND ITS TAG IS WHAT SAYS SO.
+A campaign that carries a `release/<id>/v*` tag is published: it is never edited
+again, and it is built only by the engine it pins, at that tag, by `release.yml`.
+Building it here against a moving engine would assert a compatibility nobody
+promises — nothing owes compatibility to anything already built — and the red it
+produces names the one campaign that cannot be repaired. So a released campaign
+is excluded BY NAME, with its tags printed beside the reason, and the exclusion
+is counted like every other.
+
+THE TAG SET IS CROSS-CHECKED AGAINST THE REMOTE, because the failure that
+matters is silent. A checkout without tags yields an empty exclusion, which
+reads exactly like a repository that has released nothing, and the gate then
+builds the published campaign after all — the defect it was written to remove,
+wearing the shape of a pass. So the local `release/*/v*` set is compared against
+`git ls-remote`'s, and a local set missing any tag the remote carries is a
+refusal. When the remote cannot be reached at all the run says the cross-check
+did not run and rests on the local list, in those words: a reader is told which
+arm produced the exclusion.
+
+EVERY ELIGIBLE CAMPAIGN IS ACCOUNTED FOR AT THE END. The population is fixed
 before the walk and reconciled against the RESULTS after it, in a `finally`, so a
 walk that stopped early cannot report on the part it reached and stay silent
 about the part it did not. Truncation fakes coverage, and it fakes it in the
@@ -52,8 +71,8 @@ direction that reads as a clean pass — a `cargo test` that halted at 21 of 175
 binaries is the recorded instance. A campaign with no result is a red naming it,
 whether the walk crashed, was interrupted, or simply never got there.
 
-Exit 0 = every campaign built in every language it declares. 1 = a finding.
-2 = this tool could not run at all, which is a refusal and not a pass.
+Exit 0 = every eligible campaign built in every language it declares. 1 = a
+finding. 2 = this tool could not run at all, which is a refusal and not a pass.
 """
 
 from __future__ import annotations
@@ -61,6 +80,7 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -83,6 +103,12 @@ STAGE_DOCUMENTS = (
 ENTRY_DOCUMENT = "world.json"
 
 CAMPAIGN_ROOT = "campaigns"
+
+# The tag that publishes a campaign. `release.yml` triggers on exactly this shape
+# and parses the id out of it the same way, so the two cannot disagree about
+# which campaigns are released.
+RELEASE_TAG_GLOB = "release/*/v*"
+RELEASE_TAG_RE = re.compile(r"^release/([^/]+)/v(.+)$")
 
 
 class Refusal(Exception):
@@ -114,6 +140,59 @@ def discover(root: pathlib.Path) -> tuple[list[str], list[dict], list[dict]]:
             {"dir": path.name, "carries": carries}
         )
     return campaigns, media, headless
+
+
+def _tags(argv: list[str], root: pathlib.Path) -> tuple[bool, list[str]]:
+    """(reachable, the `release/<id>/v*` tag names `argv` produced)."""
+    proc = subprocess.run(argv, cwd=root, capture_output=True)
+    if proc.returncode != 0:
+        return False, []
+    out = []
+    for line in proc.stdout.decode("utf-8", "replace").splitlines():
+        name = line.split("refs/tags/")[-1].strip() if "refs/tags/" in line else line.strip()
+        if name.endswith("^{}"):
+            name = name[:-3]
+        if RELEASE_TAG_RE.match(name):
+            out.append(name)
+    return True, sorted(set(out))
+
+
+def release_tags(root: pathlib.Path) -> tuple[dict[str, list[str]], int, bool]:
+    """(campaign id -> its release tags, tags examined, whether the remote agreed).
+
+    The local list decides, and the remote is the second method: it shares no
+    configuration with the checkout that produced the local one, so a checkout
+    fetched without tags is caught rather than read as "nothing is released".
+    A local set missing a tag the remote carries is a `Refusal`.
+    """
+    ok, local = _tags(["git", "tag", "--list", RELEASE_TAG_GLOB], root)
+    if not ok:
+        raise Refusal(
+            f"`git tag` failed in {root}. This gate excludes a released campaign "
+            f"by its `{RELEASE_TAG_GLOB}` tag, and a scan that cannot run would "
+            f"exclude nothing and build the published campaign anyway — a "
+            f"refusal, never a pass."
+        )
+    reached, remote = _tags(
+        ["git", "ls-remote", "--tags", "origin", RELEASE_TAG_GLOB], root
+    )
+    if reached:
+        missing = [t for t in remote if t not in local]
+        if missing:
+            raise Refusal(
+                f"this checkout carries {len(local)} `{RELEASE_TAG_GLOB}` tag(s) "
+                f"and the remote carries {len(remote)}; {', '.join(missing)} "
+                f"is/are absent here. The exclusion below would bind to less "
+                f"than the repository has released, which reads exactly like a "
+                f"repository that has released nothing. Fetch the tags "
+                f"(`git fetch --tags`) — this gate may not guess."
+            )
+    by_id: dict[str, list[str]] = {}
+    for tag in local:
+        m = RELEASE_TAG_RE.match(tag)
+        assert m is not None
+        by_id.setdefault(m.group(1), []).append(tag)
+    return by_id, len(local), reached
 
 
 def languages_of(root: pathlib.Path, campaign: str) -> list[str]:
@@ -185,7 +264,7 @@ def build_campaign(
 
 
 def reconcile(population: list[str], reached: list[str]) -> list[str]:
-    """Every discovered campaign has a result. A pure function over both sets.
+    """Every ELIGIBLE campaign has a result. A pure function over both sets.
 
     This is the accounting that a truncated walk cannot satisfy. It is separate
     from the walk on purpose: the walk can be stopped by anything at all — an
@@ -236,12 +315,37 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         population, media, headless = discover(root)
+        published, tags_examined, remote_reached = release_tags(root)
     except Refusal as exc:
         print(f"campaign-build: FATAL — {exc}", file=sys.stderr)
         return 2
 
+    # The exclusion the rulings make: a released campaign is verified at its tag
+    # by `release.yml`, with the engine it pins, and is never edited again. Named
+    # here with its tags, so the reader sees which campaigns this run did not
+    # judge and on what authority.
+    released = [c for c in population if c in published]
+    eligible = [c for c in population if c not in published]
+
     print(f"discovered {len(population)} campaign(s): "
           f"{', '.join(population) or '(none)'}")
+    for name in released:
+        print(
+            f"released, not built here: {name} — "
+            f"{', '.join(published[name])}. A released campaign is verified at "
+            f"its tag by release.yml with the engine it pins, and is never "
+            f"edited again"
+        )
+    print(
+        f"release tags examined: {tags_examined} matching "
+        f"{RELEASE_TAG_GLOB}"
+        + (
+            "; the remote agrees"
+            if remote_reached
+            else "; the remote cross-check did NOT run, so this rests on the "
+                 "local tag list alone"
+        )
+    )
     print(f"excluded {len(media) + len(headless)} directory/ies holding no "
           f"{ENTRY_DOCUMENT}: "
           f"{', '.join(d['dir'] for d in media + headless) or '(none)'}")
@@ -257,16 +361,26 @@ def main(argv: list[str] | None = None) -> int:
             f"cover"
         )
 
-    # A gate that binds to nothing is vacuous, not a pass.
+    # A gate that binds to nothing is vacuous, not a pass — but "nothing is
+    # eligible" and "nothing was found" are different facts and only the second
+    # is a finding. A repository whose every campaign is released has nothing for
+    # this gate to build and is not broken; one where the discovery rule broke
+    # looks identical only if the two are not told apart.
     if not population:
         errors.append(
             f"no campaign found under {CAMPAIGN_ROOT}/ (a campaign is a "
             f"directory holding {ENTRY_DOCUMENT}), so this gate would examine "
             f"nothing. A zero binding is a finding"
         )
+    elif not eligible:
+        print(
+            f"nothing is eligible: all {len(population)} discovered campaign(s) "
+            f"are released and are verified at their tags. This gate builds "
+            f"nothing, and that is the population's shape rather than a failure."
+        )
 
     reached: list[str] = []
-    if population and not args.discover_only:
+    if eligible and not args.discover_only:
         if not args.delvec:
             print("campaign-build: FATAL — --delvec is required unless "
                   "--discover-only", file=sys.stderr)
@@ -274,7 +388,7 @@ def main(argv: list[str] | None = None) -> int:
         out_dir = pathlib.Path(args.out).resolve() if args.out else root / ".build"
         out_dir.mkdir(parents=True, exist_ok=True)
         try:
-            for campaign in population:
+            for campaign in eligible:
                 errors += build_campaign(
                     args.delvec, root, campaign, args.prefabs, out_dir
                 )
@@ -296,7 +410,7 @@ def main(argv: list[str] | None = None) -> int:
                 f"would otherwise take with it"
             )
         finally:
-            errors += reconcile(population, reached)
+            errors += reconcile(eligible, reached)
 
     for message in errors:
         print(f"::error::{message}" if args.github else f"error: {message}")
@@ -311,18 +425,26 @@ def main(argv: list[str] | None = None) -> int:
     # refuses everywhere else, arriving through its own summary line. It says
     # what it is instead, and never borrows the verdict shape.
     excluded = len(media) + len(headless)
+    named = ", ".join(
+        f"{c} ({'; '.join(published[c])})" for c in released
+    ) or "(none)"
+    scope = (
+        f"{len(population)} campaign(s) discovered, "
+        f"{len(released)} released and excluded by tag [{named}], "
+        f"{len(eligible)} eligible"
+    )
     if args.discover_only:
         print(
-            f"campaign build gate: DISCOVERY ONLY — {len(population)} "
-            f"campaign(s) discovered, {excluded} directory/ies excluded and "
-            f"named, {len(errors)} finding(s). Nothing was built, so this is a "
-            f"report on the population and not a verdict on whether it compiles."
+            f"campaign build gate: DISCOVERY ONLY — {scope}, "
+            f"{excluded} directory/ies excluded and named, {len(errors)} "
+            f"finding(s). Nothing was built, so this is a report on the "
+            f"population and not a verdict on whether it compiles."
         )
     else:
         languages = sum(len(languages_of(root, c)) for c in reached)
         print(
-            f"campaign build gate: {len(reached)} of {len(population)} "
-            f"campaign(s) examined, {languages} language build(s), "
+            f"campaign build gate: {scope}, {len(reached)} of {len(eligible)} "
+            f"eligible campaign(s) examined, {languages} language build(s), "
             f"{excluded} directory/ies excluded and named, "
             f"{len(errors)} finding(s)"
         )
