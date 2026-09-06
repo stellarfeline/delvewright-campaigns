@@ -82,9 +82,13 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   to be a file `.github/pins.toml` declares as some pin's site — a revision
   pasted into a page or a script drifts the first time the pin moves, and
   nothing would report it. Editing the pin means editing its entry in
-  `.github/pins.toml` too. Run the check yourself with the same command CI runs:
-  `python3 tools/check-authoring-pin.py`. It needs no network and nothing
-  installed.
+  `.github/pins.toml` too. `[engine].release` beside it names the release whose
+  archive Init downloads instead of building — the same revision arriving by the
+  other channel, so the two keys move together — and the page reads that from
+  `versions.toml` as well rather than writing a version out. Run the check
+  yourself with the same command CI runs: `python3 tools/check-authoring-pin.py`.
+  It needs no network and nothing installed; add `--online` and it also asks
+  GitHub what the release tag resolves to and whether its shelf is complete.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
 - **Touching a workflow means saying what it gates.**

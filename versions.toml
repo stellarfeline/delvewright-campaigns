@@ -64,6 +64,26 @@ ref = "91a9a843d2ad2f0c3b852ea5fa4178567b68f875"
 # on the page goes stale, an indirection stays true, and
 # `tools/check-authoring-pin.py` is what holds the page to that.
 authoring_ref = "66906e395eb7517a8b5f7b104223877c4aa7e8ba"
+# The published release an author DOWNLOADS at Init, instead of building. ADR-0023
+# makes the per-platform release archive the default acquisition and the source
+# build the floor, so Init needs a release name — and a release name written on
+# the page is a literal nothing checks, which is the defect `authoring_ref` above
+# already paid for once.
+#
+# THE SAME REVISION, ARRIVING BY THE OTHER CHANNEL, which is why this is a name
+# and not a third revision. The archive on the shelf is `authoring_ref` as the
+# engine's own CI built it (`.github/workflows/engine-release.yml` there fills one
+# `delvec-v<version>-<target>.tar.gz` per target in the engine's `[engine].targets`,
+# plus one `SHA256SUMS`), so the release the page downloads is by definition the
+# TAG WHOSE COMMIT IS `authoring_ref`. A creator who downloads and a developer who
+# builds must end up with the same engine; the two keys are one decision, and they
+# move together.
+#
+# `tools/check-authoring-pin.py --online` is what makes that a check rather than a
+# convention: the tag must resolve, through the GitHub API, to exactly the
+# revision above, and must carry an archive for every target the engine declares.
+# The page reads this key and never restates the version.
+release = "v1.1.0"
 
 [registry]
 # Where a released delve image is published. `delve-<campaign>` per campaign,

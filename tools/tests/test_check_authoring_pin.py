@@ -22,6 +22,13 @@ closed:
 - a run that examined no file, which would be the gate going dark rather than a
   clean tree.
 
+`[engine].release` is the same pin arriving by the other channel — ADR-0023 makes
+the release archive the default acquisition — and it is held the same way: the
+name is shaped, the page carries no literal of it, and the tag resolves to the
+authoring revision, so downloading and building cannot hand out two engines. The
+last of those is the only question a network can answer, and the guards for it
+drive `release_online` with a RECORDED fixture of the real `v1.1.0` release.
+
 IDENTITY is asserted in all three directions, because it is where this gate
 answered honestly about the wrong object. A pin is an ENTRY AT A SITE and never
 a bare revision: two entries may hold one revision at their own sites, which for
@@ -39,6 +46,8 @@ the real manifest rather than to fixtures alone.
 
 from __future__ import annotations
 
+import base64
+import importlib.util
 import subprocess
 import sys
 import tempfile
@@ -58,6 +67,10 @@ REGISTRY = ".github/pins.toml"
 # builds its own the same way.
 REV = "a1b2c3d4e5f60718" * 2 + "293a4b5c"
 OTHER_REV = "9876543210fedcba" * 2 + "98765432"
+# A release tag that is not this project's, so a fixture cannot be mistaken for
+# a statement about the real shelf. The real one is recorded further down, in
+# `TheReleaseResolvesToTheAuthoringRevision`.
+RELEASE_TAG = "v9.9.9"
 
 PAGE_READS_THE_PIN = (
     "# /new-delve\n"
@@ -80,10 +93,17 @@ def git(repo: Path, *args: str) -> str:
     ).stdout.strip()
 
 
-def manifest(value: str | None, *, key: str = "authoring_ref") -> str:
+def manifest(
+    value: str | None,
+    *,
+    key: str = "authoring_ref",
+    release: str | None = RELEASE_TAG,
+) -> str:
     lines = ["[engine]", 'repo = "example/engine"']
     if value is not None:
         lines.append(f'{key} = "{value}"')
+    if release is not None:
+        lines.append(f'release = "{release}"')
     return "\n".join(lines) + "\n"
 
 
@@ -134,8 +154,11 @@ class Fixture(unittest.TestCase):
         page: str = PAGE_READS_THE_PIN,
         extra: dict[str, str] | None = None,
         pins: str | None = None,
+        release: str | None = RELEASE_TAG,
     ) -> None:
-        (self.root / MANIFEST).write_text(manifest(value, key=key), encoding="utf-8")
+        (self.root / MANIFEST).write_text(
+            manifest(value, key=key, release=release), encoding="utf-8"
+        )
         reg = self.root / REGISTRY
         reg.parent.mkdir(parents=True, exist_ok=True)
         reg.write_text(
@@ -417,3 +440,225 @@ class ThisRepositorysOwnTree(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TheReleaseNameIsTheSamePin(Fixture):
+    """`[engine].release`, offline: it exists, it is a tag, and it is not on the page.
+
+    ADR-0023 makes the release archive the default acquisition, so Init needs a
+    release NAME as well as a revision. The name is not a third value — the
+    archive is `authoring_ref` as the engine's CI built it — and the offline
+    half holds the two things reachable without a network.
+    """
+
+    def test_a_missing_release_key_is_a_finding(self) -> None:
+        self.lay(release=None)
+        r = self.run_check()
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("has no `engine.release`", r.stderr)
+        self.assertIn("literal on the page", r.stderr)
+
+    def test_a_release_that_is_not_a_tag_is_a_finding(self) -> None:
+        """The engine's release workflow starts on `v<semver>` and nothing else."""
+        self.lay(release="latest")
+        r = self.run_check()
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("not a `v<semver>` release tag", r.stderr)
+
+    def test_a_bare_semver_without_the_v_is_a_finding(self) -> None:
+        self.lay(release="1.1.0")
+        r = self.run_check()
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("not a `v<semver>` release tag", r.stderr)
+
+    def test_the_release_literal_on_the_page_is_a_finding(self) -> None:
+        """The stale literal this key exists to remove, in the one place it would be pasted."""
+        self.lay(page=PAGE_READS_THE_PIN + f"\nDownload delvec {RELEASE_TAG}.\n")
+        r = self.run_check()
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn(SKILL, r.stderr)
+        self.assertIn("carries the release literal", r.stderr)
+
+    def test_a_page_without_the_literal_passes_and_says_so(self) -> None:
+        """Both directions: a checker that only ever fails proves as little as one that only ever passes."""
+        self.lay()
+        r = self.run_check()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("carries no release literal", r.stdout)
+
+
+# ---------------------------------------------------------------------------
+# The online half, driven by a RECORDED fixture of the real `v1.1.0` release.
+#
+# `release_online` takes its `fetch` as a parameter so these guards can answer
+# for the remote. That is not an escape hatch on the gate: the CLI passes the
+# real one and nothing else, and a fixture decides only what the remote SAID,
+# never what the check concludes from it — every assertion below is about the
+# conclusion.
+#
+# The values are the real ones, read from api.github.com. `v1.1.0` is an
+# ANNOTATED tag, so it dereferences through a tag object before a commit
+# appears; that indirection is the shape the engine actually publishes, and a
+# check that only handled lightweight tags would report every real release as
+# resolving to nothing.
+#
+# The shas are composed rather than written out for the same reason the fixture
+# revisions above are: `check-pins.py` scans this file as a fetch site, and a
+# 40-hex literal here would be discovered as a pin nobody declared.
+TAG_OBJECT = "43ea20dfa5203388" + "f5c22eb7be8f5808" + "514eb422"
+V110_COMMIT = "91a9a843d2ad2f0c" + "3b852ea5fa417856" + "7b68f875"
+# The engine's own `[engine].targets` at v1.1.0. Recorded here as what the
+# remote answered — the CHECK never carries a copy, it reads this list out of
+# the engine at the tag, which is why a target added upstream cannot go unseen.
+V110_TARGETS = [
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-musl",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+    "x86_64-pc-windows-msvc",
+]
+ENGINE_REPO = "stellarfeline/delvewright"
+
+
+def load_checker():
+    spec = importlib.util.spec_from_file_location("check_authoring_pin", CHECKER)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def recorded_remote(
+    *,
+    targets: list[str] | None = None,
+    assets: list[str] | None = None,
+    tag: str = "v1.1.0",
+    missing_tag: bool = False,
+    missing_release: bool = False,
+):
+    """The real v1.1.0 responses, with one variable at a time perturbed."""
+    mod = load_checker()
+    targets = V110_TARGETS if targets is None else targets
+    if assets is None:
+        assets = [f"delvec-{tag}-{t}.tar.gz" for t in targets] + ["SHA256SUMS"]
+    engine_manifest = "[engine]\ntargets = [\n" + "".join(
+        f'  "{t}",\n' for t in targets
+    ) + "]\n"
+
+    def fetch(path: str):
+        if path.endswith(f"git/ref/tags/{tag}"):
+            if missing_tag:
+                raise mod.NotFound(path)
+            return {"object": {"sha": TAG_OBJECT, "type": "tag"}}
+        if path.endswith(f"git/tags/{TAG_OBJECT}"):
+            return {"object": {"sha": V110_COMMIT, "type": "commit"}}
+        if "contents/versions.toml" in path:
+            return {
+                "content": base64.b64encode(
+                    engine_manifest.encode("utf-8")
+                ).decode("ascii")
+            }
+        if path.endswith(f"releases/tags/{tag}"):
+            if missing_release:
+                raise mod.NotFound(path)
+            return {"assets": [{"name": n} for n in assets]}
+        raise AssertionError(f"the check asked for an endpoint nobody recorded: {path}")
+
+    return mod, fetch
+
+
+class TheReleaseResolvesToTheAuthoringRevision(unittest.TestCase):
+    """A creator who DOWNLOADS and a developer who BUILDS get one engine, or the gate reds."""
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+
+    def tearDown(self) -> None:
+        self._tmp.cleanup()
+
+    def lay(self, *, revision: str, tag: str = "v1.1.0") -> None:
+        (self.root / MANIFEST).write_text(
+            "[engine]\n"
+            f'repo = "{ENGINE_REPO}"\n'
+            f'authoring_ref = "{revision}"\n'
+            f'release = "{tag}"\n',
+            encoding="utf-8",
+        )
+
+    def test_the_tag_whose_commit_is_the_authoring_revision_passes(self) -> None:
+        """Green on the right one — the real v1.1.0, against the commit it really points at."""
+        self.lay(revision=V110_COMMIT)
+        mod, fetch = recorded_remote()
+        bound, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(errors, [])
+        self.assertEqual(bound, len(V110_TARGETS))
+
+    def test_a_tag_that_resolves_elsewhere_is_a_finding(self) -> None:
+        """Red on a tag that resolves elsewhere — the state this branch is in."""
+        self.lay(revision=OTHER_REV)
+        mod, fetch = recorded_remote()
+        bound, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("different engine", errors[0])
+        self.assertIn(V110_COMMIT, errors[0])
+        self.assertIn(OTHER_REV, errors[0])
+
+    def test_an_annotated_tag_is_dereferenced_to_its_commit(self) -> None:
+        """The tag OBJECT is not the commit, and every real release here is annotated.
+
+        A check that stopped at `git/ref/tags` would compare the authoring
+        revision against `43ea20df` and report every correct release as wrong.
+        """
+        self.lay(revision=TAG_OBJECT)
+        mod, fetch = recorded_remote()
+        _, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("different engine", errors[0])
+
+    def test_a_missing_archive_is_a_finding_naming_the_target(self) -> None:
+        """A partial shelf sends exactly the untested platforms down the source path."""
+        self.lay(revision=V110_COMMIT)
+        mod, fetch = recorded_remote(
+            assets=[
+                f"delvec-v1.1.0-{t}.tar.gz"
+                for t in V110_TARGETS
+                if t != "x86_64-pc-windows-msvc"
+            ]
+            + ["SHA256SUMS"]
+        )
+        _, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("x86_64-pc-windows-msvc", errors[0])
+        self.assertIn("1 of 5", errors[0])
+
+    def test_a_missing_checksum_file_is_a_finding(self) -> None:
+        """Init verifies the download before extracting; without SHA256SUMS it cannot."""
+        self.lay(revision=V110_COMMIT)
+        mod, fetch = recorded_remote(
+            assets=[f"delvec-v1.1.0-{t}.tar.gz" for t in V110_TARGETS]
+        )
+        _, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("SHA256SUMS", errors[0])
+
+    def test_a_tag_that_does_not_exist_is_a_finding(self) -> None:
+        self.lay(revision=V110_COMMIT)
+        mod, fetch = recorded_remote(missing_tag=True)
+        bound, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(bound, 0)
+        self.assertIn("has no tag v1.1.0", errors[0])
+
+    def test_a_tag_with_no_release_is_a_finding(self) -> None:
+        """The tag alone is not the artifact — there has to be a shelf to download."""
+        self.lay(revision=V110_COMMIT)
+        mod, fetch = recorded_remote(missing_release=True)
+        _, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertIn("no RELEASE at it", errors[-1])
+
+    def test_an_empty_target_list_is_a_finding_and_not_a_clean_shelf(self) -> None:
+        """A binding of zero is the gate going dark (CLAUDE.md, vacuity: unbound)."""
+        self.lay(revision=V110_COMMIT)
+        mod, fetch = recorded_remote(targets=[])
+        bound, errors = mod.release_online(self.root, fetch=fetch)
+        self.assertEqual(bound, 0)
+        self.assertIn("gate going dark", errors[-1])

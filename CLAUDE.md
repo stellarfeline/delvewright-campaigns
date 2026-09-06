@@ -50,6 +50,17 @@ engine's text.
   that the revision string stands only in `versions.toml` and in the sites the
   registry declares for a pin holding it (markdown is prose to pin discovery,
   and a skill page is not prose — it is a procedure somebody executes).
+  It also holds `[engine].release`, the release whose archive Init downloads
+  (ADR-0023 makes the archive the default acquisition and the source build the
+  floor). That is not a fourth pin and carries no registry entry: it is a NAME
+  for the same revision arriving by the other channel, since the archive on the
+  shelf is `authoring_ref` as the engine's CI built it. `--online` is what says
+  so — the tag must resolve, through the GitHub API, to exactly `authoring_ref`,
+  and the release must carry an archive for every target the ENGINE declares at
+  that tag, read from there and never copied here. A tag resolving anywhere else
+  means downloading and building hand out two different compilers while the page
+  claims one; the page carries no release literal, for the same reason it
+  carries no revision literal.
   `engine-authoring` is also the one pin that decides a VERDICT rather than
   being judged: `tools/check-skill-version.py` materialises the engine at that
   revision and holds the skill page's whole declaration to it — the `requires:`
