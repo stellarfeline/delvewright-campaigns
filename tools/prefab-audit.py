@@ -2,10 +2,10 @@
 """Audit every `.nbt` in this repository, one AUDITED UNIT at a time.
 
 This is the whole of the `prefab palette audit` gate. The workflow builds
-`delve-admit` and calls this script; nothing about the check lives in the
+`delvec` and calls this script; nothing about the check lives in the
 workflow YAML, so a creator runs exactly what CI runs:
 
-    python3 tools/prefab-audit.py --bin <path to delve-admit>
+    python3 tools/prefab-audit.py --bin <path to delvec>
 
 # The audited set is DISCOVERED, never listed
 
@@ -40,7 +40,7 @@ as one `.nbt` beside its metadata `.json`, and the `.nbt` is the unit.
 
 A zone past that cap ships as SEVERAL `.nbt` plus one metadata `.json` carrying
 a `structure_set`, and there is no single `.nbt` anywhere. For that zone the
-**manifest is the unit**: `delve-admit audit` reads every tile it names and
+**manifest is the unit**: `delvec prefab audit` reads every tile it names and
 returns one verdict over the whole zone. Handing the tool one tile instead is
 refused (`DW0739`) rather than answered, because a verdict over a fifth of a
 building reads as a verdict about the building.
@@ -69,9 +69,9 @@ carries the blocks — or it is some other document such as `pools.json`, a zone
 program, or a report.
 
 What this gate does NOT cover, stated so nobody has to infer it: objects that
-are not `.nbt` structures — the campaign zone PROGRAMS (`delve-grammar audit`,
+are not `.nbt` structures — the campaign zone PROGRAMS (`delvec grammar audit`,
 the `zone program audit` workflow) and the catalog cards under `catalog/`
-(`delve-admit catalog`). Those are other gates over other objects. There is no
+(`delvec prefab catalog`). Those are other gates over other objects. There is no
 directory anywhere that this gate declines to walk, and nothing is left out for
 sitting somewhere: the only thing that removes a `.nbt` from the audited set is
 git disowning it, and that is printed by name every run.
@@ -96,8 +96,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-# The tile name `split::part_filename` gives a tile of a set. `delve-admit`
-# recognises a tile by this name too (DW0739) — it is carried by the bytes
+# The tile name `split::part_filename` gives a tile of a set. `delvec prefab
+# audit` recognises a tile by this name too (DW0739) — it is carried by the bytes
 # through any copy or rename of the directory.
 TILE_RE = re.compile(r"^(?P<base>.+)\.x(?P<x>\d+)y(?P<y>\d+)z(?P<z>\d+)\.nbt$")
 
@@ -279,7 +279,7 @@ def enumerate_units(
 
 
 def audit(binary: Path, unit: Path, reports: Path | None, name: str) -> tuple[int, str]:
-    cmd = [str(binary), "audit", str(unit)]
+    cmd = [str(binary), "prefab", "audit", str(unit)]
     if reports is not None:
         reports.mkdir(parents=True, exist_ok=True)
         # Named by the unit's PATH, not its basename. Once the audited set spans
@@ -312,7 +312,7 @@ def emit(msg: str, github: bool) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--bin", required=True, type=Path, help="the `delve-admit` binary")
+    ap.add_argument("--bin", required=True, type=Path, help="the `delvec` binary")
     ap.add_argument(
         "--root",
         default=None,
@@ -335,7 +335,7 @@ def main() -> int:
     args = ap.parse_args()
 
     if not args.bin.is_file():
-        emit(f"no delve-admit binary at {args.bin}", args.github)
+        emit(f"no delvec binary at {args.bin}", args.github)
         return 2
     root = (args.root or default_root()).resolve()
     if not root.is_dir():

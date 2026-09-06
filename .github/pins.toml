@@ -16,135 +16,93 @@
 
 [[pin]]
 id = "admit-ref"
-value = "66906e395eb7517a8b5f7b104223877c4aa7e8ba"
+value = "ed39b9c73008ed980e77e1c28a358c297649d282"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
-policy = "track"
+policy = "held"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "66906e395eb7517a8b5f7b104223877c4aa7e8ba"
-builds = ["delvewright-admit"]
+reviewed = "ed39b9c73008ed980e77e1c28a358c297649d282"
 vendors = ["tools/check-pins.py"]
 why = """
-WHAT THIS PIN IS. The pipeline commit `delve-admit` — the audit every piece in
-this repository must pass — is built from. It is an INSTRUMENT: its verdicts
-decide what enters the library, so it is pinned rather than floating, and its
-currency is judged rather than assumed.
+WHAT THIS PIN IS. The pipeline command `delvec prefab audit` — the audit every
+piece in this repository must pass — is built from. It is an INSTRUMENT: its
+verdicts decide what enters the library, so it is pinned rather than floating,
+and its currency is judged rather than assumed. It is judged as one unit with
+`.github/workflows/prefab-audit.yml`, the site that builds it, rather than
+re-pinned on every upstream merge: the question this pin answers is "does the
+library still admit clean by the pinned judge", not "is this the upstream tip".
 
-HOW IT MOVES. Deliberately, and only in a change that says what interval it
-judged. `value` is the revision the tool is BUILT from; `reviewed` is the
-revision its upstream history has been JUDGED against. They answer different
-questions and are allowed to differ: they differ when the newer instrument is
-one this library cannot adopt yet, and they agree when the judgement's
-conclusion is that the newer instrument is the one this library should be held
-to.
+WHAT THE JUDGE IS BUILT FROM, and why no closure is stated. ADR-0023 folded the
+standalone `delve-admit` binary into one creator binary, `delvec`, whose
+subcommand tree also carries `validate`/`build`/`snapshot`/`render` and every
+other surface ADR-0012 lists. `cargo build -p delvec --bin delvec` therefore
+compiles the whole workspace — `crates/dsl`, `crates/compiler`, `crates/schem`,
+`crates/admit`, `crates/grammar`, `crates/orchestrator`, `crates/render` are all
+linked into the one binary this site builds, regardless of which subcommand a
+run invokes. The prior scoped closure (admit's own subcommand pulling in
+schem/grammar/orchestrator/dsl but never compiler) was a fact about
+`delvewright-admit`'s narrower dependency graph, and it no longer holds now
+that the site builds `delvec`: naming a closure here would claim a precision
+the build no longer has. This is the strongest form of the case for `held`
+over `track` — a per-merge watch over "the whole workspace" is exactly the
+absurd, always-red watch `engine-authoring`'s own entry refuses to derive, and
+`delvec` now puts every `admit-ref` site in that same shape.
 
-WHY DRIFT IS A FINDING HERE, and is not one for `engine-authoring` next door.
-`builds` names the package the site builds out of the pinned checkout, and this
-site really does build one, so the drift half derives a watch set and reds when
-those sources move since `reviewed`. That is not friction to be removed: this
-interval is the demonstration. The newer instrument REFUSES three of this
-library's audited units, and had drift been silent the repository would have
-carried three unauditable pieces with nothing anywhere saying so.
+THE METHOD an offline reader should expect from a DW-code count, stated once
+because it stops applying here rather than because it changed: `grep -aoE
+'DW[0-9]{4}'` over built bytes, never `strings` (the literals live in a packed
+string table `strings` splits between them, so it under-reports). Reading it
+off `delvec` counts every DW code in the whole pipeline the binary links, not
+the audit subcommand's own — a fact about the one-binary shape, not a
+regression in the count.
 
-WHAT A JUDGEMENT OF THIS PIN LOOKS AT, and it is much narrower than the red. The
-watch set is the package's path-dependency CLOSURE — `crates/admit`,
-`crates/schem`, `crates/grammar`, `crates/orchestrator`, `crates/compiler`,
-`crates/dsl` — because `delvewright-admit` links the whole pipeline in order to
-serve its other subcommands. This gate builds that binary for ONE of them,
-`delve-admit audit`, and that subcommand reads the palette allowlist and the
-code-injection forbid out of `crates/schem`, the settling and spatial-contract
-checkers out of `crates/grammar`, the footprint-class rule and the metrics table
-it consults out of `crates/dsl`, and NOTHING out of `crates/compiler` — the
-compiler is reached only from the `gallery` subcommand's Brigadier validation,
-which this workflow never invokes. So a red naming commits that all landed in
-`crates/compiler` is a correct statement about the closure and says nothing yet
-about a verdict; the closure is deliberately not narrowed, because narrowing a
-watch to dodge a red is the defect, and a wide watch that is understood costs
-one reading. `crates/admit`'s OTHER subcommands reach further than `audit` does,
-and `lighting` reaches furthest — `crate::light` names `delvewright_schem::nav`
-and `delvewright_compiler::light`, neither on the audit path — so a judgement
-asks which SUBCOMMAND a moved file is reached from: "the crate changed" and "the
-gate changed" are different facts.
+WHAT THE STANDING AUDIT RULE FOUND, and it is unchanged by this move.
+`license.generated_by` requires a `region` field — `[x, y, z]`, the box the
+program was expanded over, an independent input because the same program at
+the same seed over a different box is a different building. This library's
+three programs that carry a `generated_by` block — `gatehouse_elevations`,
+`signal_station`, `mill_race` — carry the field the newer `GeneratedBy` struct
+requires; nothing about that adoption changes here.
 
-THE METHOD, which two corrections have shaped. Judges are built COLD, both of
-them: `tools/worktree-new.sh` clones a donor's `target/` by default, and a judge
-built on cloned artifacts does not hash-reproduce against one built from
-scratch, so a reproduction claim taken from two clone-donor worktrees of one
-donor is a claim about the donor. And the binaries' `DW` codes are read straight
-out of the bytes (`grep -aoE 'DW[0-9]{4}'`), never with `strings`: the literals
-live in a packed string table that `strings` splits between them, so it
-under-reports and both binaries agree at the wrong number.
+WHAT THIS MOVE DID, and what was measured for it. Two things landed together,
+because upstream put them in the same interval: `tools/check-pins.py` gains
+`held` (this pin's own policy), and ADR-0023 retires the `delve-admit` binary
+this site built, so moving to an engine that carries `held` at all forces the
+same move past the retirement. `delvec` was built fresh (`cargo build -p delvec
+--bin delvec --release`, exit 0, from a detached worktree at this pin's value,
+`cargo 1.97.1` / `rustc 1.97.1`) and `delvec prefab audit --help` was read
+directly off that binary to confirm the surface `delve-admit audit` exposed
+survives unchanged under `delvec prefab audit` — same arguments
+(`<NBT>`, `--allowlist`, `-o`/`--report`), no `--prefabs` consulted by the audit
+path. `tools/prefab-audit.py` was updated to invoke that shape and then run
+against the whole repository with the fresh binary: 39 audited units over 39
+in-scope `.nbt` files, PASS 39 of 39 at exit 0 — the same count and verdict the
+library held before this move, so the binary rename changed nothing about what
+is admitted. `.github/workflows/prefab-audit.yml`'s build and invoke steps move
+to `delvec` alongside the pin, for the same reason: a pin whose site still
+named a binary the pinned revision no longer produces would not build at all.
 
-THE PRIOR INTERVAL, `968f7d87..8abcd1ac`, and the instrument really moved.
-Three commits landed. `8c0485f7` reaches `crates/` not at all. `d95ecdd6` and
-`8abcd1ac` move 14 source files ON the audit path — `crates/admit`'s `cli`,
-`light`, `main` and `meta`, six of `crates/dsl`'s and four of
-`crates/grammar`'s — plus 13 in `crates/compiler`. `crates/schem` and
-`crates/orchestrator` are byte-identical. This is the shape the closure was NOT
-going to produce most often: the tool itself changed. That interval's judgement
-found the newer instrument REFUSING three of this library's audited units —
-`demos/gatehouse-elevations/gatehouse.nbt`,
-`demos/guard-exhaustion/signal-station.nbt` and
-`demos/mill-race/mill-race.nbt` — moving those three report files' verdict from
-`pass` to `fail` and their contract state from `undeclared` to `refused`, with
-`DW0783` changing tier from warning to error on exactly those three. THE CAUSE,
-localised rather than guessed: `license.generated_by` gained a required
-`region` field — `[x, y, z]`, the box the program was expanded over, an
-independent input because the same program at the same seed over a different
-box is a different building. The three refused documents were the only ones in
-this repository that carried a `generated_by` block at all, which is why
-nothing else moved: no `prefabs/*.json` declares one. The pin was held at
-`968f7d87` while `reviewed` recorded `8abcd1ac` as judged but not yet adoptable
-— the library adopts first and the pin follows, not that nobody looked.
+WHY THIS PIN IS `held` AND NOT `track`. `value` is the revision the tool is
+BUILT from; `reviewed` is the revision its upstream history has been JUDGED
+against; the two are allowed to differ while a newer instrument is not yet
+adoptable, and agree once the judgement's conclusion is that the newer
+instrument is the one this library should be held to, which is where they
+stand now. A `track` pin's per-merge red is the wrong shape for this site: with
+the whole workspace now in scope, it would red on any upstream merge at all,
+and `builds = []` cannot silence it honestly because the site really does build
+`delvec`. `held` carries no `builds` at all — there is no watch set to derive —
+and instead demands `judged_by`, `reviewed` and this `why`, so a hold is
+deliberate and not silent: `judged_by` names the workflow that actually builds
+this pin's value, `reviewed` names the upstream commit the judgement above
+read, and this text says what interval was judged and what it found. Upstream
+drift past `value` is not a finding under this policy; the library adopts what
+a newer instrument requires first, and the pin follows.
 
-THE ADOPTION, performed against the candidate `66906e39` (one commit past
-`8abcd1ac`, `fix(tools): a worktree whose branch holds no work is reclaimed`,
-which touches no file in the watch closure and so changes nothing this pin
-judges): each of the three programs — `gatehouse_elevations`,
-`signal_station`, `mill_race` — was re-expanded from its own
-`*.program.json` at the region its `provenance` sentence already named (`delve-
-grammar expand --file … --region … --seed 1 --id …`, the successful invocation
-`demos/guard-exhaustion/boundary.txt` and `demos/mill-race/runs.txt` already
-record for the other two), built against `delve-grammar`/`delve-admit` at
-`66906e39`. All three `.nbt` files came back gunzip-identical, sha256 for
-sha256, to the committed bytes — ADR-0006 held, nothing about the buildings
-changed. The metadata regained the `region` field the newer `GeneratedBy`
-struct now requires (`params` and `roles` stayed absent: no override was passed
-to any of the three), and only that field plus the auto-written provenance
-sentence differ in each `<id>.json`.
-
-MEASURED RATHER THAN ARGUED, and the measurement is why this pin now moves.
-Two judges from two `--no-clone` detached worktrees, cold, under the pinned
-toolchain — `cargo 1.97.1` and `rustc 1.97.1` reported by each tree, each
-build's exit asserted on its own line, 0 and 0 — one at `968f7d87` (the old
-`value`), one at `66906e39` (the candidate). `tools/prefab-audit.py` with each
-over the whole repository, post-adoption: 39 audited units over 39 in-scope
-`.nbt` files under both, and both PASS 39 of 39 at exit 0 — the three
-previously-refused units audit clean under the candidate now that their
-metadata carries what it requires. The binary-level facts from the prior
-judgement still hold and were re-checked directly against `66906e39` rather
-than assumed forward: `grep -aoE 'DW[0-9]{4}'` over the built bytes finds 22
-distinct codes in the `968f7d87` binary and 23 in the `66906e39` binary, the
-addition being `DW0804`; `crates/schem` and `crates/orchestrator` remain
-byte-identical between the two revisions.
-
-SO THE PIN MOVES TO `66906e39` for both `value` and `reviewed`: the judgement's
-conclusion is that the newer instrument is the one this library should be held
-to, now that the library adopts what it requires. This is the property the pin
-is held for: it is the newest instrument every piece in this library audits
-clean by, and the newest reviewed history agrees with it.
-
-WHAT WOULD END THE RE-READING, and it is not available in this repository. The
-compiler-only case — a `crates/compiler` commit moving the watch closure while
-reaching no rule this gate applies — costs a full interval reading every time
-and never changes a verdict. Expressing "this pin moves deliberately and
-upstream drift is not a finding" needs a policy value that does not exist:
-`builds = []` is refused by name here, because the site really builds
-`delvewright-admit` and silencing that guard would mean rewording the build
-command, which is narrowing a watch to dodge a red. The vocabulary lives in
-`tools/check-pins.py`, which this entry's own `vendors` key declares a verbatim
-copy of the engine's — `tools/check-vendored.py` reds on a local edit — so the
-line is written in the engine and arrives here as a re-vendor and a re-pin.
+WHAT THE VENDORED COPY IS. `tools/check-pins.py` — this file's own checker — is
+declared in `vendors`: it is ONE tool with two copies, this repository's is
+verbatim, and `tools/check-vendored.py` reds on a local edit. The `held` policy
+itself is written in the engine and arrives here as a re-vendor and a re-pin,
+never maintained twice.
 """
 
 [[pin]]
