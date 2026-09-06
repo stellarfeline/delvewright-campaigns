@@ -4,13 +4,14 @@ name: prefab palette audit
 # that needs it, and "the NBT palette audit gates the prefab half in CI". This is
 # that gate for the content repo.
 #
-# The audit tool (`delve-admit`) is GPL pipeline code and lives in the *main*
-# repo (delvewright). It is built from a PINNED main SHA so that the rules a
-# piece is held to are the ones one reviewed commit carries, and a moving ref
-# cannot change them underneath the library. Bumping the pin is a deliberate,
-# reviewed change — and, because a pin nobody looks at is invisible, the pin is
-# registered in `.github/pins.toml` and judged by `tools/check-pins.py` in this
-# same job, immediately before the tool is built from it.
+# The audit tool (`delvec prefab audit`) is GPL pipeline code and lives in the
+# *main* repo (delvewright). It is built from a PINNED main SHA so that the
+# rules a piece is held to are the ones one reviewed commit carries, and a
+# moving ref cannot change them underneath the library. Bumping the pin is a
+# deliberate, reviewed change — and, because a pin nobody looks at is
+# invisible, the pin is registered in `.github/pins.toml` and judged by
+# `tools/check-pins.py` in this same job, immediately before the tool is built
+# from it.
 #
 # THE AUDIT'S UNIT IS A PIECE, NOT A FILE. A zone past the structure-template cap
 # ships as several `.nbt` tiles under one `.json` manifest, and both settling
@@ -71,7 +72,7 @@ env:
   # `admit-ref` in `.github/pins.toml` is where its policy lives, and
   # `tools/check-pins.py` is what holds it to that policy — a comment here
   # cannot, because nothing reads a comment.
-  ADMIT_REF: 66906e395eb7517a8b5f7b104223877c4aa7e8ba
+  ADMIT_REF: ed39b9c73008ed980e77e1c28a358c297649d282
 
 jobs:
   audit:
@@ -162,7 +163,7 @@ jobs:
       #
       # Full depth, because the next step asks what landed after this pin and a
       # shallow clone cannot answer it. The question is text-only.
-      - name: check out delve-admit source (main repo, pinned)
+      - name: check out delvec source (main repo, pinned)
         uses: actions/checkout@v4
         with:
           repository: stellarfeline/delvewright
@@ -284,11 +285,13 @@ jobs:
           workspaces: admit-src
           key: admit-${{ env.ADMIT_REF }}
 
-      # Build only the admit crate (+ its path deps schem/orchestrator), not the
-      # whole workspace — keeps the gate cheap.
-      - name: build delve-admit
+      # ADR-0023 folded `delve-admit` into the one creator binary, `delvec`, so
+      # `delvec prefab audit` is now what this gate builds and runs; there is no
+      # narrower package to build it from, since `delvec` links the whole
+      # pipeline (ADR-0012's own subcommand tree, view/render included).
+      - name: build delvec
         working-directory: admit-src
-        run: cargo build -p delvewright-admit --bin delve-admit --release
+        run: cargo build -p delvec --bin delvec --release
 
       # One audited unit at a time, with the binding count printed: which roots
       # the walk discovered, how many single-file prefabs and how many tiled
@@ -305,7 +308,7 @@ jobs:
       - name: audit every `.nbt` in the repository
         run: |
           python3 tools/prefab-audit.py \
-            --bin admit-src/target/release/delve-admit \
+            --bin admit-src/target/release/delvec \
             --reports "${RUNNER_TEMP}/prefab-audit-reports" \
             --github
 

@@ -72,17 +72,33 @@ def commit(repo: Path, rel: str, body: str, message: str) -> str:
     return git(repo, "rev-parse", "HEAD")
 
 
-def registry(value: str, *, reviewed: str | None, vendors: str | None) -> str:
-    """One `track` entry, with the two fields under test made optional."""
+def registry(
+    value: str,
+    *,
+    reviewed: str | None,
+    vendors: str | None,
+    policy: str = "track",
+    builds: str = "[]",
+) -> str:
+    """One entry, with the fields under test made optional.
+
+    Defaults to a `track` pin with an empty `builds` — deliberately the SAME
+    shape `admit-ref`'s own registry entry no longer has, but `engine-
+    authoring`'s does: no closure to derive a watch from. Most tests here are
+    about the byte-identity half and never look at `builds`; the two that do
+    (`ByteIdentityAloneIsSatisfiedByNeverLooking`) override it to say which
+    shape they mean.
+    """
     lines = [
         "[[pin]]",
         'id = "admit-ref"',
         f'value = "{value}"',
         'sites = [".github/workflows/audit.yml"]',
         'repo = "example/upstream"',
-        'policy = "track"',
-        'builds = []',
+        f'policy = "{policy}"',
     ]
+    if policy != "held":
+        lines.append(f"builds = {builds}")
     if vendors is not None:
         lines.append(f"vendors = [{vendors}]")
     if reviewed is not None:
@@ -114,6 +130,8 @@ class Fixture(unittest.TestCase):
         reviewed: str | None = _KEEP,
         vendors: str | None = f'"{VENDORED}"',
         track: bool = True,
+        policy: str = "track",
+        builds: str = "[]",
     ) -> None:
         (self.local / ".github").mkdir(parents=True, exist_ok=True)
         (self.local / ".github" / "pins.toml").write_text(
@@ -121,6 +139,8 @@ class Fixture(unittest.TestCase):
                 value or self.rev1,
                 reviewed=(value or self.rev1) if reviewed is _KEEP else reviewed,
                 vendors=vendors,
+                policy=policy,
+                builds=builds,
             ),
             encoding="utf-8",
         )
@@ -202,11 +222,21 @@ class AVendoredFileIsTheUpstreamFile(Fixture):
 
 
 class ByteIdentityAloneIsSatisfiedByNeverLooking(Fixture):
-    """The half that expires, and the reason the pin is not enough on its own."""
+    """The half that expires, and the reason the pin is not enough on its own.
+
+    A real watched closure (`builds` non-empty) throughout this class, so
+    "moved" really is a finding here — the exempt shapes (`held`, and `track`
+    with an empty `builds`) get their own class below.
+    """
 
     def test_a_source_that_moved_after_reviewed_is_a_finding(self) -> None:
         commit(self.upstream, VENDORED, BODY_V2, "v2 upstream")
-        self.lay_local(body=BODY_V1, value=self.rev1, reviewed=self.rev1)
+        self.lay_local(
+            body=BODY_V1,
+            value=self.rev1,
+            reviewed=self.rev1,
+            builds='["example-pkg"]',
+        )
         r = self.run_check("--checkout", f"admit-ref={self.upstream}")
         self.assertEqual(r.returncode, 1, r.stdout)
         self.assertIn("changed the vendored source(s) upstream", r.stderr)
@@ -216,15 +246,61 @@ class ByteIdentityAloneIsSatisfiedByNeverLooking(Fixture):
     def test_an_untouched_source_passes(self) -> None:
         """Both directions: an unrelated upstream commit is not a finding."""
         commit(self.upstream, "README.md", "unrelated\n", "unrelated")
-        self.lay_local(body=BODY_V1, value=self.rev1, reviewed=self.rev1)
+        self.lay_local(
+            body=BODY_V1,
+            value=self.rev1,
+            reviewed=self.rev1,
+            builds='["example-pkg"]',
+        )
         r = self.run_check("--checkout", f"admit-ref={self.upstream}")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
     def test_a_missing_reviewed_is_a_finding(self) -> None:
-        self.lay_local(reviewed=None)
+        self.lay_local(reviewed=None, builds='["example-pkg"]')
         r = self.run_check("--checkout", f"admit-ref={self.upstream}")
         self.assertEqual(r.returncode, 1, r.stdout)
         self.assertIn("carries no `reviewed`", r.stderr)
+
+
+class DriftIsInformationWhenThePinsOwnPolicySaysSo(Fixture):
+    """`check-pins.py --online` already treats these two shapes as "not a
+    finding" for the SAME registry entry's build closure — a `held` pin
+    (admit-ref, since PR #693), and a `track` pin with no `builds` to derive
+    a watch from (engine-authoring). `check-vendored.py` disagreeing about the
+    identical entry is the defect PR #139 surfaced; both directions below.
+
+    Byte-identity itself is never exempt — both tests here also assert the
+    copy is reported identical, so the exemption is provably about the DRIFT
+    arm alone.
+    """
+
+    def test_held_pins_drift_is_information_not_a_finding(self) -> None:
+        commit(self.upstream, VENDORED, BODY_V2, "v2 upstream")
+        self.lay_local(
+            body=BODY_V1, value=self.rev1, reviewed=self.rev1, policy="held"
+        )
+        r = self.run_check("--checkout", f"admit-ref={self.upstream}")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("identical to", r.stdout)
+        self.assertIn("information only, not a finding", r.stdout)
+        self.assertNotIn("FINDING", r.stderr)
+
+    def test_track_pin_with_empty_builds_drift_is_information_not_a_finding(
+        self,
+    ) -> None:
+        commit(self.upstream, VENDORED, BODY_V2, "v2 upstream")
+        self.lay_local(
+            body=BODY_V1,
+            value=self.rev1,
+            reviewed=self.rev1,
+            policy="track",
+            builds="[]",
+        )
+        r = self.run_check("--checkout", f"admit-ref={self.upstream}")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("identical to", r.stdout)
+        self.assertIn("information only, not a finding", r.stdout)
+        self.assertNotIn("FINDING", r.stderr)
 
 
 class ItCannotPassByComparingNothing(Fixture):
