@@ -54,9 +54,21 @@ The last is what keeps the guarantee alive between re-pins. Byte-identity agains
 a pinned revision is satisfied forever by never looking; the upstream watch is
 what turns "the source moved and this copy did not" into a red. It is the same
 demand `check-pins.py` makes of a `track` pin's sources, asked of the paths this
-repository copies rather than the packages it builds.
+repository copies rather than the packages it builds — and it is asked THE SAME
+WAY: a pin whose own policy already says upstream drift is not a finding
+(`held`, or `track` with no `builds` to derive a watch from) prints the moved
+commits as information here too, exactly as `check-pins.py --online` does for
+the identical registry entry. Two checks that read one registry and disagree
+about whether one entry's drift is a finding is the defect a shared rule
+removes; this script cannot import `check-pins.py` (that file is vendored,
+this one is not, and nothing may sit across that boundary), so the rule is
+restated here rather than shared, and it is restated as a PROPERTY of the pin
+— `policy` and `builds`, both already in the registry — never a name.
 
-There is no acknowledgement, no override and no per-file exemption, deliberately.
+Byte-identity itself is exempt from none of this: whether the drift above is
+news or a finding, the bytes here either match the pinned `value` or they do
+not, always. There is no acknowledgement, no override and no per-file exemption
+for THAT half, deliberately.
 A vendored path that cannot be compared is a red, not a skip — an absent
 checkout, a missing file on either side, or a registry that declares nothing to
 vendor all fail. A binding of zero is a finding, because "nobody declared
@@ -116,6 +128,36 @@ def digest(data: bytes) -> str:
 def tracked_here(root: pathlib.Path) -> set[str]:
     out = git_bytes(root, "ls-files", "-z").decode("utf-8")
     return {rel for rel in out.split("\0") if rel}
+
+
+def upstream_drift_is_finding(pin: dict) -> bool:
+    """Whether commits since `reviewed` touching a VENDORED path are a finding,
+    or only information — asked the same way `check-pins.py --online` already
+    asks it of the SAME registry entry's build closure, so the two checks agree
+    about one pin instead of disagreeing about it.
+
+    `held`: the policy's whole point is that upstream drift is judged as one
+    unit with the site that builds it, not per commit — `check-pins.py`'s own
+    online arm prints this drift as information, never a finding, and this
+    watch must say the same thing about the same entry.
+
+    `track` with no `builds`: `check-pins.py`'s online arm already treats an
+    empty `builds` as "the site builds nothing from this checkout, so no
+    sources are watched" — not a finding — because the entry itself declares
+    there is no closure to derive a watch from. A `vendors` declaration that
+    exists on such an entry is still watched for byte-identity (that half has
+    no exemption); only the "moved since reviewed" question follows `builds`.
+
+    Every other combination keeps the finding: a `track` entry with a real
+    `builds` really does derive a watch, and `release`/`immutable`/`floating`
+    carry no such exemption at all.
+    """
+    policy = pin.get("policy")
+    if policy == "held":
+        return False
+    if policy == "track" and not pin.get("builds"):
+        return False
+    return True
 
 
 def main() -> int:
@@ -277,7 +319,7 @@ def main() -> int:
         moved = git_text(
             repo, "log", "--oneline", f"{reviewed}..{head}", "--", *vendors
         ).splitlines()
-        if moved:
+        if moved and upstream_drift_is_finding(pin):
             listed = "".join(f"      {line}\n" for line in moved[:20])
             more = f"      … and {len(moved) - 20} more\n" if len(moved) > 20 else ""
             errors.append(
@@ -292,6 +334,24 @@ def main() -> int:
                 f"commit that\n"
                 f"      carries them, re-vendor {', '.join(vendors)}, and set "
                 f"`reviewed`."
+            )
+        elif moved:
+            listed = "".join(f"      {line}\n" for line in moved[:20])
+            more = f"      … and {len(moved) - 20} more\n" if len(moved) > 20 else ""
+            policy = pin.get("policy")
+            reason = (
+                "held deliberately at its own value; drift is not a finding "
+                "for this policy"
+                if policy == "held"
+                else "this entry's `builds` is empty, so there is no closure "
+                "to watch and no per-commit finding to derive from it"
+            )
+            print(
+                f"  ---  {pid}: {len(moved)} commit(s) have changed the vendored "
+                f"source(s) upstream since {reviewed[:8]} — information only, "
+                f"not a finding ({reason}):\n"
+                + listed
+                + more
             )
         else:
             print(
