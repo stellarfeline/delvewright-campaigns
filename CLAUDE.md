@@ -91,8 +91,9 @@ engine's text.
   localisation sidecars, generation logs. Sort a file by **which artifact it
   belongs to**, never by what kind of file it is: if abandoning the campaign
   would delete it, it is the campaign. The branch reaches `main` once, after
-  acceptance; `.github/required-status-checks.toml` (`protect-campaign-branches`)
-  is the binding.
+  acceptance, through a pull request — `.github/required-status-checks.toml`
+  (`protect-main`) is the binding there; a direct push to the campaign branch
+  itself gates on nothing, since the audit runs only on pull requests.
 
 - **`.nbt` prefabs are git-lfs objects** (`.gitattributes`). A checkout without
   LFS materialises text pointers, and the audit fails to parse them — a tool

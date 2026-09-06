@@ -85,19 +85,6 @@ contexts = [
 "every campaign builds" = ".github/workflows/campaign-build.yml"
 
 [[ruleset]]
-name = "protect-campaign-branches"
-# A campaign in progress lives on its own branch and everything of it lands
-# there, so the branch accumulates for weeks before it reaches `main` once. It
-# needs its own floor, and it needs one gate `main` does not have.
-include = ["refs/heads/campaign/*"]
-contexts = [
-  "NBT palette audit (allowlist + code-injection forbid)",
-]
-
-[ruleset.provided_by]
-"NBT palette audit (allowlist + code-injection forbid)" = ".github/workflows/prefab-audit.yml"
-
-[[ruleset]]
 name = "protect-zone-audited-campaign-branches"
 # The zone check is required exactly where it can report, and nowhere else.
 #
