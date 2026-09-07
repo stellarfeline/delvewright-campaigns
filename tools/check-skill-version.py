@@ -390,8 +390,37 @@ def parenthetical_flags(markdown: str) -> list[tuple[str, list[str]]]:
     return out
 
 
-def invocations(spans: list[str]) -> list[tuple[str | None, list[str]]]:
+def invocations(
+    spans: list[str], globals_: set[str], subcommands: set[str]
+) -> list[tuple[str | None, list[str]]]:
     """`(subcommand | None, [long flags])` for every `delvec …` span occurrence.
+
+    `globals_` and `subcommands` are the NORMALIZED names the CLI parse found;
+    both are needed to say where the subcommand is, which is the next
+    paragraph.
+
+    **A GLOBAL OPTION MAY STAND IN FRONT OF THE SUBCOMMAND, and on this page one
+    usually does.** `--prefabs` is global, and the skill's own step-3 section
+    exists to say it "goes before the subcommand" on every invocation that reads
+    a piece — so `delvec --prefabs prefabs analyze <dir>` is the commonest shape
+    the page writes. Reading the token straight after `delvec` therefore found a
+    flag rather than a word and yielded no subcommand at all, and check 4 never
+    looked at any of them: measured on the page at the revision this was written
+    against, 19 invocations over ten distinct subcommands went unchecked, and a
+    planted `delvec --prefabs prefabs vieweer` was green. So the walk skips
+    leading globals first.
+
+    Arity is not in the parsed surface — `parse_cli` returns names, not whether
+    an option takes a value — so the discriminator for "is this token the
+    option's value or the subcommand" is what the token IS: a token naming a
+    real subcommand is the subcommand, anything else after a global is its
+    value. The one thing that can get wrong is a global whose value is spelled
+    exactly like a subcommand, and that reads a genuine subcommand name as the
+    subcommand: it can only ever MISS a finding, never invent one.
+
+    The walk stops at `#` and at the next `delvec`, because a fenced command
+    carries its own trailing comment (`delvec --version   # delvec <x.y.z>, …`)
+    and consuming across one reads the comment's words as arguments.
 
     `None` is a bare mention (`` `delvec` ``, `` `delvec --version` ``): its
     flags are still held against the globals. A token that is not a lowercase
@@ -426,10 +455,27 @@ def invocations(spans: list[str]) -> list[tuple[str | None, list[str]]]:
             rest = tokens[i + 1 :]
             if rest and rest[0] == "--":  # `cargo run … --bin delvec -- schema`
                 rest = rest[1:]
+            limit = len(rest)
+            for j, tok in enumerate(rest):
+                if tok == "delvec" or tok.startswith("#"):
+                    limit = j
+                    break
+            head = 0
+            while head < limit:
+                m = LONG_FLAG_RE.match(rest[head].strip("`,.;:()[]'\""))
+                if m is None or normalize(m.group("name")) not in globals_:
+                    break
+                head += 1
+                if (
+                    head < limit
+                    and not rest[head].startswith("-")
+                    and normalize(rest[head]) not in subcommands
+                ):
+                    head += 1
             sub: str | None = None
-            if rest and SUBCOMMAND_TOKEN_RE.match(rest[0]):
-                sub = rest[0]
-                rest = rest[1:]
+            if head < limit and SUBCOMMAND_TOKEN_RE.match(rest[head]):
+                sub = rest[head]
+                rest = rest[:head] + rest[head + 1 :]
             flags: list[str] = []
             for tok in rest:
                 if tok == "delvec":
@@ -817,7 +863,9 @@ def check(engine_root: Path, rev: str) -> int:
     global_norm = {normalize(f) for f in globals_}
 
     markdown = SKILL.read_text(encoding="utf-8")
-    calls: list[tuple[str | None, list[str]]] = invocations(code_spans(markdown))
+    calls: list[tuple[str | None, list[str]]] = invocations(
+        code_spans(markdown), global_norm, set(by_norm)
+    )
     calls.extend(parenthetical_flags(markdown))
     sub_refs = 0
     flag_refs = 0

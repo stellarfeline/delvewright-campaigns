@@ -353,6 +353,57 @@ class GateTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("`--stages`", err)
 
+    def test_a_subcommand_behind_a_leading_global_is_still_checked(self) -> None:
+        """The shape the page actually writes, and the one that went unchecked.
+
+        `--prefabs` is a global and the skill's step 3 exists to say it goes
+        BEFORE the subcommand, so `delvec --prefabs prefabs analyze <dir>` is
+        the commonest invocation on the page. Reading the token straight after
+        `delvec` found the flag, yielded no subcommand, and check 4 looked at
+        none of them: measured on the live page, 19 invocations over ten
+        distinct subcommands were invisible to this gate.
+        """
+        self.write_skill(
+            GOOD_FRONTMATTER,
+            SKILL_BODY.replace(
+                "`delvec validate <campaign-dir>`",
+                "`delvec --lang en rehearse <campaign-dir>`",
+            ),
+        )
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("`delvec rehearse`, which the CLI does not have", err)
+
+    def test_a_global_with_a_value_does_not_eat_the_subcommand(self) -> None:
+        """The same shape with a REAL subcommand is green, and still counted."""
+        self.write_skill(
+            GOOD_FRONTMATTER,
+            SKILL_BODY.replace(
+                "`delvec validate <campaign-dir>`",
+                "`delvec --lang en validate <campaign-dir>`",
+            ),
+        )
+        code, out, err = self.run_check()
+        self.assertEqual(code, 0, err)
+        self.assertIn(
+            "4 distinct subcommand(s) (l10n-inventory, schema, snapshot, validate)", out
+        )
+
+    def test_a_trailing_comment_is_not_read_as_arguments(self) -> None:
+        """A fenced command carries its own comment, and it is not the CLI's.
+
+        Without a stop at `#`, the walk past a boolean global consumes the
+        comment marker as that option's value and reads the next English word
+        as a subcommand: `delvec --version   # prints the version` reported
+        `delvec prints`, which the CLI does not have.
+        """
+        self.write_skill(
+            GOOD_FRONTMATTER,
+            SKILL_BODY + "\n```sh\ndelvec --version   # prints the version\n```\n",
+        )
+        code, _, err = self.run_check()
+        self.assertEqual(code, 0, err)
+
     def test_zero_binding_is_a_failure_not_a_pass(self) -> None:
         self.write_skill(GOOD_FRONTMATTER, "\nStages: `world`, `npcs`, `site-plan`.\n")
         code, _, err = self.run_check()
