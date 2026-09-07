@@ -7,8 +7,8 @@ ADR-0016 settles three independent version lines: `dsl_version` (format),
 `delvec` (engine, semver from v1.0.0), and the `/new-delve` skill (product) —
 "its own version, declared in the skill itself, together with the `delvec`
 version range it drives". Lines 1 and 2 have machinery behind them
-(`DW0141`'s per-stage fences; `crates/compiler/Cargo.toml` -> `DELVEC_VERSION`
--> `manifest.json` -> `versions.toml`). Line 3 had none: the skill's frontmatter
+(`DW0141`'s per-stage fences; the engine root's `[workspace.package] version`
+-> `DELVEC_VERSION` -> `manifest.json` -> `versions.toml`). Line 3 had none: the skill's frontmatter
 carried `name` and `description` and nothing else.
 
 A `requires:` line nobody checks is the failure class this project keeps being
@@ -48,10 +48,12 @@ WHAT IS CHECKED
    `<2.0.0` is a page declaring it does not drive the engine it sends the
    author to build.
 
-3. **`verified_with` binds by EQUALITY** to `crates/compiler/Cargo.toml`'s
-   `[package] version` — the single source `DELVEC_VERSION` derives from
-   (`env!("CARGO_PKG_VERSION")`), so this script never carries a second
-   hand-typed copy. BOTH directions are red:
+3. **`verified_with` binds by EQUALITY** to the engine root's
+   `[workspace.package] version` — ADR-0016's second version line, which every
+   crate under `crates/` inherits and which `DELVEC_VERSION` reaches through
+   `env!("CARGO_PKG_VERSION")`, so this script never carries a second hand-typed
+   copy and there is no per-crate literal left to prefer over it. BOTH
+   directions are red:
 
    - ABOVE it names a compiler that does not exist, so no run anywhere produced
      that evidence (the same falsification `check-storybook-version.py` applies
@@ -67,7 +69,7 @@ WHAT IS CHECKED
    names alongside one exists on that subcommand or is a global. This is what
    makes the window a claim about something real rather than a shrug: the range
    is a claim about a CLI surface, so the gate reads that surface out of
-   `crates/compiler/src/main.rs` (the clap `Command`/`EditAction` subcommand
+   `crates/delvec/src/main.rs` (the clap `Command`/`EditAction` subcommand
    enums and the global `Cli` args) and holds the skill's own command spans
    against it. `delvec calibrate` losing its `--layout`, or a subcommand renamed
    out from under step 9, is exactly the drift a version range is supposed to
@@ -227,14 +229,21 @@ SKILL = REPO / ".claude" / "skills" / "new-delve" / "SKILL.md"
 MANIFEST = REPO / "versions.toml"
 STATED_COUNTS = REPO / "tools" / "check-stated-counts.py"
 
-# Paths INSIDE the engine tree, materialised at `authoring_ref`. `crates/compiler/src`
+# Paths INSIDE the engine tree, materialised at `authoring_ref`. `crates/delvec/src`
 # is taken whole rather than as one file: a `#[command(flatten)]`ed subcommand enum
 # may be declared in any module of the crate, and a parse that stopped at `main.rs`
 # would report a subcommand named after the flattening variant and miss the real ones.
+#
+# The CLI lives in `crates/delvec` and the version at the WORKSPACE ROOT. ADR-0023
+# folded every creator-facing capability into one binary and moved its package out
+# of `crates/compiler`, and ADR-0016 line 2 makes the root's `[workspace.package]
+# version` the one number every crate under `crates/` inherits — so that is where
+# the engine version is read, and there is no per-crate literal left to read it
+# from. A gate reading a crate's own `[package] version` would find
+# `version.workspace = true` and no number at all.
 ENGINE_PATHS = (
-    "crates/compiler/Cargo.toml",
-    "crates/compiler/src",
-    "crates/dsl/src/envelope.rs",
+    "Cargo.toml",
+    "crates",
     "docs/reference/grammar.md",
 )
 
@@ -249,7 +258,6 @@ SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 # strict: the expected form is printed verbatim in every failure.
 RANGE_RE = re.compile(r"^>=(?P<floor>\d+\.\d+\.\d+)\s+<(?P<ceiling>\d+\.\d+\.\d+)$")
 
-CARGO_VERSION_RE = re.compile(r'(?m)^version\s*=\s*"([^"]+)"')
 
 # --------------------------------------------------------------- frontmatter --
 
@@ -301,145 +309,23 @@ def unquote(value: str) -> str:
 
 # ------------------------------------------------------------------- the CLI --
 
-# A clap subcommand enum: `#[derive(Subcommand)] enum <Name> { ... }`. Variants
-# sit at four spaces, their fields at eight — the shape rustfmt guarantees.
-ENUM_RE = re.compile(
-    r"(?ms)^#\[derive\(Subcommand\)\]\s*\n(?:pub\s+)?enum\s+(\w+)\s*\{(.*?)\n\}"
-)
-# `#[command(flatten)] View(some::path::ViewCommand),` — the flattened enum's own
-# variants ARE top-level subcommands, so a parser that stopped at the variant
-# name would report a subcommand (`view`) the CLI does not have and miss the six
-# it does. The enum may live in any module of the crate, so its declaration is
-# looked up across the crate's sources rather than in `main.rs` alone.
-FLATTEN_ATTR_RE = re.compile(r"^\s*#\[command\(flatten\)\]")
-FLATTEN_VARIANT_RE = re.compile(r"^    (?P<name>[A-Z]\w*)\((?P<ty>[\w:]+)\)")
-VARIANT_RE = re.compile(r"^    (?P<name>[A-Z]\w*)\s*(?P<open>\{)?")
-FIELD_RE = re.compile(r"^        (?P<name>[a-z]\w*)\s*:")
-ARG_ATTR_RE = re.compile(r"^\s*#\[(?:arg|clap)\((?P<body>.*)")
-EXPLICIT_LONG_RE = re.compile(r'long\s*=\s*"(?P<name>[^"]+)"')
-SUBCOMMAND_ATTR_RE = re.compile(r"^\s*#\[command\(subcommand\)\]")
-NESTED_TYPE_RE = re.compile(r":\s*(?:Option<)?(?P<name>[A-Z]\w*)")
-GLOBAL_STRUCT_RE = re.compile(r"(?ms)^struct\s+Cli\s*\{(.*?)\n\}")
-GLOBAL_FIELD_RE = re.compile(r"^    (?P<name>[a-z]\w*)\s*:")
-# The top-level subcommand enum is whatever `Cli`'s own `#[command(subcommand)]`
-# field names — everything else is a nested action set.
-TOP_ENUM_RE = re.compile(
-    r"#\[command\(subcommand\)\]\s*\n\s*command:\s*(?:Option<)?(?P<name>\w+)"
-)
+# The clap surface parser is the ENGINE's, vendored beside this file under the
+# `engine-authoring` pin and proven byte-identical by `tools/check-vendored.py`.
+# It is not re-implemented here, and the copy that used to stand in its place is
+# gone: `tools/build-release-binaries.sh` in the engine holds a BUILT binary's
+# `--help` against this same parser, so one parse rule answers for the release
+# artifact and for this page, across the repository boundary.
+#
+# The private copy is what ADR-0023 broke. `delvec`'s CPU render arms are
+# `#[command(flatten)]`ed in from `crates/compiler/src/view/cli.rs` — another
+# CRATE, not another module — so a parser scanning only the binary's own crate
+# reported 17 of the CLI's 24 subcommands and would have called `delvec scene`,
+# `panorama`, `contact-sheet`, `viewer`, `palette` and `index` commands the
+# engine does not have. This parser is written for that shape and says so.
 
+sys.path.insert(0, str(REPO / "tools"))
 
-def kebab(name: str) -> str:
-    """clap's default rename (heck's kebab-case): `L10nInventory` -> `l10n-inventory`."""
-    spaced = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "-", name)
-    spaced = re.sub(r"(?<=[A-Z])(?=[A-Z][a-z])", "-", spaced)
-    return spaced.replace("_", "-").lower()
-
-
-def normalize(name: str) -> str:
-    """Hyphen-insensitive key, so this gate never has to re-implement heck exactly.
-
-    The failure it exists to catch — the skill naming a subcommand or flag that
-    does NOT exist — is caught either way; re-deriving clap's word-boundary rules
-    would only add a way for the gate itself to be wrong.
-    """
-    return name.replace("-", "").replace("_", "").lower()
-
-
-def parse_cli(source: str) -> tuple[dict[str, set[str]], set[str]]:
-    """`{top-level subcommand: {long flags}}` and the set of global long flags.
-
-    A nested action set (`delvec edit apply|preview`) is NOT a top-level
-    subcommand — `delvec apply` does not exist — but its flags are folded into
-    its parent's allowed set, so `delvec edit apply --batch` reads correctly.
-    """
-    enums: dict[str, dict[str, set[str]]] = {}
-    nested: dict[str, dict[str, str]] = {}
-    flattened: dict[str, set[str]] = {}
-
-    for enum_name, body in ENUM_RE.findall(source):
-        variants: dict[str, set[str]] = {}
-        links: dict[str, str] = {}
-        variant: str | None = None
-        pending_long: str | None = None
-        pending_is_long = False
-        pending_subcommand = False
-        pending_flatten = False
-        for line in body.splitlines():
-            attr = ARG_ATTR_RE.match(line)
-            if attr is not None:
-                attr_body = attr.group("body")
-                explicit = EXPLICIT_LONG_RE.search(attr_body)
-                pending_is_long = bool(re.search(r"\blong\b", attr_body))
-                pending_long = explicit.group("name") if explicit else None
-                continue
-            if SUBCOMMAND_ATTR_RE.match(line):
-                pending_subcommand = True
-                continue
-            field = FIELD_RE.match(line)
-            if field is not None and variant is not None:
-                if pending_is_long:
-                    variants[variant].add(pending_long or kebab(field.group("name")))
-                if pending_subcommand:
-                    link = NESTED_TYPE_RE.search(line)
-                    if link is not None:
-                        links[variant] = link.group("name")
-                pending_long, pending_is_long = None, False
-                pending_subcommand = False
-                continue
-            if FLATTEN_ATTR_RE.match(line):
-                pending_flatten = True
-                continue
-            if pending_flatten:
-                flat = FLATTEN_VARIANT_RE.match(line)
-                if flat is not None:
-                    flattened.setdefault(enum_name, set()).add(
-                        flat.group("ty").split("::")[-1]
-                    )
-                    pending_flatten = False
-                    variant = None
-                    continue
-                pending_flatten = False
-            var = VARIANT_RE.match(line)
-            if var is not None:
-                variant = kebab(var.group("name"))
-                variants.setdefault(variant, set())
-                pending_long, pending_is_long = None, False
-                pending_subcommand = False
-        enums[enum_name] = variants
-        nested[enum_name] = links
-
-    top_name_match = TOP_ENUM_RE.search(source)
-    top_name = top_name_match.group("name") if top_name_match else "Command"
-    subcommands = {name: set(flags) for name, flags in enums.get(top_name, {}).items()}
-    for variant, child in nested.get(top_name, {}).items():
-        for flags in enums.get(child, {}).values():
-            subcommands.setdefault(variant, set()).update(flags)
-    # A flattened enum contributes its OWN variants as top-level subcommands.
-    for child in flattened.get(top_name, set()):
-        for name, flags in enums.get(child, {}).items():
-            subcommands.setdefault(name, set()).update(flags)
-
-    globals_: set[str] = set()
-    struct = GLOBAL_STRUCT_RE.search(source)
-    if struct is not None:
-        pending_long = None
-        pending_is_long = False
-        for line in struct.group(1).splitlines():
-            attr = ARG_ATTR_RE.match(line)
-            if attr is not None:
-                attr_body = attr.group("body")
-                explicit = EXPLICIT_LONG_RE.search(attr_body)
-                pending_is_long = bool(re.search(r"\blong\b", attr_body))
-                pending_long = explicit.group("name") if explicit else None
-                continue
-            field = GLOBAL_FIELD_RE.match(line)
-            if field is not None:
-                if pending_is_long:
-                    globals_.add(pending_long or kebab(field.group("name")))
-                pending_long, pending_is_long = None, False
-    # `--help` is clap's, not ours, and never appears in the enum.
-    globals_.add("help")
-    return subcommands, globals_
+from lib.clap_surface import kebab, normalize, parse_cli  # noqa: E402
 
 
 # ------------------------------------------------- what the skill claims to drive --
@@ -575,15 +461,36 @@ def engine_major_floor(version: str) -> str:
     return f"{version_key(version)[0]}.0.0"
 
 
-def engine_version(cargo_toml: Path) -> str:
-    text = cargo_toml.read_text(encoding="utf-8")
-    match = CARGO_VERSION_RE.search(text)
-    if match is None:
+def engine_version(workspace_cargo_toml: Path) -> str:
+    """The engine version, read where the engine itself keeps it.
+
+    `[workspace.package] version` at the engine's root is ADR-0016's second
+    version line: every crate under `crates/` inherits it with
+    `version.workspace = true`, `DELVEC_VERSION` reaches it through
+    `env!("CARGO_PKG_VERSION")`, and the release workflow refuses a tag whose
+    name disagrees with it. So this gate reads the ONE number rather than any
+    crate's restatement of it — there is no restatement to read.
+
+    Parsed as TOML and not by regex, because the question is which TABLE the key
+    is in: a `version = "..."` line matched anywhere in that file could belong to
+    a dependency, and a first-match regex would answer confidently about the
+    wrong one.
+    """
+    try:
+        data = tomllib.loads(workspace_cargo_toml.read_text(encoding="utf-8"))
+    except tomllib.TOMLDecodeError as exc:
         raise SystemExit(
-            f"could not read `version` from crates/compiler/Cargo.toml — the [package] "
-            "version field moved or changed shape; fix this check, do not drop the gate"
+            f"the engine's root Cargo.toml is not parseable TOML ({exc}); fix "
+            f"this check, do not drop the gate"
+        ) from exc
+    version = data.get("workspace", {}).get("package", {}).get("version")
+    if not isinstance(version, str):
+        raise SystemExit(
+            "could not read `[workspace.package] version` from the engine's root "
+            "Cargo.toml — the engine version line moved or changed shape; fix "
+            "this check, do not drop the gate"
         )
-    return match.group(1)
+    return version
 
 
 def stage_names(envelope_rs: Path) -> list[str]:
@@ -733,15 +640,21 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def supported_dsl_version(envelope_rs: Path) -> str | None:
-    """The engine's own `SUPPORTED_DSL_VERSION`, read from the crate that owns it.
+    """The engine's own `DSL_VERSION`, read from the crate that owns it.
 
     Read rather than assumed: the number is a fact about the engine at the
     authoring revision, and taking it from anywhere else -- a manifest, a
     remembered literal -- would make this check compare the page against
     something other than the engine it claims to be checked against.
+
+    `crates/dsl/Cargo.toml` names this literal as the one gates read textually,
+    and a unit test beside the constant holds it equal to that crate's package
+    version (ADR-0024: the crate that defines the format carries the format's
+    number). So the literal is the designated reader's source, not a copy this
+    gate happened to pick.
     """
     m = re.search(
-        r'pub const SUPPORTED_DSL_VERSION:\s*&str\s*=\s*"([^"]+)"',
+        r'pub const DSL_VERSION:\s*&str\s*=\s*"([^"]+)"',
         envelope_rs.read_text(encoding="utf-8"),
     )
     # Returns None rather than raising: this file's idiom for "a thing this gate
@@ -758,8 +671,8 @@ def printed_dsl_versions(skill: Path) -> list[str]:
 
 
 def check(engine_root: Path, rev: str) -> int:
-    compiler_cargo_toml = engine_root / "crates" / "compiler" / "Cargo.toml"
-    compiler_main_rs = engine_root / "crates" / "compiler" / "src" / "main.rs"
+    compiler_cargo_toml = engine_root / "Cargo.toml"
+    compiler_main_rs = engine_root / "crates" / "delvec" / "src" / "main.rs"
     envelope_rs = engine_root / "crates" / "dsl" / "src" / "envelope.rs"
 
     for path in (compiler_cargo_toml, compiler_main_rs, envelope_rs):
@@ -832,7 +745,7 @@ def check(engine_root: Path, rev: str) -> int:
             findings.append(
                 f"the authoring engine's delvec {engine} is OUTSIDE the declared window "
                 f"{declared} — the page drives an engine it says it does not drive.\n"
-                f"    engine {rev[:8]} crates/compiler/Cargo.toml [package] version "
+                f"    engine {rev[:8]} Cargo.toml [workspace.package] version "
                 f"= {engine} (== DELVEC_VERSION). Widen or move the window:\n"
                 f'      delvec: ">={engine_major_floor(engine)} '
                 f'<{version_key(engine)[0] + 1}.0.0"\n'
@@ -852,7 +765,7 @@ def check(engine_root: Path, rev: str) -> int:
         )
         findings.append(
             f"`verified_with: {verified}` is {direction}.\n"
-            f"    engine {rev[:8]} crates/compiler/Cargo.toml [package] version "
+            f"    engine {rev[:8]} Cargo.toml [workspace.package] version "
             f"= {engine} (== DELVEC_VERSION). Restamp it:\n"
             f"      verified_with: {engine}\n"
             f"    Leave `requires.delvec` alone unless the skill genuinely stopped "
@@ -862,28 +775,34 @@ def check(engine_root: Path, rev: str) -> int:
 
     # -- 4. every command the skill names exists -----------------------------
     # `main.rs` first, so its `Cli` struct decides which enum is top-level and
-    # what the globals are; then every other module of the same directory tree,
-    # because a `#[command(flatten)]`ed subcommand enum may be declared anywhere
-    # in the crate — `delvec`'s CPU render arms are in `src/view/cli.rs` — and a
-    # parser that stopped at `main.rs` would report a subcommand named after the
-    # flattening variant and miss the six that actually exist.
+    # what the globals are; then every other Rust source under `crates/`.
+    #
+    # EVERY CRATE, and that is what ADR-0023 changed. `delvec`'s surface no
+    # longer lives in one crate: `main.rs` MOUNTS the grammar, prefab, schem,
+    # harvest and render surfaces as tuple variants whose `Args` types are
+    # declared in their own crates, and it `#[command(flatten)]`s the CPU render
+    # arms in from `crates/compiler/src/view/cli.rs`. A scan of the binary's own
+    # crate alone finds 17 of the 24 subcommands and reports the other seven as
+    # commands the CLI does not have — which is exactly what it did. This is the
+    # concatenation the vendored parser documents as its input.
     #
     # The scan root is DERIVED from `compiler_main_rs` rather than named
     # separately, so that redirecting that one path redirects the whole parse.
-    # A second constant pointing at the real crate would let this gate's own
+    # A second constant pointing at the real crates would let this gate's own
     # "an unparseable CLI is a failure, not a pass" case find real enums beside
     # the stub and go green having parsed something else entirely.
+    crates_root = compiler_main_rs.parents[2]
     sources = [compiler_main_rs.read_text(encoding="utf-8")]
     sources += [
         f.read_text(encoding="utf-8")
-        for f in sorted(compiler_main_rs.parent.rglob("*.rs"))
+        for f in sorted(crates_root.rglob("*.rs"))
         if f != compiler_main_rs
     ]
     subcommands, globals_ = parse_cli("\n".join(sources))
     if not subcommands:
         print(
             "check-skill-version: FAIL — parsed 0 subcommands from "
-            f"crates/compiler/src at engine {rev[:8]}; the clap "
+            f"crates/ at engine {rev[:8]}; the clap "
             "`#[derive(Subcommand)] enum` shape this gate keys off has changed. "
             "Fix the parser, do not drop the gate",
             file=sys.stderr,
@@ -913,7 +832,7 @@ def check(engine_root: Path, rev: str) -> int:
             if key not in by_norm:
                 findings.append(
                     f"the skill drives `delvec {sub}`, which the CLI does not have.\n"
-                    f"    engine {rev[:8]} crates/compiler/src/main.rs offers: "
+                    f"    engine {rev[:8]} crates/delvec/src/main.rs offers: "
                     f"{', '.join(sorted(subcommands))}"
                 )
                 continue
@@ -1055,7 +974,7 @@ def check(engine_root: Path, rev: str) -> int:
     if supported is None:
         print(
             f"check-skill-version: FAIL — the engine at {rev[:8]} has no "
-            "`SUPPORTED_DSL_VERSION` literal in crates/dsl/src/envelope.rs. The "
+            "`DSL_VERSION` literal in crates/dsl/src/envelope.rs. The "
             "constant this check compares the page against has moved or been "
             "renamed; fix the reader, do not drop the check — skipping here would "
             "report a binding this gate never measured.",
@@ -1069,7 +988,7 @@ def check(engine_root: Path, rev: str) -> int:
             f"the page prints `dsl_version` "
             f"{', '.join(repr(v) for v in wrong)} while the engine at "
             f"{rev[:8]} supports {supported!r} "
-            f"(crates/dsl/src/envelope.rs `SUPPORTED_DSL_VERSION`). An author "
+            f"(crates/dsl/src/envelope.rs `DSL_VERSION`). An author "
             f"copies the envelope example, and a stale number there validates "
             f"green -- the fences are per-feature minimums -- so it surfaces "
             f"much later as a fence error about a document this page told them "

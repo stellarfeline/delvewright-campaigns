@@ -1,10 +1,10 @@
 ---
 name: new-delve
 description: Generate a complete playable Minecraft delve from a creative prompt — staged DSL authoring with validation-loop self-repair, deterministic compile, machine validation, joinable output. Use when the user asks to create/generate a new delve or campaign. Args = the creative prompt (theme one-liner or detailed brief).
-version: 1.10.0
+version: 1.11.0
 requires:
   delvec: ">=1.0.0 <2.0.0"
-verified_with: 1.1.0
+verified_with: 1.2.0
 ---
 
 # /new-delve — building a delve, end to end
@@ -127,7 +127,7 @@ and nothing downstream reports that.
 |---|---|---|
 | `git` | both checkouts | `git --version` |
 | `git-lfs` | **this repository's `.nbt` prefabs are LFS objects** (`.gitattributes`). A clone without it materialises text pointers, and every tool that reads a piece fails on a file that looks present | `git lfs version` |
-| Rust (stable) | every binary is built from source | `cargo --version` |
+| Rust (stable) | `rustc -vV` names this platform's target triple, which is how step 2 picks its archive; and it is the toolchain floor — `delvec` is built from source when the release carries no archive for this platform | `cargo --version` |
 | **Python 3.11+** | the checkers, the reference-image tool, the staging gate. 3.11 and not 3.10: `tomllib` is stdlib from 3.11, and reading `versions.toml` at step 2 needs it, as do three of this repository's five checkers | `python3 --version` |
 | **Java 21+** | **the pinned game's own requirement** — 1.21.11 declares `javaVersion.majorVersion: 21` in Mojang's version manifest, and every jar-reading checker runs under it. Chunky is not where this number comes from: its launcher and `--update snapshot` both run under 17 | `java -version` |
 | Docker | the machine ladder and the play server | `docker info` |
@@ -190,33 +190,100 @@ git lfs pull
 Confirm: `file prefabs/hello-room.nbt` says `gzip compressed data`, not
 `ASCII text`.
 
-### 2. The engine, built from source, beside this repository
+### 2. The toolchain: `delvec`, downloaded; the engine tree, beside this repository
 
-The compiler is not in this repository and never will be — this repository is
-content. Clone it **next to** this one and build it. It is a public repository,
-so the clone needs no credential.
+Two different things arrive in this step and conflating them is how the step
+goes wrong.
 
-**Which revision is not yours to choose, and it is not the default branch.**
-`versions.toml` here names it, at `[engine].authoring_ref`: the engine this
-pipeline was last walked against end to end. Read it from there — this page
-never restates it, because a revision written on a page goes stale the first
-time the pin moves and nothing reports it.
+**`delvec` is one binary** (ADR-0023). Every creator-facing capability is a
+subcommand of it — the compiler, the grammar, prefab admission, schematic
+conversion, harvest, and both render arms. There is nothing else to install and
+no second `PATH` entry to forget. **You download it**; building it is the floor
+you fall to, not the route you take.
+
+**The engine CHECKOUT is a separate acquisition**, and it is not the compiler.
+Several steps below run a Python tool, a compose file or a reference document
+that lives in the engine tree and cannot exist here; they are all written
+`"$DELVEWRIGHT_ENGINE/…"`. Nothing is built out of that checkout on the default
+path.
+
+**Neither the revision nor the release is yours to choose, and neither is the
+default branch.** `versions.toml` here names both — `[engine].authoring_ref` is
+the engine this pipeline was last walked against end to end, and
+`[engine].release` is the published release built from that same revision by the
+engine's own CI. Read both from there; this page restates neither, because a
+revision or a version written on a page goes stale the first time the pin moves
+and nothing reports it.
 
 ```sh
 ENGINE_REF="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml","rb"))["engine"]["authoring_ref"])')"
+ENGINE_RELEASE="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml","rb"))["engine"]["release"])')"
 git clone https://github.com/stellarfeline/delvewright.git ../delvewright
 git -C ../delvewright checkout --detach "$ENGINE_REF"
 export DELVEWRIGHT_ENGINE="$(cd ../delvewright && pwd)"
+```
 
-# Both builds run INSIDE the clone. The subshell is what keeps your own working
-# directory where it was.
+Confirm the checkout landed where it was told:
+
+```sh
+[ "$(git -C "$DELVEWRIGHT_ENGINE" rev-parse HEAD)" = "$ENGINE_REF" ] \
+  && echo "engine at $ENGINE_REF"
+```
+
+A plain clone fetches every branch and tag, so any revision the engine still
+publishes is already in the tree and the `checkout` is local. If it fails with
+`unable to read tree`, the pin names a revision the engine no longer carries:
+say so and stop — do not fall back to the default branch, which is the moving
+toolchain this pin exists to replace.
+
+#### 2a. `delvec` from the release shelf — the default
+
+The release carries one archive per target plus one `SHA256SUMS` for the lot.
+Take the archive for this platform, **verify it, and only then extract it**.
+
+```sh
+DELVEC_BIN="$(cd .. && pwd)/delvec-bin"
+mkdir -p "$DELVEC_BIN"
+TARGET="$(rustc -vV | sed -n 's/^host: //p')"
+ARCHIVE="delvec-$ENGINE_RELEASE-$TARGET.tar.gz"
+BASE="https://github.com/stellarfeline/delvewright/releases/download/$ENGINE_RELEASE"
+
+( cd "$DELVEC_BIN" \
+  && curl -fsSL -O "$BASE/$ARCHIVE" \
+  && curl -fsSL -O "$BASE/SHA256SUMS" \
+  && grep " $ARCHIVE\$" SHA256SUMS > "$ARCHIVE.want" \
+  && if command -v sha256sum >/dev/null 2>&1; \
+     then sha256sum -c "$ARCHIVE.want"; else shasum -a 256 -c "$ARCHIVE.want"; fi \
+  && tar -xzf "$ARCHIVE" )
+
+export PATH="$DELVEC_BIN:$PATH"
+delvec --version
+```
+
+**A checksum mismatch is a refusal, not a retry.** The line must end `: OK`. If
+it does not, stop and say so — do not download it again, do not take a different
+file, and do not extract the one you have. The published `SHA256SUMS` is the
+only thing binding those bytes to that release.
+
+`rustc -vV` is what names the platform, rather than a guess assembled from
+`uname`: it prints the exact target triple the archives are named with, and it
+is already on the machine because the floor below needs it.
+
+#### 2b. The floor: build it from source
+
+**Only when 2a could not be completed** — the release carries no archive for
+this target, or the download failed. Not when the checksum failed; that is a
+refusal and this is not a way around it.
+
+```sh
 ( cd "$DELVEWRIGHT_ENGINE" \
   && cargo --version && rustc --version \
-  && cargo build --release --workspace \
-  && cargo build --release --manifest-path crates/render/Cargo.toml )
+  && cargo build --release -p delvec )
 
-export PATH="$DELVEWRIGHT_ENGINE/target/release:$DELVEWRIGHT_ENGINE/crates/render/target/release:$PATH"
+export PATH="$DELVEWRIGHT_ENGINE/target/release:$PATH"
 ```
+
+One build, one `PATH` entry, one binary.
 
 **Build from inside the clone, and read the two version lines it prints.** The
 engine pins its compiler in `rust-toolchain.toml` at its own root, and rustup
@@ -233,46 +300,34 @@ engine's own file:
 grep channel "$DELVEWRIGHT_ENGINE/rust-toolchain.toml"
 ```
 
-At the pinned engine that reads `channel = "1.97.1"`, and `cargo --version` and
-`rustc --version` inside the clone both answer `1.97.1`. Compare them against
-that file rather than against this page — the page can go stale, the file cannot.
-**A different number means the `cd` did not take effect**, and everything built
-after it was built with the wrong compiler. Step 0's `cargo --version`, run from
-*this* repository, legitimately answers something else: that check asks whether
-you have Rust at all, and rustup installs the pinned toolchain on demand the
-first time you build in the clone.
+`cargo --version` and `rustc --version` inside the clone must both answer the
+channel that file names. Compare them against that file rather than against this
+page — the page can go stale, the file cannot. **A different number means the
+`cd` did not take effect**, and everything built after it was built with the
+wrong compiler. Step 0's `cargo --version`, run from *this* repository,
+legitimately answers something else: that check asks whether you have Rust at
+all, and rustup installs the pinned toolchain on demand the first time you build
+in the clone.
 
-Confirm the checkout landed where it was told, before the build is trusted:
+#### 2c. One binary, and where its capabilities live
 
-```sh
-[ "$(git -C "$DELVEWRIGHT_ENGINE" rev-parse HEAD)" = "$ENGINE_REF" ] \
-  && echo "engine at $ENGINE_REF"
-```
+There is **one** binary and this page uses all of it. The subcommand tree is the
+whole surface:
 
-A plain clone fetches every branch and tag, so any revision the engine still
-publishes is already in the tree and the `checkout` is local. If it fails with
-`unable to read tree`, the pin names a revision the engine no longer carries:
-say so and stop — do not fall back to the default branch, which is the moving
-toolchain this step exists to replace.
+| subcommand | what it is |
+|---|---|
+| `delvec validate` / `analyze` / `build` / `fmt` / `schema` / `metrics` | the compiler proper |
+| `delvec snapshot` / `blocking-chart` / `allocation` / `edit` / `calibrate` | the layout loop |
+| `delvec viewer` / `palette` / `scene` / `panorama` / `contact-sheet` / `index` | the CPU render arms |
+| `delvec render` | the GPU arms (`piece`, `batch`, `fidelity-gate`) |
+| `delvec grammar` | writes a new prefab from a rule program |
+| `delvec prefab` | admits a prefab into the library |
+| `delvec schem` | converts an outside schematic |
+| `delvec harvest` | turns in-game playtest notes into a report |
+| `delvec l10n-inventory` | the translation input |
 
-There are **six** binaries and this page uses all of them. Five come from the
-engine workspace; `delve-render` is its own cargo workspace and lands in a
-**different** target directory — hence the two builds and the two `PATH`
-entries.
-
-| binary | what it is | lands at |
-|---|---|---|
-| `delvec` | the compiler, and the CPU render arms (`viewer`, `palette`, `scene`, `panorama`, `contact-sheet`, `index`, `snapshot`, `blocking-chart`) | `$DELVEWRIGHT_ENGINE/target/release/` |
-| `delve-grammar` | writes a new prefab from a rule program | `$DELVEWRIGHT_ENGINE/target/release/` |
-| `delve-admit` | admits a prefab into the library | `$DELVEWRIGHT_ENGINE/target/release/` |
-| `delve-schem` | converts an outside schematic | `$DELVEWRIGHT_ENGINE/target/release/` |
-| `delve-harvest` | turns in-game playtest notes into a report | `$DELVEWRIGHT_ENGINE/target/release/` |
-| `delve-render` | the GPU arms (`piece`, `batch`, `fidelity-gate`) | `$DELVEWRIGHT_ENGINE/crates/render/target/release/` |
-
-`--manifest-path`, not `-p`, for the last one: it is excluded from the engine
-workspace on purpose, so `-p delve-render` resolves to nothing. Its build
-fetches a git dependency, so it needs the network once. (The compiler's own
-package is `delvec`; `-p delvewright-compiler` matches nothing.)
+Ask the binary rather than this table when you need the exact shape:
+`delvec --help`, and `delvec <subcommand> --help` for a group's own verbs.
 
 **`$DELVEWRIGHT_ENGINE` is not a convenience — this page prints it.** Several
 steps below invoke a Python checker or a compose file that lives in that
@@ -283,16 +338,16 @@ page always means *this repository's* `tools/`.
 **Check whether your shell carries state between commands, before step 3.** Run
 `export DW_PROBE=1` and then, as a *separate* command, `echo $DW_PROBE`. An
 empty answer means every command you issue gets a fresh shell — the normal case
-for an agent — and both `export`s above are lost each time. Then do one of these
-and do it consistently: prefix the two `export` lines onto every command, or
-call the binaries by absolute path. Choosing per command is how a run reaches
-step 8 and fails on `delve-render` alone.
+for an agent — and every `export` above is lost each time. Then do one of these
+and do it consistently: prefix the `export` lines onto every command, or call
+`delvec` by absolute path. Choosing per command is how a run reaches step 8 and
+fails on one invocation alone.
 
 Confirm both:
 
 ```sh
 delvec --version          # delvec <x.y.z>, dsl <a.b.c>, mc 1.21.11
-delve-render fidelity-gate
+delvec render fidelity-gate
 ```
 
 `delvec --version` must print an engine version inside this skill's declared
@@ -415,7 +470,7 @@ delvec --prefabs prefabs palette prefabs/hello-room.nbt -o .out/palette.json
 `mkdir -p .out` is not decoration: `delvec … -o` writes the file and does **not**
 create its parent, so a missing directory comes back as `DW0722 … No such file
 or directory` at exit 3 — a write error that reads like a missing prefab.
-(`delve-render` does create its output tree; the two are not consistent.)
+(`delvec render` does create its output tree; the two are not consistent.)
 
 ### 5. Chunky — named here, fetched at step 12
 
@@ -533,8 +588,8 @@ file prefabs/hello-room.nbt              # gzip compressed data, not ASCII text
 java -version                            # 21 or newer — a lower number is a STOP
 echo "$DELVEWRIGHT_ENGINE"               # the engine checkout, non-empty
 delvec --version                         # the compiler, and the dsl number
-delve-grammar list                       # the workspace's other binaries are on PATH
-delve-render fidelity-gate               # the GPU arms, in their own target dir
+delvec grammar list                      # the rule library, through the one binary
+delvec render fidelity-gate              # the GPU arms of that same binary
 mkdir -p .out && delvec --prefabs prefabs palette prefabs/hello-room.nbt \
     -o .out/palette.json                 # the client jar
 curl -sSfIL https://chunkyupdate.lemaik.de/ChunkyLauncher.jar \
@@ -542,9 +597,9 @@ curl -sSfIL https://chunkyupdate.lemaik.de/ChunkyLauncher.jar \
 docker info                              # the ladder and the play server
 ```
 
-`delve-admit`, `delve-schem` and `delve-harvest` came out of the same
-`--workspace` build and sit beside `delve-grammar`; `command -v delve-admit`
-answering is the whole check for them.
+`delvec prefab`, `delvec schem` and `delvec harvest` are subcommands of the
+binary the two lines above already exercised, so there is nothing separate to
+check for them — `delvec --version` answering is the whole check.
 
 Path B adds
 `python3 "$DELVEWRIGHT_ENGINE/tools/refimg.py" --prompt "smoke test" --dry-run`;
@@ -656,7 +711,7 @@ with its own schema:
 
 ```json
 {
-  "dsl_version": "0.19.0",
+  "dsl_version": "0.20.0",
   "campaign_id": "the-weighbridge",
   "stage": "world",
   "content": { }
@@ -896,26 +951,34 @@ form and the commands are in *Reference: drawing the map's reference*.
    - **Extent flows down.** The region comes from the brief and the boxes
      partition it. A box is never grounds to grow the region (`DW0826`): shrink
      or move the box, or change the brief's fact and re-derive, visibly.
-   - **A box is the play space, and connected boxes sit exactly ONE CELL
-     apart.** This decides every coordinate in the document, so get it right
-     before placing anything. `extent` is the interior a body stands in; the
-     walls are not inside it — they stand in the one-cell gap between two
-     neighbours, so the plan never states a wall thickness anywhere. A box at
-     `min: [4, 4]` with `extent: [4, 4]` occupies x 4..7, so its eastern
-     neighbour's `min` x is **9**, never 8. Place two boxes flush and they have
-     no wall for a seam to be cut through, and every pair of them is `DW0828`.
-     `min` and `extent` are two horizontal numbers each, never three — the
-     vertical position is `floor` and the vertical size is `ceiling`.
-   - **Seams are allocated, not discovered.** A seam sits on a face the two
-     boxes already share, at declared cells (`DW0828`). Two places that cannot
-     mate is resolved here, while both boxes are still free.
+   - **A box says what it is; a seam says where two boxes meet; the engine
+     derives the grid.** A box is `{node, extent, floor, ceiling}` — `extent`
+     is the interior a body stands in, on the kit grid. Write `min` on **one**
+     box (the entry) to say where the whole stands in the region; write it on
+     no other box unless you mean to assert its corner, because a pin that
+     disagrees with the seams is `DW0883`.
+   - **A seam is `{edge, face, opening | contact, at?, meets?, stair_in?}`.**
+     `face` is the side of the edge's `a` box the crossing is on. The engine
+     puts `b` one cell beyond that face — the wall — and the crossing in the
+     **middle** of both faces. When the door is not in the middle, say where:
+     `at` is cells from `a`'s low corner along the face, `meets` cells from
+     `b`'s (an integer on a wall face; `[dx, dz]` through a floor or ceiling).
+     A seam that closes a loop places nothing: both boxes already stand, and
+     the engine checks that its cells are the same seen from either side
+     (`DW0828`).
+   - **Nothing about a sill, a rise or a wall thickness is written anywhere.**
+     The sill is the higher of the two floors; the rise is their difference;
+     the wall is the one cell the packing leaves between neighbours.
    - **A seam is one of two kinds, and both or neither is `DW0876`.** Write
      `opening` for a PORTAL — a doorway at a standard the table names, whose
      every cell the built world must have open (`DW0829`, `DW0836`). Write
      `contact` for a FRONT — two places that simply meet, along a span of the
      face they share:
-     `{"edge": …, "face": …, "at": [u, v], "contact": {"extent": [u, v]}}`, and
-     omit `extent` to run the span from `at` to the far edge of the face.
+     `{"edge": …, "face": …, "at": <cells>, "contact": {"extent": [u, v]}}` —
+     `at` is the seam offset above (one integer on a wall face, `[dx, dz]`
+     through a floor or ceiling) and `extent` is the span `[u, v]` on the
+     face's own two in-plane axes, anchored there. Omit `extent` to run the
+     span from `at` to the far edge of the face on both axes.
      - A contact means **continuous ground**: no wall along the span, no frame,
        no sill, and crossing legitimate anywhere along it the step rule admits.
        Do not reach for a wide `opening` to spell a front — there is no standard
@@ -942,6 +1005,9 @@ form and the commands are in *Reference: drawing the map's reference*.
        through a floor or ceiling gets the host's longer horizontal axis.
        Give the host its length on the axis the face points along, or host
        the stair in the other place.
+   - `delvec validate` prints every box's derived corner and which seam placed
+     it. Read your `volumes[]`, `sightlines[]` and `views[]` against that
+     output — they are still world coordinates.
 
 **A site-plan campaign has one area, `area/site`.** Quests, NPCs and waves name
 it; `world.json`'s `areas[]` is empty, and declaring both authorities is
@@ -1091,7 +1157,7 @@ user's judgement.
 **Which pictures these are.** At this gate they are **reference images**:
 concept art drawn from the scene description *before any prefab exists*, so what
 is confirmed is the design, not a build. A **render** is a candidate prefab
-imaged by `delve-render`, and belongs to curation later. Two stages, two
+imaged by `delvec render`, and belongs to curation later. Two stages, two
 producers; building prefabs first and rendering them inverts the gate.
 
 **A derived blockout has no reference image to judge.** On a site-plan campaign
@@ -1603,11 +1669,11 @@ shot wanted, which is worth a look while you are there.
 campaign actually uses**, one at a time:
 
 ```sh
-delve-render piece prefabs/<piece>.nbt -o <workspace>/renders/<piece>
-delve-render fidelity-gate      # must exit 0 before trusting any render
+delvec render piece prefabs/<piece>.nbt -o <workspace>/renders/<piece>
+delvec render fidelity-gate      # must exit 0 before trusting any render
 ```
 
-`delve-render batch <dir>` renders every prefab in a directory — 36 pieces and
+`delvec render batch <dir>` renders every prefab in a directory — 36 pieces and
 435 shots for the shipped library — which is a library-curation tool, not a
 campaign-review one. A site-plan campaign has no prefabs at this step at all.
 
@@ -1676,7 +1742,7 @@ and another walk.
    anchor names. Build the piece against that and nothing else. It is an input
    to nothing; ask again whenever you want it.
 3. **Build the piece** — a grammar program's export or a piece admitted through
-   `delve-admit`; the engine consumes the object, never the tool that made it.
+   `delvec prefab`; the engine consumes the object, never the tool that made it.
    It must carry a spatial contract (`DW0843`), answer every seam, and open no
    way the plan did not allocate (`DW0844`, both directions). See *Reference:
    when the prefab library has no piece you need*.
@@ -1706,7 +1772,7 @@ image with Chunky from
 `$DELVEWRIGHT_ENGINE/validation/render-shots.sh`'s scene set, plus `delvec panorama <build-dir> -o
 <dir>` for the whole-map hero shot every release owes (`--bearing` picks the
 corner). Never hand-edit a scene JSON: if the frame you want is not emittable,
-that is a `delve-render` gap to report, not a file to patch.
+that is a `delvec render` gap to report, not a file to patch.
 
 **Every edition opens with the engine-version marker**, on its own line directly
 under the title. This is the one piece of internal machinery a storybook carries
@@ -2519,7 +2585,7 @@ this needs were built at Init step 2.
    The tool needs the pinned block registry from `$DELVEWRIGHT_ENGINE/crates/dsl/data/` **and** a
    1.21.11 client jar, and refuses by name when either is absent. That does not
    make the step optional: take role names from the corpus instead
-   (`delve-grammar list`, then `delve-grammar show --program <nearest>`), which is
+   (`delvec grammar list`, then `delvec grammar show --program <nearest>`), which is
    a palette somebody already measured, and record where each name came from.
    Never invent one — a block that does not exist is refused at export, and one
    that exists but looks nothing like its name is caught only by eye at 5 below.
@@ -2536,10 +2602,10 @@ this needs were built at Init step 2.
    `dim` — a copied rule family is one nothing keeps in step and no gate reads.
 
    ```sh
-   delve-grammar show --program idiom-shape
-   delve-grammar list
-   delve-grammar show --program <nearest> > p.json
-   delve-grammar check --file p.json          # after every edit
+   delvec grammar show --program idiom-shape
+   delvec grammar list
+   delvec grammar show --program <nearest> > p.json
+   delvec grammar check --file p.json          # after every edit
    ```
 
    You write JSON — never Rust, and never blocks by hand. Four traps the
@@ -2581,7 +2647,7 @@ this needs were built at Init step 2.
    or what a neighbour may mate with. That is a `claim` node per body of space
    plus one `contract` block classifying the names, written in the same document.
    **The authoring surface is `$DELVEWRIGHT_ENGINE/docs/reference/grammar.md` §2d** — that section is
-   the only place that says how, and `delve-grammar show --program
+   the only place that says how, and `delvec grammar show --program
    spatial-contract` prints a runnable one. Write one whenever the piece has more
    than one way in and out. Step 4's `traversable` judges a piece that has none —
    it derives the sides the piece opens on from the blocks — but only a contract
@@ -2608,14 +2674,14 @@ this needs were built at Init step 2.
    without needing to write a name it structurally cannot write; one anchor per
    area may carry it (`DW0804`), and every other anchor still binds by name.
    For a hand-built or ingested piece, where no `mark` ever ran, the same role
-   is given after the fact with `delve-admit anchor --role <term>` / `--no-role`
+   is given after the fact with `delvec prefab anchor --role <term>` / `--no-role`
    (step 6) — run `--help` on the authoring pin's own binary before trusting this
    route name, since a later engine may fold it under a different command.
 
 4. **Expand and let the machine judge**:
 
    ```sh
-   delve-grammar expand --file p.json --region XxYxZ --seed N \
+   delvec grammar expand --file p.json --region XxYxZ --seed N \
        --traversable --reachable-floor -o out/
    ```
 
@@ -2664,7 +2730,7 @@ this needs were built at Init step 2.
    campaign: put it in `campaigns/<campaign>/design/programs/` and name it in
    `zones.json` there with the region, seed and gate claims it is built at
    (`traversable`, `allow_falls`, `reachable_floor`, `symmetric`).
-   `delve-grammar audit --campaign-root .` judges every zone a
+   `delvec grammar audit --campaign-root .` judges every zone a
    campaign declares, and CI in both repositories runs it — a program that
    directory carries and the manifest does not name is a red.
 
@@ -2681,13 +2747,13 @@ this needs were built at Init step 2.
 5. **Look at it**:
 
    ```sh
-   delve-render piece out/<id>.nbt -o shots/
+   delvec render piece out/<id>.nbt -o shots/
    ```
 
    and compare against the scene description from 1 above. The gates prove it is
    buildable and walkable; they
    say nothing about whether it is the scene you asked for. If the expand wrote a
-   tile set instead of one `.nbt`, pass the manifest — `delve-render piece
+   tile set instead of one `.nbt`, pass the manifest — `delvec render piece
    out/<id>.json` — which renders the assembled zone as one scene, eye shots
    included. Never review a single tile; the command refuses one anyway.
 
@@ -2720,15 +2786,15 @@ this needs were built at Init step 2.
    instead of at the façade, and the forecourt shrinks the building in every
    exterior frame. Keys: `$DELVEWRIGHT_ENGINE/docs/reference/tools.md` §4.
 
-6. **Admit it**: the `delve-admit` chain, which for a generated piece is
+6. **Admit it**: the `delvec prefab` chain, which for a generated piece is
    `audit` → `socket` → `lighting --write` → `audit` again.
 
    ```sh
-   delve-admit audit    out/<id>.nbt        # a TILE SET passes out/<id>.json
-   delve-admit socket   out/<id>.nbt --pos X,Y,Z --facing <dir> --opening 3,3 \
+   delvec prefab audit    out/<id>.nbt        # a TILE SET passes out/<id>.json
+   delvec prefab socket   out/<id>.nbt --pos X,Y,Z --facing <dir> --opening 3,3 \
                         --name <ns>:<name> --target <ns>:<name> --pool pool/<name>
-   delve-admit lighting out/<id>.nbt --write
-   delve-admit audit    out/<id>.nbt
+   delvec prefab lighting out/<id>.nbt --write
+   delvec prefab audit    out/<id>.nbt
    ```
 
    **Hand `audit` the `.nbt`, not the `.json`** — the metadata beside a single
@@ -2737,10 +2803,10 @@ this needs were built at Init step 2.
    one zone; handing any command a single tile is `DW0739`, and so is handing it
    a tile copied away from its manifest.
 
-   Two subcommands are **not** on this route. `delve-admit anchor` writes a place
+   Two subcommands are **not** on this route. `delvec prefab anchor` writes a place
    into an anchor whose producer could not — a hand-built or ingested piece; a
    grammar program already declared its anchors with `mark` at step 3.
-   `delve-admit catalog validate` reads a **catalog card**, the per-asset
+   `delvec prefab catalog validate` reads a **catalog card**, the per-asset
    verification record of the ingestion route (`catalog/<asset-id>.json`), which
    is a different document from prefab metadata — run on a prefab's `.json` it
    correctly reports that file is not a catalog card.
@@ -2810,7 +2876,7 @@ zone. Nothing an author writes says a piece is tiled, and a document that mentio
 a tile is wrong.
 
 A piece that comes from **outside** — a community schematic — instead enters via
-`delve-schem convert` and then the same admission chain with `resolve-jigsaw`
+`delvec schem convert` and then the same admission chain with `resolve-jigsaw`
 before `socket`. Never place an un-audited piece: `audit` is the licence and
 code-injection gate, and the `DW0733` check that the blocks in it exist at all.
 Flags in `$DELVEWRIGHT_ENGINE/docs/reference/tools.md` §2a and §3.
@@ -2897,16 +2963,16 @@ The full inventory — every binary, script and flag that exists today — is
   deterministically, with the post-batch invariants enforced. Never hand-patch
   `.nbt` or invent block edits outside it.
 - **Handing a build to a playtester**: the playtest note flow — `/trigger dw.note`
-  in-game, then `delve-harvest` → `playtest-report.json`. Human-optional.
+  in-game, then `delvec harvest` → `playtest-report.json`. Human-optional.
 - **Delivering or revising a cutscene**: shot calibration — in-game
   `/trigger dw.mark set <s>` (stand where the camera should be), `dw.aim set <s>`
   (look at the subject), `dw.faster`/`dw.slower set <s>`, then `/trigger dw.done`
-  once; `delve-harvest` writes `rehearsal-report.json` and `delvec calibrate
+  once; `delvec harvest` writes `rehearsal-report.json` and `delvec calibrate
   <report> --layout <out>/creator-datapack/layout.json` turns it into an
   anchor+offset patch you apply and rebuild. Human-optional. (Beat replay —
   `dw.beat` / `dw.shot` / `dw.free` — does not exist; do not promise it.)
-- **A prefab library needing human taste, not machine checks**: `delve-admit
-  gallery` (browse world) → a reviewer walks it and leaves notes → `delve-admit
+- **A prefab library needing human taste, not machine checks**: `delvec prefab
+  gallery` (browse world) → a reviewer walks it and leaves notes → `delvec prefab
   curate` / `curate-merge` fold them into the catalog cards. Human-optional.
 - **Several candidate prefabs for one slot, and a human has to pick**: `delvec
   contact-sheet <renders> -o <png>` — all the candidates on one page, each

@@ -57,7 +57,7 @@ STATED_COUNTS = pathlib.Path(__file__).resolve().parents[1] / "check-stated-coun
 ENGINE = "1.0.0"
 
 # A miniature `delvec` CLI in the exact clap shape the gate parses out of
-# `crates/compiler/src/main.rs`.
+# `crates/delvec/src/main.rs`.
 MAIN_RS = '''
 #[derive(Parser)]
 #[command(name = "delvec")]
@@ -119,7 +119,7 @@ ENVELOPE_RS = """
 // both out of this one file. The fixture carries it for the same reason it
 // carries `Stage::name`: a synthetic engine that omits what a real one has
 // makes the gate fail for a reason no real tree would produce.
-pub const SUPPORTED_DSL_VERSION: &str = "0.19.0";
+pub const DSL_VERSION: &str = "0.19.0";
 
 impl Stage {
     pub fn name(self) -> &'static str {
@@ -200,12 +200,22 @@ def load_gate():
 
 def write_engine(root: pathlib.Path, version: str = ENGINE) -> pathlib.Path:
     """A synthetic engine tree, in the layout `ENGINE_PATHS` names."""
-    cargo = root / "crates" / "compiler" / "Cargo.toml"
+    cargo = root / "Cargo.toml"
     cargo.parent.mkdir(parents=True, exist_ok=True)
+    # The engine version lives at the WORKSPACE ROOT (ADR-0016 line 2): every
+    # crate under `crates/` inherits it with `version.workspace = true`, so
+    # there is no per-crate literal left to read. The `[package]` block above it
+    # is deliberate — its `version` is the first `^version =` line in the file,
+    # so a gate that regex-matched instead of asking which TABLE the key is in
+    # would answer 7.7.7 and this fixture would catch it. (7.7.7 and not 9.9.9:
+    # `make_engine_repo` uses 9.9.9 as its working-tree sentinel, and a decoy
+    # sharing that number would make one test pass for the other's reason.)
     cargo.write_text(
-        f'[package]\nname = "delvec"\nversion = "{version}"\n', encoding="utf-8"
+        '[package]\nname = "not-the-engine-version"\nversion = "7.7.7"\n\n'
+        f'[workspace.package]\nversion = "{version}"\n',
+        encoding="utf-8",
     )
-    main_rs = root / "crates" / "compiler" / "src" / "main.rs"
+    main_rs = root / "crates" / "delvec" / "src" / "main.rs"
     main_rs.parent.mkdir(parents=True, exist_ok=True)
     main_rs.write_text(MAIN_RS, encoding="utf-8")
     envelope = root / "crates" / "dsl" / "src" / "envelope.rs"
@@ -350,7 +360,7 @@ class GateTest(unittest.TestCase):
         self.assertIn("extracted 0 delvec subcommand references", err)
 
     def test_unparseable_cli_is_a_failure_not_a_pass(self) -> None:
-        (self.engine / "crates" / "compiler" / "src" / "main.rs").write_text(
+        (self.engine / "crates" / "delvec" / "src" / "main.rs").write_text(
             "// the clap shape this gate keys off is gone\n", encoding="utf-8"
         )
         self.write_skill(GOOD_FRONTMATTER)
@@ -442,13 +452,13 @@ class GateTest(unittest.TestCase):
         envelope = self.engine / "crates" / "dsl" / "src" / "envelope.rs"
         envelope.write_text(
             envelope.read_text(encoding="utf-8").replace(
-                'pub const SUPPORTED_DSL_VERSION: &str = "0.19.0";', ""
+                'pub const DSL_VERSION: &str = "0.19.0";', ""
             ),
             encoding="utf-8",
         )
         code, _, err = self.run_check()
         self.assertNotEqual(code, 0)
-        self.assertIn("SUPPORTED_DSL_VERSION", err)
+        self.assertIn("DSL_VERSION", err)
 
     def test_a_page_that_states_no_idiom_count_is_a_failure_not_a_pass(self) -> None:
         body = SKILL_BODY.replace(
@@ -546,7 +556,7 @@ class EngineReachTest(unittest.TestCase):
         into = self.root / "materialised"
         into.mkdir()
         self.gate.materialise_engine(repo, rev, into)
-        cargo = (into / "crates" / "compiler" / "Cargo.toml").read_text()
+        cargo = (into / "Cargo.toml").read_text()
         self.assertIn('version = "1.0.0"', cargo)
         self.assertNotIn("9.9.9", cargo)
 

@@ -155,8 +155,22 @@ jobs:
       # page to reading `authoring_ref` and holds the revision to living in
       # `versions.toml` alone. It is this repository's own script and is never
       # vendored.
-      - name: the authoring pin has a reader and exactly one copy
-        run: python3 tools/check-authoring-pin.py
+      #
+      # `--online` adds the half only the remote can answer, and it is a MODE of
+      # the same script rather than a step of its own for the reason above: one
+      # tool answers "which engine does an author get", by both acquisition
+      # routes. ADR-0023 makes the release archive the default and the source
+      # build the floor, so `[engine].release` names a shelf — and the archive on
+      # that shelf is `authoring_ref` as the engine's CI built it. If the tag
+      # resolves anywhere else, a creator who downloads and a developer who
+      # builds get two different compilers while the page claims one. The offline
+      # half still runs first, and still runs alone on a creator's own clone with
+      # nothing installed and no credential.
+      - name: the authoring pin has a reader, one copy, and a shelf
+        env:
+          # Public endpoints, so this is a rate limit and not an access grant.
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/check-authoring-pin.py --online
 
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
