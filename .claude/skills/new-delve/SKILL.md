@@ -1,7 +1,7 @@
 ---
 name: new-delve
 description: Generate a complete playable Minecraft delve from a creative prompt — staged DSL authoring with validation-loop self-repair, deterministic compile, machine validation, joinable output. Use when the user asks to create/generate a new delve or campaign. Args = the creative prompt (theme one-liner or detailed brief).
-version: 1.11.0
+version: 1.12.0
 requires:
   delvec: ">=1.0.0 <2.0.0"
 verified_with: 1.2.0
@@ -68,6 +68,7 @@ step needs something the step before it produced.
 
 ```
 Init            build the toolchain, once per machine        ── §Init
+                STOP at Init 4 — the client jar is the user's
   ↓
 Decide          areas[] or a site plan — one campaign, one    ── §Which placement model
   ↓
@@ -218,7 +219,9 @@ and nothing reports it.
 ```sh
 ENGINE_REF="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml","rb"))["engine"]["authoring_ref"])')"
 ENGINE_RELEASE="$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml","rb"))["engine"]["release"])')"
-git clone https://github.com/stellarfeline/delvewright.git ../delvewright
+[ -d ../delvewright/.git ] \
+  || git clone https://github.com/stellarfeline/delvewright.git ../delvewright
+git -C ../delvewright fetch origin
 git -C ../delvewright checkout --detach "$ENGINE_REF"
 export DELVEWRIGHT_ENGINE="$(cd ../delvewright && pwd)"
 ```
@@ -230,11 +233,21 @@ Confirm the checkout landed where it was told:
   && echo "engine at $ENGINE_REF"
 ```
 
-A plain clone fetches every branch and tag, so any revision the engine still
-publishes is already in the tree and the `checkout` is local. If it fails with
-`unable to read tree`, the pin names a revision the engine no longer carries:
-say so and stop — do not fall back to the default branch, which is the moving
-toolchain this pin exists to replace.
+**The clone is guarded because `../delvewright` very often already exists** — a
+second run on the same machine, or a checkout somebody made by hand — and a bare
+`git clone` onto it is a hard failure at the third line of the toolchain step.
+The three lines above are the whole answer and they are safe to run any number of
+times: the clone happens once, the `fetch` brings the pinned revision into a tree
+that may predate it, and the `checkout --detach` puts the tree at the pin from
+wherever it was. Do not adopt a pre-existing checkout without those two lines —
+the revision, not the directory, is what this step delivers. A
+`delvewright.local.toml` a previous run left is not a problem and is not deleted:
+it is gitignored there, `checkout` never touches it, and Init step 6's dry-run is
+what decides whether it is usable.
+
+If the `checkout` fails with `unable to read tree`, the pin names a revision the
+engine no longer carries: say so and stop — do not fall back to the default
+branch, which is the moving toolchain this pin exists to replace.
 
 #### 2a. `delvec` from the release shelf — the default
 
@@ -338,10 +351,29 @@ page always means *this repository's* `tools/`.
 **Check whether your shell carries state between commands, before step 3.** Run
 `export DW_PROBE=1` and then, as a *separate* command, `echo $DW_PROBE`. An
 empty answer means every command you issue gets a fresh shell — the normal case
-for an agent — and every `export` above is lost each time. Then do one of these
-and do it consistently: prefix the `export` lines onto every command, or call
-`delvec` by absolute path. Choosing per command is how a run reaches step 8 and
-fails on one invocation alone.
+for an agent — and every `export` above is lost each time.
+
+**When it is empty, put the environment in a file and source it as the first
+clause of every later command.** Write it once, outside both repositories, with
+the paths this Init produced filled in:
+
+```sh
+cat > ../delvewright-env.sh <<'EOF'
+export JAVA_HOME=<the JDK path step 0 printed>
+export DELVEWRIGHT_ENGINE=<the engine checkout's absolute path>
+export PATH="$JAVA_HOME/bin:<the DELVEC_BIN directory from step 2a>:$PATH"
+EOF
+```
+
+Every command on this page then runs as
+`. ../delvewright-env.sh && <the command>`, and that is the form to use
+consistently. **Do not reach for the shorter-looking remedy of calling `delvec`
+by absolute path**: it carries `delvec` and nothing else, while later steps need
+`$DELVEWRIGHT_ENGINE` for every Python checker and compose file, and `JAVA_HOME`
+for every jar-reading tool and for Chunky at step 12. A run that takes it reaches
+step 10 with `DELVEWRIGHT_ENGINE` empty and reads the failure as a broken
+harness. Choosing per command is the other way to reach step 8 and fail on one
+invocation alone.
 
 Confirm both:
 
@@ -543,9 +575,23 @@ the gate:
   `api_key_env` is the NAME of an environment variable, read at call time and
   never stored or logged, and an inline `api_key =` is refused outright. So the
   key lives in **the environment your shell sees**, under the name that section
-  gives — which also means nothing carries it over from a previous session, and
-  if it is not there, **ask the user for it rather than guessing at a
-  provider**;
+  gives.
+  - **The name is yours to choose, so look before you write it.** You are
+    writing the section, so it can name whatever variable the machine already
+    has — and the block you copied out of `delvewright.toml` names an example,
+    not a requirement. Read the environment for provider keys first; this
+    prints NAMES and never values:
+
+    ```sh
+    env | grep -Eo '^[A-Z0-9_]*(API_KEY|APIKEY|TOKEN)[A-Z0-9_]*' | sort
+    ```
+
+    If one of them belongs to an image provider, write **that** name into
+    `api_key_env` and set `provider`/`model` to match it. Copying the example
+    name literally and then finding it unset is how a run spends a turn of the
+    user's asking for a key they already have under another name.
+  - **Only when the list holds no provider key at all, ask the user for one**
+    rather than guessing at a provider;
 - a confirmation that costs no call:
 
 ```sh
@@ -582,10 +628,15 @@ wherever this page says `python -m delve_skin`.
 
 ### Init is finished when every one of these answers
 
+Run each of them the way step 2c settled — through the environment file, if your
+shell does not carry state. A line here answering wrongly because the environment
+was lost is the failure this checklist exists to catch, and it is
+indistinguishable from a missing tool unless you carry the file.
+
 ```sh
 git lfs version                          # the prefab library materialises
 file prefabs/hello-room.nbt              # gzip compressed data, not ASCII text
-java -version                            # 21 or newer — a lower number is a STOP
+java -version                            # 21 or newer — below that, go back to step 0's enumeration
 echo "$DELVEWRIGHT_ENGINE"               # the engine checkout, non-empty
 delvec --version                         # the compiler, and the dsl number
 delvec grammar list                      # the rule library, through the one binary
@@ -666,6 +717,39 @@ Those nine documents are the worked example this page does not print: a real
 whenever a field on this page is not clear. It is also the campaign that
 calibrates the metrics table, so its second job is the one described under
 *The site plan* below.
+
+### The test, and how to run it
+
+"There is no prefab that is the building the story is about" is the whole
+routing question, and it is not answered by reading pool names: a pool called
+`vertical-keep` is an entry hall, corridors and terminal rooms, which is the
+*inside* of a keep and not a keep. So ask the question in the form that has an
+answer:
+
+> **Does the thing the delve is named after have an exterior silhouette the
+> player is meant to read** — a shape they stand outside of and see against the
+> sky? A pool of interiors can be the inside of a building. It can never be the
+> building.
+
+Then look, rather than deciding from memory. One command draws the whole shipped
+library as one self-contained page — orbit, plan, cutaway, and a player eye at
+every anchor:
+
+```sh
+delvec --prefabs prefabs viewer prefabs -o .out/library.html
+```
+
+Open it and put one question to the thing the delve is named after. **Is it on
+that page, as a shape?** If it is not, and the story asks the player to look at
+it from outside, `areas[]` is over: take the site plan, where the geometry is
+derived from your own plan and there is no prefab left to be missing. **If
+instead it is a place the party walks through**, and the members of some pool
+are its rooms, `areas[]` holds — say so in `GENERATION.md` in one line, so the
+reading is visible to the next round rather than implied.
+
+Take the site plan on a tie. It costs four more documents and the map's own
+reference views; taking `areas[]` wrongly costs step 2 over again, and the page
+cannot get you back there from step 5.
 
 ---
 
@@ -799,6 +883,46 @@ now. The sixth is `areas`, and which of the two ways it is filled is step 2's
 whole question: `areas[]` on path 2A, and **empty** on a site-plan campaign,
 where the plan is the placement authority and declaring both is `DW0839`.
 
+**Two optional fields here commit something you are not writing yet.** Both sit
+in `world.json` at this step, and both are refused or unbound many steps later,
+so decide each one here with the thing it obliges in front of you.
+
+- **`min_players`.** Absent = 1. Declaring `n ≥ 2` says the delve *requires* n
+  bodies, and that is a claim about the QUEST GRAPH: the analyzer demands an
+  objective with `n` `after` arms in `n` places — parallel work the party
+  divides — and a delve that is one serial chain a single player walks is
+  `DW0358` at **step 7**, after `quests.json` is written. So decide the number
+  with the quest plan at step 3, not with the world at step 1: a brief that says
+  "for two players" is a brief that has asked for a mechanism, and the design
+  gains one or the number comes down.
+- **`horizon`.** Absent = `void`, and that is the right answer unless the
+  surround is part of the design. `valley` rings the map in generated mountain;
+  both of those keep the area datum where every piece was authored for it.
+  **`ocean` is different and it is paired with a piece set**: it swaps in a
+  superflat sea at y=62 and DROPS the area datum to y=60 so a piece meets the
+  water at its own declared `waterline_y`. Only pieces carrying that field are
+  authored for it, and the invariant that proves the meeting (`DW0344`) examines
+  only those — a piece without it is not checked and is not lifted. Ask the
+  library which pieces those are before you take `ocean`:
+
+  ```sh
+  python3 - <<'EOF'
+  import json, glob, os
+  for f in sorted(glob.glob("prefabs/*.json")):
+      if os.path.basename(f) == "pools.json": continue
+      if json.load(open(f)).get("waterline_y") is not None:
+          print(os.path.basename(f)[:-5])
+  EOF
+  ```
+
+  **Measured over the shipped library: 5 of 36 pieces**, and they are exactly
+  the `island-*` set — which is the whole of `pool/island` (4 of 4 members).
+  `pool/cave-shore`, `pool/stone-keep` and `pool/vertical-keep` carry it on
+  **none** of their members, so `ocean` over those pools gives you a dropped
+  datum, an invariant examining zero pieces, and no lever to lift anything
+  clear. A coastal delve built from `cave-*`/`keep-*` takes `void` and puts the
+  sea in the fiction, or takes `pool/island`.
+
 ## 2. Placement — where everything is
 
 ### 2A. `areas[]`
@@ -847,14 +971,48 @@ A crossing that was never emitted is not a quiet difference — it is a delve th
 party cannot finish. See *Reference: when something goes red* for what it looks
 like.
 
+**A pool area's usable anchor set is its `entry`-role member's, and nothing
+else.** This is the constraint that shapes the story, and it is not either of the
+two rules above. An area declaring `pieces: {min: 3, max: 4}` over a
+thirteen-member pool seats a SUBSET, chosen by the seed — so an anchor declared
+on a `room` or `terminal` member may simply not be in the built world. The
+`entry`-role member is the one that is always seated. Design against its anchors,
+or bind a single `prefab` instead of a `prefab_pool`, in which case every anchor
+it declares is yours.
+
+Ask the library what that leaves you, before the story is shaped around
+something that is not there:
+
+```sh
+python3 - <<'EOF'
+import json
+pools = json.load(open("prefabs/pools.json"))["pools"]
+for pid, p in pools.items():
+    for m in p["members"]:
+        if m.get("role") != "entry": continue
+        name = m["prefab"].split("/", 1)[1]
+        a = json.load(open(f"prefabs/{name}.json")).get("anchors") or {}
+        print(f"{pid}  entry={name}  {sorted(a)}")
+EOF
+```
+
+**Measured over the shipped library**: `pool/cave-shore`, `pool/stone-keep` and
+`pool/vertical-keep` each leave **two** anchors — `spawn` and `anchor/exit` —
+out of the ten their members declare between them. `pool/island` leaves eleven
+of fifty-three. Two anchors per area is a real design constraint: it is one
+place to stand and one to leave from, and a story that needs three staged beats
+in one pool area needs a bound `prefab` instead.
+
 **Two more piece facts worth knowing before you place anything.** An anchor name
 is unique per *area*, so binding the same prefab to two areas makes every anchor
 it declares ambiguous (`DW0857`); the fix available to you is a **different
 piece for one of the two areas**, not renaming an anchor in the shared library.
 And if the jigsaw can seat a pool piece twice, the build says so at the pool
 declaration (`DW0498`, advisory) and names every anchor that repeat makes
-ambiguous — read that line before hanging an objective, NPC stand, gate or wave
-spawn on one, because it is a hard `DW0305` the moment you do.
+ambiguous, which is a hard `DW0305` the moment an objective, NPC stand, gate or
+wave spawn hangs on one. **That line arrives at step 8 and the anchors are bound
+at step 5**, so it is a check on what you did rather than an input to doing it:
+the rule above is the input, and `DW0498` is what confirms it held.
 
 **When the library has no piece the design needs, decide which of two things you
 are looking at.** Neither answer is "make a prefab now".
@@ -1335,16 +1493,20 @@ Compose cannot compute an absolute default, so this is a real pair and not
 something a better default removes. Set neither and everything above is
 unchanged.
 
-The build writes more than a datapack. Four things to read every time:
+The build writes more than a datapack. Four things to read, and **the last two
+stand on site-plan campaigns only** — an `areas[]` build emits neither, and
+their absence there is the placement model, not a run that went wrong:
 
 - `critical-path.json`, at the **root** of the output — the playthrough the
-  proof found, step by step. A step that crosses areas carries a `transport`
-  key; step 2A is about what puts it there.
+  proof found, step by step. **Every campaign.** A step that crosses areas
+  carries a `transport` key; step 2A is about what puts it there.
 - `render-plan.json` — the deterministic shot list, each shot with the `expect`
-  line step 12 checks it against.
-- For a site-plan campaign, the three hashes and the engine revision it prints
+  line step 12 checks it against. **Every campaign.**
+- **Site-plan campaigns**: the three hashes and the engine revision it prints
   at the end. Step 13 copies them.
-- `DW0822`, the pacing line. It measures the critical path over the built
+- **Site-plan campaigns**: `DW0822`, the pacing line — it stands beside
+  `DW0813` on every site-plan build and on no other. It measures the critical
+  path over the built
   blockout — so many blocks of route, and about so many minutes at the
   metrics table's blocks-per-minute rate — and it carries **no threshold and
   refuses nothing**, so nothing in the engine compares it to your
@@ -1352,6 +1514,10 @@ The build writes more than a datapack. Four things to read every time:
   against a `target_minutes` of 150 is not a warning anyone will raise; it is
   a map whose walking is a twelfth of its billing, and the gap is either
   content you have not written yet or a design that is smaller than it says.
+  **On an `areas[]` campaign there is no pacing measurement at all**, so
+  `target_minutes` there is your own estimate and nothing reads it — do not go
+  looking for this line, and do not read its absence as a build that skipped
+  something.
 
 **There is no blockout document and nothing to author early.** A site-plan
 campaign's geometry is derived from the plan and the metrics table by this
@@ -1386,8 +1552,16 @@ verifies over rcon that the datapack actually loaded before it says READY:
 
 ```sh
 "$DELVEWRIGHT_ENGINE/tools/playtest-server.sh" up campaigns/<id> \
-    --prefabs prefabs --out "$PWD/.out/delve"
+    --prefabs prefabs --delvec "$(command -v delvec)" --out "$PWD/.out/delve"
 ```
+
+**`--delvec` is not optional here, even though the script has a default.** Its
+default is the engine checkout's `target/release/delvec`, and Init took the
+release archive rather than building, so that path does not exist and the script
+compiles the whole workspace before it does anything else — discarding the
+checksum-verified binary Init downloaded and taking the source floor ADR-0023
+makes the fallback rather than the route. Passing the `delvec` already on `PATH`
+is what keeps this command on the engine the rest of the run used.
 
 It writes its own build tree wherever `--out` says, so nothing about this path
 touches the engine's `validation/` directory, and it daemonizes — it prints the
@@ -1416,7 +1590,9 @@ calls the gate itself rather than trusting anyone to remember.
 Then hand the user, in one message:
 
 - **how to get in** — Minecraft Java 1.21.11 → Multiplayer → Direct Connect →
-  `localhost:25565`;
+  `localhost:25565`. That wording is for the message you send them and nowhere
+  else: the storybook's own connect line is step 14's, and it names no game
+  version;
 - **what to look for, item by item.** Not "have a look". Name the scale
   question, the route, each silhouette you are unsure of, and — per item — every
   finding still open from an earlier round that they must **not** test (see
@@ -1582,6 +1758,34 @@ machine `expect` line. Every POV eye sits on a proven-standable waypoint.
 render, and treat it as the primary evidence.** A scene that photographs well
 from outside and reads as a corridor of grey stone from the doorway is a
 finding, not a pass.
+
+**Read it with `campaigns/<id>/design/concept/` open beside it, and say per
+scene whether the built area is the place the approved image shows.** This is
+the page's own discipline everywhere else — *author from the image, judge
+against it, present every choice beside it*, the sentence step 4 wrote into
+`design/README.md` — and step 12 is where the two are finally in the same hand.
+Nothing upstream compares them: the gate confirms a design, the build assembles
+whatever the jigsaw seated from the pool, and until this step they have never
+been introduced. So for each POV frame, name the approved image it answers to
+and write one of two things — *this is that place*, or a finding saying which
+element of the image is not there. A frame with no approved image to answer to
+is itself the finding: the design gate approved something the build does not
+contain.
+
+Two shapes to expect, because they are what the machine cannot say:
+
+- **The area is a different place.** A shore drawn as a black rock headland
+  built as a flat sand floor in a box of cobble is not a lighting note or a
+  detail gap; it is the pool having no piece that is the thing the design is
+  about, arriving five steps after step 2A could have acted on it. Record it as
+  a finding against the placement model, not against the render.
+- **The area is that place with something wrong in it** — a floating slab, a
+  seam that does not meet, furniture the design does not have. Those are
+  document-level fixes, below.
+
+**A site-plan campaign has no approved image of its blockout** and this
+paragraph does not apply to it — step 4 says why, and its own judgement happened
+at the walk.
 
 **Save the world first — `delvec build` does not write one.** A delve's geometry
 is stamped by the datapack over the first ticks of a server boot, so a build tree
@@ -1796,8 +2000,21 @@ translated gloss may follow on the next line but may not restate the numbers.
 only one a check can keep true; every other is hand-typed and goes stale in
 silence. So: no campaign-version stamp, and the host command names `:latest` —
 that IS the storybook's claim — with one sentence sending a reader who wants an
-exact version to the release page, where the tag is machine-written. Then prove
-it:
+exact version to the release page, where the tag is machine-written.
+
+**That includes the connect line, which is where it bites.** Step 9's wording
+names the game version because it is going into a chat message; written into the
+storybook it is a second version literal and the check refuses it by name. Point
+at the marker instead — it already carries the number, and it is the one copy
+anything keeps true:
+
+```
+Start the server, then in the Minecraft Java client at the version the marker
+above names: Multiplayer → Direct Connect → `localhost:25565`.
+```
+
+`localhost:25565` and `-p 25565:25565` are safe to write: the check knows a port
+from a version. Then prove it:
 
 ```sh
 python3 "$DELVEWRIGHT_ENGINE/tools/check-storybook-version.py" --campaigns campaigns
@@ -1815,7 +2032,7 @@ actually use.
 
 # play — one command: build, gate, serve, and print the connect line
 "$DELVEWRIGHT_ENGINE/tools/playtest-server.sh" up campaigns/<id> \
-    --prefabs prefabs --out "$PWD/.out/delve"
+    --prefabs prefabs --delvec "$(command -v delvec)" --out "$PWD/.out/delve"
 
 # playtest, with in-game notes
 EULA=TRUE CREATOR_NAME=<mc name> docker compose -f "$DELVEWRIGHT_ENGINE/validation/compose.yaml" \
