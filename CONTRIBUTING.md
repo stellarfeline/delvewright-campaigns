@@ -21,9 +21,8 @@ campaigns/<campaign-id>/               # every campaign, demo levels included
 prefabs/               # the shared building-block library (.nbt + metadata, git-lfs)
 demos/<demo>/          # a generation-time surface demonstrated: a grammar
                        #   program, the piece it exports, its reports and its
-                       #   refusal transcripts. Never a campaign — a directory
-                       #   here holding a stage document is a campaign the build
-                       #   gate would never compile, and it reds naming it
+                       #   refusal transcripts. Never a campaign — a stage
+                       #   document does not belong here
 ```
 
 Clone this repo and you have the complete authoring environment: every existing
@@ -52,20 +51,15 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   reviewable JSON validated by a closed schema. **No images, no worlds, no
   binaries, ever** — canonical images are built only by trusted CI from these
   sources (determinism makes the build reproducible by anyone).
-- Campaigns must compile in CI before merge. Every push and pull request runs
-  `delvec validate` and a full `delvec build` (which implies `analyze`) for every
-  campaign in this repo, in every language it declares, against the engine pinned
-  in `versions.toml` — so a campaign that no longer compiles is red here, not
-  discovered at release time. Run exactly what CI runs, before you push:
-  `python3 tools/campaign-build.py --delvec <path to delvec>`, or
-  `--discover-only` to see which campaigns it finds without building them. A
-  campaign still being authored lives on its own `campaign/<id>` branch and does
-  not build yet; `--branch campaign/<id>` reports its findings without counting
-  them, while every other campaign in the tree still must build. The flag names
-  the branch the work lands on, so the pull request that merges the campaign to
-  `main` is judged strictly. The
-  runtime half of the ladder (PackTest and a bot playthrough against the shipped
-  image) runs on a release tag; see *Releasing a campaign* below.
+- **A campaign is compiled by its author, with the engine that author uses.** Run
+  `delvec validate` and a full `delvec build` (which implies `analyze`) over your
+  campaign, in every language it declares, against the engine revision
+  `versions.toml` `[engine].authoring_ref` names, and open the pull request on a
+  campaign that builds. CI does not compile campaigns for you: a campaign is
+  built only by the engine it pins, and nothing here owes compatibility to a
+  campaign already authored. The runtime half of the ladder (PackTest and a bot
+  playthrough against the shipped image) runs on a release tag; see *Releasing a
+  campaign* below.
 - Only distributable-class prefabs (this repo's `prefabs/`, per-item CC0/CC BY/
   original with recorded provenance) may be referenced. Prefab additions pass a
   mechanical NBT audit in CI (block-palette allowlist; no command/structure
