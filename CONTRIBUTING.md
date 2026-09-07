@@ -71,7 +71,7 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   mechanical NBT audit in CI (block-palette allowlist; no command/structure
   blocks, no NBT-bearing spawners; and what the world will settle — stair runs
   and fluid). Run it yourself before you open anything, with the same command CI
-  runs: `python3 tools/prefab-audit.py --bin <path to delve-admit>`. It finds
+  runs: `python3 tools/prefab-audit.py --bin <path to delvec>`. It finds
   every `.nbt` in the repository by walking it, so a piece in a directory nobody
   anticipated is audited too, and it prints what it examined. Campaigns using
   user-local assets are for private play and don't belong here.
