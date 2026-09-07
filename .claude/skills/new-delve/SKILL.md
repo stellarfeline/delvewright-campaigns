@@ -626,14 +626,12 @@ Build output goes beside them and is ignored by git there.
 campaign.** A level off the engine's `docs/demo-levels.md` queue — one mechanic
 in the spotlight, ten to twenty minutes, minimum cast — is authored through this
 page like any other and goes to `campaigns/<id>/`. It has to: a delve is what
-somebody plays, and `tools/campaign-build.py` discovers a campaign by finding
-`world.json` under `campaigns/` and nowhere else. **`demos/` is not a second
-home for one.** What lives there is a demonstration of a *generation-time*
-surface — a grammar program, the piece it exports, its reports, its refusal
-transcripts — and it carries no campaign document because no delve is built from
-it. The gate holds the same line from the other side: a stage document anywhere
-outside `campaigns/` is a campaign nothing would ever compile, and it reds
-naming the directory. One place each, and no pointer file in either.
+somebody plays, and a campaign is the directory under `campaigns/` that carries
+`world.json`. **`demos/` is not a second home for one.** What lives there is a
+demonstration of a *generation-time* surface — a grammar program, the piece it
+exports, its reports, its refusal transcripts — and it carries no campaign
+document because no delve is built from it. One place each, and no pointer file
+in either.
 
 **The document names, all of them.** `delvec validate` reads a whole campaign
 and refuses one that is missing any of them with `DW0874`, which names **every**
@@ -718,15 +716,11 @@ campaign. Conventional message; do not push unless asked. The documents are the
 artifact of record: the delve must rebuild byte-identically from them with no
 model in the loop.
 
-**That branch is also what tells the build gate what it is looking at.** A
-campaign correctly stopped at the design gate does not build, and that is not a
-defect — so `python3 tools/campaign-build.py --branch campaign/<id> …` reports
-that one campaign's findings and does not count them, while every other campaign
-in the tree still must build. The excuse is the branch name and nothing else: it
-names exactly one campaign, every run prints what it excused, and the flag is
-the branch the work **lands on** — so the pull request that finally merges the
-campaign to `main` is judged strictly, which is the run that decides whether it
-ships. **A campaign on `main` must build.**
+**A campaign correctly stopped at the design gate does not build yet, and that
+is not a defect.** Nothing in CI compiles it for you: the campaign is built by
+you, with the engine `versions.toml` `[engine].authoring_ref` names, and it
+builds before the pull request that merges it to `main` — that is the run that
+decides whether it ships.
 
 **While you are authoring incrementally, stub the later documents** and mark the
 stubs clearly, so `delvec validate` can run at all. A stub is the envelope plus
