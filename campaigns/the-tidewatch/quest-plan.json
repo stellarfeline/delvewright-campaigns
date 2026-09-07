@@ -1,0 +1,37 @@
+{
+  "dsl_version": "0.20.0",
+  "campaign_id": "the-tidewatch",
+  "stage": "quest-plan",
+  "content": {
+    "quests": [
+      {
+        "id": "quest/the-empty-jar",
+        "goal": "Land on the tide stair, find Maren Sill, and hear why the Tidewatch is dark.",
+        "area": "area/shore",
+        "npcs": ["npc/maren-sill"],
+        "depends_on": [],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/what-the-tide-left",
+        "goal": "Recover the cask of lamp oil the tide dragged into the rocks below the stair.",
+        "area": "area/shore",
+        "npcs": ["npc/maren-sill"],
+        "depends_on": ["quest/the-empty-jar"],
+        "mandatory": true,
+        "act": 1
+      },
+      {
+        "id": "quest/the-dark-lamp",
+        "goal": "Climb the Tidewatch and put the light back in the window before the tide turns.",
+        "area": "area/tower",
+        "npcs": [],
+        "depends_on": ["quest/what-the-tide-left"],
+        "mandatory": true,
+        "act": 2
+      }
+    ],
+    "finale": "quest/the-dark-lamp"
+  }
+}
