@@ -1,0 +1,53 @@
+{
+  "dsl_version": "0.8.0",
+  "campaign_id": "tide-mill",
+  "stage": "dialogue",
+  "content": {
+    "dialogues": [
+      {
+        "npc": "npc/miller",
+        "root": "dlg/sedge-hail",
+        "nodes": [
+          {
+            "id": "dlg/sedge-hail",
+            "text": "Brake pin sheared on the turn of the ebb. Hear it? That knock. That's my wheel running with nothing holding it. It'll walk the mill off its footings before the pond's out. Brake's at the far end of the race, past three sluices, and these knees haven't run a sluice in nine years. Yours have.",
+            "options": [
+              { "label": "What sheared?", "next": "dlg/wheel" },
+              { "label": "How many gates?", "next": "dlg/gates" },
+              {
+                "label": "I'll run it.",
+                "effects": [{ "type": "complete-objective", "objective": "obj/hail" }]
+              }
+            ]
+          },
+          {
+            "id": "dlg/wheel",
+            "text": "Pin's an oak peg the thickness of your arm. It holds the brake band on the axle. Snapped, and now the wheel takes the whole race with nothing to bite it. It goes faster than it was ever built for. Beam shakes, then the floor, then the wall — and the village's grain is stacked against that wall.",
+            "options": [
+              { "label": "How many gates?", "next": "dlg/gates" },
+              { "label": "Back.", "next": "dlg/sedge-hail" }
+            ]
+          },
+          {
+            "id": "dlg/gates",
+            "text": "Three. The grate first — that one takes a long breath. Six seconds open, two shut, and it keeps that count whether you're watching or not. The wheel sluice is half of it: three open, four shut. Shut's longer than open on that one, so don't lean on it.",
+            "options": [
+              { "label": "And the third?", "next": "dlg/tide" },
+              { "label": "Back.", "next": "dlg/sedge-hail" }
+            ]
+          },
+          {
+            "id": "dlg/tide",
+            "text": "The tide gate, under the sea wall. Under two seconds open. Four and better shut. It has killed men who counted wrong — it doesn't push you out, it comes down through you. Stand off it. Watch it go round once. Then walk, and don't be inside it when it drops.",
+            "options": [
+              {
+                "label": "I'll run it.",
+                "effects": [{ "type": "complete-objective", "objective": "obj/hail" }]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
