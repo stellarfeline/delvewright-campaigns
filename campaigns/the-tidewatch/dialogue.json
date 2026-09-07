@@ -1,6 +1,117 @@
 {
-  "dsl_version": "0.20.0",
   "campaign_id": "the-tidewatch",
-  "stage": "dialogue",
-  "content": { "dialogues": [] }
+  "content": {
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/maren-root",
+            "options": [
+              {
+                "label": "What happened?",
+                "next": "dlg/maren-the-jar",
+                "tooltip": "Ask her why the lamp is dark."
+              },
+              {
+                "label": "Who are you?",
+                "next": "dlg/maren-who",
+                "tooltip": "Ask who she is before asking anything else."
+              }
+            ],
+            "text": "She does not turn round. \"You came up the stair, so you can see it's out. Forty years it hasn't been out.\""
+          },
+          {
+            "id": "dlg/maren-who",
+            "options": [
+              {
+                "label": "What happened?",
+                "next": "dlg/maren-the-jar",
+                "tooltip": "Back to the lamp."
+              }
+            ],
+            "text": "\"Maren Sill. I keep it. Kept it.\" She turns the empty jar over in her hands. \"That's the whole of me, and it's more than the coast asks.\""
+          },
+          {
+            "id": "dlg/maren-the-jar",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-maren",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/maren-sill",
+                  "text": "The wardens take Maren's jar and the job that comes with it.",
+                  "verb": "learns"
+                },
+                "label": "We'll light it.",
+                "next": "dlg/maren-sent",
+                "tooltip": "Take the jar and go."
+              },
+              {
+                "label": "Why not you?",
+                "next": "dlg/maren-not-me",
+                "tooltip": "Ask why she will not climb it herself."
+              }
+            ],
+            "text": "\"Oil went over the side and the cask went with it. Tide put the cask back on the landing. It did not put me back up that stair.\" She holds out the jar. \"Fill it. Carry it up. I'll watch from here.\""
+          },
+          {
+            "id": "dlg/maren-not-me",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-maren",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/maren-sill",
+                  "text": "The wardens take Maren's jar without getting a straight answer about the stair.",
+                  "verb": "learns"
+                },
+                "label": "We'll light it.",
+                "next": "dlg/maren-sent",
+                "tooltip": "Take the jar and go."
+              }
+            ],
+            "text": "\"Because I came down it faster than I went up it, and I'd rather not say how.\" A pause. \"It's a stair. It's not the stair that's the trouble.\""
+          },
+          {
+            "id": "dlg/maren-sent",
+            "options": [],
+            "text": "\"Cask is on the landing. Door is at the top of the rock. Don't spill it.\""
+          },
+          {
+            "id": "dlg/maren-waiting",
+            "options": [
+              {
+                "label": "Then what?",
+                "next": "dlg/maren-waiting-then",
+                "tooltip": "Ask what happens once the jar is full."
+              }
+            ],
+            "text": "\"Cask is down where you landed. It's wedged, so it'll want both of you.\" She does not offer to come."
+          },
+          {
+            "id": "dlg/maren-waiting-then",
+            "options": [],
+            "text": "\"Then the door, then the stair, then the room at the top. The lamp will take it. It always takes it.\""
+          },
+          {
+            "id": "dlg/maren-watching",
+            "options": [],
+            "text": "She has not moved off the stair. \"Go on, then. I'll know when it's lit — everyone from here to the point will.\""
+          }
+        ],
+        "npc": "npc/maren-sill",
+        "root": "dlg/maren-root"
+      }
+    ]
+  },
+  "dsl_version": "0.20.0",
+  "stage": "dialogue"
 }

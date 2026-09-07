@@ -1,6 +1,207 @@
 {
-  "dsl_version": "0.20.0",
   "campaign_id": "the-tidewatch",
-  "stage": "quests",
-  "content": { "quests": [] }
+  "content": {
+    "quests": [
+      {
+        "cast": {
+          "npc/maren-sill": {
+            "at": "anchor/exit",
+            "dialogue": "dlg/maren-root",
+            "doing": "Standing at the head of the tide stair with an empty jar, watching the sea instead of the tower."
+          }
+        },
+        "happening": {
+          "subject": "npc/maren-sill",
+          "text": "The wardens land on the tide stair and find Maren Sill on it with an empty jar. She tells them the Tidewatch is dark because the oil is gone, and that she is not climbing that stair again.",
+          "verb": "learns"
+        },
+        "id": "quest/the-empty-jar",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/maren-sill",
+              "text": "Maren says what is wrong: no oil, and a stair she will not climb.",
+              "verb": "learns"
+            },
+            "hint": "Up the tide stair from the landing you came ashore on, where the rock meets the tower.",
+            "id": "obj/find-maren",
+            "npc": "npc/maren-sill",
+            "title": "Find the Lampkeeper",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "text": "The sea keeps its time whatever the coast does. The cask is down on the landing where the tide left it.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/find-maren": [
+            {
+              "flag": "flag/heard-maren",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/maren-sill": {
+            "at": "anchor/exit",
+            "dialogue": "dlg/maren-waiting",
+            "doing": "Watching the landing from the stair head, saying nothing while they work at the cask."
+          }
+        },
+        "happening": {
+          "subject": "item/lamp-oil",
+          "text": "The wardens free the cask the tide wedged into the rocks on the landing and draw off a jar of lamp oil.",
+          "verb": "gains"
+        },
+        "id": "quest/what-the-tide-left",
+        "objectives": [
+          {
+            "anchor": "spawn",
+            "happening": {
+              "subject": "item/lamp-oil",
+              "text": "The cask comes free and the jar fills.",
+              "verb": "gains"
+            },
+            "hint": "Back down on the landing where you came ashore, wedged in the rocks at the waterline.",
+            "id": "obj/free-the-cask",
+            "title": "Free the Oil Cask",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "text": "Maren does not follow. The stair up to the door is yours now.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/free-the-cask": [
+            {
+              "flag": "flag/has-oil",
+              "type": "set-flag"
+            },
+            {
+              "count": 1,
+              "item": "minecraft:glass_bottle",
+              "name": "Jar of Lamp Oil",
+              "type": "give-item"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-empty-jar",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/maren-sill": {
+            "at": "anchor/exit",
+            "dialogue": "dlg/maren-watching",
+            "doing": "Left on the shore stair below, watching the top of the tower for a light that is not there yet."
+          }
+        },
+        "happening": {
+          "subject": "anchor/exit",
+          "text": "The wardens climb the Tidewatch with the jar and put the light back in the seaward window. The coast has its star again.",
+          "verb": "opens"
+        },
+        "id": "quest/the-dark-lamp",
+        "objectives": [
+          {
+            "anchor": "spawn",
+            "happening": {
+              "subject": "anchor/spawn",
+              "text": "The storm shutter over the seaward window is wound off its chain.",
+              "verb": "opens"
+            },
+            "hint": "In the entry hall at the foot of the climb, on the wall by the door.",
+            "id": "obj/free-the-shutter",
+            "title": "Free the Shutter Chain",
+            "type": "interact"
+          },
+          {
+            "anchor": "anchor/exit",
+            "happening": {
+              "subject": "anchor/exit",
+              "text": "One warden reaches the lamp room at the head of the climb.",
+              "verb": "arrives"
+            },
+            "hint": "Up the tower stair from the entry hall, to the room with the seaward window.",
+            "id": "obj/reach-the-lamp-room",
+            "radius": 3,
+            "title": "Climb to the Lamp Room",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/free-the-shutter",
+              "obj/reach-the-lamp-room"
+            ],
+            "anchor": "anchor/exit",
+            "happening": {
+              "subject": "anchor/exit",
+              "text": "The wick catches and the window goes bright over the water.",
+              "verb": "opens"
+            },
+            "hint": "At the head of the climb, in the room with the seaward window.",
+            "id": "obj/light-the-lamp",
+            "missing_item_hint": "The wick is cold and the reservoir is dry. Nothing here will catch without the oil.",
+            "requires_item": "minecraft:glass_bottle",
+            "title": "Light the Tidewatch",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "text": "Far below, on the wet stair, somebody stops watching the tower and turns back to the sea.",
+            "type": "narrate"
+          },
+          {
+            "ending": "ending/the-light-returns",
+            "happening": {
+              "subject": "anchor/exit",
+              "text": "The Tidewatch burns again and the delve ends with the coast lit.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/free-the-shutter": [
+            {
+              "flag": "flag/shutter-open",
+              "type": "set-flag"
+            }
+          ],
+          "obj/light-the-lamp": [
+            {
+              "flag": "flag/lamp-lit",
+              "type": "set-flag"
+            }
+          ],
+          "obj/reach-the-lamp-room": [
+            {
+              "flag": "flag/at-the-lamp",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/what-the-tide-left",
+          "type": "quest-complete"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.20.0",
+  "stage": "quests"
 }

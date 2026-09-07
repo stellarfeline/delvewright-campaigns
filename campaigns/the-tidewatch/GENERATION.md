@@ -17,6 +17,12 @@ Flat and weather-worn. Nobody in this delve explains the sea to anybody. Maren s
 - **`horizon: "ocean"`.** The delve is coastal and the horizon library has a base for exactly that. It brought `DW0320` with it — an ocean horizon needs a `boundary` — which was a repair owed at step 3 and not a stage-5 state.
 - **`min_players: 2`** because the brief pinned the party size, though no beat in this design is an AND-join that two bodies are mechanically required for.
 
+- **The AND-join was authored to keep `min_players: 2`, not the other way round.** `DW0358` refuses a delve that requires two players and has no objective with two `after` arms, and this design had none until step 7 said so. The shutter chain in the entry hall is the answer: the design gained a mechanism because the number it had already declared demanded one, which is the right direction for that refusal to push.
+
 ## Findings ledger
 
-Nothing yet.
+| # | what | state |
+|---|---|---|
+| 1 | `horizon: "ocean"` cannot be honestly used with the shipped `cave-*` and `keep-*` pools. `DW0344` reports the ocean-datum check examined **zero of 7 placed pieces**: four stand at or below the sea plane and not one declares a `waterline_y`, so nothing proves anything in this world meets the sea where the sea is. The diagnostic states in its own words that the demand "is not yet authorable — no lever lifts a piece clear of the sea". Only the `island-*` pieces carry the convention. | open — a capability gap, not a campaign defect |
+| 2 | `DW0781` reports the piece-mating check examined **zero abutting faces**: of 7 placed pieces, none carries a spatial contract, so nothing proves the pieces of this world fit together. A jigsaw-assembled `areas[]` campaign gets no mating proof at all from the shipped library. | open — a capability gap, not a campaign defect |
+| 3 | A pool area's usable anchor set is effectively only its `entry`-role member's, because that is the one member the assembly is guaranteed to seat, and an anchor declared on several members is ambiguous. Two anchors per area is what this campaign had to design against. | open — a constraint, recorded so the next round does not rediscover it |

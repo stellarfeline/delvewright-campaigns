@@ -35,6 +35,10 @@ The first beat plays in `area/shore`, which is the spawn area, so the crossing h
 
 No branch points, no optional quests, no endings other than the one.
 
+**The finale is an AND-join, and it is what makes this a two-player delve.** The seaward window is shuttered and the shutter is wound from a chain in the entry hall at the foot of the climb, four floors below the lamp. So `obj/free-the-shutter` happens at the bottom and `obj/reach-the-lamp-room` at the top, and `obj/light-the-lamp` waits on both: one warden opens the window, the other is standing at the lamp with the jar when it opens. `min_players: 2` is refused without exactly this (`DW0358`), and the refusal is right — a delve billed for two that one body walks end to end is billed wrong.
+
+The second arm is a `reach-anchor` rather than a second `interact` because both would stand on `anchor/exit` and their interaction boxes would be coincident, which is `DW0878`: the client would resolve the click by entity iteration order and one beat would silently stop firing.
+
 ## The world
 
 `horizon: "ocean"` — the pinned water superflat, sea level 62, which is the coast this delve is named after; `boundary: {}` because an infinite swimmable sea with no return rule lets a player wander off the map (`DW0320`). `min_players: 2`. The shore area declares `lighting` with a lantern fixture at `min_light: 7`, because a cave pool assembled at night on an ocean horizon is not a place the tide stair can be read in; the tower's pool members are all measured lit and declare nothing.
