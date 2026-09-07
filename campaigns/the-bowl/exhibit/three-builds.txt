@@ -1,0 +1,49 @@
+--- void: horizon = "void"
+    $ /private/tmp/claude-501/-Users-steve235lab-Documents-projects-Delvewright/d1437371-d298-4c77-a6f2-fb1dd685f83c/scratchpad/w-bowl/engine/target/release/delvec build campaigns/the-bowl -o /private/tmp/claude-501/-Users-steve235lab-Documents-projects-Delvewright/d1437371-d298-4c77-a6f2-fb1dd685f83c/scratchpad/w-bowl/out/three/void --prefabs prefabs
+--- valley-24: horizon = {"base": "valley", "ratio": 2.5, "rim_height": 24}
+    $ /private/tmp/claude-501/-Users-steve235lab-Documents-projects-Delvewright/d1437371-d298-4c77-a6f2-fb1dd685f83c/scratchpad/w-bowl/engine/target/release/delvec build campaigns/the-bowl -o /private/tmp/claude-501/-Users-steve235lab-Documents-projects-Delvewright/d1437371-d298-4c77-a6f2-fb1dd685f83c/scratchpad/w-bowl/out/three/valley-24 --prefabs prefabs
+--- valley-96: horizon = {"base": "valley", "ratio": 2.5, "rim_height": 96}
+    $ /private/tmp/claude-501/-Users-steve235lab-Documents-projects-Delvewright/d1437371-d298-4c77-a6f2-fb1dd685f83c/scratchpad/w-bowl/engine/target/release/delvec build campaigns/the-bowl -o /private/tmp/claude-501/-Users-steve235lab-Documents-projects-Delvewright/d1437371-d298-4c77-a6f2-fb1dd685f83c/scratchpad/w-bowl/out/three/valley-96 --prefabs prefabs
+
+=== three builds: 3 of 3 green
+--- void
+    no surround line printed (this is the void build)
+    site plan sha256: a7ae3d5039db29d0301709995142390beb966ef573442e0bc00111659fa2c068
+    layout graph sha256: 47f808232c1d40a390a5706c8175056e7d622596f158c5a3a60b4e896dde8d9e
+    blockout sha256: 838a95b0bed2b3ac5c7611c4f9192d3b6368d50525345add4c4c75f6f6105059
+--- valley-24
+    surround: 85 templates and 4 biome bands around [0, 0]..[47, 39] stated by the site-plan region, with 2742 standable gap-floor cells the climb proof floods from
+    site plan sha256: a7ae3d5039db29d0301709995142390beb966ef573442e0bc00111659fa2c068
+    layout graph sha256: 47f808232c1d40a390a5706c8175056e7d622596f158c5a3a60b4e896dde8d9e
+    blockout sha256: 838a95b0bed2b3ac5c7611c4f9192d3b6368d50525345add4c4c75f6f6105059
+--- valley-96
+    surround: 95 templates and 4 biome bands around [0, 0]..[47, 39] stated by the site-plan region, with 2742 standable gap-floor cells the climb proof floods from
+    site plan sha256: a7ae3d5039db29d0301709995142390beb966ef573442e0bc00111659fa2c068
+    layout graph sha256: 47f808232c1d40a390a5706c8175056e7d622596f158c5a3a60b4e896dde8d9e
+    blockout sha256: 838a95b0bed2b3ac5c7611c4f9192d3b6368d50525345add4c4c75f6f6105059
+
+=== method A: the derivation's own hash
+    all three builds derive one blockout: 838a95b0bed2b3ac5c7611c4f9192d3b6368d50525345add4c4c75f6f6105059
+
+=== method B: every emitted file, hashed by content
+    void vs valley-24: 82 shared path(s), 76 byte-identical, 6 differing; 85 path(s) only in valley-24, 0 only in void
+        of the 85 new path(s), 85 are the landform's own templates
+        datapack/data/the-bowl/function/place_all.mcfunction: 85 line(s) added, 0 line(s) of the void build not present in the valley build
+        datapack/data/the-bowl/function/place_verify.mcfunction: 86 line(s) added, 1 line(s) of the void build not present in the valley build
+        datapack/data/the-bowl/function/setup.mcfunction: 1 line(s) added, 0 line(s) of the void build not present in the valley build
+        datapack/data/the-bowl/function/setup_finish.mcfunction: 6 line(s) added, 0 line(s) of the void build not present in the valley build
+        manifest.json: the input hash of the one rewritten field
+        render-plan.json: 5 key path(s) differ (/horizon plus 4 review-camera stand-up value(s))
+    void vs valley-96: 82 shared path(s), 76 byte-identical, 6 differing; 95 path(s) only in valley-96, 0 only in void
+        of the 95 new path(s), 95 are the landform's own templates
+        datapack/data/the-bowl/function/place_all.mcfunction: 95 line(s) added, 0 line(s) of the void build not present in the valley build
+        datapack/data/the-bowl/function/place_verify.mcfunction: 96 line(s) added, 1 line(s) of the void build not present in the valley build
+        datapack/data/the-bowl/function/setup.mcfunction: 1 line(s) added, 0 line(s) of the void build not present in the valley build
+        datapack/data/the-bowl/function/setup_finish.mcfunction: 6 line(s) added, 0 line(s) of the void build not present in the valley build
+        manifest.json: the input hash of the one rewritten field
+        render-plan.json: 5 key path(s) differ (/horizon plus 4 review-camera stand-up value(s))
+
+=== method C: the route the bot walks
+    critical-path.json is one file in all three: 9479961ba460c1c577c76515c5bec30b47e9a01ccefe7abc7849dfbbf9e0d988
+
+three builds from one document, and one map in all three.
