@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "ed39b9c73008ed980e77e1c28a358c297649d282"
+value = "ba461b28cbce03a89dd36fad28f7d72512489f4b"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "held"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "ed39b9c73008ed980e77e1c28a358c297649d282"
+reviewed = "ba461b28cbce03a89dd36fad28f7d72512489f4b"
 vendors = ["tools/check-pins.py"]
 why = """
 WHAT THIS PIN IS. The pipeline command `delvec prefab audit` — the audit every
@@ -32,55 +32,48 @@ and its currency is judged rather than assumed. It is judged as one unit with
 re-pinned on every upstream merge: the question this pin answers is "does the
 library still admit clean by the pinned judge", not "is this the upstream tip".
 
-WHAT THE JUDGE IS BUILT FROM, and why no closure is stated. ADR-0023 folded the
-standalone `delve-admit` binary into one creator binary, `delvec`, whose
-subcommand tree also carries `validate`/`build`/`snapshot`/`render` and every
-other surface ADR-0012 lists. `cargo build -p delvec --bin delvec` therefore
-compiles the whole workspace — `crates/dsl`, `crates/compiler`, `crates/schem`,
-`crates/admit`, `crates/grammar`, `crates/orchestrator`, `crates/render` are all
-linked into the one binary this site builds, regardless of which subcommand a
-run invokes. The prior scoped closure (admit's own subcommand pulling in
-schem/grammar/orchestrator/dsl but never compiler) was a fact about
-`delvewright-admit`'s narrower dependency graph, and it no longer holds now
-that the site builds `delvec`: naming a closure here would claim a precision
-the build no longer has. This is the strongest form of the case for `held`
-over `track` — a per-merge watch over "the whole workspace" is exactly the
-absurd, always-red watch `engine-authoring`'s own entry refuses to derive, and
-`delvec` now puts every `admit-ref` site in that same shape.
+WHAT THE JUDGE IS BUILT FROM, and why no closure is stated. ADR-0023 gives the
+engine one creator binary, `delvec`, whose subcommand tree carries the audit
+alongside `validate`/`build`/`snapshot`/`render` and every other surface
+ADR-0012 lists. `cargo build -p delvec --bin delvec` therefore compiles the
+whole workspace, and every crate in it is linked into the one binary this site
+builds regardless of which subcommand a run invokes. Naming a narrower closure
+here would claim a precision the build does not have. That is the strongest
+form of the case for `held` over `track` — a per-merge watch over "the whole
+workspace" is exactly the absurd, always-red watch `engine-authoring`'s own
+entry refuses to derive.
 
-THE METHOD an offline reader should expect from a DW-code count, stated once
-because it stops applying here rather than because it changed: `grep -aoE
-'DW[0-9]{4}'` over built bytes, never `strings` (the literals live in a packed
-string table `strings` splits between them, so it under-reports). Reading it
-off `delvec` counts every DW code in the whole pipeline the binary links, not
-the audit subcommand's own — a fact about the one-binary shape, not a
-regression in the count.
+WHAT THE STANDING AUDIT RULE IS. `license.generated_by` requires a `region`
+field — `[x, y, z]`, the box the program was expanded over, an independent
+input because the same program at the same seed over a different box is a
+different building. This library's three programs that carry a `generated_by`
+block — `gatehouse_elevations`, `signal_station`, `mill_race` — carry it.
 
-WHAT THE STANDING AUDIT RULE FOUND, and it is unchanged by this move.
-`license.generated_by` requires a `region` field — `[x, y, z]`, the box the
-program was expanded over, an independent input because the same program at
-the same seed over a different box is a different building. This library's
-three programs that carry a `generated_by` block — `gatehouse_elevations`,
-`signal_station`, `mill_race` — carry the field the newer `GeneratedBy` struct
-requires; nothing about that adoption changes here.
+WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 58 commits, from
+`ed39b9c7` to this value. Two spec-0060 landings are what made the interval
+adoptable rather than merely newer: the engine gained `delvec prefab seating`,
+which asks whether a pool can stand on a declared horizon before a campaign is
+authored against either, and `DW0887`, which asks whether a declared
+`waterline_y` is in the piece's own bytes and now binds at the per-file
+admission event this workflow drives. The library declares what that instrument
+demands — `walk_y` on 36 of 36 documents, three waterlines each borne out by
+the bytes — before the pin follows, which is the order this policy's last
+paragraph states.
 
-WHAT THIS MOVE DID, and what was measured for it. Two things landed together,
-because upstream put them in the same interval: `tools/check-pins.py` gains
-`held` (this pin's own policy), and ADR-0023 retires the `delve-admit` binary
-this site built, so moving to an engine that carries `held` at all forces the
-same move past the retirement. `delvec` was built fresh (`cargo build -p delvec
---bin delvec --release`, exit 0, from a detached worktree at this pin's value,
-`cargo 1.97.1` / `rustc 1.97.1`) and `delvec prefab audit --help` was read
-directly off that binary to confirm the surface `delve-admit audit` exposed
-survives unchanged under `delvec prefab audit` — same arguments
-(`<NBT>`, `--allowlist`, `-o`/`--report`), no `--prefabs` consulted by the audit
-path. `tools/prefab-audit.py` was updated to invoke that shape and then run
-against the whole repository with the fresh binary: 39 audited units over 39
-in-scope `.nbt` files, PASS 39 of 39 at exit 0 — the same count and verdict the
-library held before this move, so the binary rename changed nothing about what
-is admitted. `.github/workflows/prefab-audit.yml`'s build and invoke steps move
-to `delvec` alongside the pin, for the same reason: a pin whose site still
-named a binary the pinned revision no longer produces would not build at all.
+WHAT WAS BUILT AND RUN. `delvec` built fresh from a clone at this value
+(`cargo build -p delvec --bin delvec --release`, exit 0, `cargo 1.97.1` /
+`rustc 1.97.1`), and `tools/prefab-audit.py` run over the whole repository with
+it and, separately, with a binary built the same way at `ed39b9c7`. Both judges
+examine the same 39 audited units over 39 in-scope `.nbt` files and both report
+PASS 39 of 39 at exit 0, so nothing this library already ships is newly refused.
+The count that moves is what the judge examines: the older binary reads no
+waterline declaration at all, and this one examines 3 of the 3 the library
+declares and finds all 3 borne out by the bytes. That arm is not vacuous, and it
+was checked by planting rather than assumed: a fictitious `waterline_y: 2` on
+`keep-shrine`, a piece that authors no water, passes the older judge at exit 0
+with `"verdict": "pass"` and is refused by this one at exit 1 with `"verdict":
+"fail"` and `DW0887`. That is the whole of what moving this pin buys, stated as
+a number.
 
 WHY THIS PIN IS `held` AND NOT `track`. `value` is the revision the tool is
 BUILT from; `reviewed` is the revision its upstream history has been JUDGED
