@@ -89,7 +89,26 @@ WHAT IS CHECKED
    deliberately outside `/new-delve` says so IN the skill, because a list of
    stages nobody has to write is how the silence came back.
 
-6. **Every number the page states about the engine's idiom index is true.** The
+6. **Every field of the one document the skill ENUMERATES, the skill names.**
+   Check 5 one level down, and the same direction: `world.json` is the document
+   step 1 tells an author to write field by field, so a field the engine has and
+   the page never lists is a field no run will ever set — silently, at whatever
+   default the engine carries, with nothing anywhere refusing it. `time` and
+   `weather` were unnamed for the whole of DSL v0.5 and v0.6, which is how a
+   creator approves night concept art at step 4 and gets a noon world at step 8;
+   `boundary` was unnamed while `horizon: ocean` refuses without it (`DW0320`).
+   The denominator is `WorldContent` in `crates/dsl/src/stages.rs`, and
+   optionality is serde's own rule — a field may be omitted exactly when its
+   attributes carry `serde(default…)`, since every stage struct is
+   `deny_unknown_fields`. The match is a CODE SPAN, not prose: `time`, `theme`
+   and `premise` are ordinary English words, so a field counts as named when it
+   appears inside a code span as a whole token (`world.difficulty` binds,
+   `set-time` does not). Only `world` is checked, because it is the only
+   document the page enumerates; the other ten it teaches by shape and refusal
+   code, and a second document is a row in `struct_fields`' caller, never a
+   second script.
+
+7. **Every number the page states about the engine's idiom index is true.** The
    page tells an author to read the idiom index before writing a grammar
    program, and it states that index's size in prose ("ten techniques",
    "usually one of the ten"). That is a claim about a table in the engine's
@@ -539,6 +558,39 @@ def engine_version(workspace_cargo_toml: Path) -> str:
     return version
 
 
+def struct_fields(stages_rs: Path, struct: str) -> list[tuple[str, bool]]:
+    """`(field name, may be omitted)` for one stage `content` struct, in order.
+
+    Parsed textually, for the reason `stage_names` is: this gate never builds
+    the compiler, so it costs a `git archive` and no cargo.
+
+    **Optionality is serde's own rule, not a guess about the type.** A field may
+    be omitted from a document exactly when its attribute block carries
+    `serde(default…)`; every stage struct is `deny_unknown_fields`, so there is
+    no third state. Reading the TYPE instead would get it wrong in both
+    directions — `areas: Vec<Area>` has no default and is required, while
+    `languages: Vec<String>` has one and is not.
+    """
+    src = stages_rs.read_text(encoding="utf-8")
+    m = re.search(rf"^pub struct {re.escape(struct)} \{{$(?P<body>.*?)^\}}$", src, re.S | re.M)
+    if m is None:
+        return []
+    fields: list[tuple[str, bool]] = []
+    attrs: list[str] = []
+    for line in m.group("body").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("#["):
+            attrs.append(stripped)
+            continue
+        field = re.match(r"pub (?P<name>[a-z][a-z0-9_]*):", stripped)
+        if field is not None:
+            fields.append((field.group("name"), any("serde(default" in a for a in attrs)))
+            attrs = []
+        elif stripped and not stripped.startswith("///"):
+            attrs = []
+    return fields
+
+
 def stage_names(envelope_rs: Path) -> list[str]:
     """Every campaign stage document the engine defines, in document order.
 
@@ -720,8 +772,9 @@ def check(engine_root: Path, rev: str) -> int:
     compiler_cargo_toml = engine_root / "Cargo.toml"
     compiler_main_rs = engine_root / "crates" / "delvec" / "src" / "main.rs"
     envelope_rs = engine_root / "crates" / "dsl" / "src" / "envelope.rs"
+    stages_rs = engine_root / "crates" / "dsl" / "src" / "stages.rs"
 
-    for path in (compiler_cargo_toml, compiler_main_rs, envelope_rs):
+    for path in (compiler_cargo_toml, compiler_main_rs, envelope_rs, stages_rs):
         rel = path.relative_to(engine_root)
         if not path.is_file():
             print(
@@ -932,7 +985,60 @@ def check(engine_root: Path, rev: str) -> int:
             f"of stages nobody has to write is how the silence came back."
         )
 
-    # -- 6. every number the page states about the idiom index is true --------
+    # -- 6. every field of the document the page enumerates, the page names ---
+    #
+    # THE DEFECT. `world.json`'s `time` and `weather` have existed since DSL
+    # v0.5 and the page never said so. A creator is walked through approving
+    # night concept art at step 4, and the world builds at the `noon` default
+    # because the field that would have said otherwise is written at step 1 and
+    # was never named. Nothing refuses it, nothing warns: the first thing that
+    # says so is a rendered frame at step 12, after the whole run is paid for.
+    # `boundary` and `outro` were unnamed the same way, and `boundary` is a hard
+    # refusal (`DW0320`) the moment `horizon: ocean` is taken.
+    #
+    # SAME DIRECTION AS CHECK 5, one level down. Check 5 asks whether the page
+    # names every stage DOCUMENT; this asks whether it names every FIELD of the
+    # one document it enumerates field by field. Both can only fail as the
+    # engine grows a surface the page never learned, which is the direction a
+    # page written once and an engine that moves actually drift in.
+    #
+    # WHY ONE STRUCT AND NOT ALL ELEVEN. The site is where the page ENUMERATES a
+    # document's fields, and `world` is the only one it does: step 1 tells an
+    # author to write that document field by field and lists what is in it. Over
+    # the other ten it teaches by shape and refusal code, and demanding every
+    # field of `quests.json` be named would red hundreds of times over a page
+    # that is not wrong. Adding a second document is a ROW in the table below,
+    # never a second check.
+    #
+    # THE MATCH IS A CODE SPAN, not prose: `time`, `theme` and `premise` are
+    # ordinary English words and check 5 already records what a bare-token match
+    # over prose cannot tell apart. A field counts as named when it appears
+    # inside a code span as a whole token, so `world.difficulty` and
+    # `"languages": [...]` bind and `set-time` does not.
+    world_fields = struct_fields(stages_rs, "WorldContent")
+    spans_text = "\n".join(code_spans(markdown))
+    unnamed = [
+        (name, optional)
+        for name, optional in world_fields
+        if not re.search(rf"(?<![\w-]){re.escape(name)}(?![\w-])", spans_text)
+    ]
+    for name, optional in unnamed:
+        findings.append(
+            f"the engine's stage-1 `world` document carries the "
+            f"{'optional' if optional else 'required'} field `{name}` and the "
+            f"skill never names it in a code span. Step 1 is where an author "
+            f"writes this document field by field, so a field missing from that "
+            f"list is a field no /new-delve run will ever set — silently, at "
+            f"whatever the engine's default is, with no refusal anywhere to say "
+            f"a decision went unmade.\n"
+            f"    engine {rev[:8]} crates/dsl/src/stages.rs `WorldContent` "
+            f"defines: {', '.join(n for n, _ in world_fields)}\n"
+            f"    Name it at step 1 with what it obliges: what absent means, and "
+            f"which later step refuses, measures or contradicts a campaign that "
+            f"left it unsaid."
+        )
+
+    # -- 7. every number the page states about the idiom index is true --------
     #
     # The page's own prose, held to a table in the engine. This claim used to be
     # a row in the engine's `tools/check-stated-counts.py` SITES table, pointing
@@ -995,7 +1101,7 @@ def check(engine_root: Path, rev: str) -> int:
             file=sys.stderr,
         )
         return 1
-    # -- 7. every dsl_version the page PRINTS is the engine's own ------------
+    # -- 8. every dsl_version the page PRINTS is the engine's own ------------
     # The page tells the author (once, in prose) to write the number
     # `delvec --version` printed. It also PRINTS a filled-in envelope, and an
     # author copies the example far more readily than they re-read the prose.
@@ -1064,6 +1170,16 @@ def check(engine_root: Path, rev: str) -> int:
             file=sys.stderr,
         )
         return 1
+    if not world_fields:
+        print(
+            f"check-skill-version: FAIL — parsed 0 fields from `WorldContent` in "
+            f"crates/dsl/src/stages.rs at engine {rev[:8]}; the struct this gate "
+            "keys off has moved or changed shape. Check 8 would then be silent "
+            "about every field of the one document the page enumerates. Fix the "
+            "parser, do not drop the gate",
+            file=sys.stderr,
+        )
+        return 1
     if count_refs == 0:
         print(
             "check-skill-version: FAIL — the skill states 0 idiom-index counts. It "
@@ -1081,7 +1197,9 @@ def check(engine_root: Path, rev: str) -> int:
         f"reference(s) over {len(seen)} distinct subcommand(s) "
         f"({', '.join(sorted(seen))}), {flag_refs} long-flag reference(s), "
         f"{len(stages) - len(unmentioned)} of the engine's {len(stages)} campaign "
-        f"stage document(s) named in the skill, and {count_refs} stated "
+        f"stage document(s) named in the skill, "
+        f"{len(world_fields) - len(unnamed)} of the engine's {len(world_fields)} "
+        f"`world` document field(s) named in the skill, and {count_refs} stated "
         f"idiom-index count(s), and {len(printed)} printed `dsl_version` literal(s)"
     )
     # The instrument, named by revision rather than by "the pinned engine": a
