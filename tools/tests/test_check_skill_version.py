@@ -133,6 +133,36 @@ impl Stage {
 """
 
 # Three numbered rows, so the oracle's answer is `three` and a page saying
+# The stage-1 `content` struct check 6 reads. Four fields, chosen so the
+# optionality rule is exercised in BOTH directions the type alone gets wrong:
+# `areas` is a `Vec` with no `serde(default)` and is REQUIRED, `languages` is a
+# `Vec` with one and is OPTIONAL. A gate keying off the type would answer
+# backwards on both, and this fixture is what says so. `NpcsContent` below it is
+# the stop test: a parse that ran past `WorldContent`'s closing brace would name
+# a field no page has ever had a reason to write.
+STAGES_RS = """
+/// Stage 1 payload.
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct WorldContent {
+    /// Player-facing delve title.
+    pub title: String,
+    /// The areas the delve is made of.
+    pub areas: Vec<Area>,
+    /// Additional declared translation languages.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub languages: Vec<String>,
+    /// Declared initial world time. Absent = `noon`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time: Option<WorldTime>,
+}
+
+/// A later struct, so the parse must stop at the closing brace above.
+pub struct NpcsContent {
+    pub never_named_on_any_page: String,
+}
+"""
+
 # anything else is red. The delimiter row and the blank line above the table
 # matter: `mdtable` is what decides where the table starts and stops, and this
 # gate deliberately does not own that rule.
@@ -174,6 +204,11 @@ Stages: `world`, `npcs`, and — for a campaign whose map is planned as a whole 
 
 Read the idiom index first: three techniques with a runnable program each. What
 looks impossible is usually one of the three.
+
+## Step 1 — the world document
+
+Write `title`, `areas` and, if the delve has other editions, `"languages"`.
+The hour is `time`; absent it is noon, and never move it with `set-time`.
 
 The storybook marker names an engine but no subcommand:
 
@@ -221,6 +256,8 @@ def write_engine(root: pathlib.Path, version: str = ENGINE) -> pathlib.Path:
     envelope = root / "crates" / "dsl" / "src" / "envelope.rs"
     envelope.parent.mkdir(parents=True, exist_ok=True)
     envelope.write_text(ENVELOPE_RS, encoding="utf-8")
+    stages = root / "crates" / "dsl" / "src" / "stages.rs"
+    stages.write_text(STAGES_RS, encoding="utf-8")
     grammar = root / "docs" / "reference" / "grammar.md"
     grammar.parent.mkdir(parents=True, exist_ok=True)
     grammar.write_text(GRAMMAR_MD, encoding="utf-8")
@@ -510,6 +547,96 @@ class GateTest(unittest.TestCase):
         code, _, err = self.run_check()
         self.assertNotEqual(code, 0)
         self.assertIn("DSL_VERSION", err)
+
+    # -- check 6: every field of the document the page enumerates ------------
+    #
+    # The defect: `world.json`'s `time` existed through two DSL minors and the
+    # page never named it, so a run approved night concept art at the design
+    # gate and built a noon world, with nothing anywhere refusing it.
+
+    def test_a_world_field_the_page_never_names_is_red(self) -> None:
+        body = SKILL_BODY.replace(
+            "The hour is `time`; absent it is noon, and never move it with `set-time`.",
+            "The hour is whatever the engine defaults to.",
+        )
+        self.write_skill(GOOD_FRONTMATTER, body)
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("optional field `time` and the skill never names it", err)
+        # The message hands over the whole denominator, so the reader does not
+        # have to go and read the struct to find out what else is missing.
+        self.assertIn("title, areas, languages, time", err)
+
+    def test_optionality_is_serdes_rule_and_not_the_field_type(self) -> None:
+        """`Vec` with no default is REQUIRED; `Vec` with one is not.
+
+        Both are `Vec<…>`, so a gate that read the type would call them the same
+        thing and would be wrong about each in the opposite direction. The
+        wording in the finding is what says which rule was applied.
+        """
+        body = SKILL_BODY.replace(
+            "Write `title`, `areas` and, if the delve has other editions, "
+            '`"languages"`.',
+            "Write `title`.",
+        )
+        self.write_skill(GOOD_FRONTMATTER, body)
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("required field `areas`", err)
+        self.assertIn("optional field `languages`", err)
+
+    def test_a_field_named_only_in_prose_does_not_count(self) -> None:
+        """`time`, `theme` and `premise` are ordinary English words.
+
+        Check 5 already records that a bare-token match over prose cannot tell a
+        workflow step from an accident; one level down, where the tokens are
+        commoner still, the span is the discriminator.
+        """
+        body = SKILL_BODY.replace(
+            "The hour is `time`; absent it is noon, and never move it with `set-time`.",
+            "Give some thought to the time of day before you build.",
+        )
+        self.write_skill(GOOD_FRONTMATTER, body)
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("optional field `time`", err)
+
+    def test_a_hyphenated_neighbour_does_not_bind_the_field(self) -> None:
+        """`set-time` is an effect, not the world field, and must not satisfy it."""
+        body = SKILL_BODY.replace(
+            "The hour is `time`; absent it is noon, and never move it with `set-time`.",
+            "Never move the hour with `set-time`.",
+        )
+        self.write_skill(GOOD_FRONTMATTER, body)
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("optional field `time`", err)
+
+    def test_the_parse_stops_at_the_structs_closing_brace(self) -> None:
+        """A run-on parse would demand fields of a struct nobody enumerates."""
+        self.write_skill(GOOD_FRONTMATTER)
+        code, out, err = self.run_check()
+        self.assertEqual(code, 0, err)
+        self.assertNotIn("never_named_on_any_page", out + err)
+        self.assertIn("4 of the engine's 4 `world` document field(s)", out)
+
+    def test_an_unparseable_world_struct_is_a_failure_not_a_pass(self) -> None:
+        """Zero fields is check 6 silent about every field at once."""
+        (self.engine / "crates" / "dsl" / "src" / "stages.rs").write_text(
+            STAGES_RS.replace("pub struct WorldContent {", "pub struct World {"),
+            encoding="utf-8",
+        )
+        self.write_skill(GOOD_FRONTMATTER)
+        code, _, err = self.run_check()
+        self.assertEqual(code, 1)
+        self.assertIn("parsed 0 fields from `WorldContent`", err)
+
+    def test_an_engine_with_no_stages_rs_is_a_refusal(self) -> None:
+        (self.engine / "crates" / "dsl" / "src" / "stages.rs").unlink()
+        self.write_skill(GOOD_FRONTMATTER)
+        code, _, err = self.run_check()
+        self.assertEqual(code, 2)
+        self.assertIn("has no crates/dsl/src/stages.rs", err)
 
     def test_a_page_that_states_no_idiom_count_is_a_failure_not_a_pass(self) -> None:
         body = SKILL_BODY.replace(

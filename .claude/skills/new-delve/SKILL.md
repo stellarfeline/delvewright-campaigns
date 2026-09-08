@@ -1,7 +1,7 @@
 ---
 name: new-delve
 description: Generate a complete playable Minecraft delve from a creative prompt — staged DSL authoring with validation-loop self-repair, deterministic compile, machine validation, joinable output. Use when the user asks to create/generate a new delve or campaign. Args = the creative prompt (theme one-liner or detailed brief).
-version: 1.12.0
+version: 1.13.0
 requires:
   delvec: ">=1.0.0 <2.0.0"
 verified_with: 1.2.0
@@ -883,10 +883,36 @@ now. The sixth is `areas`, and which of the two ways it is filled is step 2's
 whole question: `areas[]` on path 2A, and **empty** on a site-plan campaign,
 where the plan is the placement authority and declaring both is `DW0839`.
 
-**Two optional fields here commit something you are not writing yet.** Both sit
-in `world.json` at this step, and both are refused or unbound many steps later,
-so decide each one here with the thing it obliges in front of you.
+**Some of `world.json`'s optional fields commit something you are not writing
+yet.** They all sit in this document at this step, and the ones below are
+refused, unbound or silently contradicted many steps later, so decide each one
+here with the thing it obliges in front of you. The rest are described where
+they are used: `languages` in *Reference: other languages*, `difficulty` in
+*Reference: authoring pitfalls*, and `outro` — the delve's closing line, the
+last player-visible sentence of the run, absent = the finale quest's `goal`.
 
+- **`time` and `weather` — the hour the delve is played in, and the one thing
+  the design gate approves BEFORE this page writes it down.** Absent = `noon`
+  and `clear`. `time` takes `day`, `noon`, `dusk`, `night`, `midnight` or
+  `dawn`; `weather` takes `clear`, `rain` or `thunder`. Both are
+  dimension-global and frozen by environment sealing, so the state declared here
+  is the state for the whole delve.
+  **The order on this page runs backwards from the decision, and that is the
+  trap.** Step 4 confirms the design on concept art, and art has an hour in it —
+  a night sea, a storm, first light on a headland. Nothing between that gate and
+  the build compares the two, because no check reads a picture: a delve whose
+  every approved image is night builds as bright noon, and the first thing that
+  says so is a POV frame at **step 12**, after the whole run has been paid for.
+  So write the hour the brief and the design are set in **here**, and re-read it
+  against the images at step 4 before you hand them over — step 4 says to.
+  Two measurements key off the declared hour rather than off the default, and
+  both move when it does: the dark-cell proof measures under the **darkest
+  reachable** `(time, weather)` sky, so a space lit only by the sky is judged at
+  the night floor once a night hour is declared (`DW0210`, and the lighting
+  contract at 2A); and `DW0496`, the daylight-burning refusal, stands only while
+  the hour is a pinned clear daytime one — so declaring `night` is a design
+  decision that also switches that gate off, which is why *Reference: authoring
+  pitfalls* forbids reaching for the hour to save a mob.
 - **`min_players`.** Absent = 1. Declaring `n ≥ 2` says the delve *requires* n
   bodies, and that is a claim about the QUEST GRAPH: the analyzer demands an
   objective with `n` `after` arms in `n` places — parallel work the party
@@ -922,6 +948,13 @@ so decide each one here with the thing it obliges in front of you.
   datum, an invariant examining zero pieces, and no lever to lift anything
   clear. A coastal delve built from `cave-*`/`keep-*` takes `void` and puts the
   sea in the fiction, or takes `pool/island`.
+- **`boundary`, which `ocean` obliges.** Absent = no boundary. It declares the
+  playable region: the compiler derives one from the placed geometry plus a
+  `margin` of blocks on every side (default 16, range `0..=64`), and a per-second
+  clock returns anyone who leaves it to their last checkpoint, with an optional
+  `message` on the actionbar. **`horizon: ocean` with no `boundary` is
+  `DW0320`** — an infinite swimmable sea with no return rule — so those two are
+  written together or neither is written.
 
 ## 2. Placement — where everything is
 
@@ -1349,11 +1382,26 @@ image of the built map; there is not one.
     it. Twenty scenes then come back in one hand, and a reviewer reads the
     set as one place rather than twenty unrelated pictures.
 
+**Before you hand it over, read `world.json` against the pictures.** The images
+show an hour and a sky, and `time` and `weather` are where that is declared —
+written at **step 1**, before these images existed, and defaulting to `noon` and
+`clear` when you said nothing. This gate is the last place the two can be put
+side by side cheaply: nothing downstream compares them, and the next thing that
+notices is a POV frame at step 12 with the whole run already paid for. So say,
+in the walkthrough, which hour the delve is set in, and make the document agree
+with the art **now** — a one-field edit here, or a night's worth of art redrawn
+later. The same reading applies to anything else in the images the documents
+have to carry: a piece the library does not hold (step 2A says what you owe for
+one), and a room whose light the pictures show as a mood rather than as a
+lighting declaration.
+
 **The moment images are confirmed they become campaign files.** Copy them **and
 their `.json` sidecars** to `campaigns/<id>/design/concept/`, one per scene,
 named for the scene, and write `campaigns/<id>/design/README.md` carrying the
-approved names, what each one shows, and the sentence every later round is held
-to: *author from the image, judge against it, present every choice beside it.*
+approved names, what each one shows, **the environment the approved set is drawn
+in — written as the `time` and `weather` tokens `world.json` carries, not as
+prose** — and the sentence every later round is held to: *author from the image,
+judge against it, present every choice beside it.*
 **No date and no approver** — this file is a repository artifact under the same
 rule `GENERATION.md` is; what it records is that this set is the approved one,
 not when or by whom.
@@ -1747,6 +1795,12 @@ re-run. Never argued away, never left for the human QA hour.
 
 Yours to do, not a checklist to hand off: judging a frame is the whole task.
 
+**Read this step's whole cost before you run its first command.** Rendering is
+the largest single bill on this page — hours, not minutes, and it scales with
+your campaign's scene count rather than with its size on disk. *What the set
+costs*, below, gives the rate and where to read the count, and it decides which
+frames you render rather than how fast you render them.
+
 **Judge the player's eye first and the set second.** The question a playtest asks
 is *what does a player walking in experience*, and only a first-person frame on
 the actual assembled route answers it. The build emits those: a `pov` camera at
@@ -1771,6 +1825,16 @@ and write one of two things — *this is that place*, or a finding saying which
 element of the image is not there. A frame with no approved image to answer to
 is itself the finding: the design gate approved something the build does not
 contain.
+
+**Read the sky on the first frame, because it answers in one glance and it
+answers for the whole set.** `design/README.md` records the environment the
+approved set was drawn in, as the `time` and `weather` tokens `world.json`
+carries. A frame whose hour is not that hour is those two fields disagreeing
+with the art — declared at step 1, before the art existed, and defaulting to
+`noon` and `clear` if step 1 said nothing. It is a one-field edit and a rebuild,
+and it is cheap only if you catch it on the first frame instead of after reading
+the set: an hour that is wrong is wrong in every frame, and re-rendering the set
+costs what *What the set costs* says it costs.
 
 Two shapes to expect, because they are what the machine cannot say:
 
@@ -1862,6 +1926,27 @@ reads `(N of <image height>)` and counts scanlines rather than samples, so watch
 to go faster is one process per scene in parallel with `-threads <n>` each, never
 a smaller budget on the frame you are about to judge. This step does not skip —
 a visual channel that fails soft is a review that passed without looking.
+
+**What the set costs, before you start it rather than four hours into it.** The
+path tracer is CPU-bound, so the bill is a rate times a count and neither half is
+hidden from you. **The rate, measured**: one POV scene at the review tier the
+scene carries, `-threads 10` on a ten-core machine, took **299 s** — about five
+minutes of the whole machine for one frame — and a thirteen-frame POV sequence on
+that machine ran **82 minutes** end to end, so roughly 380 s a frame once a set
+is going. **The count is what `render-shots.sh` already printed**: its last line
+is `shot set ready: <N> Chunky scene(s) (incl. the whole-map panorama)`, and that
+`<N>` is the number to multiply — read it, do not assume a size, and do not carry
+a number off this page, because it is a property of your campaign. Even a
+two-scene delve's full set runs to hours on that machine.
+
+**Parallelism buys wall time, never total work.** One process per scene fills the
+cores you have and stops there; the core-hours are the same whatever the process
+layout, so the advice above is about where not to spend the budget rather than
+about making the bill smaller. So decide the reading order up front and say what
+you did: the POV sequence in route order is the primary evidence and is rendered
+at the scene's own budget; the interior, seam, NPC and spawn-orbit shots come
+after it. **A set you did not render is reported as not rendered**, per scene,
+never left in a report where it reads as a frame that passed.
 
 Every camera in `render-plan.json` is proven to stand in open air (`DW0724`);
 read `camera_eye_proof` for how many were examined and how many had to be pulled
