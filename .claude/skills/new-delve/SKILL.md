@@ -928,26 +928,31 @@ last player-visible sentence of the run, absent = the finale quest's `goal`.
   superflat sea at y=62 and DROPS the area datum to y=60 so a piece meets the
   water at its own declared `waterline_y`. Only pieces carrying that field are
   authored for it, and the invariant that proves the meeting (`DW0344`) examines
-  only those — a piece without it is not checked and is not lifted. Ask the
-  library which pieces those are before you take `ocean`:
+  only those — a piece without it is not checked and is not lifted. So the
+  question is not "does the library have sea pieces", it is **how much of the
+  pool I am about to place is authored for the sea**. Ask it, per pool, before
+  you take `ocean`:
 
   ```sh
   python3 - <<'EOF'
-  import json, glob, os
-  for f in sorted(glob.glob("prefabs/*.json")):
-      if os.path.basename(f) == "pools.json": continue
-      if json.load(open(f)).get("waterline_y") is not None:
-          print(os.path.basename(f)[:-5])
+  import json
+  pools = json.load(open("prefabs/pools.json"))["pools"]
+  for pid, p in sorted(pools.items()):
+      names = [m["prefab"].split("/", 1)[1] for m in p["members"]]
+      have = [n for n in names
+              if json.load(open(f"prefabs/{n}.json")).get("waterline_y") is not None]
+      print(f"{pid}: {len(have)} of {len(names)} member(s) declare waterline_y  {sorted(have)}")
   EOF
   ```
 
-  **Measured over the shipped library: 5 of 36 pieces**, and they are exactly
-  the `island-*` set — which is the whole of `pool/island` (4 of 4 members).
-  `pool/cave-shore`, `pool/stone-keep` and `pool/vertical-keep` carry it on
-  **none** of their members, so `ocean` over those pools gives you a dropped
-  datum, an invariant examining zero pieces, and no lever to lift anything
-  clear. A coastal delve built from `cave-*`/`keep-*` takes `void` and puts the
-  sea in the fiction, or takes `pool/island`.
+  **Read what it prints, and do not carry a number off this page** — the
+  library is a separate artifact on its own cadence, and a count written here
+  describes whichever version of it somebody last looked at. Zero for your pool
+  means `ocean` gives you a dropped datum, an invariant examining zero pieces
+  and no lever to lift anything clear: that campaign takes `void` and puts the
+  sea in the fiction. Short of every member means the unlisted ones stand in the
+  water with nothing checking them, which is exactly the silence `DW0344`
+  reports about itself.
 - **`boundary`, which `ocean` obliges.** Absent = no boundary. It declares the
   playable region: the compiler derives one from the placed geometry plus a
   `margin` of blocks on every side (default 16, range `0..=64`), and a per-second
@@ -983,20 +988,23 @@ under two conditions:
 2. **Every area a beat crosses into declares an entry point.** That is an
    anchor carrying `"role": "entry"` in the piece's metadata, or — for pieces
    admitted before the role existed — an anchor literally named `spawn` or
-   `entry`. **Measured over the shipped library: 5 of 36 prefabs have one**
-   (`cave-shore`, `hello-room`, `island-beach-camp`, `island-galley`,
-   `keep-spawn-hall`), and in `pool/stone-keep` it is **1 of the 12 members**.
-   So a multi-area campaign is a constraint on which piece each area may bind,
-   not a free narrative move. Check before you design around it:
+   `entry`. **Very few pieces have one**, and a pool usually holds exactly one
+   that does, so a multi-area campaign is a constraint on which piece each area
+   may bind rather than a free narrative move. How few is a fact about the
+   library and not about this page, so read it rather than taking a number from
+   here — the library is a separate artifact on its own cadence:
 
 ```sh
 python3 - <<'EOF'
 import json, glob, os
+n = 0
 for f in sorted(glob.glob("prefabs/*.json")):
     if os.path.basename(f) == "pools.json": continue
+    n += 1
     a = json.load(open(f)).get("anchors") or {}
     if any(v.get("role") == "entry" for v in a.values()) or {"spawn","entry"} & set(a):
         print(os.path.basename(f)[:-5])
+print(f"-- out of {n} piece(s) in the library")
 EOF
 ```
 
@@ -1020,21 +1028,26 @@ something that is not there:
 python3 - <<'EOF'
 import json
 pools = json.load(open("prefabs/pools.json"))["pools"]
-for pid, p in pools.items():
+for pid, p in sorted(pools.items()):
+    every = set()
     for m in p["members"]:
-        if m.get("role") != "entry": continue
         name = m["prefab"].split("/", 1)[1]
         a = json.load(open(f"prefabs/{name}.json")).get("anchors") or {}
-        print(f"{pid}  entry={name}  {sorted(a)}")
+        every |= set(a)
+        if m.get("role") == "entry":
+            print(f"{pid}  entry={name}  yours: {sorted(a)}")
+    print(f"{pid}  the pool declares {len(every)} distinct anchor name(s) in all")
 EOF
 ```
 
-**Measured over the shipped library**: `pool/cave-shore`, `pool/stone-keep` and
-`pool/vertical-keep` each leave **two** anchors — `spawn` and `anchor/exit` —
-out of the ten their members declare between them. `pool/island` leaves eleven
-of fifty-three. Two anchors per area is a real design constraint: it is one
-place to stand and one to leave from, and a story that needs three staged beats
-in one pool area needs a bound `prefab` instead.
+**The two lines per pool are the whole constraint**, and the gap between them is
+the point: the first is what you may design against, the second is what the pool
+appears to offer. On the pools this library ships that gap has been wide enough
+that a pool area is one place to stand and one to leave from — so read the first
+line for the pool you are placing, and a story that needs three staged beats in
+one pool area needs a bound `prefab` instead. **Do not take the numbers off this
+page**: the library is a separate artifact on its own cadence, and a count
+written here describes whichever version of it somebody last looked at.
 
 **Two more piece facts worth knowing before you place anything.** An anchor name
 is unique per *area*, so binding the same prefab to two areas makes every anchor
