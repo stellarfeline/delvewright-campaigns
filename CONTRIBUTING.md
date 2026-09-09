@@ -14,7 +14,7 @@ in the main repo (GPL). Licensing is directory-scoped: `campaigns/` is
 
 ```
 versions.toml          # which main-repo commit a release of this content is built with
-.claude/skills/new-delve/SKILL.md   # the authoring procedure, run from this directory
+.claude/settings.json  # recommends the marketplace and enables the authoring plugin
 campaigns/<campaign-id>/               # every campaign, demo levels included
   world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
   GENERATION.md        # dsl_version and the campaign's own decisions, no dates
@@ -25,7 +25,16 @@ demos/<demo>/          # a generation-time surface demonstrated: a grammar
                        #   document does not belong here
 ```
 
-Clone this repo and you have the complete authoring environment: every existing
+**Authoring is done through the `delvewright` plugin**, not from a file in this
+repository. `/plugin marketplace add stellarfeline/delvewright` then `/plugin
+install delvewright@delvewright` puts `/delvewright:new-delve` in Claude Code;
+`.claude/settings.json` here recommends the marketplace and enables the plugin,
+and Claude Code prints the install command when it is not yet installed. The
+page works in any directory, so this repository is one place to author in and
+not the only one — you clone it to use the shipped prefab library, or to publish
+a campaign here through a pull request, and for no other reason.
+
+Cloned, it is a complete authoring environment: every existing
 prefab is reusable by any campaign, and a **new prefab ships in the same PR as
 the campaign that needs it**. The prefab library now lives in `prefabs/`
 (migrated from the main repo in M3); the deterministic generators that produce
@@ -53,9 +62,8 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   sources (determinism makes the build reproducible by anyone).
 - **A campaign is compiled by its author, with the engine that author uses.** Run
   `delvec validate` and a full `delvec build` (which implies `analyze`) over your
-  campaign, in every language it declares, against the engine revision
-  `versions.toml` `[engine].authoring_ref` names, and open the pull request on a
-  campaign that builds. CI does not compile campaigns for you: a campaign is
+  campaign, in every language it declares, against the engine the authoring
+  plugin pins, and open the pull request on a campaign that builds. CI does not compile campaigns for you: a campaign is
   built only by the engine it pins, and nothing here owes compatibility to a
   campaign already authored. The runtime half of the ladder (PackTest and a bot
   playthrough against the shipped image) runs on a release tag; see *Releasing a
@@ -69,20 +77,6 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   every `.nbt` in the repository by walking it, so a piece in a directory nobody
   anticipated is audited too, and it prints what it examined. Campaigns using
   user-local assets are for private play and don't belong here.
-- **The engine you author with is named, not assumed.** `versions.toml`
-  `[engine].authoring_ref` is the engine revision `/new-delve` Init builds your
-  toolchain from; the page reads it from there and never restates it, so
-  `versions.toml` is where that revision is written. Anywhere else it stands has
-  to be a file `.github/pins.toml` declares as some pin's site — a revision
-  pasted into a page or a script drifts the first time the pin moves, and
-  nothing would report it. Editing the pin means editing its entry in
-  `.github/pins.toml` too. `[engine].release` beside it names the release whose
-  archive Init downloads instead of building — the same revision arriving by the
-  other channel, so the two keys move together — and the page reads that from
-  `versions.toml` as well rather than writing a version out. Run the check
-  yourself with the same command CI runs: `python3 tools/check-authoring-pin.py`.
-  It needs no network and nothing installed; add `--online` and it also asks
-  GitHub what the release tag resolves to and whether its shelf is complete.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
 - **Touching a workflow means saying what it gates.**

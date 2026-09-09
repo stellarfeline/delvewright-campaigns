@@ -142,36 +142,6 @@ jobs:
       - name: every pin is declared
         run: python3 tools/check-pins.py
 
-      # The two things `check-pins.py` structurally cannot ask about the
-      # authoring pin, in the same job as the rest of the pin gate rather than
-      # in one of its own — a separate job would need a new required context,
-      # and this repository has already shipped the deadlock that creates.
-      #
-      # Pin discovery scans FETCH_SITES, and markdown is deliberately not one:
-      # in any other repository a revision literal in prose fetches nothing.
-      # A skill page is the exception, because it is not prose — it is a
-      # procedure a person executes, and it is exactly where somebody would
-      # paste the revision so the reader need not look it up. This holds the
-      # page to reading `authoring_ref` and holds the revision to living in
-      # `versions.toml` alone. It is this repository's own script and is never
-      # vendored.
-      #
-      # `--online` adds the half only the remote can answer, and it is a MODE of
-      # the same script rather than a step of its own for the reason above: one
-      # tool answers "which engine does an author get", by both acquisition
-      # routes. ADR-0023 makes the release archive the default and the source
-      # build the floor, so `[engine].release` names a shelf — and the archive on
-      # that shelf is `authoring_ref` as the engine's CI built it. If the tag
-      # resolves anywhere else, a creator who downloads and a developer who
-      # builds get two different compilers while the page claims one. The offline
-      # half still runs first, and still runs alone on a creator's own clone with
-      # nothing installed and no credential.
-      - name: the authoring pin has a reader, one copy, and a shelf
-        env:
-          # Public endpoints, so this is a rate limit and not an access grant.
-          GH_TOKEN: ${{ github.token }}
-        run: python3 tools/check-authoring-pin.py --online
-
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
       #
@@ -188,35 +158,6 @@ jobs:
       - name: fetch the pipeline's default branch so the pin has something to be behind
         run: |
           git -C admit-src fetch origin main:refs/remotes/origin/main
-
-      # The authoring revision, fetched BY SHA into the same checkout, which is
-      # the author's own Init step performed in CI. This checkout is at
-      # ADMIT_REF, so the authoring revision is not in it unless it happens to
-      # be an ancestor — fetching it is what lets the online check below judge
-      # it at all, and the fetch is itself the first half of the term: a
-      # revision the remote will not serve fails here with `not our ref <sha>`,
-      # in the same words an author would see, before anything is built.
-      #
-      # The sha is READ from the manifest and never written here. A second
-      # literal in this file would be a pin held in two places, which moves in
-      # one — `check-pins.py` reds on exactly that, and it is the shape this
-      # whole pin exists to remove from the skill page.
-      - name: read the authoring engine revision from versions.toml
-        id: authoring
-        run: |
-          set -euo pipefail
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import tomllib
-          v = tomllib.load(open("versions.toml", "rb"))["engine"]["authoring_ref"]
-          print(f"ref={v}")
-          PY
-
-      - name: fetch the authoring revision, the way an author's Init fetches it
-        env:
-          AUTHORING_REF: ${{ steps.authoring.outputs.ref }}
-        run: |
-          set -euo pipefail
-          git -C admit-src fetch --quiet origin "$AUTHORING_REF"
 
       # `tools/check-pins.py` is not maintained here. It is ONE tool with two
       # copies — the pipeline's is the source, this one is a verbatim vendored
@@ -248,8 +189,7 @@ jobs:
       - name: a vendored file is the upstream file, byte for byte
         run: |
           python3 tools/check-vendored.py \
-            --checkout admit-ref=admit-src \
-            --checkout engine-authoring=admit-src
+            --checkout admit-ref=admit-src
 
       # The pin is judged HERE, in the job that uses it, immediately before the
       # tool is built out of it. There is no arrangement in which this job builds
@@ -260,36 +200,7 @@ jobs:
         run: |
           python3 tools/check-pins.py --online \
             --checkout admit-ref=admit-src \
-            --checkout engine-release=admit-src \
-            --checkout engine-authoring=admit-src
-
-      # ADR-0016's third version line: the `/new-delve` skill (the product,
-      # ADR-0012) declares its own version and the `delvec` range it drives. All
-      # hand-typed frontmatter, so without this they are a `requires:` nobody
-      # reads — the unbound declaration this project keeps being bitten by.
-      #
-      # THIS GATE USED TO LIVE IN THE ENGINE REPOSITORY, beside a copy of the
-      # page. The page moved here (ADR-0014: a creator clones this repository and
-      # no other) and the gate did not, so the page an author executes was checked
-      # by nothing while the gate went on holding a copy nobody ran. That is the
-      # very shape it was written to prevent, and it is why the gate is HERE: a
-      # gate must fire on the event it guards, and the event is an edit to the
-      # page, which happens in this repository and nowhere else.
-      #
-      # It judges against the engine at `authoring_ref` — the one Init step 2
-      # tells the author to build, which is what the page's `requires:` and
-      # `verified_with` are claims ABOUT. Not this checkout's working tree, which
-      # is at ADMIT_REF and is a different engine: the revision is fetched two
-      # steps above and the gate materialises what it reads out of git at that
-      # sha. It names the revision in its own output, so a moved pin cannot
-      # silently re-read the verdict against a different instrument.
-      #
-      # A STEP, not a job. Every job name here is a required status context and
-      # adding one is a two-part change that blocks every pull request if it is
-      # done in the wrong order; riding this job costs no new name and cannot be
-      # skipped, because this context is the one both rulesets require.
-      - name: the /new-delve skill's declared delvec range is true
-        run: python3 tools/check-skill-version.py --engine admit-src
+            --checkout engine-release=admit-src
 
       # Cache cargo + build artifacts, keyed on the pinned SHA and the admit
       # crate's lockfile so a pin bump busts the cache cleanly.
