@@ -1,10 +1,10 @@
 ---
 name: new-delve
 description: Generate a complete playable Minecraft delve from a creative prompt — staged DSL authoring with validation-loop self-repair, deterministic compile, machine validation, joinable output. Use when the user asks to create/generate a new delve or campaign. Args = the creative prompt (theme one-liner or detailed brief).
-version: 1.13.0
+version: 1.14.0
 requires:
   delvec: ">=1.0.0 <2.0.0"
-verified_with: 1.2.0
+verified_with: 1.4.0
 ---
 
 # /new-delve — building a delve, end to end
@@ -545,9 +545,11 @@ ls campaigns/<campaign-id>/design/
 A campaign being re-made carries `design/README.md` (the approved names),
 `design/concept/` (one image per scene) and, when the map was
 designed as a whole, `design/reference/` (the map views, their prompts, their
-style note and their sidecars). **If that directory exists, the reference
-exists.** Read it, author from it, judge against it, and present every later
-choice beside it. You need no image provider, and Init is finished at step 7.
+style note and their sidecars), with `design.json` beside them at the campaign
+root carrying one row per approved image and the sky it was drawn under. **If
+that directory exists, the reference exists.** Read it, author from it, judge
+against it, and present every later choice beside it. You need no image
+provider, and Init is finished at step 7.
 Do not re-draw an approved image; the approval is attached to the file that is
 there.
 
@@ -782,12 +784,13 @@ always required:
 world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
 ```
 
-Five more are conditional, and every one of them is a real campaign document
+Six more are conditional, and every one of them is a real campaign document
 with its own schema:
 
 | document | when |
 |---|---|
 | `geometry-brief.json` · `layout-graph.json` · `site-plan.json` | a site-plan campaign — step 2B; a site-plan campaign has no `areas[]` |
+| `design.json` | step 4, the moment the user approves the reference images — one row per approved picture, and the only home the approved sky has |
 | `detail-plan.json` | step 13, optional, and only after the blockout has been walked |
 | `world-edits.json` | whenever the map editor was used to fix terrain — see *Reference: tools by symptom* |
 
@@ -795,7 +798,7 @@ with its own schema:
 
 ```json
 {
-  "dsl_version": "0.20.0",
+  "dsl_version": "0.22.0",
   "campaign_id": "the-weighbridge",
   "stage": "world",
   "content": { }
@@ -876,12 +879,39 @@ Two things to expect while stubbing:
   `DW0150` — which is the ordinary state between step 3 and step 5 and is
   discussed there.
 
-**`world.json` is written here, before placement**, because five of its six
+**`world.json` is written here, before placement**, because seven of its eight
 required fields are not about placement at all: `title`, `theme`, `premise`,
-`seed` and `target_minutes`. Run `delvec schema --stage world` and write them
-now. The sixth is `areas`, and which of the two ways it is filled is step 2's
-whole question: `areas[]` on path 2A, and **empty** on a site-plan campaign,
-where the plan is the placement authority and declaring both is `DW0839`.
+`seed`, `target_minutes`, `time` and `weather`. Run `delvec schema --stage world`
+and write them now. The eighth is `areas`, and which of the two ways it is filled
+is step 2's whole question: `areas[]` on path 2A, and **empty** on a site-plan
+campaign, where the plan is the placement authority and declaring both is
+`DW0839`.
+
+**`time` and `weather` are the delve's hour, and the engine will not choose it
+for you.** `time` takes `day`, `noon`, `dusk`, `night`, `midnight` or `dawn`
+(`sunrise` is accepted as a synonym of `dawn`); `weather` takes `clear`, `rain`
+or `thunder`. Neither has a default: "this delve is played at noon" is a design
+decision, not a mechanism, so a `world.json` that omits either is `DW0100` like
+any other missing required field. `DW0874`'s stub recipe is "its envelope, and a
+`content` carrying only the fields its schema requires", so a stubbed
+`world.json` carries both from the moment it is stubbed. Both are
+dimension-global and frozen by environment sealing, so the state declared here is
+the state for the whole delve.
+
+**The order on this page runs backwards from the decision, and that is the
+trap.** Step 4 confirms the design on concept art, and art has an hour in it — a
+night sea, a storm, first light on a headland. So write the hour the brief and
+the design are set in **here**, and expect step 4 to hold the pictures to it: at
+approval each image's row in `design.json` states the sky it was drawn under, and
+from step 5 onward `DW0890` refuses a campaign whose reachable skies and whose
+approved rows are not the same two sets. Two measurements also key off the
+declared hour: the dark-cell proof measures under the **darkest reachable**
+`(time, weather)` sky, so a space lit only by the sky is judged at the night floor
+once a night hour is declared (`DW0210`, and the lighting contract at 2A); and
+`DW0496`, the daylight-burning refusal, stands only while the hour is a pinned
+clear daytime one — so declaring `night` is a design decision that also switches
+that gate off, which is why *Reference: authoring pitfalls* forbids reaching for
+the hour to save a mob.
 
 **Some of `world.json`'s optional fields commit something you are not writing
 yet.** They all sit in this document at this step, and the ones below are
@@ -891,28 +921,6 @@ they are used: `languages` in *Reference: other languages*, `difficulty` in
 *Reference: authoring pitfalls*, and `outro` — the delve's closing line, the
 last player-visible sentence of the run, absent = the finale quest's `goal`.
 
-- **`time` and `weather` — the hour the delve is played in, and the one thing
-  the design gate approves BEFORE this page writes it down.** Absent = `noon`
-  and `clear`. `time` takes `day`, `noon`, `dusk`, `night`, `midnight` or
-  `dawn`; `weather` takes `clear`, `rain` or `thunder`. Both are
-  dimension-global and frozen by environment sealing, so the state declared here
-  is the state for the whole delve.
-  **The order on this page runs backwards from the decision, and that is the
-  trap.** Step 4 confirms the design on concept art, and art has an hour in it —
-  a night sea, a storm, first light on a headland. Nothing between that gate and
-  the build compares the two, because no check reads a picture: a delve whose
-  every approved image is night builds as bright noon, and the first thing that
-  says so is a POV frame at **step 12**, after the whole run has been paid for.
-  So write the hour the brief and the design are set in **here**, and re-read it
-  against the images at step 4 before you hand them over — step 4 says to.
-  Two measurements key off the declared hour rather than off the default, and
-  both move when it does: the dark-cell proof measures under the **darkest
-  reachable** `(time, weather)` sky, so a space lit only by the sky is judged at
-  the night floor once a night hour is declared (`DW0210`, and the lighting
-  contract at 2A); and `DW0496`, the daylight-burning refusal, stands only while
-  the hour is a pinned clear daytime one — so declaring `night` is a design
-  decision that also switches that gate off, which is why *Reference: authoring
-  pitfalls* forbids reaching for the hour to save a mob.
 - **`min_players`.** Absent = 1. Declaring `n ≥ 2` says the delve *requires* n
   bodies, and that is a claim about the QUEST GRAPH: the analyzer demands an
   objective with `n` `after` arms in `n` places — parallel work the party
@@ -1012,53 +1020,51 @@ A crossing that was never emitted is not a quiet difference — it is a delve th
 party cannot finish. See *Reference: when something goes red* for what it looks
 like.
 
-**A pool area's usable anchor set is its `entry`-role member's, and nothing
-else.** This is the constraint that shapes the story, and it is not either of the
-two rules above. An area declaring `pieces: {min: 3, max: 4}` over a
-thirteen-member pool seats a SUBSET, chosen by the seed — so an anchor declared
-on a `room` or `terminal` member may simply not be in the built world. The
-`entry`-role member is the one that is always seated. Design against its anchors,
-or bind a single `prefab` instead of a `prefab_pool`, in which case every anchor
-it declares is yours.
+**A pool area guarantees its `entry`-role member's anchors, plus whatever this
+campaign REQUIRES.** An area declaring `pieces: {min: 3, max: 4}` over a
+thirteen-member pool seats a subset: the `entry` member at the area origin on
+every draw, one carrier for each anchor the campaign requires the solver to
+guarantee, and `connector` fillers drawn from the seed. A `room` or `terminal`
+member nothing requires is never seated, and an anchor it declares is not in the
+built world.
 
-Ask the library what that leaves you, before the story is shaped around
-something that is not there:
+Ask the engine, before the story is shaped around something that is not there —
+it reads the library and needs no campaign, so you can ask it at this step:
 
 ```sh
-python3 - <<'EOF'
-import json
-pools = json.load(open("prefabs/pools.json"))["pools"]
-for pid, p in sorted(pools.items()):
-    every = set()
-    for m in p["members"]:
-        name = m["prefab"].split("/", 1)[1]
-        a = json.load(open(f"prefabs/{name}.json")).get("anchors") or {}
-        every |= set(a)
-        if m.get("role") == "entry":
-            print(f"{pid}  entry={name}  yours: {sorted(a)}")
-    print(f"{pid}  the pool declares {len(every)} distinct anchor name(s) in all")
-EOF
+delvec prefab anchors            # every pool
+delvec prefab anchors --pool pool/cave-shore
 ```
 
-**The two lines per pool are the whole constraint**, and the gap between them is
-the point: the first is what you may design against, the second is what the pool
-appears to offer. On the pools this library ships that gap has been wide enough
-that a pool area is one place to stand and one to leave from — so read the first
-line for the pool you are placing, and a story that needs three staged beats in
-one pool area needs a bound `prefab` instead. **Do not take the numbers off this
-page**: the library is a separate artifact on its own cadence, and a count
-written here describes whichever version of it somebody last looked at.
+It prints, per pool, the member count, the `entry` member, the anchors that
+member declares — the unconditional guarantee — and every other name with the
+carrier it would have to arrive on and the role that decides when the layout
+seats it.
 
-**Two more piece facts worth knowing before you place anything.** An anchor name
+**Read what it prints; do not carry a number off this page.**
+
+**Three ways to design against that, and the second is the one this page used to
+omit.** Design against the entry member's anchors. Or *require* the anchor you
+want, at a site the solver must honour — an objective, an NPC stand, a wave
+spawn, a lane waypoint, or an anchor-bearing effect in that area — which forces
+its carrier to be seated, and everything else that carrier declares with it. Or
+bind a single `prefab` instead of a `prefab_pool`, in which case every anchor it
+declares is yours.
+
+**When you get it wrong, `validate` says so, not the build.** `DW0889`
+(advisory) names every anchor your documents carry that the area does not
+guarantee, with the piece it lives on and why the layout may not seat it. It is
+a warning because the filler draw may well seat the piece — but if it did not,
+`DW0360` fails the build at step 8. `DW0498` is a different line about the same
+area: it reports a pool that seated one anchor-bearing piece *twice*, which
+needs the settled draw and so still arrives at step 8.
+
+**One more piece fact worth knowing before you place anything.** An anchor name
 is unique per *area*, so binding the same prefab to two areas makes every anchor
 it declares ambiguous (`DW0857`); the fix available to you is a **different
 piece for one of the two areas**, not renaming an anchor in the shared library.
-And if the jigsaw can seat a pool piece twice, the build says so at the pool
-declaration (`DW0498`, advisory) and names every anchor that repeat makes
-ambiguous, which is a hard `DW0305` the moment an objective, NPC stand, gate or
-wave spawn hangs on one. **That line arrives at step 8 and the anchors are bound
-at step 5**, so it is a check on what you did rather than an input to doing it:
-the rule above is the input, and `DW0498` is what confirms it held.
+A `DW0498` repeat is a hard `DW0305` the moment an objective, NPC stand, gate or
+wave spawn hangs on one of the names it made ambiguous.
 
 **When the library has no piece the design needs, decide which of two things you
 are looking at.** Neither answer is "make a prefab now".
@@ -1298,6 +1304,12 @@ The codes below are the **instances a campaign hits today**, not the rule. A
 code that is not in this list is judged by the rule above — by what its message
 says is missing — never by its absence here.
 
+**`DW0890` is not one of them and cannot be**, which is worth knowing before you
+meet it: the design record does not exist until step 4 approves one, so at this
+step `validate` prints `0 reference(s) recorded over 0 image file(s)` and says
+nothing further. It becomes live at step 5, on the first `validate` after the
+gate, and it is a repair you owe there like any other.
+
 | code | what it is saying | what to do |
 |---|---|---|
 | `DW0150` | the plan is written and stage 5 is not. **One** diagnostic naming every planned quest — it says so itself: *an authoring state, not a fault*. | nothing. It clears at step 5, for every quest at once. |
@@ -1395,26 +1407,24 @@ image of the built map; there is not one.
     it. Twenty scenes then come back in one hand, and a reviewer reads the
     set as one place rather than twenty unrelated pictures.
 
-**Before you hand it over, read `world.json` against the pictures.** The images
-show an hour and a sky, and `time` and `weather` are where that is declared —
-written at **step 1**, before these images existed, and defaulting to `noon` and
-`clear` when you said nothing. This gate is the last place the two can be put
-side by side cheaply: nothing downstream compares them, and the next thing that
-notices is a POV frame at step 12 with the whole run already paid for. So say,
-in the walkthrough, which hour the delve is set in, and make the document agree
-with the art **now** — a one-field edit here, or a night's worth of art redrawn
-later. The same reading applies to anything else in the images the documents
-have to carry: a piece the library does not hold (step 2A says what you owe for
-one), and a room whose light the pictures show as a mood rather than as a
-lighting declaration.
+**Before you hand it over, read `world.json` against the pictures, and put each
+image's sky under the image.** The images show an hour and a sky, and `time` and
+`weather` are where that is declared — written at **step 1**, before these
+images existed. **The walkthrough shows every image with its two tokens under
+it**, in the words the document uses (`night` + `clear`, `dawn` + `rain`), so
+the yes you are asking for is a yes to the picture and the hour together rather
+than to the picture alone. Where a picture and the document disagree, make them
+agree **now** — a one-field edit here, or a night's worth of art redrawn later.
+The same reading applies to anything else in the images the documents have to
+carry: a piece the library does not hold (step 2A says what you owe for one),
+and a room whose light the pictures show as a mood rather than as a lighting
+declaration.
 
 **The moment images are confirmed they become campaign files.** Copy them **and
 their `.json` sidecars** to `campaigns/<id>/design/concept/`, one per scene,
 named for the scene, and write `campaigns/<id>/design/README.md` carrying the
-approved names, what each one shows, **the environment the approved set is drawn
-in — written as the `time` and `weather` tokens `world.json` carries, not as
-prose** — and the sentence every later round is held to: *author from the image,
-judge against it, present every choice beside it.*
+approved names, what each one shows, and the sentence every later round is held
+to: *author from the image, judge against it, present every choice beside it.*
 **No date and no approver** — this file is a repository artifact under the same
 rule `GENERATION.md` is; what it records is that this set is the approved one,
 not when or by whom.
@@ -1428,6 +1438,24 @@ approval that lives only in a published page is bound to nothing.** The sidecar
 travels with the image because it is what makes the image re-issuable with one
 word changed: prompt, style note, resolved frame, anchor id. An image whose
 prompt is gone can only be replaced, never edited.
+
+**Write `campaigns/<id>/design.json` in the same act, one row per image you just
+copied.** It is the machine half of this approval and the only home the approved
+sky has: a row is `{name, shows, time, weather}`, where `name` is the file's path
+stem under `design/` with no extension (`concept/shore-far`), `shows` is the one
+sentence the README carries for it, and `time` and `weather` are the sky you read
+off *that* picture — a set whose finale is a sunrise has two skies, and each row
+says its own. Run `delvec schema --stage design` for the exact shape. Those two
+tokens are the only judgement on this surface; everything else the engine
+derives, and nothing anywhere opens the image.
+
+From step 5 on, `DW0890` holds the record and the directory to each other in both
+directions — a row naming no file, an approved file with no row, a stem two files
+answer to — and holds the skies the rows state to the skies the world can reach.
+A campaign that ships no `design.json` has approved no design: validation
+measures that as a zero and says so without refusing, and `tools/staging-gate.py`
+is where the zero is a red, so a build nobody can stage is what an unwritten
+record costs.
 
 **Every later step that asks anyone to choose reads `design/` first**, and
 presents the choice beside that scene's image, under the approved name, saying
@@ -1484,6 +1512,17 @@ survives a written stage 5 it has stopped being the expected state and is a real
 finding — a `DW0150` here means an id in the plan and an id in `quests.json` do
 not match, and the message says how many quests stage 5 declares, which is how
 you tell that apart from the step-3 state.
+
+**One code arrives rather than goes away, and this is the first run that can
+raise it.** `DW0890` refuses when the approved design and the built world do not
+agree about the sky: the rows step 4 wrote into `design.json` state `night` and
+`world.json` declares `noon`, or an effect reaches a `dawn` no row states, or a
+row names a picture that is not under `design/` — or a picture there has no row.
+Every run prints its binding line first (`design record: N reference(s) recorded
+over M image file(s) …`), refusing or not, so read that line and check the two
+counts are the two you approved. The remedy is always a document edit on
+whichever side is wrong, and *never* moving the hour to satisfy a mob — that is
+`DW0496`'s rule, and *Reference: authoring pitfalls* says why.
 
 If the campaign declares other languages, the localization stage is a **final
 document stage after `dialogue`** — see *Reference: other languages*. It does
@@ -1616,13 +1655,14 @@ verifies over rcon that the datapack actually loaded before it says READY:
     --prefabs prefabs --delvec "$(command -v delvec)" --out "$PWD/.out/delve"
 ```
 
-**`--delvec` is not optional here, even though the script has a default.** Its
-default is the engine checkout's `target/release/delvec`, and Init took the
-release archive rather than building, so that path does not exist and the script
-compiles the whole workspace before it does anything else — discarding the
-checksum-verified binary Init downloaded and taking the source floor ADR-0023
-makes the fallback rather than the route. Passing the `delvec` already on `PATH`
-is what keeps this command on the engine the rest of the run used.
+**`--delvec` is optional now; this prints it so the command is exact.** Without
+it the script uses the `delvec` already on `PATH` when that binary IS this
+engine — its `--version` equal to the engine checkout's `versions.toml`
+`[engine].version`, which is what Init step 2a installed — and otherwise builds
+from source. Either way it prints, in one line, which binary it chose and why,
+before it builds anything. Read that line: if it says it is building from
+source, the `delvec` on `PATH` is a different engine from the checkout at
+`$ENGINE_REF`, and that disagreement is worth stopping for.
 
 It writes its own build tree wherever `--out` says, so nothing about this path
 touches the engine's `validation/` directory, and it daemonizes — it prints the
@@ -1840,14 +1880,15 @@ is itself the finding: the design gate approved something the build does not
 contain.
 
 **Read the sky on the first frame, because it answers in one glance and it
-answers for the whole set.** `design/README.md` records the environment the
-approved set was drawn in, as the `time` and `weather` tokens `world.json`
-carries. A frame whose hour is not that hour is those two fields disagreeing
-with the art — declared at step 1, before the art existed, and defaulting to
-`noon` and `clear` if step 1 said nothing. It is a one-field edit and a rebuild,
-and it is cheap only if you catch it on the first frame instead of after reading
-the set: an hour that is wrong is wrong in every frame, and re-rendering the set
-costs what *What the set costs* says it costs.
+answers for the whole set.** `design.json` records the sky each approved image
+was drawn under, as the `time` and `weather` tokens `world.json` uses; read the
+frame against the row for the image it answers to. `DW0890` has already held
+those two sides equal at every `validate` since step 5, so a disagreement here
+is not the noon default — it is a row that states an hour the picture does not
+show, which is the one half of this no machine can check. It is a one-field edit
+and a rebuild, and it is cheap only if you catch it on the first frame instead
+of after reading the set: an hour that is wrong is wrong in every frame, and
+re-rendering the set costs what *What the set costs* says it costs.
 
 Two shapes to expect, because they are what the machine cannot say:
 
@@ -1902,10 +1943,18 @@ curl -LO https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
 java -jar ChunkyLauncher.jar --update snapshot
 ```
 
-The launcher self-installs the pinned core into `~/.chunky/lib`. A snapshot core
-is required — the stable line does not read 1.21.x worlds. Confirm before
-rendering: `java -jar ChunkyLauncher.jar --version` prints a launcher version,
-and `--update snapshot` ends in either an install or "No updates found".
+The launcher self-installs a core into `~/.chunky/lib`, and what
+`--update snapshot` installs is **today's** snapshot, never the pinned one:
+`--update` takes a release channel, and the update site's `lib/` path serves the
+current core whatever name it is asked for, so no command installs the pin. A
+snapshot core is required either way — the stable line does not read 1.21.x
+worlds. `render-shots.sh` has already named the pinned core and said which cores
+this machine holds; if it said `MISMATCH` or `NONE installed`, every frame below
+comes off a renderer this project has not verified its scene format against, and
+you say so in the review rather than presenting them as pinned. Confirm the
+launcher runs: `java -jar ChunkyLauncher.jar --version` prints a launcher
+version, and `--update snapshot` ends in either an install or "No updates
+found".
 
 `curl -LO` drops the jar in the current directory, which is this repository's
 root, and `java -jar ChunkyLauncher.jar` only resolves from there. `*.jar` is
