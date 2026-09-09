@@ -1032,8 +1032,8 @@ Ask the engine, before the story is shaped around something that is not there â€
 it reads the library and needs no campaign, so you can ask it at this step:
 
 ```sh
-delvec prefab anchors            # every pool
-delvec prefab anchors --pool pool/cave-shore
+delvec --prefabs prefabs prefab anchors            # every pool
+delvec --prefabs prefabs prefab anchors --pool pool/cave-shore
 ```
 
 It prints, per pool, the member count, the `entry` member, the anchors that
