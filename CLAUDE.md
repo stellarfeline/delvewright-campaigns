@@ -26,54 +26,33 @@ engine's text.
   world than the tool claimed to cover (`.github/pins.toml` `admit-ref` and
   `tools/check-vendored.py` both record it).
 
-- **This repository holds no engine code; the engine revisions it is judged,
-  built and AUTHORED by are pins.** All three live in the registry
-  `.github/pins.toml`, held to their policies by `tools/check-pins.py`:
-  `admit-ref` (site: `.github/workflows/prefab-audit.yml`) names the engine
-  commit the NBT audit is built from; `engine-release` (site: `versions.toml`
-  `[engine].ref`) names the tagged engine release a delve image is built and
-  validated with; and `engine-authoring` (site: `versions.toml`
-  `[engine].authoring_ref`) names the engine a creator builds their own
-  toolchain from at `/new-delve` Init step 2. They are deliberately different
-  and are never collapsed — a released delve must reproduce through an engine
-  that never moves, while an author needs the engine the pipeline was last
-  walked against, which is neither the newest release nor the default branch.
-  Two of them nonetheless track the engine's default branch, so holding the same
-  revision is their NORMAL state and not a defect: **a pin is identified by its
-  entry and its site, never by its value.** An occurrence of a revision is
-  accounted for when some entry holding it declares that file as a site; what
-  no entry declared is a stray copy, and two entries claiming one site for one
-  value is a red, because that literal would carry two decisions about when it
-  may move.
-  `tools/check-authoring-pin.py` holds the last of the three to the two things
-  pin discovery structurally cannot see: that the skill page READS the pin, and
-  that the revision string stands only in `versions.toml` and in the sites the
-  registry declares for a pin holding it (markdown is prose to pin discovery,
-  and a skill page is not prose — it is a procedure somebody executes).
-  It also holds `[engine].release`, the release whose archive Init downloads
-  (ADR-0023 makes the archive the default acquisition and the source build the
-  floor). That is not a fourth pin and carries no registry entry: it is a NAME
-  for the same revision arriving by the other channel, since the archive on the
-  shelf is `authoring_ref` as the engine's CI built it. `--online` is what says
-  so — the tag must resolve, through the GitHub API, to exactly `authoring_ref`,
-  and the release must carry an archive for every target the ENGINE declares at
-  that tag, read from there and never copied here. A tag resolving anywhere else
-  means downloading and building hand out two different compilers while the page
-  claims one; the page carries no release literal, for the same reason it
-  carries no revision literal.
-  `engine-authoring` is also the one pin that decides a VERDICT rather than
-  being judged: `tools/check-skill-version.py` materialises the engine at that
-  revision and holds the skill page's whole declaration to it — the `requires:`
-  window, `verified_with`, every `delvec` subcommand and flag the page names,
-  every campaign stage document the engine defines, and every number the page
-  states about the idiom index. So moving that pin can red the page, which is
-  the point: it reds here rather than under an author at Init step 2. When
-  judging a red, ask which
-  revision the **job** builds, not only which tree you were handed — a stale pin
-  manufactures false reds that look exactly like content defects, and this
-  repository has produced one: a zone reported red against a rule that no longer
-  existed upstream, where the natural "repair" was to build the thing the stale
-  gate asked for.
+- **This repository holds no engine code; the engine revisions it is judged and
+  built by are pins.** Both live in the registry `.github/pins.toml`, held to
+  their policies by `tools/check-pins.py`: `admit-ref` (site:
+  `.github/workflows/prefab-audit.yml`) names the engine commit the NBT audit is
+  built from, and `engine-release` (site: `versions.toml` `[engine].ref`) names
+  the tagged engine release a delve image is built and validated with. They are
+  deliberately different and are never collapsed — a released delve must
+  reproduce through an engine that never moves, while the audit's judge is
+  adopted when the library is ready for it. Holding the same revision is a
+  normal state and not a defect: **a pin is identified by its entry and its
+  site, never by its value.** An occurrence of a revision is accounted for when
+  some entry holding it declares that file as a site; what no entry declared is
+  a stray copy, and two entries claiming one site for one value is a red,
+  because that literal would carry two decisions about when it may move.
+  When judging a red, ask which revision the **job** builds, not only which tree
+  you were handed — a stale pin manufactures false reds that look exactly like
+  content defects, and this repository has produced one: a zone reported red
+  against a rule that no longer existed upstream, where the natural "repair" was
+  to build the thing the stale gate asked for.
+
+- **The engine an author works with is not pinned here.** The `/new-delve` page
+  ships as a Claude Code plugin from the engine repository's own marketplace
+  (ADR-0014 as spec-0063 executes it, ADR-0027 §2), and the plugin carries its
+  own pin naming the revision its Init clones and the release its Init
+  downloads. `.claude/settings.json` recommends the marketplace and enables the
+  plugin; nothing here holds the page to an engine, because nothing here is the
+  page.
 
 - **Vendored files are byte-for-byte copies of engine files and are never edited
   here.** The registry's `vendors` keys name them, and `tools/check-vendored.py`
