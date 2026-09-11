@@ -59,7 +59,8 @@ it. It is a design number, recorded as one.
 
 ## Exterior
 
-Dark coursed stone with lighter dressed quoins and window surrounds. Both towers
+Warm grey-brown coursed sandstone, as Doune's own rubble reads, with lighter
+dressed quoins and window surrounds; dark brown-grey roofs. Both towers
 end in a flush crenellated parapet with a steep gabled garret roof inside it; the
 great hall's pitched roof sits below the wall-walk line; open corner rounds and
 corbelled bartizans on the curtain; a machicolated turret over the west postern.
