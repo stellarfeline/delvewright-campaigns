@@ -297,8 +297,16 @@ def outside_column(c, x, z):
 TREE_LAT = 8            # one candidate per eight-cell square of open ground
 TREE_DENSITY = 60       # per cent of those squares that carry a tree
 TREE_MARGIN = 1         # never within this many cells of the region's own edge
-CANOPY = 1              # a crown three cells across: the wood the gate can afford
-TREE_STANDOFF = 8       # nor this close to the castle's north lawn
+TREE_STANDOFF = 8       # nor this close to the castle's own north lawn
+CANOPY = 1              # crown radius: a crown three cells across
+
+# Why a three-cell crown and sixty per cent, and not a forest: every canopy
+# column puts one standable cell above its topmost leaf that no body can walk
+# to, so a wood costs the reachability gate its own footprint in area. A
+# five-cell crown costs twenty-one cells a tree against a budget of a couple of
+# hundred; a three-cell crown costs nine, and buys three times the trees. The
+# measured cost of this wood is 21 trees, 189 cells, and the piece still reads
+# 91.78% reachable against a floor of 91%.
 
 
 def _tree_zone(x, z):
