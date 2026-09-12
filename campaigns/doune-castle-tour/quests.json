@@ -1,7 +1,410 @@
 {
   "campaign_id": "doune-castle-tour",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-approach",
+            "dialogue": "dlg/approach",
+            "doing": "standing on the road with the castle behind her, letting the party look at it first"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party meets the guide on the road, with the whole castle in front of them.",
+          "verb": "arrives"
+        },
+        "id": "quest/approach",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide tells the party who built the castle and why it stands here.",
+              "verb": "learns"
+            },
+            "hint": "On the road north of the castle, before the first ditch.",
+            "id": "obj/hear-approach",
+            "npc": "npc/guide",
+            "title": "Meet the guide on the approach",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide walks in under the gate, leaving the party to follow or to look.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-gate",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-gate",
+            "dialogue": "dlg/gate-passage",
+            "doing": "under the vault with one hand up at the murder holes"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party comes in under the gate.",
+          "verb": "arrives"
+        },
+        "id": "quest/gate-passage",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide shows the party how the gate was held.",
+              "verb": "learns"
+            },
+            "hint": "Through the gate arch in the north front; she waits under the vault.",
+            "id": "obj/hear-gate-passage",
+            "npc": "npc/guide",
+            "title": "Hear the guide in the gate passage",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide walks out into the courtyard and waits by the well.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-courtyard",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/approach",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-courtyard",
+            "dialogue": "dlg/courtyard",
+            "doing": "beside the well, facing the three stairs"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party stands in the courtyard the household crossed all day.",
+          "verb": "arrives"
+        },
+        "id": "quest/courtyard",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide tells the party what the courtyard was for, and who got out over the wall.",
+              "verb": "learns"
+            },
+            "hint": "Out of the passage into the courtyard; the well is in the middle of it.",
+            "id": "obj/hear-courtyard",
+            "npc": "npc/guide",
+            "title": "Meet the guide at the well",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide climbs the stair to the Lord's Hall.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-lords-hall",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/gate-passage",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-lords-hall",
+            "dialogue": "dlg/lords-hall",
+            "doing": "at the double fireplace, warming her hands out of habit"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party climbs to the duke's own hall.",
+          "verb": "arrives"
+        },
+        "id": "quest/lords-hall",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide shows the party the hall the duke kept over his own gate.",
+              "verb": "learns"
+            },
+            "hint": "Up the external stair against the gatehouse, on the courtyard side.",
+            "id": "obj/hear-lords-hall",
+            "npc": "npc/guide",
+            "title": "Hear the guide in the Lord's Hall",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide goes up to the Duchess's Hall.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-duchess-hall",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/courtyard",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-duchess-hall",
+            "dialogue": "dlg/duchess-hall",
+            "doing": "at the oratory arch, waiting for someone to notice the basin"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party reaches the private floor and its oratory.",
+          "verb": "arrives"
+        },
+        "id": "quest/duchess-hall",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide shows the party the duchess's hall and its oratory.",
+              "verb": "learns"
+            },
+            "hint": "One floor above the Lord's Hall, up the stair in the east wall.",
+            "id": "obj/hear-duchess-hall",
+            "npc": "npc/guide",
+            "title": "Hear the guide in the Duchess's Hall",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide crosses into the great hall and takes the dais.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-great-hall",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/lords-hall",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-great-hall",
+            "dialogue": "dlg/great-hall",
+            "doing": "on the dais beside the high table"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party stands at the high table.",
+          "verb": "arrives"
+        },
+        "id": "quest/great-hall",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide tells the party how the hall was eaten in.",
+              "verb": "learns"
+            },
+            "hint": "Through the door beside the dais, or up the middle stair from the courtyard.",
+            "id": "obj/hear-great-hall",
+            "npc": "npc/guide",
+            "title": "Meet the guide at the high table",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide goes down the hall and through the servery to the kitchen.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-kitchen",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/duchess-hall",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-kitchen",
+            "dialogue": "dlg/kitchen",
+            "doing": "at the great fireplace, under the crane"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party reaches the fire the hall was fed from.",
+          "verb": "arrives"
+        },
+        "id": "quest/kitchen",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide shows the party the fire and the hatches that fed the hall.",
+              "verb": "learns"
+            },
+            "hint": "West along the hall, past the screen and the serving hatches.",
+            "id": "obj/hear-kitchen",
+            "npc": "npc/guide",
+            "title": "Hear the guide at the great fireplace",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide climbs the kitchen tower to the Royal Apartments.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-royal-apartments",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/great-hall",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-royal-apartments",
+            "dialogue": "dlg/royal-apartments",
+            "doing": "beside the chair of state, not sitting in it"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party reaches the lodgings kept for guests.",
+          "verb": "arrives"
+        },
+        "id": "quest/royal-apartments",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide shows the party the lodgings kept for royal guests.",
+              "verb": "learns"
+            },
+            "hint": "Up the kitchen tower's stair from the kitchen floor.",
+            "id": "obj/hear-royal-apartments",
+            "npc": "npc/guide",
+            "title": "Hear the guide in the Royal Apartments",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide goes down and out onto the wall-walk.",
+              "verb": "departs"
+            },
+            "npc": "npc/guide",
+            "to_anchor": "anchor/stop-wall-walk",
+            "type": "move-npc"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/kitchen",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/guide": {
+            "at": "anchor/stop-wall-walk",
+            "dialogue": "dlg/wall-walk",
+            "doing": "at a gap in the parapet, looking north"
+          }
+        },
+        "happening": {
+          "subject": "npc/guide",
+          "text": "The party comes out on top of the wall.",
+          "verb": "arrives"
+        },
+        "id": "quest/wall-walk",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The guide finishes the tour on the wall-walk, on the range that was never built.",
+              "verb": "learns"
+            },
+            "hint": "Down to the courtyard and up the long flight against the east curtain.",
+            "id": "obj/hear-wall-walk",
+            "npc": "npc/guide",
+            "title": "Hear the guide's last stop",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "npc/guide",
+              "text": "The tour ends on the wall, over the range nobody built.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/royal-apartments",
+          "type": "quest-complete"
+        }
+      }
+    ]
   },
   "dsl_version": "0.24.2",
   "stage": "quests"
