@@ -67,7 +67,7 @@ FACING = {
     "arrival": "south",                 # the castle is south of the road
     "stop-approach": "south",
     "stop-gate": "south",               # on through the passage into the yard
-    "stop-courtyard": "north",          # the three stairs and the north range
+    "stop-courtyard": "east",           # the well the guide is standing at
     "stop-lords-hall": "east",          # the double fireplace
     "stop-duchess-hall": "south",       # the oratory in the south wall
     "oratory": "south",

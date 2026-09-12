@@ -35,12 +35,15 @@ def great_hall(c, x, z):
         run = x if (north or south) else z
         cellar_door = south and 40 <= x <= 42
         west_door = south and 36 <= x <= 38
+        # the screens-end doorway through to the servery, which is how food
+        # reaches this room: the servery's own east door opens on these cells
+        servery_door = x <= x0 + 1 and 36 <= z <= 38
         hatch = x <= x0 + 1 and 38 <= z <= 40
         gh_door = x >= x1 - 1 and 38 <= z <= 40
         if cellar_door:
             c.add(None, 3)
             c.upto("wall", HALL_IN_TOP)
-        elif west_door or gh_door:
+        elif west_door or gh_door or servery_door:
             c.upto("wall", F1)
             c.add(None, 3)
             c.upto("wall", HALL_IN_TOP)
