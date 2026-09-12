@@ -115,6 +115,25 @@ where it stands.
   by walking out into the courtyard and back in. The hall's screens end now
   carries the matching doorway.
 
+- **The gate front stood open at every upper storey.** CLOSED. Over the gate
+  arch, both fronts ran up as air: a five-wide, ten-tall hole through the north
+  front and the courtyard front at the lord's hall, the duchess's hall and the
+  chambers, so two of the castle's best rooms were open to the weather. Found by
+  looking at a render, not by a gate — nothing in the expansion measures whether
+  a wall a building needs is there.
+- **Fourteen walkable cells measured dark.** CLOSED. With the area's
+  supplemental fixture dropped — the rooms light themselves — the build's own
+  dark-cell proof named them one region at a time, and each was lit where it
+  stood rather than by declaring a blanket fixture over the castle.
+
+### An engine gap this round met
+
+- **The prefab palette allowlist admits every coloured candle and not the plain
+  one.** `minecraft:candle` fails `DW0730` while `minecraft:white_candle` passes,
+  because the list matches the suffix `_candle` and the plain block has no colour
+  prefix. This campaign swapped for white candles, which is the sanctioned
+  remedy; the asymmetry itself is the engine's to decide on.
+
 ### Capability gaps met, and not worked around
 
 - **Hanging game, food on a table, a knife.** Items in item frames are entities;
