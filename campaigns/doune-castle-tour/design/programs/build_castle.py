@@ -60,8 +60,33 @@ def fill(role):
 def void():
     return {"op": "void"}
 
+# Which way a body at each anchor looks. An omitted facing is derived as the
+# direction of decreasing local z — north — which on the approach points off the
+# piece and away from the castle the arrival is supposed to be looking at.
+FACING = {
+    "arrival": "south",                 # the castle is south of the road
+    "stop-approach": "south",
+    "stop-gate": "south",               # on through the passage into the yard
+    "stop-courtyard": "north",          # the three stairs and the north range
+    "stop-lords-hall": "east",          # the double fireplace
+    "stop-duchess-hall": "south",       # the oratory in the south wall
+    "oratory": "south",
+    "bedchamber": "west",
+    "stop-great-hall": "west",          # down the hall from the dais
+    "cellars": "west",
+    "stop-kitchen": "north",            # the great fireplace
+    "servery": "east",                  # the hatches through to the hall
+    "stop-royal-apartments": "north",
+    "guardroom": "east",
+    "pit-prison": "west",
+    "stop-wall-walk": "north",          # the castle, from the wall
+}
+
+
 def mark(anchor, role=None):
     m = {"anchor": anchor, "at": "floor_center"}
+    if anchor in FACING:
+        m["facing"] = FACING[anchor]
     if role:
         m["role"] = role
     return {"op": "mark", "mark": m, "body": void()}
