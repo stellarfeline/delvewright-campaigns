@@ -62,8 +62,8 @@ PALETTE = {
     "gate/lantern_hung": "minecraft:lantern[hanging=true,waterlogged=false]",
     "gate/bracket_w": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
     "gate/bracket_e": "minecraft:oak_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
-    "gate/candle2": "minecraft:candle[candles=2,lit=true,waterlogged=false]",
-    "gate/candle3": "minecraft:candle[candles=3,lit=true,waterlogged=false]",
+    "gate/candle2": "minecraft:white_candle[candles=2,lit=true,waterlogged=false]",
+    "gate/candle3": "minecraft:white_candle[candles=3,lit=true,waterlogged=false]",
 }
 ANCHORS = {
     (77, WALK, 40): ("stop-gate", None),
@@ -400,6 +400,8 @@ def lords_hall_cells(x, z):
             f[GALLERY_Y + 1] = "gate/lantern"
         if x == 82 and z in (34, 45):
             f[L1] = "gate/cask"
+        if x == 84 and z in (37, 40):
+            f[L1] = "gate/lantern"   # under the gallery the floor gets no light
         return f
     # --- the lord's table, his great chair, and the benches down both sides
     if x == TABLE_X:
@@ -422,7 +424,9 @@ def lords_hall_cells(x, z):
     # --- the sideboard, with its plate and its candles
     if 68 <= x <= 70 and z == 33:
         f[L1] = "gate/cupboard"
-        f[L1 + 1] = "gate/candle3" if x == 69 else "gate/vessel"
+        # candles down the whole sideboard: the two ends measured dark with
+        # a vessel standing on them and a body able to stand there too
+        f[L1 + 1] = "gate/candle3" if x == 69 else "gate/candle2"
         return f
     # --- window seats in the deep embrasures of both side walls
     if x in (67, 89) and z in (35, 36, 37, 40, 41, 42, 45, 46, 47):
@@ -464,6 +468,8 @@ def duchess_hall_cells(x, z):
     f = _duchess(x, z)
     if z in BEAM_Z and 67 <= x <= 89 and GH_L2[1] not in f:
         f[GH_L2[1]] = "gate/beam"                   # the timber ceiling, on its beams
+    if (x, z) == (84, 32):
+        f[L2 + 1] = "gate/lantern"      # the one corner that measured dark at build
     return f
 
 

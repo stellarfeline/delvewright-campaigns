@@ -51,7 +51,7 @@ PALETTE = {
     "kt/torch_s": "minecraft:wall_torch[facing=south]",
     "kt/torch_e": "minecraft:wall_torch[facing=east]",
     "kt/torch_w": "minecraft:wall_torch[facing=west]",
-    "kt/candles": "minecraft:candle[candles=3,lit=true,waterlogged=false]",
+    "kt/candles": "minecraft:white_candle[candles=3,lit=true,waterlogged=false]",
     # the kitchen's own stuff
     "kt/table_leg": "minecraft:stripped_oak_log[axis=y]",
     "kt/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
@@ -117,7 +117,7 @@ SV_SHELF_X = 29
 SV_SHELF_Z = ((32, 35), (39, 42))
 SV_POTS = {(31, 33)}
 SV_VESSELS = {(31, 32), (31, 34), (31, 39), (31, 41)}
-SV_LAMPS = {(30, 34), (30, 36), (30, 38), (30, 42)}
+SV_LAMPS = {(30, 34), (30, 36), (30, 38), (30, 42), (31, 32), (31, 34), (31, 39), (31, 41)}   # the shelf tops measured dark at build
 SV_TORCHES = {(30, 31): "kt/torch_s", (30, 44): "kt/torch_n"}
 
 
@@ -234,7 +234,9 @@ OVEN_FIRE = (25, 34)
 # The work table stands west of the door-to-hearth line, so a body at the
 # kitchen stop looks straight down the room at the fire.
 TABLE = (17, 19, 36, 38)
-KT_TABLE_WARE = {(18, 37): "kt/candles", (17, 38): "kt/vessel", (19, 36): "kt/vessel"}
+KT_TABLE_WARE = {(18, 37): "kt/candles", (17, 38): "kt/lamp", (19, 36): "kt/lamp"}
+# the two far corners of the table top measured dark at build: a vessel there
+# is a prop, a lamp is a prop that also lights the corner it stands in.
 KT_STOOLS = {(19, 39), (17, 35)}
 DRAIN_X = 23
 DRAIN_Z = (34, 42)

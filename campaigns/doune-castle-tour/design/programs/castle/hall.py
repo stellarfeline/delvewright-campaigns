@@ -147,6 +147,8 @@ def hall_contents(x, z):
             cells[0] = "hall/bench"
     elif x in (38, 39) and z in (32, 33):
         cells[0] = cells[1] = "hall/cupboard"                    # plate cupboard
+    elif x == 35 and z in (34, 41):
+        cells[0] = "hall/lantern"        # the strip behind the screen, else dark
 
     # light and hangings against the two long walls
     if z in (hz0, hz1):
@@ -192,6 +194,9 @@ def cellar_contents(x, z):
         return spans
     if x in (41, 51, 61) and z == 39:
         spans.append(("hall/cellar_lantern", 1))
+        return spans
+    if x == 36 and z == 32:
+        spans.append(("hall/cellar_lantern", 1))   # the west cellar's dark corner
         return spans
     return spans
 

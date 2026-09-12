@@ -68,17 +68,17 @@ FACING = {
     "stop-approach": "south",
     "stop-gate": "south",               # on through the passage into the yard
     "stop-courtyard": "east",           # the well the guide is standing at
-    "stop-lords-hall": "east",          # the double fireplace
+    "stop-lords-hall": "north",         # the double fireplace and its hood
     "stop-duchess-hall": "south",       # the oratory in the south wall
     "oratory": "south",
-    "bedchamber": "west",
+    "bedchamber": "east",               # the curtained bed in its recess
     "stop-great-hall": "west",          # down the hall from the dais
     "cellars": "west",
     "stop-kitchen": "north",            # the great fireplace
     "servery": "east",                  # the hatches through to the hall
     "stop-royal-apartments": "north",
-    "guardroom": "east",
-    "pit-prison": "west",
+    "guardroom": "north",               # the weapon rack on the end wall
+    "pit-prison": "north",              # the barred hatch in the floor
     "stop-wall-walk": "north",          # the castle, from the wall
 }
 
