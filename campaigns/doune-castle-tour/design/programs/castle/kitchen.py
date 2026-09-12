@@ -17,6 +17,11 @@ lodging fireplace, the oven's own masonry over its embers — so the cell above
 the fire has less than a body's clearance and neither the walk nor the game
 will put a player in it. The parapet brazier stands instead inside a ring of
 wall posts, which are a block and a half tall and so cannot be stepped over.
+
+**Light is placed with the rooms, not swept over them afterwards.** The cellar,
+the servery and the bedchambers carry no window at all, so every one of their
+floor cells is lit to block light 8 or better by lantern, torch and fire alone;
+so is every other roofed room in the tower, before any daylight is counted.
 """
 
 from .common import *  # noqa: F401,F403
