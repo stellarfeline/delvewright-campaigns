@@ -17,6 +17,10 @@ PALETTE = {
     "hall/torch_s": "minecraft:wall_torch[facing=north]",
     "hall/cupboard": "minecraft:bookshelf",
     "hall/canopy": "minecraft:red_wool",
+    "hall/banner_n": "minecraft:red_wall_banner[facing=south]",
+    "hall/banner_s": "minecraft:red_wall_banner[facing=north]",
+    "hall/chandelier": "minecraft:lantern[hanging=true,waterlogged=false]",
+    "hall/chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     "hall/cask": "minecraft:spruce_log[axis=z]",
     "hall/sack": "minecraft:hay_block[axis=y]",
     "hall/cellar_lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
@@ -104,54 +108,76 @@ def louvre(x, z):
 
 
 def hall_contents(x, z):
-    """Spans laid on the hall floor at y16, bottom up. Air is `None`."""
-    hx0, hx1, hz0, hz1 = HALL_IN
-    spans = []
+    """What stands on the hall floor, cell by cell from y16 up.
+
+    Written as a map from course to block rather than as a running total: the
+    canopy hangs at y21 whatever is under it, and a hall whose cloth of estate
+    moves when somebody adds a lantern is a hall nobody can reason about.
+    """
+    hz0, hz1 = HALL_IN[2], HALL_IN[3]
+    z0, z1 = HALL[2], HALL[3]
+    cells = {}                                  # course offset from y16 -> role
+
     on_dais = x >= DAIS_X
     if on_dais:
-        spans.append(("hall/dais", 1))                       # y16: the step up
+        cells[0] = "hall/dais"                                   # the step up
         if x == HIGH_TABLE_X and 34 <= z <= 41:
-            spans += [("hall/table_leg", 1), ("hall/table_top", 1)]
+            cells[1], cells[2] = "hall/table_leg", "hall/table_top"
             if z in (36, 39):
-                spans.append(("hall/lantern", 1))
-        elif x in (DAIS_X + 1, DAIS_X + 2) and z in (37, 38):
-            spans.append(("hall/bench", 1))                  # the great chair's step
-        # the cloth of estate hangs over the high table
+                cells[3] = "hall/lantern"
+        if x in (DAIS_X + 1, DAIS_X + 2) and z in (37, 38):
+            cells[1] = "hall/bench"                              # the great chair
         if 58 <= x <= 61 and 34 <= z <= 41:
-            spans += [(None, 21 - (WALK + len(spans))), ("hall/canopy", 1)]
-        return spans
-
-    if HEARTH[0] <= x <= HEARTH[1] and HEARTH[2] <= z <= HEARTH[3]:
+            cells[5] = "hall/canopy"                             # cloth of estate
+    elif HEARTH[0] <= x <= HEARTH[1] and HEARTH[2] <= z <= HEARTH[3]:
         centre = (x == 46 and z == 38)
-        spans.append(("hall/fire" if centre else "hall/hearth_kerb", 1))
-        return spans
-
-    for table_z, bench_a, bench_b in TABLES:
-        if TABLE_RUN[0] <= x <= TABLE_RUN[1]:
-            if z == table_z:
-                spans += [("hall/table_leg", 1), ("hall/table_top", 1)]
-                if x in (44, 50):
-                    spans.append(("hall/lantern", 1))
-                return spans
-            if z in (bench_a, bench_b):
-                spans.append(("hall/bench", 1))
-                return spans
-
-    if SCREEN_X[0] <= x <= SCREEN_X[1]:
-        if 36 <= z <= 38:                                    # the two openings
-            spans.append((None, 4))
+        cells[0] = "hall/fire" if centre else "hall/hearth_kerb"
+    elif SCREEN_X[0] <= x <= SCREEN_X[1]:
+        if not 36 <= z <= 38:                                    # the two openings
+            for c in range(0, 6):
+                cells[c] = "hall/screen"
+        cells[6] = "hall/gallery"                                # the gallery over it
+    elif TABLE_RUN[0] <= x <= TABLE_RUN[1] and any(
+            z in row for row in ((34, 35, 36), (41, 42, 43))):
+        if z in (35, 42):
+            cells[0], cells[1] = "hall/table_leg", "hall/table_top"
+            if x in (44, 50):
+                cells[2] = "hall/lantern"
         else:
-            spans.append(("hall/screen", 6))
-        spans += [(None, 22 - (WALK + 8 + 1)), ("hall/gallery", 1)]
-        return spans
+            cells[0] = "hall/bench"
+    elif x in (38, 39) and z in (32, 33):
+        cells[0] = cells[1] = "hall/cupboard"                    # plate cupboard
 
-    if x in (38, 39) and z in (32, 33):
-        spans.append(("hall/cupboard", 2))                   # the plate cupboard
-        return spans
+    # light and hangings against the two long walls
+    if z in (hz0, hz1):
+        wall_torch = "hall/torch_n" if z == hz0 else "hall/torch_s"
+        wall_banner = "hall/banner_n" if z == hz0 else "hall/banner_s"
+        if x in TORCH_X:
+            cells[3] = wall_torch
+        if x in (42, 50, 56):
+            cells[5] = cells[6] = wall_banner
 
-    if x in TORCH_X and z in (hz0, hz1):
-        spans += [(None, 3), ("hall/torch_n" if z == hz0 else "hall/torch_s", 1)]
-        return spans
+    # two chandeliers on chains from the roof, over the body of the hall
+    if x in (44, 54) and z == 38:
+        # great_hall lays air up to `top - 2` and the roof on the two courses
+        # above it, so the chain stops at `top - 2` or it comes out of the roof.
+        top = HALL_IN_TOP + 1 + min(z - z0, z1 - z)              # this bay's ridge
+        cells[8] = "hall/chandelier"                             # y24
+        for c in range(9, (top - 2) - (WALK + 8) + 1):           # y25 .. top-2
+            cells[c] = "hall/chain"
+
+    if not cells:
+        return []
+    spans, run_role, run_len = [], None, 0
+    for c in range(0, max(cells) + 1):
+        role = cells.get(c)
+        if role == run_role:
+            run_len += 1
+        else:
+            if run_len:
+                spans.append((run_role, run_len))
+            run_role, run_len = role, 1
+    spans.append((run_role, run_len))
     return spans
 
 

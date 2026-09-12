@@ -92,10 +92,48 @@ rooms a player finds alone.
 
 ## Findings ledger
 
-- **The corner rounds severed the wall-walk.** The build's nav model refused the
-  guide's last walk (`DW0307`): the stepped corner rounds were solid to the
-  parapet, so the east and south wall-walks were two separate walks. Found by the
-  build, not by the expansion's own reachability, which counted both walks as
-  reached from the ground. **Open**: the repair belongs to the grounds part — the
-  round's inner cells floored at the walk level, crenels on the outer ring only —
-  and the build stays refused until it lands.
+Every row below was found by a machine or by looking at a render, and each says
+where it stands.
+
+- **The corner rounds severed the wall-walk.** CLOSED. The build's nav model
+  refused the guide's last walk (`DW0307`): the stepped corner rounds were solid
+  to the parapet, so the east and south wall-walks were two separate walks. The
+  expansion's own reachability had counted both as reached from the ground and
+  said nothing. A curtain column is now a parapet only where a neighbour is off
+  the castle's ground, so a round keeps a floor to stand on.
+- **The arrival anchor faced away from the castle.** CLOSED. A `mark` with no
+  `facing` derives one from decreasing local z — north — which on the approach
+  points off the piece. Every anchor now declares the direction it looks in, and
+  the arrival looks at the gate.
+- **The Royal Apartments stop stood inside its own staircase.** CLOSED. The
+  flight from that floor was three treads wide across the anchor cell, so the
+  cell above the stop was stone. The flight is a cell narrower and that cell is
+  its landing.
+- **The servery's door opened on a solid wall.** CLOSED. The servery's east
+  doorway met the great hall's west wall, which had only hatches: the route the
+  design feeds the hall through did not exist, and the guide reached the kitchen
+  by walking out into the courtyard and back in. The hall's screens end now
+  carries the matching doorway.
+
+### Capability gaps met, and not worked around
+
+- **Hanging game, food on a table, a knife.** Items in item frames are entities;
+  the grammar writes blocks. The kitchen vault carries chains and lanterns
+  instead, and the concept's hanging carcasses are simply not in the room.
+- **A crate that is not a container.** Chests and barrels carry inventories, and
+  an empty container reads as a bug; stores are logs, hay and stripped wood.
+- **A bucket.** No vanilla block is one; the well's bucket is a cauldron on an
+  iron chain.
+- **The wall-walk lane is one cell wide**, because the curtain is three courses
+  thick: outer parapet, lane, inner rail. A two-wide walk needs a four-thick
+  curtain, which is a change to the castle's plan rather than to its dressing.
+- **Woodland costs reachability.** Every canopy column leaves one standable cell
+  above it that no body can reach, so a wood spends the expansion's reachable
+  share at its own footprint. The valley edge is 21 small trees for that reason.
+
+### Notes for whoever authors the next round
+
+- `minecraft:chain` is renamed `minecraft:iron_chain` in 1.21.11; the old name
+  is not in the block table and reds `blocks-exist`.
+- `SV_IN` names the servery's interior as z32..43 while its walls stand at z30
+  and z45, so z31 and z44 are interior floor the constant does not name.
