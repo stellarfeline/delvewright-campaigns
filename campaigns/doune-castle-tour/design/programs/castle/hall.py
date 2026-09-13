@@ -26,7 +26,9 @@ PALETTE = {
     "hall/cellar_lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
 }
 ANCHORS = {
-    (58, F1 + 1, 38): ("stop-great-hall", None),
+    (58, F1 + 2, 39): ("stop-great-hall", None),   # ON the dais, beside the
+                                                  # high table, not inside
+                                                  # the great chair's step
     (48, WALK, 38): ("cellars", None),
 }
 

@@ -72,7 +72,9 @@ ANCHORS = {
     (72, GH_L1[0], 40): ("stop-lords-hall", None),
     (72, GH_L2[0], 40): ("stop-duchess-hall", None),
     (72, GH_L2[0], 46): ("oratory", None),
-    (84, GH_L2[0], 34): ("bedchamber", None),
+    (85, GH_L2[0], 34): ("bedchamber", None),   # floor beside the bed, not
+                                                # the stair well it used to
+                                                # stand in the middle of
 }
 
 MATTING = True          # rush matting over the lord's hall flags
@@ -454,7 +456,10 @@ def lords_hall_cells(x, z):
         f[L1 + 3] = "gate/torch_n"
     # --- rush matting over the stone flags, where the hall is walked
     if (MATTING and 68 <= x <= 79 and 34 <= z <= 46 and L1 not in f
-            and not murder_hole(x, z) and (x, z) != (72, 40)):
+            and not murder_hole(x, z)):
+        # the guide's own cell is matted like the rest of the floor: a mark names
+        # a cell, it does not clear it, and a bare square under the one body that
+        # stands still is the first thing a player notices
         f[L1] = "gate/matting"
     return f
 
