@@ -340,7 +340,10 @@ TABLE_X = 76                    # off the door's sight line, so the fire is seen
 TABLE_Z = (36, 45)
 BREAST_Z = (32, 33)             # the sooted chamber, then the projecting hood
 SCREEN_X = 80                   # the carved screen, and the gallery over it
-SCREEN_OPEN = (38, 40)
+SCREEN_OPEN = (46, 47)          # the low end of the hall, past the foot of the
+                                # table — where a screens passage belongs, and the
+                                # way through this room that crosses neither the
+                                # board nor the lord's own chair
 GALLERY_X = (81, 85)
 GALLERY_Z = (32, 47)
 GALLERY_Y = 22

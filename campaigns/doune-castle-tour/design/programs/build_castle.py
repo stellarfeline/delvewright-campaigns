@@ -90,13 +90,13 @@ FACING = {
 }
 
 
-def mark(anchor, role=None):
+def mark(anchor, role=None, body=None):
     m = {"anchor": anchor, "at": "floor_center"}
     if anchor in FACING:
         m["facing"] = FACING[anchor]
     if role:
         m["role"] = role
-    return {"op": "mark", "mark": m, "body": void()}
+    return {"op": "mark", "mark": m, "body": body if body is not None else void()}
 
 def column_node(x, z, col):
     """One column's spans, with any anchor cell split out and marked."""
@@ -111,7 +111,11 @@ def column_node(x, z, col):
                     before = cell - y
                     if before:
                         spans.append((before, fill(role) if role else void()))
-                    spans.append((1, mark(anchor, arole)))
+                    # A mark writes no blocks — it names a cell. Wrapping the
+                    # cell's own body keeps whatever stands there: an anchor laid
+                    # over a carpeted floor used to erase the carpet under the
+                    # body standing on it, leaving one bare square in the rug.
+                    spans.append((1, mark(anchor, arole, body=fill(role) if role else void())))
                     rest = y + n - cell - 1
                     if rest:
                         spans.append((rest, fill(role) if role else void()))
