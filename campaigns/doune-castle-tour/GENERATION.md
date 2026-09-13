@@ -2,10 +2,12 @@
 
 ## The toolchain this campaign is authored against
 
-- Plugin `delvewright` 1.2.4 (skill `/new-delve`), run in dev mode from the engine
+- Plugin `delvewright` 1.4.0 (skill `/new-delve`), run in dev mode from the engine
   checkout.
-- Engine revision `2bda3edd2f63a7a97b8d46b625f04e67c050fa4d`, `delvec` 1.4.0,
-  `dsl_version` 0.24.2, Minecraft 1.21.11.
+- Engine revision `bd755133f76e173ed7004ab5a82958b0f5b949e1`, `delvec` 1.4.0,
+  `dsl_version` 0.24.2, Minecraft 1.21.11. Round 1 was authored against
+  `2bda3edd2f63a7a97b8d46b625f04e67c050fa4d`; the round-2 repairs below moved the
+  engine under it.
 - Prefab library: the content repository `stellarfeline/delvewright-campaigns`,
   branch `campaign/doune-castle-tour` cut from `cf8b08ba645f6147166ccbf2f951942067bc9271`.
   That is **not** the revision the engine's `[content].sha` names
@@ -88,12 +90,32 @@ rooms a player finds alone.
 - `validate` and `analyze`: clean.
 - `build`: the area's relight fixture was declared `lantern` and refused
   (`DW0211`) — a lantern needs a ceiling above it and one cell had no such site.
-  It is `torch`, which mounts on a floor or any wall face.
+  The declaration was dropped instead: the rooms light themselves.
+
+After the round-2 repairs, on engine `bd755133`:
+
+- `validate`, `analyze`, `build`: all exit 0, with **one** advisory, `DW0781` —
+  the piece-mating check examined zero abutting faces, because one placed piece
+  touches nothing.
+- **PackTest: all 63 required tests passed**, 7.4 s.
+- **Critical-path bot: PASSED**, 11 steps, 2 advisories. Both advisories are the
+  harness reporting what it could not see rather than what it found: the
+  `mannequin` targeting ambiguity below, and `acquisition unproven` at stops 2
+  through 9.
+- **Staging gate: REFUSED, 2 of 100** — `bell-04` and `bell-05`, which read the
+  seven ceremonial puppets of the closing muster as mandatory combat and demand a
+  `combat-plan.json` the build correctly does not emit. Engine-side; see the
+  ledger.
+- The resource pack ships `en_us.json` and `zh_cn.json` and the guide's skin;
+  every one of the pack's 174 keys is namespaced to this delve.
 
 ## Findings ledger
 
-Every row below was found by a machine or by looking at a render, and each says
-where it stands.
+Round 1's rows were found by a machine or by looking at a render, while the
+delve was being built. Round 2's were found by walking the built delve. Each row
+says where it stands.
+
+### Round 1 — what the machine and the renders found while it was being built
 
 - **The corner rounds severed the wall-walk.** CLOSED. The build's nav model
   refused the guide's last walk (`DW0307`): the stepped corner rounds were solid
@@ -126,7 +148,97 @@ where it stands.
   dark-cell proof named them one region at a time, and each was lit where it
   stood rather than by declaring a blanket fixture over the castle.
 
-### An engine gap this round met
+### Round 2 — what a walk of the built delve found
+
+Nine findings, from one walk of the round-1 build. Each says where it stands and
+what carries its general form.
+
+- **The bodies were villagers, and the closing muster was illagers.** CLOSED in
+  content, OPEN in the engine. The guide is a `minecraft:mannequin` wearing
+  `skins/elspeth-moncrieff.png`; the seven guards of the muster were
+  `minecraft:vindicator` in iron and are now mannequins too — the built datapack
+  summons **0** vindicators and **15** mannequins against **16** summon lines. The
+  guards have **no faces yet**: an actor that declares a `skin` takes an emission
+  branch that drops `equipment`, `attributes`, `drops` and `vulnerable`, so
+  skinning them today disarms them. Two actors may not share a `texture_id`
+  (`DW0190`), so the muster needs seven. The general form of the rule itself —
+  *a character is a player model wearing that character's skin* — is a skill page,
+  not a diagnostic: nothing machine-checkable can tell a villager who should be a
+  person from a villager who is one.
+- **A body that walks away stops with its back to the party.** CLOSED for
+  `move-npc`, OPEN for `move-actor`. The engine now gives a walked NPC an arrival
+  turn — the destination anchor's declared facing, or the reverse of the last leg
+  (`nav::arrival_yaw`). `plan_actor_moves` never calls it, so a walked puppet
+  still arrives facing away. Every one of this campaign's 16 anchors declares the
+  direction a body standing on it looks.
+- **The delve shipped in one language and nobody was asked.** CLOSED. `world.json`
+  declares `zh-cn` and `l10n/zh-cn.json` carries **161 of 161** inventory keys;
+  the built pack's `zh_cn.json` holds **174** — those 161 plus the compiler's own
+  13 chrome strings. `DW0331` was proved binding by planting a 22-glyph option
+  label, which reds at 198 font px against a 146 px budget. The skill page now
+  asks the creator which languages before any prose is written.
+- **Three oak logs blocked a doorway.** CLOSED. The kitchen's log store moved out
+  of the door cell.
+- **Stairs were whole blocks a body had to jump up.** CLOSED. Every flight is
+  stair blocks in its walked lane with whole masonry at the edges and a landing
+  where a route joins from the side; 127 stair blocks, `DW0430` at 0. The rule is
+  in the skill page, so a first draft gets it right.
+- **The guide walked over the lord's table.** CLOSED as an instance; the general
+  form is an engine gap. The table is intact and the route rounds it — 209
+  waypoints, 0 on furniture; the closing muster measures 534 walked cells and 0 on
+  the courtyard's furniture or stair treads. Nothing in the nav model knows a
+  table from a floor: every cell of that table was standable and the route was
+  proved.
+- **The completion title was another delve's, in a language this one never
+  declared.** CLOSED. Not a default and not a copy error: every pack defined the
+  same global `world.title`, and an enabled pack from an earlier delve answered
+  it. Every key that leaves a delve now carries `delve.<campaign_id>.`; measured
+  on the built pack, **174 of 174**, and the title reads 杜恩城堡：导览之旅.
+- **The walked paths were perfect right angles.** CLOSED. A route is string-pulled
+  over level ground before it is resampled, and the yaw is read off the exact
+  samples rather than the rounded ones: the guide's eight walks go from **4148 to
+  3788** waypoints and from **135 to 95** yaw changes.
+- **A mounted jousting display.** NOT BUILT. The closing beat is a foot muster:
+  the captain and six men-at-arms come out of the gate passage, cross the
+  courtyard and form up. The display as specified needs five engine surfaces that
+  do not exist — see the capability gaps below.
+
+### Engine gaps this round met
+
+Each was reproduced before it was written down.
+
+- **A skinned actor loses its gear.** `emit::actor_puppet_summon`'s skin branch
+  predates `equipment`, `attributes`, `drops` and `vulnerable`; the other branch
+  carries all four. `docs/reference/compiler.md` states the opposite. The gallery
+  binds `skin` on one actor and `equipment` on a different one, so each unit binds
+  and the pair binds to nothing.
+- **A walked actor never takes its arrival turn.** `nav::arrival_yaw` is called
+  from the NPC planner only.
+- **An arrival facing belongs to the anchor, not to the beat.** One anchor cannot
+  serve two beats whose audiences stand in opposite directions — which this
+  campaign needs, because the guide and the captain both stop at the courtyard
+  and are looked at from different places.
+- **A body cannot be offset from its anchor**, and two bodies on one anchor are
+  silently co-located, so a rank of seven costs seven anchors and comes out
+  single-file.
+- **Equipment has no `body` or `saddle` slot.** The pinned 1.21.11 item registry
+  declares 8 slots over 84 equippable items — head 16, chest 8, legs 7, feet 7,
+  offhand 1, body 44, saddle 1 — and `MobEquipment::slots()` returns a fixed 6.
+- **There is no firework verb.** `firework` appears 0 times in 522013 bytes of
+  exported schema; the rocket is in the pinned item and entity registries.
+- **A skin texture id is client-global.** Two delves that both name a skin
+  `keeper` render each other's faces, for the same reason the title did.
+- **The critical-path bot's targeting policy is keyed to entity kind**, and the
+  rule that every character is a player model is making kind carry no
+  information. The remedy its own message prints — *give it a skin* — is what the
+  guide already has.
+- **The bot cannot see a `minecraft:interaction` body after the guide's first
+  stop**, and says so rather than inventing a verdict. Settled on a live server
+  rather than reasoned: the hitbox carries the same tag the driver teleports, and
+  the driver's own final line replies `Teleported 2 entities`. The delve is
+  clickable at every stop; the instrument is blind.
+
+### An engine gap round 1 met
 
 - **The prefab palette allowlist admits every coloured candle and not the plain
   one.** `minecraft:candle` fails `DW0730` while `minecraft:white_candle` passes,
