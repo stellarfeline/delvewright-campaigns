@@ -75,9 +75,15 @@ Scale is 1.5 blocks to the metre. A body's feet stand at y=8 in piece
 coordinates; the hall floor is y=16; the gatehouse parapet is y=44 and its
 crenels reach y=47.
 
-Sixteen anchors, `arrival` carrying the `entry` role: the nine tour stops, and
+Thirty-seven anchors, `arrival` carrying the `entry` role: the nine tour stops;
 `guardroom`, `pit-prison`, `cellars`, `oratory`, `bedchamber`, `servery` for the
-rooms a player finds alone.
+rooms a player finds alone; and twenty-one for the closing muster, because a
+mark is one cell and a cell holds one body, so each of the seven of the guard
+owns the cell it is summoned onto (`muster-gate-*`, a file down the gate
+passage), the cell it wheels at (`muster-form-*`, east of the well) and the cell
+it halts on (`muster-rank-*`, the line of the rank). Every one of the
+thirty-seven declares the direction a body standing on it looks; the rank's
+declare `south`, which is what turns each man to the party as his walk ends.
 
 ## What the machine has said so far
 
@@ -108,6 +114,24 @@ After the round-2 repairs, on engine `bd755133`:
   ledger.
 - The resource pack ships `en_us.json` and `zh_cn.json` and the guide's skin;
   every one of the pack's 174 keys is namespaced to this delve.
+
+After the round-3 muster, on engine `d1a83dbe` — the revision that adds `DW0896`,
+one mark one body — with the prefabs of this branch:
+
+- `validate`, `analyze`, `build`: all exit 0, with the same **one** advisory,
+  `DW0781`. Two builds of the tree are byte-identical.
+- **One-mark binding: 8 bodies on 8 distinct cells, 28 co-existence questions
+  asked over 7 entry events, 0 refused.** Before the muster was rebuilt: 8 bodies
+  on 2 cells, 13 questions, 6 refused, exit 3.
+- The seven of the guard summon at **7 distinct coordinate triples**, against 1
+  before. Summon census unchanged at 15 `minecraft:mannequin` + 1
+  `minecraft:interaction`.
+- Gear and faces unchanged: **7 of 7** `spawn_actor_*` functions carry
+  `equipment`, **7 of 7** carry a skin profile, **8** npc textures in the pack.
+- **0 of 361** walked cells on the courtyard's furniture or stair treads.
+- Every body's last `tp` is its own rank cell at yaw 0 — facing south, at the
+  party on the wall-walk.
+- `l10n/zh-cn.json` carries **162 of 162** inventory keys.
 
 ## Findings ledger
 
@@ -157,20 +181,20 @@ what carries its general form.
   content, OPEN in the engine. The guide is a `minecraft:mannequin` wearing
   `skins/elspeth-moncrieff.png`; the seven guards of the muster were
   `minecraft:vindicator` in iron and are now mannequins too — the built datapack
-  summons **0** vindicators and **15** mannequins against **16** summon lines. The
-  guards have **no faces yet**: an actor that declares a `skin` takes an emission
-  branch that drops `equipment`, `attributes`, `drops` and `vulnerable`, so
-  skinning them today disarms them. Two actors may not share a `texture_id`
-  (`DW0190`), so the muster needs seven. The general form of the rule itself —
+  summons **0** vindicators and **15** mannequins against **16** summon lines.
+  Each of the seven wears its own face and its six slots of iron: 7 of 7
+  `spawn_actor_*` functions carry both a skin profile and `equipment`. Two actors
+  may not share a `texture_id` (`DW0190`), so the muster needs seven of those
+  too. The general form of the rule itself —
   *a character is a player model wearing that character's skin* — is a skill page,
   not a diagnostic: nothing machine-checkable can tell a villager who should be a
   person from a villager who is one.
-- **A body that walks away stops with its back to the party.** CLOSED for
-  `move-npc`, OPEN for `move-actor`. The engine now gives a walked NPC an arrival
-  turn — the destination anchor's declared facing, or the reverse of the last leg
-  (`nav::arrival_yaw`). `plan_actor_moves` never calls it, so a walked puppet
-  still arrives facing away. Every one of this campaign's 16 anchors declares the
-  direction a body standing on it looks.
+- **A body that walks away stops with its back to the party.** CLOSED. A walked
+  body takes an arrival turn — the destination anchor's declared facing, or the
+  reverse of the last leg (`nav::arrival_yaw`) — and the actor planner asks for
+  it too. Every one of this campaign's 37 anchors declares the direction a body
+  standing on it looks, so the seven of the closing muster halt facing the party
+  after a walk whose last leg runs west.
 - **The delve shipped in one language and nobody was asked.** CLOSED. `world.json`
   declares `zh-cn` and `l10n/zh-cn.json` carries **161 of 161** inventory keys;
   the built pack's `zh_cn.json` holds **174** — those 161 plus the compiler's own
@@ -185,10 +209,9 @@ what carries its general form.
   in the skill page, so a first draft gets it right.
 - **The guide walked over the lord's table.** CLOSED as an instance; the general
   form is an engine gap. The table is intact and the route rounds it — 209
-  waypoints, 0 on furniture; the closing muster measures 534 walked cells and 0 on
-  the courtyard's furniture or stair treads. Nothing in the nav model knows a
-  table from a floor: every cell of that table was standable and the route was
-  proved.
+  waypoints, 0 on furniture. The closing muster's own figure is under round 3.
+  Nothing in the nav model knows a table from a floor: every cell of that table
+  was standable and the route was proved.
 - **The completion title was another delve's, in a language this one never
   declared.** CLOSED. Not a default and not a copy error: every pack defined the
   same global `world.title`, and an enabled pack from an earlier delve answered
@@ -198,29 +221,28 @@ what carries its general form.
   over level ground before it is resampled, and the yaw is read off the exact
   samples rather than the rounded ones: the guide's eight walks go from **4148 to
   3788** waypoints and from **135 to 95** yaw changes.
-- **A mounted jousting display.** NOT BUILT. The closing beat is a foot muster:
-  the captain and six men-at-arms come out of the gate passage, cross the
-  courtyard and form up. The display as specified needs five engine surfaces that
-  do not exist — see the capability gaps below.
+- **A mounted jousting display.** NOT BUILT. The closing beat is a foot muster
+  instead; round 3 below says what it does. The display as specified needs five
+  engine surfaces that do not exist — see the capability gaps below.
 
 ### Engine gaps this round met
 
 Each was reproduced before it was written down.
 
-- **A skinned actor loses its gear.** `emit::actor_puppet_summon`'s skin branch
-  predates `equipment`, `attributes`, `drops` and `vulnerable`; the other branch
-  carries all four. `docs/reference/compiler.md` states the opposite. The gallery
-  binds `skin` on one actor and `equipment` on a different one, so each unit binds
-  and the pair binds to nothing.
-- **A walked actor never takes its arrival turn.** `nav::arrival_yaw` is called
-  from the NPC planner only.
+- **A skinned actor loses its gear.** CLOSED in the engine: a skinned actor's
+  summon carries `equipment`, `attributes`, `drops` and `vulnerable` like any
+  other body. Measured on the built pack — 7 of 7 `spawn_actor_*` functions carry
+  both `equipment` and a skin profile.
+- **A walked actor never takes its arrival turn.** CLOSED in the engine: the
+  actor planner asks `nav::arrival_yaw` for the destination mark's facing.
 - **An arrival facing belongs to the anchor, not to the beat.** One anchor cannot
-  serve two beats whose audiences stand in opposite directions — which this
-  campaign needs, because the guide and the captain both stop at the courtyard
-  and are looked at from different places.
-- **A body cannot be offset from its anchor**, and two bodies on one anchor are
-  silently co-located, so a rank of seven costs seven anchors and comes out
-  single-file.
+  serve two beats whose audiences stand in opposite directions. This campaign no
+  longer needs it to: the guide's courtyard stop and the captain's post are two
+  different marks, which is what one body per cell costs anyway.
+- **A body cannot be offset from its anchor**, so a rank of seven costs seven
+  marks. Two bodies on one mark are no longer silent — `DW0896` refuses any two
+  bodies whose lifetimes overlap on one cell — but the seven marks are still the
+  price of a rank, and a mark is a change to the piece.
 - **Equipment has no `body` or `saddle` slot.** The pinned 1.21.11 item registry
   declares 8 slots over 84 equippable items — head 16, chest 8, legs 7, feet 7,
   offhand 1, body 44, saddle 1 — and `MobEquipment::slots()` returns a fixed 6.
@@ -237,6 +259,32 @@ Each was reproduced before it was written down.
   rather than reasoned: the hitbox carries the same tag the driver teleports, and
   the driver's own final line replies `Teleported 2 entities`. The delve is
   clickable at every stop; the instrument is blind.
+
+### Round 3 — the closing muster is the thing it says it is
+
+One finding, found by reading the built datapack against the beat's own words.
+
+- **Seven bodies grew out of one cell and six of them filed into a cellar.** CLOSED.
+  All seven actors declared `anchor/stop-gate`, so the build emitted
+  `summon minecraft:mannequin 77.5 68.0 40.5` seven times; the six men-at-arms
+  then walked to `anchor/cellars` — an interior room — at speeds 0.23 down to
+  0.18 and were despawned. There was no rank and there was no well. On the
+  engine revision that adds `DW0896` the same tree exits 3 with six refused
+  pairs, `actor/captain` against each man-at-arms at world cell [77, 68, 40].
+  The muster is now twenty-one marks: a file down the gate passage's own centre
+  line to be summoned onto, a forming-up line east of the well to wheel at, and
+  the line of the rank to halt on. The file crosses the courtyard, wheels west
+  and each man falls out at his place — man 1 to the far end, man 6 to the near
+  one; nobody despawns. Six men stand at piece x 45, 47, 49, 51, 53, 55 on z66
+  with a pace of open cobble between each, and the captain three paces out in
+  front at (50, 69), on the well shaft's own x and on the party's.
+- **The wheel is load-bearing, not decoration.** A walk straight from the gate to
+  the west end of the rank rounds the two-course well head and crosses the well's
+  worn apron whichever side it passes. Walked cells on the generator's own
+  furniture — `WELL`, `WELL_APRON`, `CART`, `STORES`, `OVEN`, `FLIGHTS`,
+  `EAST_FLIGHT` — are **0 of 361** with the wheel. Under the same instrument the
+  round-2 muster is **5 of 534**: five cells of the apron, crossed by the captain.
+  Round 2's own record of that figure as zero is corrected here.
 
 ### An engine gap round 1 met
 
