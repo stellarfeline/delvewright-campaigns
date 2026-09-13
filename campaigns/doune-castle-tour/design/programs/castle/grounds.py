@@ -64,6 +64,35 @@ ANCHORS = {
     (46, WALK, 62): ("stop-courtyard", None),
     (50, 23, 90): ("stop-wall-walk", None),
 }
+
+# ---------------------------------------------------------- the guard's rank
+# A mark is one cell and a cell holds one body, so a rank of seven is seven
+# marks. The line dresses south of the well's worn apron (z60..64) with a pace
+# of open cobble between each man — a rank shoulder to shoulder is a queue —
+# and every mark faces south, at the party standing on the south wall-walk.
+# The captain stands three paces out in front of the line, on the well shaft's
+# own x and on the party's, so he hides none of his men.
+RANK_Z = 66
+RANK_X = (45, 47, 49, 51, 53, 55)
+CAPTAIN_STAND = (50, 69)
+
+# The guard reaches that line the way a guard does: it crosses the courtyard to
+# a forming-up mark east of the well, then marches west along its own line and
+# each man falls out into his place. The wheel is what keeps every boot off the
+# well's worn apron (x48..52, z60..64) — a march straight from the gate to the
+# west end of the rank goes round the well head and over the apron, whichever
+# side it passes on — and it is also the drill: a file crosses the front of the
+# line and peels off from the far end in.
+FORM_X = (60, 62, 64, 66, 68, 70)   # man 1 wheels first, from nearest the well
+CAPTAIN_FORM = (60, 69)
+
+for _i, _x in enumerate(RANK_X, start=1):
+    ANCHORS[(_x, WALK, RANK_Z)] = (f"muster-rank-{_i}", None)
+ANCHORS[(CAPTAIN_STAND[0], WALK, CAPTAIN_STAND[1])] = ("muster-rank-captain", None)
+for _i, _x in enumerate(FORM_X, start=1):
+    ANCHORS[(_x, WALK, RANK_Z)] = (f"muster-form-{_i}", None)
+ANCHORS[(CAPTAIN_FORM[0], WALK, CAPTAIN_FORM[1])] = ("muster-form-captain", None)
+
 ANCHOR_CELLS = {(ax, az) for (ax, _, az) in ANCHORS}
 
 

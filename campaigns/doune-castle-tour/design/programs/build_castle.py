@@ -87,6 +87,30 @@ FACING = {
     "servery": "east",
     "guardroom": "north",
     "pit-prison": "north",
+    # the closing muster. A walked body takes its arrival turn from the mark it
+    # halts on, so the rank's facing is what turns each man to the party when
+    # his walk ends; the file in the gate passage looks the way it will march.
+    "muster-gate-captain": "south",
+    "muster-gate-1": "south",
+    "muster-gate-2": "south",
+    "muster-gate-3": "south",
+    "muster-gate-4": "south",
+    "muster-gate-5": "south",
+    "muster-gate-6": "south",
+    "muster-form-captain": "west",   # the wheel: they halt looking down the line
+    "muster-form-1": "west",
+    "muster-form-2": "west",
+    "muster-form-3": "west",
+    "muster-form-4": "west",
+    "muster-form-5": "west",
+    "muster-form-6": "west",
+    "muster-rank-captain": "south",
+    "muster-rank-1": "south",
+    "muster-rank-2": "south",
+    "muster-rank-3": "south",
+    "muster-rank-4": "south",
+    "muster-rank-5": "south",
+    "muster-rank-6": "south",
 }
 
 

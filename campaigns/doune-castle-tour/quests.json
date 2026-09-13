@@ -3,7 +3,7 @@
   "content": {
     "actors": [
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-captain",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -22,7 +22,7 @@
         }
       },
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-1",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -40,7 +40,7 @@
         }
       },
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-2",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -58,7 +58,7 @@
         }
       },
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-3",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -76,7 +76,7 @@
         }
       },
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-4",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -94,7 +94,7 @@
         }
       },
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-5",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -112,7 +112,7 @@
         }
       },
       {
-        "anchor": "anchor/stop-gate",
+        "anchor": "anchor/muster-gate-6",
         "entity": "minecraft:mannequin",
         "equipment": {
           "chest": "minecraft:iron_chestplate",
@@ -526,7 +526,7 @@
                 "effects": [
                   {
                     "at": {
-                      "anchor": "anchor/stop-gate",
+                      "anchor": "anchor/muster-gate-captain",
                       "at": "anchor"
                     },
                     "sound": "minecraft:event.raid.horn",
@@ -540,7 +540,7 @@
                 "effects": [
                   {
                     "style": "chat",
-                    "text": "A horn goes off under the gate arch, and the guard begins to come out.",
+                    "text": "A horn goes off under the gate arch, and the guard turns out below you.",
                     "type": "narrate"
                   }
                 ]
@@ -561,33 +561,46 @@
                     "actor": "actor/captain",
                     "happening": {
                       "subject": "actor/captain",
-                      "text": "The captain crosses the courtyard, comes forward to the well and halts facing the wall-walk.",
+                      "text": "The captain crosses the courtyard and wheels west, short of the well.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
                       {
-                        "at": {
-                          "anchor": "anchor/stop-courtyard",
-                          "at": "anchor"
+                        "actor": "actor/captain",
+                        "happening": {
+                          "subject": "actor/captain",
+                          "text": "The captain walks up to the well and takes post three paces in front of it, facing the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "sound": "minecraft:block.bell.use",
-                        "type": "play-sound",
-                        "volume": 1.6
-                      },
-                      {
-                        "style": "chat",
-                        "text": "The captain halts by the well and turns to face the wall.",
-                        "type": "narrate"
+                        "on_arrive": [
+                          {
+                            "at": {
+                              "anchor": "anchor/muster-rank-captain",
+                              "at": "anchor"
+                            },
+                            "sound": "minecraft:block.bell.use",
+                            "type": "play-sound",
+                            "volume": 1.6
+                          },
+                          {
+                            "style": "chat",
+                            "text": "The captain halts three paces in front of the well and turns his face up to you.",
+                            "type": "narrate"
+                          }
+                        ],
+                        "speed": 0.22,
+                        "to_anchor": "anchor/muster-rank-captain",
+                        "type": "move-actor"
                       }
                     ],
-                    "speed": 0.24,
-                    "to_anchor": "anchor/stop-courtyard",
+                    "speed": 0.22,
+                    "to_anchor": "anchor/muster-form-captain",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 70,
+                "at_ticks": 60,
                 "effects": [
                   {
                     "actor": "actor/man-at-arms-1",
@@ -602,7 +615,7 @@
                     "actor": "actor/man-at-arms-1",
                     "happening": {
                       "subject": "actor/man-at-arms-1",
-                      "text": "Man-at-arms 1 marches west across the courtyard and in at the cellar door.",
+                      "text": "Man-at-arms 1 marches across the courtyard and wheels west onto the line of the rank.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
@@ -610,21 +623,22 @@
                         "actor": "actor/man-at-arms-1",
                         "happening": {
                           "subject": "actor/man-at-arms-1",
-                          "text": "Man-at-arms 1 is off the courtyard and out of sight under the hall.",
-                          "verb": "departs"
+                          "text": "Man-at-arms 1 marches down the front of the line, falls out at the far end of the line, under the west curtain, and faces the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "style": "vanish",
-                        "type": "despawn-actor"
+                        "speed": 0.21,
+                        "to_anchor": "anchor/muster-rank-1",
+                        "type": "move-actor"
                       }
                     ],
-                    "speed": 0.23,
-                    "to_anchor": "anchor/cellars",
+                    "speed": 0.21,
+                    "to_anchor": "anchor/muster-form-1",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 115,
+                "at_ticks": 90,
                 "effects": [
                   {
                     "actor": "actor/man-at-arms-2",
@@ -639,7 +653,7 @@
                     "actor": "actor/man-at-arms-2",
                     "happening": {
                       "subject": "actor/man-at-arms-2",
-                      "text": "Man-at-arms 2 marches west across the courtyard and in at the cellar door.",
+                      "text": "Man-at-arms 2 marches across the courtyard and wheels west onto the line of the rank.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
@@ -647,21 +661,22 @@
                         "actor": "actor/man-at-arms-2",
                         "happening": {
                           "subject": "actor/man-at-arms-2",
-                          "text": "Man-at-arms 2 is off the courtyard and out of sight under the hall.",
-                          "verb": "departs"
+                          "text": "Man-at-arms 2 marches down the front of the line, falls out at the second place, and faces the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "style": "vanish",
-                        "type": "despawn-actor"
+                        "speed": 0.21,
+                        "to_anchor": "anchor/muster-rank-2",
+                        "type": "move-actor"
                       }
                     ],
-                    "speed": 0.22,
-                    "to_anchor": "anchor/cellars",
+                    "speed": 0.21,
+                    "to_anchor": "anchor/muster-form-2",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 160,
+                "at_ticks": 120,
                 "effects": [
                   {
                     "actor": "actor/man-at-arms-3",
@@ -676,7 +691,7 @@
                     "actor": "actor/man-at-arms-3",
                     "happening": {
                       "subject": "actor/man-at-arms-3",
-                      "text": "Man-at-arms 3 marches west across the courtyard and in at the cellar door.",
+                      "text": "Man-at-arms 3 marches across the courtyard and wheels west onto the line of the rank.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
@@ -684,21 +699,22 @@
                         "actor": "actor/man-at-arms-3",
                         "happening": {
                           "subject": "actor/man-at-arms-3",
-                          "text": "Man-at-arms 3 is off the courtyard and out of sight under the hall.",
-                          "verb": "departs"
+                          "text": "Man-at-arms 3 marches down the front of the line, falls out at the third place, and faces the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "style": "vanish",
-                        "type": "despawn-actor"
+                        "speed": 0.21,
+                        "to_anchor": "anchor/muster-rank-3",
+                        "type": "move-actor"
                       }
                     ],
                     "speed": 0.21,
-                    "to_anchor": "anchor/cellars",
+                    "to_anchor": "anchor/muster-form-3",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 205,
+                "at_ticks": 150,
                 "effects": [
                   {
                     "actor": "actor/man-at-arms-4",
@@ -713,7 +729,7 @@
                     "actor": "actor/man-at-arms-4",
                     "happening": {
                       "subject": "actor/man-at-arms-4",
-                      "text": "Man-at-arms 4 marches west across the courtyard and in at the cellar door.",
+                      "text": "Man-at-arms 4 marches across the courtyard and wheels west onto the line of the rank.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
@@ -721,21 +737,22 @@
                         "actor": "actor/man-at-arms-4",
                         "happening": {
                           "subject": "actor/man-at-arms-4",
-                          "text": "Man-at-arms 4 is off the courtyard and out of sight under the hall.",
-                          "verb": "departs"
+                          "text": "Man-at-arms 4 marches down the front of the line, falls out at the fourth place, and faces the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "style": "vanish",
-                        "type": "despawn-actor"
+                        "speed": 0.21,
+                        "to_anchor": "anchor/muster-rank-4",
+                        "type": "move-actor"
                       }
                     ],
-                    "speed": 0.2,
-                    "to_anchor": "anchor/cellars",
+                    "speed": 0.21,
+                    "to_anchor": "anchor/muster-form-4",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 250,
+                "at_ticks": 180,
                 "effects": [
                   {
                     "actor": "actor/man-at-arms-5",
@@ -750,7 +767,7 @@
                     "actor": "actor/man-at-arms-5",
                     "happening": {
                       "subject": "actor/man-at-arms-5",
-                      "text": "Man-at-arms 5 marches west across the courtyard and in at the cellar door.",
+                      "text": "Man-at-arms 5 marches across the courtyard and wheels west onto the line of the rank.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
@@ -758,21 +775,22 @@
                         "actor": "actor/man-at-arms-5",
                         "happening": {
                           "subject": "actor/man-at-arms-5",
-                          "text": "Man-at-arms 5 is off the courtyard and out of sight under the hall.",
-                          "verb": "departs"
+                          "text": "Man-at-arms 5 marches down the front of the line, falls out at the fifth place, and faces the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "style": "vanish",
-                        "type": "despawn-actor"
+                        "speed": 0.21,
+                        "to_anchor": "anchor/muster-rank-5",
+                        "type": "move-actor"
                       }
                     ],
-                    "speed": 0.19,
-                    "to_anchor": "anchor/cellars",
+                    "speed": 0.21,
+                    "to_anchor": "anchor/muster-form-5",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 295,
+                "at_ticks": 210,
                 "effects": [
                   {
                     "actor": "actor/man-at-arms-6",
@@ -787,7 +805,7 @@
                     "actor": "actor/man-at-arms-6",
                     "happening": {
                       "subject": "actor/man-at-arms-6",
-                      "text": "Man-at-arms 6 marches west across the courtyard and in at the cellar door.",
+                      "text": "Man-at-arms 6 marches across the courtyard and wheels west onto the line of the rank.",
                       "verb": "arrives"
                     },
                     "on_arrive": [
@@ -795,25 +813,31 @@
                         "actor": "actor/man-at-arms-6",
                         "happening": {
                           "subject": "actor/man-at-arms-6",
-                          "text": "Man-at-arms 6 is off the courtyard and out of sight under the hall.",
-                          "verb": "departs"
+                          "text": "Man-at-arms 6 marches down the front of the line, falls out at the near end of the line, and faces the wall-walk.",
+                          "verb": "arrives"
                         },
-                        "style": "vanish",
-                        "type": "despawn-actor"
+                        "speed": 0.21,
+                        "to_anchor": "anchor/muster-rank-6",
+                        "type": "move-actor"
                       }
                     ],
-                    "speed": 0.18,
-                    "to_anchor": "anchor/cellars",
+                    "speed": 0.21,
+                    "to_anchor": "anchor/muster-form-6",
                     "type": "move-actor"
                   }
                 ]
               },
               {
-                "at_ticks": 615,
+                "at_ticks": 450,
                 "effects": [
                   {
+                    "style": "chat",
+                    "text": "The line is dressed. Six men-at-arms stand at the well with their captain in front of them, and every one of them is looking up at you.",
+                    "type": "narrate"
+                  },
+                  {
                     "at": {
-                      "anchor": "anchor/stop-courtyard",
+                      "anchor": "anchor/muster-rank-captain",
                       "at": "anchor"
                     },
                     "sound": "minecraft:event.raid.horn",
@@ -823,11 +847,11 @@
                 ]
               },
               {
-                "at_ticks": 640,
+                "at_ticks": 490,
                 "effects": [
                   {
                     "happening": {
-                      "text": "The muster is over, the captain keeps his post by the well, and the tour ends on the wall.",
+                      "text": "The guard stands to at the well, the tour ends on the wall, and the fourth range is still not built.",
                       "verb": "departs"
                     },
                     "type": "campaign-complete"

@@ -77,6 +77,20 @@ ANCHORS = {
                                                 # stand in the middle of
 }
 
+# ------------------------------------------ where the guard falls in to march
+# The garrison forms up inside the gate passage and walks out of it, so each of
+# the seven needs its own cell to be summoned onto. They stand in file down the
+# passage's own centre line, the captain nearest the courtyard mouth (z49) and
+# the rest behind him, skipping z40 — the guide's tour stop stands there. The
+# yett is folded against x75 and the murder holes are overhead at y15, so the
+# centre line at y8 is clear the whole way.
+MUSTER_FILE_X = 77
+MUSTER_FILE_Z = (47, 45, 43, 41, 39, 37, 35)    # captain first, then 1..6
+
+ANCHORS[(MUSTER_FILE_X, WALK, MUSTER_FILE_Z[0])] = ("muster-gate-captain", None)
+for _i, _z in enumerate(MUSTER_FILE_Z[1:], start=1):
+    ANCHORS[(MUSTER_FILE_X, WALK, _z)] = (f"muster-gate-{_i}", None)
+
 MATTING = True          # rush matting over the lord's hall flags
 
 
