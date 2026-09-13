@@ -75,15 +75,16 @@ Scale is 1.5 blocks to the metre. A body's feet stand at y=8 in piece
 coordinates; the hall floor is y=16; the gatehouse parapet is y=44 and its
 crenels reach y=47.
 
-Thirty-seven anchors, `arrival` carrying the `entry` role: the nine tour stops;
+Thirty-one anchors, `arrival` carrying the `entry` role: the nine tour stops;
 `guardroom`, `pit-prison`, `cellars`, `oratory`, `bedchamber`, `servery` for the
-rooms a player finds alone; and twenty-one for the closing muster, because a
-mark is one cell and a cell holds one body, so each of the seven of the guard
-owns the cell it is summoned onto (`muster-gate-*`, a file down the gate
-passage), the cell it wheels at (`muster-form-*`, east of the well) and the cell
-it halts on (`muster-rank-*`, the line of the rank). Every one of the
-thirty-seven declares the direction a body standing on it looks; the rank's
-declare `south`, which is what turns each man to the party as his walk ends.
+rooms a player finds alone; and fifteen for the closing muster, because a mark
+is one cell and a cell holds one body, so each of the seven of the guard owns
+the cell it is summoned onto (`muster-gate-*`, a file down the gate passage) and
+the cell it halts on (`muster-rank-*`, the line of the rank), with one more
+(`muster-form-captain`) where the captain halts before stepping out in front of
+his line. Every one of the thirty-one declares the direction a body standing on
+it looks; the rank's declare `south`, which is what turns each man to the party
+as his walk ends.
 
 ## What the machine has said so far
 
@@ -128,7 +129,8 @@ one mark one body — with the prefabs of this branch:
   `minecraft:interaction`.
 - Gear and faces unchanged: **7 of 7** `spawn_actor_*` functions carry
   `equipment`, **7 of 7** carry a skin profile, **8** npc textures in the pack.
-- **0 of 361** walked cells on the courtyard's furniture or stair treads.
+- **0 of 323** walked cells on the courtyard's furniture or stair treads, and
+  **7 of 7** of the guard fully visible from the party's own eye.
 - Every body's last `tp` is its own rank cell at yaw 0 — facing south, at the
   party on the wall-walk.
 - `l10n/zh-cn.json` carries **162 of 162** inventory keys.
@@ -262,7 +264,8 @@ Each was reproduced before it was written down.
 
 ### Round 3 — the closing muster is the thing it says it is
 
-One finding, found by reading the built datapack against the beat's own words.
+Two findings, found by reading the built datapack against the beat's own words
+and then by casting the party's own sightline through the piece's blocks.
 
 - **Seven bodies grew out of one cell and six of them filed into a cellar.** CLOSED.
   All seven actors declared `anchor/stop-gate`, so the build emitted
@@ -271,20 +274,31 @@ One finding, found by reading the built datapack against the beat's own words.
   0.18 and were despawned. There was no rank and there was no well. On the
   engine revision that adds `DW0896` the same tree exits 3 with six refused
   pairs, `actor/captain` against each man-at-arms at world cell [77, 68, 40].
-  The muster is now twenty-one marks: a file down the gate passage's own centre
-  line to be summoned onto, a forming-up line east of the well to wheel at, and
-  the line of the rank to halt on. The file crosses the courtyard, wheels west
-  and each man falls out at his place — man 1 to the far end, man 6 to the near
-  one; nobody despawns. Six men stand at piece x 45, 47, 49, 51, 53, 55 on z66
-  with a pace of open cobble between each, and the captain three paces out in
-  front at (50, 69), on the well shaft's own x and on the party's.
-- **The wheel is load-bearing, not decoration.** A walk straight from the gate to
-  the west end of the rank rounds the two-course well head and crosses the well's
-  worn apron whichever side it passes. Walked cells on the generator's own
-  furniture — `WELL`, `WELL_APRON`, `CART`, `STORES`, `OVEN`, `FLIGHTS`,
-  `EAST_FLIGHT` — are **0 of 361** with the wheel. Under the same instrument the
-  round-2 muster is **5 of 534**: five cells of the apron, crossed by the captain.
-  Round 2's own record of that figure as zero is corrected here.
+  The muster is now fifteen marks. The file comes out down the gate passage's own
+  centre line and each man crosses the courtyard to his own place; nobody
+  despawns. Six men stand on z59 at x 44, 46, 48, 52, 54, 56 with a pace of open
+  cobble between each, and the captain halts on their line at (45, 58) and then
+  steps two paces out through the gap in it to (45, 61), beside the well.
+- **A rank at the well cannot be seen from the wall the party is standing on.**
+  CLOSED. The wall-walk carries a waist-high timber rail on its courtyard edge,
+  one cell in front of the party's feet, and the party's last stop is on it. Cast
+  from the eye at `anchor/stop-wall-walk` against the piece's own blocks, that
+  rail hides every courtyard cell from z61 south, and the well head with its
+  winding frame hides the three columns x49..51 behind it. A rank drawn up south
+  of the well — where "at the well" first put it — measured **0 of 7 bodies
+  fully visible**: five hidden outright and two seen only from the head up.
+  Moved north of the well and opened at the middle, it measures
+  **7 of 7**, and the well now stands in the party's foreground filling the gap
+  in the line. Of the muster's 323 walked cells the party can see **256**; the
+  rest are inside the gate arch, which is where the guard is meant to come out
+  of, and three cells where a man passes behind the well.
+- **The captain's walk crossed the well's worn apron.** CLOSED. Walked cells on
+  the generator's own furniture — `WELL`, `WELL_APRON`, `CART`, `STORES`,
+  `OVEN`, `FLIGHTS`, `EAST_FLIGHT` — are **0 of 323**. Under the same instrument
+  the round-2 muster is **5 of 534**: five cells of the apron, crossed by the
+  captain as he rounded the well head. Round 2's own record of that figure as
+  zero is corrected here. The six men, whose places are all on z59, never go near
+  it; the captain's two-leg walk is what keeps him off it.
 
 ### An engine gap round 1 met
 

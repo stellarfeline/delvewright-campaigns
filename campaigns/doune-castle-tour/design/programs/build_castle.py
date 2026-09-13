@@ -97,13 +97,7 @@ FACING = {
     "muster-gate-4": "south",
     "muster-gate-5": "south",
     "muster-gate-6": "south",
-    "muster-form-captain": "west",   # the wheel: they halt looking down the line
-    "muster-form-1": "west",
-    "muster-form-2": "west",
-    "muster-form-3": "west",
-    "muster-form-4": "west",
-    "muster-form-5": "west",
-    "muster-form-6": "west",
+    "muster-form-captain": "south",  # he halts on his own line, then steps out
     "muster-rank-captain": "south",
     "muster-rank-1": "south",
     "muster-rank-2": "south",
