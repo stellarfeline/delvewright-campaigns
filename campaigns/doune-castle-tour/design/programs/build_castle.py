@@ -64,22 +64,29 @@ def void():
 # direction of decreasing local z — north — which on the approach points off the
 # piece and away from the castle the arrival is supposed to be looking at.
 FACING = {
-    "arrival": "south",                 # the castle is south of the road
-    "stop-approach": "south",
-    "stop-gate": "south",               # on through the passage into the yard
-    "stop-courtyard": "east",           # the well the guide is standing at
-    "stop-lords-hall": "north",         # the double fireplace and its hood
-    "stop-duchess-hall": "south",       # the oratory in the south wall
+    # The rule: a body at an anchor looks the way the player will come from —
+    # the approach road, the door they enter by, the stair head they climb out
+    # of. A guide who greets the party with her back to them is the defect this
+    # table exists to prevent, so a stop faces its own entrance, never the
+    # prettiest thing in the room.
+    "arrival": "south",                 # the party spawns looking at the castle
+    "stop-approach": "north",           # they arrive down the road from the north
+    "stop-gate": "north",               # in under the arch behind them
+    "stop-courtyard": "north",          # out of the passage
+    "stop-lords-hall": "south",         # up the external stair, in at the south door
+    "stop-duchess-hall": "east",        # off the mural stair at the east end
+    "stop-great-hall": "east",          # through the door from the lord's hall
+    "stop-kitchen": "east",             # through the servery
+    "stop-royal-apartments": "west",    # off the tower stair
+    "stop-wall-walk": "east",           # along the walk from the east curtain
+    # the rooms a player finds alone: these carry no body, so they face what the
+    # room is about
     "oratory": "south",
-    "bedchamber": "east",               # the curtained bed in its recess
-    "stop-great-hall": "west",          # down the hall from the dais
+    "bedchamber": "east",
     "cellars": "west",
-    "stop-kitchen": "north",            # the great fireplace
-    "servery": "east",                  # the hatches through to the hall
-    "stop-royal-apartments": "north",
-    "guardroom": "north",               # the weapon rack on the end wall
-    "pit-prison": "north",              # the barred hatch in the floor
-    "stop-wall-walk": "north",          # the castle, from the wall
+    "servery": "east",
+    "guardroom": "north",
+    "pit-prison": "north",
 }
 
 

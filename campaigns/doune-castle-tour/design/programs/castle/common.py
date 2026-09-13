@@ -93,6 +93,25 @@ def stair_height(z, z_low, z_high, y_low, y_high):
     return y_low + (z_high - z)
 
 
+def tread(c, top, facing, rising=True, edge=False):
+    """One column of a flight: solid under, and a stair block on top.
+
+    `facing` is the direction the flight climbs — a vanilla stair's `facing` is
+    the way you ascend it. A column that does not rise over the one behind it
+    gets a whole block, so a landing reads as a landing.
+
+    `edge` is the flight's outermost column, which stays whole masonry: a body
+    can step onto a wide flight from the side, and a stair carrying a route that
+    crosses it rather than climbs it is a stair facing the wrong way (`DW0430`).
+    The lane down the middle is the stair; its edges are the steps' stone.
+    """
+    if edge or not rising:
+        c.upto("step", top)
+    else:
+        c.upto("step", top - 1)
+        c.add("stair_n" if facing == "north" else "stair_s", 1)
+
+
 class Col:
     """A column of the site, built bottom to top."""
 
@@ -132,6 +151,10 @@ PALETTE = {
     ],
     "plinth": "minecraft:stone_bricks",
     "step": "minecraft:stone_bricks",
+    # A flight's top course is a stair block, never a whole one: vanilla lets a
+    # body walk up a stair, and a whole-block step has to be jumped.
+    "stair_n": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "stair_s": "minecraft:stone_brick_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
     "wall": [
         {"weight": 10, "block": "minecraft:stone_bricks"},
         {"weight": 2, "block": "minecraft:cracked_stone_bricks"},

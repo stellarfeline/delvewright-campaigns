@@ -251,7 +251,9 @@ LARDER_DOOR_X = (23, 24)
 LARDER_SHELF_X = 25
 LARDER_SACKS = {(22, 46): 2, (22, 47): 1, (23, 47): 1}
 
-KT_LOGS = {(24, 37): 2, (24, 38): 1}    # the log pile by the drain
+KT_LOGS = {(24, 41): 2, (24, 42): 1}    # the log pile by the drain, clear of
+                                        # the east door: nothing is stacked in
+                                        # a doorway, walkable or not
 KT_SACKS = {(17, 34): 1, (18, 34): 1, (14, 46): 1, (15, 46): 2}
 KT_CASKS = {(14, 44): 1, (14, 45): 2, (15, 44): 1}
 KT_LAMPS = {(18, 35), (22, 35), (18, 41), (22, 41), (15, 45), (19, 45), (23, 46), (17, 42), (24, 45), (24, 39)}
@@ -573,20 +575,22 @@ def kitchen_tower(c, x, z):
     # treads. x20 carries the landing strip the anchor stands on instead.
     east_strip = 18 <= x <= 19          # flight 2 climbs south here
     if west_strip and 32 <= z <= 43:
-        c.upto("step", F1 + (43 - z))
+        tread(c, F1 + (43 - z), "north", edge=x in (14, 16))
         c.add(None, max(0, KT_F2 - c.y))
     else:
         lay(c, kitchen_contents(x, z), KT_L1[1] - kt_vault(x))
         c.upto("kt/vault", KT_L1[1])
         c.add("floor_upper", 1)
     if east_strip and 32 <= z <= 41:
-        c.upto("step", KT_F2 + (z - 32))
+        # the first two treads are a solid landing, for the reason the gatehouse
+        # flight has one: this flight is joined from the side at its foot
+        tread(c, KT_F2 + (z - 32), "south", edge=x in (18, 20) or z <= 33)
         c.add(None, max(0, KT_F3 - c.y))
     else:
         lay(c, royal_contents(x, z), KT_L2[1])
         c.add("floor_upper", 1)
     if west_strip and 32 <= z <= 39:
-        c.upto("step", KT_F3 + (39 - z))
+        tread(c, KT_F3 + (39 - z), "north", edge=x in (14, 16))
         c.add(None, max(0, KT_PARAPET - c.y))
     else:
         lay(c, bed_contents(x, z), KT_L3[1])

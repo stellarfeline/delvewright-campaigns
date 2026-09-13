@@ -480,17 +480,21 @@ def _joint(x, z):
 def courtyard_column(c, x, z):
     # the three external stairs, each climbing north toward its own door
     for x0, x1, z0, z1, y0, y1 in FLIGHTS:
+        h = stair_height(z, z0, z1, y0, y1)
+        if h is None:
+            continue
         if x0 <= x <= x1:
-            h = stair_height(z, z0, z1, y0, y1)
-            if h is not None:
-                c.add("cobble", 1)
-                c.upto("step", h)
-                c.air_to_top()
-                return c
-    # the long flight up onto the east wall-walk
-    if inside(x, z, EAST_FLIGHT):
+            c.add("cobble", 1)
+            tread(c, h, "north", edge=x in (x0, x1))
+            c.air_to_top()
+            return c
+    # the long flight up onto the east wall-walk, and its one open cheek
+    ex0, ex1, ez0, ez1 = EAST_FLIGHT
+    if ez0 <= z <= ez1 and ex0 <= x <= ex1:
+        top = WALK + (ez1 - z) // 2
+        behind = WALK + (ez1 - (z + 1)) // 2        # the cell it climbs from
         c.add("cobble", 1)
-        c.upto("step", WALK + (EAST_FLIGHT[3] - z) // 2)
+        tread(c, top, "north", rising=top > behind, edge=x in (ex0, ex1))
         c.air_to_top()
         return c
     stack = FURNITURE.get((x, z))

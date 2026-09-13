@@ -204,21 +204,24 @@ def gatehouse_upper(c, x, z, from_y):
     mid_strip = 82 <= x <= 84           # flight 2 climbs south here
     # level 1: the lord's hall, and the first flight up to the duchess's
     if east_strip and 33 <= z <= 44:
-        c.upto("step", F1 + (44 - z))
+        tread(c, F1 + (44 - z), "north", edge=x in (86, 88))
         c.add(None, max(0, GH_F2 - c.y))
     else:
         lay(c, lords_hall_cells(x, z), GH_L1[1])
         c.add("floor_upper", 1)
     # level 2: the duchess's hall, and the flight up to the chambers
     if mid_strip and 33 <= z <= 43:
-        c.upto("step", GH_F2 + (z - 33))
+        # the first two treads are a solid landing: a body joins this flight
+        # from the side at its foot, and a stair carrying a route across it is a
+        # stair facing the wrong way
+        tread(c, GH_F2 + (z - 33), "south", edge=x in (82, 84) or z <= 34)
         c.add(None, max(0, GH_F3 - c.y))
     else:
         lay(c, duchess_hall_cells(x, z), GH_L2[1])
         c.add("floor_upper", 1)
     # level 3: the chambers, and the flight out onto the parapet
     if east_strip and 33 <= z <= 40:
-        c.upto("step", GH_F3 + (40 - z))
+        tread(c, GH_F3 + (40 - z), "north", edge=x in (86, 88))
         c.add(None, max(0, GH_PARAPET - c.y))
     else:
         lay(c, chamber_cells(x, z), GH_L3[1])
