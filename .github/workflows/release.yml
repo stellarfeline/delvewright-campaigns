@@ -214,58 +214,32 @@ jobs:
       # 19-22 depend on. The ladder would have caught it as a wall of red with no
       # hint that the PIN was the cause.
       #
-      # Bind it to a fact the campaign already states about itself: its storybook
-      # marker records the delvec version it was last verified with
-      # (`tools/check-storybook-version.py` keeps that honest and CI-enforced in
-      # the engine repo). Building a release with an engine OLDER than that is
-      # shipping something nobody validated, so it is refused here rather than
-      # discovered downstream.
-      - name: the pinned engine is not older than the campaign was verified with
+      # Bind it to the fact the campaign already states about itself: its
+      # storybook marker records the `dsl_version` it is written in and the
+      # delvec it was last verified with. `tools/check-storybook-version.py` is
+      # the check that keeps that honest, but it is CI-enforced in the engine
+      # repo only against the content revision the engine ITSELF PINS
+      # (`.github/pins.toml` `engine-release`) — a campaign newer than that pin
+      # is never checked before its tag is pushed here.
+      # `release/doune-castle-tour/v1.0.0` shipped that way: a stale
+      # engine-version claim in `README.md` and a missing `README.zh-cn.md`
+      # that nothing had ever run the real check to catch. So the check runs
+      # here too, against THIS release's own campaign and THIS release's own
+      # pinned engine, scoped to that one campaign directory alone — an
+      # unrelated campaign's storybook (or the engine's
+      # own `hollow-vigil` allowlist entry, which binds only to the engine's own
+      # dev tree per the script's docstring) neither blocks this release nor is
+      # silently exempted from it.
+      - name: the release refuses a storybook its own check refuses
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
         run: |
           set -euo pipefail
-          python3 - "$CAMPAIGN" <<'PY'
-          import re, sys, pathlib
-          campaign = sys.argv[1]
-
-          readme = pathlib.Path(f"campaigns/{campaign}/README.md").read_text(encoding="utf-8")
-          m = re.search(r"last verified with delvec ([0-9]+\.[0-9]+\.[0-9]+)", readme)
-          if not m:
-              sys.exit(
-                  f"REFUSING: campaigns/{campaign}/README.md carries no "
-                  "'last verified with delvec <x.y.z>' marker, so there is no "
-                  "statement of which engine validated this campaign."
-              )
-          verified = m.group(1)
-
-          # ADR-0023 gave the engine ONE binary, `delvec`, whose crate inherits the
-          # workspace version (`version.workspace = true`), so the number is typed
-          # in the workspace manifest and nowhere else. This read used to name
-          # `crates/compiler/Cargo.toml`, a crate that has not existed since; it
-          # had never been exercised, because the only release cut before this one
-          # predates the rename.
-          cargo = pathlib.Path("engine/Cargo.toml").read_text(encoding="utf-8")
-          pkg = cargo.split("[workspace.package]", 1)[1]
-          v = re.search(r'^version\s*=\s*"([^"]+)"', pkg, re.M)
-          if not v:
-              sys.exit(
-                  "REFUSING: cannot read [workspace.package] version from the "
-                  "engine's workspace manifest."
-              )
-          engine = v.group(1)
-
-          key = lambda s: tuple(int(p) for p in s.split("."))
-          if key(engine) < key(verified):
-              sys.exit(
-                  f"REFUSING to publish: versions.toml [engine].ref checks out delvec "
-                  f"{engine}, but {campaign} states it was last verified with delvec "
-                  f"{verified}. The pin is stale — re-pin [engine].ref to the released "
-                  f"engine commit in a reviewed PR before tagging (see the RE-PIN "
-                  f"CONVENTION at the top of versions.toml)."
-              )
-          print(f"engine delvec {engine} >= verified delvec {verified} — OK")
-          PY
+          scope="$RUNNER_TEMP/storybook-scope"
+          rm -rf "$scope"
+          mkdir -p "$scope"
+          ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$scope/$CAMPAIGN"
+          python3 engine/tools/check-storybook-version.py --campaigns "$scope"
 
       - uses: Swatinem/rust-cache@v2
         with:
