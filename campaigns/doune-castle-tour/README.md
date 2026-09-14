@@ -8,11 +8,13 @@ A walk through a real castle with somebody who knows it. Nine stops, one guide, 
 
 | | |
 |---|---|
-| Players | 1–4 |
-| Length | ~35 minutes |
-| Mode | adventure, no combat |
-| Languages | English, 简体中文 |
-| Class | one — the Visitor: a book, a spyglass, and bread |
+| **Players** | 1–4 |
+| **Playtime** | ~35 minutes |
+| **Mode** | adventure, no combat |
+| **Languages** | English, 简体中文 (`zh-cn`) |
+| **Class** | one — the Visitor: a book, a spyglass, and bread |
+| **Source** | Doune Castle, Stirling — late 14th century |
+| **Licence** | CC BY-SA 4.0 |
 
 ## What it is
 
