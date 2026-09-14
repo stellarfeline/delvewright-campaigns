@@ -230,11 +230,20 @@ jobs:
               )
           verified = m.group(1)
 
-          cargo = pathlib.Path("engine/crates/compiler/Cargo.toml").read_text(encoding="utf-8")
-          pkg = cargo.split("[package]", 1)[1]
+          # ADR-0023 gave the engine ONE binary, `delvec`, whose crate inherits the
+          # workspace version (`version.workspace = true`), so the number is typed
+          # in the workspace manifest and nowhere else. This read used to name
+          # `crates/compiler/Cargo.toml`, a crate that has not existed since; it
+          # had never been exercised, because the only release cut before this one
+          # predates the rename.
+          cargo = pathlib.Path("engine/Cargo.toml").read_text(encoding="utf-8")
+          pkg = cargo.split("[workspace.package]", 1)[1]
           v = re.search(r'^version\s*=\s*"([^"]+)"', pkg, re.M)
           if not v:
-              sys.exit("REFUSING: cannot read [package] version from the engine's compiler crate.")
+              sys.exit(
+                  "REFUSING: cannot read [workspace.package] version from the "
+                  "engine's workspace manifest."
+              )
           engine = v.group(1)
 
           key = lambda s: tuple(int(p) for p in s.split("."))
