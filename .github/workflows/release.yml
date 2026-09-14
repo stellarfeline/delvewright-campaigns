@@ -131,7 +131,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "campaign=$campaign version=$version dry_run=$dry_run"
 
-      - name: derive the shipped language
+      - name: derive the declared translations
         id: lang
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
@@ -152,18 +152,27 @@ jobs:
           # (8 files in the pack, zero of them lang files) on an engine that had
           # supported client selection since #314.
           #
-          # The value below is now only for the release NOTES and the summary
-          # table: which language the campaign was authored in, which is a fact
-          # about the writing, not about what the image serves.
-          lang=$(python3 - "$CAMPAIGN" <<'PY'
+          # What is left is a MACHINE fact for the job summary: which translations
+          # the campaign declares. It is not the authored language and must never
+          # be printed as one. `content.languages` is defined by the world schema
+          # as "additional author-declared translation languages ... English (`en`)
+          # is implicit, always canonical, and is NEVER listed here", so its first
+          # entry is by construction a translation. This step used to print that
+          # entry as the language the campaign was authored in, and the fallback
+          # that made it look right -- `langs[0] if langs else "en"` -- is reached
+          # only by a campaign with no translations, the one case where the two
+          # cannot be told apart. Nobody's Isle v1.1.0 therefore shipped release
+          # notes saying it was authored in `zh-cn`. The reader-facing language
+          # fact now comes from the storybook's own **Languages** row, which is
+          # the artifact a person reviewed.
+          langs=$(python3 - "$CAMPAIGN" <<'PY'
           import json, sys
           w = json.load(open(f"campaigns/{sys.argv[1]}/world.json"))
-          langs = w.get("content", {}).get("languages") or []
-          print(langs[0] if langs else "en")
+          print(",".join(w.get("content", {}).get("languages") or []))
           PY
           )
-          echo "lang=$lang" >> "$GITHUB_OUTPUT"
-          echo "shipping language: $lang"
+          echo "translations=$langs" >> "$GITHUB_OUTPUT"
+          echo "declared translations: ${langs:-(none)}"
 
       # ---- 2. the pinned engine -------------------------------------------
       - name: read the pinned engine from versions.toml
@@ -287,7 +296,6 @@ jobs:
         working-directory: engine
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
-          LANG_CODE: ${{ steps.lang.outputs.lang }}
         run: |
           set -euo pipefail
           cargo run -p delvec --bin delvec -- --version
@@ -430,7 +438,6 @@ jobs:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
           VERSION: ${{ steps.rel.outputs.version }}
           IMAGE: ${{ steps.rel.outputs.image }}
-          LANG_CODE: ${{ steps.lang.outputs.lang }}
           HAS_PACK: ${{ steps.build.outputs.resourcepack }}
         run: |
           set -euo pipefail
@@ -476,7 +483,7 @@ jobs:
                        f"first — title, blurb, and a header table carrying **Players** "
                        f"and **Playtime**.")
           image, version = os.environ["IMAGE"], os.environ["VERSION"]
-          lang, has_pack = os.environ["LANG_CODE"], os.environ["HAS_PACK"] == "true"
+          has_pack = os.environ["HAS_PACK"] == "true"
 
           def row(label):
               m = re.search(rf"^\|\s*\*\*{label}\*\*\s*\|\s*(.+?)\s*\|\s*$", book, re.M)
@@ -488,6 +495,7 @@ jobs:
 
           title = (re.search(r"^#\s+(.+)$", book, re.M) or [None, c.get("title", camp)])[1]
           players, playtime = row("Players"), row("Playtime")
+          languages = row("Languages")
 
           # The storybook and the campaign document must agree about length. This is the
           # drift that shipped in v1.0.0; nothing was checking it.
@@ -528,9 +536,9 @@ jobs:
               print("The resource pack (character skins and in-game art) is served "
                     "by the delve itself — accept the prompt when you join. "
                     "Nothing to install by hand.\n")
-          print(f"In-game text follows your Minecraft client's language where the "
-                f"delve has been translated (authored in `{lang}`); accept the "
-                f"resource-pack prompt and it happens by itself.\n")
+          print(f"Languages: {languages}. In-game text follows your Minecraft "
+                f"client's language where the delve has been translated; accept "
+                f"the resource-pack prompt and it happens by itself.\n")
           print("### Terms\n")
           print("This release contains **no Minecraft server software**. The server "
                 "is downloaded by the container on first start, and you accept "
@@ -675,7 +683,7 @@ jobs:
             ca.stellarfeline.delvewright.dsl-version=${{ steps.build.outputs.dsl_version }}
             ca.stellarfeline.delvewright.mc-version=${{ steps.build.outputs.mc_version }}
             ca.stellarfeline.delvewright.datapack-sha256=${{ steps.build.outputs.datapack_sha256 }}
-            ca.stellarfeline.delvewright.language=${{ steps.lang.outputs.lang }}
+            ca.stellarfeline.delvewright.translations=${{ steps.lang.outputs.translations }}
             ca.stellarfeline.delvewright.resource-pack-sha1=${{ steps.build.outputs.resourcepack_sha1 }}
 
       # ---- 7. roll back a half-published release ---------------------------
@@ -696,7 +704,7 @@ jobs:
           VERSION: ${{ steps.rel.outputs.version }}
           IMAGE: ${{ steps.rel.outputs.image }}
           DRY_RUN: ${{ steps.rel.outputs.dry_run }}
-          LANG_CODE: ${{ steps.lang.outputs.lang }}
+          TRANSLATIONS: ${{ steps.lang.outputs.translations }}
           PACK_URL: ${{ steps.pack.outputs.url }}
           PREDICTED: ${{ steps.rel.outputs.asset_url }}
           PACK_SHA1: ${{ steps.build.outputs.resourcepack_sha1 }}
@@ -709,7 +717,7 @@ jobs:
             echo "|---|---|"
             echo "| dry run | \`${DRY_RUN:-?}\` |"
             echo "| image | \`${IMAGE:-?}:v${VERSION:-?}\` |"
-            echo "| language | \`${LANG_CODE:-?}\` |"
+            echo "| translations | \`${TRANSLATIONS:-none}\` |"
             echo "| engine commit | \`${ENGINE_SHA:-?}\` |"
             echo "| campaign commit | \`${GITHUB_SHA}\` |"
             echo "| resource pack sha1 | \`${PACK_SHA1:-none}\` |"
