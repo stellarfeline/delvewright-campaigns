@@ -28,7 +28,7 @@ engine's text.
 
 - **This repository holds no engine code; the engine revisions it is judged and
   built by are pins.** Both live in the registry `.github/pins.toml`, held to
-  their policies by `tools/check-pins.py`: `admit-ref` (site:
+  their policies by `tools/ci/check-pins.py`: `admit-ref` (site:
   `.github/workflows/prefab-audit.yml`) names the engine commit the NBT audit is
   built from, and `engine-release` (site: `versions.toml` `[engine].ref`) names
   the tagged engine release a delve image is built and validated with. They are

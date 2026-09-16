@@ -1,7 +1,7 @@
 # THE PIN REGISTRY — every literal in this repo that decides which version of an
 # external thing gets fetched, with the policy that says whether it may drift.
 #
-# `tools/check-pins.py` reads this file; its docstring is the full account of the
+# `tools/ci/check-pins.py` reads this file; its docstring is the full account of the
 # discovery, the policies, and why the reason lives here rather than in a comment
 # beside the value. The short form: a pin that has rotted and a pin that is frozen
 # on purpose look identical in a diff, and only a machine-checked policy tells
@@ -16,13 +16,13 @@
 
 [[pin]]
 id = "admit-ref"
-value = "ba461b28cbce03a89dd36fad28f7d72512489f4b"
+value = "90e44a8ad79674c3b32f1a0ade9109da775960ec"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "held"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "ba461b28cbce03a89dd36fad28f7d72512489f4b"
-vendors = ["tools/check-pins.py"]
+reviewed = "90e44a8ad79674c3b32f1a0ade9109da775960ec"
+vendors = ["tools/ci/check-pins.py", "tools/lib/release_tags.py"]
 why = """
 WHAT THIS PIN IS. The pipeline command `delvec prefab audit` — the audit every
 piece in this repository must pass — is built from. It is an INSTRUMENT: its
@@ -43,37 +43,48 @@ form of the case for `held` over `track` — a per-merge watch over "the whole
 workspace" is exactly the absurd, always-red watch `engine-authoring`'s own
 entry refuses to derive.
 
-WHAT THE STANDING AUDIT RULE IS. `license.generated_by` requires a `region`
-field — `[x, y, z]`, the box the program was expanded over, an independent
-input because the same program at the same seed over a different box is a
-different building. This library's three programs that carry a `generated_by`
-block — `gatehouse_elevations`, `signal_station`, `mill_race` — carry it.
+WHAT THE STANDING AUDIT RULE IS. Two, both of which this library already
+satisfies. `license.generated_by` requires a `region` field — `[x, y, z]`, the
+box the program was expanded over, an independent input because the same program
+at the same seed over a different box is a different building; this library's
+three programs that carry a `generated_by` block — `gatehouse_elevations`,
+`signal_station`, `mill_race` — carry it. And a declaration that states a
+measurement of the piece is held to the piece's own bytes (`DW0888`): `walk_y`,
+`structure.data_version`, each anchor's `pos`, `region`, `dispenser`,
+`trigger_block` and `furniture`, each connector's `opening` and `socket`, and
+the jigsaw blocks the document declares.
 
-WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 58 commits, from
-`ed39b9c7` to this value. Two spec-0060 landings are what made the interval
-adoptable rather than merely newer: the engine gained `delvec prefab seating`,
-which asks whether a pool can stand on a declared horizon before a campaign is
-authored against either, and `DW0887`, which asks whether a declared
-`waterline_y` is in the piece's own bytes and now binds at the per-file
-admission event this workflow drives. The library declares what that instrument
-demands — `walk_y` on 36 of 36 documents, three waterlines each borne out by
-the bytes — before the pin follows, which is the order this policy's last
-paragraph states.
+WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 303 commits, from
+`ba461b28` to this value, which is the commit `delvec--v1.6.0` points at and the
+tip of the upstream default branch. What makes the interval adoptable rather
+than merely newer is `DW0888`, the byte-claim class above: the older judge reads
+no such declaration at all, and this one reads every one of them. The library
+declares what that instrument demands before the pin follows, which is the order
+this policy's last paragraph states — measured below rather than asserted.
 
-WHAT WAS BUILT AND RUN. `delvec` built fresh from a clone at this value
-(`cargo build -p delvec --bin delvec --release`, exit 0, `cargo 1.97.1` /
-`rustc 1.97.1`), and `tools/prefab-audit.py` run over the whole repository with
-it and, separately, with a binary built the same way at `ed39b9c7`. Both judges
-examine the same 39 audited units over 39 in-scope `.nbt` files and both report
-PASS 39 of 39 at exit 0, so nothing this library already ships is newly refused.
-The count that moves is what the judge examines: the older binary reads no
-waterline declaration at all, and this one examines 3 of the 3 the library
-declares and finds all 3 borne out by the bytes. That arm is not vacuous, and it
-was checked by planting rather than assumed: a fictitious `waterline_y: 2` on
-`keep-shrine`, a piece that authors no water, passes the older judge at exit 0
-with `"verdict": "pass"` and is refused by this one at exit 1 with `"verdict":
-"fail"` and `DW0887`. That is the whole of what moving this pin buys, stated as
-a number.
+WHAT WAS BUILT AND RUN. The RELEASED artifact, not a build of the branch, since
+the released artifact is what a consumer gets: the `delvec--v1.6.0` archive for
+`aarch64-apple-darwin` downloaded from the GitHub Release, its sha256 checked
+against the Release's own `SHA256SUMS` (`shasum -a 256 -c`, exit 0), unpacked to
+a binary printing `delvec 1.6.0, dsl 0.29.0, mc 1.21.11`. `tools/prefab-audit.py`
+run over the whole repository with it and, separately, with a binary built the
+same way at `ba461b28` (`cargo build -p delvec --bin delvec --release`, exit 0,
+`rust_toolchain` 1.97.1, printing `delvec 1.3.0`). Both judges examine the same
+40 audited units over 57 in-scope `.nbt` files and both report PASS 40 of 40 at
+exit 0, so nothing this library already ships is newly refused; report by report,
+every field but one is byte-identical between the two runs.
+
+The count that moves is what the judge examines. The older binary emits no
+byte-claim block in any of its 40 reports; this one emits it in 40 of 40 and
+examines 377 declarations across the library, 0 denied by the bytes — 136
+`anchors.*.pos`, 54 `connectors[].opening`, 53 `connectors[].socket`, 53
+jigsaw-declared, 40 `structure.data_version`, 37 `walk_y`, 4 `anchors.*.region`.
+That arm is not vacuous, and it was checked by planting rather than assumed: a
+fictitious `walk_y: 40` on `keep-shrine`, a piece whose own bytes stand a body
+lowest at local y=1, passes the older judge at exit 0 with `"verdict": "pass"`
+and no byte-claim block at all, and is refused by this one at exit 1 with
+`"verdict": "fail"`, `DW0888`, and `walk_y` counted 1 examined / 1 denied. That
+is the whole of what moving this pin buys, stated as a number.
 
 WHY THIS PIN IS `held` AND NOT `track`. `value` is the revision the tool is
 BUILT from; `reviewed` is the revision its upstream history has been JUDGED
@@ -91,11 +102,33 @@ read, and this text says what interval was judged and what it found. Upstream
 drift past `value` is not a finding under this policy; the library adopts what
 a newer instrument requires first, and the pin follows.
 
-WHAT THE VENDORED COPY IS. `tools/check-pins.py` — this file's own checker — is
-declared in `vendors`: it is ONE tool with two copies, this repository's is
-verbatim, and `tools/check-vendored.py` reds on a local edit. The `held` policy
-itself is written in the engine and arrives here as a re-vendor and a re-pin,
-never maintained twice.
+WHAT THE VENDORED COPIES ARE, and why they sit at the paths they do. Two:
+`tools/ci/check-pins.py` — this file's own checker — and `tools/lib/
+release_tags.py`, which that file imports off a path relative to itself
+(`parents[1] / "lib"`) and cannot run without. Each is ONE tool with two copies,
+this repository's is verbatim, and `tools/check-vendored.py` reds on a local
+edit. The `held` policy itself is written in the engine and arrives here as a
+re-vendor and a re-pin, never maintained twice. They sit under `tools/ci/` and
+`tools/lib/` because `check-vendored.py` compares ONE path string against both
+sides — a copy is the upstream file at the path upstream holds it, or the
+comparison is not the sentence it claims to be — and because the import above is
+resolved by position, so a copy moved out of that shape would not even load.
+
+WHY ONE ENTRY CARRIES BOTH QUESTIONS. `vendors` here asks "which revision does
+this repository copy those two files from", and the rest of the entry asks
+"which engine builds the audit judge". They are separable — a second entry with
+its own `value` and its own checkout would do it — and they are not separated,
+because separating them buys nothing this round can measure. Both questions
+resolve to the same revision; the library is ready for the newer judge (PASS 40
+of 40, above), which is exactly the condition this policy requires before the
+pin follows, so the coupling forced nothing and hid nothing. The bar for a
+second entry in this registry is the one `seating-ref` met: a MEASURED wrong
+answer from reusing this one. There is none here, and a second entry would cost
+a third full-depth engine checkout in the job plus a second revision literal to
+keep honest. What would force the split is a state this round does not have: the
+vendored source moved upstream while the library is NOT ready for the newer
+judge. On the day those two disagree, the vendored question gets its own entry
+and this paragraph is what says so.
 """
 
 [[pin]]
@@ -124,9 +157,9 @@ the binary built at `admit-ref` reports `4 pool(s) seatable of 4` on `ocean`,
 and the binary built at this value reports `3 of 4` and names the refusal. A
 seating gate built from `admit-ref` would therefore be green over a library no
 campaign can seat — a gate binding to nothing, which is the one failure this
-gate exists to end. `engine-release` (v1.5.0, `70eea629`) is the same story and
-must additionally never move, so it cannot carry a question about the engine's
-current horizon surface either.
+gate exists to end. `engine-release` (`delvec--v1.6.0`) is the same story and is
+additionally a frozen release rather than a revision chosen for a question, so
+it cannot carry a question about the engine's current horizon surface either.
 
 WHAT WAS BUILT AND RUN. `delvec` built fresh at this value (`cargo build -p
 delvec --bin delvec --release`, exit 0, `cargo 1.97.1` / `rustc 1.97.1`),
@@ -169,19 +202,56 @@ the row exists to prevent.
 
 [[pin]]
 id = "engine-release"
-value = "70eea6296cfab2440054f95670729081c3d4bca1"
+value = "delvec--v1.6.0"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "release"
 judged_by = ".github/workflows/prefab-audit.yml"
+bound_by = "tools/check-engine-pin.py"
+bound_key = "engine.ref"
 why = """
-The tagged engine release a delve image is built and validated with
-(versions.toml [engine]). A released delve reproduces through its own pinned
-engine and through nothing else, so this pin must never move for the sake of
-newer behaviour — it moves only when a release deliberately adopts a newer
-engine. `release` is checked, not asserted: the value must be a commit a
-v<semver> tag points at, which a commit somebody merely stopped looking at
-cannot be.
+The engine release a delve image is built and validated with (versions.toml
+[engine]). A released delve reproduces through its own pinned engine and through
+nothing else, so this pin must never move for the sake of newer behaviour — it
+moves only when a release deliberately adopts a newer engine. `release` is
+checked, not asserted: the value must BE a release tag in the engine's own
+grammar (`<name>--v<major>.<minor>.<patch>`, ADR-0028), naming a tag the engine
+carries whose commit's tree states that same version. A commit somebody merely
+stopped looking at cannot supply that, and neither can a hand-written tag.
+
+WHY IT NAMES A TAG AND NOT A COMMIT. The value used to be `70eea629`, the commit
+`v1.5.0` points at. That is no longer a value this policy accepts, and it is not
+a rule this repository can soften: the rule lives in the vendored
+`tools/ci/check-pins.py`, which is the engine's file verbatim. Measured, every
+candidate, before this one was chosen — the commit reds as "not a release tag";
+`v1.5.0` reds because the six pre-grammar `v<semver>` tags are published history
+and nothing new is held to them; `delvec--v1.6.0` was itself red until the engine
+published it, because an unborn tag is accepted only from the tree that will
+create it and this repository releases no `delvec`. So the pin's FORM was forced
+by the vendored tool and the only value that form admits is the newest engine
+release.
+
+WHY IT CARRIES `bound_by`. A tag name has no shape a scan can find, so nothing
+discovers this value where it sits and `sites` alone would be a claim no check
+can test. `tools/check-engine-pin.py` is the binder, and it is not a
+restatement: re-reading `engine.ref` to compare it with this entry is what the
+pin gate already does. It holds the obligation a READER of that key has — every
+campaign storybook's `last verified with delvec` claim is judged against the
+release this pin names, one-directionally, because a delve is built with the
+pinned engine and nothing else. The same refusal exists in `release.yml`, where
+it fires on a tag push; this one fires on every pull request, out of the two
+files that already state it. It binds 3 storybook claims over 5 storybooks in
+`campaigns/`, and a binding of zero is a finding.
+
+WHAT ADOPTING IT COSTS, AND WHY IT COSTS NOTHING ALREADY SHIPPED. This pin
+decides which engine the NEXT release of this content is built with; it never
+reaches one already out, because a release builds from what `versions.toml` says
+at its own tag and three shipped delves each carry their own. Moving it forward
+with a release is this pin's normal cadence, not an exception to it. The engine
+it now names is the one this repository's audit judge is also built from
+(`admit-ref`), which is the first time the two have agreed — and the release
+workflow's reach into that engine's tool tree moved with it, since the engine
+now files a tool by its reader.
 """
 
 [[pin]]

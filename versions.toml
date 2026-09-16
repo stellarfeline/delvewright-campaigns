@@ -2,9 +2,9 @@
 #
 # The main repo (`delvewright`, GPL pipeline code) pins THIS repo in its own
 # `versions.toml` `[content].sha`, so a main-repo CI run is reproducible. This
-# file is the other direction: which main-repo commit a *release* of this
-# content is built and validated with. Both pins together make a released delve
-# reproducible from two commit ids and nothing else (ADR-0006).
+# file is the other direction: which engine *release* of this content is built
+# and validated with. Both pins together make a released delve reproducible from
+# one commit id and one release tag and nothing else (ADR-0006).
 #
 # RE-PIN CONVENTION: bump `[engine].ref` in a normal reviewed PR when a release
 # needs newer compiler behaviour. A release tag always builds with whatever this
@@ -13,37 +13,26 @@
 # NOTE: `.github/workflows/prefab-audit.yml` carries its own, deliberately
 # different pin (`ADMIT_REF`): it names the main-repo commit the AUDIT is built
 # from, which is a property of the rules a piece is judged by, not of the
-# compiler a release ships. Do not collapse the two — one must never move and the
-# other must not be allowed to sit still unexamined.
+# compiler a release ships. They may name the same engine without being one pin.
 #
 # No pin's terms live in a comment. Every one is registered in
-# `.github/pins.toml`, and `tools/check-pins.py` is what holds it to those
-# terms: the release pin must be a commit a release tag points at, the audit
-# pin is measured against the sources it builds, in the job that builds them,
-# and the authoring pin must be a commit the engine's default branch carries.
+# `.github/pins.toml`, and `tools/ci/check-pins.py` is what holds it to those
+# terms.
 
 [engine]
-# The main repo and the commit `release.yml` checks out to build + validate a
+# The main repo and the ref `release.yml` checks out to build + validate a
 # release. It is a public repo, so the checkout needs no credential of its own;
 # the default GITHUB_TOKEN reaches it, same as prefab-audit.yml.
 repo = "stellarfeline/delvewright"
-# Engine release `v1.1.0` (delvec 1.1.0) — the TAGGED release commit, not a
-# main tip, so the pin names something immutable and published. The island
-# was built on this engine in both languages and byte-identically by two
-# independent channels (the crates.io install and the release shelf binary),
-# which is what the README marker below now records.
-#
-# This pin was 75 commits stale until 2026-08-05 — it still named the spec-0024
-# docs PR that first carried the ladder inputs, so a release tag pushed at any
-# point since would have built the island with an engine predating almost
-# everything rounds 19-22 depend on: `DW0497` uniform wave machinery (#280, the
-# round-21 blocker), the per-NPC walk supersede (#287), branch-aware inter-area
-# transport (#276), cast-ledger talk-to positions (#284). Nothing checked it,
-# because the pin's only reader is `release.yml` and no release had ever run.
-# `.github/workflows/release.yml` now refuses to publish when the engine it
-# checks out is older than the version the campaign's storybook says it was
-# verified with.
-ref = "70eea6296cfab2440054f95670729081c3d4bca1"
+# A RELEASE TAG in the engine's own grammar (`<name>--v<semver>`, ADR-0028), not
+# a main tip: the pin names something immutable and published, and the registry
+# holds it to a tag the engine really carries whose commit's tree states that
+# same version. This pin's only reader is `release.yml`, so nothing else can
+# notice it going stale — which is why its terms are registered rather than
+# written here, and why `release.yml` additionally refuses to publish when the
+# engine it checks out is older than the version the campaign's storybook says
+# it was verified with.
+ref = "delvec--v1.6.0"
 # The engine an author works with is NOT pinned here any more. The `/new-delve`
 # page left this repository (spec-0063): it ships as a Claude Code plugin from
 # the engine repository's own marketplace, and the plugin carries its own

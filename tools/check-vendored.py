@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """A vendored file is the upstream file, byte for byte, or it is a finding.
 
-`tools/check-pins.py` exists in this repository and in the pipeline repository,
-and it is ONE tool. It is not maintained twice: the pipeline's copy is the
+`tools/ci/check-pins.py` exists in this repository and in the pipeline
+repository, and it is ONE tool — as does the `tools/lib/release_tags.py` it
+imports off a path relative to itself. It is not maintained twice: the pipeline's copy is the
 source, this one is a verbatim vendored copy, and this script is what makes that
 sentence checkable instead of aspirational.
 

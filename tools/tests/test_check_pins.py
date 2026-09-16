@@ -1,4 +1,4 @@
-r"""Guards for `tools/check-pins.py`, and for the one narrowing inside it.
+r"""Guards for `tools/ci/check-pins.py`, and for the one narrowing inside it.
 
 The gate keeps `FETCH_SITES` honest by reading every file no site pattern covers
 and asking whether it can reach the network. A verb is read in the LANGUAGE of
@@ -52,7 +52,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-CHECKER = Path(os.environ.get("CHECK_PINS", REPO / "tools" / "check-pins.py"))
+CHECKER = Path(os.environ.get("CHECK_PINS", REPO / "tools" / "ci" / "check-pins.py"))
 
 DIGEST = "sha256:" + "ab12" * 16
 ACTION = "example/fetch" + "er@v4"

@@ -10,7 +10,7 @@ name: prefab palette audit
 # moving ref cannot change them underneath the library. Bumping the pin is a
 # deliberate, reviewed change — and, because a pin nobody looks at is
 # invisible, the pin is registered in `.github/pins.toml` and judged by
-# `tools/check-pins.py` in this same job, immediately before the tool is built
+# `tools/ci/check-pins.py` in this same job, immediately before the tool is built
 # from it.
 #
 # THE AUDIT'S UNIT IS A PIECE, NOT A FILE. A zone past the structure-template cap
@@ -70,9 +70,9 @@ concurrency:
 env:
   # Pinned main-repo SHA the audit tool is built from. The registry entry
   # `admit-ref` in `.github/pins.toml` is where its policy lives, and
-  # `tools/check-pins.py` is what holds it to that policy — a comment here
+  # `tools/ci/check-pins.py` is what holds it to that policy — a comment here
   # cannot, because nothing reads a comment.
-  ADMIT_REF: ba461b28cbce03a89dd36fad28f7d72512489f4b
+  ADMIT_REF: 90e44a8ad79674c3b32f1a0ade9109da775960ec
   # Pinned main-repo SHA the SEATING judge is built from, registered as
   # `seating-ref`. A second checkout and a second build, because the two
   # instruments answer different questions and neither may stand in for the
@@ -151,7 +151,21 @@ jobs:
       # on a creator's own clone with nothing installed. It states its binding
       # count; a binding of zero is a finding, not a pass.
       - name: every pin is declared
-        run: python3 tools/check-pins.py
+        run: python3 tools/ci/check-pins.py
+
+      # The binder the entry above demands, run in the same job for the same
+      # reason everything else here is: a new job is a new required context, and
+      # a context nothing requires is an advisory gate that stops no merge.
+      #
+      # `engine-release` names a release TAG, and a tag name has no shape the pin
+      # scan can find — so that entry may not rest on `sites` alone and names
+      # this file as `bound_by`. It is not a restatement of the pin gate: it
+      # judges every campaign storybook's `last verified with delvec` claim
+      # against the engine release the pin names. The same refusal lives in
+      # `release.yml`, where it fires on a tag push; here it fires on every pull
+      # request, which is where a wrong answer is cheap.
+      - name: the pinned engine is newer than every storybook's claim
+        run: python3 tools/check-engine-pin.py
 
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
@@ -182,10 +196,11 @@ jobs:
           git -C admit-src fetch origin main:refs/remotes/origin/main
           git -C seating-src fetch origin main:refs/remotes/origin/main
 
-      # `tools/check-pins.py` is not maintained here. It is ONE tool with two
-      # copies — the pipeline's is the source, this one is a verbatim vendored
-      # copy — and this step is what makes that sentence checkable rather than
-      # aspirational. It runs BEFORE the pinned tool is trusted below, and before
+      # `tools/ci/check-pins.py` is not maintained here, and neither is the
+      # `tools/lib/release_tags.py` it imports off a path relative to itself. Each
+      # is ONE tool with two copies — the pipeline's is the source, this one is a
+      # verbatim vendored copy at the path the pipeline holds it — and this step is
+      # what makes that sentence checkable rather than aspirational. It runs BEFORE the pinned tool is trusted below, and before
       # anything is built out of the checkout.
       #
       # The two copies once differed by a single constant naming directories to
@@ -221,7 +236,7 @@ jobs:
       # terms; a pin nobody has looked at since its sources moved is a red.
       - name: the pinned instrument is measured against what it names
         run: |
-          python3 tools/check-pins.py --online \
+          python3 tools/ci/check-pins.py --online \
             --checkout admit-ref=admit-src \
             --checkout engine-release=admit-src \
             --checkout seating-ref=seating-src

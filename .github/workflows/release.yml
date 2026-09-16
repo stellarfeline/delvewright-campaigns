@@ -216,7 +216,7 @@ jobs:
       #
       # Bind it to the fact the campaign already states about itself: its
       # storybook marker records the `dsl_version` it is written in and the
-      # delvec it was last verified with. `tools/check-storybook-version.py` is
+      # delvec it was last verified with. `tools/creator/check-storybook-version.py` is
       # the check that keeps that honest, but it is CI-enforced in the engine
       # repo only against the content revision the engine ITSELF PINS
       # (`.github/pins.toml` `engine-release`) — a campaign newer than that pin
@@ -239,7 +239,7 @@ jobs:
           rm -rf "$scope"
           mkdir -p "$scope"
           ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$scope/$CAMPAIGN"
-          python3 engine/tools/check-storybook-version.py --campaigns "$scope"
+          python3 engine/tools/creator/check-storybook-version.py --campaigns "$scope"
 
       - uses: Swatinem/rust-cache@v2
         with:
