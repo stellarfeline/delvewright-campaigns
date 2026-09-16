@@ -1,6 +1,6 @@
 r"""Guards for `tools/check-vendored.py`.
 
-The defect it exists to prevent: `tools/check-pins.py` is ONE tool with two
+The defect it exists to prevent: `tools/ci/check-pins.py` is ONE tool with two
 copies, and the copies drifted. They differed by a single constant naming
 directories to skip — inert in the repository it was written in, where every name
 in it matched zero tracked files, and destructive here, where `campaigns/` IS the
@@ -38,7 +38,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 CHECKER = REPO / "tools" / "check-vendored.py"
 
-VENDORED = "tools/check-pins.py"
+VENDORED = "tools/ci/check-pins.py"
 BODY_V1 = "#!/usr/bin/env python3\nMARKER = 'one'\n"
 BODY_V2 = "#!/usr/bin/env python3\nMARKER = 'two'\n"
 
