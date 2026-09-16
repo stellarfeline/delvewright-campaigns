@@ -45,38 +45,39 @@ built the piece — `delvec prefab planes --write` — never typed by hand.
 
 ## What the shipped pools stand on
 
-Measured with `delvec prefab seating` and with one `delvec build` per cell, over
-an `areas[]` campaign whose only variable is the pool and the horizon.
+Not written here, because it is derivable from the pieces and a table somebody
+types goes stale the first time a piece changes. `tools/check-seating.py`
+derives it on every pull request — every pool in `pools.json` against every base
+the pinned engine exports — and `seating-limits.toml` records the cells this
+library is not expected to stand on, each with its reason and with the exact
+diagnostic its refusal carries, so a refusal this library chose reads
+differently from one nobody noticed. Run it on your own clone:
 
-| pool | `void` | `ocean` | `valley` |
-| ---- | ------ | ------- | -------- |
-| `pool/stone-keep` | stands | stands | see below |
-| `pool/vertical-keep` | stands | stands | see below |
-| `pool/island` | refused | stands | see below |
-| `pool/cave-shore` | refused | refused | see below |
+    python3 tools/check-seating.py --bin <path to delvec>
 
-**`valley` takes no pool.** It rings a declared extent, and an `areas[]`
-campaign whose area draws from a pool declares none, so every pool is refused
-there by `DW0855` — a fact about the campaign's shape, not about any piece set.
-The way a piece reaches `valley` is the one `DW0855` names: one area bound to
-one `prefab`, the map being that piece. `prefab/keep-spawn-hall` and
-`prefab/island-beach-camp` build that way; `prefab/cave-shore` is refused at
-`DW0885` on five sides, for the reason below.
+Two facts about the pieces sit outside that record, because neither is a seating
+verdict.
 
-**`pool/island` on `void`.** `island-beach-camp` authors an ocean of its own,
-and that water runs out of 171 of the piece's own faces; `void` puts nothing
-beyond them. Every island piece's `down` plane is also 100% stone — the seabed
-substrate its terrain rests on — which a sea buries and nothing else does. It is
-not finished exterior surface and it is not declared. The island set is built
-for `ocean`, and on `ocean` all four members stand.
+**Why the cave set declares nothing.** Twelve of `pool/cave-shore`'s thirteen
+members are interior passages and rooms: their sides are the cut edge of rock
+and their `down` planes carry between 3.2% and 38.2% of a floor. They are built
+to be buried, so they declare no face, and nothing among the shipped horizons
+buries them. Declaring their sides shown would be a fiction that leaves a rock
+slab in the sky with nothing saying so.
 
-**`pool/cave-shore` on any open horizon.** Twelve of its thirteen members are
-interior passages and rooms: their sides are the cut edge of rock and their
-`down` planes carry between 3.2% and 38.2% of a floor. `prefab/cave-cavern`'s
-own air reaches its box boundary at local `[0, 4, 0]`, so a party that gets out
-there puts every side of every member in question; and `prefab/cave-descent`
-joins its neighbours at two different rises above the walk plane, so no horizon
-can be credited with burying the set at a fixed height. The set is built to be
-buried and nothing in the shipped horizons buries it. Declaring its sides shown
-would be a fiction, so they are not declared, and the pool is refused rather
-than quietly wrong.
+**Why the island set declares four sides and not six.** Each of its lateral
+sides is the island's own edge, finished in the grass, sand and stone a player
+standing in the water sees. Its `down` plane is solid substrate, which a sea
+covers and nothing else does, so it is not declared and the set does not pretend
+to stand on a horizon with no sea.
+
+**`valley` reaches a piece, not a pool.** The base rings a declared extent, and
+an `areas[]` campaign whose area draws from a pool declares none, so a campaign
+written that way is refused at `DW0855` whatever the pool is — a fact about the
+campaign's shape rather than about any piece set. The way in is the one `DW0855`
+names: one area bound to one `prefab`, the map being that piece.
+`prefab/keep-spawn-hall` and `prefab/island-beach-camp` build that way.
+`prefab/cave-shore` does not: the surround rings the extent instead of burying
+it, so the build refuses the piece at `DW0885` on five sides. A `valley` verdict
+from the seating gate is about the pool's documents; what happens to a piece
+placed there is the build's answer and it can differ.

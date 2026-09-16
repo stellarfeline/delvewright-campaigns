@@ -1,0 +1,61 @@
+# WHERE THIS LIBRARY'S POOLS CANNOT STAND, AND WHY.
+#
+# `tools/check-seating.py` asks the pinned engine, for every pool in
+# `pools.json` and every horizon base `delvec schema --stage world` exports,
+# whether that pool can be seated there. Every cell is expected to be SEATABLE
+# unless a `[[limit]]` here says otherwise, and a limit is held to the exact
+# diagnostic it claims: the codes and the shapes the engine prints. Both
+# directions are findings — a cell that refuses with no limit row, a limit row
+# whose cell now stands, and a limit row whose refusal has changed shape.
+#
+# That is the whole point of this file. A pool that refuses because nobody has
+# looked and a pool that refuses because the pieces are built that way look
+# identical in a CI log; a row here is the second one saying so out loud, and a
+# row that stops being true is a red rather than a silence.
+#
+# A row is not an exemption. It records a decision about the PIECES — what their
+# blocks finish and what they leave to be covered — and `prefabs/README.md`
+# carries the reasoning a piece author needs. Removing a row is how a pool is
+# admitted to a base once its pieces earn it; editing one to match a new refusal
+# is how a regression gets hidden, so read what changed before you touch a row.
+#
+# `valley` is judged here only as far as the seating question reaches. The
+# engine defers a `valley` piece's outside to the build, which judges it against
+# the landform it actually builds, so a SEATABLE verdict on `valley` is not a
+# promise that every member survives placement — `prefabs/README.md` records
+# what that costs `pool/cave-shore`.
+
+[[limit]]
+pool = "pool/island"
+base = "void"
+codes = ["DW0886"]
+shapes = ["FluidOffTheWorld", "OutsideUnanswered"]
+reason = """
+The island set authors an ocean of its own. `island-beach-camp`'s water runs out
+of 171 of the piece's own faces and `void` puts nothing beyond them, and every
+member's `down` plane is solid substrate a sea buries and `void` does not. The
+set is built for `ocean` and stands there.
+"""
+
+[[limit]]
+pool = "pool/cave-shore"
+base = "void"
+codes = ["DW0886"]
+shapes = ["OutsideUnanswered"]
+reason = """
+Twelve of the thirteen members are interior passages and rooms whose sides are
+the cut edge of rock, and `prefab/cave-cavern`'s own air reaches its box
+boundary, so a party that gets out there puts every side of every member in
+question. `void` buries nothing. The set is built to be buried.
+"""
+
+[[limit]]
+pool = "pool/cave-shore"
+base = "ocean"
+codes = ["DW0886"]
+shapes = ["OutsideUnanswered"]
+reason = """
+The same open set, and `ocean` cannot bury it either: `prefab/cave-descent`
+joins its neighbours at two different rises above the walk plane, so no height
+is fixed and the sea is credited with covering nothing.
+"""
