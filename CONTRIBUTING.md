@@ -77,6 +77,15 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   every `.nbt` in the repository by walking it, so a piece in a directory nobody
   anticipated is audited too, and it prints what it examined. Campaigns using
   user-local assets are for private play and don't belong here.
+- **A piece set has to be able to stand somewhere.** The audit asks what one
+  piece is; `tools/check-seating.py` asks whether each pool can be seated on each
+  horizon base the engine declares, and holds the answer to
+  `prefabs/seating-limits.toml`, where every cell that is not expected to stand
+  is recorded with its reason and with the diagnostic its refusal carries.
+  Adding a piece to a pool, or editing a piece's `shown_faces`, moves a cell in
+  either direction, so run it before you open anything, with the same command CI
+  runs: `python3 tools/check-seating.py --bin <path to delvec>`. What a declared
+  face means is in `prefabs/README.md`.
 - All content you submit is licensed CC BY-SA 4.0 and must be your own or
   compatible.
 - **Touching a workflow means saying what it gates.**

@@ -99,6 +99,75 @@ never maintained twice.
 """
 
 [[pin]]
+id = "seating-ref"
+value = "3598d8f8673246d387fcf79c91d7bfb64554ea2d"
+sites = [".github/workflows/prefab-audit.yml"]
+repo = "stellarfeline/delvewright"
+policy = "held"
+judged_by = ".github/workflows/prefab-audit.yml"
+reviewed = "3598d8f8673246d387fcf79c91d7bfb64554ea2d"
+why = """
+WHAT THIS PIN IS. The engine `tools/check-seating.py` builds its judge from —
+`delvec prefab seating`, which answers whether each pool in `prefabs/pools.json`
+can be seated on each horizon base the same binary's `delvec schema --stage
+world` exports. It is an INSTRUMENT, like `admit-ref`, and it is a SECOND one
+rather than a reuse of it.
+
+WHY IT IS NOT `admit-ref`. The two pins answer different questions and the
+difference is measurable, not stylistic. `admit-ref` decides what a piece must
+BE to enter the library, and its whole policy is that it is adopted when the
+library is ready for a newer judge rather than chased. This pin decides whether
+the piece SETS can stand on the horizons the engine declares, and the rule that
+answers it — the exposure arm of `DW0886`, `compiler::seating::set_exposure` —
+landed at `9e101878`, after both other pins' values. Measured on this library:
+the binary built at `admit-ref` reports `4 pool(s) seatable of 4` on `ocean`,
+and the binary built at this value reports `3 of 4` and names the refusal. A
+seating gate built from `admit-ref` would therefore be green over a library no
+campaign can seat — a gate binding to nothing, which is the one failure this
+gate exists to end. `engine-release` (v1.5.0, `70eea629`) is the same story and
+must additionally never move, so it cannot carry a question about the engine's
+current horizon surface either.
+
+WHAT WAS BUILT AND RUN. `delvec` built fresh at this value (`cargo build -p
+delvec --bin delvec --release`, exit 0, `cargo 1.97.1` / `rustc 1.97.1`),
+printing `delvec 1.5.0, dsl 0.29.0, mc 1.21.11`, and `tools/check-seating.py`
+run over this repository with it: 12 cell(s) judged of 12 that exist (4 pools in
+`prefabs/pools.json` x 3 bases the engine exports), 126 member verdicts over 42
+member slots, 17 `shown_faces` declarations put in front of the engine, 3
+recorded limits, exit 0.
+
+The gate was then perturbed toward each shape it claims to catch, on a scratch
+copy of the whole tree, through the same command the workflow runs. Five
+perturbations, five exit 1:
+
+  a declaration removed from a piece  `pool/island` refused on `ocean`, unclaimed
+  a face declared over no block       three cells, one of them a recorded limit
+                                      whose shape had changed
+  a recorded limit deleted            `pool/cave-shore` on `ocean`, unclaimed
+  a limit row for a cell that stands  the stale-record arm, named as stale
+  the pool set emptied                0 cells judged of 0, the vacuous shape
+
+The second and fourth matter most: the second is the arm a boolean allowlist
+would lose, and the fourth is the one that keeps a row from outliving what it
+excused.
+
+WHAT INTERVAL THIS PIN JUDGED. Its first registration, so the judgement is of
+the value itself rather than of an interval behind it: `295` commits separate it
+from `admit-ref`, and what makes it adoptable for THIS question is one of them,
+`9e101878`, which is where the seating tool and the build began giving one
+answer about a pool on a horizon. `reviewed` equals `value` because nothing
+upstream has been read past it.
+
+WHY `held` AND NOT `track`. Its site BUILDS the tool out of the checkout, and
+the question it answers is "does this library still stand", not "is this the
+tip". Upstream distance is information, and the pin moves when the engine's
+horizon surface or its seating rule moves — at which point the table this gate
+holds is re-derived and `prefabs/seating-limits.toml` is re-read line by line,
+because a limit row that survives an engine bump unexamined is the stale record
+the row exists to prevent.
+"""
+
+[[pin]]
 id = "engine-release"
 value = "70eea6296cfab2440054f95670729081c3d4bca1"
 sites = ["versions.toml"]
