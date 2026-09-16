@@ -13,6 +13,11 @@ claim, which is the vacuous shape; and the clean tree, which must pass.
 The fixtures are real git repositories, because the checker closes its walk over
 git's index rather than a glob — a storybook nobody tracked is one the walk must
 not find.
+
+`REV` below is ASSEMBLED rather than written out, for the reason
+`test_check_pins.py` states: this file is a `**/*.py` and therefore itself a
+fetch site. The release-tag fixtures need no such care — a version string has no
+pin shape, which is the whole reason the entry they exercise carries `bound_by`.
 """
 
 from __future__ import annotations
@@ -30,6 +35,8 @@ MARKER = (
     "> **Requires delve engine 1.0.0 or newer** — last verified with delvec "
     "{version} on Minecraft Java 1.21.11.\n"
 )
+
+REV = "0123456789abcdef" * 2 + "01234567"
 
 
 def git(repo: Path, *args: str) -> str:
@@ -97,7 +104,7 @@ class EnginePinBinder(unittest.TestCase):
     def test_a_pin_that_is_not_a_release_tag_is_refused(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "repo"
-            build(root, "70eea6296cfab2440054f95670729081c3d4bca1", {"alpha": "1.5.0"})
+            build(root, REV, {"alpha": "1.5.0"})
             r = run(root)
             self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
             self.assertIn("is not a release tag", r.stderr)
