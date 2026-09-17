@@ -33,6 +33,10 @@ One area, `area/castle`, bound to one campaign-built piece, `prefab/vesperhold`:
 
 ## The site
 
+The layout of record is `design/programs/castle/layout.py`; the generator and the layout chart both read it.
+
+The side route runs from the postern in the barbican's south face, west of where the causeway meets it, west along a shelf under the south curtain, round the crag's south-west corner, north along a shelf under the west curtain, and in at the stables' west door. A gap of open air keeps the shelf from the causeway.
+
 Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall walks and tower rooms 36, bell deck 52, undercroft 12. The crag stands sixteen blocks over the valley floor with sheer faces on the south and west.
 
 | region | place | what the player does there |
@@ -75,6 +79,8 @@ Shrine → road → causeway tower → causeway → barbican (Porter) → poster
 ## The echoes
 
 An echo is a `sequence` fired by an interaction at a shard: the sky cuts to `noon` + `clear`, the people of that morning appear where they stood (deferred NPCs and staged actors wearing their faces), they play their moment, and after it the sky cuts back to `dusk` + `rain` and they are removed. Nothing moves the party.
+
+The party keeps control through the chapel and tower echoes and may walk among the figures and speak with Warden Hesk; the belfry echo is a camera cutscene, the only one in the campaign.
 
 1. **Chapel echo** — the court at morning prayers; Warden Hesk reads from her ledger what she has lost and says she is afraid of the day she will not know the girl beside her. She hangs the Warden's Key on the altar hook; when the rain returns, the key is still there — the party takes it.
 2. **Tower echo** — the apprentice alone on the stair with the smith's hammer.
