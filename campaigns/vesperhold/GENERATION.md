@@ -27,3 +27,11 @@ Research consulted before authoring (ideas only): the anatomy of Stormveil Castl
 ## Posture note
 
 Three axes pushed off the default for this campaign: **time order** — the decisive event is shown out of order, in the echoes, after its consequences; **morality** — the final boss is right and the sympathetic keeper caused the ruin; **emotion rendering** — Warden Hesk names her fear outright ("I am afraid of the day I will not know her"). The Silence ending is disproportionate to everything before it and explains nothing.
+
+## The castle piece
+
+The whole site is one grammar-built piece, `prefab/vesperhold`, expanded at **172 x 104 x 292, seed 1** and bound in the campaign's one area under a `valley` horizon. `design/programs/build_castle.py` paints the site into a voxel grid from one module per part (`castle/terrain.py`, `approach.py`, `walls.py`, `ward.py`, `cathedral.py`, `undercroft.py`, `keep.py`, `belltower.py`), reading every position from `castle/layout.py`, derives every stair's shape the way vanilla does, and emits the grammar's partition as `vesperhold.json`. `finish.py` expands it into the prefab library and writes the seven gate regions (`gates.json`) into the manifest — the grammar declares point anchors only — then measures the planes and the lighting and audits the piece. Re-run both to regenerate.
+
+Heights in piece coordinates: valley floor feet 8, castle floor 24, keep dais 28, wall walks 36, bell deck 52, undercroft 12.
+
+What the machine said about the piece at admission: every expansion gate passes (blocks exist, shapes and states complete, oriented fills, stair shapes as vanilla derives them, fluid contained); `prefab audit` passes; `walk_y` 8; lighting profile `dark` over 21629 walkable floor cells, 9.4% below light 3 under a clear night sky and none under daylight. With every gate sealed, only the approach and the barbican are walkable from the valley; with every gate open, all 85 point anchors are reached on foot (an author-side walk check over the painted grid, not an engine gate).

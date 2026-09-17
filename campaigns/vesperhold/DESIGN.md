@@ -43,7 +43,7 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 |---|---|---|
 | Approach | Wayside Shrine | spawn; **Causeway Fire** (rest 1); Tamsin hires the company |
 | Approach | Pilgrim Road | the walk in across the valley floor; the whole castle over the crag |
-| Approach | Causeway Tower | a stair tower that climbs sixteen blocks to the bridge deck |
+| Approach | Causeway Stair | an open flight on an arcaded ramp, sixteen blocks up to the bridge deck |
 | Approach | Hanging Causeway | a bridge on piers over the valley floor to the gatehouse |
 | Approach | Barbican | **gatekeeper: the Porter**; the portcullis to the ward is shut; a postern in its south face opens onto the shelf |
 | West cliffs | Postern Ledge | a shelf outside the south curtain, the drop to the valley on one side |
@@ -75,7 +75,7 @@ Twenty-nine places.
 
 ## The route
 
-Shrine → road → causeway tower → causeway → barbican (Porter) → postern ledge → cliff path → stables → outer ward → cloister lane → cloister (fire) → scriptorium (ledger, illusory wall) → psalter stair → crypt → Undertide Pool (tongue) → well-house (shortcut) → cloister → chapel (echo; the Warden's Key) → ward → rampart stair → east rampart → watch tower → buttress walk → Warden's Door → bell tower (echo) → belfry (Ringer; ring; echo; the Keep Doors open) → ward → keep steps → great hall → antechamber (fire) → throne hall (King) → the choice.
+Shrine → road → causeway stair → causeway → barbican (Porter) → postern ledge → cliff path → stables → outer ward → cloister lane → cloister (fire) → scriptorium (ledger, illusory wall) → psalter stair → crypt → Undertide Pool (tongue) → well-house (shortcut) → cloister → chapel (echo; the Warden's Key) → ward → rampart stair → east rampart → watch tower → buttress walk → Warden's Door → bell tower (echo) → belfry (Ringer; ring; echo; the Keep Doors open) → ward → keep steps → great hall → antechamber (fire) → throne hall (King) → the choice.
 
 ## The echoes
 

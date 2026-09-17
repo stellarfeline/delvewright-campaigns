@@ -20,7 +20,7 @@ UNDER = 12          # feet in the undercroft
 # The rock the castle stands on: its top course is CASTLE - 1. Sheer on the
 # south and west, where the side route runs along a shelf cut into its face.
 CRAG = (12, 167, 2, 171)            # x0, x1, z0, z1
-SHELF_SOUTH = (4, 80, 172, 177)     # the shelf under the south curtain
+SHELF_SOUTH = (4, 75, 172, 177)     # the shelf under the south curtain
 SHELF_WEST = (4, 11, 128, 177)      # the shelf under the west curtain
 
 
@@ -45,46 +45,48 @@ def place(key, name, box, floor, height, note=""):
 
 # the approach
 place("wayside-shrine", "Wayside Shrine", (80, 95, 276, 287), VALLEY, 0, "roofless; the Causeway Fire")
-place("pilgrim-road", "Pilgrim Road", (84, 91, 236, 275), VALLEY, 0, "open road across the valley floor")
-place("causeway-tower", "Causeway Tower", (80, 95, 220, 235), VALLEY, 20, "stair tower, valley floor to deck")
-place("hanging-causeway", "Hanging Causeway", (84, 91, 172, 219), CASTLE, 0, "deck on piers")
-place("barbican", "Barbican", (76, 99, 152, 171), CASTLE, 10, "gatehouse; postern in its south face, west of the gate")
+place("pilgrim-road", "Pilgrim Road", (84, 91, 237, 275), VALLEY, 0, "open road across the valley floor")
+place("causeway-stair", "Causeway Stair", (84, 91, 220, 235), VALLEY, 0, "an open flight on an arcaded ramp, valley floor to deck")
+place("hanging-causeway", "Hanging Causeway", (84, 91, 176, 219), CASTLE, 0, "deck on piers")
+place("barbican", "Barbican", (76, 99, 153, 171), CASTLE, 10, "gatehouse; two gate towers; the postern in the west tower's west face")
 # the west cliffs
-place("postern-ledge", "Postern Ledge", (5, 79, 173, 177), CASTLE, 0, "shelf, west from the postern; a gap to the causeway keeps the two apart")
-place("cliff-path", "Cliff Path", (5, 9, 128, 172), CASTLE, 0, "shelf, north along the west face")
-place("stables", "Stables", (16, 55, 132, 147), CASTLE, 7, "back door west onto the cliff path, east door into the ward")
+place("postern-ledge", "Postern Ledge", (5, 75, 172, 176), CASTLE, 0, "shelf, west from the postern in the gate tower's west face")
+place("cliff-path", "Cliff Path", (5, 9, 128, 176), CASTLE, 0, "shelf, north along the west face")
+place("stables", "Stables", (16, 47, 132, 147), CASTLE, 7, "back door west onto the cliff path, east door into the ward")
 # the ward
-place("outer-ward", "Outer Ward", (60, 123, 100, 151), CASTLE, 0, "open hub; the portcullis winch on its south wall")
-place("barracks", "Barracks", (128, 151, 144, 163), CASTLE, 8, "")
-place("armory", "Armory", (156, 163, 144, 155), CASTLE, 6, "the false chest")
-place("keep-steps", "Keep Steps", (76, 91, 92, 99), CASTLE, 10, "porch before the Keep Doors")
+place("outer-ward", "Outer Ward", (52, 123, 100, 151), CASTLE, 0, "open hub; the portcullis winch on its south wall")
+place("barracks", "Barracks", (126, 149, 144, 163), CASTLE, 8, "")
+place("armory", "Armory", (152, 159, 146, 155), CASTLE, 6, "the false chest")
+place("keep-steps", "Keep Steps", (76, 91, 94, 99), CASTLE, 7, "porch before the Keep Doors")
 place("cloister-lane", "Cloister Lane", (52, 57, 60, 99), CASTLE, 0, "walled lane from the ward to the cloister")
 # the cathedral quarter
 place("cloister-garth", "Cloister Garth", (16, 47, 60, 91), CASTLE, 0, "open garth inside four arcades; the Cloister Fire")
 place("well-house", "Well-House", (18, 25, 62, 69), CASTLE, 6, "in the garth's north-west corner")
 place("chapel-of-hours", "Chapel of Hours", (16, 51, 32, 55), CASTLE, 22, "nave east-west; rose window on the west front; altar east")
 place("scriptorium", "Scriptorium", (16, 31, 96, 111), CASTLE, 8, "the ledger; the Psalter Wall in its south wall")
-place("psalter-stair", "Psalter Stair", (16, 23, 112, 127), UNDER, 14, "cut down through the rock, south to north")
+place("psalter-stair", "Psalter Stair", (17, 19, 113, 127), UNDER, 14, "cut down through the rock, north to south, behind the Psalter Wall")
 # the undercroft
-place("crypt-of-wardens", "Crypt of Wardens", (26, 49, 100, 123), UNDER, 9, "")
-place("undertide-pool", "Undertide Pool", (16, 47, 60, 91), UNDER, 10, "under the garth; the well at its centre")
+place("crypt-of-wardens", "Crypt of Wardens", (26, 49, 104, 127), UNDER, 9, "")
+place("well-stair", "Well Stair", (18, 23, 62, 79), UNDER, 14, "from the well-house floor down to the pool passage")
+place("undertide-pool", "Undertide Pool", (24, 47, 68, 91), UNDER, 10, "under the garth; the well at its centre")
 # the heights
-place("rampart-stair", "Rampart Stair", (144, 159, 124, 139), CASTLE, 14, "stair tower, ward to wall walk")
-place("east-rampart", "East Rampart", (152, 159, 20, 123), WALK, 0, "wall walk on the east curtain")
+place("rampart-stair", "Rampart Stair", (125, 140, 120, 135), CASTLE, 14, "stair tower off the ward's east side; a short wall walk joins its top to the east rampart")
+place("east-rampart", "East Rampart", (152, 159, 21, 129), WALK, 0, "wall walk on the east curtain")
 place("watch-tower", "Watch Tower", (148, 163, 4, 19), WALK, 7, "Brother Pellam's stall")
-place("buttress-walk", "Buttress Walk", (32, 147, 12, 15), WALK, 0, "high walk along the north edge")
+place("buttress-walk", "Buttress Walk", (34, 146, 12, 15), WALK, 0, "high walk along the north edge")
 place("bell-tower-stair", "Bell Tower Stair", (16, 31, 8, 23), WALK, 15, "the Warden's Door in its east wall")
 place("belfry", "Belfry", (16, 31, 8, 23), BELL, 10, "open bell deck; spire over it")
 # the keep
 place("great-hall", "Great Hall", (60, 107, 60, 91), CASTLE, 18, "the Almoner's Door in its west wall")
-place("antechamber", "Antechamber", (76, 91, 48, 59), DAIS, 7, "the Throne Fire")
-place("throne-hall", "Throne Hall", (60, 107, 20, 47), DAIS, 22, "")
+place("antechamber", "Antechamber", (76, 91, 47, 55), DAIS, 7, "the Throne Fire")
+place("throne-hall", "Throne Hall", (60, 107, 20, 43), DAIS, 22, "")
 
 # The side route, end to end: the postern in the barbican's south face, west
 # along the south shelf, round the south-west corner, north along the west
 # shelf, in at the stables' back door.
 SIDE_ROUTE = [
-    ("postern", (78, 172)),
+    ("postern", (76, 173)),
     ("south-west corner", (7, 175)),
-    ("stables back door", (7, 139)),
+    ("west shelf, at the stables", (7, 139)),
+    ("stables back door", (13, 139)),
 ]
