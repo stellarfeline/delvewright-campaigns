@@ -45,13 +45,14 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Approach | Pilgrim Road | the walk in across the valley floor; the whole castle over the crag |
 | Approach | Causeway Tower | a stair tower that climbs sixteen blocks to the bridge deck |
 | Approach | Hanging Causeway | a bridge on piers over the valley floor to the gatehouse |
-| Approach | Barbican | **gatekeeper: the Porter**; the portcullis to the ward is shut; a postern opens west |
+| Approach | Barbican | **gatekeeper: the Porter**; the portcullis to the ward is shut; a postern in its south face opens onto the shelf |
 | West cliffs | Postern Ledge | a shelf outside the south curtain, the drop to the valley on one side |
 | West cliffs | Cliff Path | the shelf turns north along the crag's west face, under archers on the wall |
 | West cliffs | Stables | the long stable block on the crag's west edge; spear-armed grooms among the undead horses |
 | Ward | Outer Ward | the hub; the portcullis winch (**shortcut 1**) |
 | Ward | Barracks | a fight among bunks with scraped-blank nameplates |
 | Ward | Armory | optional loot; a false chest that becomes a shulker and an ambush |
+| Ward | Cloister Lane | the walled lane from the ward's north-west corner to the cloister |
 | Ward | Keep Steps | the sealed Keep Doors — "they open to the bell" |
 | Cathedral | Cloister Garth | **Cloister Fire** (rest 2); Ser Halvard's first watch; the well-house |
 | Cathedral | Chapel of Hours | the first shard at the altar; **the chapel echo** |
@@ -70,11 +71,11 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Keep | Antechamber | **Throne Fire** (rest 3); Ser Halvard standing dead in the doorway, if he kept his oath |
 | Keep | Throne Hall | **final boss: King Oswin, who kept the watch**; the last choice |
 
-Twenty-eight places.
+Twenty-nine places.
 
 ## The route
 
-Shrine → road → causeway tower → causeway → barbican (Porter) → postern ledge → cliff path → stables → outer ward → cloister (fire) → scriptorium (ledger, illusory wall) → psalter stair → crypt → Undertide Pool (tongue) → well-house (shortcut) → cloister → chapel (echo; the Warden's Key) → ward → rampart stair → east rampart → watch tower → buttress walk → Warden's Door → bell tower (echo) → belfry (Ringer; ring; echo; the Keep Doors open) → ward → keep steps → great hall → antechamber (fire) → throne hall (King) → the choice.
+Shrine → road → causeway tower → causeway → barbican (Porter) → postern ledge → cliff path → stables → outer ward → cloister lane → cloister (fire) → scriptorium (ledger, illusory wall) → psalter stair → crypt → Undertide Pool (tongue) → well-house (shortcut) → cloister → chapel (echo; the Warden's Key) → ward → rampart stair → east rampart → watch tower → buttress walk → Warden's Door → bell tower (echo) → belfry (Ringer; ring; echo; the Keep Doors open) → ward → keep steps → great hall → antechamber (fire) → throne hall (King) → the choice.
 
 ## The echoes
 
