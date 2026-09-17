@@ -24,23 +24,24 @@ What the party can learn, and where (each fact is placed at least twice):
 ## Brief constraints honoured
 
 - Dark-souls-like combat, exploration and a cryptic main plot, in one huge Gothic castle with regions and a spectacular exterior.
-- More than twenty designed places (26), about half of Stormveil Castle in structure (5 regions plus a memory wing, 3 rest points, 1 gatekeeper, 1 mid-boss, 1 final boss, 1 optional elite, 3 shortcuts, a front gate and a side route).
+- More than twenty designed places (31), about half of Stormveil Castle in structure (5 regions plus a memory wing, 3 rest points, 1 gatekeeper, 1 mid-boss, 1 final boss, 1 optional elite, 3 shortcuts, a front gate and a side route).
 - Up to four players, co-op, 60+ minutes (`target_minutes` 80).
 - A second timeline, ten years earlier, as a **memory wing** (see below).
 
 ## Regions and places
 
-Floors (datums): valley 64, causeway 76, castle 80, keep dais 84, rampart 92, belfry 108, undercroft 68.
+Floors (datums): valley 64, castle and causeway deck 80, keep dais 84, rampart 92, belfry 108, undercroft 68.
 
 | region | place | size | floor | what the player does there |
 |---|---|---|---|---|
 | Approach | Wayside Shrine | room 12×12, open | 64 | spawn; **Causeway Fire** (rest point 1); Tamsin hires the company |
-| Approach | Pilgrim Road | road 8×44, open | 64 | the walk in; the castle's silhouette over the valley; the road climbs at its north end |
-| Approach | Hanging Causeway | road 8×40, open | 76 | a bridge over the valley floor; vista of the keep and the bell tower |
+| Approach | Pilgrim Road | road 8×44, open | 64 | the walk in; the castle's silhouette over the valley |
+| Approach | Causeway Tower | room 12×16, tall | 64 | the road climbs sixteen blocks inside a stair tower |
+| Approach | Hanging Causeway | road 8×40, open | 80 | a bridge sixteen blocks over the valley floor; vista of the keep and the bell tower |
 | Approach | Barbican | hall 24×16, roofed | 80 | **gatekeeper: the Porter**; the portcullis to the ward is shut; the postern to the west is locked |
-| West cliffs | Postern Ledge | corridor 32×4, open | 80 | the side route out along the cliff face |
+| West cliffs | Postern Ledge | corridor 24×4, open | 80 | the side route out along the cliff face |
 | West cliffs | Cliff Stair Path | corridor 4×36, open | 80 | the ledge turns north; archers above |
-| West cliffs | Stables | room 24×12, roofed | 80 | ambush: the grooms who forgot the horses died |
+| West cliffs | Stables | room 16×12, roofed | 80 | ambush: the grooms who forgot the horses died |
 | Ward | Outer Ward | arena 40×40, open | 80 | the plaza; five ways out; the portcullis winch (**shortcut 1** back to the barbican) |
 | Ward | Barracks | hall 20×16, roofed | 80 | a fight; the blank nameplates |
 | Ward | Armory | room 12×12, roofed | 80 | optional loot; a false chest (mimic) |
@@ -55,7 +56,8 @@ Floors (datums): valley 64, causeway 76, castle 80, keep dais 84, rampart 92, be
 | Memory | Mirror Passage | corridor 4×24 | 80 | through the mirror; the sky turns to a clear noon ten years ago |
 | Memory | Remembered Hall | hall 24×20 | 80 | the court intact, the morning of the Last Vesper; Warden Hesk, who does not know her daughter |
 | Memory | Remembered Stair | room 12×12 | 80 | young Tamsin with the hammer; the Warden's Key, taken out of the memory |
-| Heights | East Rampart | road 8×96, open | 92 | the long wall walk north; archers and a volley trap |
+| Heights | Rampart Stair | room 12×16, tall | 80 | the stair tower from the ward's north-east corner up to the wall walk |
+| Heights | East Rampart | road 8×76, open | 92 | the long wall walk north; archers and a volley trap |
 | Heights | Watch Tower | room 12×12 | 92 | Brother Pellam's stall; Ser Halvard's second watch |
 | Heights | Buttress Walk | corridor 48×4, open | 92 | high over the keep roofs; the Warden's Door at its west end opens only to the key from the memory |
 | Heights | Bell Tower Stair | room 16×16, tall | 92 | the climb |
@@ -66,7 +68,7 @@ Floors (datums): valley 64, causeway 76, castle 80, keep dais 84, rampart 92, be
 
 ## The route
 
-Shrine → road → causeway → barbican (Porter) → postern ledge → cliff path → stables → outer ward → cloister (fire) → scriptorium (ledger, illusory wall) → niche → crypt → Undertide Pool (tongue) → well-house (shortcut) → cloister → chapel → mirror → remembered hall → remembered stair (key) → back → ward → east rampart → watch tower → buttress walk → Warden's Door → bell tower → belfry (Ringer, ring the bell; the Keep Doors open) → ward → keep steps → great hall → antechamber (fire) → throne hall (King) → the choice.
+Shrine → road → causeway tower → causeway → barbican (Porter) → postern ledge → cliff path → stables → outer ward → cloister (fire) → scriptorium (ledger, illusory wall) → niche → crypt → Undertide Pool (tongue) → well-house (shortcut) → cloister → chapel → mirror → remembered hall → remembered stair (key) → back → ward → rampart stair → east rampart → watch tower → buttress walk → Warden's Door → bell tower → belfry (Ringer, ring the bell; the Keep Doors open) → ward → keep steps → great hall → antechamber (fire) → throne hall (King) → the choice.
 
 Loops: the portcullis (ward ↔ barbican) folds the whole approach back to the Causeway Fire; the well-house door folds the undercroft back to the Cloister Fire; the Almoner's Door folds the keep back to the Cloister Fire.
 
