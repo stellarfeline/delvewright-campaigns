@@ -329,8 +329,10 @@ def tower(g, x0, x1, z0, z1, base, top, wall, roof, trim, quoin=None, cap=True, 
     """A square tower with chamfered corners, a machicolated head and a
     pyramid roof — the silhouette every tower on the site shares."""
     g.box(x0, x1, base, top, z0, z1, wall)
+    from .layout import CASTLE
+    chamfer = max(base, CASTLE + 3)
     for (cx, cz) in ((x0, z0), (x1, z0), (x0, z1), (x1, z1)):
-        g.box(cx, cx, base + 3, top, cz, cz, AIR)
+        g.box(cx, cx, chamfer, top, cz, cz, AIR)
         if quoin:
             dx = 1 if cx == x0 else -1
             dz = 1 if cz == z0 else -1

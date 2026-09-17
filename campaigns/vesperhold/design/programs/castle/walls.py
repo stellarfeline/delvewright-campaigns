@@ -3,7 +3,7 @@ spur, the watch tower, and the buttress walk along the north edge."""
 from . import layout as L
 from .grid import room, crenels, flight, hsh, stairs, slab, pyramid, tower, AIR
 from .palette import (WALL, WALL_RUIN, TRIM, QUOIN, FLAG, FLOOR, LANTERN,
-                      DARK_PLANKS, PLANKS, COBWEB, POST, CANDLES, ROOF)
+                      DARK_PLANKS, PLANKS, COBWEB, POST, CANDLES, ROOF, BARS_X, BARS_Z)
 
 C, W = L.CASTLE, L.WALK
 SB = "minecraft:stone_brick_stairs"
@@ -40,7 +40,7 @@ def ring(g):
     for (a0, a1, b0, b1) in segs:
         for a in range(a0, a1 + 1):
             for b in range(b0, b1 + 1):
-                if hsh(a, b, 61) < .12:
+                if hsh(a, b, 61) < .12 and b > 30:
                     h = 1 + int(4 * hsh(a, b, 62))
                     g.clear(a, a, CURTAIN_TOP + 2 - h, CURTAIN_TOP + 1, b, b)
     # arrow slits on the outer faces
@@ -89,16 +89,14 @@ def east_rampart(g):
     g.box(x0, x1, top, top, z0, z1, FLAG)
     # inner parapet low and broken; the outer curtain rises above the walk
     for z in range(z0, z1 + 1):
-        if hsh(x0 - 1, z, 71) < .7:
-            g.set(x0 - 1, W, z, WALL_RUIN)
-        g.box(x0 - 1, x0 - 1, C - 1, top, z, z, WALL)
+        g.box(x0 - 1, x0 - 1, C - 1, W, z, z, WALL)
+        g.set(x0 - 1, W + 1, z, WALL if z % 4 == 0 else BARS_Z)
     g.box(x1 + 1, L.CRAG[1], top, W + 1, z0, z1, WALL)
     for z in range(z0, z1 + 1, 2):
         g.set(L.CRAG[1], W + 2, z, WALL)
     # buttresses on the ward side every twelve cells, and lanterns
     for z in range(z0 + 4, z1, 12):
-        g.box(x0 - 3, x0 - 2, C - 1, top - 2, z, z + 1, QUOIN)
-        g.box(x0 - 3, x0 - 2, top - 1, top - 1, z, z + 1, slab("minecraft:stone_brick_slab"))
+        g.box(x0 - 3, x0 - 2, C - 1, top + 1, z, z + 1, QUOIN)
         g.set(x1, W, z + 6, LANTERN)
     g.mark("east-rampart", 155, W, 70, "north")
     g.mark("rampart-archers", 155, W, 45, "south")
@@ -116,6 +114,7 @@ def rampart_stair(g):
     g.box(x0 - 1, x0 - 1, C + 4, C + 4, 125, 130, TRIM)
     # one flight up the south wall climbing east, landing, one up the east wall climbing north
     flight(g, "x", 132, 134, x0 + 1, 1, C, 6, SB, WALL)             # 24 -> 30, x126..131
+    g.box(x0 + 1, x0 + 1, C, C + 1, 131, 131, WALL)                 # newel: taken from the west
     g.box(x0 + 7, x1, C + 5, C + 5, 131, 135, FLOOR)                # landing at 30
     g.box(x0 + 7, x1, C, C + 4, 131, 135, WALL)
     flight(g, "z", 138, 140, 130, -1, C + 6, 6, SB, WALL)           # 30 -> 36, z130..125
@@ -130,10 +129,10 @@ def rampart_stair(g):
     # the spur: a short wall walk from the tower's top to the rampart
     g.box(x1 + 1, 151, C - 1, W - 1, 120, 125, WALL)
     g.box(x1 + 2, 151, W - 1, W - 1, 121, 123, FLAG)
-    for x in range(x1 + 2, 152, 2):
-        g.set(x, W, 120, WALL); g.set(x, W, 124, WALL)
     g.box(x1 + 2, 151, W, W, 120, 120, WALL)
     g.box(x1 + 2, 151, W, W, 124, 124, WALL)
+    g.box(x1 + 2, 151, W + 1, W + 1, 120, 120, BARS_X)
+    g.box(x1 + 2, 151, W + 1, W + 1, 124, 124, BARS_X)
     g.clear(x1 + 2, 151, W, W + 3, 121, 123)
     g.clear(151, 151, W, W + 3, 121, 123)
 
@@ -179,7 +178,8 @@ def buttress_walk(g):
     g.box(x0, x1, top, top, z0, z1, FLAG)
     for x in range(x0, x1 + 1):
         for z in (z0 - 1, z1 + 1):
-            g.set(x, W, z, WALL if (x % 2 == 0 or hsh(x, z, 81) < .3) else AIR)
+            g.set(x, W, z, WALL)
+            g.set(x, W + 1, z, WALL if x % 4 == 0 else BARS_X)
     # piers down to the crag with pointed arches between them
     for x in range(x0 + 3, x1, 10):
         g.box(x, x + 1, C - 1, top - 2, z0 - 1, z1 + 1, WALL)
@@ -190,6 +190,10 @@ def buttress_walk(g):
     # lanterns and a few wreck spots
     for x in range(x0 + 8, x1, 16):
         g.set(x, W, z0, LANTERN)
+    # a roofed arch over the walk below the keep: under it the parapet is no floor
+    g.box(88, 92, W + 2, W + 2, z0 - 1, z0 - 1, WALL)
+    g.box(88, 92, W + 2, W + 2, z1 + 1, z1 + 1, WALL)
+    g.box(87, 93, W + 3, W + 3, z0 - 2, z1 + 2, WALL)
     g.mark("buttress-walk", 90, W, 13, "west")
     g.mark("wardens-door-key", 36, W, 13, "west")
 

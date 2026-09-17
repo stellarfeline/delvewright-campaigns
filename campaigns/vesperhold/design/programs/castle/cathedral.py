@@ -193,6 +193,8 @@ def scriptorium(g):
     x0, x1, z0, z1 = p.box
     top = C + p.height
     room(g, x0, x1, z0, z1, C, p.height, CHAPEL, FLOOR, ceiling=PLANKS)
+    g.clear(22, 24, C, C + 2, z0 - 1, z0 - 1)             # the door from the cloister
+    g.box(22, 24, C - 1, C - 1, z0 - 1, z0 - 1, FLOOR)
     gable(g, x0 - 1, x1 + 1, z0 - 1, z1 + 1, top + 1, ROOF_MAT, CHAPEL, along="z")
     # shelves on the walls, desks in the middle, the lectern
     for x in range(x0, x1 + 1):

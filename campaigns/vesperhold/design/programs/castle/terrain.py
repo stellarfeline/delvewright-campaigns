@@ -46,6 +46,8 @@ def crag(g):
         outcrop(x1, z, 1, 0)
         if z < 120:
             outcrop(x0, z, -1, 0)
+    # no scree pockets along the south foot east of the gate
+    g.clear(100, L.X - 2, GROUND + 1, top, z1 + 1, z1 + 14)
     # the crag's own face: moss bands and a few overhanging courses
     for x in range(x0, x1 + 1):
         for z in (z0, z1):
@@ -112,8 +114,20 @@ def trees(g):
                 tree(g, jx, jz, 5 + int(5 * hsh(jx, jz, 34)))
 
 
+def field_wall(g):
+    """A dry-stone wall round the whole valley field, two courses high, so the
+    party's world ends where the piece does."""
+    for x in range(L.X):
+        for z in (0, L.Z - 1):
+            g.box(x, x, L.VALLEY, L.VALLEY + 1, z, z, ROCK_MOSS)
+    for z in range(L.Z):
+        for x in (0, L.X - 1):
+            g.box(x, x, L.VALLEY, L.VALLEY + 1, z, z, ROCK_MOSS)
+
+
 def build(g):
     valley(g)
     crag(g)
     shelves(g)
     trees(g)
+    field_wall(g)

@@ -127,6 +127,11 @@
         "facing": "east",
         "id": "actor/apprentice-belfry",
         "name": "The Apprentice",
+        "offset": [
+          2,
+          0,
+          0
+        ],
         "skin": {
           "model": "wide",
           "texture_id": "apprentice-belfry"
@@ -183,9 +188,9 @@
         "region": {
           "anchor": "anchor/undertide-well",
           "extent": [
-            2,
             1,
-            2
+            1,
+            1
           ]
         }
       }
@@ -262,7 +267,7 @@
             },
             "hint": "North up the pilgrim road, up the stair, and over the bridge to the gatehouse.",
             "id": "obj/cross-the-causeway",
-            "radius": 4,
+            "radius": 2,
             "title": "Cross the causeway",
             "type": "reach-anchor"
           }
@@ -295,6 +300,36 @@
               "style": "title",
               "text": "VESPERHOLD",
               "type": "narrate"
+            },
+            {
+              "anchor": "anchor/gate-postern",
+              "happening": {
+                "subject": "anchor/gate-postern",
+                "text": "The postern is locked behind the gatehouse.",
+                "verb": "seals"
+              },
+              "sealed_hint": "The postern is locked. The Porter had a key.",
+              "type": "close-gate"
+            },
+            {
+              "anchor": "anchor/gate-keep-doors",
+              "happening": {
+                "subject": "anchor/gate-keep-doors",
+                "text": "The Keep Doors are barred.",
+                "verb": "seals"
+              },
+              "sealed_hint": "The Keep Doors are barred from within.",
+              "type": "close-gate"
+            },
+            {
+              "anchor": "anchor/gate-wardens-door",
+              "happening": {
+                "subject": "anchor/gate-wardens-door",
+                "text": "The Warden's Door is locked.",
+                "verb": "seals"
+              },
+              "sealed_hint": "The Warden's Door is locked. The Warden kept the key.",
+              "type": "close-gate"
             },
             {
               "happening": {
@@ -505,7 +540,7 @@
             },
             "hint": "Out through the postern and west along the shelf.",
             "id": "obj/walk-the-shelf",
-            "radius": 6,
+            "radius": 5,
             "title": "Walk the cliff shelf",
             "type": "reach-anchor"
           },
@@ -536,7 +571,7 @@
             },
             "hint": "Round the corner of the crag and north along the west face, to the stable's back door.",
             "id": "obj/enter-the-stables",
-            "radius": 8,
+            "radius": 6,
             "title": "Find a way in",
             "type": "reach-anchor"
           },
@@ -567,7 +602,7 @@
             },
             "hint": "East through the stable doors.",
             "id": "obj/reach-the-ward",
-            "radius": 10,
+            "radius": 9,
             "title": "Reach the outer ward",
             "type": "reach-anchor"
           }
@@ -690,7 +725,7 @@
             },
             "hint": "North-west corner of the ward, up the walled lane to the cloister.",
             "id": "obj/find-the-cloister",
-            "radius": 10,
+            "radius": 5,
             "title": "Find shelter",
             "type": "reach-anchor"
           },
@@ -713,6 +748,10 @@
         "on_complete": [],
         "on_objective_complete": {
           "obj/find-the-cloister": [
+            {
+              "flag": "flag/cloister-found",
+              "type": "set-flag"
+            },
             {
               "anchor": "anchor/cloister-fire",
               "on_rest": [
@@ -1349,7 +1388,7 @@
             },
             "hint": "The stair tower in the ward's north-east corner, then east along the spur.",
             "id": "obj/climb-the-rampart",
-            "radius": 8,
+            "radius": 3,
             "title": "Climb to the east rampart",
             "type": "reach-anchor"
           },
@@ -1395,7 +1434,7 @@
             },
             "hint": "West from the watch tower along the high walk.",
             "id": "obj/walk-the-buttresses",
-            "radius": 8,
+            "radius": 2,
             "title": "Cross the buttress walk",
             "type": "reach-anchor"
           },
@@ -1462,6 +1501,10 @@
               "amount": 20,
               "state": "state/tallow",
               "type": "add-state"
+            },
+            {
+              "flag": "flag/rampart-cleared",
+              "type": "set-flag"
             }
           ],
           "obj/climb-the-rampart": [
@@ -1601,7 +1644,7 @@
             },
             "hint": "Up the tower stair.",
             "id": "obj/climb-to-the-belfry",
-            "radius": 6,
+            "radius": 3,
             "title": "Climb to the belfry",
             "type": "reach-anchor"
           },
@@ -1782,17 +1825,17 @@
                             {
                               "anchor": "anchor/belfry",
                               "offset": [
-                                -4,
+                                -2,
                                 4,
-                                -1
+                                2
                               ]
                             },
                             {
                               "anchor": "anchor/belfry",
                               "offset": [
-                                -5,
+                                3,
                                 6,
-                                -5
+                                2
                               ]
                             }
                           ],
@@ -1807,16 +1850,16 @@
                               "anchor": "anchor/belfry",
                               "offset": [
                                 0,
-                                16,
-                                0
+                                5,
+                                2
                               ]
                             },
                             {
                               "anchor": "anchor/belfry",
                               "offset": [
                                 0,
-                                28,
-                                0
+                                23,
+                                25
                               ]
                             }
                           ],
@@ -1924,7 +1967,7 @@
             },
             "hint": "Through the Keep Doors on the ward's north side.",
             "id": "obj/enter-the-keep",
-            "radius": 8,
+            "radius": 7,
             "title": "Enter the keep",
             "type": "reach-anchor"
           },
@@ -1955,7 +1998,7 @@
             },
             "hint": "Up the steps at the north end of the hall.",
             "id": "obj/reach-the-antechamber",
-            "radius": 4,
+            "radius": 2,
             "title": "Reach the antechamber",
             "type": "reach-anchor"
           }
@@ -2559,18 +2602,6 @@
           }
         ],
         "unlock": "anchor/unlock-well-house-door"
-      },
-      {
-        "gate": "anchor/gate-almoners-door",
-        "id": "shortcut/almoners-door",
-        "on_unlock": [
-          {
-            "style": "subtitle",
-            "text": "The Almoner's Door opens.",
-            "type": "narrate"
-          }
-        ],
-        "unlock": "anchor/unlock-almoners-door"
       }
     ],
     "stakes": [
@@ -2692,22 +2723,6 @@
         "once": false
       },
       {
-        "at": "anchor/gate-almoners-door",
-        "audience": "presser",
-        "effects": [
-          {
-            "style": "actionbar",
-            "text": "The Almoner's Door is barred from the hall side.",
-            "type": "narrate"
-          }
-        ],
-        "id": "trigger/almoners-reply",
-        "on": {
-          "on": "use"
-        },
-        "once": false
-      },
-      {
         "at": "anchor/psalter-face",
         "effects": [
           {
@@ -2745,22 +2760,6 @@
         "requires_flags": [
           "flag/ledger-read"
         ]
-      },
-      {
-        "at": "anchor/psalter-face",
-        "audience": "presser",
-        "effects": [
-          {
-            "style": "actionbar",
-            "text": "The psalters are glued to the shelf. Cold air comes through the crack between them.",
-            "type": "narrate"
-          }
-        ],
-        "id": "trigger/psalter-look",
-        "on": {
-          "on": "use"
-        },
-        "once": false
       }
     ],
     "waves": [

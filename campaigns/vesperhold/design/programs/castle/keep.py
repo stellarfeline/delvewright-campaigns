@@ -72,14 +72,15 @@ def great_hall(g):
     g.box(81, 85, D - 1, D - 1, z0, z0, FLOOR)
     g.clear(81, 85, D, D + 3, z0 - 2, z0 - 1)           # through the hall's north wall
     g.box(81, 85, D - 1, D - 1, z0 - 2, z0 - 1, FLOOR)
-    # the Almoner's Door in the west wall: a shortcut to the cloister lane
-    g.gate("almoners-door", x0 - 2, x0 - 1, C, C + 1, 75, 75, "minecraft:dark_oak_planks", GATE_WOOD)
+    # the Almoner's Door in the west wall, recessed on the lane side and barred for good:
+    # the keep doors reach the hall sooner from the gate, so it can shorten no walk
+    g.clear(x0 - 2, x0 - 2, C, C + 1, 75, 76)
+    g.box(x0 - 1, x0 - 1, C, C + 1, 75, 76, GATE_WOOD)
     # light
     for (lx, lz) in ((x0, z0 + 2), (x1, z0 + 2), (x0, z1), (x1, z1), (x0, 76), (x1, 76)):
         g.set(lx, C, lz, LANTERN)
     g.mark("great-hall", 83, C, 86, "north")
     g.mark("unremembered-guard", 83, C, 72, "south")
-    g.mark("unlock-almoners-door", x0 + 1, C, 75, "west")
     g.mark("great-hall-west", x0 + 4, C, 80, "east")
 
 
@@ -87,6 +88,7 @@ def antechamber(g):
     p = L.P["antechamber"]
     x0, x1, z0, z1 = p.box
     top = D + p.height
+    g.box(x0 - 2, x1 + 2, C, D - 2, z0 - 2, z1 + 2, KEEP)   # no hollow under the floor
     room(g, x0, x1, z0, z1, D, p.height, KEEP, FLOOR, ceiling=KEEP, t=2)
     g.clear(81, 85, D, D + 3, z1 + 1, z1 + 4)          # from the hall stair
     g.box(81, 85, D - 1, D - 1, z1 + 1, z1 + 4, FLOOR)

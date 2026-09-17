@@ -3,7 +3,7 @@ hanging causeway and the barbican with its portcullis and its postern."""
 from . import layout as L
 from .grid import room, crenels, flight, pyramid, hsh, stairs, slab, block, machicolate, tower, AIR
 from .palette import (WALL, WALL_RUIN, TRIM, QUOIN, ROAD, FLAG, FLOOR, ROCK,
-                      LANTERN, CANDLES, BARS_X, GATE_WOOD, DARK_PLANKS, POST,
+                      LANTERN, CANDLES, BARS_X, BARS_Z, GATE_WOOD, DARK_PLANKS, POST,
                       PLANKS, COBWEB, CHAIN, ROOF)
 
 C, V = L.CASTLE, L.VALLEY
@@ -98,12 +98,11 @@ def causeway(g):
     # parapets, broken in places
     for z in range(z0, z1 + 1):
         for x in (x0 - 1, x1 + 1):
-            g.set(x, C, z, WALL if hsh(x, z, 51) < .85 else AIR)
-            if (z - z0) % 2 == 0 and hsh(x, z, 52) < .8:
-                g.set(x, C + 1, z, WALL)
+            g.set(x, C, z, WALL)
+            g.set(x, C + 1, z, WALL if (z - z0) % 2 == 0 else BARS_Z)
     # piers every eight cells, with arches between
     for z in range(z0 + 2, z1 - 1, 8):
-        g.box(x0 - 2, x1 + 2, L.VALLEY - 1, C - 3, z, z + 2, WALL)
+        g.box(x0 - 1, x1 + 1, L.VALLEY - 1, C - 3, z, z + 2, WALL)
         g.box(x0 - 2, x1 + 2, L.VALLEY - 1, L.VALLEY + 1, z - 1, z + 3, QUOIN)
     for z in range(z0, z1 + 1):
         k = (z - z0 - 2) % 8

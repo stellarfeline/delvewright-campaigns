@@ -67,7 +67,7 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Heights | Buttress Walk | a high walk along the north edge over the keep's buttresses to the Warden's Door |
 | Heights | Bell Tower Stair | the climb; the second shard; **the tower echo** |
 | Heights | Belfry | **mid-boss: the Ringer Unmade**; hang the tongue, ring the cracked Vesper once; **the belfry echo** |
-| Keep | Great Hall | the Unremembered Guard; the Almoner's Door (**shortcut 3**) to the cloister |
+| Keep | Great Hall | the Unremembered Guard; the Almoner's Door to the cloister lane, barred for good |
 | Keep | Antechamber | **Throne Fire** (rest 3); Ser Halvard standing dead in the doorway, if he kept his oath |
 | Keep | Throne Hall | **final boss: King Oswin, who kept the watch**; the last choice |
 

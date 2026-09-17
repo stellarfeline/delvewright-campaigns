@@ -9,7 +9,7 @@ writes the gate regions the program cannot declare into gates.json, which
 
 Run it to regenerate vesperhold.json. The JSON is the artifact the engine reads.
 """
-import json, pathlib, sys
+import json, os, pathlib, sys
 
 HERE = pathlib.Path(__file__).parent
 sys.path.insert(0, str(HERE))
@@ -54,12 +54,22 @@ def mark(name, facing, role, body):
     return {"op": "mark", "mark": m, "body": body}
 
 
+# Built open, and sealed by the campaign at its first beat (GENERATION.md says why).
+BUILT_OPEN = ("postern", "keep-doors", "wardens-door")
+
+
 def build():
     g = Grid()
     for part in PARTS:
         part.build(g)
+    for name in BUILT_OPEN:
+        a, b, _ = g.gates[name]
+        g.clear(a[0], b[0], a[1], b[1], a[2], b[2])
     if "--open-gates" in sys.argv:
-        for (a, b, _) in g.gates.values():
+        only = os.environ.get("OPEN_GATES")
+        for name, (a, b, _) in g.gates.items():
+            if only and name not in only.split(","):
+                continue
             g.clear(a[0], b[0], a[1], b[1], a[2], b[2])
     settled = settle_stairs(g)
     print(f"stairs: {settled} shape(s) derived from their neighbours")
