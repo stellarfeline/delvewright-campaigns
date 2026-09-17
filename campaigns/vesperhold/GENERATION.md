@@ -24,6 +24,14 @@ Research consulted before authoring (ideas only): the anatomy of Stormveil Castl
 - `difficulty` is `normal`: the souls baseline, without zombie reinforcement muddying the tuned waves.
 - `horizon` is a valley with a 64-block rim, so the castle stands in a mountain bowl; the approach and the causeway cross the piece's own valley floor.
 
+## Content decisions
+
+- The past is staged in the present rooms: two echoes put the people of the Last Vesper's morning where they stood (a deferred NPC and skinned actors), the third is the campaign's one camera cutscene. The engine's `DW0351` advisory on the two deferred NPCs is accepted with narrative cover — each appears under the title card of an echo ("the morning of it", "The stair remembers.") and leaves as the rain returns.
+- The chapel echo is two quests (`the-chapel-echo`, `the-wardens-key`) because a body spawned mid-quest can only be cast from the next quest on.
+- Both forks put their options in one node, each option setting its flag and completing the talk objective, so the two branches are exclusive by construction. Halvard leaves the watch tower on both branches; only what the party finds at the Throne Fire differs.
+- Wave mobs that are one kind of creature share one name on purpose: `Nameless Soldier` (barracks and armory), `Hired Knife` (both mobs of the walk ambush). The `zh-cn` sidecar translates each consistently.
+- The `zh-cn` sidecar was translated in-agent from the finished English, with each character's speech style held (Halvard archaic and courteous, Pellam wheedling, the apprentice blunt).
+
 ## Posture note
 
 Three axes pushed off the default for this campaign: **time order** — the decisive event is shown out of order, in the echoes, after its consequences; **morality** — the final boss is right and the sympathetic keeper caused the ruin; **emotion rendering** — Warden Hesk names her fear outright ("I am afraid of the day I will not know her"). The Silence ending is disproportionate to everything before it and explains nothing.

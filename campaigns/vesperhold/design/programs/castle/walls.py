@@ -165,6 +165,7 @@ def watch_tower(g):
     g.set(x0, W, z1, LANTERN)
     g.mark("watch-tower", 156, W, 17, "south")
     g.mark("pellam-stall", 153, W, 10, "south")
+    g.mark("pellam-counter", 151, W, 13, "north")
     g.mark("halvard-tower", 159, W, 15, "west")
 
 
