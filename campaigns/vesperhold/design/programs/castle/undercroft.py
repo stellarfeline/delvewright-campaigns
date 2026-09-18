@@ -1,6 +1,6 @@
 """Under the rock: the Crypt of Wardens, the passage, and the Undertide Pool."""
 from . import layout as L
-from .grid import hsh, stairs, slab, block, AIR
+from .grid import hsh, stairs, slab, block, rail, AIR
 from .palette import (ROCK, ROCK_MOSS, FLOOR, PILLAR, TRIM, CHAPEL, WATER, CANDLES,
                       SOUL_LANTERN, LANTERN, COBWEB, BARS_Z, CHAIN, GLASS_DARK)
 
@@ -68,8 +68,11 @@ def pool(g):
             h = p.height - (1 if hsh(x, z, 161) < .25 else 0) - (1 if hsh(x, z, 162) < .1 else 0)
             g.clear(x, x, U, U + h - 1, z, z)
             g.set(x, U - 1, z, ROCK_MOSS if hsh(x, z, 163) < .3 else FLOOR)
-    # the well at the centre: a stone lip, grey water, three deep
+    # the well at the centre: grey water behind a curb nothing walks over,
+    # and under it a shaft to the bottom, where the Undertide takes whatever
+    # reaches it
     cx, cz = 36, 80
+    curb = rail("minecraft:polished_deepslate_wall")
     for x in range(cx - 5, cx + 6):
         for z in range(cz - 5, cz + 6):
             d2 = (x - cx) ** 2 + (z - cz) ** 2
@@ -79,18 +82,20 @@ def pool(g):
             elif d2 <= 26:
                 g.set(x, U, z, slab("minecraft:polished_deepslate_slab"))
     g.box(cx - 5, cx + 5, U - 5, U - 5, cz - 5, cz + 5, ROCK)
-    # a way out of the water on the north and south: three treads climbing
-    # out of the well to a gap in its lip, so a body that falls in can walk out
-    for sgn, face in ((-1, "north"), (1, "south")):
-        for k, y in enumerate((U - 1, U - 2, U - 3)):
-            z = cz + sgn * (4 - k)
-            g.box(cx - 1, cx + 1, U - 5, y - 1, z, z, ROCK)
-            g.box(cx - 1, cx + 1, y, y, z, z, stairs("minecraft:polished_deepslate_stairs", face, wet=True))
-        g.box(cx - 1, cx + 1, U, U, cz + sgn * 4, cz + sgn * 4, AIR)
-        g.box(cx - 1, cx + 1, U, U, cz + sgn * 5, cz + sgn * 5, AIR)
-        g.box(cx - 1, cx + 1, U - 1, U - 1, cz + sgn * 5, cz + sgn * 5, FLOOR)
-        for x in (cx - 2, cx + 2):             # a lamp either side of the way out
-            g.set(x, U, cz + sgn * 5, SOUL_LANTERN)
+    # the curb: every cell that touches the water, one wall block high — a
+    # block and a half, over the lift of a blow and under a player's eye
+    for x in range(cx - 5, cx + 6):
+        for z in range(cz - 5, cz + 6):
+            d2 = (x - cx) ** 2 + (z - cz) ** 2
+            if d2 > 16 and any((x + dx - cx) ** 2 + (z + dz - cz) ** 2 <= 16
+                               for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
+                g.set(x, U - 1, z, block("minecraft:polished_deepslate"))
+                g.set(x, U, z, curb)
+    # the shaft under the well's heart, five deeper, rock all round it
+    g.box(cx - 2, cx + 2, U - 11, U - 5, cz - 2, cz + 2, ROCK)
+    g.box(cx - 1, cx + 1, U - 10, U - 5, cz - 1, cz + 1, WATER)
+    for (lx, lz) in ((cx, cz - 5), (cx, cz + 5), (cx - 5, cz), (cx + 5, cz)):
+        g.set(lx, U + 1, lz, SOUL_LANTERN)
     # choir stalls round the well, and the fallen tongue at its lip
     for (sx, sz) in ((cx - 8, cz), (cx + 8, cz), (cx, cz - 8), (cx, cz + 8)):
         g.set(sx, U, sz, stairs("minecraft:polished_deepslate_stairs", "south"))
@@ -109,7 +114,7 @@ def pool(g):
     g.mark("undertide-pool", 36, U, 90, "north")
     g.mark("drowned-choir", 36, U, 70, "south")
     g.mark("bell-tongue", 42, U, 74, "west")
-    g.mark("undertide-well", 36, U, 80, "north", stand=False)
+    g.mark("undertide-well", 36, U - 9, 80, "north", stand=False)
 
 
 def build(g):

@@ -83,13 +83,16 @@ def build():
             if g.get(x, y, z) == AIR:
                 bad.append(f"anchor {name} at {(x, y, z)} names furniture and holds none")
         elif name in g.points:
-            if g.get(x, y, z) != AIR:
+            if g.get(x, y, z) not in (AIR, PAL["water"]):
                 bad.append(f"anchor {name} at {(x, y, z)} is inside a block")
         elif g.get(x, y, z) != AIR or g.get(x, y + 1, z) != AIR:
             bad.append(f"anchor {name} at {(x, y, z)} has no room to stand: {PAL.names[g.get(x, y, z)]}, {PAL.names[g.get(x, y + 1, z)]}")
         elif g.get(x, y - 1, z) == AIR:
             bad.append(f"anchor {name} at {(x, y, z)} stands on air")
-        marks.setdefault((x, z), {})[y] = (name, facing, role)
+        cell = marks.setdefault((x, z), {})
+        if y in cell:
+            bad.append(f"anchors {cell[y][0]} and {name} share the cell {(x, y, z)}; the partition keeps one mark a cell")
+        cell[y] = (name, facing, role)
     if bad:
         raise SystemExit("\n".join(bad))
 

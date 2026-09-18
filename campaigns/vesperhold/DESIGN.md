@@ -59,7 +59,7 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Cathedral | Scriptorium | the Warden's Ledger; the Psalter Wall (illusory — strike it) |
 | Undercroft | Psalter Stair | the stair cut down into the rock behind the wall |
 | Undercroft | Crypt of Wardens | **optional elite: the Last Warden-Knight**, kneeling until struck |
-| Undercroft | Undertide Pool | a lethal well of grey water with steps up out of it on its north and south, a lamp either side of each; **the Drowned Choir**; the fallen bell-tongue |
+| Undercroft | Undertide Pool | a well of grey water behind a curb nothing walks over, lethal only at the bottom of the shaft under it; **the Drowned Choir**, whose Precentor carries the fallen bell-tongue |
 | Undercroft | Well-House | the stair up into the cloister; **shortcut 2** |
 | Heights | Rampart Stair | the tower up to the wall walk |
 | Heights | East Rampart | the long wall walk north; archers, and a pressure plate in the flagstones that looses a volley |
@@ -144,7 +144,7 @@ Neither ending is labelled good.
 - Every boss and elite shows a health bar, drawn for a player from the moment they cross into its arena until it falls: the Porter, the Drowned Choir, the Last Warden-Knight, the Chandler, the Hedge Knight, the Ringer Unmade, the Unremembered Guard and King Oswin. The Gilded Bowman is bait and shows none.
 - A gatekeeper before the castle proper; a front gate that is a shortcut; a side route that is the real way in.
 - An illusory wall on the main path, hinted twice.
-- Real chests and a false one in the armory, a volley trap on the rampart, a lethal well in the Undertide Pool with a way out of the water.
+- Real chests and a false one in the armory, a volley trap on the rampart, a lethal well in the Undertide Pool behind its curb.
 - A bait enemy held up by the terrain, covering an ambush from behind (the Hedge Garden).
 - Three optional elites off the road (the Last Warden-Knight, the Chandler, the Hedge Knight), each dropping the high-tier piece it fought with.
 - A recurring ally whose fate turns on one choice; a trickster merchant.
