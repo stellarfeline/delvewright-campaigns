@@ -153,6 +153,101 @@
           "model": "wide",
           "texture_id": "halvard-fallen"
         }
+      },
+      {
+        "anchor": "anchor/chandler",
+        "attributes": {
+          "attack_damage": 8.0,
+          "follow_range": 18.0,
+          "max_health": 110.0,
+          "movement_speed": 0.25
+        },
+        "drops": [
+          {
+            "slot": "main_hand"
+          }
+        ],
+        "entity": "minecraft:zombie_villager",
+        "equipment": {
+          "chest": "minecraft:leather_chestplate",
+          "main_hand": {
+            "enchantments": {
+              "minecraft:sharpness": 3,
+              "minecraft:unbreaking": 2
+            },
+            "item": "minecraft:diamond_axe"
+          }
+        },
+        "facing": "west",
+        "id": "actor/chandler",
+        "name": "The Chandler",
+        "tier": "elite"
+      },
+      {
+        "anchor": "anchor/hedge-knight",
+        "attributes": {
+          "attack_damage": 9.0,
+          "follow_range": 18.0,
+          "max_health": 130.0
+        },
+        "drops": [
+          {
+            "slot": "chest"
+          }
+        ],
+        "entity": "minecraft:zombie",
+        "equipment": {
+          "chest": {
+            "enchantments": {
+              "minecraft:protection": 3,
+              "minecraft:unbreaking": 2
+            },
+            "item": "minecraft:diamond_chestplate"
+          },
+          "head": "minecraft:iron_helmet",
+          "legs": "minecraft:iron_leggings",
+          "main_hand": "minecraft:iron_sword"
+        },
+        "facing": "south",
+        "id": "actor/hedge-knight",
+        "name": "The Hedge Knight",
+        "tier": "elite"
+      },
+      {
+        "anchor": "anchor/hedge-lurker-1",
+        "attributes": {
+          "attack_damage": 4.0,
+          "follow_range": 16.0,
+          "max_health": 22.0
+        },
+        "entity": "minecraft:zombie",
+        "facing": "east",
+        "id": "actor/hedge-lurker-1",
+        "name": "Hedge-Lurker"
+      },
+      {
+        "anchor": "anchor/hedge-lurker-2",
+        "attributes": {
+          "attack_damage": 4.0,
+          "follow_range": 16.0,
+          "max_health": 22.0
+        },
+        "entity": "minecraft:zombie",
+        "facing": "west",
+        "id": "actor/hedge-lurker-2",
+        "name": "Hedge-Lurker"
+      },
+      {
+        "anchor": "anchor/hedge-lurker-3",
+        "attributes": {
+          "attack_damage": 4.0,
+          "follow_range": 16.0,
+          "max_health": 22.0
+        },
+        "entity": "minecraft:zombie",
+        "facing": "east",
+        "id": "actor/hedge-lurker-3",
+        "name": "Hedge-Lurker"
       }
     ],
     "ambushes": [
@@ -178,6 +273,56 @@
           "on": "approach",
           "range": 3
         }
+      },
+      {
+        "actors": [
+          "actor/chandler"
+        ],
+        "at": "anchor/chandler",
+        "happening": {
+          "subject": "actor/chandler",
+          "text": "The Chandler turns from his vat.",
+          "verb": "arrives"
+        },
+        "id": "ambush/chandler",
+        "trigger": {
+          "on": "approach",
+          "range": 5
+        }
+      },
+      {
+        "actors": [
+          "actor/hedge-knight"
+        ],
+        "at": "anchor/hedge-knight",
+        "happening": {
+          "subject": "actor/hedge-knight",
+          "text": "The Hedge Knight steps out of the summerhouse.",
+          "verb": "arrives"
+        },
+        "id": "ambush/hedge-knight",
+        "trigger": {
+          "on": "approach",
+          "range": 4
+        }
+      },
+      {
+        "actors": [
+          "actor/hedge-lurker-1",
+          "actor/hedge-lurker-2",
+          "actor/hedge-lurker-3"
+        ],
+        "at": "anchor/garden-plinth-foot",
+        "happening": {
+          "subject": "actor/hedge-lurker-1",
+          "text": "Lurkers come out of the hedges behind the company.",
+          "verb": "arrives"
+        },
+        "id": "ambush/hedge-lurkers",
+        "trigger": {
+          "on": "approach",
+          "range": 4
+        }
       }
     ],
     "lethal_volumes": [
@@ -193,6 +338,34 @@
             1
           ]
         }
+      }
+    ],
+    "loot": [
+      {
+        "anchor": "anchor/armory-chest-north",
+        "id": "loot/garrison-blade",
+        "items": [
+          {
+            "enchantments": {
+              "minecraft:sharpness": 2
+            },
+            "item": "minecraft:iron_sword",
+            "name": "Garrison Blade"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/armory-chest-south",
+        "id": "loot/garrison-hauberk",
+        "items": [
+          {
+            "enchantments": {
+              "minecraft:protection": 2
+            },
+            "item": "minecraft:iron_chestplate",
+            "name": "Garrison Hauberk"
+          }
+        ]
       }
     ],
     "on_death": [
@@ -1505,6 +1678,20 @@
             {
               "flag": "flag/rampart-cleared",
               "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/watch-fire",
+              "on_rest": [
+                {
+                  "style": "actionbar",
+                  "text": "Pellam's brazier. He charges for everything but the warmth.",
+                  "type": "narrate"
+                }
+              ],
+              "prompt": "The Watch Fire",
+              "rest_label": "Rest by the fire",
+              "save_label": "Only warm up",
+              "type": "bonfire"
             }
           ],
           "obj/climb-the-rampart": [
@@ -1578,6 +1765,20 @@
               },
               "npc": "npc/young-tamsin",
               "type": "spawn-npc"
+            },
+            {
+              "anchor": "anchor/tower-fire",
+              "on_rest": [
+                {
+                  "style": "actionbar",
+                  "text": "Overhead, a rope creaks where the bell should hang.",
+                  "type": "narrate"
+                }
+              ],
+              "prompt": "The Tower Fire",
+              "rest_label": "Rest by the fire",
+              "save_label": "Only warm up",
+              "type": "bonfire"
             }
           ],
           "obj/walk-the-buttresses": [
@@ -2478,29 +2679,29 @@
                     {
                       "op": "at-most",
                       "state": "state/tallow",
-                      "value": 19
+                      "value": 34
                     }
                   ]
                 }
               },
               {
                 "carrier": "one",
-                "count": 2,
-                "item": "minecraft:honey_bottle",
-                "name": "Chapel Honey",
+                "count": 1,
+                "item": "minecraft:iron_spear",
+                "name": "Pilgrim's Staff",
                 "type": "give-item",
                 "when": {
                   "requires_state": [
                     {
                       "op": "at-least",
                       "state": "state/tallow",
-                      "value": 20
+                      "value": 35
                     }
                   ]
                 }
               },
               {
-                "amount": -20,
+                "amount": -35,
                 "state": "state/tallow",
                 "type": "add-state",
                 "when": {
@@ -2508,14 +2709,114 @@
                     {
                       "op": "at-least",
                       "state": "state/tallow",
-                      "value": 20
+                      "value": 35
                     }
                   ]
                 }
               }
             ],
-            "label": "Honey, 20",
-            "tooltip": "Two bottles. The wax seal has been broken and pressed shut again."
+            "label": "Iron spear, 35",
+            "tooltip": "\"A pilgrim's staff,\" he says, of a boar spear still bloody at the socket."
+          },
+          {
+            "effects": [
+              {
+                "style": "actionbar",
+                "text": "Pellam spreads his hands. \"Tallow first, friend.\"",
+                "type": "narrate",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tallow",
+                      "value": 44
+                    }
+                  ]
+                }
+              },
+              {
+                "carrier": "one",
+                "count": 1,
+                "item": "minecraft:crossbow",
+                "name": "Gate-Warden's Crossbow",
+                "type": "give-item",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tallow",
+                      "value": 45
+                    }
+                  ]
+                }
+              },
+              {
+                "amount": -45,
+                "state": "state/tallow",
+                "type": "add-state",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tallow",
+                      "value": 45
+                    }
+                  ]
+                }
+              }
+            ],
+            "label": "Crossbow, 45",
+            "tooltip": "Off a dead gate-warden. The string is new; he is proud of that."
+          },
+          {
+            "effects": [
+              {
+                "style": "actionbar",
+                "text": "Pellam spreads his hands. \"Tallow first, friend.\"",
+                "type": "narrate",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tallow",
+                      "value": 99
+                    }
+                  ]
+                }
+              },
+              {
+                "carrier": "one",
+                "count": 1,
+                "item": "minecraft:diamond_sword",
+                "name": "Altar-Blessed Sword",
+                "type": "give-item",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tallow",
+                      "value": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "amount": -100,
+                "state": "state/tallow",
+                "type": "add-state",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tallow",
+                      "value": 100
+                    }
+                  ]
+                }
+              }
+            ],
+            "label": "Diamond sword, 100",
+            "tooltip": "\"Blessed at the altar.\" Nothing in this castle has been blessed in ten years."
           },
           {
             "effects": [
@@ -2760,6 +3061,63 @@
         "requires_flags": [
           "flag/ledger-read"
         ]
+      },
+      {
+        "at": "anchor/east-yard",
+        "effects": [
+          {
+            "happening": {
+              "subject": "anchor/east-yard",
+              "text": "The Chandler's hands come out of the yard.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/chandlery-hands"
+          }
+        ],
+        "id": "trigger/east-yard",
+        "on": {
+          "on": "approach",
+          "range": 6
+        }
+      },
+      {
+        "at": "anchor/spur-passage",
+        "effects": [
+          {
+            "happening": {
+              "subject": "anchor/spur-passage",
+              "text": "A gilded bowman stands on the fountain.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/garden-bowman"
+          }
+        ],
+        "id": "trigger/spur-passage",
+        "on": {
+          "on": "approach",
+          "range": 3
+        }
+      },
+      {
+        "at": "anchor/orchard",
+        "effects": [
+          {
+            "happening": {
+              "subject": "anchor/orchard",
+              "text": "The gardeners look up from the dead rows.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/gardeners"
+          }
+        ],
+        "id": "trigger/orchard",
+        "on": {
+          "on": "approach",
+          "range": 10
+        }
       }
     ],
     "waves": [
@@ -3050,9 +3408,72 @@
         ],
         "respawns_on_rest": false,
         "tier": "boss"
+      },
+      {
+        "anchor": "anchor/chandlery-hands",
+        "id": "wave/chandlery-hands",
+        "mobs": [
+          {
+            "attributes": {
+              "attack_damage": 4.0,
+              "follow_range": 18.0,
+              "max_health": 22.0
+            },
+            "count": 3,
+            "entity": "minecraft:zombie",
+            "equipment": {
+              "head": "minecraft:leather_helmet",
+              "main_hand": "minecraft:iron_shovel"
+            },
+            "name": "Tallow-Hand"
+          }
+        ],
+        "respawns_on_rest": true
+      },
+      {
+        "anchor": "anchor/garden-plinth",
+        "id": "wave/garden-bowman",
+        "mobs": [
+          {
+            "attributes": {
+              "follow_range": 24.0,
+              "max_health": 24.0
+            },
+            "count": 1,
+            "entity": "minecraft:skeleton",
+            "equipment": {
+              "chest": "minecraft:golden_chestplate",
+              "head": "minecraft:golden_helmet",
+              "main_hand": "minecraft:bow"
+            },
+            "name": "The Gilded Bowman"
+          }
+        ],
+        "respawns_on_rest": true
+      },
+      {
+        "anchor": "anchor/gardeners",
+        "id": "wave/gardeners",
+        "mobs": [
+          {
+            "attributes": {
+              "attack_damage": 4.0,
+              "follow_range": 18.0,
+              "max_health": 22.0
+            },
+            "count": 3,
+            "entity": "minecraft:zombie",
+            "equipment": {
+              "head": "minecraft:leather_helmet",
+              "main_hand": "minecraft:iron_hoe"
+            },
+            "name": "Gardener"
+          }
+        ],
+        "respawns_on_rest": true
       }
     ]
   },
-  "dsl_version": "0.29.0",
+  "dsl_version": "0.30.0",
   "stage": "quests"
 }
