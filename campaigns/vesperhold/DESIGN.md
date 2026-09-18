@@ -90,7 +90,7 @@ The east side is the castle's off-path pocket, entered by the garden gate in the
 - **The gardeners** (the orchard) — three, working the dead rows, back after every rest.
 - **The Hedge Knight** (Summerhouse) — a knight in a diamond breastplate (Protection III, Unbreaking II) who keeps a watch nobody set him; he rises in the summerhouse when the company comes within four blocks of it, and drops the breastplate.
 
-With the Last Warden-Knight kneeling beside the road in the crypt, the castle holds three optional elites, each dropping one high-tier piece; the rank and file on the east side return on every rest.
+With the Last Warden-Knight kneeling beside the road in the crypt, the castle holds three optional elites, each dropping one high-tier piece; the rank and file on the east side return on every rest, and pay tallow on every kill.
 
 ## The echoes
 
@@ -140,6 +140,7 @@ Neither ending is labelled good.
 
 - Five rest points with the full rest-and-refill contract; enemies return on rest. The Watch Fire stands at the east end of the hired knives' walk and the Tower Fire one flight under the Ringer, so a lost fight is retried from a short, safe walk away.
 - A death leaves your **Tallow** where you fell; die again first and it is gone. Tallow is a currency; Brother Pellam sells for it — arrows, a golden apple, an iron spear, a crossbow, a diamond sword, three enchanted books (Smite III, Protection II, Power II) and an iron sword with Smite II — and lies about what he sells. An anvil stands at the end of his counter, so a book goes into a weapon or a piece of armour on the spot.
+- **Every kill of the rank and file pays tallow to the player who makes it, every time** — two on the road, three on the east side, five for the Gilded Bowman — so a purse lost to a second death can be earned back at the east side's fires. The three optional elites pay twenty-five once; the bosses and the elite waves on the road pay through the story beat that ends them and nothing per kill. A body that falls to anything but a player pays nothing.
 - Every boss and elite shows a health bar, drawn for a player from the moment they cross into its arena until it falls: the Porter, the Drowned Choir, the Last Warden-Knight, the Chandler, the Hedge Knight, the Ringer Unmade, the Unremembered Guard and King Oswin. The Gilded Bowman is bait and shows none.
 - A gatekeeper before the castle proper; a front gate that is a shortcut; a side route that is the real way in.
 - An illusory wall on the main path, hinted twice.
@@ -157,5 +158,4 @@ Neither ending is labelled good.
 - **NPCs never fight**, cannot lie down or kneel, and cannot drop a prop on the floor: Halvard's death is shown standing.
 - **No riders.** The stables' undead horses are staged, riderless.
 - **No custom head blocks** in the campaign documents.
-- **No tallow for an ordinary kill.** Tallow comes from story beats; a wave that returns on rest pays nothing when it falls again, because the engine has no per-kill yield. The rank and file off the road are there for the fight, not the purse.
 - **The anvil wears out.** Vanilla damages an anvil on use and the engine does not repair it; once broken it stays broken. The stall expects a handful of uses per run.

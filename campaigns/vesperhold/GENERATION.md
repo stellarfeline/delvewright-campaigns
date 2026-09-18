@@ -2,7 +2,7 @@
 
 ## Toolchain
 
-- Built with the engine at revision `cfaccaf5` (`delvec 1.6.0, dsl 0.33.0, mc 1.21.11`), `dsl_version` 0.33.0 on every stage document and the `zh-cn` sidecar.
+- Built with the engine at revision `1e84fccb` (`delvec 1.6.0, dsl 0.33.0, mc 1.21.11`), `dsl_version` 0.33.0 on every stage document and the `zh-cn` sidecar.
 - Placement: `areas[]` with one area bound to one campaign-built piece, `prefab/vesperhold` — the whole site as a grammar program generated from `design/programs/`, ringed by a `valley` surround. A site plan was drafted first and dropped: its derived walls and roofs are the blockout's fixed palette and stay whole-owned after detail, so it cannot give the castle a designed exterior, which is the brief's one standing requirement (the Doune Castle site in this repository is the bar). The same single-area shape rules out a second space, so the second timeline is told as echoes in the present rooms.
 - No shipped library piece is bound; the campaign's only piece is its own.
 - The engine constitution's operating half (`CLAUDE.local.md`) was not available to this run; nothing here decides dispatch, review, merge or staging.
@@ -57,7 +57,7 @@ Calibration drawn from those counts: about one optional elite per eight to ten m
 - The Hedge Garden's set piece is a bait held by terrain: the Gilded Bowman on a plinth four high with a ladder on its far face, and three lurkers sprung behind the company when it reaches the fountain. The lurkers come without a telegraph.
 - The armory's two real chests each hold one piece a step above the kits: an iron sword with Sharpness II, an iron chestplate with Protection II.
 - Pellam sells arrows, a golden apple, an iron spear, a crossbow, a diamond sword, three enchanted books and an enchanted iron sword, and one lie. The anvil at the east end of his counter is how a book reaches a weapon.
-- **Pellam's prices** are set against the tallow a player holds at his stall. Tallow comes only from story beats: 40 (the Porter), 35 (the cliff path), 40 (beneath the psalter) and 20 (the rampart cleared) put 135 in a player's purse on the first visit; the hired knives add 20 (155), the Ringer 60 (215) and the keep 50 (265), the last after the road has left him. A death can forfeit all of it. On the first visit a player affords one major piece and change, never the shelf:
+- **Pellam's prices** are set against the tallow a player holds at his stall. The story beats pay every player: 40 (the Porter), 35 (the cliff path), 40 (beneath the psalter) and 20 (the rampart cleared) put 135 in a player's purse on the first visit; the hired knives add 20 (155), the Ringer 60 (215) and the keep 50 (265), the last after the road has left him. A death can forfeit all of it. On the first visit a player affords one major piece and change, never the shelf:
 
   | offer | price | why |
   |---|---|---|
@@ -68,6 +68,25 @@ Calibration drawn from those counts: about one optional elite per eight to ten m
   | diamond sword (*Altar-Blessed Sword*) | 100 | unchanged: the lie on the shelf. It costs more than the Smite book and does less against the dead |
 
   A book applied at the anvil costs experience levels, which the party earns only from kills; by vanilla's anvil rule a book costs its level times its enchantment's anvil multiplier halved (Smite III, Power II and Protection II come to two or three levels each). These figures are from memory of the game's rule and are not measured here; the next playtest reads whether a player arrives at the stall with the levels to spend.
+- **What a kill pays** (`on_kill`, spec-0074). Tallow is a `player` datum, so a kill pays the player the game credits with it. A purse forfeited on a second death is gone for good, so earnings have to be repeatable or the economy only shrinks; the rank and file are the repeatable part, and they are a top-up, never the road's income:
+
+  | fight | per kill | `fires` | bodies |
+  |---|---|---|---|
+  | cliff watch, grooms, barracks, rampart archers, hired knives | 2 | `every-kill` | 3, 4, 4, 3, 3 |
+  | the armory ambush | 2 | (left off: sprung once by its trap, never back) | 3 |
+  | Tallow-Hands, Gardeners | 3 | `every-kill` | 3, 3 |
+  | the Gilded Bowman | 5 | `every-kill` | 1 |
+  | Hedge-Lurkers | 3 | `first-kill` (an actor is re-stood only while it stands, so a dead one never pays again) | 3 |
+  | the Last Warden-Knight, the Chandler, the Hedge Knight | 25 | `first-kill` | 1 each |
+
+  The Porter, the Drowned Choir, the Ringer, the Unremembered Guard and the King keep the payout of the `kill` objective that ends them and carry no `on_kill`, so no boss pays twice.
+
+  The arithmetic, in tallow paid across the party (each kill goes to the one player who makes it):
+  - **The road's first pass.** Before the first visit to Pellam the road's rank and file are 17 bodies (cliff 3, grooms 4, barracks 4, armory 3, archers 3): 34 tallow, plus 25 for the Warden-Knight if the company wakes him. Against 135 each from the story beats, a pair of players arrives with about 165 each, a party of four with about 150: the kills add a tenth to a fifth.
+  - **The farm.** One loop of the east side after a rest — three Tallow-Hands, three Gardeners, the Bowman — pays 23. The Sexton's Blade (80) is 27 east-side kills, three and a half loops; the Smite book (70) three loops; the diamond sword (100) four and a half. A first-visit purse lost for good (135) is six loops. On the road, a rest's worth of the barracks pays 8, and the same 80 takes 40 kills.
+  - **Against the road's pace.** The story beats pay 265 over a campaign aimed at 80 minutes; a loop of the east side is a few minutes of fighting and pays 23, near the four smaller story beats (15 to 20) and under the mean of the eight (33, from 15 to 60), so farming tops a purse up or rebuilds it, and never outpaces walking on.
+
+  Research: spec-0074's record (§7) holds the precedent — in Dark Souls a rest respawns every enemy except bosses and mini-bosses, and the respawned enemies drop souls again, which is what makes soul farming possible (Fextralife, *Bonfire*, ideas only). The pair `every-kill` for the rank and file, once for the elites, is transcribed from that. No yield figure from any reference game is used; the amounts are this record's own, set against Vesperhold's purse and shelf above.
 - The Undertide Pool's well has three treads up out of the water to a gap in its lip on the north and south, each gap between two soul lanterns.
 - The portcullis windlass stands against the gatehouse wall west of the gate — two uprights, a drum with a wheel at each end under a plank hood, and its chain running up the wall and across to the gate — so the gate's passage is clear.
 - The garth's tree is an old dark oak with a two-wide bole, root flares, limbs and a full crown; the east garden's trees and the orchard rows are the same tree, one wide.
