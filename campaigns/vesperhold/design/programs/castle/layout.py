@@ -88,6 +88,17 @@ place("hedge-garden", "Hedge Garden", (111, 150, 18, 118), CASTLE, 0, "east of t
 place("summerhouse", "Summerhouse", (138, 146, 24, 33), CASTLE, 5, "an open pavilion; the Hedge Knight")
 FOUNTAIN = (134, 100)               # the dry fountain's plinth, in the parterre
 
+# the pockets off the road, one or more from every region of the route
+place("sally-tower", "Sally Tower", (116, 120, 167, 174), VALLEY, 8, "the south mural tower east of the causeway, a door in its foot on the valley floor")
+place("hall-of-arms", "Hall of Arms", (94, 98, 165, 175), CASTLE, 4, "the barbican's east gate tower, hollowed at the gate level")
+place("bastion", "Bastion", (12, 16, 166, 171), CASTLE, 4, "a storeroom in the south-west bastion, its door off the west shelf")
+place("ossuary", "Ossuary", (58, 70, 115, 129), UNDER, 6, "under the ward, down the dry fountain: the gallery and the charnel chamber")
+place("ringers-stair", "Ringers' Stair", (21, 33, 15, 23), CASTLE, 12, "down the bell tower's foot from the stair hall to a door into the Founders' Yard")
+place("founders-yard", "Founders' Yard", (34, 52, 18, 30), CASTLE, 0, "north of the chapel, under the buttress walk: the casting pit and the Bellfounder")
+place("arbalest-turret", "Arbalest Turret", (163, 169, 97, 103), WALK, 4, "the mural tower on the east curtain, off the rampart walk")
+place("gallows-walk", "Gallows Walk", (84, 108, 5, 9), CASTLE, 0, "the ground under the north curtain behind the keep")
+place("buttery", "Buttery", (112, 120, 72, 81), CASTLE, 5, "off the great hall's east wall")
+
 # The side route, end to end: the postern in the barbican's south face, west
 # along the south shelf, round the south-west corner, north along the west
 # shelf, in at the stables' back door.

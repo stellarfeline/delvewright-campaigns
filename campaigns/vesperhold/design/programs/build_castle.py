@@ -17,7 +17,7 @@ sys.path.insert(0, str(HERE))
 from castle.layout import X, Y, Z
 from castle.grid import Grid, PAL, AIR, settle_stairs, settle_rails
 from castle import palette  # noqa: F401  (declares the shared roles)
-from castle import terrain, approach, walls, ward, cathedral, undercroft, keep, belltower, gardens
+from castle import terrain, approach, walls, ward, cathedral, undercroft, keep, belltower, gardens, pockets
 
 
 class Step:
@@ -26,7 +26,7 @@ class Step:
 
 
 PARTS = [terrain, Step(ward.grounds), walls, approach, ward, cathedral, undercroft,
-         keep, belltower, Step(walls.buttress_walk), gardens, Step(terrain.parapets)]
+         keep, belltower, Step(walls.buttress_walk), gardens, pockets, Step(terrain.parapets)]
 
 
 def sz(n):
