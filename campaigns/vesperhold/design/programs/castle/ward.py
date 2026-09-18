@@ -167,8 +167,8 @@ def armory(g):
     chest = lambda f: block(f"minecraft:chest[facing={f},type=single,waterlogged=false]")
     g.set(x1, C, z1, chest("west"))
     g.set(156, C, z0, chest("south"))
-    # (the false chest is a plain chest: the audit's palette refuses a trapped one)
-    g.set(157, C, 152, chest("west"))
+    # the false chest is a trapped chest, the trap's own trigger, standing like the real ones
+    g.set(157, C, 152, block("minecraft:trapped_chest[facing=west,type=single,waterlogged=false]"))
     g.mark("armory", 155, C, 150, "west")
     g.mark("armory-chest-south", x1, C, z1, "west", holds=True)
     g.mark("armory-chest-north", 156, C, z0, "south", holds=True)

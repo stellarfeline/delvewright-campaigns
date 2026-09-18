@@ -1,7 +1,7 @@
 """The curtain, its corner towers, the east rampart with its stair tower and
 spur, the watch tower, and the buttress walk along the north edge."""
 from . import layout as L
-from .grid import room, crenels, flight, hsh, stairs, slab, pyramid, tower, AIR
+from .grid import room, crenels, flight, hsh, stairs, slab, pyramid, tower, block, AIR
 from .palette import (WALL, WALL_RUIN, TRIM, QUOIN, FLAG, FLOOR, LANTERN,
                       DARK_PLANKS, PLANKS, COBWEB, POST, CANDLES, ROOF, BARS_X, BARS_Z)
 
@@ -100,7 +100,10 @@ def east_rampart(g):
         g.set(x1, W, z + 6, LANTERN)
     g.mark("east-rampart", 155, W, 70, "north")
     g.mark("rampart-archers", 155, W, 45, "south")
-    g.mark("rampart-volley", 155, W, 90, "north")
+    # the volley's plate, set in a whole flagstone in the middle of the walk
+    g.set(155, top, 90, block("minecraft:stone_bricks"))
+    g.set(155, W, 90, block("minecraft:stone_pressure_plate[powered=false]"))
+    g.mark("rampart-volley", 155, W, 90, "north", holds=True)
     g.mark("rampart-volley-battery", 155, W, 60, "south")
 
 
@@ -160,6 +163,8 @@ def watch_tower(g):
     # Pellam's stall: a counter of planks and his wares
     g.box(x0 + 2, x0 + 7, W, W, 11, 11, DARK_PLANKS)
     g.set(x0 + 2, W + 1, 11, CANDLES)
+    # an anvil at the counter's east end, on the company's side, for the books he sells
+    g.set(x0 + 8, W, 12, block("minecraft:anvil[facing=north]"))
     g.set(x1 - 1, W, z0, LANTERN)
     g.set(x0, W, z1, LANTERN)
     g.mark("watch-tower", 156, W, 17, "south")
