@@ -46,6 +46,7 @@ def build(g):
     g.set(24, W, 16, LANTERN)
     g.set(x0 + 5, W + 12, z1, LANTERN)
     g.mark("bell-tower-stair", 26, W, 18, "west")
+    g.mark("tower-fire", 30, W, 17, "west")
     g.mark("tower-shard", 24, W, 15, "south")
     g.mark("echo-apprentice", 17, W + 7, 18, "north")
 

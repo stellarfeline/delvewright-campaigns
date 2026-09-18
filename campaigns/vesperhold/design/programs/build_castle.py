@@ -17,7 +17,7 @@ sys.path.insert(0, str(HERE))
 from castle.layout import X, Y, Z
 from castle.grid import Grid, PAL, AIR, settle_stairs
 from castle import palette  # noqa: F401  (declares the shared roles)
-from castle import terrain, approach, walls, ward, cathedral, undercroft, keep, belltower
+from castle import terrain, approach, walls, ward, cathedral, undercroft, keep, belltower, gardens
 
 
 class Step:
@@ -26,7 +26,7 @@ class Step:
 
 
 PARTS = [terrain, Step(ward.grounds), walls, approach, ward, cathedral, undercroft,
-         keep, belltower, Step(walls.buttress_walk)]
+         keep, belltower, Step(walls.buttress_walk), gardens]
 
 
 def sz(n):
@@ -75,7 +75,10 @@ def build():
     print(f"stairs: {settled} shape(s) derived from their neighbours")
     marks, bad = {}, []
     for name, (x, y, z, facing, role) in g.anchors.items():
-        if name in g.points:
+        if name in g.furniture:
+            if g.get(x, y, z) == AIR:
+                bad.append(f"anchor {name} at {(x, y, z)} names furniture and holds none")
+        elif name in g.points:
             if g.get(x, y, z) != AIR:
                 bad.append(f"anchor {name} at {(x, y, z)} is inside a block")
         elif g.get(x, y, z) != AIR or g.get(x, y + 1, z) != AIR:

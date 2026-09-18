@@ -79,6 +79,18 @@ def pool(g):
             elif d2 <= 26:
                 g.set(x, U, z, slab("minecraft:polished_deepslate_slab"))
     g.box(cx - 5, cx + 5, U - 5, U - 5, cz - 5, cz + 5, ROCK)
+    # a way out of the water on the north and south: three treads climbing
+    # out of the well to a gap in its lip, so a body that falls in can walk out
+    for sgn, face in ((-1, "north"), (1, "south")):
+        for k, y in enumerate((U - 1, U - 2, U - 3)):
+            z = cz + sgn * (4 - k)
+            g.box(cx - 1, cx + 1, U - 5, y - 1, z, z, ROCK)
+            g.box(cx - 1, cx + 1, y, y, z, z, stairs("minecraft:polished_deepslate_stairs", face, wet=True))
+        g.box(cx - 1, cx + 1, U, U, cz + sgn * 4, cz + sgn * 4, AIR)
+        g.box(cx - 1, cx + 1, U, U, cz + sgn * 5, cz + sgn * 5, AIR)
+        g.box(cx - 1, cx + 1, U - 1, U - 1, cz + sgn * 5, cz + sgn * 5, FLOOR)
+        for x in (cx - 2, cx + 2):             # a lamp either side of the way out
+            g.set(x, U, cz + sgn * 5, SOUL_LANTERN)
     # choir stalls round the well, and the fallen tongue at its lip
     for (sx, sz) in ((cx - 8, cz), (cx + 8, cz), (cx, cz - 8), (cx, cz + 8)):
         g.set(sx, U, sz, stairs("minecraft:polished_deepslate_stairs", "south"))

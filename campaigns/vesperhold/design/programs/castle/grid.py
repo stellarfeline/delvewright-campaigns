@@ -47,14 +47,15 @@ def state(block, **props):
 STAIRS = {}                          # role id -> (material, facing, half, shape)
 
 
-def stairs(material, facing, half="bottom", shape="straight"):
+def stairs(material, facing, half="bottom", shape="straight", wet=False):
     """A stair role: `facing` is the direction a body ascends it. The shape is
-    written straight here and derived from the neighbours by `settle_stairs`."""
+    written straight here and derived from the neighbours by `settle_stairs`.
+    `wet` is a stair standing in water (waterlogged)."""
     suffix = "" if shape == "straight" else f"_{shape}"
-    name = f"{material.split(':')[1]}__{facing}_{half}{suffix}"
+    name = f"{material.split(':')[1]}__{facing}_{half}{suffix}{'_wet' if wet else ''}"
     r = PAL.role(name, state(material, facing=facing, half=half,
-                             shape=shape, waterlogged=False))
-    STAIRS[r] = (material, facing, half, shape)
+                             shape=shape, waterlogged=wet))
+    STAIRS[r] = (material, facing, half, shape, wet)
     return r
 
 
@@ -74,7 +75,7 @@ def settle_stairs(g):
         if r not in ids:
             continue
         x = i % X; rest = i // X; y = rest % Y; z = rest // Y
-        mat, facing, half, _ = STAIRS[r]
+        mat, facing, half, _, wet = STAIRS[r]
 
         def at(d, _x=x, _z=z):
             dx, dz = _STEP[d]
@@ -99,7 +100,7 @@ def settle_stairs(g):
                 if (d2 in ("east", "west")) != (facing in ("east", "west")) and can_take(d2):
                     shape = "inner_left" if d2 == _CCW[facing] else "inner_right"
         if shape != "straight":
-            changes.append((x, y, z, stairs(mat, facing, half, shape)))
+            changes.append((x, y, z, stairs(mat, facing, half, shape, wet)))
     for x, y, z, r in changes:
         g.set(x, y, z, r)
     return len(changes)
@@ -122,6 +123,7 @@ class Grid:
         self.anchors = {}            # name -> (x, y, z, facing, role)
         self.gates = {}              # name -> ((x0,y0,z0),(x1,y1,z1), block)
         self.points = set()          # anchors that name a cell nobody stands in
+        self.furniture = set()       # point anchors that name a block (a chest), not air
 
     def _i(self, x, y, z):
         return (z * Y + y) * X + x
@@ -157,9 +159,13 @@ class Grid:
                 return y
         return -1
 
-    def mark(self, name, x, y, z, facing, role=None, stand=True):
-        if not stand:
+    def mark(self, name, x, y, z, facing, role=None, stand=True, holds=False):
+        """`stand=False` names a cell nobody stands in; `holds=True` names the
+        cell of a piece of furniture the campaign fills (a chest)."""
+        if not stand or holds:
             self.points.add(name)
+        if holds:
+            self.furniture.add(name)
         if name in self.anchors:
             raise ValueError(f"anchor {name} marked twice")
         self.anchors[name] = (x, y, z, facing, role)
@@ -349,3 +355,39 @@ def tower(g, x0, x1, z0, z1, base, top, wall, roof, trim, quoin=None, cap=True, 
             g.clear(x0, x0, y, y + 1, mz, mz); g.clear(x1, x1, y, y + 1, mz, mz)
     if cap:
         pyramid(g, x0, x1, z0, z1, top + 2, roof, cap=trim)
+
+
+def tree(g, tx, tz, base, log, wood, leaves, trunk=2, height=6, spread=5, seed=0):
+    """A broad old tree that reads as one at a walker's eye: a `trunk`-wide
+    bole with root flares, four limbs forking out and up from its head, and a
+    layered crown of leaves over the limbs. `(tx, tz)` is the bole's north-west
+    column, `base` the course its roots stand on, `log`/`wood` the axis-y log
+    and bark-all-round block of one species, `leaves` its (persistent) leaves.
+    Returns the crown's centre (x, y, z)."""
+    cx, cz = tx + (trunk - 1) / 2, tz + (trunk - 1) / 2
+    for dx in range(trunk):
+        for dz in range(trunk):
+            g.box(tx + dx, tx + dx, base, base + height, tz + dz, tz + dz, log)
+    # root flares on the four sides of the bole
+    for (rx, rz) in ((tx - 1, tz), (tx + trunk, tz + trunk - 1), (tx + trunk - 1, tz - 1), (tx, tz + trunk)):
+        g.set(rx, base, rz, wood)
+    # four limbs, one from each face of the head, climbing as they reach out
+    head = base + height
+    for k, (ux, uz) in enumerate(((1, 0), (-1, 0), (0, 1), (0, -1))):
+        reach = 2 + int(2 * hsh(tx, tz, seed, k))
+        sx = tx + (trunk if ux > 0 else -1 if ux < 0 else int(hsh(tx, k, seed) * trunk))
+        sz = tz + (trunk if uz > 0 else -1 if uz < 0 else int(hsh(tz, k, seed) * trunk))
+        y = head - 2 + (k % 2)
+        for s in range(reach):
+            g.set(sx + ux * s, y + s // 2, sz + uz * s, wood)
+    # the crown: three courses of leaves, broad in the middle, holed a little
+    top = head + 3
+    for y in range(head - 1, top + 1):
+        r = spread - (1 if y in (head - 1, top) else 0) - (1 if y == top else 0)
+        for x in range(int(cx - r - 1), int(cx + r + 2)):
+            for z in range(int(cz - r - 1), int(cz + r + 2)):
+                d2 = (x - cx) ** 2 + (z - cz) ** 2
+                if d2 <= r * r + .5 and hsh(x, y, z, seed) < (.93 if d2 < (r - 1) ** 2 else .7):
+                    if g.get(x, y, z) == AIR:
+                        g.set(x, y, z, leaves)
+    return (cx, head, cz)

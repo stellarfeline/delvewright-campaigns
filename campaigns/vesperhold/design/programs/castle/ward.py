@@ -1,7 +1,7 @@
 """The outer ward and what stands round it: the stables, the barracks and
 armory, the keep steps, the cloister lane, the inner walls and the gardens."""
 from . import layout as L
-from .grid import room, crenels, gable, hsh, stairs, slab, block, AIR
+from .grid import room, crenels, gable, hsh, stairs, slab, block, tree, AIR
 from .palette import (WALL, WALL_RUIN, TRIM, QUOIN, FLAG, FLOOR, LANTERN, LANTERN_HANG,
                       DARK_PLANKS, PLANKS, COBWEB, POST, BEAM, BEAM_Z, HAY, STRAW,
                       TURF, ROCK_MOSS, ROOF, ROOF_RUIN, ROOF_MAT, CANDLES, CHAIN,
@@ -22,14 +22,8 @@ def grounds(g):
                 g.set(x, C, z, ROCK_MOSS)
     # gardens: a few dark trees behind the keep and east of it
     for (tx, tz) in ((118, 40), (126, 64), (116, 84), (134, 30), (40, 124), (132, 88)):
-        g.box(tx, tx, C, C + 5, tz, tz, LOG)
-        for dy in range(3, 7):
-            r = 2 if dy < 6 else 1
-            for dx in range(-r, r + 1):
-                for dz in range(-r, r + 1):
-                    if (dx or dz) and abs(dx) + abs(dz) <= r + 1 and hsh(tx + dx, tz + dz, dy) < .85:
-                        if g.get(tx + dx, C + dy, tz + dz) == AIR:
-                            g.set(tx + dx, C + dy, tz + dz, DARK_LEAVES)
+        tree(g, tx, tz, C, block("minecraft:dark_oak_log[axis=y]"), block("minecraft:dark_oak_wood[axis=y]"),
+             DARK_LEAVES, trunk=1, height=5, spread=3, seed=tx * 7 + tz)
 
 
 def ward(g):
@@ -55,11 +49,18 @@ def ward(g):
     for z in range(100, 152, 2):
         if not 120 <= z <= 135:
             g.set(124, C + 8, z, WALL)
-    # the winch for the portcullis, against the south wall
-    g.box(84, 84, C, C + 2, 150, 150, POST)
-    g.box(92, 92, C, C + 2, 150, 150, POST)
-    g.box(84, 92, C + 2, C + 2, 150, 150, BEAM)
-    g.box(86, 90, C + 1, C + 1, 150, 150, DARK_PLANKS)
+    # the portcullis windlass, against the gatehouse wall west of the gate and
+    # clear of the passage: two uprights, a drum between them with a wheel at
+    # each end, and the chain running up the wall and across to the gate
+    g.box(78, 78, C, C + 2, 151, 151, POST)
+    g.box(83, 83, C, C + 2, 151, 151, POST)
+    g.box(79, 82, C + 1, C + 1, 151, 151, BEAM)
+    g.set(77, C + 1, 151, block("minecraft:grindstone[face=wall,facing=west]"))
+    g.set(84, C + 1, 151, block("minecraft:grindstone[face=wall,facing=east]"))
+    g.box(78, 83, C + 3, C + 3, 151, 151, slab("minecraft:spruce_slab"))
+    g.box(81, 81, C + 2, C + 6, 151, 151, CHAIN)
+    g.set(81, C + 7, 151, BEAM_Z)
+    g.box(82, 85, C + 7, C + 7, 151, 151, block("minecraft:iron_chain[axis=x,waterlogged=false]"))
     # lanterns on posts round the ward
     for (lx, lz) in ((56, 104), (56, 146), (120, 104), (120, 146), (70, 126), (106, 126)):
         g.box(lx, lx, C, C + 1, lz, lz, POST)
@@ -70,7 +71,7 @@ def ward(g):
     for (rx, rz) in ((62, 110), (63, 111), (114, 143), (76, 144)):
         g.set(rx, C, rz, ROCK_MOSS)
     g.mark("outer-ward", 88, C, 140, "north")
-    g.mark("portcullis-winch", 88, C, 148, "north")
+    g.mark("portcullis-winch", 80, C, 149, "south")
     g.mark("ward-patrol", 72, C, 118, "south")
     g.mark("ward-patrol-east", 108, C, 132, "west")
 
@@ -161,8 +162,17 @@ def armory(g):
     g.box(x0 + 1, x0 + 3, C, C, z1, z1, DARK_PLANKS)
     g.set(x1 - 1, C, z0, LANTERN)
     g.set(x0, C + p.height - 1, z1, COBWEB)
+    # the stores: two real chests in the corners, and the false one standing
+    # out on the floor where a reward is most plausible
+    chest = lambda f: block(f"minecraft:chest[facing={f},type=single,waterlogged=false]")
+    g.set(x1, C, z1, chest("west"))
+    g.set(156, C, z0, chest("south"))
+    # (the false chest is a plain chest: the audit's palette refuses a trapped one)
+    g.set(157, C, 152, chest("west"))
     g.mark("armory", 155, C, 150, "west")
-    g.mark("false-chest", 157, C, 152, "west")
+    g.mark("armory-chest-south", x1, C, z1, "west", holds=True)
+    g.mark("armory-chest-north", 156, C, z0, "south", holds=True)
+    g.mark("false-chest", 157, C, 152, "west", holds=True)
     g.mark("armory-ambush", 154, C, 148, "east")
 
 

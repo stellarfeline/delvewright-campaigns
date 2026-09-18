@@ -1,7 +1,7 @@
 """The cathedral quarter: the cloister and its well-house, the Chapel of Hours,
 the scriptorium with the Psalter Wall, and the annex the wall hides."""
 from . import layout as L
-from .grid import room, crenels, gable, pyramid, rose, lancet, hsh, stairs, slab, block, AIR
+from .grid import room, crenels, gable, pyramid, rose, lancet, hsh, stairs, slab, block, tree, AIR
 from .palette import (WALL, TRIM, TRIM_TUFF, QUOIN, FLAG, FLOOR, FLOOR_HALL, LANTERN,
                       LANTERN_HANG, CHAPEL, PILLAR, GLASS, GLASS_DARK, ROSE_GLASS, TURF,
                       ROOF, ROOF_MAT, DARK_PLANKS, PLANKS, BOOKS, CANDLES, COBWEB, POST,
@@ -45,13 +45,11 @@ def cloister(g):
         g.box(x0 + k, x0 + k, y, y, z0 + k + 1, z1 - k - 1, stairs(ROOF_MAT, "east"))
         g.box(x1 - k, x1 - k, y, y, z0 + k + 1, z1 - k - 1, stairs(ROOF_MAT, "west"))
         g.box(x0 - 4, x1 + 4, y, y, z0 - 4, z0 - 1 - 0, CHAPEL) if k == 0 else None
-    # the gnarled tree in the garth
-    tx, tz = 34, 78
-    g.box(tx, tx, C, C + 4, tz, tz, block("minecraft:dark_oak_log[axis=y]"))
-    for dx in range(-2, 3):
-        for dz in range(-2, 3):
-            if abs(dx) + abs(dz) <= 3 and hsh(dx, dz, 121) < .8:
-                g.set(tx + dx, C + 5, tz + dz, block("minecraft:dark_oak_leaves[distance=1,persistent=true,waterlogged=false]"))
+    # the old dark oak in the garth: a two-wide bole, limbs and a full crown
+    # that roofs the lawn's west half, clear of the pool's grating
+    tree(g, 29, 73, C, block("minecraft:dark_oak_log[axis=y]"), block("minecraft:dark_oak_wood[axis=y]"),
+         block("minecraft:dark_oak_leaves[distance=1,persistent=true,waterlogged=false]"),
+         trunk=2, height=5, spread=5, seed=121)
     # doors: east to the lane, north to the chapel, south to the scriptorium
     g.clear(x1 + 1, x1 + 4, C, C + 3, 74, 76)
     g.box(x1 + 1, x1 + 4, C - 1, C - 1, 74, 76, FLOOR)

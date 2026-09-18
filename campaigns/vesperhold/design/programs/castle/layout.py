@@ -81,6 +81,13 @@ place("great-hall", "Great Hall", (60, 107, 60, 91), CASTLE, 18, "the Almoner's 
 place("antechamber", "Antechamber", (76, 91, 47, 55), DAIS, 7, "the Throne Fire")
 place("throne-hall", "Throne Hall", (60, 107, 20, 43), DAIS, 22, "")
 
+# the east side, off the road
+place("chandlery-yard", "Chandlery Yard", (142, 164, 130, 143), CASTLE, 0, "behind the garden gate; the Chandler at his vat, the chandlery on the curtain")
+place("spur-passage", "Spur Passage", (145, 147, 119, 126), CASTLE, 3, "a vaulted way under the rampart spur, the yard to the garden")
+place("hedge-garden", "Hedge Garden", (111, 150, 18, 118), CASTLE, 0, "east of the keep: the parterre and dry fountain at the south, the orchard, the summerhouse at the north")
+place("summerhouse", "Summerhouse", (138, 146, 24, 33), CASTLE, 5, "an open pavilion; the Hedge Knight")
+FOUNTAIN = (134, 100)               # the dry fountain's plinth, in the parterre
+
 # The side route, end to end: the postern in the barbican's south face, west
 # along the south shelf, round the south-west corner, north along the west
 # shelf, in at the stables' back door.
