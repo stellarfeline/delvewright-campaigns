@@ -51,7 +51,7 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | West cliffs | Stables | the long stable block on the crag's west edge; spear-armed grooms among the undead horses |
 | Ward | Outer Ward | the hub; the portcullis windlass against the gatehouse wall beside the gate (**shortcut 1**) |
 | Ward | Barracks | a fight among bunks with scraped-blank nameplates |
-| Ward | Armory | two real chests, each holding one better piece (the Garrison Blade, the Garrison Hauberk); a false chest among them that becomes a shulker and an ambush |
+| Ward | Armory | two real chests, each holding one better piece (the Garrison Blade, the Garrison Hauberk); a false chest among them — a trapped chest, the same shape as the real ones — that becomes a shulker and an ambush |
 | Ward | Cloister Lane | the walled lane from the ward's north-west corner to the cloister |
 | Ward | Keep Steps | the sealed Keep Doors — "they open to the bell" |
 | Cathedral | Cloister Garth | **Cloister Fire** (rest 2); Ser Halvard's first watch; the well-house; an old dark oak over the lawn |
@@ -62,8 +62,8 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Undercroft | Undertide Pool | a lethal well of grey water with steps up out of it on its north and south, a lamp either side of each; **the Drowned Choir**; the fallen bell-tongue |
 | Undercroft | Well-House | the stair up into the cloister; **shortcut 2** |
 | Heights | Rampart Stair | the tower up to the wall walk |
-| Heights | East Rampart | the long wall walk north; archers and a volley trap |
-| Heights | Watch Tower | **Watch Fire** (rest 3); Brother Pellam's stall; Ser Halvard's second watch and his choice |
+| Heights | East Rampart | the long wall walk north; archers, and a pressure plate in the flagstones that looses a volley |
+| Heights | Watch Tower | **Watch Fire** (rest 3); Brother Pellam's stall and the anvil at its end; Ser Halvard's second watch and his choice |
 | Heights | Buttress Walk | a high walk along the north edge over the keep's buttresses to the Warden's Door |
 | Heights | Bell Tower Stair | **Tower Fire** (rest 4), lit when the shard wakes; the climb; the second shard; **the tower echo** |
 | Heights | Belfry | **mid-boss: the Ringer Unmade**; hang the tongue, ring the cracked Vesper once; **the belfry echo** |
@@ -139,7 +139,8 @@ Neither ending is labelled good.
 ## Souls elements
 
 - Five rest points with the full rest-and-refill contract; enemies return on rest. The Watch Fire stands at the east end of the hired knives' walk and the Tower Fire one flight under the Ringer, so a lost fight is retried from a short, safe walk away.
-- A death leaves your **Tallow** where you fell; die again first and it is gone. Tallow is a currency; Brother Pellam sells for it — arrows, a golden apple, an iron spear, a crossbow and a diamond sword — and lies about what he sells.
+- A death leaves your **Tallow** where you fell; die again first and it is gone. Tallow is a currency; Brother Pellam sells for it — arrows, a golden apple, an iron spear, a crossbow, a diamond sword, three enchanted books (Smite III, Protection II, Power II) and an iron sword with Smite II — and lies about what he sells. An anvil stands at the end of his counter, so a book goes into a weapon or a piece of armour on the spot.
+- Every boss and elite shows a health bar, drawn for a player from the moment they cross into its arena until it falls: the Porter, the Drowned Choir, the Last Warden-Knight, the Chandler, the Hedge Knight, the Ringer Unmade, the Unremembered Guard and King Oswin. The Gilded Bowman is bait and shows none.
 - A gatekeeper before the castle proper; a front gate that is a shortcut; a side route that is the real way in.
 - An illusory wall on the main path, hinted twice.
 - Real chests and a false one in the armory, a volley trap on the rampart, a lethal well in the Undertide Pool with a way out of the water.
@@ -157,5 +158,4 @@ Neither ending is labelled good.
 - **No riders.** The stables' undead horses are staged, riderless.
 - **No custom head blocks** in the campaign documents.
 - **No tallow for an ordinary kill.** Tallow comes from story beats; a wave that returns on rest pays nothing when it falls again, because the engine has no per-kill yield. The rank and file off the road are there for the fight, not the purse.
-- **No enchanted books and no anvil.** A shop gives items without enchantments, and neither a shop nor a chest can give a book its stored enchantments, so Pellam sells no book; the prefab audit refuses an anvil, so none stands at his stall.
-- **The false chest is a plain chest.** The prefab audit refuses a trapped chest, so the false chest looks exactly like the real ones.
+- **The anvil wears out.** Vanilla damages an anvil on use and the engine does not repair it; once broken it stays broken. The stall expects a handful of uses per run.

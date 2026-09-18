@@ -2,7 +2,7 @@
 
 ## Toolchain
 
-- Built with the engine at revision `509ebc58` (`delvec 1.6.0, dsl 0.30.0, mc 1.21.11`), `dsl_version` 0.30.0 on every stage document and the `zh-cn` sidecar.
+- Built with the engine at revision `cfaccaf5` (`delvec 1.6.0, dsl 0.33.0, mc 1.21.11`), `dsl_version` 0.33.0 on every stage document and the `zh-cn` sidecar.
 - Placement: `areas[]` with one area bound to one campaign-built piece, `prefab/vesperhold` — the whole site as a grammar program generated from `design/programs/`, ringed by a `valley` surround. A site plan was drafted first and dropped: its derived walls and roofs are the blockout's fixed palette and stay whole-owned after detail, so it cannot give the castle a designed exterior, which is the brief's one standing requirement (the Doune Castle site in this repository is the bar). The same single-area shape rules out a second space, so the second timeline is told as echoes in the present rooms.
 - No shipped library piece is bound; the campaign's only piece is its own.
 - The engine constitution's operating half (`CLAUDE.local.md`) was not available to this run; nothing here decides dispatch, review, merge or staging.
@@ -40,9 +40,34 @@ Calibration drawn from those counts: about one optional elite per eight to ten m
 - Both forks put their options in one node, each option setting its flag and completing the talk objective, so the two branches are exclusive by construction. Halvard leaves the watch tower on both branches; only what the party finds at the Throne Fire differs.
 - Five fires: the Causeway, Cloister, Watch, Tower and Throne Fires. The Watch Fire stands in the watch tower's north-east corner, beyond the rampart archers' reach, lit when the rampart is cleared; the Tower Fire stands in the bell tower's stair hall, one flight under the Ringer.
 - The east side is the castle's one off-road pocket: the Chandlery Yard (the Chandler, three Tallow-Hands), the Spur Passage, the Hedge Garden (the Gilded Bowman, three Hedge-Lurkers, three Gardeners) and the Summerhouse (the Hedge Knight). Every wave there returns on rest; the two elites are actors sprung by approach, as the Last Warden-Knight is, and each drops the piece it wears.
+- **Health bars** (`health_bar`, spec-0073) on every fight billed `boss` or `elite`, each titled by the fight's own name. A bar is drawn for a player within `range` blocks of a live body, so each `range` is the distance from the body's seat to the threshold of its arena — the bar comes up as the player crosses into the room and not before:
+
+  | fight | seat (piece) | range | threshold it answers |
+  |---|---|---|---|
+  | the Porter | (87, 24, 158) | 14 | the barbican's south arch, z 172 |
+  | the Drowned Choir | (36, 12, 70) | 22 | the pool's south mouth from the crypt passage, z 92 |
+  | the Last Warden-Knight | (47, 13, 115) | 24 | the crypt's west door (25, 125); he shows it only once he stands |
+  | the Chandler | (153, 24, 135) | 14 | the chandlery yard's corners; he shows it only once he turns from the vat |
+  | the Hedge Knight | (142, 24, 27) | 14 | the summerhouse and its lawn; he shows it only once he steps out |
+  | the Ringer Unmade | (24, 52, 12) | 12 | the head of the stair onto the bell deck; the Tower Fire, one flight down, is 18 away |
+  | the Unremembered Guard | (83, 24, 72) | 20 | the Keep Doors, z 93 |
+  | King Oswin | (83, 28, 32) | 14 | the throne hall's door, z 46; the Throne Fire is 19 away |
+
+  The Gilded Bowman is bait and the east side's rank and file are no one's billing; they show none.
 - The Hedge Garden's set piece is a bait held by terrain: the Gilded Bowman on a plinth four high with a ladder on its far face, and three lurkers sprung behind the company when it reaches the fountain. The lurkers come without a telegraph.
 - The armory's two real chests each hold one piece a step above the kits: an iron sword with Sharpness II, an iron chestplate with Protection II.
-- Pellam sells arrows, a golden apple, an iron spear, a crossbow and a diamond sword, and one lie.
+- Pellam sells arrows, a golden apple, an iron spear, a crossbow, a diamond sword, three enchanted books and an enchanted iron sword, and one lie. The anvil at the east end of his counter is how a book reaches a weapon.
+- **Pellam's prices** are set against the tallow a player holds at his stall. Tallow comes only from story beats: 40 (the Porter), 35 (the cliff path), 40 (beneath the psalter) and 20 (the rampart cleared) put 135 in a player's purse on the first visit; the hired knives add 20 (155), the Ringer 60 (215) and the keep 50 (265), the last after the road has left him. A death can forfeit all of it. On the first visit a player affords one major piece and change, never the shelf:
+
+  | offer | price | why |
+  |---|---|---|
+  | Book of Smite III (*Litany for the Unquiet*) | 70 | the strongest thing he sells: almost everything in Vesperhold is undead, and Smite III goes on every class's weapon (sword, axe, mace). Dearer than any single piece so it is the first visit's one choice |
+  | Iron sword, Smite II, Unbreaking I (*Sexton's Blade*) | 80 | the enchanted mid-tier weapon: a ready-made undead-killer that needs no anvil and no experience, priced above the book it is weaker than because it is the one that needs nothing else |
+  | Book of Power II (*Bowyer's Hymnal*) | 55 | the archer's book; one class uses it, so it sits under the Smite book |
+  | Book of Protection II (*Vigil Psalter*) | 50 | one armour piece a step up — the Garrison Hauberk's enchantment, for any piece |
+  | diamond sword (*Altar-Blessed Sword*) | 100 | unchanged: the lie on the shelf. It costs more than the Smite book and does less against the dead |
+
+  A book applied at the anvil costs experience levels, which the party earns only from kills; by vanilla's anvil rule a book costs its level times its enchantment's anvil multiplier halved (Smite III, Power II and Protection II come to two or three levels each). These figures are from memory of the game's rule and are not measured here; the next playtest reads whether a player arrives at the stall with the levels to spend.
 - The Undertide Pool's well has three treads up out of the water to a gap in its lip on the north and south, each gap between two soul lanterns.
 - The portcullis windlass stands against the gatehouse wall west of the gate — two uprights, a drum with a wheel at each end under a plank hood, and its chain running up the wall and across to the gate — so the gate's passage is clear.
 - The garth's tree is an old dark oak with a two-wide bole, root flares, limbs and a full crown; the east garden's trees and the orchard rows are the same tree, one wide.
@@ -59,7 +84,7 @@ The whole site is one grammar-built piece, `prefab/vesperhold`, expanded at **17
 
 Heights in piece coordinates: valley floor feet 8, castle floor 24, keep dais 28, wall walks 36, bell deck 52, undercroft 12.
 
-What the machine says about the piece at admission: every expansion gate passes (blocks exist, shapes and states complete, oriented fills, stair shapes as vanilla derives them, fluid contained); `prefab audit` passes; `walk_y` 8, `waterline_y` 11; lighting profile `dark`: 4812 of 43015 floor cells reachable on foot are below light 3 under a clear night sky (1935 at 0, 1113 at 1, 1764 at 2); the area's torch pass (`min_light` 3) lights the rest at build. The piece marks 101 point anchors — 96 cells a body stands in, three furniture cells (the armory's three chests) and two cells nobody stands in — and six gate regions.
+What the machine says about the piece at admission: every expansion gate passes (blocks exist, shapes and states complete, oriented fills, stair shapes as vanilla derives them, fluid contained); `prefab audit` passes; `walk_y` 8, `waterline_y` 11; lighting profile `dark`: 4812 of 43015 floor cells reachable on foot are below light 3 under a clear night sky (1936 at 0, 1112 at 1, 1764 at 2); the area's torch pass (`min_light` 3) lights the rest at build. The piece marks 101 point anchors — 95 cells a body stands in, four furniture cells (the armory's three chests and the rampart's plate) and two cells nobody stands in — and six gate regions.
 
 The valley field is ringed by a two-course dry-stone wall on the piece's edge, and `world.boundary` holds the party four blocks beyond it, so the party's world ends where the piece does. The causeway's parapets are unbroken, iron bars between merlons, so nothing on the bridge is a way off it.
 
@@ -69,7 +94,7 @@ The valley field is ringed by a two-course dry-stone wall on the piece's edge, a
 - **The Almoner's Door is barred for good.** As a shortcut it failed `DW0374`: from the campaign entry the Keep Doors reach the Great Hall sooner than the cloister lane does, so opening it shortened no walk. The Throne Fire already stands beside the keep's fights. The door stays in the hall's west wall, as the approved image shows it.
 - **Every reach volume is sized to its own floor** (`DW0881`), so no cube takes in a parapet top or a floor on the far side of a wall. The Buttress Walk gained a short roofed arch where its objective is, so the parapet under it is no floor, and the Antechamber's floor was filled beneath, closing a hollow.
 - **The Tower Fire is lit when the second shard wakes, not when the Warden's Door opens.** Armed in the door's own beat, the stake proof (`DW0525`) refused it: it measures a fire's reign from the state the party arrives in at the arming step, which is before the door that same step opens, so from inside the tower the whole castle read as unreachable. The shard is in the same stair hall, one objective later, and nothing about the fight changes.
-- **The false chest is a plain chest.** The prefab audit's palette refuses `minecraft:trapped_chest` (`DW0730`), which is the block a `trapped-chest` trap names as its visible trigger; a plain chest is the only chest the audit admits, and the trap's own trigger is the interaction the compiler places on that cell. The armory's two real chests are plain chests too, so nothing tells the false one apart.
-- **No anvil stands at Pellam's stall.** The prefab audit refuses `minecraft:anvil` (`DW0730`).
+- **Every trap stands on its trigger** (`DW0917`). The false chest is a `minecraft:trapped_chest` at piece (157, 24, 152), world (157, 80, 152), facing west like the real chests beside it; the volley's `minecraft:stone_pressure_plate` sits at piece (155, 36, 90), world (155, 92, 90), on a whole stone-brick flag in the middle of the east rampart's walk. The plate's anchor is a furniture cell (it names a block, not air).
+- **The anvil** stands at piece (156, 36, 12), world (156, 92, 12), at the east end of Pellam's counter on the company's side.
 - **The Chandler's hands wait in the lean-to**, not in the yard: seated in the yard, their aggro radius reached the rampart stair's flights through the wall and `DW0380` read the road as running through an optional fight.
 - **Two flights gained a newel post** at their first tread (the rampart stair, the bell tower's first flight), so the only way onto them is up their climb (`DW0430`).
