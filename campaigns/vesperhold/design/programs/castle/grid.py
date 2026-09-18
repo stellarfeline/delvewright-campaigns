@@ -106,6 +106,50 @@ def settle_stairs(g):
     return len(changes)
 
 
+RAILS = {}                           # role id -> wall-block material
+
+
+def rail(material):
+    """A wall-block role (`minecraft:*_wall`), laid as a lone post; its sides
+    and post are derived from the neighbours by `settle_rails`."""
+    return rail_state(material, "none", "none", "none", "none", True)
+
+
+def rail_state(material, north, east, south, west, up):
+    name = f"{material.split(':')[1]}__{north[0]}{east[0]}{south[0]}{west[0]}{'p' if up else ''}"
+    r = PAL.role(name, state(material, north=north, east=east, south=south,
+                             west=west, up=up, waterlogged=False))
+    RAILS[r] = material
+    return r
+
+
+def settle_rails(g, sturdy):
+    """Write every wall block's sides and post the way vanilla derives them
+    (WallBlock.updateShape / shouldRaisePost): a side connects to another wall
+    block, to iron bars or to a full block (`sturdy`, role ids), and is low
+    under open air; the post stands unless the block runs straight through."""
+    from .layout import X, Y, Z
+    ids = set(RAILS)
+    bars = {PAL.index[n] for n in ("bars_x", "bars_z") if n in PAL.index}
+    changes = []
+    for i, r in enumerate(g.cells):
+        if r not in ids:
+            continue
+        x = i % X; rest = i // X; y = rest % Y; z = rest // Y
+        side = {}
+        for d, (dx, dz) in _STEP.items():
+            n = g.get(x + dx, y, z + dz)
+            side[d] = "low" if (n in ids or n in bars or n in sturdy) else "none"
+        above = g.get(x, y + 1, z)
+        nn, ee, ss, ww = (side[d] == "none" for d in ("north", "east", "south", "west"))
+        up = (above in ids) or (nn and ee and ss and ww) or nn != ss or ee != ww
+        changes.append((x, y, z, rail_state(RAILS[r], side["north"], side["east"],
+                                            side["south"], side["west"], up)))
+    for x, y, z, r in changes:
+        g.set(x, y, z, r)
+    return len(changes)
+
+
 def slab(material, kind="bottom"):
     name = f"{material.split(':')[1]}__{kind}"
     return PAL.role(name, state(material, type=kind, waterlogged=False))

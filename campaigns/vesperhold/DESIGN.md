@@ -35,7 +35,7 @@ One area, `area/castle`, bound to one campaign-built piece, `prefab/vesperhold`:
 
 The layout of record is `design/programs/castle/layout.py`; the generator and the layout chart both read it.
 
-The side route runs from the postern in the barbican's south face, west of where the causeway meets it, west along a shelf under the south curtain, round the crag's south-west corner, north along a shelf under the west curtain, and in at the stables' west door. A gap of open air keeps the shelf from the causeway.
+The side route runs from the postern in the barbican's south face, west of where the causeway meets it, west along a shelf under the south curtain, round the crag's south-west corner, north along a shelf under the west curtain, and in at the stables' west door. A gap of open air keeps the shelf from the causeway. An unbroken parapet runs along every open edge of both shelves, low enough to see the valley over and too high for a blow to carry a body across.
 
 Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall walks and tower rooms 36, bell deck 52, undercroft 12. The crag stands sixteen blocks over the valley floor with sheer faces on the south and west.
 
@@ -46,7 +46,7 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Approach | Causeway Stair | an open flight on an arcaded ramp, sixteen blocks up to the bridge deck |
 | Approach | Hanging Causeway | a bridge on piers over the valley floor to the gatehouse |
 | Approach | Barbican | **gatekeeper: the Porter**; the portcullis to the ward is shut; a postern in its south face opens onto the shelf |
-| West cliffs | Postern Ledge | a shelf outside the south curtain, the drop to the valley on one side |
+| West cliffs | Postern Ledge | a shelf outside the south curtain, the drop to the valley on one side behind an unbroken parapet the Cliff Watchmen fight at |
 | West cliffs | Cliff Path | the shelf turns north along the crag's west face, under archers on the wall |
 | West cliffs | Stables | the long stable block on the crag's west edge; spear-armed grooms among the undead horses |
 | Ward | Outer Ward | the hub; the portcullis windlass against the gatehouse wall beside the gate (**shortcut 1**) |

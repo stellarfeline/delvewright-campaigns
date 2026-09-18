@@ -1,7 +1,7 @@
 """The valley floor, the crag, the two shelves cut into its faces, and trees."""
 from . import layout as L
-from .grid import hsh, AIR
-from .palette import BEDROCK, EARTH, TURF, ROCK, ROCK_MOSS, LOG, LEAVES, WALL_RUIN, ROAD
+from .grid import hsh, AIR, rail
+from .palette import BEDROCK, EARTH, TURF, ROCK, ROCK_MOSS, LOG, LEAVES, WALL, ROAD
 
 GROUND = L.VALLEY - 1          # the surface course
 
@@ -66,25 +66,58 @@ def on_approach(x, z):
 
 def shelves(g):
     """The side route's ground: rock cut out from the crag's south and west
-    faces at castle height, with a low broken parapet on the drop side and a
-    sheer fall below it."""
+    faces at castle height, with a parapet on the drop side and a sheer fall
+    below it."""
     top = L.CASTLE - 1
     # the fall below the shelves is sheer: no scree against it
     g.clear(0, 82, GROUND + 1, L.CASTLE + 6, 178, 186)
     g.clear(0, 3, GROUND + 1, L.CASTLE + 6, 120, 186)
     for (sx0, sx1, sz0, sz1) in (L.SHELF_SOUTH, L.SHELF_WEST):
         g.box(sx0, sx1, GROUND, top, sz0, sz1, ROCK)
+    # the west shelf's blind north end, one course of rock for its parapet
+    g.box(4, 11, GROUND, top, L.SHELF_WEST[2] - 1, L.SHELF_WEST[2] - 1, ROCK)
     g.box(5, 75, top, top, 172, 176, ROAD)
     g.box(5, 9, top, top, 128, 176, ROAD)
-    # parapet on the outer edge, one course, broken
-    for x in range(4, 76):
-        if hsh(x, 177, 21) < .7:
-            g.set(x, L.CASTLE, 177, WALL_RUIN)
-    for z in range(128, 178):
-        if hsh(4, z, 22) < .7:
-            g.set(4, L.CASTLE, z, WALL_RUIN)
     # east of the shelf's end, under the gate towers, open air to the valley
     g.clear(76, 83, GROUND + 1, L.CASTLE + 6, 176, 186)
+
+
+RAIL = [(6, "minecraft:stone_brick_wall"), (3, "minecraft:mossy_stone_brick_wall"),
+        (2, "minecraft:cobblestone_wall"), (2, "minecraft:mossy_cobblestone_wall")]
+
+
+def rail_material(x, z):
+    """The parapet's stone, mixed by position: the same stone as the curtain
+    over it, weathered unevenly."""
+    t = hsh(x, z, 21) * sum(w for w, _ in RAIL)
+    for w, m in RAIL:
+        if t < w:
+            return m
+        t -= w
+    return RAIL[-1][1]
+
+
+def parapets(g):
+    """The shelves' parapet, laid after every part so it reads what stands.
+
+    One unbroken course of wall blocks along every open edge of the side
+    route — the south shelf's lip, the west shelf's lip and its blind north
+    end. A wall block stands a block and a half, over the height a blow can
+    lift a body (a knockback rises about a block and a quarter) and under the
+    eye (a block and five eighths), so nothing fought on the shelf goes over
+    it and the valley stays in view. Every so often the course steps up into
+    a stub of the old parapet, a stone with a post on it."""
+    top = L.CASTLE - 1
+    line = ([(x, 177) for x in range(4, 76)] + [(4, z) for z in range(L.SHELF_WEST[2], 177)]
+            + [(x, L.SHELF_WEST[2] - 1) for x in range(4, 12)])
+    for x, z in line:
+        if g.get(x, L.CASTLE, z) != AIR or g.get(x, top, z) == AIR:
+            continue
+        if hsh(x, z, 23) < .1:
+            g.set(x, L.CASTLE, z, WALL)
+            g.set(x, L.CASTLE + 1, z, rail(rail_material(x, z)))
+        else:
+            g.set(x, L.CASTLE, z, rail(rail_material(x, z)))
 
 
 def tree(g, x, z, h):
