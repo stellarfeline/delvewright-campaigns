@@ -96,6 +96,7 @@ The band, and which parts of it are cited:
   | King Oswin | (83, 28, 32) | 14 | the throne hall's door, z 46; the Throne Fire is 19 away |
 
   The Gilded Bowman is bait and the pockets' rank and file are no one's billing; they show none. The Drowned Choir's bar is titled "The Drowned Choir", since the wave names two kinds of body.
+- **King Oswin's health is 280** (`wave/king`, `mobs[0].attributes.max_health`): the owner's first playtest found 420 too much even for four players. Nothing else about the fight changes — attack damage, follow range, movement speed, resistance and equipment stand as tuned.
 - The Hedge Garden's set piece is a bait held by terrain: the Gilded Bowman on a plinth four high with a ladder on its far face, and three lurkers sprung behind the company when it reaches the fountain. The lurkers come without a telegraph.
 - The armory's two real chests each hold one piece a step above the kits: an iron sword with Sharpness II, an iron chestplate with Protection II.
 - Pellam sells arrows, a golden apple, an iron spear, a crossbow, a diamond sword, three enchanted books and an enchanted iron sword, and one lie. The anvil at the east end of his counter is how a book reaches a weapon.
