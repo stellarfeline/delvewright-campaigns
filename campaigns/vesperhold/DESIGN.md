@@ -134,7 +134,7 @@ The party keeps control through the chapel and tower echoes and may walk among t
 1. **The Causeway Fire** — Tamsin hires the company; the fire is lit.
 2. **The Porter** — the gatekeeper; its key opens the postern.
 3. **The Cliff Path** — the cliff shelf; the stables ambush; into the ward.
-4. **The Cloister Fire** — the second fire; Ser Halvard asks for news of his king.
+4. **The Cloister Fire** — the second fire; Ser Halvard asks for news of his king, and tells the company how the watch used to walk the east wall.
 5. **The Warden's Ledger** — the ledger; the Psalter Wall gives way to a blow.
 6. **Beneath the Psalter** — the crypt; the Undertide Pool; the Drowned Choir; the bell-tongue.
 7. **The Chapel Echo** — Tamsin, seeing the tongue, tells the company to wake the shard at the altar; the echo; the Warden's Key.
@@ -162,7 +162,7 @@ Neither ending is labelled good.
 - Every boss and elite shows a health bar, drawn for a player from the moment they cross into its arena until it falls: the Porter, the Drowned Choir, the Last Warden-Knight, the Gate-Sergeant, the Chandler, the Hedge Knight, the Bellfounder, the Ringer Unmade, the Unremembered Guard and King Oswin. The Gilded Bowman is bait and shows none.
 - A gatekeeper before the castle proper; a front gate that is a shortcut; a side route that is the real way in.
 - An illusory wall on the main path, hinted twice.
-- Real chests and a false one in the armory, a volley trap on the rampart, a lethal well in the Undertide Pool behind its curb.
+- Real chests and a false one in the armory, a volley trap on the rampart hinted at the cloister, a lethal well in the Undertide Pool behind its curb.
 - A bait enemy held up by the terrain, covering an ambush from behind (the Hedge Garden); a bait chest under ambushers in plain sight overhead (the Sally Tower); a stand of arms that is a soldier, told by his face and his sword (the Hall of Arms).
 - Five optional elites off the road (the Last Warden-Knight, the Gate-Sergeant, the Chandler, the Hedge Knight, and the Bellfounder, the side boss), each dropping the high-tier piece it fought with.
 - Twelve pockets off the road, one or more from every region; a third shortcut, the Ringers' Stair, loops the bell tower back to the cloister quarter.
