@@ -1,0 +1,438 @@
+{
+  "campaign_id": "vesperhold",
+  "content": {
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/tamsin-hire",
+            "options": [
+              {
+                "label": "What is the hold?",
+                "next": "dlg/tamsin-hold"
+              },
+              {
+                "label": "What do you want?",
+                "next": "dlg/tamsin-want"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-tamsin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll go."
+              }
+            ],
+            "text": "\"You're the ones who answered the notice. Sit. Eat something. The hold doesn't open for anyone, so you'll have to open it.\""
+          },
+          {
+            "id": "dlg/tamsin-hold",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/tamsin-hire"
+              }
+            ],
+            "text": "\"Vesperhold. A king, a court, a bell. Ten years ago the bell stopped. Since then the gates stay shut and nobody inside remembers why they're keeping them shut.\""
+          },
+          {
+            "id": "dlg/tamsin-want",
+            "options": [
+              {
+                "label": "Who are you to it?",
+                "next": "dlg/tamsin-who"
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/tamsin-hire"
+              }
+            ],
+            "text": "\"There's a piece of the bell somewhere under the castle. The tongue. I want it found. After that I don't know. I'm being honest about that part.\""
+          },
+          {
+            "id": "dlg/tamsin-who",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/tamsin-hire"
+              }
+            ],
+            "text": "\"I carried the warden's lantern once. That's all you need.\""
+          },
+          {
+            "id": "dlg/tamsin-tongue",
+            "options": [
+              {
+                "label": "Why not?",
+                "next": "dlg/tamsin-why"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/show-tamsin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "To the chapel."
+              }
+            ],
+            "text": "\"That's her tongue. That's the Vesper's.\" She doesn't touch it. \"There's a shard of her on the chapel altar. Hold that to it. The chapel will remember what it was like when she still rang. I'm not coming in.\""
+          },
+          {
+            "id": "dlg/tamsin-why",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/show-tamsin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "To the chapel."
+              }
+            ],
+            "text": "\"Because I know what it'll show you. I'm afraid of it. Go.\""
+          },
+          {
+            "id": "dlg/tamsin-throne",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/rang-the-vesper",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/choose",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/tamsin",
+                  "text": "The company tells Tamsin to take the rope.",
+                  "verb": "believes"
+                },
+                "label": "Ring it again.",
+                "tooltip": "The castle remembers. Tamsin forgets."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/let-it-fall-silent",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/choose",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/tamsin",
+                  "text": "The company tells Tamsin to let the bell lie.",
+                  "verb": "believes"
+                },
+                "label": "Let it stay quiet.",
+                "tooltip": "The watch ends. The castle forgets itself."
+              },
+              {
+                "label": "Why tell us?",
+                "next": "dlg/tamsin-why-tell"
+              }
+            ],
+            "text": "Tamsin looks at the king for a long time. \"I cracked the bell. I was fifteen. She'd have rung it that night and forgotten me the rest of the way, so I took a hammer to it.\" She holds up her mother's ledger. \"It can ring again if somebody takes the rope. It'll be me. Or we let it stay quiet and let the grey out.\""
+          },
+          {
+            "id": "dlg/tamsin-why-tell",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/tamsin-throne"
+              }
+            ],
+            "text": "\"Because you carried her up and down this castle. You get a say.\""
+          }
+        ],
+        "npc": "npc/tamsin",
+        "root": "dlg/tamsin-hire"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/halvard-cloister",
+            "options": [
+              {
+                "label": "We don't know yet.",
+                "next": "dlg/halvard-dont-know",
+                "requires_flags": [
+                  "flag/cloister-found"
+                ]
+              },
+              {
+                "label": "What door?",
+                "next": "dlg/halvard-door"
+              }
+            ],
+            "text": "\"Friends of the watch. Ser Halvard Dray, sworn to the king's door. I cannot recall which door. Have you seen the king? Does he live?\""
+          },
+          {
+            "id": "dlg/halvard-dont-know",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-halvard",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll find out."
+              }
+            ],
+            "text": "\"Then I keep the watch until you do. I will be honest with you: I am afraid you will come back and tell me he is dead, and then I will not know what I am for.\" He straightens, glad of something else to say. \"I had the east wall before I had the door. We walked it hard against the outer curtain, a hand on the stone. Never down the middle. I never thought to ask why, and now there is nobody left to ask.\""
+          },
+          {
+            "id": "dlg/halvard-door",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/halvard-cloister"
+              }
+            ],
+            "text": "\"Every morning I choose one and stand at it. It seems the least I can do.\""
+          },
+          {
+            "id": "dlg/halvard-tower",
+            "options": [
+              {
+                "label": "Ask your question.",
+                "next": "dlg/halvard-choice",
+                "requires_flags": [
+                  "flag/rampart-cleared"
+                ]
+              },
+              {
+                "label": "Later."
+              }
+            ],
+            "text": "Halvard has moved his watch to the top of the wall. \"Friends of the watch. The wall is not safe yet. When it is, I have a question for you.\""
+          },
+          {
+            "id": "dlg/halvard-choice",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/halvard-released",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/meet-halvard-again",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/halvard",
+                  "text": "Halvard believes his king is gone and lays down his oath.",
+                  "verb": "believes"
+                },
+                "label": "Go home, Halvard.",
+                "tooltip": "The man on the throne is not the king you swore to."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/halvard-kept-oath",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/meet-halvard-again",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/halvard",
+                  "text": "Halvard believes his king still needs the door held.",
+                  "verb": "believes"
+                },
+                "label": "Hold the door.",
+                "tooltip": "The king still needs his door held."
+              },
+              {
+                "label": "What will you do?",
+                "next": "dlg/halvard-what"
+              }
+            ],
+            "text": "\"You went up and down this castle. Tell me plainly. Is my king alive? If he is not, say so, and I will go home. If he is, I will go ahead of you and hold his door.\""
+          },
+          {
+            "id": "dlg/halvard-what",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/halvard-choice"
+              }
+            ],
+            "text": "\"Whatever you tell me. I have been choosing a door every morning for ten years. I am tired of choosing.\""
+          }
+        ],
+        "npc": "npc/halvard",
+        "root": "dlg/halvard-cloister"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/pellam-root",
+            "options": [
+              {
+                "label": "Where's it from?",
+                "next": "dlg/pellam-where"
+              },
+              {
+                "label": "Were you a monk?",
+                "next": "dlg/pellam-monk"
+              },
+              {
+                "label": "Goodbye."
+              }
+            ],
+            "text": "\"Brother Pellam, friend to pilgrims, seller of what the dead don't need. My blanket's by the counter. Tallow only.\""
+          },
+          {
+            "id": "dlg/pellam-where",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/pellam-root"
+              }
+            ],
+            "text": "\"Here and there. Mostly there. As the saying goes, a coat on a corpse is a coat going cold.\""
+          },
+          {
+            "id": "dlg/pellam-monk",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/pellam-root"
+              }
+            ],
+            "text": "\"Of course. For years. Or I bought the habit from one.\" He frowns. \"One of those is true.\""
+          },
+          {
+            "id": "dlg/pellam-after",
+            "options": [
+              {
+                "label": "You sold us.",
+                "next": "dlg/pellam-sold"
+              },
+              {
+                "label": "Goodbye."
+              }
+            ],
+            "text": "Pellam won't meet your eye. \"They paid more. You'd have done the same. The blanket's still open, if you're still buying.\""
+          },
+          {
+            "id": "dlg/pellam-sold",
+            "options": [
+              {
+                "label": "Goodbye."
+              }
+            ],
+            "text": "\"I sell everything, friend. That's the one true thing about me.\""
+          }
+        ],
+        "npc": "npc/pellam",
+        "root": "dlg/pellam-root"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/hesk-root",
+            "options": [
+              {
+                "label": "What does it cost?",
+                "next": "dlg/hesk-cost"
+              },
+              {
+                "label": "Who is the girl?",
+                "next": "dlg/hesk-girl"
+              }
+            ],
+            "text": "The warden looks up from her ledger as if you had always been there. \"Good morning. Are you new to the court? Everyone is new to me now. I ring the Vesper tonight.\""
+          },
+          {
+            "id": "dlg/hesk-cost",
+            "options": [
+              {
+                "label": "Who is the girl?",
+                "next": "dlg/hesk-girl"
+              },
+              {
+                "label": "Why keep ringing?",
+                "next": "dlg/hesk-why"
+              }
+            ],
+            "text": "\"A day for every ringing. I write down which one, so something keeps it.\" She reads: \"'The eighth of Thaw. It had a song in it.' I don't know the song any more. Only that there was one.\""
+          },
+          {
+            "id": "dlg/hesk-girl",
+            "options": [
+              {
+                "label": "Why keep ringing?",
+                "next": "dlg/hesk-why"
+              }
+            ],
+            "text": "\"The apprentice. The ledger says she's my daughter.\" She says it without looking round. \"I'm afraid of the day I won't know her even from the page. I'm afraid of it more than of the Undertide.\""
+          },
+          {
+            "id": "dlg/hesk-why",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-warden",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll remember."
+              }
+            ],
+            "text": "\"Because if I stop, the grey comes up and takes everyone's days at once instead of mine one by one.\" She hangs a heavy key on the hook by the altar. \"The tower door. For whoever rings after me.\""
+          }
+        ],
+        "npc": "npc/ilse-hesk",
+        "root": "dlg/hesk-root"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/apprentice-root",
+            "options": [
+              {
+                "label": "The hammer?",
+                "next": "dlg/apprentice-hammer"
+              },
+              {
+                "label": "Leave her be."
+              }
+            ],
+            "text": "The girl doesn't look at you. \"She asked me my name this morning. Twice. So don't tell me what's right. Tonight she's not ringing it.\""
+          },
+          {
+            "id": "dlg/apprentice-hammer",
+            "options": [
+              {
+                "label": "Leave her be."
+              }
+            ],
+            "text": "\"If there's no bell there's nothing to ring. That's all. That's the whole plan.\""
+          }
+        ],
+        "npc": "npc/young-tamsin",
+        "root": "dlg/apprentice-root"
+      }
+    ]
+  },
+  "dsl_version": "0.33.0",
+  "stage": "dialogue"
+}
