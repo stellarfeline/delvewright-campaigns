@@ -41,7 +41,9 @@ def ring(g):
         for a in range(a0, a1 + 1):
             for b in range(b0, b1 + 1):
                 if hsh(a, b, 61) < .12 and b > 30:
-                    h = 1 + int(4 * hsh(a, b, 62))
+                    # the walk is the curtain's top, so a gap bitten out of it
+                    # is one course deep at most: a body steps into it and out
+                    h = 1 + int(2 * hsh(a, b, 62))
                     g.clear(a, a, CURTAIN_TOP + 2 - h, CURTAIN_TOP + 1, b, b)
     # arrow slits on the outer faces
     for x in range(x0 + 6, x1 - 5, 9):
