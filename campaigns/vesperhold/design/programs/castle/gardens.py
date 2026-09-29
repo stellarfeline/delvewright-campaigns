@@ -91,14 +91,21 @@ def parterre(g):
     # the gravel walk from the passage to the fountain and on north
     g.box(144, 148, C - 1, C - 1, 92, 118, ROAD)
     g.box(128, 144, C - 1, C - 1, 106, 108, ROAD)
-    # beds: coarse earth with dead growth, hedged on every side but one
-    for (bx0, bx1, bz0, bz1) in ((126, 133, 110, 116), (136, 142, 110, 116),
-                                 (125, 129, 92, 103), (139, 143, 92, 103)):
+    # beds: coarse earth with dead growth, hedged on every side but one — the
+    # side open to the walk or the fountain, so a body that climbs the hedge
+    # and drops into a bed walks back out of it
+    for (bx0, bx1, bz0, bz1, open_side) in ((126, 133, 110, 116, "north"),
+                                            (136, 142, 110, 116, "north"),
+                                            (125, 129, 92, 103, "east"),
+                                            (139, 143, 92, 103, "west")):
         g.box(bx0, bx1, C - 1, C - 1, bz0, bz1, BED)
-        hedge_row(g, bx0, bx1, bz0, bz0)
+        if open_side != "north":
+            hedge_row(g, bx0, bx1, bz0, bz0)
         hedge_row(g, bx0, bx1, bz1, bz1)
-        hedge_row(g, bx0, bx0, bz0, bz1)
-        hedge_row(g, bx1, bx1, bz0, bz1)
+        if open_side != "west":
+            hedge_row(g, bx0, bx0, bz0, bz1)
+        if open_side != "east":
+            hedge_row(g, bx1, bx1, bz0, bz1)
         for x in range(bx0 + 1, bx1):
             for z in range(bz0 + 1, bz1):
                 if hsh(x, z, 211) < .3:

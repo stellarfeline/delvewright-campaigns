@@ -91,11 +91,18 @@ def pool(g):
                                for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
                 g.set(x, U - 1, z, block("minecraft:polished_deepslate"))
                 g.set(x, U, z, curb)
+    # one gate in the curb, on the well's west side: the stalls stand within a
+    # jump of the curb's top, and a body that goes over it into the water climbs
+    # out here, where the water's top is a step below the sill. The choir cannot
+    # work a gate; a body can.
+    g.set(cx - 5, U, cz,
+          block("minecraft:dark_oak_fence_gate[facing=west,in_wall=true,open=false,powered=false]"))
     # the shaft under the well's heart, five deeper, rock all round it
     g.box(cx - 2, cx + 2, U - 11, U - 5, cz - 2, cz + 2, ROCK)
     g.box(cx - 1, cx + 1, U - 10, U - 5, cz - 1, cz + 1, WATER)
-    for (lx, lz) in ((cx, cz - 5), (cx, cz + 5), (cx - 5, cz), (cx + 5, cz)):
+    for (lx, lz) in ((cx, cz - 5), (cx, cz + 5), (cx + 5, cz)):
         g.set(lx, U + 1, lz, SOUL_LANTERN)
+    g.set(cx - 6, U, cz - 1, SOUL_LANTERN)     # beside the gate, which cannot carry one
     # choir stalls round the well, and the fallen tongue at its lip
     for (sx, sz) in ((cx - 8, cz), (cx + 8, cz), (cx, cz - 8), (cx, cz + 8)):
         g.set(sx, U, sz, stairs("minecraft:polished_deepslate_stairs", "south"))

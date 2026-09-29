@@ -395,8 +395,11 @@ def tower(g, x0, x1, z0, z1, base, top, wall, roof, trim, quoin=None, cap=True, 
             mx, mz = (x0 + x1) // 2, (z0 + z1) // 2
             for (sx, sz) in ((mx, z0), (mx, z1), (x0, mz), (x1, mz)):
                 g.box(sx, sx, y, y + 2, sz, sz, trim)
-            g.clear(mx, mx, y, y + 1, z0, z0); g.clear(mx, mx, y, y + 1, z1, z1)
-            g.clear(x0, x0, y, y + 1, mz, mz); g.clear(x1, x1, y, y + 1, mz, mz)
+            # a slit opens onto air: where a wall or a walk stands against the
+            # face, the notch would be a step down into the masonry, not a slit
+            for (sx, sz, ox, oz) in ((mx, z0, 0, -1), (mx, z1, 0, 1), (x0, mz, -1, 0), (x1, mz, 1, 0)):
+                if g.get(sx + ox, y, sz + oz) == AIR:
+                    g.clear(sx, sx, y, y + 1, sz, sz)
     if cap:
         pyramid(g, x0, x1, z0, z1, top + 2, roof, cap=trim)
 

@@ -156,6 +156,17 @@ def field_wall(g):
     for z in range(L.Z):
         for x in (0, L.X - 1):
             g.box(x, x, L.VALLEY, L.VALLEY + 1, z, z, ROCK_MOSS)
+    # the east wall stands four cells off the crag's sheer face, and the ditch
+    # between them is where a body that falls from the east curtain lands: one
+    # course there, so it steps over into the mist and is turned back
+    x0, x1, z0, z1 = L.CRAG
+    for z in range(max(z0 - 6, 0), min(z1 + 7, L.Z)):
+        if g.get(L.X - 1, L.VALLEY + 2, z) == AIR:
+            g.set(L.X - 1, L.VALLEY + 1, z, AIR)
+    # and one hollow in the scree at the ditch's north end, two cells a body
+    # lands in off the crag and cannot climb out of: its east lip comes down a
+    # course, to a step
+    g.clear(170, 170, L.VALLEY + 3, L.VALLEY + 3, 10, 11)
 
 
 def build(g):
