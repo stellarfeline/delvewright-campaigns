@@ -1,11 +1,17 @@
 """Under the rock: the Crypt of Wardens, the passage, and the Undertide Pool."""
 from . import layout as L
-from .grid import hsh, stairs, slab, block, rail, AIR
+from .grid import PAL, hsh, stairs, slab, block, rail, state, AIR
 from .palette import (ROCK, ROCK_MOSS, FLOOR, PILLAR, TRIM, CHAPEL, WATER, CANDLES,
                       SOUL_LANTERN, LANTERN, COBWEB, BARS_Z, CHAIN, GLASS_DARK)
 
 U = L.UNDER
 VAULT = None
+# the Undertide over the pool's floor: bottom slabs standing in their own water
+WET_FLOOR = PAL.role("pool_floor_wet", [
+    {"weight": 4, "block": state("minecraft:tuff_slab", type="bottom", waterlogged=True)},
+    {"weight": 3, "block": state("minecraft:cobbled_deepslate_slab", type="bottom", waterlogged=True)},
+    {"weight": 2, "block": state("minecraft:mossy_cobblestone_slab", type="bottom", waterlogged=True)},
+])
 
 
 def vaulted(g, x0, x1, z0, z1, height, wall, floor, bay=6):
@@ -111,6 +117,21 @@ def pool(g):
           block("minecraft:iron_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]"))
     for (lx, lz) in ((x0, z0), (x1, z0), (x0, z1), (x1, z1), (x0 + 4, 78), (x1 - 2, 70)):
         g.set(lx, U, lz, SOUL_LANTERN)
+    # the Undertide has risen over the cavern floor: every flag outside the
+    # well's ring stands in a skin of grey water, so a body fighting the choir
+    # stands in it -- a drowned will not quarrel with anyone on dry ground while
+    # the sky is light, and here there is no dry ground to leave them on. The
+    # water is each slab's own, so it spreads nowhere; the flags under the stalls,
+    # the lanterns and the fallen tongue stay whole, since a lantern will not
+    # stand on a half block.
+    wet = 0
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            if ((x - cx) ** 2 + (z - cz) ** 2 > 26 and g.get(x, U, z) == AIR
+                    and g.get(x, U - 1, z) in (ROCK_MOSS, FLOOR)):
+                g.set(x, U - 1, z, WET_FLOOR)
+                wet += 1
+    assert wet > 0, "the pool floor took no water"
     g.mark("undertide-pool", 36, U, 90, "north")
     g.mark("drowned-choir", 36, U, 70, "south")
     g.mark("bell-tongue", 42, U, 74, "west")
