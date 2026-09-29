@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "90e44a8ad79674c3b32f1a0ade9109da775960ec"
+value = "9c7d6a5d2a2023d569f970eed672fad309df1859"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "held"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "90e44a8ad79674c3b32f1a0ade9109da775960ec"
+reviewed = "9c7d6a5d2a2023d569f970eed672fad309df1859"
 vendors = ["tools/ci/check-pins.py", "tools/lib/release_tags.py"]
 why = """
 WHAT THIS PIN IS. The pipeline command `delvec prefab audit` — the audit every
@@ -54,37 +54,33 @@ measurement of the piece is held to the piece's own bytes (`DW0888`): `walk_y`,
 `trigger_block` and `furniture`, each connector's `opening` and `socket`, and
 the jigsaw blocks the document declares.
 
-WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 303 commits, from
-`ba461b28` to this value, which is the commit `delvec--v1.6.0` points at and the
-tip of the upstream default branch. What makes the interval adoptable rather
-than merely newer is `DW0888`, the byte-claim class above: the older judge reads
-no such declaration at all, and this one reads every one of them. The library
-declares what that instrument demands before the pin follows, which is the order
-this policy's last paragraph states — measured below rather than asserted.
+WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 181 commits, from
+`90e44a8a` to this value, which is the commit `delvec--v1.7.0` points at and the
+tip of the upstream default branch; 85 of them touch `crates/`, 0 touch either
+vendored file. No audit rule moved for this library: the newer judge's verdict on
+every piece it examines is byte for byte the older judge's, so the library is
+ready for it by measurement, and the pin follows the engine a release of this
+content is built with rather than holding a second, older engine for the audit.
 
 WHAT WAS BUILT AND RUN. The RELEASED artifact, not a build of the branch, since
-the released artifact is what a consumer gets: the `delvec--v1.6.0` archive for
+the released artifact is what a consumer gets: the `delvec--v1.7.0` archive for
 `aarch64-apple-darwin` downloaded from the GitHub Release, its sha256 checked
-against the Release's own `SHA256SUMS` (`shasum -a 256 -c`, exit 0), unpacked to
-a binary printing `delvec 1.6.0, dsl 0.29.0, mc 1.21.11`. `tools/prefab-audit.py`
-run over the whole repository with it and, separately, with a binary built the
-same way at `ba461b28` (`cargo build -p delvec --bin delvec --release`, exit 0,
-`rust_toolchain` 1.97.1, printing `delvec 1.3.0`). Both judges examine the same
-40 audited units over 57 in-scope `.nbt` files and both report PASS 40 of 40 at
-exit 0, so nothing this library already ships is newly refused; report by report,
-every field but one is byte-identical between the two runs.
+against the Release's own `SHA256SUMS` (`shasum -a 256 -c`, 5 of 5 OK, exit 0),
+unpacked to a binary printing `delvec 1.7.0, dsl 0.34.0, mc 1.21.11`.
+`tools/prefab-audit.py` run over the whole repository with it and, separately,
+with the `delvec--v1.6.0` release archive for the same target (its own
+`SHA256SUMS` line OK, printing `delvec 1.6.0, dsl 0.29.0, mc 1.21.11`). Both
+judges examine the same 40 audited units over 57 in-scope `.nbt` files, both
+report PASS 40 of 40 at exit 0, and the 40 reports are byte-identical between
+the two runs. Cross-checked by a second channel sharing no configuration with the
+archive: a source build at this value (`cargo build -p delvec --bin delvec
+--release`, exit 0, printing `delvec 1.7.0, dsl 0.34.0, mc 1.21.11`) gives 40
+reports byte-identical to the archive's.
 
-The count that moves is what the judge examines. The older binary emits no
-byte-claim block in any of its 40 reports; this one emits it in 40 of 40 and
-examines 377 declarations across the library, 0 denied by the bytes — 136
-`anchors.*.pos`, 54 `connectors[].opening`, 53 `connectors[].socket`, 53
-jigsaw-declared, 40 `structure.data_version`, 37 `walk_y`, 4 `anchors.*.region`.
-That arm is not vacuous, and it was checked by planting rather than assumed: a
-fictitious `walk_y: 40` on `keep-shrine`, a piece whose own bytes stand a body
-lowest at local y=1, passes the older judge at exit 0 with `"verdict": "pass"`
-and no byte-claim block at all, and is refused by this one at exit 1 with
-`"verdict": "fail"`, `DW0888`, and `walk_y` counted 1 examined / 1 denied. That
-is the whole of what moving this pin buys, stated as a number.
+The byte-claim arm (`DW0888`) is still bound, checked by planting on a scratch
+copy of the tree rather than assumed: a fictitious `walk_y: 40` on
+`keep-shrine`, a piece whose own bytes stand a body lowest at local y=1, is
+refused by both judges at exit 1, FAILED 1 of 40, `DW0888`.
 
 WHY THIS PIN IS `held` AND NOT `track`. `value` is the revision the tool is
 BUILT from; `reviewed` is the revision its upstream history has been JUDGED
@@ -157,7 +153,7 @@ the binary built at `admit-ref` reports `4 pool(s) seatable of 4` on `ocean`,
 and the binary built at this value reports `3 of 4` and names the refusal. A
 seating gate built from `admit-ref` would therefore be green over a library no
 campaign can seat — a gate binding to nothing, which is the one failure this
-gate exists to end. `engine-release` (`delvec--v1.6.0`) is the same story and is
+gate exists to end. `engine-release` (`delvec--v1.7.0`) is the same story and is
 additionally a frozen release rather than a revision chosen for a question, so
 it cannot carry a question about the engine's current horizon surface either.
 
@@ -202,7 +198,7 @@ the row exists to prevent.
 
 [[pin]]
 id = "engine-release"
-value = "delvec--v1.6.0"
+value = "delvec--v1.7.0"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "release"
