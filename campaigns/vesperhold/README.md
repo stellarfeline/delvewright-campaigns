@@ -68,7 +68,6 @@ About an hour is a party's first run: the main line, and a look around as it goe
 
 ## Known limits
 
-- The fights are tuned for a company of two to four, and do not scale down. Alone, one fight in the keep is very hard to win in the open. Choose where you stand.
 - Nobody swims in Vesperhold. The grey well under the castle kills whoever goes into it, and the curb around it is there to keep you out.
 - The anvils wear out as anvils do, and nothing in the castle mends them. Expect a handful of uses from each.
 
