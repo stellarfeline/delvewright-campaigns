@@ -108,7 +108,11 @@ def pool(g):
     g.box(cx - 1, cx + 1, U - 10, U - 5, cz - 1, cz + 1, WATER)
     for (lx, lz) in ((cx, cz - 5), (cx, cz + 5), (cx + 5, cz)):
         g.set(lx, U + 1, lz, SOUL_LANTERN)
-    g.set(cx - 6, U, cz - 1, SOUL_LANTERN)     # beside the gate, which cannot carry one
+    # the west lantern stands ON the curb beside the gate, which cannot carry
+    # one: a lantern on the floor against the curb is a step half a block up
+    # from the wet flags, and from its top a drowned jumps onto the curb and
+    # walks along it over the gate into the well
+    g.set(cx - 5, U + 1, cz - 1, SOUL_LANTERN)
     # choir stalls round the well, and the fallen tongue at its lip
     for (sx, sz) in ((cx - 8, cz), (cx + 8, cz), (cx, cz - 8), (cx, cz + 8)):
         g.set(sx, U, sz, stairs("minecraft:polished_deepslate_stairs", "south"))
