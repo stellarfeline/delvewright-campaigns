@@ -65,7 +65,7 @@ Heights (feet): valley floor 8, crag top and castle floor 24, keep dais 28, wall
 | Cathedral | Scriptorium | the Warden's Ledger; the Psalter Wall (illusory — strike it) |
 | Undercroft | Psalter Stair | the stair cut down into the rock behind the wall |
 | Undercroft | Crypt of Wardens | **optional elite: the Last Warden-Knight**, kneeling until struck |
-| Undercroft | Undertide Pool | a well of grey water behind a curb nothing walks over, lethal only at the bottom of the shaft under it, and the Undertide risen over the cavern floor around it, so the party wades; **the Drowned Choir**, whose Precentor carries the fallen bell-tongue, and which fights only a body standing in water while the sky is light |
+| Undercroft | Undertide Pool | a well of grey water behind a curb nothing walks over, entered only by a jump across a dry cut onto the sill between two gateposts on its west side, lethal only at the bottom of the shaft under it, and the Undertide risen over the cavern floor around it, so the party wades; **the Drowned Choir**, whose Precentor carries the fallen bell-tongue, and which fights only a body standing in water while the sky is light |
 | Undercroft | Well-House | the stair up into the cloister; **shortcut 2** |
 | Heights | Rampart Stair | the tower up to the wall walk |
 | Heights | East Rampart | the long wall walk north; archers, and a pressure plate in the flagstones that looses a volley |

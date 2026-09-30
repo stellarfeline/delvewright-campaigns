@@ -13,6 +13,14 @@ WET_FLOOR = PAL.role("pool_floor_wet", [
     {"weight": 2, "block": state("minecraft:mossy_cobblestone_slab", type="bottom", waterlogged=True)},
 ])
 
+# the same flags without the water, where a cut in the floor must stay dry;
+# drawn with the wet flags' weights so the site's other draws keep their order
+DRY_FLOOR = PAL.role("pool_floor_dry", [
+    {"weight": 4, "block": state("minecraft:tuff_slab", type="bottom", waterlogged=False)},
+    {"weight": 3, "block": state("minecraft:cobbled_deepslate_slab", type="bottom", waterlogged=False)},
+    {"weight": 2, "block": state("minecraft:mossy_cobblestone_slab", type="bottom", waterlogged=False)},
+])
+
 
 def vaulted(g, x0, x1, z0, z1, height, wall, floor, bay=6):
     """A room cut into rock with a ribbed vault: the walls and the ceiling
@@ -97,22 +105,45 @@ def pool(g):
                                for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
                 g.set(x, U - 1, z, block("minecraft:polished_deepslate"))
                 g.set(x, U, z, curb)
-    # one gate in the curb, on the well's west side: the stalls stand within a
-    # jump of the curb's top, and a body that goes over it into the water climbs
-    # out here, where the water's top is a step below the sill. The choir cannot
-    # work a gate; a body can.
-    g.set(cx - 5, U, cz,
-          block("minecraft:dark_oak_fence_gate[facing=west,in_wall=true,open=false,powered=false]"))
+    # one opening in the curb, on the well's west side, between two gateposts
+    # two blocks high: a body in the water climbs out onto its sill, whose top is
+    # a step above the water, and a body on the floor comes in by jumping the dry
+    # cut in front of it. The choir never can: it does not jump a gap, a body in
+    # the cut is a block and a half under the sill, and there is nothing a body
+    # can leave open. (A gate stood here; a player who opened it and walked on,
+    # or died in the well, left the choir a way to walk in and drown.)
+    g.set(cx - 5, U, cz, AIR)
+    # the gateposts and the sill are the cavern's own rock: rock is drawn from
+    # a mix, and the cut takes three wet flags out of the floor, so the three
+    # rock cells here keep the site's weighted draws in step and nothing else in
+    # the castle changes its stone
+    g.set(cx - 5, U - 1, cz, ROCK)
+    for dz in (-1, 1):
+        g.set(cx - 5, U, cz + dz, ROCK)
+        g.set(cx - 5, U + 1, cz + dz, block("minecraft:polished_deepslate"))
+    for dz in (-1, 0, 1):
+        g.set(cx - 6, U - 1, cz + dz, AIR)
+        g.set(cx - 6, U - 2, cz + dz, DRY_FLOOR)
+    # the floor round the cut stays dry, so that no water pours into it and a
+    # body in the cut cannot swim up to the sill (in water it rose to 68.67
+    # from the cut's floor at 66.5): the three flags on its west side are dry
+    # slabs at the floor's height, the floor a body climbs out of the cut onto, and the four
+    # corners beside them are whole rock, because a dry slab with two wet
+    # flags beside it is wetted again by the next fluid tick (measured on the
+    # pinned server); each of the three dry flags has one wet neighbour
+    for dz in (-1, 0, 1):
+        g.set(cx - 7, U - 1, cz + dz, DRY_FLOOR)
+    for (dx, dz) in ((-7, -2), (-7, 2), (-6, -2), (-6, 2)):
+        g.set(cx + dx, U - 1, cz + dz, ROCK)
     # the shaft under the well's heart, five deeper, rock all round it
     g.box(cx - 2, cx + 2, U - 11, U - 5, cz - 2, cz + 2, ROCK)
     g.box(cx - 1, cx + 1, U - 10, U - 5, cz - 1, cz + 1, WATER)
     for (lx, lz) in ((cx, cz - 5), (cx, cz + 5), (cx + 5, cz)):
         g.set(lx, U + 1, lz, SOUL_LANTERN)
-    # the west lantern stands ON the curb beside the gate, which cannot carry
-    # one: a lantern on the floor against the curb is a step half a block up
-    # from the wet flags, and from its top a drowned jumps onto the curb and
-    # walks along it over the gate into the well
-    g.set(cx - 5, U + 1, cz - 1, SOUL_LANTERN)
+    # the west lantern stands on the north gatepost: a lantern on the floor
+    # against the curb is a step half a block up from the wet flags, and from
+    # its top a drowned jumps onto the curb and walks along it into the well
+    g.set(cx - 5, U + 2, cz - 1, SOUL_LANTERN)
     # choir stalls round the well, and the fallen tongue at its lip
     for (sx, sz) in ((cx - 8, cz), (cx + 8, cz), (cx, cz - 8), (cx, cz + 8)):
         g.set(sx, U, sz, stairs("minecraft:polished_deepslate_stairs", "south"))
