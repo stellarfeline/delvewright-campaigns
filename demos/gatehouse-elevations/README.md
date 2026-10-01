@@ -4,7 +4,7 @@ One small gatehouse, photographed twice out of the same bytes. The first set is
 everything the renderer plans on its own. The second is three cameras aimed by
 hand at the faces a reviewer actually asks about.
 
-The demo is about the second kind — `delve-render --view`, which is **a bearing
+The demo is about the second kind — `delvec render piece --view`, which is **a bearing
 plus a subject box**.
 
 ---
@@ -123,7 +123,7 @@ the gate, and they cannot ask to see the arch.
 Same bytes, three more cameras:
 
 ```sh
-delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+delvec render piece gatehouse.nbt -o review/aimed --size 512 \
     --view name=north-front,face=north,of=model \
     --view name=west-flank,face=west,of=model \
     --view name=gate-arch,face=north,of=anchor/gate
@@ -202,7 +202,7 @@ printed.
 a mistyped anchor is a one-line fix rather than a hunt:
 
 ```
-$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+$ delvec render piece gatehouse.nbt -o review/aimed --size 512 \
       --view name=portcullis,face=north,of=anchor/portcullis
 DW0721 [error] view aims at `anchor/portcullis`, which this piece does not
 declare. Declared anchors: anchor/gate, anchor/guard-1, anchor/guard-2,
@@ -213,7 +213,7 @@ exit 2
 **A bearing given twice.**
 
 ```
-$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+$ delvec render piece gatehouse.nbt -o review/aimed --size 512 \
       --view name=north-front,face=north,yaw=180
 DW0721 [error] view states both `face=` and `yaw=` — a camera has one bearing.
 Use `face=` for a square-on elevation, `yaw=` for any other angle
@@ -223,7 +223,7 @@ exit 2
 **A bearing omitted.** A camera with no bearing is not a camera:
 
 ```
-$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+$ delvec render piece gatehouse.nbt -o review/aimed --size 512 \
       --view name=north-front,of=model
 DW0721 [error] view `name=north-front,of=model` states no bearing — give
 `face=<north|south|east|west|up|down>` for a square-on elevation, or
@@ -235,7 +235,7 @@ exit 2
 image, and the set would come back one shot short of what it claims:
 
 ```
-$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+$ delvec render piece gatehouse.nbt -o review/aimed --size 512 \
       --view name=top,face=up
 DW0721 [error] view `top` is already the name of a plan shot in this set —
 rendering it would overwrite that image. Give the view its own `name=`
@@ -248,7 +248,7 @@ frame is written, and it is reported with the bearing and the zoom that produced
 it, so the blank picture is never read as an answer:
 
 ```
-$ delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+$ delvec render piece gatehouse.nbt -o review/aimed --size 512 \
       --view name=gate-close,face=north,of=anchor/gate,zoom=8
 DW0727 [warning] gatehouse/gate-close: the declared view
 `name=gate-close,face=north,of=anchor/gate,zoom=8` is an EMPTY frame (1 distinct
@@ -267,46 +267,44 @@ camera that ended up somewhere unintended is invisible in its own frame.
 
 ## Build it yourself
 
-Everything here is rebuilt from `gatehouse.program.json` and two tools built
-from source. Clone the pipeline repository,
+Everything here is rebuilt from `gatehouse.program.json` and `delvec`, the
+engine's one binary. Clone the pipeline repository,
 [stellarfeline/delvewright](https://github.com/stellarfeline/delvewright), then,
 from its root:
 
 ```sh
-cargo build --release -p delvewright-grammar --bin delve-grammar
-cargo build --release --manifest-path crates/render/Cargo.toml --bin delve-render
-export PATH="$PWD/target/release:$PWD/crates/render/target/release:$PATH"
+cargo build --release -p delvec --bin delvec
+export PATH="$PWD/target/release:$PATH"
 ```
 
-`delve-render` is its own cargo workspace, which is why it is built by manifest
-path rather than by `-p`. It needs the Minecraft 1.21.11 client jar for
+`delvec render` needs the Minecraft 1.21.11 client jar for
 textures, found at `--textures <path>`, `$DELVEWRIGHT_CLIENT_JAR`, or
 `~/.chunky/resources/minecraft.jar`.
 
 Then, from this directory:
 
 ```sh
-delve-grammar expand --file gatehouse.program.json --region 19x15x15 --seed 1 \
+delvec grammar expand --file gatehouse.program.json --region 19x15x15 --seed 1 \
     --id gatehouse --traversable --reachable-floor -o .
 
-delve-render piece gatehouse.nbt -o review/planned --size 512
+delvec render piece gatehouse.nbt -o review/planned --size 512
 
-delve-render piece gatehouse.nbt -o review/aimed --size 512 \
+delvec render piece gatehouse.nbt -o review/aimed --size 512 \
     --view name=north-front,face=north,of=model \
     --view name=west-flank,face=west,of=model \
     --view name=gate-arch,face=north,of=anchor/gate
 
-delve-render contact-sheet review/planned -o review/planned-set.png \
+delvec contact-sheet review/planned -o review/planned-set.png \
     --columns 5 --thumb 256 \
     --title "gatehouse - the seventeen shots the renderer plans on its own"
 ```
 
 The expansion prints its verdicts and its binding count per gate. All of them
 pass, and two are worth reading rather than skimming: `traversable` walks a body
-from the approach face to the exit face, and `reachable-floor` reports 287
-standable cells under a roof with none of them stranded. The `.nbt` is a pure
-function of the program, the region and the seed (ADR-0006) — re-expanding
-produces the same 10,715 bytes.
+from the approach face to the exit face, and `reachable-floor` reports the
+standable cells under a roof and how many of them are stranded. The `.nbt` is a
+pure function of the program, the region and the seed (ADR-0006) — re-expanding
+produces the same bytes.
 
 Renders are validation artifacts and are deliberately not byte-stable, so the
 PNGs a rebuild writes may differ from the ones committed here. The manifests and
@@ -320,5 +318,5 @@ The piece declares **no spatial contract**, so every contract obligation over it
 examines nothing and the expansion says so as a finding. What the building is —
 which space is enclosed, which edge is a way in, which envelope is open to the
 sky — is therefore unstated, and nothing downstream can check that this piece
-fits a neighbour. That is a different capability with a demo of its own; this
+fits a neighbour. That is a different capability, whose demo is queued; this
 one is about where the camera stands.

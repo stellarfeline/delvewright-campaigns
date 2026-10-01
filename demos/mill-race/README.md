@@ -56,11 +56,11 @@ region or the seed moves.
 
 ```sh
 # the yard the server keeps
-delve-grammar expand --file mill-race.program.json \
+delvec grammar expand --file mill-race.program.json \
     --region 13x9x11 --seed 1 --id mill-race -o .
 
 # the yard as drawn
-delve-grammar expand --file mill-race.program.json \
+delvec grammar expand --file mill-race.program.json \
     --region 13x9x11 --seed 1 --id mill-race-as-drawn \
     --role 'kerb=minecraft:stone_brick_stairs[facing=west,half=bottom,shape=outer_left,waterlogged=false]' \
     --param wall_head=3 -o .
@@ -215,7 +215,7 @@ Run the same rule over the frozen bytes and it says the same thing, with its
 binding counts on the record:
 
 ```
-$ delve-admit audit mill-race.nbt
+$ delvec prefab audit mill-race.nbt
 DW0800 [warning] a body of fluid reaches this piece's own outer face in 12 run
 direction(s) …
 ```
@@ -230,7 +230,7 @@ verdict `pass`. The transcript is `audit.txt`.
 | path | what it is |
 |---|---|
 | `mill-race.program.json` | the program both versions come from |
-| `mill-race.nbt` | the yard the server keeps — 3,177 bytes |
+| `mill-race.nbt` | the yard the server keeps |
 | `mill-race.json` | its metadata, and the program hash and seed that regenerate the bytes |
 | `mill-race.report.json` | the passing run's gate verdicts and measurements |
 | `mill-race-kerb-only.report.json` | the property alone: `DW0801`, and every other number unchanged |
@@ -244,33 +244,27 @@ verdict `pass`. The transcript is `audit.txt`.
 
 ## Build it yourself
 
-Everything here comes from `mill-race.program.json` and two tools built from
-source. Clone the pipeline repository,
+Everything here comes from `mill-race.program.json` and `delvec`, the engine's
+one binary. Clone the pipeline repository,
 [stellarfeline/delvewright](https://github.com/stellarfeline/delvewright), then,
 from its root:
 
 ```sh
-cargo build --release -p delvewright-grammar --bin delve-grammar
-cargo build --release -p delvewright-admit --bin delve-admit
+cargo build --release -p delvec --bin delvec
 export PATH="$PWD/target/release:$PATH"
 ```
 
-The renderer is its own workspace and needs the 1.21.11 client jar for textures,
-through `--textures` or `$DELVEWRIGHT_CLIENT_JAR`:
-
-```sh
-cargo build --release --manifest-path crates/render/Cargo.toml --bin delve-render
-export PATH="$PWD/crates/render/target/release:$PATH"
-```
+`delvec render` needs the 1.21.11 client jar for textures, through `--textures`
+or `$DELVEWRIGHT_CLIENT_JAR`.
 
 Then, from this directory, the four expansions above, the audit, and:
 
 ```sh
-delve-render piece mill-race.nbt -o views
+delvec render piece mill-race.nbt -o views
 ```
 
 The `.nbt` is a pure function of the program, the region and the seed: the
-passing run rewrites the same 3,177 bytes every time.
+passing run rewrites the same bytes every time.
 
 ---
 
