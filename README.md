@@ -50,8 +50,8 @@ you own — a desktop, a home server, a Raspberry Pi. Images are built for both
 Intel/AMD and ARM, so a Pi works.
 
 Pick a campaign and a version from the
-[Releases page](https://github.com/stellarfeline/delvewright-campaigns/releases),
-then:
+[Releases page](https://github.com/stellarfeline/delvewright-campaigns/releases)
+(one marked **Pre-release** is a test build ahead of a release), then:
 
 ```sh
 docker run -d --name delve -p 25565:25565 -v delve-data:/data \

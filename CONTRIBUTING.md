@@ -100,20 +100,39 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
 
 ## Releasing a campaign
 
-A release is a tag on this repo:
+A release is a tag on this repo, in one of two families:
 
 ```
-release/<campaign>/v<semver>
+release/<campaign>/v<major>.<minor>.<patch>                e.g. release/vesperhold/v1.1.0
+prerelease/<campaign>/v<major>.<minor>.<patch>-<suffix>    e.g. prerelease/vesperhold/v1.1.0-beta.1
 ```
 
-Pushing it runs `.github/workflows/release.yml`, which builds the campaign with
-the engine release tag pinned in `versions.toml` `[engine].ref`, runs the full
-release-tier ladder (PackTest + a complete bot playthrough against the shipped
-image), and — only on green — publishes the GitHub Release (with
+Pushing either runs `.github/workflows/release.yml`, which builds the campaign
+with the engine release tag pinned in `versions.toml` `[engine].ref`, runs the
+full release-tier ladder (PackTest + a complete bot playthrough against the
+shipped image), and — only on green — publishes the GitHub Release (with
 `resourcepack.zip`) and the multi-arch delve image on GHCR. A red ladder
 publishes nothing.
 
+The family decides only how it is published:
+
+| | GitHub Release | Image tags |
+| --- | --- | --- |
+| `release/` | a Release | `v<version>` and `latest` |
+| `prerelease/` | a pre-release, never marked latest | `v<version>` only |
+
+The version must match the family: a `release/` tag with a `-<suffix>` is
+refused (`RELEASE_HAS_PRERELEASE`), and so is a `prerelease/` tag without one
+(`PRERELEASE_WITHOUT_PRERELEASE`), before anything is built. Build metadata
+(`+...`) is refused in both. `tools/lib/campaign_tags.py` is the grammar; check
+a tag before pushing it with `python3 tools/lib/campaign_tags.py parse <tag>`.
+
+Publish a pre-release through its tag, never by hand: the workflow is what
+creates a campaign's GHCR package, and a package created from a workstation is
+not linked to this repository, so the workflow cannot push to it afterwards.
+
 `workflow_dispatch` on the same workflow is a **dry run**: it takes a campaign
 id and a version, exercises build + ladder + multi-arch image build, and skips
-every publishing step. Use it to check a campaign is releasable without minting
-a release.
+every publishing step. A version with a `-<suffix>` simulates a pre-release;
+one without simulates a release. Use it to check a campaign is releasable
+without minting anything.
