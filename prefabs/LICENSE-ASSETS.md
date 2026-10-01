@@ -9,14 +9,14 @@ zones.
 Prefab assets committed to this repository (`prefabs/**`) must carry an
 **ADR-0013 allowlist** license: **original, CC0, CC BY, MIT, Apache-2.0, or a
 GPL-3.0-compatible license (incl. LGPL-3.0)**. **CC BY-NC / ND / ShareAlike or
-unknown-license material is never ingested** — the `delve-admit` catalog-card
-license check enforces this. The source and license of every asset are recorded
+unknown-license material is never ingested** — the licence check of
+`delvec prefab catalog` enforces this. The source and license of every asset are recorded
 in that asset's prefab metadata (`prefabs/<id>.json` `license` block) and its
 catalog card (`catalog/<id>.json`), so provenance is auditable at all times.
 
 ### Third-party attribution
 
-External prefabs ingested through the `delve-admit` pipeline (spec-0007), with
+External prefabs ingested through `delvec prefab` admission (spec-0007), with
 the license verified via the source's API **and** project page:
 
 | Prefab(s) | Source | Author | License |
@@ -39,6 +39,4 @@ provenance governs them, not the root license.
 
 The pipeline code (compiler, validation, tooling) lives in the engine
 repository ([stellarfeline/delvewright](https://github.com/stellarfeline/delvewright)),
-licensed GPL-3.0-or-later. Since the split, the license boundary is the
-repository boundary (owner correction, 2026-08-03 — this section previously
-carried stale monorepo-era wording claiming pipeline code lived here).
+licensed GPL-3.0-or-later. The license boundary is the repository boundary.

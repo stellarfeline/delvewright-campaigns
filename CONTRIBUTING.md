@@ -8,12 +8,13 @@ delves — the staged DSL documents from which every delve is deterministically
 rebuilt, byte for byte. This repo is content; the pipeline that compiles it lives
 in the main repo (GPL). Licensing is directory-scoped: `campaigns/` is
 **CC BY-SA 4.0** (see LICENSE); `prefabs/` items carry per-item licenses
-(CC0 / CC BY / original) recorded in their metadata.
+(original, or an ADR-0013 allowlist licence; see `prefabs/LICENSE-ASSETS.md`)
+recorded in their metadata.
 
 ## Layout
 
 ```
-versions.toml          # which main-repo commit a release of this content is built with
+versions.toml          # which engine release tag a release of this content is built with
 .claude/settings.json  # recommends the marketplace and enables the authoring plugin
 campaigns/<campaign-id>/               # every campaign, demo levels included
   world.json  npcs.json  classes.json  quest-plan.json  quests.json  dialogue.json
@@ -36,8 +37,8 @@ a campaign here through a pull request, and for no other reason.
 
 Cloned, it is a complete authoring environment: every existing
 prefab is reusable by any campaign, and a **new prefab ships in the same PR as
-the campaign that needs it**. The prefab library now lives in `prefabs/`
-(migrated from the main repo in M3); the deterministic generators that produce
+the campaign that needs it**. The prefab library lives in `prefabs/`;
+the deterministic generators that produce
 those pieces stay in the main repo (GPL code), and their outputs are committed
 here. `.nbt` files are tracked with git-lfs (see `.gitattributes`) — clone with
 git-lfs installed.
@@ -68,8 +69,8 @@ delvec --prefabs prefabs build campaigns/<id> -o out/
   campaign already authored. The runtime half of the ladder (PackTest and a bot
   playthrough against the shipped image) runs on a release tag; see *Releasing a
   campaign* below.
-- Only distributable-class prefabs (this repo's `prefabs/`, per-item CC0/CC BY/
-  original with recorded provenance) may be referenced. Prefab additions pass a
+- Only distributable-class prefabs (this repo's `prefabs/`, per-item original or
+  ADR-0013 allowlist licence with recorded provenance) may be referenced. Prefab additions pass a
   mechanical NBT audit in CI (block-palette allowlist; no command/structure
   blocks, no NBT-bearing spawners; and what the world will settle — stair runs
   and fluid). Run it yourself before you open anything, with the same command CI
@@ -106,7 +107,7 @@ release/<campaign>/v<semver>
 ```
 
 Pushing it runs `.github/workflows/release.yml`, which builds the campaign with
-the main-repo commit pinned in `versions.toml` `[engine].ref`, runs the full
+the engine release tag pinned in `versions.toml` `[engine].ref`, runs the full
 release-tier ladder (PackTest + a complete bot playthrough against the shipped
 image), and — only on green — publishes the GitHub Release (with
 `resourcepack.zip`) and the multi-arch delve image on GHCR. A red ladder

@@ -37,7 +37,7 @@ the expansion stops.
 At a region of 21 × 9 × 13 — one block under what the walk needs:
 
 ```
-$ delve-grammar expand --file signal-station.program.json \
+$ delvec grammar expand --file signal-station.program.json \
       --region 21x9x13 --seed 1 --id signal-station -o out/
 error: signal-station: no alternative of rule "plan" applies to this scope, and none is `otherwise`
   at: station › split z→z piece 2/2 › terrace › split x→x piece 2/3 › plan
@@ -107,9 +107,9 @@ the rule apply, and one fewer should make it refuse harder. Nothing else on the
 command line should matter.
 
 ```sh
-delve-grammar expand --file signal-station.program.json --region 20x9x13 --seed 1 --id signal-station -o out/
-delve-grammar expand --file signal-station.program.json --region 21x9x13 --seed 1 --id signal-station -o out/
-delve-grammar expand --file signal-station.program.json --region 22x9x13 --seed 1 --id signal-station -o out/
+delvec grammar expand --file signal-station.program.json --region 20x9x13 --seed 1 --id signal-station -o out/
+delvec grammar expand --file signal-station.program.json --region 21x9x13 --seed 1 --id signal-station -o out/
+delvec grammar expand --file signal-station.program.json --region 22x9x13 --seed 1 --id signal-station -o out/
 ```
 
 | region | `dim:z` at the failure site | result |
@@ -142,19 +142,19 @@ The whole transcript is `boundary.txt`.
 
 ## Build it yourself
 
-Everything here comes from `signal-station.program.json` and one tool built from
-source. Clone the pipeline repository,
+Everything here comes from `signal-station.program.json` and `delvec`, the
+engine's one binary. Clone the pipeline repository,
 [stellarfeline/delvewright](https://github.com/stellarfeline/delvewright), then,
 from its root:
 
 ```sh
-cargo build --release -p delvewright-grammar --bin delve-grammar
+cargo build --release -p delvec --bin delvec
 export PATH="$PWD/target/release:$PATH"
 ```
 
 Then run the three commands above from this directory. The `.nbt` is a pure
 function of the program, the region and the seed (ADR-0006): the passing run
-rewrites the same 5,875 bytes every time.
+rewrites the same bytes every time.
 
 ---
 
