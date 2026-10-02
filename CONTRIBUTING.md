@@ -114,6 +114,15 @@ shipped image), and — only on green — publishes the GitHub Release (with
 `resourcepack.zip`) and the multi-arch delve image on GHCR. A red ladder
 publishes nothing.
 
+Before the build, the same pinned engine runs `delvec grammar audit
+--campaign-root` over the released campaign alone (a temp content root holding
+`campaigns/<id>`), for both families, and refuses the release on a red audit. A
+campaign with `design/programs/` must carry a `zones.json` that maps every
+program to a region and seed, and every program must pass its gates; a campaign
+with no `design/programs/` passes, and the log states a zero binding. To check
+before tagging, run the same command from the pinned engine against a root that
+holds only your campaign under `campaigns/`.
+
 The family decides only how it is published:
 
 | | GitHub Release | Image tags |
