@@ -61,7 +61,21 @@ walk; they contain vanilla's pixels and are never committed.
 
 ## State
 
-Built by the engine branch `feat/texture-overrides`. The level is served with
-the engine's playtest server (`tools/creator/playtest-server.sh up
-campaigns/the-painted-night`), which serves the pack from its sidecar and
-never installs it; never copied into a singleplayer save.
+Built by the engine branch `feat/texture-overrides`. The machine ladder on the
+`validation/` image:
+
+- **PackTest**: all 18 required tests passed.
+- **The mineflayer critical path** passed (5 steps). The bot was pushed the
+  pack the build made: one push of `http://pack:8000/resourcepack.zip` with
+  sha1 `2fa9a50e31c453356f218b4a316af0f5ee8f0ac1`, downloaded from that URL
+  to the same sha1, equal to the build's `resource_pack_sha1`. Pointed at a
+  URL the sidecar does not serve, the same run fails: the push downloads
+  nothing and the bot refuses the run.
+
+The level is served with the engine's playtest server
+(`tools/creator/playtest-server.sh up campaigns/the-painted-night`), which
+serves the pack from its sidecar and never installs it; never copied into a
+singleplayer save. Its staging gate refuses it on five findings about objects
+the level does not author — a quest `cast` (isl-35, isl-46), a design record
+(drill3-01, drill3-03) and actor equipment (doune-04) — so serving it takes
+the gate's own deliberate override, which is the walker's call.
