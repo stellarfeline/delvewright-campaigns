@@ -10,11 +10,13 @@ The level is a campaign, so it lives where every campaign lives:
 
 ## What it is meant to show
 
-One roofless tower top standing on the sea, an 8 × 8 roof inside a low parapet,
-open to the sky. The Stargazer stands at its centre. The party arrives under
-*a new moon, just risen* — `{"moon": "just-risen", "phase": "new-moon"}`, day 4.
-Each sentence you choose in her dialogue cuts the sky to it, and you look up and
-read the sky against the sentence:
+One roofless tower top standing on the sea: an 8 × 8 roof inside a parapet one
+course of stone brick high with two courses of glass above it, so the edge is
+full height and the whole horizon shows through it from anywhere on the roof.
+The Stargazer stands at its centre. The party arrives under *a new moon, just
+risen* — `{"moon": "just-risen", "phase": "new-moon"}`, day 4. Each sentence
+you choose in her dialogue cuts the sky to it, and you look up and read the sky
+against the sentence:
 
 | Choice | Written as | Day, daytime |
 |---|---|---|
@@ -35,42 +37,30 @@ dialogue. Three `interact` objectives on one cell are refused (`DW0878`), and
 a dialogue effect cannot play a sound, so no bell is heard. The sentence the
 sky was cut to is the text of her reply.
 
-## Walking it in the test world
+## Walking it
 
-The build's `datapack/` goes into the save's `datapacks/` as
-`stargazers-roof`. A Delvewright delve pack and another delve pack in one
-save share the engine's run-once guard and player state, so the steps
-disable the other delve while you walk this one, and put it back after.
+Served on a local server; join with Multiplayer → Direct Connect →
+`localhost:25565`. You play in adventure mode, and nothing on the walk needs a
+command.
 
-1. Open the world. If cheats are off: Esc → Open to LAN → Allow Commands ON
-   → Start LAN World.
-2. If another delve pack is enabled (`/datapack list enabled`), disable it,
-   e.g. `/datapack disable "file/the-threshold"`.
-3. `/function stargazers-roof:setup`
-4. `/tag @s remove dw_joined`, `/scoreboard players reset @s dw.classed`,
-   `/scoreboard players reset @s dw.dlg_shown`
-5. Pick **Stargazer** in the class dialog (a spyglass). You are put at
-   12303 64 12303, the middle of the roof.
-6. To see over the parapet: `/gamemode creative`, then
-   `/tp @s 12303.5 69 12301.5 -90 -5` (facing east, +X). Yaw `90` faces west;
-   pitch `-90` looks straight up.
-7. **Arrival.** `/time query day` → 4, `/time query daytime` → 12959. East:
-   the dark new-moon disc wholly just above the horizon (+2.86°). West: the
-   sun just under it (−2.86°).
-8. Right-click the Stargazer and choose a sentence; "Another sentence." comes
-   back to the list. Confirm each with `/time query day` and
-   `/time query daytime` against the table above:
-   - **A full moon, high** — look up: a full moon at the zenith.
-   - **A new moon, high** — look up: the same hour, and the moon is new.
-   - **The sun just set** — west: no sun disc at all (−4.29°); east: the new
-     moon at +4.29°.
-   - **The sun rising** — east: the sun's centre on the horizon, half a disc;
-     west: the moon's centre on the horizon.
-   - **A new moon, risen** — back to the arrival sky.
+1. **Arriving.** You are put at the middle of the roof, beside the Stargazer.
+   Turn until you find the moon: a dark, nearly unlit disc sitting low over the
+   parapet, wholly clear of the sea's horizon. That way is **east**. The
+   opposite way, **west**, the sky still glows where the sun has just gone
+   under.
+2. **Talk to the Stargazer** (right-click her). She lists the sentences; after
+   each one she says what to look at, and "Another sentence." brings the list
+   back. Stand anywhere on the roof and look through the glass.
+   - **A full moon, high** — look straight up: a full moon at the zenith.
+   - **A new moon, high** — look straight up again: the same hour, and the moon
+     overhead is now new. The phase moved; the hour did not.
+   - **The sun just set** — look **west**: no sun disc at all, the whole of it
+     gone below the horizon. Look **east**: the new moon a little higher than
+     when you arrived.
+   - **The sun rising** — look **east**: the sun's middle on the horizon, half
+     a disc above the sea. Look **west**: the new moon's middle on the horizon.
+   - **A new moon, risen** — back to the arrival sky; compare with step 1.
    - **That is all** — completes the delve.
-9. Afterwards: `/datapack disable "file/stargazers-roof"`, re-enable the other
-   delve, and run its `setup` if you want its spawn point back — this level's
-   setup moved the world spawn to the roof.
 
 ## Binding lines
 
@@ -110,3 +100,7 @@ on the `validation/` image is green: PackTest passes all 15 required tests,
 `predicate stargazers-roof:moon_new-moon` asserted on the server — and the
 mineflayer critical path passes (3 steps, 2 advisory findings: no death plan
 and no combat plan, because the level has neither).
+
+The staging gate refuses it on two findings, `drill3-01` and `drill3-03`: the
+level has no design record, so the checks that read one are unbound. That is
+tracked separately and is not overridden here.
