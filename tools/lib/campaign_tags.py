@@ -25,6 +25,13 @@ none of it:
 - a pre-release is published as a GitHub pre-release that is never marked
   latest, and its image is pushed as `v<version>` only.
 
+The changelog of a published release starts from the previous tag of the same
+campaign, never from whatever tag GitHub finds nearest: `previous()` answers it
+in semver order (not date). A release looks back through `release/` tags only; a
+pre-release looks back through both families. Tags of other campaigns and tags
+outside the grammar are not candidates. With no earlier tag (a campaign's first
+release) the answer is none, and the workflow generates no changelog.
+
 `tools/lib/release_tags.py` is a different grammar — the engine's own
 `<name>--v<semver>` tags, vendored byte for byte — and is not this one.
 
@@ -150,6 +157,43 @@ def for_version(campaign: str, version: str) -> Coordinates:
     return coordinates(family, campaign, version)
 
 
+def _semver_key(version: str) -> tuple:
+    """Sort key implementing semver 2.0 precedence (prerelease < its release)."""
+    core, _, pre = version.partition("-")
+    nums = tuple(int(x) for x in core.split("."))
+    if not pre:
+        return (nums, 1, ())
+    # numeric identifiers sort below alphanumeric ones, numerically among themselves
+    ids = tuple((0, int(i), "") if i.isdigit() else (1, 0, i) for i in pre.split("."))
+    return (nums, 0, ids)
+
+
+def previous(tag: str, existing: list[str]) -> str | None:
+    """The tag a changelog for `tag` starts from, or None when it is the campaign's first.
+
+    `existing` is every tag of the repository, in any order; entries outside the
+    grammar are ignored. A release is compared against `release/` tags only, a
+    pre-release against both families; the candidate must precede `tag` in semver
+    order, and the latest such wins.
+    """
+    c = parse(tag)
+    families = (RELEASE,) if c.family == RELEASE else FAMILIES
+    mine = _semver_key(c.version)
+    best: tuple | None = None
+    best_tag: str | None = None
+    for t in existing:
+        try:
+            o = parse(t)
+        except Refused:
+            continue
+        if o.campaign != c.campaign or o.family not in families:
+            continue
+        key = _semver_key(o.version)
+        if key < mine and (best is None or key > best):
+            best, best_tag = key, o.tag
+    return best_tag
+
+
 def outputs(c: Coordinates, owner: str) -> list[str]:
     """`key=value` lines for `$GITHUB_OUTPUT`; every value is single-line."""
     return [
@@ -166,6 +210,8 @@ def outputs(c: Coordinates, owner: str) -> list[str]:
 USAGE = """usage: campaign_tags.py <command> [args]
 
   parse <tag>                          print "<family> <campaign> <version>", refused (exit 1) outside the grammar
+  previous --tag <tag>                 read every repository tag on stdin; print the tag a changelog starts
+                                       from (empty line when <tag> is the campaign's first)
   outputs --tag <tag> --owner <owner>  print $GITHUB_OUTPUT lines for a pushed tag
   outputs --campaign <id> --version <semver> --owner <owner>
                                        the same for a dry run; the version decides the family
@@ -191,6 +237,13 @@ def main(argv: list[str]) -> int:
         if command == "parse" and len(rest) == 1:
             c = parse(rest[0])
             print(f"{c.family} {c.campaign} {c.version}")
+            return 0
+        if command == "previous":
+            flags = _flags(rest)
+            if flags is None or set(flags) != {"tag"}:
+                print(USAGE, file=sys.stderr)
+                return 2
+            print(previous(flags["tag"], sys.stdin.read().split()) or "")
             return 0
         if command == "outputs":
             flags = _flags(rest)
