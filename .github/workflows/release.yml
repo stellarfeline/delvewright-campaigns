@@ -238,6 +238,39 @@ jobs:
         with:
           workspaces: engine
 
+      # The engine's CI no longer judges this repo's campaigns; each campaign is
+      # judged at its own release by the engine it pins. A campaign's zone
+      # programs (`design/programs/`) are artifacts of record that no other
+      # command invokes, so `delvec grammar audit` is the only judge they have,
+      # and nothing ran it here. The audit runs from the same pinned engine
+      # checkout the build uses, scoped like the storybook check to this
+      # release's own campaign: a temp content root holding `campaigns/<id>` as
+      # a symlink, so another campaign's programs neither block this release nor
+      # are exempted from it. Both tag families pass through it.
+      #
+      # `audit` refuses a corpus of nothing, and a campaign with no zone
+      # programs is a legitimate release, so that case is decided here and
+      # printed as a named zero binding rather than left to the audit's refusal.
+      # A campaign that declares `design/programs/` is always handed to the
+      # audit, which reds on a missing `zones.json`, an unmapped program, a
+      # failing gate, or an empty directory.
+      - name: the release refuses zone programs its own audit refuses
+        working-directory: engine
+        env:
+          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+        run: |
+          set -euo pipefail
+          programs="$GITHUB_WORKSPACE/campaigns/$CAMPAIGN/design/programs"
+          if [ ! -d "$programs" ]; then
+            echo "zone audit: campaign $CAMPAIGN carries 0 zone programs (no design/programs/) -- zero binding, nothing to judge; the audit is not run"
+            exit 0
+          fi
+          root="$RUNNER_TEMP/zone-audit-scope"
+          rm -rf "$root"
+          mkdir -p "$root/campaigns"
+          ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$root/campaigns/$CAMPAIGN"
+          cargo run -p delvec --bin delvec -- grammar audit --campaign-root "$root"
+
       # ---- 3. build --------------------------------------------------------
       # The build is a function of the campaign directory, the prefab directory
       # and the flags below it, and of nothing else — no file above the working
