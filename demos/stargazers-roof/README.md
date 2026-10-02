@@ -104,5 +104,9 @@ Each is the campaign plus one edit, refused by `delvec validate` with `DW0931`:
 
 ## State
 
-Builds on the engine branch `feat/celestial-time`. Validates and builds there
-(exit 0). The machine ladder on the `validation/` image has not been run.
+Builds on the engine branch `feat/celestial-time` (exit 0). The machine ladder
+on the `validation/` image is green: PackTest passes all 15 required tests,
+`sealed_state` among them — `daytime` 12959, `day` 4 and
+`predicate stargazers-roof:moon_new-moon` asserted on the server — and the
+mineflayer critical path passes (3 steps, 2 advisory findings: no death plan
+and no combat plan, because the level has neither).
