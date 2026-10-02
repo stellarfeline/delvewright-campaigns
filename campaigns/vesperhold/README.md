@@ -41,7 +41,7 @@ A souls-like, in adventure mode. Here is what that means in play.
 
 **Fires.** Five of them, from the causeway to the throne. At a fire you can *rest*: you are healed, fed and mended, your Vigil Draughts are refilled, and this is where you come back if you fall — but everything ordinary you have killed since comes back too. Or you can *only warm up*: the fire becomes your return point and nothing else changes.
 
-**Dying.** You wake at your last fire. Your tallow — the castle's only coin — stays on the ground where you fell. Walk back and pick it up. Die again before you reach it, and it is gone. Tallow comes from putting down the castle's rank and file, each kill paying the player who made it, so a lost purse can be earned back.
+**Dying.** You wake at your last fire. Your tallow — the castle's only coin — stays on the ground where you fell. Walk back and pick it up. Die again before you reach it, and it is gone. Tallow comes from putting down the castle's rank and file, each kill paying the player who made it, so a lost purse can be earned back. Playing with others, a fallen player waits 20 seconds, watching a teammate, before coming back; a lone player does not wait.
 
 **Walking back.** The walk from a fire to the next hard fight is short, and doors you open from the far side stay open. The castle folds back on itself as you learn it.
 
