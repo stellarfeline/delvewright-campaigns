@@ -1,0 +1,5738 @@
+{
+  "name": "whale-fall",
+  "palette": {
+    "bone": [
+      {
+        "block": "minecraft:bone_block[axis=y]",
+        "weight": 6
+      },
+      {
+        "block": "minecraft:calcite",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:diorite",
+        "weight": 1
+      }
+    ],
+    "cartilage": "minecraft:calcite",
+    "column": "minecraft:chiseled_stone_bricks",
+    "column_ruin": [
+      {
+        "block": "minecraft:chiseled_stone_bricks",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:air",
+        "weight": 2
+      }
+    ],
+    "lamp": "minecraft:pearlescent_froglight[axis=y]",
+    "paving": [
+      {
+        "block": "minecraft:stone_bricks",
+        "weight": 5
+      },
+      {
+        "block": "minecraft:mossy_stone_bricks",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:cracked_stone_bricks",
+        "weight": 2
+      }
+    ],
+    "spine": [
+      {
+        "block": "minecraft:bone_block[axis=z]",
+        "weight": 7
+      },
+      {
+        "block": "minecraft:calcite",
+        "weight": 2
+      },
+      {
+        "block": "minecraft:diorite",
+        "weight": 1
+      }
+    ],
+    "stair_north": "minecraft:smooth_quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "stair_north_stone": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "stair_south": "minecraft:stone_brick_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
+    "walk": [
+      {
+        "block": "minecraft:stone_bricks",
+        "weight": 5
+      },
+      {
+        "block": "minecraft:mossy_stone_bricks",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:cracked_stone_bricks",
+        "weight": 2
+      }
+    ]
+  },
+  "params": {
+    "lower": 0,
+    "n": 0,
+    "walk_n": 4
+  },
+  "rules": {
+    "blade_band": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "axis": "x",
+                  "children": [
+                    {
+                      "material": {
+                        "role": "spine"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "spine"
+                      },
+                      "op": "fill"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "braincase": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "op": "call",
+                "symbol": "taper_solid"
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "y": true
+                }
+              }
+            },
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "material": {
+                        "role": "bone"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "material": {
+                        "role": "paving"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "material": {
+                        "role": "bone"
+                      },
+                      "op": "fill"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "call",
+              "symbol": "chamber_walls"
+            },
+            {
+              "op": "call",
+              "symbol": "vault"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 8
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "braincase_box": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "braincase"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 9
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 27
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 9
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "caudal": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "caudal_vertebra"
+            },
+            {
+              "op": "call",
+              "symbol": "caudal_disc"
+            },
+            {
+              "op": "call",
+              "symbol": "caudal_rest"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 4
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "void"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "caudal_disc": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "cartilage"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "stair_north"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "arith",
+            "lhs": {
+              "expr": "param",
+              "name": "n"
+            },
+            "op": "rem",
+            "rhs": {
+              "expr": "int",
+              "value": 2
+            }
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "cartilage"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "caudal_rest": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "body": {
+                    "op": "call",
+                    "symbol": "caudal"
+                  },
+                  "op": "bind",
+                  "params": {
+                    "n": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "n"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "n"
+                },
+                "op": "rem",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "body": {
+            "op": "call",
+            "symbol": "caudal"
+          },
+          "op": "bind",
+          "params": {
+            "n": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "n"
+              },
+              "op": "add",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          }
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "caudal_vertebra": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "axis": "x",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "bone"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "material": {
+                "role": "spine"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "centrum_band": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "spine"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "disc"
+            }
+          ],
+          "op": "split",
+          "repeat": true,
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "chamber_walls": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "side_wall"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "call",
+                  "symbol": "temple"
+                },
+                {
+                  "op": "call",
+                  "symbol": "rear_wall"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "call",
+              "symbol": "side_wall"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "column"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "column_ruin"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "column"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "column"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 13
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "disc": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "cartilage"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "material": {
+                "role": "cartilage"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "flipper": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "flipper_course"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "flipper"
+              },
+              "op": "bind",
+              "params": {
+                "n": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "n"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              }
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "y",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 2
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "flipper_course"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "flipper_course": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "int",
+                      "value": 5
+                    },
+                    "op": "min",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "n"
+                      },
+                      "op": "div",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 2
+                      }
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "min",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "n"
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 3
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "n"
+          },
+          "op": "lt",
+          "rhs": {
+            "expr": "int",
+            "value": 4
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "int",
+                      "value": 5
+                    },
+                    "op": "min",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "n"
+                      },
+                      "op": "div",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 2
+                      }
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "min",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "n"
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 3
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "n"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 4
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "n"
+              },
+              "op": "lt",
+              "rhs": {
+                "expr": "int",
+                "value": 9
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "int",
+                      "value": 5
+                    },
+                    "op": "min",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "n"
+                      },
+                      "op": "div",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 2
+                      }
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "min",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "n"
+                  },
+                  "op": "div",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 3
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "flipper_margin": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "body": {
+                    "body": {
+                      "op": "call",
+                      "symbol": "flipper"
+                    },
+                    "op": "bind",
+                    "params": {
+                      "n": {
+                        "expr": "int",
+                        "value": 0
+                      }
+                    }
+                  },
+                  "op": "reorient",
+                  "orient": {
+                    "mirror": {
+                      "y": true
+                    }
+                  }
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 16
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 12
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "gap_slice": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "walk"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 5
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 15
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "jaw_band": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "body": {
+                "op": "call",
+                "symbol": "mandible_zone"
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "x": true
+                }
+              }
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "mandible_zone"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 17
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 17
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "lumbar": [
+      {
+        "body": {
+          "body": {
+            "axis": "x",
+            "children": [
+              {
+                "op": "void"
+              },
+              {
+                "body": {
+                  "op": "call",
+                  "symbol": "process_column"
+                },
+                "op": "reorient",
+                "orient": {
+                  "mirror": {
+                    "x": true
+                  }
+                }
+              },
+              {
+                "op": "call",
+                "symbol": "lumbar_spine"
+              },
+              {
+                "op": "call",
+                "symbol": "process_column_stair"
+              },
+              {
+                "op": "call",
+                "symbol": "stair_lane"
+              },
+              {
+                "op": "void"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 13
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 11
+                },
+                "size": "absolute"
+              }
+            ]
+          },
+          "mark": {
+            "anchor": "spine-walk",
+            "at": "offset",
+            "facing": "north",
+            "x": {
+              "expr": "int",
+              "value": 22
+            },
+            "y": {
+              "expr": "int",
+              "value": 33
+            },
+            "z": {
+              "expr": "int",
+              "value": 18
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "lumbar_spine": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "axis": "x",
+                  "children": [
+                    {
+                      "material": {
+                        "role": "walk"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "material": {
+                        "role": "walk"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "material": {
+                        "role": "walk"
+                      },
+                      "op": "fill"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 5
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "centrum_band"
+            },
+            {
+              "op": "call",
+              "symbol": "blade_band"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 12
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 15
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "mandible": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "axis": "y",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "bone"
+                      },
+                      "op": "fill"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    {
+                      "blocks": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "int",
+                          "value": 3
+                        },
+                        "op": "min",
+                        "rhs": {
+                          "dim": "y",
+                          "expr": "dim"
+                        }
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "int",
+                      "value": 0
+                    },
+                    "op": "max",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "int",
+                          "value": 3
+                        },
+                        "op": "add",
+                        "rhs": {
+                          "expr": "arith",
+                          "lhs": {
+                            "expr": "arith",
+                            "lhs": {
+                              "expr": "param",
+                              "name": "n"
+                            },
+                            "op": "mul",
+                            "rhs": {
+                              "expr": "int",
+                              "value": 11
+                            }
+                          },
+                          "op": "div",
+                          "rhs": {
+                            "expr": "int",
+                            "value": 4
+                          }
+                        }
+                      },
+                      "op": "min",
+                      "rhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "int",
+                          "value": 14
+                        },
+                        "op": "sub",
+                        "rhs": {
+                          "expr": "arith",
+                          "lhs": {
+                            "expr": "arith",
+                            "lhs": {
+                              "expr": "arith",
+                              "lhs": {
+                                "expr": "param",
+                                "name": "n"
+                              },
+                              "op": "sub",
+                              "rhs": {
+                                "expr": "int",
+                                "value": 4
+                              }
+                            },
+                            "op": "mul",
+                            "rhs": {
+                              "expr": "int",
+                              "value": 11
+                            }
+                          },
+                          "op": "div",
+                          "rhs": {
+                            "expr": "int",
+                            "value": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "body": {
+                    "op": "call",
+                    "symbol": "mandible"
+                  },
+                  "op": "bind",
+                  "params": {
+                    "n": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "n"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "void"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "mandible_zone": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "body": {
+                  "op": "call",
+                  "symbol": "mandible"
+                },
+                "op": "bind",
+                "params": {
+                  "n": {
+                    "expr": "int",
+                    "value": 0
+                  }
+                }
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "z": true
+                }
+              }
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 28
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "neck": [
+      {
+        "body": {
+          "body": {
+            "axis": "y",
+            "children": [
+              {
+                "op": "void"
+              },
+              {
+                "axis": "x",
+                "children": [
+                  {
+                    "op": "void"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "centrum_band"
+                  },
+                  {
+                    "op": "void"
+                  }
+                ],
+                "op": "split",
+                "sizes": [
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 19
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 7
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "size": "relative",
+                    "weight": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "axis": "x",
+                "children": [
+                  {
+                    "op": "void"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "blade_band"
+                  },
+                  {
+                    "op": "void"
+                  }
+                ],
+                "op": "split",
+                "sizes": [
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 19
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 7
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "size": "relative",
+                    "weight": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "void"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 28
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "mark": {
+            "anchor": "skull-rear",
+            "at": "offset",
+            "facing": "north",
+            "x": {
+              "expr": "int",
+              "value": 22
+            },
+            "y": {
+              "expr": "int",
+              "value": 33
+            },
+            "z": {
+              "expr": "int",
+              "value": 3
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "process_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "axis": "z",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "axis": "y",
+                          "children": [
+                            {
+                              "op": "void"
+                            },
+                            {
+                              "material": {
+                                "role": "spine"
+                              },
+                              "op": "fill"
+                            },
+                            {
+                              "op": "void"
+                            }
+                          ],
+                          "op": "split",
+                          "sizes": [
+                            {
+                              "blocks": {
+                                "expr": "int",
+                                "value": 2
+                              },
+                              "size": "absolute"
+                            },
+                            {
+                              "blocks": {
+                                "expr": "int",
+                                "value": 1
+                              },
+                              "size": "absolute"
+                            },
+                            {
+                              "blocks": {
+                                "expr": "int",
+                                "value": 2
+                              },
+                              "size": "absolute"
+                            }
+                          ]
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "repeat": true,
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 3
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 5
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 28
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "process_column_stair": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "material": {
+                    "role": "walk"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "axis": "z",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "axis": "y",
+                          "children": [
+                            {
+                              "op": "void"
+                            },
+                            {
+                              "material": {
+                                "role": "spine"
+                              },
+                              "op": "fill"
+                            },
+                            {
+                              "op": "void"
+                            }
+                          ],
+                          "op": "split",
+                          "sizes": [
+                            {
+                              "blocks": {
+                                "expr": "int",
+                                "value": 2
+                              },
+                              "size": "absolute"
+                            },
+                            {
+                              "blocks": {
+                                "expr": "int",
+                                "value": 1
+                              },
+                              "size": "absolute"
+                            },
+                            {
+                              "blocks": {
+                                "expr": "int",
+                                "value": 2
+                              },
+                              "size": "absolute"
+                            }
+                          ]
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "repeat": true,
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 3
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "axis": "y",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "walk"
+                      },
+                      "op": "fill"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 4
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 23
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 12
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 15
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "rear_wall": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "rib_band": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "call",
+                "symbol": "rib_half"
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "z": true
+                }
+              }
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "call",
+                  "symbol": "gap_slice"
+                },
+                {
+                  "op": "call",
+                  "symbol": "rib_half"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "rib_half": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "rib_slice"
+            },
+            {
+              "op": "call",
+              "symbol": "gap_slice"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "axis": "y",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "op": "call",
+                      "symbol": "rib_half"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 4
+          }
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "gap_slice"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "lt",
+              "rhs": {
+                "expr": "int",
+                "value": 4
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "void"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "rib_slice": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "body": {
+                  "op": "call",
+                  "symbol": "ring"
+                },
+                "op": "bind",
+                "params": {
+                  "lower": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "n": {
+                    "expr": "int",
+                    "value": 0
+                  }
+                }
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "y": true
+                }
+              }
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "ring"
+              },
+              "op": "bind",
+              "params": {
+                "lower": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "n": {
+                  "expr": "int",
+                  "value": 0
+                }
+              }
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 11
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ring": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ring_course"
+            },
+            {
+              "op": "call",
+              "symbol": "ring_step"
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "int",
+                      "value": 2
+                    },
+                    "op": "max",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "param",
+                          "name": "n"
+                        },
+                        "op": "div",
+                        "rhs": {
+                          "expr": "int",
+                          "value": 3
+                        }
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "ring_course"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "lower"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "int",
+                      "value": 2
+                    },
+                    "op": "max",
+                    "rhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "param",
+                          "name": "n"
+                        },
+                        "op": "div",
+                        "rhs": {
+                          "expr": "int",
+                          "value": 3
+                        }
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  },
+                  "op": "mul",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "any",
+              "of": [
+                {
+                  "cond": "cmp",
+                  "lhs": {
+                    "dim": "y",
+                    "expr": "dim"
+                  },
+                  "op": "lt",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                {
+                  "cond": "cmp",
+                  "lhs": {
+                    "dim": "x",
+                    "expr": "dim"
+                  },
+                  "op": "lt",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "int",
+                          "value": 2
+                        },
+                        "op": "max",
+                        "rhs": {
+                          "expr": "arith",
+                          "lhs": {
+                            "expr": "arith",
+                            "lhs": {
+                              "expr": "param",
+                              "name": "n"
+                            },
+                            "op": "div",
+                            "rhs": {
+                              "expr": "int",
+                              "value": 3
+                            }
+                          },
+                          "op": "add",
+                          "rhs": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      },
+                      "op": "mul",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 2
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 2
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "bone"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "ring_course": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "walk"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "max",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "n"
+                    },
+                    "op": "div",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 3
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "max",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "n"
+                    },
+                    "op": "div",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 3
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "lower"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "n"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "walk_n"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "max",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "n"
+                    },
+                    "op": "div",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 3
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "max",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "n"
+                    },
+                    "op": "div",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 3
+                    }
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "ring_step": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "ring"
+              },
+              "op": "bind",
+              "params": {
+                "n": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "n"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              }
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "n"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "n"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "rostrum": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "axis": "y",
+                  "children": [
+                    {
+                      "op": "call",
+                      "symbol": "rostrum"
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "bone"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "rostrum_box": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "body": {
+                    "op": "call",
+                    "symbol": "rostrum"
+                  },
+                  "op": "reorient",
+                  "orient": {
+                    "mirror": {
+                      "z": true
+                    }
+                  }
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 10
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 25
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 10
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 13
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "side_wall": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "skull": [
+      {
+        "body": {
+          "body": {
+            "axis": "y",
+            "children": [
+              {
+                "op": "void"
+              },
+              {
+                "op": "call",
+                "symbol": "jaw_band"
+              },
+              {
+                "op": "call",
+                "symbol": "skull_band"
+              },
+              {
+                "op": "void"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 11
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 27
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "mark": {
+            "anchor": "temple",
+            "at": "offset",
+            "facing": "north",
+            "x": {
+              "expr": "int",
+              "value": 22
+            },
+            "y": {
+              "expr": "int",
+              "value": 33
+            },
+            "z": {
+              "expr": "int",
+              "value": 26
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "skull_band": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "rostrum_box"
+            },
+            {
+              "op": "call",
+              "symbol": "braincase_box"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 16
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 14
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "stair": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "stair_south"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "walk"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "call",
+                  "symbol": "stair"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 2
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "stair_south"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "stair_lane": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "material": {
+                    "role": "walk"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "axis": "y",
+                  "children": [
+                    {
+                      "op": "call",
+                      "symbol": "stair"
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 20
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "y",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "walk"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 19
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 20
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 12
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "tail": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "body": {
+                    "op": "call",
+                    "symbol": "caudal"
+                  },
+                  "op": "bind",
+                  "params": {
+                    "n": {
+                      "expr": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 26
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 7
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 19
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 7
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "taper_solid": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "taper_solid"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "bone"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "taper_solid_up": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "bone"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "taper_solid_up"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "bone"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "temple": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "axis": "x",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "paving"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 6
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 11
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 6
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "axis": "x",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "material": {
+                        "role": "stair_north_stone"
+                      },
+                      "op": "fill"
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 6
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 11
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 6
+                      },
+                      "size": "absolute"
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "column_row"
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "column_row"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "thorax": [
+      {
+        "body": {
+          "body": {
+            "axis": "x",
+            "children": [
+              {
+                "body": {
+                  "op": "call",
+                  "symbol": "flipper_margin"
+                },
+                "op": "reorient",
+                "orient": {
+                  "mirror": {
+                    "x": true
+                  }
+                }
+              },
+              {
+                "op": "call",
+                "symbol": "thorax_middle"
+              },
+              {
+                "op": "call",
+                "symbol": "flipper_margin"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 33
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "size": "absolute"
+              }
+            ]
+          },
+          "mark": {
+            "anchor": "cage",
+            "at": "offset",
+            "facing": "north",
+            "x": {
+              "expr": "int",
+              "value": 22
+            },
+            "y": {
+              "expr": "int",
+              "value": 13
+            },
+            "z": {
+              "expr": "int",
+              "value": 25
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "thorax_middle": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "rib_band"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "centrum_band"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 13
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 7
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 13
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "blade_band"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 13
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 7
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 13
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 7
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 21
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "vault": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "taper_solid_up"
+            },
+            {
+              "op": "call",
+              "symbol": "vault_ring"
+            },
+            {
+              "op": "call",
+              "symbol": "taper_solid_up"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "vault_ring": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "op": "void"
+                },
+                {
+                  "material": {
+                    "role": "bone"
+                  },
+                  "op": "fill"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "void"
+                },
+                {
+                  "op": "call",
+                  "symbol": "vault_ring"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 2
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "rounding": "start",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 8
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "material": {
+            "role": "bone"
+          },
+          "op": "fill"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "whale": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "skull"
+            },
+            {
+              "op": "call",
+              "symbol": "neck"
+            },
+            {
+              "op": "call",
+              "symbol": "thorax"
+            },
+            {
+              "op": "call",
+              "symbol": "lumbar"
+            },
+            {
+              "op": "call",
+              "symbol": "tail"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 30
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 40
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 24
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 30
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "start": "whale",
+  "version": "1.9.0"
+}
