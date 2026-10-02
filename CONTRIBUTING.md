@@ -127,6 +127,13 @@ refused (`RELEASE_HAS_PRERELEASE`), and so is a `prerelease/` tag without one
 (`+...`) is refused in both. `tools/lib/campaign_tags.py` is the grammar; check
 a tag before pushing it with `python3 tools/lib/campaign_tags.py parse <tag>`.
 
+The Release's generated changelog starts from the previous tag of the same
+campaign in semver order: a release looks back through `release/` tags only, a
+pre-release through both families. A campaign's first release carries the
+storybook blurb and no generated changelog.
+`python3 tools/lib/campaign_tags.py previous --tag <tag>` (tags on stdin, from
+`git tag -l`) prints the start tag.
+
 Publish a pre-release through its tag, never by hand: the workflow is what
 creates a campaign's GHCR package, and a package created from a workstation is
 not linked to this repository, so the workflow cannot push to it afterwards.

@@ -143,5 +143,69 @@ class Cli(unittest.TestCase):
                 self.assertEqual(self.run_cli(*args).returncode, 2)
 
 
+# Several campaigns interleaved, pre-releases of both campaigns, a stray tag.
+TAGS = [
+    "archive/bell-remake-r1-abandoned",
+    "release/alpha/v1.0.0",
+    "prerelease/alpha/v1.1.0-beta.1",
+    "prerelease/beta/v1.0.0-beta.1",
+    "release/beta/v0.9.0",
+    "release/alpha/v1.1.0",
+    "release/alpha/v1.10.0",
+    "release/alpha/v1.2.0",
+    "prerelease/alpha/v1.1.0-beta.2",
+    "prerelease/alpha/v1.1.0-beta.10",
+    "release/beta/v1.0.0",
+    "release/alpha-two/v5.0.0",
+]
+
+
+class Previous(unittest.TestCase):
+    def test_table(self) -> None:
+        cases = [
+            # stable: previous stable of the same campaign, semver not date or lexical order
+            ("release/alpha/v1.1.0", "release/alpha/v1.0.0"),
+            ("release/alpha/v1.2.0", "release/alpha/v1.1.0"),
+            ("release/alpha/v1.10.0", "release/alpha/v1.2.0"),
+            ("release/beta/v1.0.0", "release/beta/v0.9.0"),
+            # a stable never looks back at a pre-release, nor at another campaign
+            ("release/alpha/v1.0.0", None),
+            ("release/beta/v0.9.0", None),
+            ("release/alpha-two/v5.0.0", None),
+            # pre-release: either family, whatever precedes it in semver order
+            ("prerelease/alpha/v1.1.0-beta.1", "release/alpha/v1.0.0"),
+            ("prerelease/alpha/v1.1.0-beta.2", "prerelease/alpha/v1.1.0-beta.1"),
+            ("prerelease/alpha/v1.1.0-beta.10", "prerelease/alpha/v1.1.0-beta.2"),
+            ("prerelease/beta/v1.0.0-beta.1", "release/beta/v0.9.0"),
+            # a tag not yet in the list (the one being published) still resolves
+            ("prerelease/alpha/v1.1.0-rc.1", "prerelease/alpha/v1.1.0-beta.10"),
+            ("release/gamma/v1.0.0", None),
+        ]
+        for tag, want in cases:
+            with self.subTest(tag=tag):
+                self.assertEqual(ct.previous(tag, TAGS), want)
+
+    def test_prerelease_precedes_its_release_but_a_release_skips_it(self) -> None:
+        tags = ["prerelease/a/v1.0.0-beta.1", "release/a/v1.0.0"]
+        self.assertIsNone(ct.previous("release/a/v1.0.0", tags))
+        self.assertIsNone(ct.previous("prerelease/a/v1.0.0-beta.1", tags))
+        self.assertEqual(ct.previous("prerelease/a/v1.0.0-rc.1", tags), "prerelease/a/v1.0.0-beta.1")
+
+    def test_a_tag_is_never_its_own_predecessor(self) -> None:
+        self.assertIsNone(ct.previous("release/alpha/v1.0.0", ["release/alpha/v1.0.0"]))
+
+    def test_cli_reads_tags_on_stdin(self) -> None:
+        r = subprocess.run(
+            [sys.executable, str(SCRIPT), "previous", "--tag", "release/alpha/v1.2.0"],
+            input="\n".join(TAGS), capture_output=True, text=True, check=False,
+        )
+        self.assertEqual((r.returncode, r.stdout), (0, "release/alpha/v1.1.0\n"))
+        r = subprocess.run(
+            [sys.executable, str(SCRIPT), "previous", "--tag", "release/gamma/v1.0.0"],
+            input="\n".join(TAGS), capture_output=True, text=True, check=False,
+        )
+        self.assertEqual((r.returncode, r.stdout), (0, "\n"))
+
+
 if __name__ == "__main__":
     unittest.main()
