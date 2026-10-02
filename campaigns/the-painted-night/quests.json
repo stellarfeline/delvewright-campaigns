@@ -1,0 +1,99 @@
+{
+  "campaign_id": "the-painted-night",
+  "content": {
+    "actors": [
+      {
+        "anchor": "anchor/node-shore",
+        "entity": "minecraft:drowned",
+        "facing": "north",
+        "id": "actor/shore-walker",
+        "name": "The Shore Walker"
+      }
+    ],
+    "quests": [
+      {
+        "happening": {
+          "text": "The party stands in a meadow at midnight, under a full moon.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-painted-night",
+        "objectives": [
+          {
+            "anchor": "anchor/node-meadow",
+            "happening": {
+              "text": "They look up, and the moon is red.",
+              "verb": "opens"
+            },
+            "hint": "Here, in the middle of the meadow.",
+            "id": "obj/look-up",
+            "radius": 6,
+            "title": "Look up at the moon",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/look-up"
+            ],
+            "anchor": "anchor/node-shore",
+            "happening": {
+              "text": "At the far edge stands a drowned that is not the colour a drowned should be.",
+              "verb": "arrives"
+            },
+            "hint": "South, at the far end of the meadow.",
+            "id": "obj/the-shore",
+            "radius": 4,
+            "title": "Walk to the shore",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-shore"
+            ],
+            "anchor": "anchor/node-meadow",
+            "happening": {
+              "text": "They come back under the same red moon.",
+              "verb": "arrives"
+            },
+            "hint": "Back north, to where you started.",
+            "id": "obj/walk-back",
+            "radius": 4,
+            "title": "Walk back",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The walk is over.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/look-up": [
+            {
+              "actor": "actor/shore-walker",
+              "happening": {
+                "subject": "actor/shore-walker",
+                "text": "Something takes its place at the far edge of the meadow.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "style": "subtitle",
+              "text": "Something waits at the far edge.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.35.0",
+  "stage": "quests"
+}
