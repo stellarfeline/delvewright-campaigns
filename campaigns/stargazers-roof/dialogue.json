@@ -1,0 +1,141 @@
+{
+  "campaign_id": "stargazers-roof",
+  "content": {
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/sky",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "time": {
+                      "moon": "high",
+                      "phase": "full-moon"
+                    },
+                    "type": "set-time"
+                  }
+                ],
+                "label": "A full moon, high",
+                "next": "dlg/rung-full"
+              },
+              {
+                "effects": [
+                  {
+                    "time": {
+                      "moon": "high"
+                    },
+                    "type": "set-time"
+                  }
+                ],
+                "label": "A new moon, high",
+                "next": "dlg/rung-newhigh"
+              },
+              {
+                "effects": [
+                  {
+                    "time": {
+                      "sun": "just-set"
+                    },
+                    "type": "set-time"
+                  }
+                ],
+                "label": "The sun just set",
+                "next": "dlg/rung-sunset"
+              },
+              {
+                "effects": [
+                  {
+                    "time": {
+                      "sun": "rising"
+                    },
+                    "type": "set-time"
+                  }
+                ],
+                "label": "The sun rising",
+                "next": "dlg/rung-sunrise"
+              },
+              {
+                "effects": [
+                  {
+                    "time": {
+                      "moon": "just-risen"
+                    },
+                    "type": "set-time"
+                  }
+                ],
+                "label": "A new moon, risen",
+                "next": "dlg/rung-newmoon"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-sky",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "That is all"
+              }
+            ],
+            "text": "Say the sky in words, and I will ring it into place. Look up after every ring."
+          },
+          {
+            "id": "dlg/rung-full",
+            "options": [
+              {
+                "label": "Another sentence.",
+                "next": "dlg/sky"
+              }
+            ],
+            "text": "The bell rings. Look up: a full moon, high in the sky."
+          },
+          {
+            "id": "dlg/rung-sunset",
+            "options": [
+              {
+                "label": "Another sentence.",
+                "next": "dlg/sky"
+              }
+            ],
+            "text": "The bell rings. Look west: the sun has just set, and the new moon stands just over the east."
+          },
+          {
+            "id": "dlg/rung-sunrise",
+            "options": [
+              {
+                "label": "Another sentence.",
+                "next": "dlg/sky"
+              }
+            ],
+            "text": "The bell rings. Look east: the sun is rising, its middle on the horizon."
+          },
+          {
+            "id": "dlg/rung-newmoon",
+            "options": [
+              {
+                "label": "Another sentence.",
+                "next": "dlg/sky"
+              }
+            ],
+            "text": "The bell rings. Look east: a new moon, just risen, the whole of it clear of the horizon."
+          },
+          {
+            "id": "dlg/rung-newhigh",
+            "options": [
+              {
+                "label": "Another sentence.",
+                "next": "dlg/sky"
+              }
+            ],
+            "text": "The bell rings. Look straight up: the same hour as the full moon, four days on, and the moon overhead is new."
+          }
+        ],
+        "npc": "npc/stargazer",
+        "root": "dlg/sky"
+      }
+    ]
+  },
+  "dsl_version": "0.35.0",
+  "stage": "dialogue"
+}
