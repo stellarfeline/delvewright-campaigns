@@ -13,7 +13,12 @@ The level is a campaign, so it lives where every campaign lives:
 One roofless tower top standing on the sea: an 8 × 8 roof inside a parapet one
 course of stone brick high with two courses of glass above it, so the edge is
 full height and the whole horizon shows through it from anywhere on the roof.
-The Stargazer stands at its centre. The party arrives under *a new moon, just
+The world is the sea (`horizon: ocean`). The roof is twenty-two blocks above
+it, on a stone-brick tower with a corbelled cornice and blind slit windows,
+which stands on a rock skerry, so from the roof the sun and moon rise and set
+over an unbroken sea line. The tower is a `massif` volume in the site plan,
+refaced in `world-edits.json`; nobody can climb down it.
+The Stargazer stands at the roof's centre. The party arrives under *a new moon, just
 risen* — `{"moon": "just-risen", "phase": "new-moon"}`, day 4. Each sentence
 you choose in her dialogue cuts the sky to it, and you look up and read the sky
 against the sentence:
