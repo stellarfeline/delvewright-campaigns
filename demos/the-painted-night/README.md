@@ -19,6 +19,15 @@ open grass.
   up, a drowned takes its place at the shore's middle and stands there, facing
   north, a nautilus shell in its hand. It does not move and cannot be hurt.
 
+The meadow is open: its shell walls are carved down to the ground on three
+sides, so it runs on into the valley floor. It is turf scattered with grass,
+ferns, bushes and wild flowers, and has no trees, so nothing shades it from the
+moon. The shore is a cove. Its three outer sides are a rock bank, two courses
+high with a broken crest, and a body cannot climb it, so the open grass is
+still the only way between the two halves. A sand beach runs down to a still
+pool along the far bank, with a wandering waterline. The drowned's place is on
+the sand a few blocks from the water. Every block comes from `world-edits.json`.
+
 Two textures are replaced:
 
 | Row | Replaces | The image |
