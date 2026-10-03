@@ -73,7 +73,7 @@ walk; they contain vanilla's pixels and are never committed.
 Built by the engine branch `feat/texture-overrides`. The machine ladder on the
 `validation/` image:
 
-- **PackTest**: all 18 required tests passed.
+- **PackTest**: all 19 required tests passed.
 - **The mineflayer critical path** passed (5 steps). The bot was pushed the
   pack the build made: one push of `http://pack:8000/resourcepack.zip` with
   sha1 `2fa9a50e31c453356f218b4a316af0f5ee8f0ac1`, downloaded from that URL
