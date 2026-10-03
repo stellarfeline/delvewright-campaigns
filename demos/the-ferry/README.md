@@ -28,6 +28,20 @@ into, and a tiller beside the hull.
   been reached (`flag/far-shore`), so the return exists when the story asks for
   it.
 
+What you see: the world is the sea (`horizon: ocean`), and each boathouse
+stands at the edge of its own shore, a turf bank ringed with sand, with the
+strait between them and open water to the north. A boathouse is timber on a
+stone footing under a dark-oak gable roof. Inside, an oak jetty runs round a
+slip of sea water; the ferry is built of blocks, a dark-oak hull three wide
+with a spruce rail, moored bow to a barred water-gate in the north wall and
+stern to the jetty. The hull cell is the stern well, and the tiller is the
+floor lever just astern of it on the jetty. Windows look across the strait at
+the other house, and lanterns hang from the ceiling beams. Every block comes
+from `world-edits.json`. The footing runs down to the sea floor and the
+water-gate is barred, so nobody swims out of a boathouse. Each side channel of
+the slip has a plank step at its stern end, so a body that falls in wades out
+onto the jetty.
+
 A player left on the jetty when the tiller is pulled is not carried — the
 ferry moves whoever is in its hull. That player boards and pulls the tiller
 again, and follows: the trigger is repeatable, which is what makes it a link
