@@ -97,10 +97,10 @@ Builds on the engine branch `feat/teleport-link`. The machine ladder on the
 `validation/` image is green: PackTest runs the generated suite (20 required
 tests, among them both links' `env_trigger_*` and `teleport_*` templates), and
 the mineflayer critical path boards each hull, pulls each tiller from its
-stand cell and is carried both ways (8 steps). The staging gate refuses it on
-four rows about objects a demo level does not author — a cast declaration
-(isl-35, isl-46) and a design record (drill3-01, drill3-03) — the same four the
-other demo levels carry; it has not been overridden.
+stand cell and is carried both ways (8 steps). With the staging-gate ledger
+that reads a demo by its own objects, the gate refuses it on two findings,
+both the design record it does not yet carry (drill3-01, drill3-03); it is not
+overridden.
 
 Serve it with the engine's playtest server
 (`tools/creator/playtest-server.sh up campaigns/the-ferry`), never copied into
