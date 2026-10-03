@@ -17,7 +17,7 @@ open grass.
   middle.
 - **The shore** (x 8200–8247, z 8233–8264), south of it. When you have looked
   up, a drowned takes its place at the shore's middle and stands there, facing
-  north. It does not move and cannot be hurt.
+  north, a nautilus shell in its hand. It does not move and cannot be hurt.
 
 Two textures are replaced:
 
@@ -75,7 +75,6 @@ Built by the engine branch `feat/texture-overrides`. The machine ladder on the
 The level is served with the engine's playtest server
 (`tools/creator/playtest-server.sh up campaigns/the-painted-night`), which
 serves the pack from its sidecar and never installs it; never copied into a
-singleplayer save. Its staging gate refuses it on five findings about objects
-the level does not author — a quest `cast` (isl-35, isl-46), a design record
-(drill3-01, drill3-03) and actor equipment (doune-04) — so serving it takes
-the gate's own deliberate override, which is the walker's call.
+singleplayer save. With the staging-gate ledger that reads a demo by its own
+objects, the gate refuses it on two findings, both the design record it does
+not yet carry (drill3-01, drill3-03); it is not overridden.
