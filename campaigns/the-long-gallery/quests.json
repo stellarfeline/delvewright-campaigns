@@ -1,0 +1,124 @@
+{
+  "campaign_id": "the-long-gallery",
+  "content": {
+    "loops": [
+      {
+        "counts": "state/crossings",
+        "id": "loop/the-gallery",
+        "on_cross": [
+          {
+            "style": "subtitle",
+            "text": "The lamp ahead is lit, as it was.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/crossings",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "style": "subtitle",
+            "text": "Another bay. The same bay.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/crossings",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "style": "subtitle",
+            "text": "Ahead, the way is open.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/crossings",
+                  "value": 3
+                }
+              ]
+            }
+          }
+        ],
+        "region": {
+          "anchor": "anchor/gallery-slab",
+          "extent": [
+            1,
+            1,
+            0
+          ]
+        },
+        "requires_state": [
+          {
+            "op": "at-most",
+            "state": "state/crossings",
+            "value": 2
+          }
+        ],
+        "to": {
+          "anchor": "anchor/gallery-slab",
+          "offset": [
+            0,
+            0,
+            -6
+          ]
+        }
+      }
+    ],
+    "quests": [
+      {
+        "happening": {
+          "text": "The party stands at the head of a long gallery.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-long-gallery",
+        "objectives": [
+          {
+            "anchor": "anchor/gallery-end",
+            "happening": {
+              "text": "The bell rings at the end of the gallery.",
+              "verb": "opens"
+            },
+            "hint": "Walk the gallery to its end. It ends when it is ready.",
+            "id": "obj/ring-the-bell",
+            "prop": {
+              "block": "minecraft:bell"
+            },
+            "title": "Ring the bell",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The walk is over.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "state": [
+      {
+        "id": "state/crossings",
+        "note": "How many times a body has crossed the gallery's slab.",
+        "scope": "party"
+      }
+    ]
+  },
+  "dsl_version": "0.35.0",
+  "stage": "quests"
+}
