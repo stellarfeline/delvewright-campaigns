@@ -1,0 +1,422 @@
+{
+  "campaign_id": "something-looks-back",
+  "content": {
+    "quests": [
+      {
+        "happening": {
+          "text": "The party comes into the court at noon.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-court",
+        "objectives": [
+          {
+            "anchor": "anchor/node-plate-one",
+            "happening": {
+              "text": "Someone presses the west plate, and only they see what looks back.",
+              "verb": "learns"
+            },
+            "hint": "The plate in the west alcove.",
+            "id": "obj/press-plate-one",
+            "prop": {
+              "block": "minecraft:heavy_weighted_pressure_plate"
+            },
+            "title": "Press the west plate",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/press-plate-one"
+            ],
+            "anchor": "anchor/node-plate-two",
+            "happening": {
+              "text": "Someone presses the east plate, and everyone in the court sees it.",
+              "verb": "learns"
+            },
+            "hint": "The plate in the east alcove.",
+            "id": "obj/press-plate-two",
+            "prop": {
+              "block": "minecraft:heavy_weighted_pressure_plate"
+            },
+            "title": "Press the east plate",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/press-plate-two"
+            ],
+            "anchor": "anchor/node-plate-three",
+            "happening": {
+              "text": "Someone presses the south plate, and everyone sees it.",
+              "verb": "learns"
+            },
+            "hint": "The plate in the south alcove.",
+            "id": "obj/press-plate-three",
+            "prop": {
+              "block": "minecraft:heavy_weighted_pressure_plate"
+            },
+            "title": "Press the south plate",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/press-plate-three"
+            ],
+            "anchor": "anchor/node-court",
+            "happening": {
+              "text": "They come back to the middle of the court, eyes still adjusting.",
+              "verb": "arrives"
+            },
+            "hint": "Back to the middle of the court. The pit is north, behind its rail, if you want to look.",
+            "id": "obj/back-to-the-court",
+            "radius": 3,
+            "title": "Back to the court",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The court is only a court again.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/press-plate-one": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "audience": "actor",
+                      "effect": "minecraft:darkness",
+                      "hide_particles": true,
+                      "seconds": 8,
+                      "type": "give-effect"
+                    },
+                    {
+                      "audience": "actor",
+                      "effect": "minecraft:nausea",
+                      "hide_particles": true,
+                      "seconds": 10,
+                      "type": "give-effect"
+                    },
+                    {
+                      "at": "players",
+                      "audience": "actor",
+                      "particle": "minecraft:elder_guardian",
+                      "type": "particle"
+                    },
+                    {
+                      "audience": "actor",
+                      "pitch": 0.7,
+                      "sound": "minecraft:entity.elder_guardian.curse",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    },
+                    {
+                      "audience": "actor",
+                      "pitch": 0.6,
+                      "sound": "minecraft:entity.warden.heartbeat",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 50,
+                  "effects": [
+                    {
+                      "audience": "actor",
+                      "effect": "minecraft:blindness",
+                      "hide_particles": true,
+                      "seconds": 2,
+                      "type": "give-effect"
+                    },
+                    {
+                      "at": "players",
+                      "audience": "actor",
+                      "particle": "minecraft:elder_guardian",
+                      "type": "particle"
+                    },
+                    {
+                      "audience": "actor",
+                      "pitch": 0.5,
+                      "sound": "minecraft:entity.elder_guardian.curse",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 110,
+                  "effects": [
+                    {
+                      "at": {
+                        "at": "players",
+                        "offset": [
+                          0,
+                          0,
+                          -3
+                        ]
+                      },
+                      "audience": "actor",
+                      "pitch": 0.5,
+                      "sound": "minecraft:entity.warden.nearby_closest",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ],
+          "obj/press-plate-three": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "effect": "minecraft:darkness",
+                      "hide_particles": true,
+                      "seconds": 8,
+                      "type": "give-effect"
+                    },
+                    {
+                      "effect": "minecraft:nausea",
+                      "hide_particles": true,
+                      "seconds": 10,
+                      "type": "give-effect"
+                    },
+                    {
+                      "at": "players",
+                      "particle": "minecraft:elder_guardian",
+                      "type": "particle"
+                    },
+                    {
+                      "pitch": 0.7,
+                      "sound": "minecraft:entity.elder_guardian.curse",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    },
+                    {
+                      "pitch": 0.6,
+                      "sound": "minecraft:entity.warden.heartbeat",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 50,
+                  "effects": [
+                    {
+                      "effect": "minecraft:blindness",
+                      "hide_particles": true,
+                      "seconds": 2,
+                      "type": "give-effect"
+                    },
+                    {
+                      "at": "players",
+                      "particle": "minecraft:elder_guardian",
+                      "type": "particle"
+                    },
+                    {
+                      "pitch": 0.5,
+                      "sound": "minecraft:entity.elder_guardian.curse",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 110,
+                  "effects": [
+                    {
+                      "at": {
+                        "at": "players",
+                        "offset": [
+                          0,
+                          0,
+                          -3
+                        ]
+                      },
+                      "pitch": 0.5,
+                      "sound": "minecraft:entity.warden.nearby_closest",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ],
+          "obj/press-plate-two": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "effect": "minecraft:darkness",
+                      "hide_particles": true,
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "seconds": 8,
+                      "type": "give-effect"
+                    },
+                    {
+                      "effect": "minecraft:nausea",
+                      "hide_particles": true,
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "seconds": 10,
+                      "type": "give-effect"
+                    },
+                    {
+                      "at": "players",
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "particle": "minecraft:elder_guardian",
+                      "type": "particle"
+                    },
+                    {
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "pitch": 0.7,
+                      "sound": "minecraft:entity.elder_guardian.curse",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    },
+                    {
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "pitch": 0.6,
+                      "sound": "minecraft:entity.warden.heartbeat",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 50,
+                  "effects": [
+                    {
+                      "effect": "minecraft:blindness",
+                      "hide_particles": true,
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "seconds": 2,
+                      "type": "give-effect"
+                    },
+                    {
+                      "at": "players",
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "particle": "minecraft:elder_guardian",
+                      "type": "particle"
+                    },
+                    {
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "pitch": 0.5,
+                      "sound": "minecraft:entity.elder_guardian.curse",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 110,
+                  "effects": [
+                    {
+                      "at": {
+                        "at": "players",
+                        "offset": [
+                          0,
+                          0,
+                          -3
+                        ]
+                      },
+                      "in": {
+                        "anchor": "anchor/node-court",
+                        "extent": [
+                          15,
+                          3,
+                          15
+                        ]
+                      },
+                      "pitch": 0.5,
+                      "sound": "minecraft:entity.warden.nearby_closest",
+                      "type": "play-sound",
+                      "volume": 1.0
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.35.0",
+  "stage": "quests"
+}

@@ -1,0 +1,147 @@
+{
+  "campaign_id": "something-looks-back",
+  "content": {
+    "batches": [
+      {
+        "area": "area/site",
+        "edits": [
+          {
+            "name": "region/basin",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-pit",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                2,
+                -2,
+                2
+              ],
+              "min": [
+                -2,
+                -2,
+                -2
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:blackstone",
+                  "weight": 1.0
+                }
+              ]
+            },
+            "region": "region/basin",
+            "verb": "fill"
+          },
+          {
+            "name": "region/lava",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-pit",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                1,
+                -1,
+                1
+              ],
+              "min": [
+                -1,
+                -1,
+                -1
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:lava",
+                  "weight": 1.0
+                }
+              ]
+            },
+            "region": "region/lava",
+            "verb": "fill"
+          },
+          {
+            "name": "region/rail-outer",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-pit",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                3,
+                0,
+                3
+              ],
+              "min": [
+                -3,
+                0,
+                -3
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "name": "region/rail-inner",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-pit",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                2,
+                0,
+                2
+              ],
+              "min": [
+                -2,
+                0,
+                -2
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "name": "region/rail",
+            "shape": {
+              "base": "region/rail-outer",
+              "kind": "subtract",
+              "remove": [
+                "region/rail-inner"
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:dark_oak_fence",
+                  "weight": 1.0
+                }
+              ]
+            },
+            "region": "region/rail",
+            "verb": "fill"
+          }
+        ],
+        "id": "batch/the-pit",
+        "note": "The pit at the centre of the north room: a three-by-three pool of lava let into the floor over a blackstone basin, a one-cell ledge round it, and a fence rail round the ledge. The rail is a wall a body cannot cross, so the ledge — the only floor from which a body could step into the lava — is floor nobody can walk to."
+      }
+    ]
+  },
+  "dsl_version": "0.35.0",
+  "stage": "world-edits"
+}
