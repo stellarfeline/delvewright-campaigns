@@ -46,9 +46,9 @@ the mud is walked at y 64).
 - **The back**: the top of the body, open to the sky, walked to (31, 104, 38).
 
 Both bays are lit only by the lights placed in the form; neither has a cut to
-the sky. The two light blocks emit the same level (10), so the two rooms carry
-the same density of light by the engine's measure and differ only in the block
-that gives it.
+the sky. The two light blocks emit the same level (10) and stand on a similar
+grid, about six blocks apart, so the two rooms differ mainly in the block that
+gives the light.
 
 ## What to look for
 
@@ -79,3 +79,11 @@ Serve it with the engine's playtest server:
     tools/creator/playtest-server.sh up campaigns/the-beached-thing --prefabs demos/the-beached-thing/prefabs
 
 It is never copied into a singleplayer save.
+
+The machine ladder on the `validation/` image: PackTest passed, and the
+mineflayer critical path passed (5 steps: spawn, bay A, bay B, the back; its
+die-retry and death-loop stages did not run, because the level declares no
+combat and no death plan). The staging gate refuses it with four findings
+about objects this demo does not author — a cast (isl-35, isl-46) and an
+approved design record (drill3-01, drill3-03) — so serving it to a person
+takes the gate's own deliberate override, which is the owner's call.
