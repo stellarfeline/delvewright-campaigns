@@ -16,7 +16,7 @@ A stone-brick gallery three cells wide and three tall, closed at both ends, floo
 - **Three identical bays**, six courses each (z 4–21). Every bay is the same: its ribbed mouth, a lantern hung from the roof over the middle of the passage, a baffle across the two western cells, two open courses, and a baffle across the two eastern cells. The baffles stagger, so you walk a zigzag and your view down the gallery closes inside one bay.
 - **The slab** is the mouth of the third bay (z 16), the whole cross-section of the passage. Crossing it moves you six blocks back, to the mouth of the second bay (z 10), with your facing and your speed kept. What you see there is what you saw before you crossed, block for block and light for light; the engine refuses to build the level otherwise.
 - **The release**: the loop counts its crossings in a party datum and holds while the count is at most 2. The third crossing is the last one it answers; after it the slab is ordinary floor.
-- **The end room** (z 22–25) opens like a fourth bay's mouth, rib and all, with its lantern where that bay's would hang. The bell is at its far end.
+- **The end room** (z 22–25) opens like a fourth bay's mouth, rib and all, with its lantern where that bay's would hang. The bell stands at its far end from the world's first tick: a one-cell `world-edits.json` batch sets it at setup, and the quest's `interact` objective names the same block as its prop, so its activation writes what is already there.
 
 ## What to look for
 
@@ -37,9 +37,9 @@ What the engine does not check, by name: whether a client draws anything at the 
 
 ## State
 
-Builds on the engine branch `feat/seamless-loop`. The machine ladder on the `validation/` image:
+Builds on the engine's integration branch `integration/stranding-capabilities` (revision 9923c1bb). The machine ladder on the `validation/` image:
 
 - **PackTest**: 17 of 17 required tests pass, among them `loop_the_gallery` (a body in the slab is moved by exactly the offset and the count rises by one) and `loop_the_gallery_released` (with the count past the release, the same poll moves nothing). Each goes red alone when its half of the emission is removed: with the move's `tp` line deleted, `loop_the_gallery` fails (*expected -6000, got 0*); with the poll's gate deleted, `loop_the_gallery_released` fails (*expected 0, got 1*).
 - **The mineflayer critical path** passes in 4 steps: it walks to the slab, crosses it three times and reads each move as exactly `[0, 0, -6]`, then walks on and rings the bell.
 
-The staging gate refuses this build with six findings about objects a demo level does not author (an item-gated interaction and a cast: isl-02, isl-35, isl-41, isl-46; a design record: drill3-01, drill3-03), the same six it reports on The Threshold. Serving it takes the gate's own deliberate override, which this branch has not used.
+The staging gate, against the findings ledger at engine revision 1cd6cd1f, refuses this build with 2 reds, both about the design record a demo level does not yet carry: drill3-01 and drill3-03. Serving it takes the gate's own deliberate override, which this branch has not used.
