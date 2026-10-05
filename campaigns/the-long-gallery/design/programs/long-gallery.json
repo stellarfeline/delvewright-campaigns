@@ -1,6 +1,8 @@
 {
   "name": "long_gallery",
   "palette": {
+    "floor": "minecraft:smooth_stone",
+    "rib": "minecraft:polished_deepslate",
     "stone": "minecraft:stone_bricks"
   },
   "params": {},
@@ -138,7 +140,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "open_slice"
+              "symbol": "mouth_slice"
             },
             {
               "op": "call",
@@ -271,7 +273,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "open_slice"
+              "symbol": "mouth_slice"
             },
             {
               "op": "call",
@@ -336,7 +338,7 @@
           "children": [
             {
               "material": {
-                "role": "stone"
+                "role": "floor"
               },
               "op": "fill"
             },
@@ -554,6 +556,105 @@
         "weight": 1
       }
     ],
+    "mouth_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "rib"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "mouth_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "rib"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "mouth_column"
+            },
+            {
+              "material": {
+                "role": "rib"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "open_slice": [
       {
         "body": {
@@ -611,7 +712,7 @@
           "children": [
             {
               "material": {
-                "role": "stone"
+                "role": "floor"
               },
               "op": "fill"
             },

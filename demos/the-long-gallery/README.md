@@ -10,13 +10,13 @@ Its one piece, `prefab/long-gallery`, is in the prefab library (`prefabs/long-ga
 
 ## What it is
 
-A stone-brick gallery three cells wide and three tall, closed at both ends.
+A stone-brick gallery three cells wide and three tall, closed at both ends, floored in smooth stone. Every bay mouth is framed by a rib of polished deepslate, a pier in each wall and a band across the roof, so the gallery reads as a run of bays rather than a tunnel.
 
 - **The porch** (z 1–3): you arrive here, facing south down the gallery.
-- **Three identical bays**, six courses each (z 4–21). Every bay is the same: its mouth, a lantern hung from the roof over the middle of the passage, a baffle across the two western cells, two open courses, and a baffle across the two eastern cells. The baffles stagger, so you walk a zigzag and your view down the gallery closes inside one bay.
+- **Three identical bays**, six courses each (z 4–21). Every bay is the same: its ribbed mouth, a lantern hung from the roof over the middle of the passage, a baffle across the two western cells, two open courses, and a baffle across the two eastern cells. The baffles stagger, so you walk a zigzag and your view down the gallery closes inside one bay.
 - **The slab** is the mouth of the third bay (z 16), the whole cross-section of the passage. Crossing it moves you six blocks back, to the mouth of the second bay (z 10), with your facing and your speed kept. What you see there is what you saw before you crossed, block for block and light for light; the engine refuses to build the level otherwise.
 - **The release**: the loop counts its crossings in a party datum and holds while the count is at most 2. The third crossing is the last one it answers; after it the slab is ordinary floor.
-- **The end room** (z 22–25) opens like a fourth bay's mouth, with its lantern where that bay's would hang. The bell is at its far end.
+- **The end room** (z 22–25) opens like a fourth bay's mouth, rib and all, with its lantern where that bay's would hang. The bell is at its far end.
 
 ## What to look for
 

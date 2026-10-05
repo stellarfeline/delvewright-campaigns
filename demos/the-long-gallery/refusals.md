@@ -1,6 +1,6 @@
 # Refusals beside The Long Gallery
 
-Each is `campaigns/the-long-gallery` plus one edit, built by `delvec` at engine revision `69965714` against this branch's prefab library. The refusal is the build's own line, verbatim.
+Each is `campaigns/the-long-gallery` plus one edit, built by `delvec` at engine revision `a9b1e259` against this branch's prefab library. The refusal is the build's own line, verbatim.
 
 ## The jog removed
 
