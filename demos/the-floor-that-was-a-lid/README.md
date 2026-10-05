@@ -12,37 +12,40 @@ The level is a campaign, so it lives where every campaign lives:
 Its one piece, `prefab/lid-room`, is in the prefab library
 (`prefabs/lid-room.{nbt,json}`) and is expanded from the grammar program
 `campaigns/the-floor-that-was-a-lid/design/programs/lid-room.json`
-(11 × 8 × 17, seed 1, named in `zones.json` beside it).
+(11 × 18 × 17, seed 1, named in `zones.json` beside it).
 
 ## What it is
 
 One stone-brick hall, open to the noon sky, floored in polished andesite. You
-arrive at its north end (5, 68, 2), facing south. A lever hangs on the far
+arrive at its north end (5, 78, 2), facing south. A lever hangs on the far
 (south) wall.
 
-- **The lid.** The middle of the floor — a 3 × 3 patch around (5, 67, 8) — is
-  the roof of a pit. It is the same andesite as the rest of the floor; nothing
-  says it is different.
-- **The pit.** Two courses of air under the lid, lit by four glowstone blocks
-  set in its walls, with a polished blackstone bottom. Its bottom course is the
-  killing volume `lethal/the-pit`, staged on `flag/lid-fell`: dead until the
-  lever is pulled, live from then on.
-- **The lever** (5, 69, 15). Pulling it sets `flag/lid-fell` and clears the
+- **The lid.** The middle of the floor — a 3 × 3 patch around (5, 77, 8) — is
+  the roof of a pit: spruce boards laid in a stone-brick kerb, a cover over
+  something, and floor you can walk on until the lever.
+- **The pit.** A shaft twelve courses deep under the lid, with a polished
+  blackstone bottom. Four glowstone blocks are set one in each wall of its
+  bottom course and light only that course, so from the rim the shaft is dark
+  and its floor is a small lit square thirteen blocks down. Its bottom course is
+  the killing volume `lethal/the-pit`, staged on `flag/lid-fell`: dead until the
+  lever is pulled, live from then on. The fall alone is thirteen blocks, which a
+  body survives; the volume is what kills.
+- **The lever** (5, 79, 15). Pulling it sets `flag/lid-fell` and clears the
   lid in the same beat, so the floor that was a lid becomes a hole in the same
   tick the pit's bottom starts to kill.
 
 ## What to look for
 
-1. **At the spawn**, look down the hall: one plain floor, one lever at the far
-   end. Nothing marks the middle.
+1. **At the spawn**, look down the hall: one plain floor with a boarded lid in
+   its middle, one lever at the far end.
 2. **Walk straight down the middle to the lever.** You cross the lid. Nothing
-   happens: the volume under you is not live, and the floor is floor.
+   happens: the volume under you is not live, and the boards are floor.
 3. **Pull the lever.** *Behind you, the floor falls in.* Turn round: the middle
    of the hall is a 3 × 3 hole.
 4. **Walk back to the hole and look down** (the objective completes at the rim,
-   (5, 68, 6)). You see the lit pit and its black floor three courses down —
-   the danger is in plain sight now, where before the beat it was under your
-   feet and safe.
+   (5, 78, 6)). You see a dark shaft and, thirteen blocks down, its lamp-lit
+   black floor — the danger is in plain sight now, where before the beat it was
+   under your feet and safe.
 5. **Step in.** You die at the bottom, the pit's own line is shown (*The floor
    was a lid, and the pit under it has no bottom you would survive.*) and
    *The pit keeps what falls into it. You wake where you came in.* You respawn
@@ -70,7 +73,7 @@ lid. Refused in the configuration before the lever, because a body standing
 there when the gate flips has no tick in which to step off:
 
 ```
-DW0891 [error] build: lethal volume `lethal/the-pit` goes live at step 2 of the critical path and a body may be standing on these cells when it does; nothing in the world before that beat says they kill: y=68 (25 cell(s): [3, 68, 6], [3, 68, 7], [3, 68, 8], [3, 68, 9], [3, 68, 10], [4, 68, 6], and 19 more on the same floor) (25 cell(s), the configuration arriving at critical step 0, before its gate — requires `flag/lid-fell` — holds). A body standing in a volume's keep-out when its gate flips is killed in the same server tick, with no tick in which to step off, so the floor it stood on must read as danger BEFORE the beat. It declares no `shown_by` at all. Roof or wall the volume's cells off until the beat that opens them (the beat that arms the volume is usually the beat that should open the way to it); lower the volume so its keep-out's top course lies under the floor a body stands on before the flip; or author one of the blocks vanilla hurts a body with under those cells, visible before the flip, and declare it in `shown_by`. Do not declare the floor a place nobody walks, and do not fire the flag later to pass — a hazard that arrives silently under a body is the finding, wherever on the path it arrives.
+DW0891 [error] build: lethal volume `lethal/the-pit` goes live at step 2 of the critical path and a body may be standing on these cells when it does; nothing in the world before that beat says they kill: y=78 (25 cell(s): [3, 78, 6], [3, 78, 7], [3, 78, 8], [3, 78, 9], [3, 78, 10], [4, 78, 6], and 19 more on the same floor) (25 cell(s), the configuration arriving at critical step 0, before its gate — requires `flag/lid-fell` — holds). A body standing in a volume's keep-out when its gate flips is killed in the same server tick, with no tick in which to step off, so the floor it stood on must read as danger BEFORE the beat. It declares no `shown_by` at all. Roof or wall the volume's cells off until the beat that opens them (the beat that arms the volume is usually the beat that should open the way to it); lower the volume so its keep-out's top course lies under the floor a body stands on before the flip; or author one of the blocks vanilla hurts a body with under those cells, visible before the flip, and declare it in `shown_by`. Do not declare the floor a place nobody walks, and do not fire the flag later to pass — a hazard that arrives silently under a body is the finding, wherever on the path it arrives.
 ```
 
 **A way onward through a volume that has woken** (`DW0510`). On this level the
