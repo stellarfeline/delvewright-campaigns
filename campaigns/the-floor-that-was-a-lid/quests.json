@@ -1,0 +1,127 @@
+{
+  "campaign_id": "the-floor-that-was-a-lid",
+  "content": {
+    "lethal_volumes": [
+      {
+        "damage_type": "fall",
+        "id": "lethal/the-pit",
+        "message": "The floor was a lid, and the pit under it has no bottom you would survive.",
+        "region": {
+          "anchor": "anchor/pit",
+          "extent": [
+            1,
+            0,
+            1
+          ]
+        },
+        "when": {
+          "requires_flags": [
+            "flag/lid-fell"
+          ]
+        }
+      }
+    ],
+    "on_death": [
+      {
+        "style": "actionbar",
+        "text": "The pit keeps what falls into it. You wake where you came in.",
+        "type": "narrate"
+      }
+    ],
+    "quests": [
+      {
+        "happening": {
+          "text": "The party comes into the hall.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-lid",
+        "objectives": [
+          {
+            "anchor": "anchor/lever-stand",
+            "happening": {
+              "text": "Someone pulls the lever in the far wall.",
+              "verb": "opens"
+            },
+            "hint": "The lever on the far wall, past the middle of the hall.",
+            "id": "obj/pull-the-lever",
+            "title": "Pull the lever",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/pull-the-lever"
+            ],
+            "anchor": "anchor/rim",
+            "happening": {
+              "text": "They come back to the edge of the hole and look down.",
+              "verb": "learns"
+            },
+            "hint": "Go back to the middle of the hall, to the edge of what is there now.",
+            "id": "obj/look-down",
+            "radius": 1,
+            "title": "Look down",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/look-down"
+            ],
+            "anchor": "anchor/porch",
+            "happening": {
+              "text": "They walk back out of the hall.",
+              "verb": "departs"
+            },
+            "hint": "The way you came in.",
+            "id": "obj/walk-out",
+            "radius": 1,
+            "title": "Walk out",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The hall is quiet, and has a hole in it.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/pull-the-lever": [
+            {
+              "flag": "flag/lid-fell",
+              "type": "set-flag"
+            },
+            {
+              "happening": {
+                "subject": "anchor/lid",
+                "text": "The middle of the floor drops into the pit under it.",
+                "verb": "opens"
+              },
+              "region": {
+                "anchor": "anchor/lid",
+                "extent": [
+                  1,
+                  0,
+                  1
+                ]
+              },
+              "type": "clear-region"
+            },
+            {
+              "style": "subtitle",
+              "text": "Behind you, the floor falls in.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.35.0",
+  "stage": "quests"
+}
