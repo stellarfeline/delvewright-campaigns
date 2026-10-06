@@ -12,25 +12,33 @@ The level is a campaign, so it lives where every campaign lives:
 Its one piece, `prefab/lid-room`, is in the prefab library
 (`prefabs/lid-room.{nbt,json}`) and is expanded from the grammar program
 `campaigns/the-floor-that-was-a-lid/design/programs/lid-room.json`
-(11 × 18 × 17, seed 1, named in `zones.json` beside it).
+(11 × 14 × 17, seed 1, named in `zones.json` beside it).
 
 ## What it is
 
 One stone-brick hall, open to the noon sky, floored in polished andesite. You
-arrive at its north end (5, 78, 2), facing south. A lever hangs on the far
+arrive at its north end (5, 74, 2), facing south. A lever hangs on the far
 (south) wall.
 
-- **The lid.** The middle of the floor — a 3 × 3 patch around (5, 77, 8) — is
+- **The lid.** The middle of the floor — a 3 × 3 patch around (5, 73, 8) — is
   the roof of a pit: spruce boards laid in a stone-brick kerb, a cover over
   something, and floor you can walk on until the lever.
-- **The pit.** A shaft twelve courses deep under the lid, with a polished
-  blackstone bottom. Four glowstone blocks are set one in each wall of its
-  bottom course and light only that course, so from the rim the shaft is dark
-  and its floor is a small lit square thirteen blocks down. Its bottom course is
-  the killing volume `lethal/the-pit`, staged on `flag/lid-fell`: dead until the
-  lever is pulled, live from then on. The fall alone is thirteen blocks, which a
-  body survives; the volume is what kills.
-- **The lever** (5, 79, 15). Pulling it sets `flag/lid-fell` and clears the
+- **The pit.** A plain stone shaft under the lid whose whole floor is a bed of
+  nine upward stalagmite points (pointed dripstone tips on dripstone blocks,
+  y=65), about eight blocks below the rim. The shaft's walls are unbroken
+  stone to the bottom: no opening, no lamp, no floor you could stand on and
+  walk away from. Four glow lichen on its walls, just above the points, are
+  the pit's only light of its own; after the beat, daylight falls straight
+  down the open shaft onto the points. The course just above the points
+  (y=66), the one a body that lands on them stands in, is the killing volume
+  `lethal/the-pit`, staged on `flag/lid-fell`: dead until the lever is pulled,
+  live from then on.
+- **The points are the signal; the volume is the mechanism.** Landing on a
+  point adds fall damage, and the pit is exactly as deep as it can be without
+  the points killing on their own (measured below): a body that steps in
+  takes 15 of its 20 health from the points and one that jumps in takes 18.
+  The volume kills it on the next tick and shows the pit's own line.
+- **The lever** (5, 75, 15). Pulling it sets `flag/lid-fell` and clears the
   lid in the same beat, so the floor that was a lid becomes a hole in the same
   tick the pit's bottom starts to kill.
 
@@ -43,14 +51,68 @@ arrive at its north end (5, 78, 2), facing south. A lever hangs on the far
 3. **Pull the lever.** *Behind you, the floor falls in.* Turn round: the middle
    of the hall is a 3 × 3 hole.
 4. **Walk back to the hole and look down** (the objective completes at the rim,
-   (5, 78, 6)). You see a dark shaft and, thirteen blocks down, its lamp-lit
-   black floor — the danger is in plain sight now, where before the beat it was
-   under your feet and safe.
-5. **Step in.** You die at the bottom, the pit's own line is shown (*The floor
-   was a lid, and the pit under it has no bottom you would survive.*) and
-   *The pit keeps what falls into it. You wake where you came in.* You respawn
-   at the north end.
+   (5, 74, 6)). You see a plain stone shaft and, at its bottom, a bed of
+   stalagmite points filling it wall to wall. Ask whether it reads as a drop
+   that kills, and whether anything down there reads as a way on.
+5. **Step in.** You land on the points, die, and the pit's own line is shown
+   (*The floor was a lid, and the pit under it has no bottom you would
+   survive.*) with *The pit keeps what falls into it. You wake where you came
+   in.* You respawn at the north end.
 6. **Walk out**: back to the spawn. The delve completes.
+
+## Why the pit looks like this
+
+A fatal drop has to read differently from a drop you survive or one that leads
+somewhere. Each rule below says whether it is cited or authored.
+
+- **Cited.** Pointed and spiked shapes read as deadly and hazardous: "teeth,
+  needles, stabbing instruments" (David Orosz, *Shaping Emotions: Utilizing
+  Shape Language and Symbols in Level Design*, Game Developer). So the pit's
+  floor is points.
+- **Cited.** A spike-covered floor is the common alternative to a bottomless
+  pit and carries the same message, certain death (All The Tropes, *Spikes of
+  Doom*). This pit has a bottom you can see, so the bottom itself carries the
+  message.
+- **Cited.** Where lethal pits are marked at all, they are marked as unlike
+  pits that lead somewhere: *Super Mario Bros. Wonder* gives lethal pits a
+  darkened gradient across the bottom, while in *Super Paper Mario* some pits
+  drop the player into a secret room instead of killing them (Super Mario Wiki,
+  *Pit*). So nothing at the bottom of this pit looks like the floor of a room.
+- **Cited.** Lighting draws attention to exits and points of interest and
+  guides players through a level (Tom Pugh, *Level Design Tips and Tricks*,
+  Game Developer). A lamp-lit floor at the bottom of a shaft therefore reads
+  as a destination, so the lamps are gone.
+- **Authored.** The pit's own light is glow lichen, which grows in vanilla
+  dripstone caves, set on the walls rather than in them: four plants, enough
+  for the engine's darkness check (`DW0210`), which refused the cells above
+  the points at light 0 with no light in the pit at all.
+  The walls stay unbroken stone to the bottom, so no opening suggests a
+  passage.
+- **Authored, from measurement.** The points never kill by themselves. The
+  volume is what the engine counts on, and a body killed by the points before
+  the volume acts never sees the volume's line. That fixes the depth (below).
+
+## What the points do to a body
+
+Measured on the pinned 1.21.11 server: a probe server booted from this
+campaign's build, pigs given 100 health dropped onto a pointed-dripstone tip
+and onto stone, and their health read back.
+
+| Drop | Lands on | Damage |
+| --- | --- | --- |
+| 13 blocks (the old 78 rim) | stone | 10 |
+| 12.3125 blocks (old 78 rim) | a tip | 23 |
+| 13.5647 blocks (a jump from the old 78 rim) | a tip | 26 |
+| 8.3125 blocks (step off this rim, y=74) | a tip | 15 |
+| 9.5647 blocks (jump from this rim) | a tip | 18 |
+| 10.5647 blocks (jump from a rim at y=75) | a tip | 20 |
+
+A pig given 20 health, a player's, dropped from this rim's jump height is left
+with 2; dropped from the jump height of a rim one course higher it dies.
+A tip deals the fall at twice its distance, less 2, rounded up: lethal for a
+20-health body from about 10.5 blocks. At the pit's old depth the points would
+have killed before the volume acted, so the hall now stands four courses lower,
+the deepest rim at which a jump onto the points still leaves the body alive.
 
 ## The compile transcript, beside the walk
 
@@ -73,7 +135,7 @@ lid. Refused in the configuration before the lever, because a body standing
 there when the gate flips has no tick in which to step off:
 
 ```
-DW0891 [error] build: lethal volume `lethal/the-pit` goes live at step 2 of the critical path and a body may be standing on these cells when it does; nothing in the world before that beat says they kill: y=78 (25 cell(s): [3, 78, 6], [3, 78, 7], [3, 78, 8], [3, 78, 9], [3, 78, 10], [4, 78, 6], and 19 more on the same floor) (25 cell(s), the configuration arriving at critical step 0, before its gate — requires `flag/lid-fell` — holds). A body standing in a volume's keep-out when its gate flips is killed in the same server tick, with no tick in which to step off, so the floor it stood on must read as danger BEFORE the beat. It declares no `shown_by` at all. Roof or wall the volume's cells off until the beat that opens them (the beat that arms the volume is usually the beat that should open the way to it); lower the volume so its keep-out's top course lies under the floor a body stands on before the flip; or author one of the blocks vanilla hurts a body with under those cells, visible before the flip, and declare it in `shown_by`. Do not declare the floor a place nobody walks, and do not fire the flag later to pass — a hazard that arrives silently under a body is the finding, wherever on the path it arrives.
+DW0891 [error] build: lethal volume `lethal/the-pit` goes live at step 2 of the critical path and a body may be standing on these cells when it does; nothing in the world before that beat says they kill: y=74 (25 cell(s): [3, 74, 6], [3, 74, 7], [3, 74, 8], [3, 74, 9], [3, 74, 10], [4, 74, 6], and 19 more on the same floor) (25 cell(s), the configuration arriving at critical step 0, before its gate — requires `flag/lid-fell` — holds). A body standing in a volume's keep-out when its gate flips is killed in the same server tick, with no tick in which to step off, so the floor it stood on must read as danger BEFORE the beat. It declares no `shown_by` at all. Roof or wall the volume's cells off until the beat that opens them (the beat that arms the volume is usually the beat that should open the way to it); lower the volume so its keep-out's top course lies under the floor a body stands on before the flip; or author one of the blocks vanilla hurts a body with under those cells, visible before the flip, and declare it in `shown_by`. Do not declare the floor a place nobody walks, and do not fire the flag later to pass — a hazard that arrives silently under a body is the finding, wherever on the path it arrives.
 ```
 
 **A way onward through a volume that has woken** (`DW0510`). On this level the
@@ -110,17 +172,20 @@ is never copied into a singleplayer save.
 
 ## State
 
-Built and machine-proven with the engine at `feat/staged-lethal`: two builds
-byte-identical; PackTest 19 of 19, among them `lethal_the_pit` (gate open, the
-dummy in the box dies) and `lethal_the_pit_shut` (gate shut by one term, the
-dummy lives) — each red alone under its own strip (the tick's guard removed:
-`lethal_the_pit_shut` fails, *expected 20, got 0*; the entity sweep removed:
-`lethal_the_pit` fails, *expected ..0, got 2000*). The mineflayer critical
-path passes in 5 steps; before each walk it asks the server whether the pit is
-live (`lethal/the-pit shut` before the lever, `live` after it), and its
-death loop enters the pit, dies there, reads the pit's own line and reports
-`staged_live_at_trial` 1 of 1.
+Built and machine-proven with the engine at `feat/staged-lethal` merged into
+the integration branch (`delvec 1.7.1`): two builds byte-identical (97 files);
+the prefab expanded twice from the committed program, byte-identical; PackTest
+19 of 19, among them `lethal_the_pit` and `lethal_the_pit_shut`. The
+mineflayer critical path passes in 5 steps; before each walk it asks the
+server whether the pit is live (`lethal/the-pit shut` before the lever,
+`live` after it), and its death loop jumps in from the rim, is released 6.92
+blocks above the volume, dies at y=66.44 (caught in the volume's course while
+still falling, above the points at 65.6875), reads the pit's own line and
+reports `staged_live_at_trial` 1 of 1.
 
-The staging gate refuses this build: 2 of 122 findings have no live, binding
-check on it — `drill3-01` and `drill3-03` (it carries no design record).
-Not yet walked by a person.
+The staging gate, with the findings ledger at engine revision 1cd6cd1f, refuses
+this build on its own: 2 of 122 findings have no live, binding check on it,
+`drill3-01` and `drill3-03`, because the campaign carries no design record.
+With the prepared design record copied in, it admits the build: all 122
+findings carry a live, binding check or a justified exemption (79 inapplicable).
+Not yet walked by a person since the points went in.
