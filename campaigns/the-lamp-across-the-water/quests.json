@@ -1,0 +1,92 @@
+{
+  "campaign_id": "the-lamp-across-the-water",
+  "content": {
+    "quests": [
+      {
+        "happening": {
+          "text": "The party steps onto the jetty.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-lamp",
+        "objectives": [
+          {
+            "anchor": "anchor/pier-end",
+            "happening": {
+              "text": "They walk out to the end of the jetty.",
+              "verb": "arrives"
+            },
+            "hint": "Follow the planks out over the water to the two lanterns at the end.",
+            "id": "obj/walk-out",
+            "radius": 1,
+            "title": "Walk to the end of the jetty",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/walk-out"
+            ],
+            "anchor": "anchor/landing",
+            "happening": {
+              "text": "They walk back to the landing.",
+              "verb": "departs"
+            },
+            "hint": "Back along the planks to where you came in.",
+            "id": "obj/walk-back",
+            "radius": 1,
+            "title": "Walk back",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The jetty is quiet, and the lamp is still lit across the water.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/walk-out": [
+            {
+              "shots": [
+                {
+                  "look_at": {
+                    "anchor": "anchor/lamp",
+                    "offset": [
+                      0,
+                      0,
+                      0
+                    ]
+                  },
+                  "path": [
+                    {
+                      "anchor": "anchor/pier-end",
+                      "offset": [
+                        0,
+                        1,
+                        0
+                      ]
+                    }
+                  ],
+                  "seconds": 6
+                }
+              ],
+              "type": "cutscene"
+            },
+            {
+              "style": "subtitle",
+              "text": "Across the water, the lamp.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.36.0",
+  "stage": "quests"
+}
