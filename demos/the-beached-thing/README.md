@@ -165,13 +165,14 @@ Researched, not invented; each rule below says which.
 
 ## State
 
-Builds on the engine's integration branch `integration/stranding-capabilities`
-(revision 9923c1bb). The quest walks the spawn, bay A, bay B and the back in
-order; the build proves the route (`DW0311`: 3 legs walked), finds no place a
-body can get into and not out of (`DW0921`: 0 of 16532 reachable cells), and
-measures every walkable cell lit (`DW0210`). `delvec sculpt` itself reports
-`pockets: 0 place(s)` of 10618 reachable cells and all four standing anchors
-reached from grade.
+Builds on the engine's `feat/organic-giant` branch (revision 3677b4f4; the
+hull light is spec-0087 §9 there). The quest walks the vantage, bay A, bay B
+and the back in order; the build proves the route (4 legs walked), finds no
+place a body can get into and not out of (`DW0921`: 0 of 31154 reachable
+cells), and measures every walkable cell lit (`DW0210` silent). `delvec
+sculpt` itself reports `pockets: 0 place(s)` of 22763 reachable cells and all
+five standing anchors reached from grade; sculpted twice, the bytes are
+identical.
 
 Serve it with the engine's playtest server:
 
@@ -179,11 +180,12 @@ Serve it with the engine's playtest server:
 
 It is never copied into a singleplayer save.
 
-The machine ladder on the `validation/` image: PackTest passed (16 of 16
-required tests), and the mineflayer critical path passed (5 steps: spawn,
-bay A, bay B, the back; its die-retry and death-loop stages did not run,
-because the level declares no combat and no death plan).
+The machine ladder on the `validation/` image: PackTest passed (17 of 17
+required tests), and the mineflayer critical path passed (6 steps: spawn, the
+vantage, bay A, bay B, the back; its die-retry and death-loop stages did not
+run, because the level declares no combat and no death plan).
 The staging gate, against the findings ledger at engine revision 1cd6cd1f,
 refuses it with 2 reds, both about the design record a demo level does not
-yet carry: drill3-01 and drill3-03. Serving it to a person takes the gate's
-own deliberate override, which is the owner's call.
+yet carry: drill3-01 and drill3-03 (14 bound, 81 inapplicable, 25 declared
+uncoverable). Serving it to a person takes the gate's own deliberate override,
+which is the owner's call.
