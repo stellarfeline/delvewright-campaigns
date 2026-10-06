@@ -1,0 +1,111 @@
+{
+  "campaign_id": "the-same-room-twice",
+  "content": {
+    "quests": [
+      {
+        "happening": {
+          "text": "The party comes into the hall.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-room",
+        "objectives": [
+          {
+            "anchor": "anchor/rim",
+            "happening": {
+              "text": "They stop at the boarded patch in the middle of the floor.",
+              "verb": "arrives"
+            },
+            "hint": "The boarded patch in the middle of the hall.",
+            "id": "obj/stand-at-the-boards",
+            "radius": 1,
+            "title": "Look at the floor",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/stand-at-the-boards"
+            ],
+            "anchor": "anchor/lever-stand",
+            "happening": {
+              "text": "Someone pulls the lever in the far wall.",
+              "verb": "opens"
+            },
+            "hint": "The lever on the far wall.",
+            "id": "obj/pull-the-lever",
+            "title": "Pull the lever",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/pull-the-lever"
+            ],
+            "anchor": "anchor/rim",
+            "happening": {
+              "text": "They come back to where the boards were.",
+              "verb": "learns"
+            },
+            "hint": "Back to the middle of the hall.",
+            "id": "obj/look-again",
+            "radius": 1,
+            "title": "Look at the floor again",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/look-again"
+            ],
+            "anchor": "anchor/porch",
+            "happening": {
+              "text": "They walk back out of the hall.",
+              "verb": "departs"
+            },
+            "hint": "The way you came in.",
+            "id": "obj/walk-out",
+            "radius": 1,
+            "title": "Walk out",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The hall is quiet, one course lower in the middle.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/pull-the-lever": [
+            {
+              "happening": {
+                "subject": "anchor/lid",
+                "text": "The boards in the middle of the floor fall away into the hollow under them.",
+                "verb": "opens"
+              },
+              "region": {
+                "anchor": "anchor/lid",
+                "extent": [
+                  1,
+                  0,
+                  1
+                ]
+              },
+              "type": "clear-region"
+            },
+            {
+              "style": "subtitle",
+              "text": "Behind you, the boards fall in.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.35.1",
+  "stage": "quests"
+}
