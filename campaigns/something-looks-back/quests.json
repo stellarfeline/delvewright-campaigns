@@ -10,56 +10,52 @@
         "id": "quest/the-court",
         "objectives": [
           {
-            "anchor": "anchor/node-plate-one",
+            "anchor": "anchor/node-lever-one",
             "happening": {
-              "text": "Someone presses the west plate, and only they see what looks back.",
+              "text": "Someone pulls the west lever, and only they see what looks back.",
               "verb": "learns"
             },
-            "hint": "The plate in the west alcove.",
-            "id": "obj/press-plate-one",
+            "hint": "The lever in the west alcove. Right-click it.",
+            "id": "obj/pull-lever-one",
             "prop": {
-              "block": "minecraft:heavy_weighted_pressure_plate"
+              "block": "minecraft:lever[face=floor,facing=east]"
             },
-            "title": "Press the west plate",
+            "title": "Pull the west lever",
+            "type": "interact"
+          },
+          {
+            "anchor": "anchor/node-lever-two",
+            "happening": {
+              "text": "Someone pulls the east lever, and everyone in the court sees it.",
+              "verb": "learns"
+            },
+            "hint": "The lever in the east alcove. Right-click it.",
+            "id": "obj/pull-lever-two",
+            "prop": {
+              "block": "minecraft:lever[face=floor,facing=west]"
+            },
+            "title": "Pull the east lever",
+            "type": "interact"
+          },
+          {
+            "anchor": "anchor/node-lever-three",
+            "happening": {
+              "text": "Someone pulls the south lever, and everyone sees it.",
+              "verb": "learns"
+            },
+            "hint": "The lever in the south alcove. Right-click it.",
+            "id": "obj/pull-lever-three",
+            "prop": {
+              "block": "minecraft:lever[face=floor,facing=north]"
+            },
+            "title": "Pull the south lever",
             "type": "interact"
           },
           {
             "after": [
-              "obj/press-plate-one"
-            ],
-            "anchor": "anchor/node-plate-two",
-            "happening": {
-              "text": "Someone presses the east plate, and everyone in the court sees it.",
-              "verb": "learns"
-            },
-            "hint": "The plate in the east alcove.",
-            "id": "obj/press-plate-two",
-            "prop": {
-              "block": "minecraft:heavy_weighted_pressure_plate"
-            },
-            "title": "Press the east plate",
-            "type": "interact"
-          },
-          {
-            "after": [
-              "obj/press-plate-two"
-            ],
-            "anchor": "anchor/node-plate-three",
-            "happening": {
-              "text": "Someone presses the south plate, and everyone sees it.",
-              "verb": "learns"
-            },
-            "hint": "The plate in the south alcove.",
-            "id": "obj/press-plate-three",
-            "prop": {
-              "block": "minecraft:heavy_weighted_pressure_plate"
-            },
-            "title": "Press the south plate",
-            "type": "interact"
-          },
-          {
-            "after": [
-              "obj/press-plate-three"
+              "obj/pull-lever-one",
+              "obj/pull-lever-two",
+              "obj/pull-lever-three"
             ],
             "anchor": "anchor/node-court",
             "happening": {
@@ -83,7 +79,7 @@
           }
         ],
         "on_objective_complete": {
-          "obj/press-plate-one": [
+          "obj/pull-lever-one": [
             {
               "steps": [
                 {
@@ -174,7 +170,7 @@
               "type": "sequence"
             }
           ],
-          "obj/press-plate-three": [
+          "obj/pull-lever-three": [
             {
               "steps": [
                 {
@@ -256,7 +252,7 @@
               "type": "sequence"
             }
           ],
-          "obj/press-plate-two": [
+          "obj/pull-lever-two": [
             {
               "steps": [
                 {
