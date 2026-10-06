@@ -1,6 +1,6 @@
 # Vesperhold
 
-> **Requires delve engine 0.35.0 or newer** — last verified with delvec 1.7.1 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.35.0 or newer** — last verified with delvec 1.8.0 on Minecraft Java 1.21.11.
 
 > *"Friends of the watch. Ser Halvard Dray, sworn to the king's door. I cannot recall which door."*
 

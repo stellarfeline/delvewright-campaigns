@@ -1,6 +1,6 @@
 # 维斯珀堡
 
-> **Requires delve engine 0.35.0 or newer** — last verified with delvec 1.7.1 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.35.0 or newer** — last verified with delvec 1.8.0 on Minecraft Java 1.21.11.
 > (上一行是版本印记,不翻译:它声明本战役需要的引擎版本、最近一次验证所用的 delvec 版本,以及本秘境运行所需的 Minecraft Java 版本。)
 
 > *"守望的朋友们。在下哈尔瓦德·德雷爵士,誓守国王之门。是哪一扇,我已记不起了。"*
