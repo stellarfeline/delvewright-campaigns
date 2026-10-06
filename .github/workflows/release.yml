@@ -572,10 +572,21 @@ jobs:
           PRERELEASE: ${{ steps.rel.outputs.prerelease }}
         run: |
           set -euo pipefail
-          # `--generate-notes` alongside `--notes-file`: GitHub pre-pends the
-          # supplied body to the notes it generates, so players get the blurb and
-          # the changelog follows. A pre-release is marked so and never latest.
-          args=(--title "$TITLE" --notes-file notes.md --generate-notes)
+          # The supplied body is the blurb; the generated changelog follows it,
+          # starting from the previous tag of THIS campaign (the one parser,
+          # `campaign_tags.py previous`), so it never lists another campaign's
+          # history. A campaign's first release has no such tag and carries no
+          # generated changelog.
+          start=$(git ls-remote --tags origin 'refs/tags/*' \
+            | sed -n 's|.*refs/tags/\([^^]*\)$|\1|p' \
+            | python3 tools/lib/campaign_tags.py previous --tag "$TAG")
+          args=(--title "$TITLE" --notes-file notes.md)
+          if [ -n "$start" ]; then
+            echo "changelog starts from $start"
+            args+=(--generate-notes --notes-start-tag "$start")
+          else
+            echo "first release of this campaign: no generated changelog"
+          fi
           if [ "$PRERELEASE" = "true" ]; then
             args+=(--prerelease --latest=false)
           fi
