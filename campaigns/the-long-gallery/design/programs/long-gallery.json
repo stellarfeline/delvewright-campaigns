@@ -7,132 +7,6 @@
   },
   "params": {},
   "rules": {
-    "baffle_east": [
-      {
-        "body": {
-          "axis": "x",
-          "children": [
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "call",
-              "symbol": "passage_column"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "baffle_west": [
-      {
-        "body": {
-          "axis": "x",
-          "children": [
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "call",
-              "symbol": "passage_column"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "bay": [
       {
         "body": {
@@ -148,15 +22,7 @@
             },
             {
               "op": "call",
-              "symbol": "baffle_west"
-            },
-            {
-              "op": "call",
               "symbol": "open_slice"
-            },
-            {
-              "op": "call",
-              "symbol": "baffle_east"
             }
           ],
           "op": "split",
@@ -178,21 +44,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
+                "value": 4
               },
               "size": "absolute"
             }
@@ -705,6 +557,85 @@
         "weight": 1
       }
     ],
+    "padded": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "skip"
+                },
+                {
+                  "op": "call",
+                  "symbol": "long_gallery"
+                },
+                {
+                  "op": "skip"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 8
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 27
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 8
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 16
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 16
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "passage_column": [
       {
         "body": {
@@ -756,13 +687,9 @@
     ]
   },
   "shown_faces": [
-    "north",
-    "south",
-    "east",
-    "west",
     "up",
     "down"
   ],
-  "start": "long_gallery",
+  "start": "padded",
   "version": "1.9.0"
 }
