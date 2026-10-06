@@ -1,6 +1,19 @@
 {
   "campaign_id": "the-long-gallery",
   "content": {
+    "actors": [
+      {
+        "anchor": "anchor/den",
+        "entity": "minecraft:wither_skeleton",
+        "equipment": {
+          "chest": "minecraft:netherite_chestplate",
+          "head": "minecraft:netherite_helmet",
+          "main_hand": "minecraft:stone_sword"
+        },
+        "facing": "south",
+        "id": "actor/the-thing-behind"
+      }
+    ],
     "loops": [
       {
         "counts": "state/crossings",
@@ -8,7 +21,7 @@
         "on_cross": [
           {
             "style": "subtitle",
-            "text": "The lamp ahead is lit, as it was.",
+            "text": "The light ahead is no nearer.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -22,7 +35,7 @@
           },
           {
             "style": "subtitle",
-            "text": "Another bay. The same bay.",
+            "text": "Two bays back. No nearer.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -36,7 +49,7 @@
           },
           {
             "style": "subtitle",
-            "text": "Ahead, the way is open.",
+            "text": "Ahead, the light comes nearer.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -69,7 +82,7 @@
           "offset": [
             0,
             0,
-            -6
+            -12
           ]
         }
       }
@@ -77,18 +90,32 @@
     "quests": [
       {
         "happening": {
-          "text": "The party stands at the head of a long gallery.",
+          "text": "The party stands at the head of a long hall, a light at its far end.",
           "verb": "arrives"
         },
         "id": "quest/the-long-gallery",
         "objectives": [
           {
+            "anchor": "anchor/porch",
+            "happening": {
+              "text": "Something stands up behind the glass at their backs.",
+              "verb": "arrives"
+            },
+            "id": "obj/hear-it-behind",
+            "radius": 2,
+            "title": "Hear what is behind you",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/hear-it-behind"
+            ],
             "anchor": "anchor/gallery-end",
             "happening": {
               "text": "The bell rings at the end of the gallery.",
               "verb": "opens"
             },
-            "hint": "Walk the gallery to its end. It ends when it is ready.",
+            "hint": "Run for the light at the end of the hall. It comes nearer when the hall is ready.",
             "id": "obj/ring-the-bell",
             "prop": {
               "block": "minecraft:bell"
@@ -106,6 +133,36 @@
             "type": "campaign-complete"
           }
         ],
+        "on_objective_complete": {
+          "obj/hear-it-behind": [
+            {
+              "actor": "actor/the-thing-behind",
+              "happening": {
+                "subject": "actor/the-thing-behind",
+                "text": "An armoured figure stands up behind the glass at the party's back.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "at": {
+                "at": "players",
+                "offset": [
+                  0,
+                  0,
+                  -4
+                ]
+              },
+              "sound": "minecraft:entity.wither_skeleton.ambient",
+              "type": "play-sound"
+            },
+            {
+              "style": "subtitle",
+              "text": "It stands up behind you. Run.",
+              "type": "narrate"
+            }
+          ]
+        },
         "trigger": {
           "type": "campaign-start"
         }

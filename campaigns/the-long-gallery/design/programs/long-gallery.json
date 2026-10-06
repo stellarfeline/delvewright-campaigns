@@ -1,21 +1,117 @@
 {
-  "name": "long_gallery",
+  "name": "long_hall",
   "palette": {
-    "floor": "minecraft:smooth_stone",
-    "rib": "minecraft:polished_deepslate",
+    "floor": "minecraft:dark_oak_planks",
+    "pillar": "minecraft:polished_deepslate",
     "stone": "minecraft:stone_bricks"
   },
   "params": {},
   "rules": {
+    "bars_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": "minecraft:glass",
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "bars_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "bars_column"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "bay": [
       {
         "body": {
           "axis": "z",
           "children": [
-            {
-              "op": "call",
-              "symbol": "mouth_slice"
-            },
             {
               "op": "call",
               "symbol": "lamp_slice"
@@ -37,14 +133,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
+                "value": 5
               },
               "size": "absolute"
             }
@@ -53,128 +142,29 @@
         "weight": 1
       }
     ],
-    "bays": [
+    "centre_column": [
       {
         "body": {
-          "axis": "z",
+          "axis": "y",
           "children": [
             {
-              "op": "call",
-              "symbol": "bay"
-            },
-            {
-              "op": "call",
-              "symbol": "bay"
-            },
-            {
-              "body": {
-                "op": "call",
-                "symbol": "bay"
+              "material": {
+                "role": "floor"
               },
-              "mark": {
-                "anchor": "gallery-slab",
-                "at": "offset",
-                "x": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "y": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "z": {
-                  "expr": "int",
-                  "value": 0
-                }
-              },
-              "op": "mark"
+              "op": "fill"
             },
             {
-              "op": "call",
-              "symbol": "bay"
+              "material": "minecraft:red_carpet",
+              "op": "fill"
             },
             {
-              "op": "call",
-              "symbol": "bay"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
+              "op": "void"
             },
             {
-              "blocks": {
-                "expr": "int",
-                "value": 6
+              "material": {
+                "role": "stone"
               },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "end_room": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "mouth_slice"
-            },
-            {
-              "op": "call",
-              "symbol": "open_slice"
-            },
-            {
-              "body": {
-                "op": "call",
-                "symbol": "open_slice"
-              },
-              "mark": {
-                "anchor": "gallery-end",
-                "at": "offset",
-                "x": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "y": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "z": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "op": "mark"
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -199,6 +189,393 @@
                 "value": 2
               },
               "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "den": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "plain_slice"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "den_slice"
+              },
+              "mark": {
+                "anchor": "den",
+                "at": "offset",
+                "facing": "south",
+                "x": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "y": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "z": {
+                  "expr": "int",
+                  "value": 0
+                }
+              },
+              "op": "mark"
+            },
+            {
+              "op": "call",
+              "symbol": "plain_slice"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "den_lamp_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "material": "minecraft:glowstone",
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "den_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "op": "call",
+              "symbol": "den_lamp_column"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "end_room": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "exit_slice"
+            },
+            {
+              "op": "call",
+              "symbol": "plain_slice"
+            },
+            {
+              "op": "call",
+              "symbol": "room_lamp_slice"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "plain_slice"
+              },
+              "mark": {
+                "anchor": "gallery-end",
+                "at": "offset",
+                "x": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "y": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "z": {
+                  "expr": "int",
+                  "value": 0
+                }
+              },
+              "op": "mark"
+            },
+            {
+              "op": "call",
+              "symbol": "room_lamp_slice"
+            },
+            {
+              "op": "call",
+              "symbol": "plain_slice"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "exit_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "material": "minecraft:glowstone",
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "exit_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "exit_column"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
             }
           ]
         },
@@ -206,6 +583,751 @@
       }
     ],
     "lamp_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": "minecraft:red_carpet",
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "material": "minecraft:soul_lantern[hanging=true,waterlogged=false]",
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "lamp_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "pillar_column"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "op": "call",
+              "symbol": "lamp_column"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "op": "call",
+              "symbol": "pillar_column"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "long_hall": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "wall"
+            },
+            {
+              "op": "call",
+              "symbol": "den"
+            },
+            {
+              "op": "call",
+              "symbol": "bars_slice"
+            },
+            {
+              "op": "call",
+              "symbol": "porch"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "slab_bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "bay"
+            },
+            {
+              "op": "call",
+              "symbol": "end_room"
+            },
+            {
+              "op": "call",
+              "symbol": "wall"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 7
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "open_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "op": "call",
+              "symbol": "centre_column"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "pillar_column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "pillar"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "plain_slice": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "side_column"
+            },
+            {
+              "material": {
+                "role": "stone"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "porch": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "plain_slice"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "plain_slice"
+              },
+              "mark": {
+                "anchor": "porch",
+                "at": "offset",
+                "facing": "south",
+                "role": "entry",
+                "x": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "y": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "z": {
+                  "expr": "int",
+                  "value": 0
+                }
+              },
+              "op": "mark"
+            },
+            {
+              "op": "call",
+              "symbol": "plain_slice"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "room_lamp_column": [
       {
         "body": {
           "axis": "y",
@@ -265,7 +1387,7 @@
         "weight": 1
       }
     ],
-    "lamp_slice": [
+    "room_lamp_slice": [
       {
         "body": {
           "axis": "x",
@@ -278,15 +1400,15 @@
             },
             {
               "op": "call",
-              "symbol": "passage_column"
+              "symbol": "side_column"
             },
             {
               "op": "call",
-              "symbol": "lamp_column"
+              "symbol": "room_lamp_column"
             },
             {
               "op": "call",
-              "symbol": "passage_column"
+              "symbol": "side_column"
             },
             {
               "material": {
@@ -337,16 +1459,67 @@
         "weight": 1
       }
     ],
-    "long_gallery": [
+    "side_column": [
       {
         "body": {
-          "axis": "z",
+          "axis": "y",
           "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            },
             {
               "material": {
                 "role": "stone"
               },
               "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "slab_bay": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "lamp_slice"
+            },
+            {
+              "op": "call",
+              "symbol": "open_slice"
             },
             {
               "body": {
@@ -354,112 +1527,26 @@
                 "symbol": "open_slice"
               },
               "mark": {
-                "anchor": "porch",
+                "anchor": "gallery-slab",
                 "at": "offset",
-                "facing": "south",
-                "role": "entry",
                 "x": {
                   "expr": "int",
                   "value": 2
                 },
                 "y": {
                   "expr": "int",
-                  "value": 1
+                  "value": 2
                 },
                 "z": {
                   "expr": "int",
-                  "value": 1
+                  "value": 0
                 }
               },
               "op": "mark"
             },
             {
               "op": "call",
-              "symbol": "bay"
-            },
-            {
-              "op": "call",
-              "symbol": "bays"
-            },
-            {
-              "op": "call",
-              "symbol": "end_room"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 30
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "mouth_column": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "material": {
-                "role": "floor"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "void"
-            },
-            {
-              "material": {
-                "role": "rib"
-              },
-              "op": "fill"
+              "symbol": "open_slice"
             }
           ],
           "op": "split",
@@ -484,49 +1571,6 @@
                 "value": 1
               },
               "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "mouth_slice": [
-      {
-        "body": {
-          "axis": "x",
-          "children": [
-            {
-              "material": {
-                "role": "rib"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "call",
-              "symbol": "mouth_column"
-            },
-            {
-              "material": {
-                "role": "rib"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
             },
             {
               "blocks": {
@@ -540,189 +1584,26 @@
         "weight": 1
       }
     ],
-    "open_slice": [
+    "wall": [
       {
         "body": {
-          "axis": "x",
-          "children": [
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "call",
-              "symbol": "passage_column"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "padded": [
-      {
-        "body": {
-          "axis": "x",
-          "children": [
-            {
-              "op": "skip"
-            },
-            {
-              "axis": "z",
-              "children": [
-                {
-                  "op": "skip"
-                },
-                {
-                  "op": "call",
-                  "symbol": "long_gallery"
-                },
-                {
-                  "op": "skip"
-                }
-              ],
-              "op": "split",
-              "sizes": [
-                {
-                  "blocks": {
-                    "expr": "int",
-                    "value": 12
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "int",
-                    "value": 45
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "int",
-                    "value": 8
-                  },
-                  "size": "absolute"
-                }
-              ]
-            },
-            {
-              "op": "skip"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 16
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 5
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 16
-              },
-              "size": "absolute"
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "passage_column": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "material": {
-                "role": "floor"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "void"
-            },
-            {
-              "material": {
-                "role": "stone"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            }
-          ]
+          "material": {
+            "role": "stone"
+          },
+          "op": "fill"
         },
         "weight": 1
       }
     ]
   },
   "shown_faces": [
+    "down",
+    "east",
+    "north",
+    "south",
     "up",
-    "down"
+    "west"
   ],
-  "start": "padded",
+  "start": "long_hall",
   "version": "1.9.0"
 }
