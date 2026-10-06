@@ -80,16 +80,15 @@ walk; they contain vanilla's pixels and are never committed.
 
 ## State
 
-Built by the engine branch `feat/texture-overrides`. The machine ladder on the
+Built by the engine at `edab67d9` (`delvec 1.7.1`). The machine ladder on the
 `validation/` image:
 
 - **PackTest**: all 19 required tests passed.
-- **The mineflayer critical path** passed (5 steps). The bot was pushed the
-  pack the build made: one push of `http://pack:8000/resourcepack.zip` with
-  sha1 `2fa9a50e31c453356f218b4a316af0f5ee8f0ac1`, downloaded from that URL
-  to the same sha1, equal to the build's `resource_pack_sha1`. Pointed at a
-  URL the sidecar does not serve, the same run fails: the push downloads
-  nothing and the bot refuses the run.
+- **The mineflayer critical path** passed (3 legs walked). The bot was pushed
+  the pack the build made: one push of `http://pack:8000/resourcepack.zip`
+  with sha1 `5e649233e6a6a55e213d4336934b12807601133b`, downloaded from that
+  URL to the same sha1, equal to the build's `resource_pack_sha1`. The pack
+  holds the three textures byte for byte as committed.
 
 The level is served with the engine's playtest server
 (`tools/creator/playtest-server.sh up campaigns/the-painted-night`), which
