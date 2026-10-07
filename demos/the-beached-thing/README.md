@@ -54,20 +54,31 @@ form declares them (snout north, tail south):
   back as they go down. Two of them are broken off and hang over the way in.
   Further back on both flanks, the ribs show as ridges under the dried hide.
 
-The tones come from the sculpt's own shading, which puts each block on one of
-four tiers by its surface normal and openness, and from materials the form
-gives some parts:
+Every part of the body declares its own material, so the tones follow the
+anatomy, not the sculpt's shading. Each hide tone is one full block, with a
+stair and slab family of nearly the same mean colour, so no tone is single-block
+noise:
 
-- **Bone** (bone block, calcite) is on the jaw, the teeth and the ribs, and on
-  the thin, upward-facing parts of the body. On the back it reads as patches
-  where the dark skin has peeled.
-- **Dark leathery hide** (cyan, light gray, gray, black and brown terracotta)
-  covers the head, the back, the flanks, the flippers and the flukes.
+- **Hide**: one dark slate grey over the whole body: the head, the back, the
+  flanks, the flippers and the flukes. Gray concrete, with deepslate-tile stairs
+  and slabs.
+- **The lower flanks**, where the trunk spreads on the mud, are a slightly
+  darker, browner grey: gray terracotta, with polished-blackstone stairs and
+  slabs.
+- **Sloughed skin**: five large pale-grey areas with defined edges, on the back
+  and the upper flanks: two along the back, one on the upper west flank above
+  the wound, one on the west flank before the rump, and one on the crown of the
+  head. Light gray concrete, with stone stairs and slabs. It is grey, not white.
+- **The fluke edge** is one row of a lighter grey round each lobe (cyan
+  terracotta, with cobbled-deepslate stairs and slabs), so the flukes show
+  against the mud.
+- **Bone** (bone block and calcite, with pale-oak stairs and slabs) is only
+  where bone is bare: the lower jaw, its teeth and the ribs in the wound.
 - **Red-brown flesh** (red, brown and pink terracotta, nether wart block) is
-  in the crevices, round the wound, and on every inside wall of the bays and
-  the passage.
+  only on the rim of the wound and on the inside walls of the bays and the
+  passage.
 
-No stone block is in the body. The mud bank is its own material (packed mud,
+The mud bank is its own material (packed mud,
 coarse and rooted dirt, mud-brick steps), so it reads as ground, not as part of
 the animal.
 
@@ -195,11 +206,21 @@ is the room the two bays need inside walls thick enough to hold their lights.
 - **Ribs show** (cited). Rib contours showed through the minke's skin at seven
   months ([Baptist et al.][minke]). The open wound with exposed ribs is
   authored: it is where the way in is.
-- **Dark hide with pale patches** (cited). Sperm whales are "mostly dark grey"
-  ([NOAA][noaa]). The minke turned grey, then white and brown in patches, then
-  dark brown, its skin drying like leather ([Baptist et al.][minke]). The
-  sperm whale's head carries pale scars from fights ([Degrati et al.][degrati],
-  ideas-only). The knuckles behind the hump are from [SEASWAP, *Sperm Whale
+- **One dark grey hide** (cited). Sperm whales are "mostly dark grey"
+  ([NOAA][noaa]).
+- **Sloughed skin in a few pale areas on the back** (cited for the effect and
+  its place, authored for the amount). On the minke the "epidermis detaching"
+  came at two months, and birds marked it "particularly on the back"
+  ([Baptist et al.][minke]). The record gives no area, so the number and size
+  of the patches are authored. The sperm whale's head carries pale scars from
+  fights ([Degrati et al.][degrati], ideas-only), which is why one patch is on
+  the crown.
+- **A lighter fluke edge** (cited). At three weeks the minke's "tail edge
+  discolored light grey" ([Baptist et al.][minke]).
+- **Bone white only where bone is bare, flesh red only where the body is
+  open** (authored). Scattering bone and flesh tones over the hide read as
+  camouflage: the outline was lost in it.
+- **The knuckles** behind the hump are from [SEASWAP, *Sperm Whale
   Anatomy*][seaswap], which states no licence and is ideas-only.
 
 ### Reading at a distance
@@ -216,9 +237,10 @@ is the room the two bays need inside walls thick enough to hold their lights.
   its caverns "decorated with pale earth, tan rotting flesh, and bloody
   remains" ([Monster Hunter Wiki, *Rotten Vale*][vale]). Hence red-brown flesh
   inside the body and round the wound.
-- **No stone texture on the body** (authored). A pale stone-and-coral palette
-  read as a boulder from afar and a cliff from the ground, so every tone is
-  terracotta, bone or nether wart.
+- **No pale stone on the body** (authored). A pale stone-and-coral palette
+  read as a boulder from afar and a cliff from the ground. The hide's full
+  blocks are concrete and terracotta; dark deepslate, blackstone and stone
+  appear only as the stairs and slabs matched to them.
 
 The engine's organic-voxel spike pins a CC0 skeleton mesh of *Cetotherium
 riabinini* (`tools/spike-organic-voxel/`; `docs/ACKNOWLEDGEMENTS.md`). It is
