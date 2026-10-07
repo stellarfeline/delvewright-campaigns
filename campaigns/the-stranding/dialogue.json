@@ -1,7 +1,323 @@
 {
   "campaign_id": "the-stranding",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/wenna-hire",
+            "options": [
+              {
+                "label": "What is out on the flat?",
+                "next": "dlg/wenna-flat"
+              },
+              {
+                "label": "In his sleep?",
+                "next": "dlg/wenna-dream"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-wenna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll find him."
+              }
+            ],
+            "text": "\"You came. Good. I'm Wenna Coyle, harbourmistress; I put the notice in the papers. My son Davey walked out onto the flat four nights ago in his sleep and didn't come back.\""
+          },
+          {
+            "id": "dlg/wenna-flat",
+            "options": [
+              {
+                "label": "The Fathomer?",
+                "next": "dlg/wenna-fathomer"
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/wenna-hire"
+              }
+            ],
+            "text": "\"Four nights ago the bottom of the bay came up. Two miles of black mud, right across the harbour mouth. And something came up with it, out at the far edge. It's the size of a hill. The old people call it the Fathomer.\""
+          },
+          {
+            "id": "dlg/wenna-fathomer",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/wenna-hire"
+              }
+            ],
+            "text": "\"An old Wrackham name for what sleeps in the trench off the bay. There's a stone in its head, they say. Absalom Tregear at the chapel knows what the stone is. Ask him.\""
+          },
+          {
+            "id": "dlg/wenna-dream",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/wenna-hire"
+              }
+            ],
+            "text": "\"Everyone in Wrackham dreams the same dream now. You walk out on the mud and lie down beside it. And then people do it, asleep. Most of them we find at dawn standing at the edge of the water. Three walked into it. Davey is one of the three. I'm afraid of that dream. I'm afraid to sleep.\""
+          },
+          {
+            "id": "dlg/wenna-slipway",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/wenna-at-the-stair",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll bring him."
+              }
+            ],
+            "text": "\"The lamps are lit. That's the old road; it doesn't sink, they say. Follow the stakes out to the black water. Bring him back.\""
+          },
+          {
+            "id": "dlg/wenna-pier",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/stone-kept",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/the-choice",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "item/brow-stone",
+                  "text": "The party gives the Brow Stone to Tregear to keep.",
+                  "verb": "believes"
+                },
+                "label": "Keep it.",
+                "tooltip": "Tregear locks the stone in the chapel crypt, where nobody can ever put it back."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/stone-returned",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/the-choice",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "item/brow-stone",
+                  "text": "The party throws the Brow Stone back into the sea.",
+                  "verb": "believes"
+                },
+                "label": "Give it back.",
+                "tooltip": "The stone goes off the end of the pier, into the sea it came from."
+              }
+            ],
+            "text": "\"You brought him back.\" She has hold of Davey's arm and doesn't let go. \"That stone. Tregear says if it goes back in the sea, the thing goes back down. If you keep it, nobody can ever put it back. It's yours to say.\""
+          }
+        ],
+        "npc": "npc/wenna-coyle",
+        "root": "dlg/wenna-hire"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/tregear-rubbing",
+            "options": [
+              {
+                "label": "What does it show?",
+                "next": "dlg/tregear-panels"
+              },
+              {
+                "label": "Who carved it?",
+                "next": "dlg/tregear-carvers"
+              },
+              {
+                "label": "The broken bottom?",
+                "next": "dlg/tregear-row"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-tregear",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              }
+            ],
+            "text": "\"Wenna sent you. Then I'll tell you. This is the Rubbing: my grandfather took it from a piece of the Brow Stone, the carved stone that's driven into the Fathomer's head. The bottom of it is broken off.\""
+          },
+          {
+            "id": "dlg/tregear-panels",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/tregear-rubbing"
+              }
+            ],
+            "text": "\"People driving the stone into its head. Then the Fathomer asleep, and dreaming, and the dream reaching the shore. Then the stone lifted, and the Fathomer going down into the trench. That's what lifting the stone does: it sends it down.\""
+          },
+          {
+            "id": "dlg/tregear-carvers",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/tregear-rubbing"
+              }
+            ],
+            "text": "\"A people nobody remembers, before the town. Under the second panel there's a line in their own script. I've never been able to read it.\""
+          },
+          {
+            "id": "dlg/tregear-row",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/tregear-rubbing"
+              }
+            ],
+            "text": "\"The bottom row. It was broken off before my grandfather's time. I don't know what it showed. That frightens me more than the rest of it.\""
+          }
+        ],
+        "npc": "npc/absalom-tregear",
+        "root": "dlg/tregear-rubbing"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/marrack",
+            "options": [
+              {
+                "label": "We're looking for a boy.",
+                "next": "dlg/marrack-boy"
+              },
+              {
+                "label": "Who are you?",
+                "next": "dlg/marrack-who"
+              }
+            ],
+            "text": "\"Another crew after the carcass? Turn round.\" He looks at you properly. \"...No. You're not salvage.\""
+          },
+          {
+            "id": "dlg/marrack-who",
+            "options": [
+              {
+                "label": "We're looking for a boy.",
+                "next": "dlg/marrack-boy"
+              }
+            ],
+            "text": "\"Ivo Marrack. Salvage, out of Penhallow. Came by sea three days ago to strip the thing before anyone else could.\""
+          },
+          {
+            "id": "dlg/marrack-boy",
+            "options": [
+              {
+                "label": "How do we get across?",
+                "next": "dlg/marrack-skiff"
+              }
+            ],
+            "text": "\"Then you're going inside. I went in. The mouth's open at the low end. I took two men in with me and I came out alone, and they're still in there. I don't know if they're alive.\""
+          },
+          {
+            "id": "dlg/marrack-skiff",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-marrack",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll take it.",
+                "tooltip": "Marrack lends you his skiff and gives you his log."
+              }
+            ],
+            "text": "\"My skiff's in the old ferry house at the end of the road. Take it. Take my log too; it's what I saw. If you find my men, bring them out.\""
+          }
+        ],
+        "npc": "npc/ivo-marrack",
+        "root": "dlg/marrack"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/davey-dream",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/davey",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Davey. Your mother."
+              }
+            ],
+            "text": "Davey stands by the heart with his eyes open. \"It's warm here. It's dreaming, and we dream it. Lie down. Lie down beside it, it's nearly time.\""
+          },
+          {
+            "id": "dlg/davey-awake",
+            "options": [
+              {
+                "label": "She's waiting."
+              }
+            ],
+            "text": "\"I don't know how I got here. I don't remember any of it. Is my mother all right?\""
+          }
+        ],
+        "npc": "npc/davey-coyle",
+        "root": "dlg/davey-dream"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/sleeper-street-1",
+            "options": [],
+            "text": "The sleeper doesn't wake. Eyes shut, facing the sea, murmuring."
+          }
+        ],
+        "npc": "npc/sleeper-street-1",
+        "root": "dlg/sleeper-street-1"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/sleeper-street-2",
+            "options": [],
+            "text": "The sleeper doesn't wake. Eyes shut, facing the sea, murmuring."
+          }
+        ],
+        "npc": "npc/sleeper-street-2",
+        "root": "dlg/sleeper-street-2"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/sleeper-lofts",
+            "options": [],
+            "text": "The sleeper doesn't wake. Eyes shut, facing the sea, murmuring."
+          }
+        ],
+        "npc": "npc/sleeper-lofts",
+        "root": "dlg/sleeper-lofts"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/sleeper-ropewalk",
+            "options": [],
+            "text": "The sleeper doesn't wake. Eyes shut, facing the sea, murmuring."
+          }
+        ],
+        "npc": "npc/sleeper-ropewalk",
+        "root": "dlg/sleeper-ropewalk"
+      }
+    ]
   },
   "dsl_version": "0.35.1",
   "stage": "dialogue"
