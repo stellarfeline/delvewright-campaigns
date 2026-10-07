@@ -112,3 +112,29 @@ The review of the act 2–4 and ending images found three things `DESIGN.md` did
 - **A wave spawned from a trigger is not placed**: `DW0310` ("its spawn anchor is not placed in any assembled area") refuses a `spawn-wave` an approach trigger fires, so a fight starts on a quest beat, not on arrival.
 - **A checkpoint set from an approach trigger** strands the route proof (`DW0315` named a coach-stop anchor after a far-landing checkpoint); checkpoints are set by objectives, so the Run has its landing checkpoint and none on the back or the bank.
 - **A talk beat that must follow another** meets the `DW0205`/`DW0191` pair: an ungated completing button is refused for being early, a gated one for being gated. The homecoming is a use at the pier end instead of a word with Wenna.
+
+## Step 10 — the machine ladder (round 2): red on two engine defects
+
+- **A rebuild leaves the last build's files behind.** `delvec build -o <dir>` writes every emitted file and removes none (`write_output` in `crates/delvec/src/main.rs`), so the reused `validation/delve-output` carried 134 files the current build does not emit — the removed objectives' functions, their PackTests (`verb_kill` asserting `dw.o_the_slipway_drowned`), and live advancements (`c_the_spade.json`, `press_pillar_script.json`). A build into an empty directory is byte-identical to the current emission; the output directory is now cleared before every build here.
+- **PackTest: the atmosphere tests share the world.** The generated `atmosphere_repaint_<n>` tests paint and read biomes at absolute coordinates and run in parallel batches of 50; one test's "kept" cell lies inside another's repaint box (`atmosphere_repaint_1` reads `162 74 130`, inside `atmosphere_repaint_4`'s `[142,52,123]..[173,87,154]`). Two runs of one build failed different sets: `atmosphere_repaint_5`, `atmosphere_places`; then `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`. An intermittent red is an under-specified test; it is not re-run and the campaign's paint is not moved to dodge it.
+- **Bot: a cutscene inside a `sequence` is not waited out.** `cutscene_seconds_in` (`crates/delvec/src/compiler/plan.rs`) reads only top-level `cutscene` effects, so the notice step, whose completion runs the opening cutscene from a `sequence` step, carries no `cutscene_seconds`; the bot walks its next leg while in spectator and is stranded at the first camera (`step 2 (talk-to) failed … bot at [177.5, 94.3, 655.4]`). A cutscene fired by an approach trigger is invisible to the plan the same way (the first run: `step 1 (interact) failed … bot at [177.5, 92.9, 637.4]`); the route's arrival cutscenes now play on the objectives beside them (the notice, the pillars, the chalk arrow) and the Crown's arrival shot is cut.
+- Not run past the first red: the die-retry and death-loop stages report unbound (the campaign has no mandatory combat and no lethal volume), and the branch runs wait for a green critical path.
+
+## Step 11 — the branch chronicle
+
+Branches `branch/the-keeping` and `branch/the-return`; the two chronicles are identical to line 120 and differ only at the choice (line 122) and the ending (line 124). No dialogue node is flag-gated; every node is reachable on both branches, and the campaign ends at the choice.
+
+| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
+|---|---|---|---|
+| Davey by the heart, "It's dreaming, and we dream it…" (`dlg/davey-dream`) | both | 91 `learns` (still dreaming) | cleared |
+| Davey in the skiff, "I don't remember any of it. Is my mother all right?" (`dlg/davey-awake`) | both | 93 `opens` (Davey wakes), 99 `arrives` (to the skiff), 110 `survives` | cleared |
+| Davey on the pier, "Mother says you came a long way for me." (`dlg/davey-home`) | both | 116 `arrives` (home on the pier) | cleared |
+| Wenna on the pier offers the choice (`dlg/wenna-pier`) | both | 105 `arrives` (Wenna to the pier), 107 `arrives` (Tregear), 116 | cleared |
+| Marrack, "I took two men in…" (`dlg/marrack-boy`) and the shore of the pool | both | 66 `learns`, 85 `learns` | cleared |
+| The keeping: "Tregear does not sleep: under his chapel the stone dreams" | `branch/the-keeping` | 122 `believes` (to Tregear), 124 `survives` | cleared |
+| The return: "Nobody in Wrackham dreams." | `branch/the-return` | 122 `believes` (into the sea), 124 `seals` | cleared |
+| DESIGN.md: Davey goes ahead along the causeway to the pier | both | 114 `departs`, 116 `arrives` | cleared — he goes to his mother when the party reaches the pier end |
+| DESIGN.md: the keeping ends at dawn, the town clear | `branch/the-keeping` | 124 | cleared |
+| DESIGN.md: the return shows the bottom row and the figure at the shore | `branch/the-return` | 124 | cleared for what is built; the figure and the bottom row wait on spec-0092 |
+
+One contradiction found and fixed before this table: line 91 read "Davey, awake, speaks the dream's words" two lines before "Davey wakes".
