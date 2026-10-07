@@ -138,3 +138,17 @@ Branches `branch/the-keeping` and `branch/the-return`; the two chronicles are id
 | DESIGN.md: the return shows the bottom row and the figure at the shore | `branch/the-return` | 124 | cleared for what is built; the figure and the bottom row wait on spec-0092 |
 
 One contradiction found and fixed before this table: line 91 read "Davey, awake, speaks the dream's words" two lines before "Davey wakes".
+
+## Round 3 — the owner's rulings (content issue 168), on the released engine
+
+Toolchain: engine release `delvec--v1.8.2` (commit `11cd7c8a73b4b3b9c2383e67310ba6d49fc19903`), binary `delvec 1.8.2, dsl 0.35.1, mc 1.21.11`; the `/new-delve` page's pin check (I1b) exits 0 against it. Prefab library: this clone's `prefabs/`.
+
+- **The journal** restates what the story has told: seventeen objectives carry a title (twelve a hint), each naming only what a person or a reading has said by then; objectives nothing has told stay untitled. Wenna's hire now says where to go (the chapel past the fish market, the Customs House key), and Marrack's says the road runs past the pillars and the Narrows to the ferry house.
+- **Props**: fourteen of the sixteen interact objectives sit on a prop block, which the 1.8.2 emitter places instead of the glowing lantern marker (`activate_o_*`: `setblock` and no `item_display`). The lighthouse lamp is lit by the beat that lights it; the Brow Stone's block leaves the socket empty when it is cut.
+- **The story frame and the endings**: the notice and Wenna say the party came to find out what is happening and stop it before it gets worse; the return's closing line says plainly that the catastrophe was not averted. The Figure is unnamed, mentioned obliquely, and never by the townsfolk.
+- **The man at the oars**: Marrack rows. The launch body leaves when the pillars are read and two more declarations of him (`npc/marrack-near`, `npc/marrack-far`, one skin seed) sit at the oars of each copy of the skiff, forward of the seat row, so the carry never moves him. After the crossing back (`flag/reveal-seen`) his talk opens on a repeatable exchange.
+- **Crossings**: the outbound crossing is one shot from the jetty out toward the far sea, then the carry; the crossing back plays its placeholder reveal once (the two in-house shots are gone: they framed an empty skiff), and any later press is an ordinary crossing.
+- **Writing**: Davey's line about the valves says plainly what the right valve is; no line narrates the heartbeat; every line addressed to the party reads right for one player or four.
+- **zh-cn**: 88 rows transcreated by `tools/creator/i18n-translate.py` (deepseek-v4-pro), then a review pass over the whole sidecar: one rendering per name (额石, 探海者, 温娜, 特雷加尔, 剥鲸铲, 溺亡者, 朝圣者之路, 窄口, 小艇, 打捞船, 渡屋, 山脊), no 你们 aimed at the party, and two meaning errors fixed (the flat read as an apartment; the launch read as the only boat that can sail out).
+- **Waits on the unreleased engine** (DESIGN.md, *Waiting on the engine*): the Figure, the lightning and the party's stand-ins in the reveal; the obfuscated line; a visible press object for every `use` trigger, and for the Customs House lock and the diaphragm; progress that does not hang on reading an object; tentacle lock, re-arm and perception range; the walk after detail.
+- **The walk record is stale**: `delvec allocation` refuses with `DW0841` because `walk-record.json` names layout graph `aa13434b…` and the graph now hashes `5ee5d3b4…` (round 2 changed the graph after the walk). Detail, and so the boats, cannot start until the blockout is walked again.

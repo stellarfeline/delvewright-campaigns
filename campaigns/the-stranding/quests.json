@@ -456,6 +456,9 @@
               "verb": "learns"
             },
             "id": "obj/the-notice",
+            "prop": {
+              "block": "minecraft:spruce_sign"
+            },
             "type": "interact"
           }
         ],
@@ -623,7 +626,7 @@
             },
             {
               "style": "chat",
-              "text": "The notice, pinned in the coach shelter: \"My son Davey Coyle walked out onto the new flat in his sleep four nights ago and has not come back. I will pay whoever brings him home. Ask at the Harbour Office, Wrackham. Wenna Coyle, harbourmistress.\"",
+              "text": "The notice, pinned in the coach shelter: \"Four nights ago the bay floor rose, and something came up with it onto the new flat. Since then Wrackham walks out to it in its sleep, and three have not come back. One of them is my son, Davey Coyle. I will pay whoever finds out what is happening here and stops it before it gets worse, and brings my son home. Ask at the Harbour Office. Wenna Coyle, harbourmistress.\"",
               "type": "narrate"
             }
           ]
@@ -748,8 +751,10 @@
               "text": "Wenna tells the party what the town is living through and gives them the Customs House key.",
               "verb": "learns"
             },
+            "hint": "The notice says to ask for her at the Harbour Office.",
             "id": "obj/hear-wenna",
             "npc": "npc/wenna-coyle",
+            "title": "Talk to Wenna Coyle",
             "type": "talk-to"
           }
         ],
@@ -900,7 +905,12 @@
               "text": "The fish market's slate stopped four days ago, the night of the rising.",
               "verb": "learns"
             },
+            "hint": "Wenna said the Drowned come up the slipway into the market at night.",
             "id": "obj/the-market-slate",
+            "prop": {
+              "block": "minecraft:dark_oak_sign"
+            },
+            "title": "Look round the fish market",
             "type": "interact"
           }
         ],
@@ -1070,8 +1080,10 @@
               "text": "Tregear reads the Rubbing: the stone keeps the Fathomer asleep, lifting it sends it down, and the bottom row is lost.",
               "verb": "learns"
             },
+            "hint": "Wenna said he is at the Seamen's Chapel, along the seawall past the fish market.",
             "id": "obj/hear-tregear",
             "npc": "npc/absalom-tregear",
+            "title": "Talk to Absalom Tregear",
             "type": "talk-to"
           }
         ],
@@ -1201,9 +1213,11 @@
               "text": "The Customs House door opens.",
               "verb": "opens"
             },
+            "hint": "Wenna's key opens it. It stands on the seawall.",
             "id": "obj/unlock-customs",
             "missing_item_hint": "Locked. You need the Customs House key.",
             "requires_item": "minecraft:tripwire_hook",
+            "title": "Open the Customs House",
             "type": "interact"
           },
           {
@@ -1216,7 +1230,12 @@
               "text": "The chart shows the Pilgrims' Way: the old road over the bay, marked by stakes the lighthouse once lit.",
               "verb": "learns"
             },
+            "hint": "Wenna said the town keeps its charts there.",
             "id": "obj/the-chart",
+            "prop": {
+              "block": "minecraft:cartography_table"
+            },
+            "title": "Look through the Customs House",
             "type": "interact"
           },
           {
@@ -1230,6 +1249,9 @@
               "verb": "learns"
             },
             "id": "obj/the-chip",
+            "prop": {
+              "block": "minecraft:glass"
+            },
             "type": "interact"
           }
         ],
@@ -1476,6 +1498,9 @@
               "verb": "learns"
             },
             "id": "obj/the-shipwright-note",
+            "prop": {
+              "block": "minecraft:oak_sign"
+            },
             "type": "interact"
           },
           {
@@ -1489,6 +1514,9 @@
               "verb": "gains"
             },
             "id": "obj/the-spade",
+            "prop": {
+              "block": "minecraft:spruce_fence"
+            },
             "type": "interact"
           }
         ],
@@ -1646,7 +1674,12 @@
               "text": "The lamp is lit, and the stakes of the Pilgrims' Way catch the light one by one.",
               "verb": "opens"
             },
+            "hint": "The chart says the lighthouse lamp once lit the stakes of the Pilgrims' Way.",
             "id": "obj/light-the-lamp",
+            "prop": {
+              "block": "minecraft:waxed_copper_bulb"
+            },
+            "title": "Light the lighthouse lamp",
             "type": "interact"
           }
         ],
@@ -1658,6 +1691,11 @@
         ],
         "on_objective_complete": {
           "obj/light-the-lamp": [
+            {
+              "anchor": "anchor/lighthouse-lamp",
+              "block": "minecraft:waxed_copper_bulb[lit=true]",
+              "type": "set-block"
+            },
             {
               "shots": [
                 {
@@ -1848,6 +1886,7 @@
             },
             "id": "obj/wenna-at-the-stair",
             "npc": "npc/wenna-coyle",
+            "title": "Talk to Wenna Coyle",
             "type": "talk-to"
           },
           {
@@ -1860,7 +1899,12 @@
               "text": "One of the risen hulls is a Wrackham boat lost long ago.",
               "verb": "learns"
             },
+            "hint": "Wenna said the old road runs out to the black water and does not sink.",
             "id": "obj/the-nameboard",
+            "prop": {
+              "block": "minecraft:spruce_sign"
+            },
+            "title": "Follow the stakes out across the flat",
             "type": "interact"
           }
         ],
@@ -2037,7 +2081,7 @@
             "at": "anchor/node-slipway-stair",
             "dialogue": {
               "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+                "\"Bring him back, and come back safe.\""
               ]
             },
             "doing": "waiting at the head of the slipway stair"
@@ -2056,8 +2100,10 @@
               "text": "Marrack lends the party his skiff.",
               "verb": "learns"
             },
+            "hint": "The shipwright's note says his launch is the only boat out past the harbour mouth.",
             "id": "obj/hear-marrack",
             "npc": "npc/ivo-marrack",
+            "title": "Talk to Marrack at his salvage launch",
             "type": "talk-to"
           },
           {
@@ -2070,7 +2116,12 @@
               "text": "The carved pillars tell again what the Brow Stone does.",
               "verb": "learns"
             },
+            "hint": "Marrack said the old road runs past them and the Narrows to the ferry house.",
             "id": "obj/the-pillars",
+            "prop": {
+              "block": "minecraft:chiseled_stone_bricks"
+            },
+            "title": "Go on past the carved pillars",
             "type": "interact"
           }
         ],
@@ -2166,6 +2217,33 @@
                 ]
               },
               "type": "clear-region"
+            },
+            {
+              "happening": {
+                "subject": "npc/ivo-marrack",
+                "text": "Marrack leaves his launch to row the party across.",
+                "verb": "departs"
+              },
+              "npc": "npc/ivo-marrack",
+              "type": "despawn-npc"
+            },
+            {
+              "happening": {
+                "subject": "npc/marrack-near",
+                "text": "Marrack waits at the oars of the skiff in the near ferry house.",
+                "verb": "arrives"
+              },
+              "npc": "npc/marrack-near",
+              "type": "spawn-npc"
+            },
+            {
+              "happening": {
+                "subject": "npc/marrack-far",
+                "text": "The skiff's far copy has its oarsman too, out of sight in the shut far ferry house.",
+                "verb": "arrives"
+              },
+              "npc": "npc/marrack-far",
+              "type": "spawn-npc"
             }
           ]
         },
@@ -2186,14 +2264,40 @@
             "dialogue": "dlg/davey-dream",
             "doing": "standing by the heart, awake, speaking the dream's words"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": {
-              "barks": [
-                "\"Sit in the skiff and work the tiller. Bring my men if they're breathing.\""
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
               ]
             },
-            "doing": "watching the party go on toward the body"
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff, waiting for the party to come back out"
+          },
+          "npc/marrack-near": {
+            "at": {
+              "anchor": "anchor/near-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"Sit in the skiff and put a hand to the tiller when you're ready. I'll row.\"",
+                "\"Anyone left behind rings the bell by the door. I'll come back for them.\""
+              ]
+            },
+            "doing": "at the oars of the near skiff, waiting to row the party across"
           },
           "npc/sleeper-lofts": {
             "at": {
@@ -2271,7 +2375,7 @@
             "at": "anchor/node-slipway-stair",
             "dialogue": {
               "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+                "\"Bring him back, and come back safe.\""
               ]
             },
             "doing": "waiting at the head of the slipway stair"
@@ -2290,7 +2394,12 @@
               "text": "Marrack's chalk arrow on a tooth points into the mouth.",
               "verb": "learns"
             },
+            "hint": "Marrack said the mouth is open at the low end. He went in that way.",
             "id": "obj/the-chalk-arrow",
+            "prop": {
+              "block": "minecraft:bone_block"
+            },
+            "title": "Go in through the mouth",
             "type": "interact"
           }
         ],
@@ -2362,10 +2471,40 @@
             "dialogue": "dlg/davey-dream",
             "doing": "standing by the heart, awake, speaking the dream's words"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": "unchanged",
-            "doing": "watching the body"
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff, waiting for the party to come back out"
+          },
+          "npc/marrack-near": {
+            "at": {
+              "anchor": "anchor/near-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the near skiff, behind the shut door"
           },
           "npc/sleeper-lofts": {
             "at": {
@@ -2443,7 +2582,7 @@
             "at": "anchor/node-slipway-stair",
             "dialogue": {
               "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+                "\"Bring him back, and come back safe.\""
               ]
             },
             "doing": "waiting at the head of the slipway stair"
@@ -2463,6 +2602,9 @@
               "verb": "opens"
             },
             "id": "obj/the-wrong-rib",
+            "prop": {
+              "block": "minecraft:bone_block[axis=x]"
+            },
             "type": "interact"
           }
         ],
@@ -2510,10 +2652,40 @@
             "dialogue": "dlg/davey-dream",
             "doing": "standing by the heart, awake, speaking the dream's words"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": "unchanged",
-            "doing": "watching the body"
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff, waiting for the party to come back out"
+          },
+          "npc/marrack-near": {
+            "at": {
+              "anchor": "anchor/near-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the near skiff, behind the shut door"
           },
           "npc/sleeper-lofts": {
             "at": {
@@ -2591,7 +2763,7 @@
             "at": "anchor/node-slipway-stair",
             "dialogue": {
               "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+                "\"Bring him back, and come back safe.\""
               ]
             },
             "doing": "waiting at the head of the slipway stair"
@@ -2626,6 +2798,9 @@
               "verb": "learns"
             },
             "id": "obj/the-shore",
+            "prop": {
+              "block": "minecraft:waxed_copper_bulb"
+            },
             "type": "interact"
           }
         ],
@@ -2693,10 +2868,40 @@
             "dialogue": "dlg/davey-dream",
             "doing": "standing by the heart, awake, speaking the dream's words"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": "unchanged",
-            "doing": "watching the body"
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff, waiting for the party to come back out"
+          },
+          "npc/marrack-near": {
+            "at": {
+              "anchor": "anchor/near-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the near skiff, behind the shut door"
           },
           "npc/sleeper-lofts": {
             "at": {
@@ -2774,7 +2979,7 @@
             "at": "anchor/node-slipway-stair",
             "dialogue": {
               "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+                "\"Bring him back, and come back safe.\""
               ]
             },
             "doing": "waiting at the head of the slipway stair"
@@ -2795,6 +3000,7 @@
             },
             "id": "obj/davey",
             "npc": "npc/davey-coyle",
+            "title": "Find Davey",
             "type": "talk-to"
           },
           {
@@ -2803,6 +3009,7 @@
               "text": "Three right valves in a row: the heart stops, and Davey wakes.",
               "verb": "opens"
             },
+            "hint": "Davey said each valve answers the wound on its side, and only the ridge outside shows which wound has risen.",
             "id": "obj/davey-wakes",
             "npc": "npc/davey-coyle",
             "requires_state": [
@@ -2812,6 +3019,7 @@
                 "value": 3
               }
             ],
+            "title": "Stop the heart, then wake Davey",
             "type": "talk-to"
           }
         ],
@@ -2940,10 +3148,40 @@
             "dialogue": "dlg/davey-awake",
             "doing": "sitting in the far skiff, waiting for the party"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": "unchanged",
-            "doing": "watching the body"
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff, waiting for the party to come back out"
+          },
+          "npc/marrack-near": {
+            "at": {
+              "anchor": "anchor/near-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the near skiff, behind the shut door"
           },
           "npc/sleeper-lofts": {
             "at": {
@@ -3021,7 +3259,7 @@
             "at": "anchor/node-slipway-stair",
             "dialogue": {
               "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+                "\"Bring him back, and come back safe.\""
               ]
             },
             "doing": "waiting at the head of the slipway stair"
@@ -3041,9 +3279,14 @@
               "text": "The Brow Stone comes out of the forehead.",
               "verb": "opens"
             },
+            "hint": "Tregear said it is driven into the Fathomer's head. The Flensing Spade can cut it.",
             "id": "obj/cut-the-stone",
             "missing_item_hint": "Driven deep into the flesh. It needs a long, sharp blade.",
+            "prop": {
+              "block": "minecraft:chiseled_quartz_block"
+            },
             "requires_item": "minecraft:iron_shovel",
+            "title": "Cut the Brow Stone out",
             "type": "interact"
           }
         ],
@@ -3059,6 +3302,11 @@
                 {
                   "at_ticks": 0,
                   "effects": [
+                    {
+                      "anchor": "anchor/brow-stone",
+                      "block": "minecraft:air",
+                      "type": "set-block"
+                    },
                     {
                       "effect": "minecraft:nausea",
                       "hide_particles": true,
@@ -3374,11 +3622,60 @@
             "dialogue": "dlg/davey-awake",
             "doing": "sitting in the far skiff, waiting for the party"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": "unchanged",
-            "doing": "watching the body"
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"Sit in and take the tiller, and I'll row us out of here.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff with Davey aboard, ready to row back"
           },
+          "npc/marrack-near": [
+            {
+              "at": {
+                "anchor": "anchor/near-skiff",
+                "offset": [
+                  2,
+                  0,
+                  2
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "\"This is as far as I go. I'll wait here with the skiff.\"",
+                  "\"If you find my men in there, bring them out.\""
+                ]
+              },
+              "doing": "at the oars of the near skiff, behind the shut door",
+              "forbids_flags": [
+                "flag/reveal-seen"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/near-skiff",
+                "offset": [
+                  2,
+                  0,
+                  2
+                ]
+              },
+              "dialogue": "dlg/marrack-ashore",
+              "doing": "ashore in the near ferry house; he remembers only a wild sea",
+              "requires_flags": [
+                "flag/reveal-seen"
+              ]
+            }
+          ],
           "npc/sleeper-lofts": {
             "at": {
               "anchor": "anchor/node-net-lofts",
@@ -3482,6 +3779,7 @@
             },
             "id": "obj/davey-in-the-skiff",
             "npc": "npc/davey-coyle",
+            "title": "Get back to the skiff",
             "type": "talk-to"
           },
           {
@@ -3492,9 +3790,13 @@
               "verb": "arrives"
             },
             "id": "obj/home",
+            "prop": {
+              "block": "minecraft:stripped_spruce_log"
+            },
             "requires_flags": [
               "flag/run-done"
             ],
+            "title": "Take Davey home to Wenna",
             "type": "interact"
           }
         ],
@@ -3567,10 +3869,35 @@
             "dialogue": "dlg/davey-home",
             "doing": "home, on the pier beside his mother"
           },
-          "npc/ivo-marrack": {
-            "at": "anchor/node-marracks-launch",
-            "dialogue": "unchanged",
-            "doing": "on his launch on the flat"
+          "npc/ivo-marrack": "offstage",
+          "npc/marrack-far": {
+            "at": {
+              "anchor": "anchor/far-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"This is as far as I go. I'll wait here with the skiff.\"",
+                "\"If you find my men in there, bring them out.\""
+              ]
+            },
+            "doing": "at the oars of the far skiff, behind the shut door"
+          },
+          "npc/marrack-near": {
+            "at": {
+              "anchor": "anchor/near-skiff",
+              "offset": [
+                2,
+                0,
+                2
+              ]
+            },
+            "dialogue": "dlg/marrack-ashore",
+            "doing": "ashore in the near ferry house; he remembers only a wild sea"
           },
           "npc/sleeper-lofts": {
             "at": {
@@ -3672,6 +3999,7 @@
             },
             "id": "obj/the-choice",
             "npc": "npc/wenna-coyle",
+            "title": "Talk to Wenna Coyle on the pier",
             "type": "talk-to"
           }
         ],
@@ -3824,7 +4152,7 @@
                 "effects": [
                   {
                     "style": "chat",
-                    "text": "Nobody in Wrackham dreams that night. Tregear does not sleep: under his chapel the stone dreams, and he hears it.",
+                    "text": "Nobody in Wrackham dreams that night, and nothing comes up out of the sea. Tregear does not sleep: under his chapel the stone dreams, and he hears it.",
                     "type": "narrate"
                   },
                   {
@@ -4097,7 +4425,7 @@
                 "effects": [
                   {
                     "style": "chat",
-                    "text": "Nobody in Wrackham dreams.",
+                    "text": "The stone settles on the sea floor, and what it kept asleep wakes. In the morning it stands up out of the sea at the harbour mouth, and by nightfall there is no Wrackham left.",
                     "type": "narrate"
                   },
                   {
@@ -4965,7 +5293,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The heartbeat quickens. Wrong valve.",
+            "text": "Wrong valve. Start again from the first.",
             "type": "narrate",
             "when": {
               "forbids_flags": [
@@ -5144,7 +5472,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The heartbeat quickens. Wrong valve.",
+            "text": "Wrong valve. Start again from the first.",
             "type": "narrate",
             "when": {
               "forbids_flags": [
@@ -5334,7 +5662,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The heartbeat quickens. Wrong valve.",
+            "text": "Wrong valve. Start again from the first.",
             "type": "narrate",
             "when": {
               "forbids_flags": [
@@ -5475,7 +5803,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The heartbeat quickens. Wrong valve.",
+            "text": "Wrong valve. Start again from the first.",
             "type": "narrate",
             "when": {
               "forbids_flags": [
@@ -5709,7 +6037,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The heartbeat quickens. Wrong valve.",
+            "text": "Wrong valve. Start again from the first.",
             "type": "narrate",
             "when": {
               "forbids_flags": [
@@ -5932,7 +6260,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The heartbeat quickens. Wrong valve.",
+            "text": "Wrong valve. Start again from the first.",
             "type": "narrate",
             "when": {
               "forbids_flags": [
@@ -6051,75 +6379,39 @@
                 "at_ticks": 0,
                 "effects": [
                   {
-                    "shots": [
+                    "look_at": {
+                      "anchor": "anchor/node-skiff-stage",
+                      "offset": [
+                        -150,
+                        0,
+                        40
+                      ]
+                    },
+                    "path": [
                       {
-                        "look_at": {
-                          "anchor": "anchor/near-skiff"
-                        },
-                        "path": [
-                          {
-                            "anchor": "anchor/node-near-ferry-house",
-                            "offset": [
-                              0,
-                              2,
-                              5
-                            ]
-                          }
-                        ],
-                        "seconds": 4
+                        "anchor": "anchor/node-skiff-stage",
+                        "offset": [
+                          -7,
+                          2,
+                          14
+                        ]
                       },
                       {
-                        "look_at": {
-                          "anchor": "anchor/node-jaw-bank",
-                          "offset": [
-                            0,
-                            12,
-                            0
-                          ]
-                        },
-                        "path": [
-                          {
-                            "anchor": "anchor/node-skiff-stage",
-                            "offset": [
-                              -7,
-                              2,
-                              14
-                            ]
-                          },
-                          {
-                            "anchor": "anchor/node-skiff-stage",
-                            "offset": [
-                              -7,
-                              2,
-                              60
-                            ]
-                          }
-                        ],
-                        "seconds": 22
-                      },
-                      {
-                        "look_at": {
-                          "anchor": "anchor/far-skiff"
-                        },
-                        "path": [
-                          {
-                            "anchor": "anchor/node-far-ferry-house",
-                            "offset": [
-                              0,
-                              2,
-                              -5
-                            ]
-                          }
-                        ],
-                        "seconds": 4
+                        "anchor": "anchor/node-skiff-stage",
+                        "offset": [
+                          -7,
+                          3,
+                          34
+                        ]
                       }
                     ],
+                    "seconds": 10,
                     "type": "cutscene"
                   }
                 ]
               },
               {
-                "at_ticks": 605,
+                "at_ticks": 205,
                 "effects": [
                   {
                     "from": {
@@ -6232,22 +6524,6 @@
                     "shots": [
                       {
                         "look_at": {
-                          "anchor": "anchor/far-skiff"
-                        },
-                        "path": [
-                          {
-                            "anchor": "anchor/node-far-ferry-house",
-                            "offset": [
-                              0,
-                              2,
-                              -5
-                            ]
-                          }
-                        ],
-                        "seconds": 4
-                      },
-                      {
-                        "look_at": {
                           "anchor": "anchor/node-far-landing",
                           "offset": [
                             80,
@@ -6295,22 +6571,6 @@
                           }
                         ],
                         "seconds": 8
-                      },
-                      {
-                        "look_at": {
-                          "anchor": "anchor/near-skiff"
-                        },
-                        "path": [
-                          {
-                            "anchor": "anchor/node-near-ferry-house",
-                            "offset": [
-                              0,
-                              2,
-                              5
-                            ]
-                          }
-                        ],
-                        "seconds": 4
                       }
                     ],
                     "type": "cutscene"
@@ -6318,7 +6578,102 @@
                 ]
               },
               {
-                "at_ticks": 605,
+                "at_ticks": 445,
+                "effects": [
+                  {
+                    "from": {
+                      "anchor": "anchor/far-skiff",
+                      "extent": [
+                        2,
+                        1,
+                        0
+                      ]
+                    },
+                    "to": {
+                      "anchor": "anchor/near-skiff"
+                    },
+                    "type": "teleport"
+                  },
+                  {
+                    "anchor": "anchor/near-door",
+                    "happening": {
+                      "subject": "anchor/near-door",
+                      "text": "The near ferry house stands open again.",
+                      "verb": "opens"
+                    },
+                    "type": "open-gate"
+                  },
+                  {
+                    "anchor": "anchor/seam-far-house-door",
+                    "happening": {
+                      "subject": "anchor/seam-far-house-door",
+                      "text": "The far ferry house is shut behind the party.",
+                      "verb": "seals"
+                    },
+                    "sealed_hint": "The ferry house is shut. Ring the bell beside the door.",
+                    "type": "close-gate"
+                  },
+                  {
+                    "flag": "flag/crossed-back",
+                    "type": "set-flag"
+                  },
+                  {
+                    "flag": "flag/far-house-shut",
+                    "type": "set-flag"
+                  },
+                  {
+                    "flag": "flag/reveal-seen",
+                    "type": "set-flag"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence",
+            "when": {
+              "forbids_flags": [
+                "flag/reveal-seen"
+              ]
+            }
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "look_at": {
+                      "anchor": "anchor/node-far-landing",
+                      "offset": [
+                        160,
+                        0,
+                        -40
+                      ]
+                    },
+                    "path": [
+                      {
+                        "anchor": "anchor/node-far-landing",
+                        "offset": [
+                          40,
+                          4,
+                          -30
+                        ]
+                      },
+                      {
+                        "anchor": "anchor/node-far-landing",
+                        "offset": [
+                          48,
+                          6,
+                          -62
+                        ]
+                      }
+                    ],
+                    "seconds": 22,
+                    "type": "cutscene"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 445,
                 "effects": [
                   {
                     "from": {
@@ -6364,7 +6719,12 @@
                 ]
               }
             ],
-            "type": "sequence"
+            "type": "sequence",
+            "when": {
+              "requires_flags": [
+                "flag/reveal-seen"
+              ]
+            }
           }
         ],
         "id": "trigger/far-tiller",

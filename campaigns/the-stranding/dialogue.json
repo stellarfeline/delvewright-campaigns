@@ -16,16 +16,30 @@
                 "next": "dlg/wenna-dream"
               },
               {
+                "label": "Where to start?",
+                "next": "dlg/wenna-start"
+              }
+            ],
+            "text": "\"You came. Good. I'm Wenna Coyle, harbourmistress; the notice is mine. My son Davey walked out onto the flat four nights ago in his sleep and didn't come back. And it isn't only Davey: every night more of the town walks out there. It's getting worse.\""
+          },
+          {
+            "id": "dlg/wenna-start",
+            "options": [
+              {
                 "effects": [
                   {
                     "objective": "obj/hear-wenna",
                     "type": "complete-objective"
                   }
                 ],
-                "label": "We'll find him."
+                "label": "Right away."
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/wenna-hire"
               }
             ],
-            "text": "\"You came. Good. I'm Wenna Coyle, harbourmistress; I put the notice in the papers. My son Davey walked out onto the flat four nights ago in his sleep and didn't come back.\""
+            "text": "\"Go to Absalom Tregear at the Seamen's Chapel, along the seawall past the fish market. He knows the old stories about what lies out there. Mind the market: things come up the slipway out of the harbour mud at night. We call them the Drowned. And take this key. It opens the Customs House on the seawall, where the town keeps its charts.\""
           },
           {
             "id": "dlg/wenna-flat",
@@ -71,7 +85,7 @@
                     "type": "complete-objective"
                   }
                 ],
-                "label": "We'll bring him."
+                "label": "He'll come home."
               }
             ],
             "text": "\"The lamps are lit. That's the old road; it doesn't sink, they say. Follow the stakes out to the black water. Bring him back.\""
@@ -193,7 +207,7 @@
             "id": "dlg/marrack",
             "options": [
               {
-                "label": "We're looking for a boy.",
+                "label": "Looking for a boy.",
                 "next": "dlg/marrack-boy"
               },
               {
@@ -207,7 +221,7 @@
             "id": "dlg/marrack-who",
             "options": [
               {
-                "label": "We're looking for a boy.",
+                "label": "Looking for a boy.",
                 "next": "dlg/marrack-boy"
               }
             ],
@@ -233,11 +247,11 @@
                     "type": "complete-objective"
                   }
                 ],
-                "label": "We'll take it.",
-                "tooltip": "Marrack lends you his skiff and gives you his log."
+                "label": "Thank you, captain.",
+                "tooltip": "Marrack gives you his log and goes ahead to row you across."
               }
             ],
-            "text": "\"My skiff's in the old ferry house at the end of the road. Sit in it and put a hand to the tiller; it crosses on its own line. If you get left behind, ring the bell by the door. Take my log too; it's what I saw. If you find my men, bring them out.\""
+            "text": "\"My skiff's in the old ferry house at the end of the road, past the carved pillars and the Narrows. I'll go ahead and row you over. Sit in, and put a hand to the tiller when you're ready. Anyone left behind rings the bell by the door and I'll come back for them. Take my log too; it's what I saw in there. If you find my men, bring them out.\""
           }
         ],
         "npc": "npc/ivo-marrack",
@@ -267,7 +281,7 @@
                 "label": "Wake up, Davey."
               }
             ],
-            "text": "Davey stands by the heart with his eyes open. \"It's warm here. It's dreaming, and we dream it. The heart answers the wound that wakes; the wound shows itself outside, never in here. Lie down beside it. It's nearly time.\""
+            "text": "Davey stands by the heart with his eyes open. \"It's warm here. It's dreaming, and we dream it. There are three valves in the wall and three wounds in its side, west, middle and east. When something rises out of a wound, the valve on the same side is the right one. You can't see the wounds from in here. You can from the ridge outside. Three right valves and the heart stops. Lie down beside it. It's nearly time.\""
           },
           {
             "id": "dlg/davey-awake",
@@ -342,6 +356,46 @@
         ],
         "npc": "npc/sleeper-ropewalk",
         "root": "dlg/sleeper-ropewalk"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/marrack-ashore",
+            "options": [
+              {
+                "label": "What was that thing?",
+                "next": "dlg/marrack-what-thing"
+              },
+              {
+                "label": "Never mind."
+              }
+            ],
+            "text": "\"Across, and everyone breathing. That's more than I managed the last time.\""
+          },
+          {
+            "id": "dlg/marrack-what-thing",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/marrack-ashore"
+              }
+            ],
+            "text": "\"What thing? All I remember is the sea running wild out there. I don't know how you slept through it. You must be worn out.\""
+          }
+        ],
+        "npc": "npc/marrack-near",
+        "root": "dlg/marrack-ashore"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/marrack-far-waiting",
+            "options": [],
+            "text": "\"I'll wait here with the skiff.\""
+          }
+        ],
+        "npc": "npc/marrack-far",
+        "root": "dlg/marrack-far-waiting"
       }
     ]
   },
