@@ -1,0 +1,154 @@
+{
+  "campaign_id": "the-reaching-arm",
+  "content": {
+    "batches": [
+      {
+        "area": "area/site",
+        "edits": [
+          {
+            "name": "region/pit-floor",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-yard",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                1,
+                -1,
+                -11
+              ],
+              "min": [
+                -1,
+                -1,
+                -13
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:sculk",
+                  "weight": 1.0
+                }
+              ]
+            },
+            "region": "region/pit-floor",
+            "verb": "fill"
+          },
+          {
+            "name": "region/curb-outer",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-yard",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                2,
+                0,
+                -10
+              ],
+              "min": [
+                -2,
+                0,
+                -14
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "name": "region/curb-inner",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-yard",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                1,
+                0,
+                -11
+              ],
+              "min": [
+                -1,
+                0,
+                -13
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "name": "region/curb",
+            "shape": {
+              "base": "region/curb-outer",
+              "kind": "subtract",
+              "remove": [
+                "region/curb-inner"
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:polished_blackstone",
+                  "weight": 1.0
+                }
+              ]
+            },
+            "region": "region/curb",
+            "verb": "fill"
+          }
+        ],
+        "id": "batch/the-pit",
+        "note": "The pit at the yard's north end: a floor of sculk inside a one-course curb of polished blackstone, centred on the thing's mark (anchor/node-yard + [0, 0, -12]). The curb is a step, not a wall, so a body walks in and out of it."
+      },
+      {
+        "area": "area/site",
+        "edits": [
+          {
+            "name": "region/flag",
+            "shape": {
+              "frame": {
+                "anchor": "anchor/node-yard",
+                "kind": "anchor-relative"
+              },
+              "kind": "box",
+              "max": [
+                0,
+                -1,
+                0
+              ],
+              "min": [
+                0,
+                -1,
+                0
+              ]
+            },
+            "verb": "select"
+          },
+          {
+            "recipe": {
+              "blocks": [
+                {
+                  "block": "minecraft:red_concrete",
+                  "weight": 1.0
+                }
+              ]
+            },
+            "region": "region/flag",
+            "verb": "fill"
+          }
+        ],
+        "id": "batch/the-flag",
+        "note": "The red flag (anchor/node-yard): the middle of the floor the thing locks onto, and where the party first stands."
+      }
+    ]
+  },
+  "dsl_version": "0.36.0",
+  "stage": "world-edits"
+}

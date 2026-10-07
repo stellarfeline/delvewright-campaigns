@@ -1,0 +1,323 @@
+{
+  "campaign_id": "the-reaching-arm",
+  "content": {
+    "assemblies": [
+      {
+        "at": {
+          "anchor": "anchor/node-yard",
+          "offset": [
+            0,
+            0,
+            -12
+          ]
+        },
+        "facing": "south",
+        "hitbox": {
+          "height": 8.0,
+          "width": 3.0
+        },
+        "id": "assembly/limb",
+        "initial": "idle",
+        "rig": "rig/tentacle",
+        "strikes": {
+          "pattern": [
+            {
+              "hold": 10,
+              "lock": {
+                "pick": "nearest",
+                "reaches": [
+                  "strike",
+                  "strike-far"
+                ],
+                "within": {
+                  "anchor": "anchor/node-yard",
+                  "extent": [
+                    4,
+                    0,
+                    4
+                  ]
+                }
+              },
+              "on_land": [
+                {
+                  "amount": 6,
+                  "type": "damage-players"
+                },
+                {
+                  "at": {
+                    "anchor": "anchor/node-yard",
+                    "at": "anchor"
+                  },
+                  "sound": "minecraft:entity.warden.sonic_boom",
+                  "type": "play-sound"
+                }
+              ],
+              "strike": "strike-near",
+              "windup": "windup"
+            }
+          ],
+          "while_in": {
+            "anchor": "anchor/node-yard",
+            "extent": [
+              10,
+              1,
+              7
+            ]
+          }
+        }
+      }
+    ],
+    "quests": [
+      {
+        "happening": {
+          "text": "The party comes into the yard.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-pit",
+        "objectives": [
+          {
+            "anchor": "anchor/node-yard",
+            "happening": {
+              "text": "Someone stands on the red flag in the middle of the yard.",
+              "verb": "arrives"
+            },
+            "hint": "The red flag in the middle of the yard.",
+            "id": "obj/come-to-the-mark",
+            "radius": 1,
+            "title": "Stand on the red flag",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/come-to-the-mark"
+            ],
+            "anchor": "anchor/node-gate",
+            "happening": {
+              "text": "They walk back out of the yard.",
+              "verb": "departs"
+            },
+            "hint": "Drive the thing back into its pit twice, then walk out the way you came.",
+            "id": "obj/walk-out",
+            "radius": 3,
+            "requires_flags": [
+              "flag/limb-sunk"
+            ],
+            "title": "Walk out",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The yard is quiet.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/come-to-the-mark": [
+            {
+              "assembly": "assembly/limb",
+              "type": "spawn-assembly"
+            },
+            {
+              "style": "subtitle",
+              "text": "Something comes up out of the pit.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "state": [
+      {
+        "id": "state/limb-hits",
+        "initial": 0,
+        "name": "Blows on the limb",
+        "note": "How many times the party has struck the thing in the pit. Three send it down until it rises again; six send it down for good.",
+        "scope": "party"
+      }
+    ],
+    "triggers": [
+      {
+        "effects": [
+          {
+            "amount": 1,
+            "state": "state/limb-hits",
+            "type": "add-state"
+          },
+          {
+            "assembly": "assembly/limb",
+            "clip": "retract",
+            "type": "play-clip",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/limb-hits",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "style": "subtitle",
+            "text": "It goes back down into the dark.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/limb-hits",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 240,
+                "effects": [
+                  {
+                    "assembly": "assembly/limb",
+                    "clip": "rise",
+                    "type": "play-clip",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/limb-sunk"
+                      ]
+                    }
+                  },
+                  {
+                    "style": "subtitle",
+                    "text": "It comes up again.",
+                    "type": "narrate",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/limb-sunk"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "at_ticks": 420,
+                "effects": [
+                  {
+                    "assembly": "assembly/limb",
+                    "clip": "idle",
+                    "type": "play-clip",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/limb-sunk"
+                      ]
+                    }
+                  },
+                  {
+                    "assembly": "assembly/limb",
+                    "type": "arm-strikes",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/limb-sunk"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ],
+            "type": "sequence",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/limb-hits",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/limb",
+            "clip": "retract",
+            "type": "play-clip",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/limb-hits",
+                  "value": 6
+                }
+              ]
+            }
+          },
+          {
+            "flag": "flag/limb-sunk",
+            "type": "set-flag",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/limb-hits",
+                  "value": 6
+                }
+              ]
+            }
+          },
+          {
+            "style": "subtitle",
+            "text": "It goes back down into the dark, and stays there.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/limb-hits",
+                  "value": 6
+                }
+              ]
+            }
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 180,
+                "effects": [
+                  {
+                    "assembly": "assembly/limb",
+                    "type": "despawn-assembly"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/limb-hits",
+                  "value": 6
+                }
+              ]
+            }
+          }
+        ],
+        "forbids_flags": [
+          "flag/limb-sunk"
+        ],
+        "id": "trigger/limb-struck",
+        "on": {
+          "assembly": "assembly/limb",
+          "on": "strike-assembly"
+        },
+        "once": false
+      }
+    ]
+  },
+  "dsl_version": "0.36.0",
+  "stage": "quests"
+}
