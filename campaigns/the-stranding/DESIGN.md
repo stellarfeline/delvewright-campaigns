@@ -62,14 +62,16 @@ Hour: `time: night`, `weather: clear`, and a full moon (capability **H**). Moonl
 
 ## The body
 
-The Fathomer has one silhouette, drawn the same in every view and every cutscene, in the stranded-creature language of the demo level The Beached Thing:
+The Fathomer is a realistic, rotting **sperm whale** the size of a hill, and nothing else: one silhouette, drawn the same in every view and every cutscene.
 
-- a stranded deep-sea leviathan lying on its belly on its own bank of mud, sunk to the belly, never floating and never low in the water;
-- the head on the mud at the north end, toward the town, the jaw dropped open in a long low gape with irregular pale teeth like posts — never a ring of teeth; an eye socket on each side, the eye shut until the cut; the Brow Stone, a tall pale carved tablet, driven into the forehead above the eye;
-- a short neck to the shoulder, the highest point of the back; a ridge of vertebral spines along the back; behind the shoulder the torso narrows to the hips, and the round blowhole sits on the back behind the head;
-- three torn wounds on the west flank with rib bands standing out of them; two flippers splayed on the mud, one on each flank;
-- a long tail leaving from under the rump, sweeping back and ending in two flukes laid flat on the mud;
-- tones: dark leathery hide (black, grey and brown terracotta, with dull grey-teal patches), bone white on the spines, ribs, skull, flippers and flukes, and red-brown flesh in the wounds and the mouth. It is a horror, not a cartoon: no bright colour anywhere, no comic features.
+- It lies on its belly on its own bank of mud, sunk to the belly, never floating; the head at the north end, toward the town.
+- The head is a third of its length: a tall, square, blunt forehead, the Brow Stone (a tall pale carved tablet) driven into its face; the blowhole at the front of the head, set to one side; a long narrow lower jaw slung under the head, hanging open, set with peg teeth; a small eye low at the back of the head, near the corner of the mouth, shut until the cut.
+- The back is a low hump and a line of knuckles toward the tail; two small flippers splayed on the mud; the tail ends in broad flukes laid flat on the mud.
+- It is rotting: the wrinkled dark grey-brown hide is torn open in three wounds on the west flank and in places along the back, and pale ribs stand out of the wounds; red-brown flesh shows in the wounds and the mouth; bone is white.
+- **The wrongness is not the whale's own.** Tentacles that do not belong to any whale rise out of its wounds and pits; nothing about the whale explains them.
+- Horror, not cartoon: no bright colour, no comic features.
+
+The demo level The Beached Thing is the reference for this body at playable scale. The body's sculpted form is bound at step 13, after the walk.
 
 The Brow Stone's face carries the same pictures as the Rubbing, its bottom row broken off until the ending shows it.
 
@@ -175,7 +177,7 @@ When the third valve is opened the beat stops, Davey wakes and does not know whe
 | The Brow Stone | the Pier | **Keep it**: the stone is given to Tregear, who locks it in the Chapel Crypt so it can never be put back. Sea fog comes in with the tide and covers the bay; at dawn the town is clear and the bay is fog, and the town does not dream that night. Tregear does not sleep: the stone dreams in the crypt under his chapel, and he hears it. (The keeping cutscene.) | `ending/the-keeping` |
 | | | **Give it back**: the stone is thrown off the end of the pier. As it goes down, the party sees the bottom row of the carvings for the first time: Wrackham, under water. Sea fog comes in with the tide and covers the bay; at dawn the fog has not lifted and nobody in Wrackham dreams. (The return cutscene.) | `ending/the-return` |
 
-Neither ending is labelled good. Davey lives in both; the two other sleepers who walked out and Marrack's two men do not come back in either.
+No player-facing text labels either ending good or bad. **The return is the bad ending** by what it shows: the stone goes back, its bottom row shows Wrackham under water, and the thing beyond the fog rises at the town's own shore. The keeping is the hard one — Tregear never sleeps again — but the town stands. Davey lives in both; the two other sleepers who walked out and Marrack's two men do not come back in either.
 
 Skies:
 
@@ -298,9 +300,9 @@ Twelve, about 4½ minutes in all. Each plays to every player through the engine'
 | 7 | The beat stops | the Heart Chamber, at the third valve | the heart squeezes once more and stops; the camera holds on Davey as he wakes and looks round; then turns to the spine stair opening. Davey's waking is seen, not reported | 15 |
 | 8 | The Crown | the blowhole, as the party comes out onto the back | a circle round the head: the town's lights to the north, the flat and its lamps, the tentacles standing out of the wounds. The first time the party sees all of it from above | 15 |
 | 9 | The cut | the Brow, when the perception bundle has ended | close on the empty socket in the forehead (4 s); wide from the north: every tentacle rises at once (10 s); the largest out of the blowhole, arching over the Brow (8 s); low under the Brow as the eye opens, the moon above it red (6 s); the bank and the flat at the body's feet starting to fall into the sea (7 s). The beat out of proportion to everything before it | 35 |
-| 10 | The escape | the skiff's landing on the bank, at the tiller after the Run | three shots, hard cuts: on the black water at a rower's eye height looking astern: the bank collapsing, the tentacles standing in the fog, the eye open, under the red moon, while the body is within about 64 blocks, the far ferry house a shut roof at the water's edge (14 s); ahead, to the lamps of the Pilgrims' Way and the town's lights, the near ferry house shut on the Skiff Stage (12 s); in the near ferry house, from its water gate, the party seated in the skiff at its slip (4 s). Neither skiff is shown from outside a house; the one left at the landing stays behind its shut door | 30 |
+| 10 | The escape — the thing beyond the fog | the skiff's landing on the bank, at the tiller after the Run | the climax reveal, played once. The skiff is out on a separate patch of open sea, away from the bay, in thick fog and a thunderstorm. The camera rises diagonally from the skiff toward a vast shape in the fog and stops. Lightning strikes, and in the same instant the fog lifts for a moment: a colossal silhouette stands out of the sea — an octopus head, tentacles hanging from its face, folded wings, glowing eyes. Only its camera-facing side is built. The fog closes, the cutscene ends, and the party is in the near ferry house on the Skiff Stage. **Waiting on engine capability** (see *Waiting on the engine*): until it lands, the shots fly over the open sea in fog and the reveal is a marked placeholder | 30 |
 | 11 | The keeping | the Pier, `ending/the-keeping` | Tregear carrying the stone down into the Chapel Crypt and locking it in; dawn over the bay under the sea fog, the town clear; last, Tregear standing awake in his chapel | 20 |
-| 12 | The return | the Pier, `ending/the-return` | the stone going off the end of the pier; the camera goes down through the water to the stone on the sea floor, placed there by the ending, its bottom row facing up: Wrackham, under water; then up to the fog over the bay at dawn | 20 |
+| 12 | The return | the Pier, `ending/the-return` | the stone going off the end of the pier; the camera goes down through the water to the stone on the sea floor, placed there by the ending, its bottom row facing up: Wrackham, under water; then up to the fog over the bay at dawn; last, at the town's shore, the same colossal figure rises out of the fog over the harbour mouth. **The figure is waiting on engine capability** (see *Waiting on the engine*); until it lands the cutscene ends on the fog | 25 |
 
 ## Texture overrides
 
@@ -315,6 +317,15 @@ The delve's resource pack may replace vanilla textures (capability **G**). The p
 The moon turns red at the cut at the Brow and stays red until the ending's dawn (act 4), and the body, the bank and the flat are repainted under a dark-red atmosphere (**A**) for the Run and the escape; the town's creep lifts as before. Every night act has a full moon (capability **H**, celestial time).
 
 A red moon from the first minute would break the posture (acts 1 and 2 build slowly and quietly), and because the pack is client-global a red full-moon texture would be red in every act. So the pack draws the red moon on the texture of one moon phase the night acts never show, and at the cut **H** advances the world by whole days to that phase, so the hour does not change and only the moon does. Whether **H** can set the phase at a story beat is confirmed on a demo level. If it cannot, the red moon is dropped rather than shown for the whole campaign, and the dark-red atmosphere stays.
+
+## Waiting on the engine
+
+Two beats depend on engine work in progress: a demo level, The Thing Beyond the Fog, with spec-0092 for the gaps it finds — lightning at a mark, a timed fog flash, an open-backed sculpt form, glowing eyes. Everything around them is authored now; each has a clearly marked placeholder beat the capability fills.
+
+| beat | what is authored now | what the capability fills |
+|---|---|---|
+| the escape crossing (cutscene 10) | the crossing link and its tiller, the thunderstorm, the fog, the shots out over the open sea and the landing in the near ferry house | the colossal figure, the lightning at its mark and the fog flash that shows it |
+| the return ending (cutscene 12) | the return's shots down to the stone and up to the fog | the same figure rising at the town's shore |
 
 ## Danger model
 
