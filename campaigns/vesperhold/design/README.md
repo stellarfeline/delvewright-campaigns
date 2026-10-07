@@ -2,7 +2,7 @@
 
 Author from the image, judge against it, present every choice beside it.
 
-The layout of record is `programs/castle/layout.py`; these images are the authority on look and mood, never on position. Where an image and the layout disagree, the layout wins.
+The layout of record is `generator/castle/layout.py`; these images are the authority on look and mood, never on position. Where an image and the layout disagree, the layout wins.
 
 ## Map views (`reference/`)
 
