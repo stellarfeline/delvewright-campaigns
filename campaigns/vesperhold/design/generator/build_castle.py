@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emits vesperhold.json, the grammar program that builds the whole site.
+"""Emits ../programs/vesperhold.json, the grammar program that builds the whole site.
 
 Every part of the site paints roles into one voxel grid (castle/*.py); this
 driver turns the grid into the grammar's partition — one column per cell as a
@@ -7,11 +7,14 @@ stack of spans, equal columns merged along x, equal rows merged along z — and
 writes the gate regions the program cannot declare into gates.json, which
 `finish.py` writes into the prefab metadata after every expansion.
 
-Run it to regenerate vesperhold.json. The JSON is the artifact the engine reads.
+Run it to regenerate the program. The program is the artifact the engine reads;
+it lives in ../programs/ beside zones.json, which states the region and seed it
+is built at. This directory holds the program's sources, which no engine reads.
 """
 import json, os, pathlib, sys
 
 HERE = pathlib.Path(__file__).parent
+PROGRAMS = HERE.parent / "programs"
 sys.path.insert(0, str(HERE))
 
 from castle.layout import X, Y, Z
@@ -151,6 +154,11 @@ def column_node(col, mk):
 
 
 def main():
+    zone = next(z for z in json.loads((PROGRAMS / "zones.json").read_text())["zones"]
+                if z["program"] == "vesperhold.json")
+    if zone["region"] != [X, Y, Z]:
+        raise SystemExit(f"zones.json builds vesperhold.json at {zone['region']}, but the layout "
+                         f"is {[X, Y, Z]}; change one so they agree")
     g, body = build()
     palette_out = {PAL.names[i]: PAL.blocks[i] for i in range(1, len(PAL.names))}
     program = {
@@ -163,7 +171,7 @@ def main():
         "shown_faces": ["north", "south", "east", "west"],
     }
     out = (pathlib.Path(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv
-           else HERE / "vesperhold.json")
+           else PROGRAMS / "vesperhold.json")
     out.write_text(json.dumps(program, separators=(",", ":")) + "\n", encoding="utf-8")
     gates = {f"anchor/gate-{k}": {"from": list(a), "to": list(b), "block": bid}
              for k, (a, b, bid) in sorted(g.gates.items())}

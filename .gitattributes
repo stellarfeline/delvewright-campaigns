@@ -31,3 +31,16 @@
 **/design/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
 **/design/**/*.png filter=lfs diff=lfs merge=lfs -text
 **/design/**/*.webp filter=lfs diff=lfs merge=lfs -text
+
+# A generated zone program that outgrows a plain blob travels through LFS.
+#
+# Vesperhold's program is the castle written out as a grammar partition: 50 MB
+# of canonical JSON that grows with every regeneration, against GitHub's
+# warning at 50 MB and refusal at 100 MB. LFS keeps the bytes the audit, the
+# expansion and `program_hash` read exactly as they are; splitting the program
+# into composed documents would change the document the hash is taken over and
+# so every tile built from it. Named by path, not by a glob over
+# `design/programs/`: `zones.json` beside it is hand-read and stays a diffable
+# blob, and another campaign's committed program is not re-stored by a rule
+# written for this one.
+campaigns/vesperhold/design/programs/vesperhold.json filter=lfs diff=lfs merge=lfs -text
