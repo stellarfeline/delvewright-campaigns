@@ -52,3 +52,12 @@ The campaign's own decisions, as its author records them. `DESIGN.md` is the des
 ## Conformance against `DESIGN.md` at the gate
 
 Deviations the run made, none requested, each forced or a gap-fill: the covered cliff steps (a place `DESIGN.md` does not list), the covered fish market hall, the net lofts three courses up and the mast platform four, the quay at y 72 rather than 66, the Narrows four blocks wide on the kit grid rather than three, the body's heading (head north) chosen where `DESIGN.md` is silent, the back descending in four broad steps that lengthen the tail past 140 blocks, and no body mass in the blockout until the sculpted form is bound at step 13.
+
+## Step 4 — decisions taken for the delegated review
+
+The review of the act 2–4 and ending images found three things `DESIGN.md` did not decide; each is now decided there (English and zh-cn) and the images are drawn to it:
+
+- **The wrong place stands over the body's bank and outside until the cut.** `DESIGN.md` made the whole flat the wrong place and was silent on the bank; for continuity the far landing, the Flank Ridge, the Jaw Bank, the back and the Crown stand under `atmosphere/wrong-place` from the first tick until the cut at the Brow, then under `atmosphere/red-night`. The site plan still carries the wrong place on the flat's boxes only: carried on the bank's boxes, its paint would meet the inside-body boxes' paint at the mouth and the breach, which the build refuses (`DW0929`), so whether the bank carries it with a gap or is painted by a beat is settled with the beats at step 5.
+- **One body.** The Fathomer has one silhouette, `DESIGN.md` § The body, in the stranded-creature language of the demo level The Beached Thing (head and dropped jaw on the mud, shoulder, spine ridge, ribs at the wounds, flippers, a long tail ending in flat flukes; hide, bone and flesh tones), with this campaign's own parts added: the Brow Stone in the forehead, the blowhole, three flank wounds.
+- **The inside's light** follows the engine's `interior-lighting.md` §7 and the owner's lighting rules: natural light set into the walls and vault, artificial sources hidden, placement staggered in three dimensions, the upper space lit. The comparison of soul lanterns and crying obsidian stays with The Beached Thing.
+- The Pier image is drawn to what `DESIGN.md` says happens there: one player holds the Brow Stone before Wenna, Davey and Tregear.

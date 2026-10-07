@@ -60,6 +60,19 @@ Approximate extents, to be fixed in the geometry brief: the town on cliff terrac
 
 Hour: `time: night`, `weather: clear`, and a full moon (capability **H**). Moonlight on the mud is the image of the campaign. From the cut at the Brow until the ending's dawn the moon is red (see *The red moon*). The darkest reachable sky is therefore the night floor, and every walked cell is lit by placed light (see *Light*).
 
+## The body
+
+The Fathomer has one silhouette, drawn the same in every view and every cutscene, in the stranded-creature language of the demo level The Beached Thing:
+
+- a stranded deep-sea leviathan lying on its belly on its own bank of mud, sunk to the belly, never floating and never low in the water;
+- the head on the mud at the north end, toward the town, the jaw dropped open in a long low gape with irregular pale teeth like posts — never a ring of teeth; an eye socket on each side, the eye shut until the cut; the Brow Stone, a tall pale carved tablet, driven into the forehead above the eye;
+- a short neck to the shoulder, the highest point of the back; a ridge of vertebral spines along the back; behind the shoulder the torso narrows to the hips, and the round blowhole sits on the back behind the head;
+- three torn wounds on the west flank with rib bands standing out of them; two flippers splayed on the mud, one on each flank;
+- a long tail leaving from under the rump, sweeping back and ending in two flukes laid flat on the mud;
+- tones: dark leathery hide (black, grey and brown terracotta, with dull grey-teal patches), bone white on the spines, ribs, skull, flippers and flukes, and red-brown flesh in the wounds and the mouth. It is a horror, not a cartoon: no bright colour anywhere, no comic features.
+
+The Brow Stone's face carries the same pictures as the Rubbing, its bottom row broken off until the ending shows it.
+
 ## Act 1 — Wrackham (about 60 minutes)
 
 The party comes down the coach road at night into a town where nobody is awake except the harbourmistress. They learn what lies on the flat, what the Brow Stone is and why it matters, take the tool to cut it, find that no boat can leave the emptied harbour, and open the only way across the flat: the Pilgrims' Way, the old road over the bay that the sea took before the town was built, marked out again by lamps from the lighthouse. It is the one ground on the flat that does not sink, and it runs to the edge of the black water.
@@ -91,7 +104,7 @@ The road: Coach Road → High Street → Harbour Office → Fish Market (fight; 
 
 ## Act 2 — The Crossing (about 25 minutes)
 
-The party walks the Pilgrims' Way out across the flat by the lamps. The whole flat is the wrong place. The Fathomer grows from an outline to a hill. Each completed beat sinks the flat one stage: a layer of mud is cleared, the sea water under it shows, and the dry ground left is narrower. The sinking happens behind and beside the party and never takes the ground under the marked way. At the end of the way, where the old road runs into the black water, they row Marrack's skiff across to the body's bank.
+The party walks the Pilgrims' Way out across the flat by the lamps. The whole flat is the wrong place, and so is the body's bank and the body's outside — the far landing, the Flank Ridge, the Jaw Bank, the back and the Crown — from the first tick until the cut at the Brow, when the red night replaces it. The inside of the body is its own zone. The Fathomer grows from an outline to a hill. Each completed beat sinks the flat one stage: a layer of mud is cleared, the sea water under it shows, and the dry ground left is narrower. The sinking happens behind and beside the party and never takes the ground under the marked way. At the end of the way, where the old road runs into the black water, they row Marrack's skiff across to the body's bank.
 
 | # | place | what the player does there |
 |---|---|---|
@@ -320,8 +333,12 @@ Light is placed with each room and the engine only checks. Every walked cell is 
 - **Town:** lanterns on brackets at doors and along the seawall, lit windows, the lighthouse lamp, candles in the chapel.
 - **Flat:** the lamps on the marker stakes of the Pilgrims' Way (lit by the lighthouse beat, before anyone walks the flat), lanterns on Marrack's launch, and the lanterns Marrack hung in the near ferry house.
 - **Body, outside:** moonlight, and the lamps Marrack's crew left on the Jaw Bank and in the far ferry house.
-- **Body, inside:** what earlier visitors brought (Marrack's lamps and chalk-marked lanterns in the Mouth, the Throat and the Stomach), moonlight through the wounds in the Rib Cathedral, and in the Heart Chamber the sculk's own sensors plus lanterns Davey's dream did not put out. **Open:** how a giant body's interior is lit without reading as a lit building is a craft question this record does not answer; it is researched against established practice (games set inside giant creatures) before step 2, never invented. Glowing blocks paved over flesh is the shape to avoid.
-  - **The owner's view, input to the research and not a decision:** soul lanterns read well (the blue lamps at Vesperhold's Undertide Pool); crying obsidian is another candidate — it gives light and drips purple particles, and reads as weeping or bleeding flesh. The question stays open until it is researched and shown on a demo level.
+- **Body, inside:** what earlier visitors brought (Marrack's lamps and chalk-marked lanterns in the Mouth, the Throat and the Stomach), moonlight through the wounds in the Rib Cathedral, and in the Heart Chamber the sculk's own sensors plus lanterns Davey's dream did not put out. How it is lit follows the engine's research record `docs/reference/interior-lighting.md` §7 and the owner's lighting rules:
+  - natural light is set into the surface: glow lichen on the walls, cave vines with glow berries hanging from the vault, and points of light across the vault the way glowworms light a grotto;
+  - every source that reads as artificial — the lamps Marrack's crew left, the chalk-marked lanterns — is hidden behind a lip of bone, a slab, a stair or a trapdoor, so its light shows and the fixture does not;
+  - sources are staggered and irregular in three dimensions, on the walls and the vault as well as low down, never a grid and never ore-like specks; the upper space is lit, not black;
+  - glowing blocks paved over flesh is the anti-example.
+  Which block reads as the body's own light (soul lanterns recessed, or crying obsidian embedded) is confirmed on The Beached Thing's two bays.
 
 ## Mechanisms: supported today, or the capability each needs
 
