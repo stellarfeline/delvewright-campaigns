@@ -1147,27 +1147,12 @@
         "id": "quest/the-rubbing",
         "objectives": [
           {
-            "anchor": "anchor/node-seawall",
-            "happening": {
-              "text": "The party crosses into the wrong place at the seawall.",
-              "verb": "arrives"
-            },
-            "hint": "Along the quay from the fish market to the seawall steps.",
-            "id": "obj/over-the-seawall",
-            "radius": 6,
-            "title": "Cross the seawall",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/over-the-seawall"
-            ],
             "happening": {
               "subject": "npc/absalom-tregear",
               "text": "Tregear reads the Rubbing: the stone keeps the Fathomer asleep, lifting it sends it down, and the bottom row is lost.",
               "verb": "learns"
             },
-            "hint": "The stone chapel above the seawall, past the steps.",
+            "hint": "Along the quay from the fish market, over the seawall steps, to the stone chapel past them.",
             "id": "obj/hear-tregear",
             "npc": "npc/absalom-tregear",
             "title": "Speak with Absalom Tregear",
@@ -1750,7 +1735,11 @@
           },
           "npc/wenna-coyle": {
             "at": "anchor/node-harbour-office",
-            "dialogue": "dlg/wenna-slipway",
+            "dialogue": {
+              "barks": [
+                "\"Light the lamp. Then come and find me at the slipway stair.\""
+              ]
+            },
             "doing": "watching for the lighthouse, then going down to the slipway stair"
           }
         },
@@ -1771,21 +1760,6 @@
             "id": "obj/light-the-lamp",
             "title": "Light the lighthouse lamp",
             "type": "interact"
-          },
-          {
-            "after": [
-              "obj/light-the-lamp"
-            ],
-            "happening": {
-              "subject": "npc/wenna-coyle",
-              "text": "Wenna sends the party out onto the flat.",
-              "verb": "learns"
-            },
-            "hint": "Back along the breakwater and through the harbour to the stone stair onto the flat.",
-            "id": "obj/wenna-at-the-stair",
-            "npc": "npc/wenna-coyle",
-            "title": "Meet Wenna at the slipway stair",
-            "type": "talk-to"
           }
         ],
         "on_complete": [
@@ -1978,12 +1952,8 @@
           },
           "npc/wenna-coyle": {
             "at": "anchor/node-slipway-stair",
-            "dialogue": {
-              "barks": [
-                "\"Bring him back. Bring yourselves back.\""
-              ]
-            },
-            "doing": "waiting at the head of the slipway stair"
+            "dialogue": "dlg/wenna-slipway",
+            "doing": "at the head of the slipway stair, sending the party out onto the flat"
           }
         },
         "happening": {
@@ -1993,6 +1963,21 @@
         "id": "quest/the-wreck-field",
         "objectives": [
           {
+            "happening": {
+              "subject": "npc/wenna-coyle",
+              "text": "Wenna sends the party out onto the flat.",
+              "verb": "learns"
+            },
+            "hint": "Back along the breakwater and through the harbour to the stone stair onto the flat.",
+            "id": "obj/wenna-at-the-stair",
+            "npc": "npc/wenna-coyle",
+            "title": "Meet Wenna at the slipway stair",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/wenna-at-the-stair"
+            ],
             "anchor": "anchor/node-wreck-field",
             "happening": {
               "text": "The party reaches the old hulls lying on the mud.",
@@ -2970,6 +2955,15 @@
             {
               "anchor": "anchor/node-stomach",
               "type": "set-checkpoint"
+            },
+            {
+              "actor": "actor/watcher-heart",
+              "happening": {
+                "subject": "actor/watcher-heart",
+                "text": "The tall figure stands in the heart chamber, facing the party.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
             }
           ],
           "obj/the-cathedral": [
@@ -3120,27 +3114,12 @@
         "id": "quest/the-heart",
         "objectives": [
           {
-            "anchor": "anchor/node-heart-chamber",
-            "happening": {
-              "text": "The party comes into the heart chamber.",
-              "verb": "arrives"
-            },
-            "hint": "On from the stomach to where the heartbeat is loudest.",
-            "id": "obj/the-heart",
-            "radius": 8,
-            "title": "Find the heart",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-heart"
-            ],
             "happening": {
               "subject": "npc/davey-coyle",
               "text": "Davey, awake, speaks the dream's words.",
               "verb": "learns"
             },
-            "hint": "The young man standing by the heart.",
+            "hint": "On from the stomach to where the heartbeat is loudest: the young man standing by the heart.",
             "id": "obj/davey",
             "npc": "npc/davey-coyle",
             "title": "Speak with Davey Coyle",
@@ -3280,17 +3259,6 @@
                 "anchor": "anchor/far-skiff"
               },
               "type": "move-npc"
-            }
-          ],
-          "obj/the-heart": [
-            {
-              "actor": "actor/watcher-heart",
-              "happening": {
-                "subject": "actor/watcher-heart",
-                "text": "The tall figure stands in the heart chamber, facing the party.",
-                "verb": "arrives"
-              },
-              "type": "spawn-actor"
             }
           ]
         },
