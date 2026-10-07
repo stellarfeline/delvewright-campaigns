@@ -11,28 +11,50 @@
           "npc/keeper": {
             "at": "anchor/boss",
             "dialogue": "dlg/keeper",
-            "doing": "standing alone in the great hall, listening for the gate"
+            "doing": "standing alone in the great hall, listening for the gate and the bell"
           }
         },
         "happening": {
-          "text": "The party enters a keep that will not explain itself.",
+          "text": "The party enters a keep that explains nothing and answers everything they do.",
           "verb": "learns"
         },
         "id": "quest/the-room",
         "objectives": [
           {
-            "anchor": "anchor/exit",
+            "anchor": "anchor/keeper-stand",
             "happening": {
-              "subject": "anchor/exit",
-              "text": "They read the slate on the far wall of the entry hall, and the gate beyond answers.",
-              "verb": "learns"
+              "subject": "anchor/gate",
+              "text": "They pull the lever at the warden's empty stand, and the gate beside it lifts.",
+              "verb": "opens"
             },
-            "id": "obj/the-slate",
+            "id": "obj/the-gate-lever",
+            "prop": {
+              "block": "minecraft:lever[face=floor,facing=north]"
+            },
             "type": "interact"
           },
           {
             "after": [
-              "obj/the-slate"
+              "obj/the-gate-lever"
+            ],
+            "anchor": "anchor/wave",
+            "announcement": "shown",
+            "happening": {
+              "subject": "wave/watch",
+              "text": "They ring the bell in the side room, and the watch comes up around it.",
+              "verb": "arrives"
+            },
+            "hint": "Past the gate, a bell stands in the side room. Ringing it wakes what the floor is keeping.",
+            "id": "obj/the-bell",
+            "prop": {
+              "block": "minecraft:bell[attachment=floor,facing=north]"
+            },
+            "title": "Ring the bell in the side room",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/the-bell"
             ],
             "happening": {
               "subject": "wave/watch",
@@ -40,9 +62,6 @@
               "verb": "dies"
             },
             "id": "obj/the-watch",
-            "requires_flags": [
-              "flag/lever-pulled"
-            ],
             "type": "kill",
             "wave": "wave/watch"
           },
@@ -52,7 +71,7 @@
             ],
             "happening": {
               "subject": "npc/keeper",
-              "text": "The Keeper says the first thing, because they read before they asked.",
+              "text": "The Keeper says the first thing: what the keep was keeping.",
               "verb": "learns"
             },
             "id": "obj/hear-the-keeper",
@@ -84,37 +103,44 @@
           }
         ],
         "on_objective_complete": {
-          "obj/the-last-word": [
+          "obj/the-bell": [
+            {
+              "happening": {
+                "subject": "wave/watch",
+                "text": "The watch comes up out of the floor around the bell.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/watch"
+            },
             {
               "style": "chat",
-              "text": "The Keeper turns back to his gate. That was all of it.",
+              "text": "The bell rings once, and the floor gives up what it was keeping.",
               "type": "narrate"
             }
           ],
-          "obj/the-slate": [
-            {
-              "style": "chat",
-              "text": "The slate on the wall reads: THE GATE IS FOR THOSE WHO READ. Down the passage, a bar lifts.",
-              "type": "narrate"
-            },
-            {
-              "flag": "flag/read",
-              "type": "set-flag"
-            },
+          "obj/the-gate-lever": [
             {
               "anchor": "anchor/gate",
               "happening": {
                 "subject": "anchor/gate",
-                "text": "The gate down the passage lifts for a reader.",
+                "text": "The gate beside the stand lifts.",
                 "verb": "opens"
               },
               "type": "open-gate"
             }
           ],
+          "obj/the-last-word": [
+            {
+              "style": "chat",
+              "text": "The Keeper turns back to his hall. That was all of it.",
+              "type": "narrate"
+            }
+          ],
           "obj/the-watch": [
             {
               "style": "chat",
-              "text": "The last of the watch goes still. The lever room is quiet again.",
+              "text": "The last of the watch goes still. The side room is quiet again.",
               "type": "narrate"
             }
           ]
@@ -126,54 +152,24 @@
     ],
     "triggers": [
       {
-        "at": "anchor/wave",
+        "at": "anchor/exit",
         "effects": [
           {
-            "flag": "flag/lever-pulled",
-            "type": "set-flag"
-          },
-          {
+            "anchor": "anchor/exit",
             "happening": {
-              "subject": "wave/watch",
-              "text": "The watch comes up out of the floor around the hand that pulled the lever.",
-              "verb": "arrives"
-            },
-            "type": "spawn-wave",
-            "wave": "wave/watch"
-          },
-          {
-            "style": "chat",
-            "text": "The lever goes over with a crack. The floor gives up what it was keeping.",
-            "type": "narrate"
-          }
-        ],
-        "id": "trigger/the-lever",
-        "on": {
-          "on": "use"
-        },
-        "requires_flags": [
-          "flag/read"
-        ]
-      },
-      {
-        "at": "anchor/keeper-stand",
-        "effects": [
-          {
-            "anchor": "anchor/keeper-stand",
-            "happening": {
-              "subject": "anchor/keeper-stand",
-              "text": "The warden's empty stand keeps whoever stops at it.",
+              "subject": "anchor/exit",
+              "text": "The gatehouse keeps whoever passes through it.",
               "verb": "gains"
             },
             "type": "set-checkpoint"
           },
           {
             "style": "chat",
-            "text": "The warden's stand is empty, and the stone is worn where he stood. You would come back here, if it came to that.",
+            "text": "The gatehouse is cold and dry. You would come back here, if it came to that.",
             "type": "narrate"
           }
         ],
-        "id": "trigger/the-wardens-stand",
+        "id": "trigger/the-gatehouse",
         "on": {
           "on": "approach",
           "range": 3
