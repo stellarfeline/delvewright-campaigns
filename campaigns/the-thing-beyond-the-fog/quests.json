@@ -1,0 +1,239 @@
+{
+  "campaign_id": "the-thing-beyond-the-fog",
+  "content": {
+    "quests": [
+      {
+        "happening": {
+          "text": "The party stands on the near jetty in the fog, the ferry moored in its slip below.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-crossing",
+        "objectives": [
+          {
+            "anchor": "anchor/hull",
+            "happening": {
+              "text": "They step down into the ferry.",
+              "verb": "arrives"
+            },
+            "hint": "Step down into the ferry.",
+            "id": "obj/board",
+            "radius": 1,
+            "title": "Board the ferry",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/board"
+            ],
+            "anchor": "anchor/node-far",
+            "happening": {
+              "text": "They climb onto the far jetty.",
+              "verb": "arrives"
+            },
+            "hint": "Pull the tiller.",
+            "id": "obj/far-shore",
+            "radius": 2,
+            "requires_flags": [
+              "flag/seen"
+            ],
+            "title": "Cross the strait",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The crossing is made.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/board": [
+            {
+              "flag": "flag/boarded",
+              "happening": {
+                "text": "The tiller answers anyone aboard.",
+                "verb": "gains"
+              },
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/tiller",
+        "effects": [
+          {
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "atmosphere": "atmosphere/sea-fog",
+                    "region": {
+                      "anchor": "anchor/node-near",
+                      "extent": [
+                        21,
+                        35,
+                        85
+                      ]
+                    },
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "shots": [
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-near",
+                          "offset": [
+                            10,
+                            31,
+                            -147
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-near",
+                            "offset": [
+                              -2,
+                              1,
+                              -28
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-near",
+                            "offset": [
+                              7,
+                              22,
+                              -73
+                            ]
+                          }
+                        ],
+                        "seconds": 7
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-near",
+                          "offset": [
+                            10,
+                            31,
+                            -147
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-near",
+                            "offset": [
+                              7,
+                              22,
+                              -73
+                            ]
+                          }
+                        ],
+                        "seconds": 6
+                      }
+                    ],
+                    "type": "cutscene"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 162,
+                "effects": [
+                  {
+                    "atmosphere": "atmosphere/torn-fog",
+                    "region": {
+                      "anchor": "anchor/node-near",
+                      "extent": [
+                        21,
+                        35,
+                        85
+                      ]
+                    },
+                    "type": "set-atmosphere"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 182,
+                "effects": [
+                  {
+                    "atmosphere": "atmosphere/sea-fog",
+                    "region": {
+                      "anchor": "anchor/node-near",
+                      "extent": [
+                        21,
+                        35,
+                        85
+                      ]
+                    },
+                    "type": "set-atmosphere"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 263,
+                "effects": [
+                  {
+                    "flag": "flag/seen",
+                    "happening": {
+                      "text": "The crossing has been seen, and the ferry carries whoever is aboard.",
+                      "verb": "gains"
+                    },
+                    "type": "set-flag"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/tiller",
+        "on": {
+          "on": "use"
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/boarded"
+        ]
+      },
+      {
+        "at": "anchor/hull",
+        "effects": [
+          {
+            "from": {
+              "anchor": "anchor/hull",
+              "extent": [
+                1,
+                1,
+                0
+              ]
+            },
+            "to": {
+              "anchor": "anchor/far-landing"
+            },
+            "type": "teleport"
+          }
+        ],
+        "id": "trigger/ferry",
+        "on": {
+          "on": "approach",
+          "range": 1
+        },
+        "once": false,
+        "requires_flags": [
+          "flag/seen"
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.35.1",
+  "stage": "quests"
+}

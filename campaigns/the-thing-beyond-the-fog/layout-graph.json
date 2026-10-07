@@ -1,0 +1,72 @@
+{
+  "campaign_id": "the-thing-beyond-the-fog",
+  "content": {
+    "beats": [
+      {
+        "node": "node/near",
+        "objective": "obj/board",
+        "quest": "quest/the-crossing"
+      },
+      {
+        "node": "node/far",
+        "objective": "obj/far-shore",
+        "quest": "quest/the-crossing"
+      }
+    ],
+    "critical_path": [
+      "node/near",
+      "node/far"
+    ],
+    "edges": [
+      {
+        "a": "node/near",
+        "b": "node/far",
+        "class": "carry",
+        "gating": {
+          "flags": [
+            "flag/boarded"
+          ]
+        },
+        "id": "edge/crossing",
+        "one_way": "a-to-b"
+      }
+    ],
+    "entry": "node/near",
+    "goal": "node/far",
+    "nodes": [
+      {
+        "id": "node/near",
+        "intent": "jetty",
+        "note": "The near jetty: a stone quay with a timber deck, and the ferry moored in its slip.",
+        "size_class": "room",
+        "stations": [
+          {
+            "anchor": "anchor/hull",
+            "kind": "point",
+            "note": "the ferry's stern well, where the party stands aboard"
+          },
+          {
+            "anchor": "anchor/tiller",
+            "kind": "point",
+            "note": "the ferry's tiller, astern of the well"
+          }
+        ]
+      },
+      {
+        "id": "node/far",
+        "intent": "jetty",
+        "note": "The far jetty across the strait, where the ferry puts the party down.",
+        "size_class": "room",
+        "stations": [
+          {
+            "anchor": "anchor/far-landing",
+            "kind": "point",
+            "note": "where the crossing puts the party down"
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.35.1",
+  "stage": "layout-graph"
+}
