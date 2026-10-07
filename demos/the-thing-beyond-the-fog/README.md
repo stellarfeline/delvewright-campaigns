@@ -28,14 +28,18 @@ Build it with `--prefabs demos/the-thing-beyond-the-fog/prefabs`.
 
 A strait under a thunderstorm and fog so thick the far shore is gone. Two
 jetties face each other across it, forty-eight blocks apart; each is a stone
-quay with a spruce deck, a railing all round with lanterns on its posts, a
-rocky bank behind, and a slip in its north end with a ferry moored in it — a
-dark-oak hull three wide, fence rails along both gunwales, a stem post at the
-bow. The slip's mouth is closed by a boom of piles, so nobody swims out.
+quay with a spruce deck, a railing all round with lanterns on its posts and a
+rocky bank behind.
 
 - **The near jetty** (play space x 8200–8211, z 8292–8307, deck at y 63) is
-  where you arrive. The ferry's stern well is the hull cell (8204, 64, 8298);
-  the tiller is the floor lever just astern of it (8204, 64, 8299).
+  where you arrive. A gap in its north rail opens onto a railed landing.
+- **The ferry's slip** (x 8204–8211, z 8287–8290), north of the jetty behind a
+  palisade of piles: the ferry lies east-west in open water, a dark-oak hull
+  three wide, its stem on the west boom, fence rails along both gunwales. Its
+  well — the row z 8288, x 8203–8209 — is all of it inside the carry, so it
+  does not matter where in the boat you stand. **The tiller** is the lone post
+  with a lantern on the north gunwale (8206, 64, 8287); it can be pulled only
+  from the well. The landing leaves the ferry's stern.
 - **The far jetty** (x 8248–8259) is where the ferry puts you down
   (8252, 64, 8298), its own ferry moored beside you.
 - **Out on the open sea**, thirty blocks north of the near jetty, a third ferry
@@ -63,14 +67,19 @@ Ferry) plays one `sequence`:
 | 121 | the camera stops at its set point, 68 blocks from the figure's face, aimed where it was aimed while it rose (one `look_at` for both shots, so the hold is not a cut) |
 | 141 | **a bolt strikes the sea beside the figure's raised wing** (8268, 63, 8128), and in the same tick the volume is painted `atmosphere/torn-fog`: the fog end leaves the camera and the figure stands in the flash |
 | 161 | the volume is painted `atmosphere/sea-fog` again: the figure is gone into the fog |
-| 222 | the camera returns everyone to where the puller stood |
-| 223 | whoever is in the hull is carried to the far jetty; `flag/seen` is set |
+| 222 | the camera returns everyone to where the puller stood — in the well, since the tiller is reached from nowhere else |
+| 223 | whoever is in the well is carried to the far jetty; `flag/seen` is set |
 
 **It plays once.** Every step of the reveal is guarded on `forbids
 flag/seen`, and the flag is set with the carry. A later pull — a player who
 stayed on the jetty, boarding afterwards — plays no cutscene: whoever is in
-the hull is blinded for twelve seconds, told *the ferry slides out into the
+the well is blinded for twelve seconds, told *the ferry slides out into the
 fog*, and carried.
+
+**There is no fog-edge return.** `world.boundary.returns` is `false`: the
+build proves no body can walk out of the region or into the open sea, so
+nothing pulls a creator back who flies out with `/trigger dw.free` to look at
+the far views.
 
 ## The fog flash, measured
 
@@ -179,10 +188,12 @@ look at it in a real client — the fog, the flash and the bolt are client-side
 and no render can show them.
 
 1. **You arrive on the near jetty** (8205, 64, 8299) in fog and rain under a
-   thunderstorm. Nothing beyond about thirty blocks is visible. The ferry is in
-   the slip in front of you.
-2. **Choose the passenger's kit, then step down into the ferry's stern well** (8204, 64, 8298) — *Board the
-   ferry*. Then **pull the tiller**, the lever astern of the well.
+   thunderstorm. Nothing beyond about thirty blocks is visible. The ferry lies
+   in its slip beyond the palisade to the north.
+2. **Choose the passenger's kit, walk through the gap in the north rail and
+   along the landing, and step down into the ferry's well** — *Board the
+   ferry* completes as you near the tiller. **Pull the tiller**: the post with
+   the lantern on the north gunwale. Anywhere in the well is aboard.
 3. **The cutscene** (eleven seconds): the camera starts just behind a ferry
    adrift in the fog, its bow lantern ahead, and rises up and out toward the
    north. Look for: the drifting ferry reading as *your* boat; the climb being
@@ -194,35 +205,56 @@ and no render can show them.
    second is long enough; whether the cut reads as a flash rather than a fade.
 5. **The fog closes; the camera returns; you are on the far jetty**
    (8252, 64, 8298) — *Cross the strait*, and the delve completes. Look for:
-   the one or two frames of the near jetty between the camera's return and the
+   one or two frames of the ferry's well between the camera's return and the
    carry (the same seam The Ferry has).
-6. **With a second player**, leave them on the near jetty: they watch the
-   cutscene too, come back where the puller stood, and are carried with them.
-7. **Pull the tiller a second time** (a fresh join, or a player who stayed
-   behind and boards afterwards): no cutscene — twelve seconds of blindness,
+6. **With a second player** anywhere — on the jetty, on the landing: they
+   watch the cutscene too, are put down in the well where the puller stood,
+   and are carried with them.
+7. **Pull the tiller a second time** (a fresh join after the crossing,
+   boarding from the jetty): no cutscene — twelve seconds of blindness,
    *The ferry slides out into the fog.*, then the far jetty.
+8. **Fly out with `/trigger dw.free`** and look at the figure from anywhere:
+   nothing returns you; `/trigger dw.free` again puts you back in your body.
 
 ## What the compile says
 
-On the engine branch at `bcac1165e` (delvec 1.8.1, dsl 0.36.0):
+On the engine branch at `5726e7f6a` (delvec 1.8.1, dsl 0.36.0):
 
     lightning binding: 1 strike(s) declared, 1 struck block(s) read, 1 post(s) within reach examined, 0 refused
+    boundary binding: the region does not return; 4 place(s) a body is put examined, 0 outside; 371 reachable cell(s) examined for a way out; 0 refused
+    link gathering binding: 1 link(s) carried after their root's cutscene, 0 press cell(s) outside their volumes over 371 walk cell(s)
     DW0311 binding: 4 leg(s); 3 walked, 0 carried by a crossing, 1 carried by a link, 0 carried by a loop; 1 link(s) declared, 1 live on some leg, 1 taken; 0 gather(s) declared
-    DW0921 binding: 1 quest configuration(s), 6 route cell(s), 358 cell(s) a body can reach by walking, falling, jumping or swimming (28 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
+    DW0921 binding: 1 quest configuration(s), 24 route cell(s), 385 cell(s) a body can reach by walking, falling, jumping or swimming (14 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
 
-The 28 afloat cells are the two slips' side channels, each with a step at its
-stern end; nothing reaches the open sea. Setup holds the strike's chunk
-(`forceload add 8268 8128 8268 8128`). The figure sculpts with 0 pockets and
-1 component kept.
+The 14 afloat cells are the far jetty's slip channels, each with a step at its
+stern end; nothing reaches the open sea, which is what lets the boundary not
+return. The level as first built — the ferry in the jetty's slip, its carry the
+stern row — is refused by the same engine: `DW0932`, 34 cells the tiller can
+be pulled from outside the carry, the first (8201, 64, 8297).
+
+## What the owner's first walk found
+
+The carry did not carry, and a second pull did nothing. Reproduced with
+`measure/repro.mjs` (a client pulling the tiller through its interaction
+entity) from the boat's well one cell forward of the stern: after both pulls
+the client stood where it pulled from. The carry volume was the stern row;
+the camera's return puts every player on the presser's cell; so a pull from
+anywhere else in the boat carried nobody, and the second pull's blindness and
+narration, narrowed to that row, reached nobody. The boundary was not the
+cause — the far jetty is inside its region, and a client carried from the
+stern row arrived. Rebuilt, the same probe pulling from the bow end of the
+well is carried on the first pull, and on the second is blinded and carried.
 
 ## State
 
-- **Machine ladder** on the `validation/` image, engine `bcac1165e`, content
-  `4656f6f`: PackTest **21 of 21 required tests passed**, `lightning_0` and
-  `atmosphere_places` among them; the mineflayer critical path **passed, 5
-  steps** — boards the hull, pulls the tiller from its stand cell, waits out
-  the cutscene and is carried.
+- **Machine ladder** on the `validation/` image, engine `5726e7f6a`: PackTest
+  **19 of 19 required tests passed** (`lightning_0` and `atmosphere_places`
+  among them; no boundary templates, since the boundary does not return); the
+  mineflayer critical path **passed, 5 steps** — the tiller clickable from 17 of
+  19 stances, pulled from the well, the cutscene waited out, and
+  `obj/far-shore completed on the landing`.
 - **Staging gate**: REFUSED on two findings, both the design record the level
   does not carry (`drill3-01`, `drill3-03`): no approved image under `design/`.
   An approved image is the owner's to give; it is not overridden.
-- **Not yet looked at by a person**: everything in *What to look for*.
+- **Looked at by the owner**: the figure reads at first sight. Not yet re-walked
+  after the rebuild: everything in *What to look for*.
