@@ -24,3 +24,13 @@ The campaign's own decisions, as its author records them. `DESIGN.md` is the des
 ## Posture
 
 `DESIGN.md` § Posture is the posture note: escalation is uneven, people name their fear, and the ending does not explain itself. Every line written at step 5 is held to it.
+
+## Step 2 — the site plan
+
+- **The map's reference** is five views under one style contract (`design/reference/style-contract.txt`), view 1 from the prompt alone and every later view chained on view 1: from above the coach road, a plan, a west elevation, the body from the Narrows, and from above the tail looking north. The plan view was drawn twice: the first return laid the body east-west, against the plan; the second, with the orientation stated, is the one kept. Reference images are style authority only; the geometry is `geometry-brief.json` and `site-plan.json`.
+- **The body lies north-south, head to the north**, facing the town across the black water, with the Flank Ridge along its west side. `DESIGN.md` does not state the heading; this one puts the mouth at the Jaw Bank where the crossing lands and the flank wounds in sight from the ridge and, obliquely, from the Narrows.
+- **Covered stairs.** A stair seam's opening has to lie inside both places' headroom, and a sky-open place claims only its size class's minimum headroom (a road six courses, a hall eight, an arena twelve). So every stair with a rise of eight is hosted in a roofed place: a covered flight of cliff steps between the coach road and the high street (a place `DESIGN.md` does not list), the harbour office, a covered fish market hall, the chapel crypt and the rope shed. The net lofts sit three courses above the seawall and the mast platform four above the launch's deck so that their open hosts can carry the stair.
+- **The Run's descent is four broad steps.** Forty blocks from the back to the bank cannot be one open-air stair under that rule, so the back falls in four arenas of eight courses each (`back-upper`, `back-middle`, `back-lower`, `tail-flank`) to the bank behind the tail, which lengthens the tail beyond the brief's 140 blocks. Recorded as a capability limit, not a design choice.
+- **No massif for the body.** A whole-owned volume may not contain a place, and the body's inside is places, so the blockout has no outer body mass. Its exterior shape is the sculpted form's (`delvec sculpt`), bound at step 13.
+- **Two placement components**: the town and the flat (pinned at the coach road) and the far bank with the body (pinned at the far landing), joined only by the `carry` crossing and the two ferry bells.
+- **Blockout lighting** (`lantern`, minimum 7) lights the derived massing for the walk only; detailed places carry their own placed light.
