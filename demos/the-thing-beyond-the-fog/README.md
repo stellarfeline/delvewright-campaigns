@@ -1,13 +1,16 @@
 # The Thing Beyond the Fog
 
-The demo level for **a cutscene that tears the fog open**: a ferry crossing
-under fog and storm, a camera that rises out of the boat toward something in
-the sea, a lightning bolt, and the fog cut away for one second to show it.
+The demo level for **a cutscene that tears the fog open and shows the party in
+it**: a ferry on a fogbound strait under a storm, a camera that rises from
+behind the party toward something in the sea, a lightning bolt, the fog cut
+away, and a wide shot of the boat — with the party standing in it — and the
+thing together in a clearing.
 
-It confirms one new capability, `lightning` (engine spec-0092), and shows that
-the rest of the scene is built from what the engine already has: `cutscene`,
-`set-atmosphere` (spec-0080) in a `sequence`, the ferry's link (spec-0083) and a
-body sculpted from a form (spec-0087).
+It confirms two capabilities: `lightning` (engine spec-0092) and **the party
+seen in its own cutscenes** (engine spec-0095: a stand-in for each player, in
+their own skin and gear, where they stood). The rest is built from what the
+engine already has: `cutscene`, `set-atmosphere` (spec-0080) in a `sequence`,
+the ferry's link (spec-0083) and a body sculpted from a form (spec-0087).
 
 The level is a campaign, so it lives where every campaign lives:
 
@@ -32,112 +35,108 @@ quay with a spruce deck, a railing all round with lanterns on its posts and a
 rocky bank behind.
 
 - **The near jetty** (play space x 8200–8211, z 8292–8307, deck at y 63) is
-  where you arrive. A gap in its north rail opens onto a railed landing.
-- **The ferry's slip** (x 8204–8211, z 8287–8290), north of the jetty behind a
-  palisade of piles: the ferry lies east-west in open water, a dark-oak hull
-  three wide, its stem on the west boom, fence rails along both gunwales. Its
-  well — the row z 8288, x 8203–8209 — is all of it inside the carry, so it
-  does not matter where in the boat you stand. **The tiller** is the lone post
-  with a lantern on the north gunwale (8206, 64, 8287); it can be pulled only
-  from the well. The landing leaves the ferry's stern.
+  where you arrive. A gap in its east rail (8212, 8301–8302) opens onto a pier.
+- **The ferry** lies on the strait just off the near jetty's east side, in its
+  slip (x 8213–8220, z 8295–8302), **bow north toward the open sea**: a
+  dark-oak hull five wide with fence rails along both gunwales and round the
+  bow. Its well — x 8214–8216, z 8298–8300 — is all of it inside the carry,
+  so it does not matter where in the boat you stand. The pier on piles runs
+  from the jetty's gap along the ferry's stern; you step from it down into
+  the well.
+- **The bell** hangs at the bow, under an arm on the stem post (8215, 65,
+  8297). It is the act: the interaction the `use` trigger fits over the
+  bell's cell is the only thing a click there meets, and ringing it plays the
+  bell's own sound. It can be rung only from the well.
 - **The far jetty** (x 8248–8259) is where the ferry puts you down
   (8252, 64, 8298), its own ferry moored beside you.
-- **Out on the open sea**, thirty blocks north of the near jetty, a third ferry
-  drifts with a lantern at its bow: the boat the cutscene's camera starts in.
-- **The Thing**, a hundred and forty blocks out, stands on the sea floor
-  (piece origin 8170, 54, 8130) and rises 96 blocks from it: waist-deep in the
-  sea, an octopus mantle bent forward onto hunched shoulders with no neck, a
-  beard of feelers hanging over the chest, long narrow bat-like wings raised
-  behind, its east claw raised and its west claw gripping the water, and two
-  slanted eyes of ochre froglight. It is built for one side only — the one its
-  camera sees; the form's box ends behind it, and that face is its flat back.
+- **The Thing**, about seventy blocks beyond the bow, stands on the sea floor (piece
+  origin 8170, 54, 8198) and rises 96 blocks from it: waist-deep in the sea,
+  an octopus mantle bent forward onto hunched shoulders with no neck, a beard
+  of feelers hanging over the chest, long narrow bat-like wings raised behind,
+  its east claw raised and its west claw gripping the water, and two slanted
+  eyes of ochre froglight. It is built for one side only — the one its camera
+  sees; the form's box ends behind it, and that face is its flat back.
 
-Both jetties carry `atmosphere/sea-fog` from the first tick: fog from the eye
-to 32 blocks, the sky and the clouds under it too. From either jetty the Thing
-is far inside the fog.
+Both jetties and the slip carry `atmosphere/sea-fog` from the first tick: fog
+from the eye to 32 blocks, the sky and the clouds under it too. From anywhere a
+body can stand, the Thing is far inside the fog.
 
 ## The cutscene
 
-Pull the tiller. The ferry's link (one repeatable `use` trigger, as in The
-Ferry) plays one `sequence`:
+Ring the bell. The ferry's link (one repeatable `use` trigger) plays one
+`sequence`; the cutscene is `party: present`, so **every player in play is
+shown by a stand-in where they stood** — a mannequin wearing their own skin,
+armour and held items, facing as they faced — and the wide shot shows them in
+the boat.
 
 | tick | what happens |
 |---|---|
-| 0 | the volume round the camera's path is painted `atmosphere/sea-fog`; the camera cuts to just behind the drifting ferry's stern, at a standing eye, and rises up and out toward the Thing for six seconds |
-| 121 | the camera stops at its set point, 68 blocks from the figure's face, aimed where it was aimed while it rose (one `look_at` for both shots, so the hold is not a cut) |
-| 141 | **a bolt strikes the sea beside the figure's raised wing** (8268, 63, 8128), and in the same tick the volume is painted `atmosphere/torn-fog`: the fog end leaves the camera and the figure stands in the flash |
-| 161 | the volume is painted `atmosphere/sea-fog` again: the figure is gone into the fog |
-| 222 | the camera returns everyone to where the puller stood — in the well, since the tiller is reached from nowhere else |
-| 223 | whoever is in the well is carried to the far jetty; `flag/seen` is set |
+| 0 | the bell sounds; the volume round every camera pose (x 8162–8270, y 24–104, z 8198–8398) is painted `atmosphere/sea-fog`; each player leaves a stand-in and the camera cuts to low behind the ferry's stern (8215.5, 66.5, 8306.5), the party's heads in the bottom of the frame |
+| 0–120 | **shot 1**, six seconds: the camera rises diagonally up and forward over the boat toward the Thing, to a close-up under its face (8215.5, 72.5, 8262.5, 40 blocks from it) |
+| 120 | **a bolt strikes the sea beside the figure's raised wing** (8268, 63, 8196), and in the same tick the volume holding the ferry, the Thing's front and the whole of shot 2 (x 8166–8266, y 28–100, z 8218–8378) is painted `atmosphere/clearing`: the fog leaves the camera and the close-up stands in the flash |
+| 121–281 | **shot 2**, eight seconds: from the close-up the camera pulls back and up, away from the Thing, to high behind the ferry (8231.5, 86.5, 8345.5), widening until the boat with the party's stand-ins in it and the whole figure share the frame. Both shots aim at one point on the face, so the cut between them keeps the aim |
+| 282 | the camera returns everyone to where the ringer stood — in the well, since the bell is reached from nowhere else; the stand-ins leave unseen; the clearing is painted `atmosphere/sea-fog` again |
+| 283 | whoever is in the well is carried to the far jetty; `flag/seen` is set |
 
 **It plays once.** Every step of the reveal is guarded on `forbids
-flag/seen`, and the flag is set with the carry. A later pull — a player who
-stayed on the jetty, boarding afterwards — plays no cutscene: whoever is in
-the well is blinded for twelve seconds, told *the ferry slides out into the
-fog*, and carried.
+flag/seen`, and the flag is set with the carry. A later ring — a player who
+stayed on the jetty, boarding afterwards — plays no cutscene: the bell sounds,
+whoever is in the well is blinded for fifteen seconds, told *the ferry slides
+out into the fog*, and carried.
 
 **There is no fog-edge return.** `world.boundary.returns` is `false`: the
 build proves no body can walk out of the region or into the open sea, so
 nothing pulls a creator back who flies out with `/trigger dw.free` to look at
 the far views.
 
-## The fog flash, measured
+## The clearing, measured
 
-The owner asked for the fog to be removed *briefly*. Whether a one-second
-reveal reads as a flash or as a slow fade is a property of the client, so it
-was measured on both legs of the path from the server to the screen.
+The owner asked for the wide shot to show the boat and the Thing in a clearing
+ringed by fog. Fog in the pinned client is a property of **the camera**, not of
+the space it looks through: every frame the client samples the atmosphere in a
+Gaussian kernel of 4-block cells round the camera, and draws distance fog from
+the camera out by the fog start and end that sample gives. So what the clearing
+can be is decided by two things, and both were read through the client's own
+classes (`measure/FogEdge.java`, run by `measure/clearing.sh` over the camera's
+emitted keyframes, `measure/keyframes.txt`; readings in
+`measure/clearing-readings.txt`) — the same `GaussianSampler`,
+`SpatialAttributeInterpolator` and `EnvironmentAttributeMap` calls, and the same
+`AtmosphericFogEnvironment.setupFog` rain offset transcribed from its bytecode,
+that this level's first fog measurement used.
 
-**The network leg** — a mineflayer client (the harness pin, 4.37.1) on the
-pinned validation server running this build, boarding the ferry and pulling the
-tiller as itself, every packet stamped on one monotonic clock
-(`measure/fog-net.sh`, `measure/fog-timing.mjs`; readings in
-`measure/fog-timing.json`). After the pull:
+1. **The camera stands wholly in the clearing for the whole of shot 2.** At
+   every keyframe from tick 121 to the last, the repainted cells carry
+   1.000000000000 of the kernel: the client reads the clearing's fog and
+   nothing else, and the cut at tick 120 lands in one client tick, as the
+   repaint did when this level first measured it.
+2. **The ring is the clearing's fog distance round the camera.**
+   `atmosphere/clearing` keeps sea-fog's colours and precipitation (a change
+   of precipitation would ease the cut over a second) and sets fog 320/476,
+   which the storm's rain offset makes **effective 160 → 220 blocks**. At the
+   wide shot's pose:
 
-| ms after the pull | packet |
-|---|---|
-| +117.9 | 16 `chunk_biomes` packets, 48 distinct chunks — the tick-0 paint |
-| +134.0 / +153.3 | spectator mode; the camera |
-| **+7145.8** | **the bolt** (`spawn_entity minecraft:lightning_bolt` at 8268.5 63 8128.5) |
-| **+7145.9** | **16 `chunk_biomes` packets, 48 chunks — the fog torn away** |
-| +8144.5 | 16 `chunk_biomes` packets, 48 chunks — the fog back |
-| +11189.9 | adventure mode again: the camera has returned |
-| +16140.1 | the client stands at 8252.5 64 8298.5, the far landing |
-
-The bolt and the torn fog reach the client in the same server tick, 0.1 ms
-apart; the fog returns 998.6 ms (20 ticks) later.
-
-**The client leg** — what the client does with a repaint, read through its own
-classes (`measure/FogFlash.java`; readings in `measure/client-readings.txt`).
-The pinned client's `GaussianSampler`, `SpatialAttributeInterpolator` and
-`EnvironmentAttributeMap` are called from its jar at the camera's two poses,
-and the `fog_end_distance` type's own partial-tick `LerpFunction` — the
-function `EnvironmentAttributeProbe$ValueProbe.get` applies between the
-previous client tick's value and the current one — across the tick a repaint
-lands in. At both poses the repainted volume holds the whole kernel (weight
-1.000000000000), and through `AtmosphericFogEnvironment.setupFog`'s rain
-offset (transcribed from its bytecode; both atmospheres rain, so the rain fog
-multiplier does not move):
-
-| client frame | effective fog | fog over the boat (4) / at 32 / on the figure (68) / at 100 blocks |
+| from (8231.5, 86.5, 8345.5) | distance | fog |
 |---|---|---|
-| the tick before | −10 → 32 | 0.333 / 1.000 / 1.000 / 1.000 |
-| ¼ into the next | −10 → 96 | 0.132 / 0.396 / 0.736 / 1.000 |
-| ½ | −10 → 272 | 0.050 / 0.149 / 0.277 / 0.390 |
-| ¾ | −10 → 520 | 0.026 / 0.079 / 0.147 / 0.208 |
-| the tick after | −10 → 768 | 0.018 / 0.054 / 0.100 / 0.141 |
+| a stand-in in the well | 53 | 0.000 |
+| the face | 124 | 0.000 |
+| the top of the raised wing | 146 | 0.000 |
+| the west wing tip | 150 | 0.000 |
+| the raised claw | 140 | 0.000 |
+| the sea beyond the figure (8215, 63, 8160) | 188 | 0.462 |
 
-So the figure goes from wholly fogged to nine-tenths clear inside one client
-tick (50 ms), holds for a second while the bolt flickers, and is gone again
-inside one tick. **It is a flash, not a fade.**
+   Everything in the frame is clear, and the sea fades into fog from 160
+   blocks out — which is also where the pinned view distance (ten chunks)
+   ends the world. That is the ring the wide shot shows.
 
-Two choices in the atmospheres follow from this reading. `fog_start` is 150 so
-that, under the storm's rain offset of −160, the fog starts at the eye rather
-than 160 blocks behind it; and the two atmospheres share `precipitation`,
-because a change of precipitation would ease the rain fog multiplier over
-about a second and turn the cut into a fade.
-
-The instrument committed here differs from the one run only in where it finds
-`tools/lib/rcon.mjs` (an env var instead of a path in the scratch tree).
+**What the client cannot show is the painted edge itself.** The sea just
+outside the painted volume, 46 blocks behind the camera (8231, 63, 8385), reads
+**0.000** fog: a cell's atmosphere fogs only a camera that stands in it, never a
+camera looking at it, so the boundary of the repainted box is not drawn. The
+box still decides everything that matters — it is what the camera samples —
+and the sea around it stays painted sea-fog, which any camera that leaves the
+clearing (a creator's free camera) meets at once. The figure's top and its
+back stand outside the painted box, which changes nothing a camera in the
+clearing sees.
 
 ## How the figure is made to read
 
@@ -172,89 +171,85 @@ Researched, not invented; each rule says which.
 - **The eyes glow** (engine — spec-0087 hand lights): eight cells of ochre
   froglight set into two slanted cut sockets, the inner end lower.
 
-`review/reveal-frame.png` is the frame the camera holds when the fog is torn:
-the pinned Chunky core (`chunky-core-2.5.0-SNAPSHOT.474.g156e2bb`, 260 spp)
-over this build's world save, the scene `delvec panorama` emits re-posed at the
-camera's set point (8212.5, 86.5, 8226.5, yaw −177.7, pitch −6.9, fov 70) —
-`review/reveal-frame.scene.json`, its world path written as `<build-dir>/world`, the save `validation/world-save.sh` writes. Chunky
-draws neither biome fog nor entities, so it shows the instant the fog is gone
-and not the bolt.
+## The key frames
+
+`review/keyframe-t000.png`, `-t051`, `-t121`, `-t172` and `-t272` are the
+camera at ticks 0, 51, 121 (the close-up, as the bolt strikes), 172 and 272
+(the wide shot), each posed exactly as the emitted keyframe in
+`measure/keyframes.txt`, fov 70, drawn by `delvec snapshot` — the CPU draft
+renderer, which draws blocks only: **no fog, no bolt, no entities, so no
+stand-ins and no bell**, and a pale slab under the figure where it draws the
+sea floor of the figure's box. They show the composition: the stern rail and
+the stem post in the foreground of the first frame, the face filling the
+close-up, and in the wide shot the ferry at the bottom of the frame between
+the near jetty and the strait with the whole figure above it. What the frames
+cannot show is looked at in a real client.
 
 ## What to look for
 
 Serve it with the engine's playtest server, from the engine branch
-`feat/the-thing-beyond-the-fog` (the verb is not in a released engine), and
-look at it in a real client — the fog, the flash and the bolt are client-side
-and no render can show them.
+`feat/the-thing-beyond-the-fog` (neither the verb nor the stand-ins are in a
+released engine), and look at it in a real client — the fog, the bolt and the
+stand-ins are client-side and no render here can show them.
 
 1. **You arrive on the near jetty** (8205, 64, 8299) in fog and rain under a
-   thunderstorm. Nothing beyond about thirty blocks is visible. The ferry lies
-   in its slip beyond the palisade to the north.
-2. **Choose the passenger's kit, walk through the gap in the north rail and
-   along the landing, and step down into the ferry's well** — *Board the
-   ferry* completes as you near the tiller. **Pull the tiller**: the post with
-   the lantern on the north gunwale. Anywhere in the well is aboard.
-3. **The cutscene** (eleven seconds): the camera starts just behind a ferry
-   adrift in the fog, its bow lantern ahead, and rises up and out toward the
-   north. Look for: the drifting ferry reading as *your* boat; the climb being
-   smooth; the camera stopping and holding.
-4. **One second into the hold, a bolt strikes beside the figure's raised
-   wing.** Look for: the bolt, the sky flash and the thunder arriving together
-   with the fog being cut away; **whether the figure reads at first sight as a
-   colossal octopus-headed thing with wings and glowing eyes**; whether one
-   second is long enough; whether the cut reads as a flash rather than a fade.
-5. **The fog closes; the camera returns; you are on the far jetty**
-   (8252, 64, 8298) — *Cross the strait*, and the delve completes. Look for:
-   one or two frames of the ferry's well between the camera's return and the
-   carry (the same seam The Ferry has).
-6. **With a second player** anywhere — on the jetty, on the landing: they
-   watch the cutscene too, are put down in the well where the puller stood,
-   and are carried with them.
-7. **Pull the tiller a second time** (a fresh join after the crossing,
-   boarding from the jetty): no cutscene — twelve seconds of blindness,
+   thunderstorm. Nothing beyond about thirty blocks is visible.
+2. **Choose the passenger's kit, walk through the gap in the east rail and
+   along the pier, and step down into the ferry's well** — *Board the ferry*
+   completes as you step in. **Ring the bell at the bow.** Look for: the bell
+   reading as the thing to use, without the hint.
+3. **Shot 1** (six seconds): the camera starts low behind the stern, the
+   party's stand-ins in front of it, and rises over them and the bow toward
+   the north. Look for: **the stand-ins reading as the party** — your own
+   skin, your armour and what you hold, standing where you stood and facing
+   as you faced.
+4. **The bolt and the close-up.** Look for: the bolt, the sky flash and the
+   thunder arriving with the fog cut away; whether the face reads at first
+   sight.
+5. **Shot 2** (eight seconds): the camera pulls back and up until the ferry,
+   with the party in it, and the whole figure share the frame. Look for: the
+   two of them in one frame; the sea fading to fog round them; the pull-back
+   being smooth from the close-up with no jump in aim.
+6. **The camera returns; you are on the far jetty** (8252, 64, 8298) —
+   *Cross the strait*, and the delve completes. Look for: one or two frames
+   of the ferry's well between the camera's return and the carry.
+7. **With a second player** anywhere — on the jetty, on the pier: both are
+   shown by stand-ins where they stood, watch the cutscene, are put down in
+   the well where the ringer stood, and are carried together.
+8. **Ring the bell a second time** (a fresh join after the crossing, boarding
+   from the jetty): no cutscene — the bell, fifteen seconds of blindness,
    *The ferry slides out into the fog.*, then the far jetty.
-8. **Fly out with `/trigger dw.free`** and look at the figure from anywhere:
+9. **Fly out with `/trigger dw.free`** and look at the figure from anywhere:
    nothing returns you; `/trigger dw.free` again puts you back in your body.
 
 ## What the compile says
 
-On the engine branch at `5726e7f6a` (delvec 1.8.1, dsl 0.36.0):
+On the engine branch (delvec 1.8.1):
 
+    stand-in binding: 1 cutscene(s) examined, 1 present (stand-ins placed and removed), 0 absent (none placed)
     lightning binding: 1 strike(s) declared, 1 struck block(s) read, 1 post(s) within reach examined, 0 refused
-    boundary binding: the region does not return; 4 place(s) a body is put examined, 0 outside; 371 reachable cell(s) examined for a way out; 0 refused
-    link gathering binding: 1 link(s) carried after their root's cutscene, 0 press cell(s) outside their volumes over 371 walk cell(s)
+    boundary binding: the region does not return; 4 place(s) a body is put examined, 0 outside; 378 reachable cell(s) examined for a way out; 0 refused
+    link gathering binding: 1 link(s) carried after their root's cutscene, 0 press cell(s) outside their volumes over 378 walk cell(s)
     DW0311 binding: 4 leg(s); 3 walked, 0 carried by a crossing, 1 carried by a link, 0 carried by a loop; 1 link(s) declared, 1 live on some leg, 1 taken; 0 gather(s) declared
-    DW0921 binding: 1 quest configuration(s), 24 route cell(s), 385 cell(s) a body can reach by walking, falling, jumping or swimming (14 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
+    DW0921 binding: 1 quest configuration(s), 19 route cell(s), 392 cell(s) a body can reach by walking, falling, jumping or swimming (14 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
 
-The 14 afloat cells are the far jetty's slip channels, each with a step at its
-stern end; nothing reaches the open sea, which is what lets the boundary not
-return. The level as first built — the ferry in the jetty's slip, its carry the
-stern row — is refused by the same engine: `DW0932`, 34 cells the tiller can
-be pulled from outside the carry, the first (8201, 64, 8297).
-
-## What the owner's first walk found
-
-The carry did not carry, and a second pull did nothing. Reproduced with
-`measure/repro.mjs` (a client pulling the tiller through its interaction
-entity) from the boat's well one cell forward of the stern: after both pulls
-the client stood where it pulled from. The carry volume was the stern row;
-the camera's return puts every player on the presser's cell; so a pull from
-anywhere else in the boat carried nobody, and the second pull's blindness and
-narration, narrowed to that row, reached nobody. The boundary was not the
-cause — the far jetty is inside its region, and a client carried from the
-stern row arrived. Rebuilt, the same probe pulling from the bow end of the
-well is carried on the first pull, and on the second is blinded and carried.
+The camera's clip check (`DW0308`) and angular budget (`DW0347`) pass on both
+shots: the climb passes 0.7 of a block over the stem post's arm and 1.7 over the party's heads, and the
+aim turns 7° across shot 1 and about 22° across shot 2's eight seconds.
 
 ## State
 
-- **Machine ladder** on the `validation/` image, engine `5726e7f6a`: PackTest
-  **19 of 19 required tests passed** (`lightning_0` and `atmosphere_places`
-  among them; no boundary templates, since the boundary does not return); the
-  mineflayer critical path **passed, 5 steps** — the tiller clickable from 17 of
-  19 stances, pulled from the well, the cutscene waited out, and
-  `obj/far-shore completed on the landing`.
-- **Staging gate**: REFUSED on two findings, both the design record the level
-  does not carry (`drill3-01`, `drill3-03`): no approved image under `design/`.
-  An approved image is the owner's to give; it is not overridden.
-- **Looked at by the owner**: the figure reads at first sight. Not yet re-walked
-  after the rebuild: everything in *What to look for*.
+- **Machine ladder** on the `validation/` image (engine `5dca19d9a`, this
+  content at `aea21c7`): PackTest **20 of 20 required tests passed**
+  (`standin` — a stand-in wears its player's profile, facing and gear — and
+  `lightning_0` among them); the mineflayer critical path **passed, 5
+  steps** — the bell clickable from 16 of 19 stances, rung from the well,
+  `obj/far-shore completed on the landing`, and the run's own entity record
+  shows the bot's stand-in removed by the cutscene's end at
+  (8215, −128, 8298), the column of the well cell it rang from.
+- **Staging gate**: REFUSED on two findings, both the design record the
+  level does not carry (`drill3-01`, `drill3-03`): no approved image under
+  `design/`. An approved image is the owner's to give; it is not overridden.
+- **Looked at by the owner**: the figure reads at first sight, and the carry
+  works. Not yet walked: everything in *What to look for* — the stand-ins,
+  the re-shot reveal, the clearing and the bell.
