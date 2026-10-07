@@ -30,7 +30,7 @@
               "text": "They climb onto the far jetty.",
               "verb": "arrives"
             },
-            "hint": "Pull the tiller.",
+            "hint": "Ring the bell at the bow to cross.",
             "id": "obj/far-shore",
             "radius": 2,
             "title": "Cross the strait",
@@ -51,7 +51,7 @@
             {
               "flag": "flag/boarded",
               "happening": {
-                "text": "The tiller answers anyone aboard.",
+                "text": "The bell answers anyone aboard.",
                 "verb": "gains"
               },
               "type": "set-flag"
@@ -65,7 +65,7 @@
     ],
     "triggers": [
       {
-        "at": "anchor/tiller",
+        "at": "anchor/bell",
         "effects": [
           {
             "steps": [
@@ -73,13 +73,22 @@
                 "at_ticks": 0,
                 "effects": [
                   {
+                    "at": {
+                      "anchor": "anchor/bell",
+                      "at": "anchor"
+                    },
+                    "sound": "minecraft:block.bell.use",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  },
+                  {
                     "atmosphere": "atmosphere/sea-fog",
                     "region": {
-                      "anchor": "anchor/node-near",
+                      "anchor": "anchor/node-slip",
                       "extent": [
-                        21,
-                        35,
-                        85
+                        54,
+                        40,
+                        100
                       ]
                     },
                     "type": "set-atmosphere",
@@ -90,31 +99,32 @@
                     }
                   },
                   {
+                    "party": "present",
                     "shots": [
                       {
                         "look_at": {
-                          "anchor": "anchor/node-near",
+                          "anchor": "anchor/node-slip",
                           "offset": [
-                            10,
-                            31,
-                            -147
+                            -1,
+                            24,
+                            -76
                           ]
                         },
                         "path": [
                           {
-                            "anchor": "anchor/node-near",
+                            "anchor": "anchor/node-slip",
                             "offset": [
-                              -2,
-                              1,
-                              -28
+                              -1,
+                              2,
+                              8
                             ]
                           },
                           {
-                            "anchor": "anchor/node-near",
+                            "anchor": "anchor/node-slip",
                             "offset": [
-                              7,
-                              22,
-                              -73
+                              -1,
+                              8,
+                              -36
                             ]
                           }
                         ],
@@ -122,24 +132,32 @@
                       },
                       {
                         "look_at": {
-                          "anchor": "anchor/node-near",
+                          "anchor": "anchor/node-slip",
                           "offset": [
-                            10,
-                            31,
-                            -147
+                            -1,
+                            24,
+                            -76
                           ]
                         },
                         "path": [
                           {
-                            "anchor": "anchor/node-near",
+                            "anchor": "anchor/node-slip",
                             "offset": [
-                              7,
+                              -1,
+                              8,
+                              -36
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-slip",
+                            "offset": [
+                              15,
                               22,
-                              -73
+                              47
                             ]
                           }
                         ],
-                        "seconds": 5
+                        "seconds": 8
                       }
                     ],
                     "type": "cutscene",
@@ -153,14 +171,14 @@
                     "effect": "minecraft:blindness",
                     "hide_particles": true,
                     "in": {
-                      "anchor": "anchor/hull",
+                      "anchor": "anchor/well",
                       "extent": [
-                        3,
                         1,
-                        0
+                        1,
+                        1
                       ]
                     },
-                    "seconds": 12,
+                    "seconds": 15,
                     "type": "give-effect",
                     "when": {
                       "requires_flags": [
@@ -170,11 +188,11 @@
                   },
                   {
                     "in": {
-                      "anchor": "anchor/hull",
+                      "anchor": "anchor/well",
                       "extent": [
-                        3,
                         1,
-                        0
+                        1,
+                        1
                       ]
                     },
                     "style": "subtitle",
@@ -189,15 +207,15 @@
                 ]
               },
               {
-                "at_ticks": 141,
+                "at_ticks": 120,
                 "effects": [
                   {
                     "at": {
-                      "anchor": "anchor/node-near",
+                      "anchor": "anchor/node-slip",
                       "offset": [
-                        63,
+                        52,
                         -1,
-                        -171
+                        -102
                       ]
                     },
                     "happening": {
@@ -212,13 +230,13 @@
                     }
                   },
                   {
-                    "atmosphere": "atmosphere/torn-fog",
+                    "atmosphere": "atmosphere/clearing",
                     "region": {
-                      "anchor": "anchor/node-near",
+                      "anchor": "anchor/node-slip",
                       "extent": [
-                        21,
-                        35,
-                        85
+                        50,
+                        36,
+                        80
                       ]
                     },
                     "type": "set-atmosphere",
@@ -231,16 +249,16 @@
                 ]
               },
               {
-                "at_ticks": 161,
+                "at_ticks": 282,
                 "effects": [
                   {
                     "atmosphere": "atmosphere/sea-fog",
                     "region": {
-                      "anchor": "anchor/node-near",
+                      "anchor": "anchor/node-slip",
                       "extent": [
-                        21,
-                        35,
-                        85
+                        50,
+                        36,
+                        80
                       ]
                     },
                     "type": "set-atmosphere",
@@ -253,15 +271,15 @@
                 ]
               },
               {
-                "at_ticks": 223,
+                "at_ticks": 283,
                 "effects": [
                   {
                     "from": {
-                      "anchor": "anchor/hull",
+                      "anchor": "anchor/well",
                       "extent": [
-                        3,
                         1,
-                        0
+                        1,
+                        1
                       ]
                     },
                     "to": {
@@ -283,7 +301,7 @@
             "type": "sequence"
           }
         ],
-        "id": "trigger/tiller",
+        "id": "trigger/bell",
         "on": {
           "on": "use"
         },
