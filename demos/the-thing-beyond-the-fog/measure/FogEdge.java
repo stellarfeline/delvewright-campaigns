@@ -1,7 +1,7 @@
 // The clearing of The Thing Beyond the Fog, read through the pinned 1.21.11 client's OWN classes:
 // GaussianSampler (ceh), SpatialAttributeInterpolator (cej), EnvironmentAttributeMap (cec) and the
-// fog attribute types (ceg.b fog_start_distance, ceg.c fog_end_distance), exactly as FogFlash.java
-// (the fog-flash instrument this demo already commits) calls them, plus AtmosphericFogEnvironment.setupFog's
+// fog attribute types (ceg.b fog_start_distance, ceg.c fog_end_distance), as this level's first fog
+// instrument (FogFlash.java, in this directory's history) called them, plus AtmosphericFogEnvironment.setupFog's
 // rain offset transcribed from its bytecode (m = rain fog multiplier, 1 under the storm) and fog.glsl's
 // linear_fog_value over the spherical distance.
 //
