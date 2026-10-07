@@ -52,6 +52,11 @@ Three axes pushed off the machine default for this campaign (writing craft §B):
 - **People name their fear.** Wenna says she is afraid of the dream and of the flat in so many words; Tregear says he does not know what the bottom row showed.
 - **The ending does not explain itself.** Neither ending tells the party what the Fathomer does next. One ending shows the bottom row of the carvings and does not interpret it.
 
+## Guidance and writing (rulings for this campaign)
+
+- **No guidance text and no reach steps.** The story feels non-linear and rewards exploring and reading. No objective carries a title or a hint, no waypoint or checkpoint is announced, and no step is "reach this place": progress comes from what the player does — reading, talking, using, taking. Where the engine forces a reach step, objective text or a marker, it is recorded as a capability gap, not worked around.
+- **No narration of the world changing.** A line that announces a change in the environment ("the way behind you narrows") is not used. A change that matters to the story is shown with a short cutscene close-up on the change; a change that does not matter gets no text and no cutscene. No line ever claims a change the world does not make.
+
 ## Placement
 
 A site plan (step 2B): the map is the point, and no prefab is the town or the body. One region and one walk, with one crossing: the skiff of Marrack, the salvage captain, over the black water, which is a teleport between two identical copies of the skiff, one at each shore, used out and back; each copy lies inside one of the old road's two ferry houses, so neither is ever seen from outside (see *The skiff*). The body lies on its own bank of mud across the black water and is entered through its mouth; the endless corridor is a loop inside the body, not a second space. Piece axes: x east, y up, z south. The town is the north end; the body is the south end.

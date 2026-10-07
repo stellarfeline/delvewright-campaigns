@@ -6,23 +6,13 @@
         "anchor": "anchor/node-high-street",
         "entity": "minecraft:enderman",
         "facing": "north",
-        "id": "actor/watcher-street",
-        "offset": [
-          0,
-          0,
-          20
-        ]
+        "id": "actor/watcher-street"
       },
       {
         "anchor": "anchor/node-pilgrims-way",
         "entity": "minecraft:enderman",
         "facing": "north",
-        "id": "actor/watcher-flat",
-        "offset": [
-          0,
-          0,
-          40
-        ]
+        "id": "actor/watcher-flat"
       },
       {
         "anchor": "anchor/node-heart-chamber",
@@ -55,6 +45,9 @@
         "initial": "idle",
         "rig": "rig/tentacle",
         "strikes": {
+          "aim": {
+            "facings": 8
+          },
           "pattern": [
             {
               "hold": 0,
@@ -143,10 +136,24 @@
             "extent": [
               10,
               2,
-              10
+              6
             ]
           }
         }
+      },
+      {
+        "at": {
+          "anchor": "anchor/node-narrows-shelf",
+          "offset": [
+            0,
+            0,
+            -12
+          ]
+        },
+        "facing": "south",
+        "id": "assembly/narrows-tentacle-sinking",
+        "initial": "retract",
+        "rig": "rig/tentacle"
       },
       {
         "at": {
@@ -444,249 +451,25 @@
           {
             "anchor": "anchor/coach-stop",
             "happening": {
-              "text": "The coach leaves the party at the stop above the town.",
-              "verb": "arrives"
+              "subject": "anchor/coach-stop",
+              "text": "The notice the party answered is pinned at the coach stop.",
+              "verb": "learns"
             },
-            "hint": "The coach stop on the road at the top of the cliff.",
-            "id": "obj/the-coach-stop",
-            "radius": 3,
-            "title": "Get down from the coach",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-coach-stop"
-            ],
-            "anchor": "anchor/node-harbour-office",
-            "happening": {
-              "text": "The party walks down through a town where everyone stands asleep.",
-              "verb": "arrives"
-            },
-            "hint": "Down the covered steps from the coach stop and down the high street to the lit office at the bottom.",
-            "id": "obj/down-the-high-street",
-            "radius": 1,
-            "title": "Find the Harbour Office",
-            "type": "reach-anchor"
+            "id": "obj/the-notice",
+            "type": "interact"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
-          "obj/the-coach-stop": [
-            {
-              "sound": "minecraft:ambient.basalt_deltas.mood",
-              "style": "title",
-              "text": "WRACKHAM",
-              "type": "narrate"
-            },
-            {
-              "style": "subtitle",
-              "text": "a fishing town on Wrack Bay",
-              "type": "narrate"
-            },
-            {
-              "shots": [
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-jaw-bank",
-                    "offset": [
-                      0,
-                      15,
-                      0
-                    ]
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-far-landing",
-                      "offset": [
-                        0,
-                        30,
-                        90
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-far-landing",
-                      "offset": [
-                        0,
-                        30,
-                        40
-                      ]
-                    }
-                  ],
-                  "seconds": 10
-                },
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-pilgrims-way",
-                    "offset": [
-                      0,
-                      0,
-                      -60
-                    ]
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-narrows",
-                      "offset": [
-                        0,
-                        18,
-                        20
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-pilgrims-way",
-                      "offset": [
-                        0,
-                        18,
-                        0
-                      ]
-                    }
-                  ],
-                  "seconds": 10
-                },
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-boatyard"
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-boatyard",
-                      "offset": [
-                        0,
-                        20,
-                        30
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-boatyard",
-                      "offset": [
-                        0,
-                        16,
-                        0
-                      ]
-                    }
-                  ],
-                  "seconds": 8
-                },
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-cliff-steps"
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-high-street",
-                      "offset": [
-                        0,
-                        6,
-                        24
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-high-street",
-                      "offset": [
-                        0,
-                        6,
-                        -18
-                      ]
-                    }
-                  ],
-                  "seconds": 8
-                },
-                {
-                  "look_at": {
-                    "anchor": "anchor/coach-stop"
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-coach-road",
-                      "offset": [
-                        6,
-                        4,
-                        8
-                      ]
-                    }
-                  ],
-                  "seconds": 4
-                }
-              ],
-              "type": "cutscene"
-            },
+          "obj/the-notice": [
             {
               "anchor": "anchor/coach-stop",
               "type": "set-checkpoint"
             },
             {
-              "actor": "actor/watcher-street",
-              "happening": {
-                "subject": "actor/watcher-street",
-                "text": "A tall dark figure stands at the far end of the high street, facing the party.",
-                "verb": "arrives"
-              },
-              "type": "spawn-actor"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/far-landing",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/far-ferry-house",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/flank-ridge",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/jaw-bank",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/crown",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/brow",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/back-upper",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/back-middle",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/back-lower",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/tail-flank",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/tail-bank",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/tail-road",
-              "type": "set-atmosphere"
-            },
-            {
-              "atmosphere": "atmosphere/wrong-place",
-              "place": "node/run-bank",
-              "type": "set-atmosphere"
+              "style": "chat",
+              "text": "The notice, pinned in the coach shelter: \"My son Davey Coyle walked out onto the new flat in his sleep four nights ago and has not come back. I will pay whoever brings him home. Ask at the Harbour Office, Wrackham. Wenna Coyle, harbourmistress.\"",
+              "type": "narrate"
             }
           ]
         },
@@ -810,10 +593,8 @@
               "text": "Wenna tells the party what the town is living through and gives them the Customs House key.",
               "verb": "learns"
             },
-            "hint": "The harbourmistress in the Harbour Office at the bottom of the high street.",
             "id": "obj/hear-wenna",
             "npc": "npc/wenna-coyle",
-            "title": "Speak with Wenna Coyle",
             "type": "talk-to"
           }
         ],
@@ -826,9 +607,17 @@
             "type": "give-item"
           },
           {
-            "style": "actionbar",
-            "text": "Wenna Coyle gives you the Customs House key.",
-            "type": "narrate"
+            "flag": "flag/hired",
+            "type": "set-flag"
+          },
+          {
+            "happening": {
+              "subject": "wave/drowned-slipway",
+              "text": "The Drowned climb up the slipway out of the mud into the market.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/drowned-slipway"
           }
         ],
         "trigger": {
@@ -950,31 +739,14 @@
         "id": "quest/the-fish-market",
         "objectives": [
           {
-            "anchor": "anchor/node-fish-market",
+            "anchor": "anchor/market-slate",
             "happening": {
-              "text": "The party comes into the fish market.",
-              "verb": "arrives"
+              "subject": "anchor/market-slate",
+              "text": "The fish market's slate stopped four days ago, the night of the rising.",
+              "verb": "learns"
             },
-            "hint": "Down the stair from the Harbour Office to the covered market by the harbour.",
-            "id": "obj/into-the-market",
-            "radius": 1,
-            "title": "Go down to the fish market",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/into-the-market"
-            ],
-            "happening": {
-              "subject": "wave/drowned-slipway",
-              "text": "The Drowned from the slipway are put down.",
-              "verb": "dies"
-            },
-            "hint": "They come up the slipway into the market.",
-            "id": "obj/the-slipway-drowned",
-            "title": "Fight off the Drowned",
-            "type": "kill",
-            "wave": "wave/drowned-slipway"
+            "id": "obj/the-market-slate",
+            "type": "interact"
           }
         ],
         "on_complete": [
@@ -1011,23 +783,14 @@
             "atmosphere": "atmosphere/wrong-place",
             "place": "node/seawall",
             "type": "set-atmosphere"
-          },
-          {
-            "style": "subtitle",
-            "text": "The sky over the seawall turns.",
-            "type": "narrate"
           }
         ],
         "on_objective_complete": {
-          "obj/into-the-market": [
+          "obj/the-market-slate": [
             {
-              "happening": {
-                "subject": "wave/drowned-slipway",
-                "text": "The Drowned climb up the slipway out of the mud.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/drowned-slipway"
+              "style": "chat",
+              "text": "The fish market's price slate, in chalk: pilchard, mackerel, ling, and the date four days ago. Under it someone has written LOW in large letters, three times.",
+              "type": "narrate"
             }
           ]
         },
@@ -1152,10 +915,8 @@
               "text": "Tregear reads the Rubbing: the stone keeps the Fathomer asleep, lifting it sends it down, and the bottom row is lost.",
               "verb": "learns"
             },
-            "hint": "Along the quay from the fish market, over the seawall steps, to the stone chapel past them.",
             "id": "obj/hear-tregear",
             "npc": "npc/absalom-tregear",
-            "title": "Speak with Absalom Tregear",
             "type": "talk-to"
           }
         ],
@@ -1285,11 +1046,9 @@
               "text": "The Customs House door opens.",
               "verb": "opens"
             },
-            "hint": "The heavy door below the seawall. Hold the Customs House key to it.",
             "id": "obj/unlock-customs",
-            "missing_item_hint": "Locked. You need the Customs House key from Wenna Coyle.",
+            "missing_item_hint": "Locked. You need the Customs House key.",
             "requires_item": "minecraft:tripwire_hook",
-            "title": "Unlock the Customs House",
             "type": "interact"
           },
           {
@@ -1302,9 +1061,7 @@
               "text": "The chart shows the Pilgrims' Way: the old road over the bay, marked by stakes the lighthouse once lit.",
               "verb": "learns"
             },
-            "hint": "The chart pinned behind the counter.",
             "id": "obj/the-chart",
-            "title": "Read the chart",
             "type": "interact"
           },
           {
@@ -1317,9 +1074,7 @@
               "text": "Whoever touches the chip feels the dream first.",
               "verb": "learns"
             },
-            "hint": "Under the glass on the counter.",
             "id": "obj/the-chip",
-            "title": "Touch the chip of stone",
             "type": "interact"
           }
         ],
@@ -1378,18 +1133,13 @@
             "atmosphere": "atmosphere/wrong-place",
             "place": "node/chapel-crypt",
             "type": "set-atmosphere"
-          },
-          {
-            "style": "subtitle",
-            "text": "The fog reaches the harbour.",
-            "type": "narrate"
           }
         ],
         "on_objective_complete": {
           "obj/the-chart": [
             {
               "style": "chat",
-              "text": "The chart shows a road across the bay from before the town: the Pilgrims' Way. Stakes mark it. The lighthouse lit them, once.",
+              "text": "The chart is older than the town: a road across the bay, the Pilgrims' Way, marked by stakes all the way out. A note in the margin says the lighthouse lamp once lit them.",
               "type": "narrate"
             }
           ],
@@ -1570,29 +1320,12 @@
               "text": "The flat closed the harbour mouth; the only boat on the far side is the salvage launch of a captain called Marrack.",
               "verb": "learns"
             },
-            "hint": "On the shed in the emptied harbour, down the stair from the Customs House.",
             "id": "obj/the-shipwright-note",
-            "title": "Read the shipwright's note",
             "type": "interact"
           },
           {
             "after": [
               "obj/the-shipwright-note"
-            ],
-            "happening": {
-              "subject": "wave/drowned-hulls",
-              "text": "The Drowned among the hulls are put down.",
-              "verb": "dies"
-            },
-            "hint": "Among the boats lying on the harbour mud.",
-            "id": "obj/the-hull-drowned",
-            "title": "Fight off the Drowned",
-            "type": "kill",
-            "wave": "wave/drowned-hulls"
-          },
-          {
-            "after": [
-              "obj/the-hull-drowned"
             ],
             "anchor": "anchor/spade-rack",
             "happening": {
@@ -1600,9 +1333,7 @@
               "text": "The party takes the Flensing Spade, the one tool long and sharp enough to cut a stone out of flesh.",
               "verb": "gains"
             },
-            "hint": "On its rack in the whalers' shed, through the arch past the boats.",
             "id": "obj/the-spade",
-            "title": "Take the Flensing Spade",
             "type": "interact"
           }
         ],
@@ -1611,7 +1342,7 @@
           "obj/the-shipwright-note": [
             {
               "style": "chat",
-              "text": "The note: the flat closed the harbour mouth the night of the rising. No boat goes out of Wrackham. The only boat on the far side is the salvage launch of a captain called Marrack, who came by sea three days ago.",
+              "text": "The shipwright's note: the flat closed the harbour mouth the night of the rising, and no boat goes out of Wrackham now. The only boat on the far side is the salvage launch of a captain called Marrack, who came by sea three days ago.",
               "type": "narrate"
             },
             {
@@ -1741,10 +1472,10 @@
             "at": "anchor/node-harbour-office",
             "dialogue": {
               "barks": [
-                "\"Light the lamp. Then come and find me at the slipway stair.\""
+                "\"If anyone could find the old road, it was the lighthouse keepers.\""
               ]
             },
-            "doing": "watching for the lighthouse, then going down to the slipway stair"
+            "doing": "watching for the lighthouse"
           }
         },
         "happening": {
@@ -1760,9 +1491,7 @@
               "text": "The lamp is lit, and the stakes of the Pilgrims' Way catch the light one by one.",
               "verb": "opens"
             },
-            "hint": "Through the rope shed, along the breakwater and up the tower stair to the lamp.",
             "id": "obj/light-the-lamp",
-            "title": "Light the lighthouse lamp",
             "type": "interact"
           }
         ],
@@ -1830,16 +1559,6 @@
               "atmosphere": "atmosphere/wrong-place",
               "place": "node/coyle-house",
               "type": "set-atmosphere"
-            },
-            {
-              "style": "subtitle",
-              "text": "Lamps come on across the flat.",
-              "type": "narrate"
-            },
-            {
-              "style": "chat",
-              "text": "Out on the mud a line of lamps runs to the black water. The yellow fog now covers the whole lower town.",
-              "type": "narrate"
             },
             {
               "happening": {
@@ -1972,56 +1691,22 @@
               "text": "Wenna sends the party out onto the flat.",
               "verb": "learns"
             },
-            "hint": "Back along the breakwater and through the harbour to the stone stair onto the flat.",
             "id": "obj/wenna-at-the-stair",
             "npc": "npc/wenna-coyle",
-            "title": "Meet Wenna at the slipway stair",
             "type": "talk-to"
           },
           {
             "after": [
               "obj/wenna-at-the-stair"
             ],
-            "anchor": "anchor/node-wreck-field",
+            "anchor": "anchor/wreck-nameboard",
             "happening": {
-              "text": "The party reaches the old hulls lying on the mud.",
-              "verb": "arrives"
+              "subject": "anchor/wreck-nameboard",
+              "text": "One of the risen hulls is a Wrackham boat lost long ago.",
+              "verb": "learns"
             },
-            "hint": "Follow the lit stakes out across the mud from the slipway stair.",
-            "id": "obj/onto-the-flat",
-            "radius": 3,
-            "title": "Walk the Pilgrims' Way",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/onto-the-flat"
-            ],
-            "happening": {
-              "subject": "wave/drowned-wrecks-1",
-              "text": "The first Drowned from the hulls are put down.",
-              "verb": "dies"
-            },
-            "hint": "They climb out of the hulls around you.",
-            "id": "obj/wrecks-first",
-            "title": "Fight off the Drowned",
-            "type": "kill",
-            "wave": "wave/drowned-wrecks-1"
-          },
-          {
-            "after": [
-              "obj/wrecks-first"
-            ],
-            "happening": {
-              "subject": "wave/drowned-wrecks-2",
-              "text": "The second Drowned from the hulls are put down.",
-              "verb": "dies"
-            },
-            "hint": "More are climbing out of the hulls.",
-            "id": "obj/wrecks-second",
-            "title": "Fight off the Drowned",
-            "type": "kill",
-            "wave": "wave/drowned-wrecks-2"
+            "id": "obj/the-nameboard",
+            "type": "interact"
           }
         ],
         "on_complete": [
@@ -2055,28 +1740,20 @@
             "pitch": 0.5,
             "sound": "minecraft:block.mud.break",
             "type": "play-sound"
-          },
-          {
-            "style": "subtitle",
-            "text": "The mud beside the way sinks.",
-            "type": "narrate"
-          },
-          {
-            "style": "chat",
-            "text": "The open mud on both sides of the way sinks. Sea water stands where it was.",
-            "type": "narrate"
           }
         ],
         "on_objective_complete": {
-          "obj/onto-the-flat": [
+          "obj/the-nameboard": [
             {
-              "actor": "actor/watcher-flat",
-              "happening": {
-                "subject": "actor/watcher-flat",
-                "text": "The tall figure stands out on the mud in the fog.",
-                "verb": "arrives"
-              },
-              "type": "spawn-actor"
+              "style": "chat",
+              "text": "The name board of a hull lying on its side in the mud, the paint nearly gone: MORWENNA, WRACKHAM. A bell is still in its mount at the bow.",
+              "type": "narrate"
+            }
+          ],
+          "obj/wenna-at-the-stair": [
+            {
+              "flag": "flag/sent-out",
+              "type": "set-flag"
             },
             {
               "happening": {
@@ -2086,9 +1763,7 @@
               },
               "type": "spawn-wave",
               "wave": "wave/drowned-wrecks-1"
-            }
-          ],
-          "obj/wrecks-first": [
+            },
             {
               "happening": {
                 "subject": "wave/drowned-wrecks-2",
@@ -2097,6 +1772,15 @@
               },
               "type": "spawn-wave",
               "wave": "wave/drowned-wrecks-2"
+            },
+            {
+              "actor": "actor/watcher-flat",
+              "happening": {
+                "subject": "actor/watcher-flat",
+                "text": "The tall figure stands out on the mud in the fog.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
             }
           ]
         },
@@ -2217,26 +1901,22 @@
               "text": "Marrack lends the party his skiff.",
               "verb": "learns"
             },
-            "hint": "The salvage launch grounded beside the way, past the wreck field.",
             "id": "obj/hear-marrack",
             "npc": "npc/ivo-marrack",
-            "title": "Speak with Captain Marrack",
             "type": "talk-to"
           },
           {
             "after": [
               "obj/hear-marrack"
             ],
-            "anchor": "anchor/node-carved-pillars",
+            "anchor": "anchor/pillar-script",
             "happening": {
-              "text": "The party reaches the carved pillars of the old road.",
-              "verb": "arrives"
+              "subject": "anchor/pillar-script",
+              "text": "The carved pillars tell again what the Brow Stone does.",
+              "verb": "learns"
             },
-            "hint": "Along the way from the launch to the carved standing stones.",
-            "id": "obj/past-the-pillars",
-            "radius": 3,
-            "title": "Walk on past the pillars",
-            "type": "reach-anchor"
+            "id": "obj/the-pillars",
+            "type": "interact"
           }
         ],
         "on_complete": [],
@@ -2248,13 +1928,18 @@
               "item": "minecraft:paper",
               "name": "Marrack's Log",
               "type": "give-item"
-            },
+            }
+          ],
+          "obj/the-pillars": [
             {
               "flag": "flag/skiff-lent",
               "type": "set-flag"
-            }
-          ],
-          "obj/past-the-pillars": [
+            },
+            {
+              "style": "chat",
+              "text": "Carved in the pillar, sharper than the Rubbing: people driving a tablet into a vast sleeping head; the head dreaming; the tablet lifted, and the creature going down into the deep. Under it, a line of small marks nobody here can read.",
+              "type": "narrate"
+            },
             {
               "region": {
                 "anchor": "anchor/node-mud-pillars-west",
@@ -2276,11 +1961,6 @@
                 ]
               },
               "type": "clear-region"
-            },
-            {
-              "style": "subtitle",
-              "text": "The way behind you narrows.",
-              "type": "narrate"
             }
           ]
         },
@@ -2305,7 +1985,7 @@
             "at": "anchor/node-marracks-launch",
             "dialogue": {
               "barks": [
-                "\"The tiller's in the near house. Bring my men if they're breathing.\""
+                "\"Sit in the skiff and work the tiller. Bring my men if they're breathing.\""
               ]
             },
             "doing": "watching the party go on toward the body"
@@ -2399,229 +2079,27 @@
         "id": "quest/the-narrows",
         "objectives": [
           {
-            "anchor": "anchor/node-narrows",
+            "anchor": "anchor/chalk-arrow",
             "happening": {
-              "text": "The fog thins and the whole body is in sight.",
-              "verb": "arrives"
+              "subject": "anchor/chalk-arrow",
+              "text": "Marrack's chalk arrow on a tooth points into the mouth.",
+              "verb": "learns"
             },
-            "hint": "On along the way where the ridge narrows between open water.",
-            "id": "obj/the-narrows",
-            "radius": 3,
-            "title": "Cross the Narrows",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-narrows"
-            ],
-            "anchor": "anchor/near-skiff",
-            "happening": {
-              "subject": "anchor/near-skiff",
-              "text": "The party sits down in Marrack's skiff.",
-              "verb": "arrives"
-            },
-            "hint": "In the ferry house on the stone stage at the end of the way. Use its tiller to cross.",
-            "id": "obj/the-skiff-stage",
-            "radius": 1,
-            "title": "Get into the skiff",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-skiff-stage"
-            ],
-            "anchor": "anchor/far-skiff",
-            "happening": {
-              "subject": "anchor/seam-far-house-door",
-              "text": "The party climbs out in the far ferry house, and its land door opens.",
-              "verb": "opens"
-            },
-            "hint": "The skiff has come to the far ferry house's slip.",
-            "id": "obj/out-of-the-skiff",
-            "radius": 2,
-            "title": "Get out of the skiff",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/out-of-the-skiff"
-            ],
-            "anchor": "anchor/node-far-landing",
-            "happening": {
-              "subject": "anchor/node-far-landing",
-              "text": "The party is ashore on the body's bank.",
-              "verb": "arrives"
-            },
-            "hint": "Out of the far ferry house onto the bank.",
-            "id": "obj/the-far-landing",
-            "radius": 3,
-            "title": "Go ashore",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-far-landing"
-            ],
-            "anchor": "anchor/node-jaw-bank",
-            "happening": {
-              "subject": "anchor/node-jaw-bank",
-              "text": "The party stands at the open mouth.",
-              "verb": "arrives"
-            },
-            "hint": "Along the bank to the open mouth under the head.",
-            "id": "obj/the-jaw",
-            "radius": 3,
-            "title": "Go to the mouth",
-            "type": "reach-anchor"
+            "id": "obj/the-chalk-arrow",
+            "type": "interact"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
-          "obj/out-of-the-skiff": [
-            {
-              "anchor": "anchor/seam-far-house-door",
-              "happening": {
-                "subject": "anchor/seam-far-house-door",
-                "text": "The far ferry house's land door stands open.",
-                "verb": "opens"
-              },
-              "type": "open-gate"
-            }
-          ],
-          "obj/the-far-landing": [
-            {
-              "anchor": "anchor/node-far-landing",
-              "type": "set-checkpoint"
-            }
-          ],
-          "obj/the-jaw": [
-            {
-              "shots": [
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-throat"
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-jaw-bank",
-                      "offset": [
-                        8,
-                        2,
-                        -4
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-jaw-bank",
-                      "offset": [
-                        8,
-                        2,
-                        6
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-mouth",
-                      "offset": [
-                        -2,
-                        2,
-                        4
-                      ]
-                    }
-                  ],
-                  "seconds": 12
-                }
-              ],
-              "type": "cutscene"
-            },
+          "obj/the-chalk-arrow": [
             {
               "anchor": "anchor/node-jaw-bank",
               "type": "set-checkpoint"
             },
             {
-              "assembly": "assembly/jaw-tentacle-west",
-              "type": "spawn-assembly"
-            },
-            {
-              "assembly": "assembly/jaw-tentacle-east",
-              "type": "spawn-assembly"
-            }
-          ],
-          "obj/the-narrows": [
-            {
-              "shots": [
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-jaw-bank",
-                    "offset": [
-                      0,
-                      10,
-                      0
-                    ]
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-narrows",
-                      "offset": [
-                        0,
-                        3,
-                        0
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-narrows",
-                      "offset": [
-                        0,
-                        26,
-                        -30
-                      ]
-                    }
-                  ],
-                  "seconds": 15
-                },
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-narrows-shelf"
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-narrows",
-                      "offset": [
-                        8,
-                        6,
-                        0
-                      ]
-                    }
-                  ],
-                  "seconds": 10
-                }
-              ],
-              "type": "cutscene"
-            },
-            {
-              "assembly": "assembly/narrows-tentacle",
-              "type": "spawn-assembly"
-            },
-            {
-              "style": "subtitle",
-              "text": "Something rises beside the way.",
-              "type": "narrate"
-            },
-            {
               "style": "chat",
-              "text": "A tentacle rises out of a pit in the mud beside the way, and strikes the shelf beside it.",
+              "text": "A chalk arrow on a tooth, pointing into the mouth. Under it, in the same chalk: \"I.M. and two\".",
               "type": "narrate"
-            }
-          ],
-          "obj/the-skiff-stage": [
-            {
-              "region": {
-                "anchor": "anchor/node-mud-narrows-west",
-                "extent": [
-                  16,
-                  2,
-                  32
-                ]
-              },
-              "type": "clear-region"
             }
           ]
         },
@@ -2736,43 +2214,28 @@
         "id": "quest/the-throat",
         "objectives": [
           {
-            "anchor": "anchor/node-mouth",
-            "happening": {
-              "text": "The party is inside the body.",
-              "verb": "arrives"
-            },
-            "hint": "Into the mouth, onto the tongue, past the chalk arrow on a tooth.",
-            "id": "obj/into-the-mouth",
-            "radius": 3,
-            "title": "Go in through the teeth",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/into-the-mouth"
-            ],
             "anchor": "anchor/wrong-rib",
             "happening": {
               "subject": "anchor/wrong-rib",
               "text": "The broken rib gives, and the corridor ends.",
               "verb": "opens"
             },
-            "hint": "In the corridor of ribs past the mouth: the one broken rib that does not match the others.",
             "id": "obj/the-wrong-rib",
-            "title": "Break the rib set wrong",
             "type": "interact"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
-          "obj/into-the-mouth": [
-            {
-              "style": "actionbar",
-              "text": "A chalk arrow on a tooth points inward. Marrack came this way.",
-              "type": "narrate"
-            }
-          ],
           "obj/the-wrong-rib": [
+            {
+              "happening": {
+                "subject": "wave/lice",
+                "text": "Lice swarm out of the walls of the vault.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/lice"
+            },
             {
               "at": {
                 "anchor": "anchor/wrong-rib",
@@ -2899,83 +2362,43 @@
         "id": "quest/the-cathedral",
         "objectives": [
           {
-            "anchor": "anchor/node-rib-cathedral",
-            "happening": {
-              "text": "The party stands in the vault of ribs.",
-              "verb": "arrives"
-            },
-            "hint": "Out of the corridor of ribs into the vault beyond.",
-            "id": "obj/the-cathedral",
-            "radius": 3,
-            "title": "Cross the Rib Cathedral",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-cathedral"
-            ],
-            "happening": {
-              "subject": "wave/lice",
-              "text": "The lice are killed.",
-              "verb": "dies"
-            },
-            "hint": "They swarm out of the flesh walls.",
-            "id": "obj/the-lice",
-            "title": "Kill the lice",
-            "type": "kill",
-            "wave": "wave/lice"
-          },
-          {
-            "after": [
-              "obj/the-lice"
-            ],
             "anchor": "anchor/diaphragm",
             "happening": {
               "subject": "anchor/seam-diaphragm",
               "text": "The Flensing Spade cuts the diaphragm open.",
               "verb": "opens"
             },
-            "hint": "The wall of membrane at the far end of the vault. Hold the Flensing Spade to it.",
             "id": "obj/cut-the-diaphragm",
-            "missing_item_hint": "Tough membrane. You need the Flensing Spade from the whalers' shed.",
+            "missing_item_hint": "Tough membrane. It needs a long, sharp blade.",
             "requires_item": "minecraft:iron_shovel",
-            "title": "Cut the diaphragm",
             "type": "interact"
           },
           {
             "after": [
               "obj/cut-the-diaphragm"
             ],
-            "anchor": "anchor/node-stomach",
+            "anchor": "anchor/stomach-shore",
             "happening": {
-              "text": "The party reaches the stomach and what earlier visitors left there.",
-              "verb": "arrives"
+              "subject": "anchor/stomach-shore",
+              "text": "On the shore of the pool lies what Marrack's men left.",
+              "verb": "learns"
             },
-            "hint": "Through the cut in the diaphragm.",
-            "id": "obj/the-stomach",
-            "radius": 3,
-            "title": "Go down into the stomach",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-stomach"
-            ],
-            "happening": {
-              "subject": "wave/marracks-men",
-              "text": "The Drowned that were Marrack's men are put down.",
-              "verb": "dies"
-            },
-            "hint": "Two of them, in salvage men's oilskins.",
-            "id": "obj/marracks-men",
-            "title": "Fight the Drowned",
-            "type": "kill",
-            "wave": "wave/marracks-men"
+            "id": "obj/the-shore",
+            "type": "interact"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
           "obj/cut-the-diaphragm": [
+            {
+              "happening": {
+                "subject": "wave/marracks-men",
+                "text": "Two Drowned in oilskins wait by the pool.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/marracks-men"
+            },
             {
               "anchor": "anchor/seam-diaphragm",
               "happening": {
@@ -2990,9 +2413,14 @@
               "type": "set-flag"
             }
           ],
-          "obj/marracks-men": [
+          "obj/the-shore": [
             {
-              "anchor": "anchor/node-stomach",
+              "style": "chat",
+              "text": "On the shore of the black pool: two salvage lamps, gone out; a boot; a coil of rope; two oilskin coats, empty, laid side by side as if someone meant to come back for them.",
+              "type": "narrate"
+            },
+            {
+              "anchor": "anchor/node-throat",
               "type": "set-checkpoint"
             },
             {
@@ -3003,41 +2431,6 @@
                 "verb": "arrives"
               },
               "type": "spawn-actor"
-            }
-          ],
-          "obj/the-cathedral": [
-            {
-              "happening": {
-                "subject": "wave/lice",
-                "text": "Lice swarm out of the walls.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/lice"
-            },
-            {
-              "assembly": "assembly/cathedral-tentacle-west",
-              "type": "spawn-assembly"
-            },
-            {
-              "assembly": "assembly/cathedral-tentacle-east",
-              "type": "spawn-assembly"
-            }
-          ],
-          "obj/the-stomach": [
-            {
-              "style": "chat",
-              "text": "On the shore of a black pool: two lamps, a boot, a coil of rope, two coats.",
-              "type": "narrate"
-            },
-            {
-              "happening": {
-                "subject": "wave/marracks-men",
-                "text": "Two Drowned in oilskins come at the party.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/marracks-men"
             }
           ]
         },
@@ -3158,25 +2551,18 @@
               "text": "Davey, awake, speaks the dream's words.",
               "verb": "learns"
             },
-            "hint": "On from the stomach to where the heartbeat is loudest: the young man standing by the heart.",
             "id": "obj/davey",
             "npc": "npc/davey-coyle",
-            "title": "Speak with Davey Coyle",
             "type": "talk-to"
           },
           {
-            "after": [
-              "obj/davey"
-            ],
-            "anchor": "anchor/node-heart-chamber",
             "happening": {
-              "subject": "anchor/node-heart-chamber",
-              "text": "Three right valves in a row: the heart stops.",
+              "subject": "npc/davey-coyle",
+              "text": "Three right valves in a row: the heart stops, and Davey wakes.",
               "verb": "opens"
             },
-            "hint": "Open the valve that matches the wound a tentacle rises from. The wound shows only outside: watch it from the mud ridge through the wound beside the heart.",
-            "id": "obj/stop-the-heart",
-            "radius": 3,
+            "id": "obj/davey-wakes",
+            "npc": "npc/davey-coyle",
             "requires_state": [
               {
                 "op": "at-least",
@@ -3184,8 +2570,7 @@
                 "value": 3
               }
             ],
-            "title": "Stop the heart",
-            "type": "reach-anchor"
+            "type": "talk-to"
           }
         ],
         "on_complete": [],
@@ -3198,14 +2583,9 @@
             {
               "assembly": "assembly/wound-north",
               "type": "spawn-assembly"
-            },
-            {
-              "style": "chat",
-              "text": "Three valves in the heart wall. Outside, a tentacle has risen from one of the wounds in the flank.",
-              "type": "narrate"
             }
           ],
-          "obj/stop-the-heart": [
+          "obj/davey-wakes": [
             {
               "shots": [
                 {
@@ -3413,38 +2793,25 @@
         "id": "quest/the-brow",
         "objectives": [
           {
-            "anchor": "anchor/node-crown",
-            "happening": {
-              "text": "The party stands on top of the head.",
-              "verb": "arrives"
-            },
-            "hint": "Up the stair inside the neck from the heart chamber and out through the blowhole.",
-            "id": "obj/the-crown",
-            "radius": 3,
-            "title": "Climb to the top of the head",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-crown"
-            ],
             "anchor": "anchor/brow-stone",
             "happening": {
               "subject": "item/brow-stone",
               "text": "The Brow Stone comes out of the forehead.",
               "verb": "opens"
             },
-            "hint": "The tall carved stone in the forehead, past the top of the head. Hold the Flensing Spade to it.",
             "id": "obj/cut-the-stone",
-            "missing_item_hint": "Driven deep into the flesh. You need the Flensing Spade to cut it out.",
+            "missing_item_hint": "Driven deep into the flesh. It needs a long, sharp blade.",
             "requires_item": "minecraft:iron_shovel",
-            "title": "Cut out the Brow Stone",
             "type": "interact"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
           "obj/cut-the-stone": [
+            {
+              "anchor": "anchor/node-crown",
+              "type": "set-checkpoint"
+            },
             {
               "steps": [
                 {
@@ -3691,61 +3058,49 @@
                       "type": "give-item"
                     },
                     {
-                      "style": "subtitle",
-                      "text": "The moon has gone red. Run.",
-                      "type": "narrate"
+                      "flag": "flag/stone-cut",
+                      "type": "set-flag"
+                    },
+                    {
+                      "happening": {
+                        "subject": "npc/wenna-coyle",
+                        "text": "Wenna goes out onto the pier to wait.",
+                        "verb": "arrives"
+                      },
+                      "npc": "npc/wenna-coyle",
+                      "speed": 0.3,
+                      "to": {
+                        "anchor": "anchor/node-pier",
+                        "offset": [
+                          0,
+                          0,
+                          8
+                        ]
+                      },
+                      "type": "move-npc"
+                    },
+                    {
+                      "happening": {
+                        "subject": "npc/absalom-tregear",
+                        "text": "Tregear comes down to the pier.",
+                        "verb": "arrives"
+                      },
+                      "npc": "npc/absalom-tregear",
+                      "speed": 0.3,
+                      "to": {
+                        "anchor": "anchor/node-pier",
+                        "offset": [
+                          -2,
+                          0,
+                          10
+                        ]
+                      },
+                      "type": "move-npc"
                     }
                   ]
                 }
               ],
               "type": "sequence"
-            }
-          ],
-          "obj/the-crown": [
-            {
-              "shots": [
-                {
-                  "look_at": {
-                    "anchor": "anchor/node-crown"
-                  },
-                  "path": [
-                    {
-                      "anchor": "anchor/node-crown",
-                      "offset": [
-                        10,
-                        8,
-                        10
-                      ]
-                    },
-                    {
-                      "anchor": "anchor/node-crown",
-                      "offset": [
-                        -10,
-                        8,
-                        10
-                      ]
-                    }
-                  ],
-                  "seconds": 15
-                }
-              ],
-              "type": "cutscene"
-            },
-            {
-              "anchor": "anchor/node-crown",
-              "type": "set-checkpoint"
-            },
-            {
-              "assembly": "assembly/crown-tentacle-1",
-              "type": "spawn-assembly"
-            },
-            {
-              "assembly": "assembly/crown-tentacle-2",
-              "type": "spawn-assembly"
-            },
-            {
-              "assembly": "assembly/crown-tentacle-3",
-              "type": "spawn-assembly"
             }
           ]
         },
@@ -3757,9 +3112,20 @@
       {
         "cast": {
           "npc/absalom-tregear": {
-            "at": "anchor/node-seamens-chapel",
-            "dialogue": "unchanged",
-            "doing": "at the Rubbing"
+            "at": {
+              "anchor": "anchor/node-pier",
+              "offset": [
+                -2,
+                0,
+                10
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "\"Whatever happens out there, I'll write it down.\""
+              ]
+            },
+            "doing": "on the pier with Wenna, waiting"
           },
           "npc/davey-coyle": {
             "at": "anchor/far-skiff",
@@ -3844,13 +3210,20 @@
             "doing": "standing asleep, facing the sea, murmuring"
           },
           "npc/wenna-coyle": {
-            "at": "anchor/node-slipway-stair",
-            "dialogue": {
-              "barks": [
-                "\"Bring him back. Bring yourselves back.\""
+            "at": {
+              "anchor": "anchor/node-pier",
+              "offset": [
+                0,
+                0,
+                8
               ]
             },
-            "doing": "waiting at the head of the slipway stair"
+            "dialogue": {
+              "barks": [
+                "\"Bring him back to me.\""
+              ]
+            },
+            "doing": "on the pier, waiting for her son"
           }
         },
         "happening": {
@@ -3860,89 +3233,46 @@
         "id": "quest/the-run",
         "objectives": [
           {
-            "anchor": "anchor/node-tail-bank",
             "happening": {
-              "text": "The party runs down the body's back.",
-              "verb": "departs"
+              "subject": "npc/davey-coyle",
+              "text": "The party finds Davey waiting in the skiff.",
+              "verb": "survives"
             },
-            "hint": "Down the back from the head to the bank behind the tail.",
-            "id": "obj/down-the-back",
-            "radius": 1,
-            "title": "Run down the back",
-            "type": "reach-anchor"
+            "id": "obj/davey-in-the-skiff",
+            "npc": "npc/davey-coyle",
+            "type": "talk-to"
           },
           {
-            "after": [
-              "obj/down-the-back"
-            ],
-            "anchor": "anchor/node-run-bank",
+            "anchor": "anchor/pier-end",
             "happening": {
-              "subject": "anchor/node-tail-road",
-              "text": "The ground behind the party falls into the sea.",
-              "verb": "departs"
-            },
-            "hint": "Along the bank past the lamp stakes toward the ferry house.",
-            "id": "obj/along-the-bank",
-            "radius": 3,
-            "title": "Run along the bank",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/along-the-bank"
-            ],
-            "anchor": "anchor/node-far-landing",
-            "happening": {
-              "subject": "anchor/far-skiff",
-              "text": "The party reaches the skiff.",
+              "subject": "npc/wenna-coyle",
+              "text": "The party brings Davey home to his mother on the pier.",
               "verb": "arrives"
             },
-            "hint": "The ferry house at the end of the bank. Davey is waiting in the skiff; use its tiller.",
-            "id": "obj/the-landing",
-            "radius": 3,
-            "title": "Reach the skiff",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/the-landing"
+            "id": "obj/home",
+            "requires_flags": [
+              "flag/run-done"
             ],
-            "anchor": "anchor/near-skiff",
-            "happening": {
-              "subject": "anchor/near-skiff",
-              "text": "The party is back across the black water.",
-              "verb": "arrives"
-            },
-            "hint": "Use the tiller in the ferry house.",
-            "id": "obj/across",
-            "radius": 3,
-            "title": "Cross back",
-            "type": "reach-anchor"
-          },
-          {
-            "after": [
-              "obj/across"
-            ],
-            "anchor": "anchor/node-slipway-stair",
-            "happening": {
-              "subject": "anchor/node-slipway-stair",
-              "text": "The party comes back off the flat.",
-              "verb": "arrives"
-            },
-            "hint": "Back along the Pilgrims' Way to the slipway stair.",
-            "id": "obj/the-causeway",
-            "radius": 3,
-            "title": "Walk home along the causeway",
-            "type": "reach-anchor"
+            "type": "interact"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
-          "obj/across": [
+          "obj/davey-in-the-skiff": [
+            {
+              "flag": "flag/run-done",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/node-far-landing",
+              "type": "set-checkpoint"
+            }
+          ],
+          "obj/home": [
             {
               "happening": {
                 "subject": "npc/davey-coyle",
-                "text": "Davey gets out of the skiff and goes ahead along the causeway.",
+                "text": "Davey leaves the skiff and goes to his mother.",
                 "verb": "departs"
               },
               "npc": "npc/davey-coyle",
@@ -3956,206 +3286,6 @@
               },
               "npc": "npc/davey-home",
               "type": "spawn-npc"
-            }
-          ],
-          "obj/along-the-bank": [
-            {
-              "anchor": "anchor/node-run-bank",
-              "type": "set-checkpoint"
-            },
-            {
-              "region": {
-                "anchor": "anchor/node-tail-road",
-                "extent": [
-                  24,
-                  2,
-                  4
-                ]
-              },
-              "type": "clear-region"
-            },
-            {
-              "at": {
-                "anchor": "anchor/node-run-bank",
-                "at": "anchor"
-              },
-              "pitch": 0.5,
-              "sound": "minecraft:block.mud.break",
-              "type": "play-sound"
-            },
-            {
-              "style": "subtitle",
-              "text": "The bank falls behind you.",
-              "type": "narrate"
-            }
-          ],
-          "obj/down-the-back": [
-            {
-              "anchor": "anchor/node-tail-bank",
-              "type": "set-checkpoint"
-            }
-          ],
-          "obj/the-causeway": [
-            {
-              "happening": {
-                "subject": "npc/wenna-coyle",
-                "text": "Wenna goes out onto the pier to meet her son.",
-                "verb": "arrives"
-              },
-              "npc": "npc/wenna-coyle",
-              "speed": 0.3,
-              "to": {
-                "anchor": "anchor/node-pier",
-                "offset": [
-                  0,
-                  0,
-                  8
-                ]
-              },
-              "type": "move-npc"
-            },
-            {
-              "happening": {
-                "subject": "npc/absalom-tregear",
-                "text": "Tregear comes down to the pier.",
-                "verb": "arrives"
-              },
-              "npc": "npc/absalom-tregear",
-              "speed": 0.3,
-              "to": {
-                "anchor": "anchor/node-pier",
-                "offset": [
-                  -2,
-                  0,
-                  10
-                ]
-              },
-              "type": "move-npc"
-            },
-            {
-              "steps": [
-                {
-                  "at_ticks": 0,
-                  "effects": [
-                    {
-                      "atmosphere": null,
-                      "place": "node/coach-road",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/cliff-steps",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/high-street",
-                      "type": "set-atmosphere"
-                    }
-                  ]
-                },
-                {
-                  "at_ticks": 60,
-                  "effects": [
-                    {
-                      "atmosphere": null,
-                      "place": "node/harbour-office",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/coyle-house",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/fish-market",
-                      "type": "set-atmosphere"
-                    }
-                  ]
-                },
-                {
-                  "at_ticks": 120,
-                  "effects": [
-                    {
-                      "atmosphere": null,
-                      "place": "node/seamens-chapel",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/chapel-crypt",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/customs-house",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/net-lofts",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/boatyard",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/whalers-shed",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/ropewalk",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/breakwater",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/lighthouse",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/slipway-stair",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/pier",
-                      "type": "set-atmosphere"
-                    },
-                    {
-                      "atmosphere": null,
-                      "place": "node/seawall",
-                      "type": "set-atmosphere"
-                    }
-                  ]
-                }
-              ],
-              "type": "sequence"
-            },
-            {
-              "style": "subtitle",
-              "text": "The fog lifts off the town.",
-              "type": "narrate"
-            }
-          ],
-          "obj/the-landing": [
-            {
-              "flag": "flag/run-done",
-              "type": "set-flag"
-            },
-            {
-              "anchor": "anchor/node-far-landing",
-              "type": "set-checkpoint"
             }
           ]
         },
@@ -4298,10 +3428,8 @@
               "text": "The party decides what becomes of the Brow Stone.",
               "verb": "believes"
             },
-            "hint": "Wenna and Davey are waiting at the end of the pier in the harbour.",
             "id": "obj/the-choice",
             "npc": "npc/wenna-coyle",
-            "title": "Decide on the pier",
             "type": "talk-to"
           }
         ],
@@ -4454,7 +3582,7 @@
                 "effects": [
                   {
                     "style": "chat",
-                    "text": "At dawn the town is clear and the bay is fog. Nobody in Wrackham dreams. Tregear does not sleep: under his chapel the stone dreams, and he hears it.",
+                    "text": "Nobody in Wrackham dreams that night. Tregear does not sleep: under his chapel the stone dreams, and he hears it.",
                     "type": "narrate"
                   },
                   {
@@ -4727,7 +3855,7 @@
                 "effects": [
                   {
                     "style": "chat",
-                    "text": "Going down, the stone shows its bottom row for the first time: Wrackham, under water. At dawn the fog has not lifted. Nobody in Wrackham dreams.",
+                    "text": "Nobody in Wrackham dreams.",
                     "type": "narrate"
                   },
                   {
@@ -4821,20 +3949,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/narrows-tentacle",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/narrows-tentacle-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/narrows-tentacle-gone",
             "type": "set-flag",
             "when": {
@@ -4848,9 +3962,21 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/narrows-tentacle",
+            "type": "despawn-assembly",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 12
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/narrows-tentacle-sinking",
+            "type": "spawn-assembly",
             "when": {
               "requires_state": [
                 {
@@ -4867,7 +3993,7 @@
                 "at_ticks": 181,
                 "effects": [
                   {
-                    "assembly": "assembly/narrows-tentacle",
+                    "assembly": "assembly/narrows-tentacle-sinking",
                     "type": "despawn-assembly"
                   }
                 ]
@@ -4903,20 +4029,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/jaw-tentacle-west",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/jaw-tentacle-west-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/jaw-tentacle-west-gone",
             "type": "set-flag",
             "when": {
@@ -4930,9 +4042,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/jaw-tentacle-west",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -4985,20 +4097,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/jaw-tentacle-east",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/jaw-tentacle-east-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/jaw-tentacle-east-gone",
             "type": "set-flag",
             "when": {
@@ -5012,9 +4110,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/jaw-tentacle-east",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -5067,20 +4165,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/cathedral-tentacle-west",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/cathedral-tentacle-west-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/cathedral-tentacle-west-gone",
             "type": "set-flag",
             "when": {
@@ -5094,9 +4178,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/cathedral-tentacle-west",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -5149,20 +4233,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/cathedral-tentacle-east",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/cathedral-tentacle-east-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/cathedral-tentacle-east-gone",
             "type": "set-flag",
             "when": {
@@ -5176,9 +4246,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/cathedral-tentacle-east",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -5231,20 +4301,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/crown-tentacle-1",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/crown-tentacle-1-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/crown-tentacle-1-gone",
             "type": "set-flag",
             "when": {
@@ -5258,9 +4314,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/crown-tentacle-1",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -5313,20 +4369,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/crown-tentacle-2",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/crown-tentacle-2-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/crown-tentacle-2-gone",
             "type": "set-flag",
             "when": {
@@ -5340,9 +4382,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/crown-tentacle-2",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -5395,20 +4437,6 @@
             "type": "add-state"
           },
           {
-            "assembly": "assembly/crown-tentacle-3",
-            "clip": "retract",
-            "type": "play-clip",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/crown-tentacle-3-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/crown-tentacle-3-gone",
             "type": "set-flag",
             "when": {
@@ -5422,9 +4450,9 @@
             }
           },
           {
-            "style": "actionbar",
-            "text": "The tentacle draws back down into the dark and stays down.",
-            "type": "narrate",
+            "assembly": "assembly/crown-tentacle-3",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -5492,7 +4520,7 @@
             "actor": "actor/watcher-street",
             "happening": {
               "subject": "actor/watcher-street",
-              "text": "The tall figure at the end of the street is gone.",
+              "text": "The tall figure in the street is gone when the party comes near.",
               "verb": "departs"
             },
             "style": "vanish",
@@ -5502,12 +4530,15 @@
         "id": "trigger/watcher-street-gone",
         "on": {
           "on": "approach",
-          "range": 10
+          "range": 6
         },
-        "once": true
+        "once": true,
+        "requires_flags": [
+          "flag/arrived"
+        ]
       },
       {
-        "at": "anchor/node-wreck-field",
+        "at": "anchor/node-pilgrims-way",
         "effects": [
           {
             "actor": "actor/watcher-flat",
@@ -5523,9 +4554,12 @@
         "id": "trigger/watcher-flat-gone",
         "on": {
           "on": "approach",
-          "range": 20
+          "range": 8
         },
-        "once": true
+        "once": true,
+        "requires_flags": [
+          "flag/sent-out"
+        ]
       },
       {
         "at": "anchor/valve-west",
@@ -5559,26 +4593,6 @@
             "pitch": 0.8,
             "sound": "minecraft:entity.warden.heartbeat",
             "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "The heart squeezes once, hard, and the floor shudders.",
-            "type": "narrate",
             "when": {
               "forbids_flags": [
                 "flag/beat-stopped"
@@ -6365,26 +5379,6 @@
                 }
               ]
             }
-          },
-          {
-            "style": "actionbar",
-            "text": "The heart squeezes once, hard, and the floor shudders.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
           }
         ],
         "id": "trigger/valve-middle",
@@ -6566,26 +5560,6 @@
             "pitch": 0.8,
             "sound": "minecraft:entity.warden.heartbeat",
             "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "The heart squeezes once, hard, and the floor shudders.",
-            "type": "narrate",
             "when": {
               "forbids_flags": [
                 "flag/beat-stopped"
@@ -6909,7 +5883,7 @@
                     "from": {
                       "anchor": "anchor/near-skiff",
                       "extent": [
-                        0,
+                        2,
                         1,
                         0
                       ]
@@ -6926,8 +5900,19 @@
                       "text": "The near ferry house is shut behind the party.",
                       "verb": "seals"
                     },
-                    "sealed_hint": "The ferry house is shut. Ring the bell beside the door to follow the others across.",
+                    "sealed_hint": "The ferry house is shut. Ring the bell beside the door.",
                     "type": "close-gate"
+                  },
+                  {
+                    "region": {
+                      "anchor": "anchor/node-mud-narrows-west",
+                      "extent": [
+                        16,
+                        2,
+                        32
+                      ]
+                    },
+                    "type": "clear-region"
                   },
                   {
                     "flag": "flag/crossed-out",
@@ -6973,9 +5958,12 @@
             "type": "teleport"
           },
           {
-            "style": "chat",
-            "text": "The skiff comes back for you out of the fog, and takes you across.",
-            "type": "narrate"
+            "at": {
+              "anchor": "anchor/near-bell",
+              "at": "anchor"
+            },
+            "sound": "minecraft:block.bell.use",
+            "type": "play-sound"
           }
         ],
         "forbids_flags": [
@@ -7094,7 +6082,7 @@
                     "from": {
                       "anchor": "anchor/far-skiff",
                       "extent": [
-                        0,
+                        2,
                         1,
                         0
                       ]
@@ -7120,7 +6108,7 @@
                       "text": "The far ferry house is shut behind the party.",
                       "verb": "seals"
                     },
-                    "sealed_hint": "The ferry house is shut. Ring the bell beside the door to follow the others across.",
+                    "sealed_hint": "The ferry house is shut. Ring the bell beside the door.",
                     "type": "close-gate"
                   },
                   {
@@ -7164,9 +6152,12 @@
             "type": "teleport"
           },
           {
-            "style": "chat",
-            "text": "The skiff comes back for you out of the fog, and takes you across.",
-            "type": "narrate"
+            "at": {
+              "anchor": "anchor/far-bell",
+              "at": "anchor"
+            },
+            "sound": "minecraft:block.bell.use",
+            "type": "play-sound"
           }
         ],
         "id": "trigger/far-bell",
@@ -7184,7 +6175,7 @@
         "effects": [
           {
             "style": "actionbar",
-            "text": "The door is barred from inside. The boat that came this way came by water.",
+            "text": "The door is barred from inside.",
             "type": "narrate"
           }
         ],
@@ -7200,7 +6191,7 @@
         "effects": [
           {
             "style": "actionbar",
-            "text": "Locked. The Customs House key opens it: Wenna Coyle has it at the Harbour Office.",
+            "text": "Locked. You need the Customs House key.",
             "type": "narrate"
           }
         ],
@@ -7216,7 +6207,7 @@
         "effects": [
           {
             "style": "actionbar",
-            "text": "A wall of tough membrane. Hold the Flensing Spade to it to cut it.",
+            "text": "Tough membrane. It needs a long, sharp blade.",
             "type": "narrate"
           }
         ],
@@ -7248,7 +6239,7 @@
         "effects": [
           {
             "style": "actionbar",
-            "text": "The mud past the stair swallows a boot. Nobody can find the old road out there in the dark.",
+            "text": "The mud past the stair swallows a boot. Nobody could find the old road out there in the dark.",
             "type": "narrate"
           }
         ],
@@ -7275,20 +6266,651 @@
         "once": false
       },
       {
-        "at": "anchor/pillar-script",
-        "audience": "presser",
+        "at": "anchor/coach-stop",
         "effects": [
           {
-            "style": "actionbar",
-            "text": "The same small carved marks as under the Rubbing. Nobody here can read them.",
-            "type": "narrate"
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "sound": "minecraft:ambient.basalt_deltas.mood",
+                    "style": "title",
+                    "text": "WRACKHAM",
+                    "type": "narrate"
+                  },
+                  {
+                    "style": "subtitle",
+                    "text": "a fishing town on Wrack Bay",
+                    "type": "narrate"
+                  },
+                  {
+                    "shots": [
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-jaw-bank",
+                          "offset": [
+                            0,
+                            15,
+                            0
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-far-landing",
+                            "offset": [
+                              0,
+                              30,
+                              90
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-far-landing",
+                            "offset": [
+                              0,
+                              30,
+                              40
+                            ]
+                          }
+                        ],
+                        "seconds": 10
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-pilgrims-way",
+                          "offset": [
+                            0,
+                            0,
+                            -60
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-narrows",
+                            "offset": [
+                              0,
+                              18,
+                              20
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-pilgrims-way",
+                            "offset": [
+                              0,
+                              18,
+                              0
+                            ]
+                          }
+                        ],
+                        "seconds": 10
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-boatyard"
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-boatyard",
+                            "offset": [
+                              0,
+                              20,
+                              30
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-boatyard",
+                            "offset": [
+                              0,
+                              16,
+                              0
+                            ]
+                          }
+                        ],
+                        "seconds": 8
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-cliff-steps"
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-high-street",
+                            "offset": [
+                              0,
+                              6,
+                              24
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-high-street",
+                            "offset": [
+                              0,
+                              6,
+                              -18
+                            ]
+                          }
+                        ],
+                        "seconds": 8
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/coach-stop"
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-coach-road",
+                            "offset": [
+                              6,
+                              4,
+                              8
+                            ]
+                          }
+                        ],
+                        "seconds": 4
+                      }
+                    ],
+                    "type": "cutscene"
+                  },
+                  {
+                    "actor": "actor/watcher-street",
+                    "happening": {
+                      "subject": "actor/watcher-street",
+                      "text": "A tall dark figure stands in the high street, facing the party.",
+                      "verb": "arrives"
+                    },
+                    "type": "spawn-actor"
+                  },
+                  {
+                    "anchor": "anchor/near-bell",
+                    "block": "minecraft:bell",
+                    "type": "set-block"
+                  },
+                  {
+                    "anchor": "anchor/far-bell",
+                    "block": "minecraft:bell",
+                    "type": "set-block"
+                  },
+                  {
+                    "anchor": "anchor/near-tiller",
+                    "block": "minecraft:oak_fence",
+                    "type": "set-block"
+                  },
+                  {
+                    "anchor": "anchor/far-tiller",
+                    "block": "minecraft:oak_fence",
+                    "type": "set-block"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/far-landing",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/far-ferry-house",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/flank-ridge",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/jaw-bank",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/crown",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/brow",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/back-upper",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/back-middle",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/back-lower",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/tail-flank",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/tail-bank",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/tail-road",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": "atmosphere/wrong-place",
+                    "place": "node/run-bank",
+                    "type": "set-atmosphere"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 805,
+                "effects": [
+                  {
+                    "flag": "flag/arrived",
+                    "type": "set-flag"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
           }
         ],
-        "id": "trigger/pillar-script",
+        "id": "trigger/the-coach-stop",
         "on": {
-          "on": "use"
+          "on": "approach",
+          "range": 6
         },
-        "once": false
+        "once": true
+      },
+      {
+        "at": "anchor/node-narrows",
+        "effects": [
+          {
+            "shots": [
+              {
+                "look_at": {
+                  "anchor": "anchor/node-jaw-bank",
+                  "offset": [
+                    0,
+                    10,
+                    0
+                  ]
+                },
+                "path": [
+                  {
+                    "anchor": "anchor/node-narrows",
+                    "offset": [
+                      0,
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "anchor": "anchor/node-narrows",
+                    "offset": [
+                      0,
+                      26,
+                      -30
+                    ]
+                  }
+                ],
+                "seconds": 15
+              },
+              {
+                "look_at": {
+                  "anchor": "anchor/node-narrows-shelf"
+                },
+                "path": [
+                  {
+                    "anchor": "anchor/node-narrows",
+                    "offset": [
+                      8,
+                      6,
+                      0
+                    ]
+                  }
+                ],
+                "seconds": 10
+              }
+            ],
+            "type": "cutscene"
+          },
+          {
+            "assembly": "assembly/narrows-tentacle",
+            "type": "spawn-assembly"
+          }
+        ],
+        "id": "trigger/the-narrows",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/skiff-lent"
+        ]
+      },
+      {
+        "at": "anchor/far-skiff",
+        "effects": [
+          {
+            "anchor": "anchor/seam-far-house-door",
+            "happening": {
+              "subject": "anchor/seam-far-house-door",
+              "text": "The far ferry house's land door stands open.",
+              "verb": "opens"
+            },
+            "type": "open-gate"
+          }
+        ],
+        "id": "trigger/out-of-the-skiff",
+        "on": {
+          "on": "approach",
+          "range": 2
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/crossed-out"
+        ]
+      },
+      {
+        "at": "anchor/node-jaw-bank",
+        "effects": [
+          {
+            "shots": [
+              {
+                "look_at": {
+                  "anchor": "anchor/node-throat"
+                },
+                "path": [
+                  {
+                    "anchor": "anchor/node-jaw-bank",
+                    "offset": [
+                      8,
+                      2,
+                      -4
+                    ]
+                  },
+                  {
+                    "anchor": "anchor/node-jaw-bank",
+                    "offset": [
+                      8,
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "anchor": "anchor/node-mouth",
+                    "offset": [
+                      -2,
+                      2,
+                      4
+                    ]
+                  }
+                ],
+                "seconds": 12
+              }
+            ],
+            "type": "cutscene"
+          },
+          {
+            "assembly": "assembly/jaw-tentacle-west",
+            "type": "spawn-assembly"
+          },
+          {
+            "assembly": "assembly/jaw-tentacle-east",
+            "type": "spawn-assembly"
+          }
+        ],
+        "id": "trigger/the-jaw",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/crossed-out"
+        ]
+      },
+      {
+        "at": "anchor/node-rib-cathedral",
+        "effects": [
+          {
+            "assembly": "assembly/cathedral-tentacle-west",
+            "type": "spawn-assembly"
+          },
+          {
+            "assembly": "assembly/cathedral-tentacle-east",
+            "type": "spawn-assembly"
+          }
+        ],
+        "id": "trigger/the-cathedral",
+        "on": {
+          "on": "approach",
+          "range": 8
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/wrong-rib-struck"
+        ]
+      },
+      {
+        "at": "anchor/node-crown",
+        "effects": [
+          {
+            "shots": [
+              {
+                "look_at": {
+                  "anchor": "anchor/node-crown"
+                },
+                "path": [
+                  {
+                    "anchor": "anchor/node-crown",
+                    "offset": [
+                      10,
+                      8,
+                      10
+                    ]
+                  },
+                  {
+                    "anchor": "anchor/node-crown",
+                    "offset": [
+                      -10,
+                      8,
+                      10
+                    ]
+                  }
+                ],
+                "seconds": 15
+              }
+            ],
+            "type": "cutscene"
+          },
+          {
+            "assembly": "assembly/crown-tentacle-1",
+            "type": "spawn-assembly"
+          },
+          {
+            "assembly": "assembly/crown-tentacle-2",
+            "type": "spawn-assembly"
+          },
+          {
+            "assembly": "assembly/crown-tentacle-3",
+            "type": "spawn-assembly"
+          }
+        ],
+        "id": "trigger/the-crown",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/beat-stopped"
+        ]
+      },
+      {
+        "at": "anchor/node-run-bank",
+        "effects": [
+          {
+            "region": {
+              "anchor": "anchor/node-tail-road",
+              "extent": [
+                24,
+                2,
+                4
+              ]
+            },
+            "type": "clear-region"
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-run-bank",
+              "at": "anchor"
+            },
+            "pitch": 0.5,
+            "sound": "minecraft:block.mud.break",
+            "type": "play-sound"
+          }
+        ],
+        "id": "trigger/along-the-bank",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/stone-cut"
+        ]
+      },
+      {
+        "at": "anchor/node-slipway-stair",
+        "effects": [
+          {
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "atmosphere": null,
+                    "place": "node/coach-road",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/cliff-steps",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/high-street",
+                    "type": "set-atmosphere"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 60,
+                "effects": [
+                  {
+                    "atmosphere": null,
+                    "place": "node/harbour-office",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/coyle-house",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/fish-market",
+                    "type": "set-atmosphere"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 120,
+                "effects": [
+                  {
+                    "atmosphere": null,
+                    "place": "node/seamens-chapel",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/chapel-crypt",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/customs-house",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/net-lofts",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/boatyard",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/whalers-shed",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/ropewalk",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/breakwater",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/lighthouse",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/slipway-stair",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/pier",
+                    "type": "set-atmosphere"
+                  },
+                  {
+                    "atmosphere": null,
+                    "place": "node/seawall",
+                    "type": "set-atmosphere"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/the-causeway",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/crossed-back"
+        ]
       }
     ],
     "waves": [
@@ -7301,8 +6923,7 @@
               "max_health": 20
             },
             "count": 4,
-            "entity": "minecraft:drowned",
-            "name": "Drowned"
+            "entity": "minecraft:drowned"
           }
         ]
       },
@@ -7315,8 +6936,7 @@
               "max_health": 20
             },
             "count": 5,
-            "entity": "minecraft:drowned",
-            "name": "Drowned"
+            "entity": "minecraft:drowned"
           }
         ]
       },
@@ -7329,8 +6949,7 @@
               "max_health": 20
             },
             "count": 4,
-            "entity": "minecraft:drowned",
-            "name": "Drowned"
+            "entity": "minecraft:drowned"
           }
         ]
       },
@@ -7343,8 +6962,7 @@
               "max_health": 20
             },
             "count": 6,
-            "entity": "minecraft:drowned",
-            "name": "Drowned"
+            "entity": "minecraft:drowned"
           }
         ]
       },
@@ -7374,8 +6992,7 @@
             "equipment": {
               "chest": "minecraft:leather_chestplate",
               "legs": "minecraft:leather_leggings"
-            },
-            "name": "Drowned"
+            }
           }
         ]
       }
