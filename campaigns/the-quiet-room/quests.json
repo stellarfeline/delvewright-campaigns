@@ -1,0 +1,199 @@
+{
+  "campaign_id": "the-quiet-room",
+  "content": {
+    "guidance": {
+      "announcements": "hidden",
+      "markers": "hidden"
+    },
+    "quests": [
+      {
+        "cast": {
+          "npc/keeper": {
+            "at": "anchor/boss",
+            "dialogue": "dlg/keeper",
+            "doing": "standing alone in the great hall, listening for the gate"
+          }
+        },
+        "happening": {
+          "text": "The party enters a keep that will not explain itself.",
+          "verb": "learns"
+        },
+        "id": "quest/the-room",
+        "objectives": [
+          {
+            "anchor": "anchor/exit",
+            "happening": {
+              "subject": "anchor/exit",
+              "text": "They read the slate on the far wall of the entry hall, and the gate beyond answers.",
+              "verb": "learns"
+            },
+            "id": "obj/the-slate",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/the-slate"
+            ],
+            "happening": {
+              "subject": "wave/watch",
+              "text": "The watch they woke is put down where it woke.",
+              "verb": "dies"
+            },
+            "id": "obj/the-watch",
+            "requires_flags": [
+              "flag/lever-pulled"
+            ],
+            "type": "kill",
+            "wave": "wave/watch"
+          },
+          {
+            "after": [
+              "obj/the-watch"
+            ],
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "The Keeper says the first thing, because they read before they asked.",
+              "verb": "learns"
+            },
+            "id": "obj/hear-the-keeper",
+            "npc": "npc/keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-the-keeper"
+            ],
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "The Keeper says the second thing, which he says to nobody who did not hear the first.",
+              "verb": "learns"
+            },
+            "id": "obj/the-last-word",
+            "npc": "npc/keeper",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "ending": "The keep answered what they did, and nothing else.",
+            "happening": {
+              "text": "The party leaves a keep that told them nothing and showed them everything.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/the-last-word": [
+            {
+              "style": "chat",
+              "text": "The Keeper turns back to his gate. That was all of it.",
+              "type": "narrate"
+            }
+          ],
+          "obj/the-slate": [
+            {
+              "style": "chat",
+              "text": "The slate on the wall reads: THE GATE IS FOR THOSE WHO READ. Down the passage, a bar lifts.",
+              "type": "narrate"
+            },
+            {
+              "flag": "flag/read",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/gate",
+              "happening": {
+                "subject": "anchor/gate",
+                "text": "The gate down the passage lifts for a reader.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            }
+          ],
+          "obj/the-watch": [
+            {
+              "style": "chat",
+              "text": "The last of the watch goes still. The lever room is quiet again.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/wave",
+        "effects": [
+          {
+            "flag": "flag/lever-pulled",
+            "type": "set-flag"
+          },
+          {
+            "happening": {
+              "subject": "wave/watch",
+              "text": "The watch comes up out of the floor around the hand that pulled the lever.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/watch"
+          },
+          {
+            "style": "chat",
+            "text": "The lever goes over with a crack. The floor gives up what it was keeping.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-lever",
+        "on": {
+          "on": "use"
+        },
+        "requires_flags": [
+          "flag/read"
+        ]
+      },
+      {
+        "at": "anchor/keeper-stand",
+        "effects": [
+          {
+            "anchor": "anchor/keeper-stand",
+            "happening": {
+              "subject": "anchor/keeper-stand",
+              "text": "The warden's empty stand keeps whoever stops at it.",
+              "verb": "gains"
+            },
+            "type": "set-checkpoint"
+          },
+          {
+            "style": "chat",
+            "text": "The warden's stand is empty, and the stone is worn where he stood. You would come back here, if it came to that.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-wardens-stand",
+        "on": {
+          "on": "approach",
+          "range": 3
+        }
+      }
+    ],
+    "waves": [
+      {
+        "anchor": "anchor/wave",
+        "id": "wave/watch",
+        "mobs": [
+          {
+            "count": 3,
+            "entity": "minecraft:zombie",
+            "name": "The Watch"
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.36.0",
+  "stage": "quests"
+}
