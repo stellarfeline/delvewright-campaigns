@@ -3,7 +3,7 @@
   "content": {
     "beats": [
       {
-        "node": "node/near",
+        "node": "node/slip",
         "objective": "obj/board",
         "quest": "quest/the-crossing"
       },
@@ -15,11 +15,18 @@
     ],
     "critical_path": [
       "node/near",
+      "node/slip",
       "node/far"
     ],
     "edges": [
       {
         "a": "node/near",
+        "b": "node/slip",
+        "class": "walk",
+        "id": "edge/gangway"
+      },
+      {
+        "a": "node/slip",
         "b": "node/far",
         "class": "carry",
         "gating": {
@@ -37,18 +44,24 @@
       {
         "id": "node/near",
         "intent": "jetty",
-        "note": "The near jetty: a stone quay with a timber deck, and the ferry moored in its slip.",
-        "size_class": "room",
+        "note": "The near jetty: a stone quay with a timber deck, railings round it, and a gangway north to the ferry's slip.",
+        "size_class": "room"
+      },
+      {
+        "id": "node/slip",
+        "intent": "slip",
+        "note": "The ferry's slip north of the near jetty: the ferry moored in it, reached by a railed gangway from its stern.",
+        "size_class": "alcove",
         "stations": [
-          {
-            "anchor": "anchor/hull",
-            "kind": "point",
-            "note": "the ferry's stern well, where the party stands aboard"
-          },
           {
             "anchor": "anchor/tiller",
             "kind": "point",
-            "note": "the ferry's tiller, astern of the well"
+            "note": "the ferry's tiller post on the north gunwale, its lever over the well"
+          },
+          {
+            "anchor": "anchor/hull",
+            "kind": "point",
+            "note": "the ferry's well, where the party stands aboard"
           }
         ]
       },
