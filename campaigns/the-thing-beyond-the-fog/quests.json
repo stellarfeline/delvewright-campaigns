@@ -33,9 +33,6 @@
             "hint": "Pull the tiller.",
             "id": "obj/far-shore",
             "radius": 2,
-            "requires_flags": [
-              "flag/seen"
-            ],
             "title": "Cross the strait",
             "type": "reach-anchor"
           }
@@ -85,7 +82,12 @@
                         85
                       ]
                     },
-                    "type": "set-atmosphere"
+                    "type": "set-atmosphere",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
                   },
                   {
                     "shots": [
@@ -116,7 +118,7 @@
                             ]
                           }
                         ],
-                        "seconds": 7
+                        "seconds": 6
                       },
                       {
                         "look_at": {
@@ -137,15 +139,57 @@
                             ]
                           }
                         ],
-                        "seconds": 6
+                        "seconds": 5
                       }
                     ],
-                    "type": "cutscene"
+                    "type": "cutscene",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  },
+                  {
+                    "effect": "minecraft:blindness",
+                    "hide_particles": true,
+                    "in": {
+                      "anchor": "anchor/hull",
+                      "extent": [
+                        1,
+                        1,
+                        0
+                      ]
+                    },
+                    "seconds": 12,
+                    "type": "give-effect",
+                    "when": {
+                      "requires_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  },
+                  {
+                    "in": {
+                      "anchor": "anchor/hull",
+                      "extent": [
+                        1,
+                        1,
+                        0
+                      ]
+                    },
+                    "style": "subtitle",
+                    "text": "The ferry slides out into the fog.",
+                    "type": "narrate",
+                    "when": {
+                      "requires_flags": [
+                        "flag/seen"
+                      ]
+                    }
                   }
                 ]
               },
               {
-                "at_ticks": 162,
+                "at_ticks": 141,
                 "effects": [
                   {
                     "atmosphere": "atmosphere/torn-fog",
@@ -157,12 +201,17 @@
                         85
                       ]
                     },
-                    "type": "set-atmosphere"
+                    "type": "set-atmosphere",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
                   }
                 ]
               },
               {
-                "at_ticks": 182,
+                "at_ticks": 161,
                 "effects": [
                   {
                     "atmosphere": "atmosphere/sea-fog",
@@ -174,17 +223,36 @@
                         85
                       ]
                     },
-                    "type": "set-atmosphere"
+                    "type": "set-atmosphere",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
                   }
                 ]
               },
               {
-                "at_ticks": 263,
+                "at_ticks": 223,
                 "effects": [
+                  {
+                    "from": {
+                      "anchor": "anchor/hull",
+                      "extent": [
+                        1,
+                        1,
+                        0
+                      ]
+                    },
+                    "to": {
+                      "anchor": "anchor/far-landing"
+                    },
+                    "type": "teleport"
+                  },
                   {
                     "flag": "flag/seen",
                     "happening": {
-                      "text": "The crossing has been seen, and the ferry carries whoever is aboard.",
+                      "text": "The crossing has been seen; the ferry carries whoever is aboard without it.",
                       "verb": "gains"
                     },
                     "type": "set-flag"
@@ -199,37 +267,9 @@
         "on": {
           "on": "use"
         },
-        "once": true,
-        "requires_flags": [
-          "flag/boarded"
-        ]
-      },
-      {
-        "at": "anchor/hull",
-        "effects": [
-          {
-            "from": {
-              "anchor": "anchor/hull",
-              "extent": [
-                1,
-                1,
-                0
-              ]
-            },
-            "to": {
-              "anchor": "anchor/far-landing"
-            },
-            "type": "teleport"
-          }
-        ],
-        "id": "trigger/ferry",
-        "on": {
-          "on": "approach",
-          "range": 1
-        },
         "once": false,
         "requires_flags": [
-          "flag/seen"
+          "flag/boarded"
         ]
       }
     ]
