@@ -152,3 +152,22 @@ Toolchain: engine release `delvec--v1.8.2` (commit `11cd7c8a73b4b3b9c2383e67310b
 - **zh-cn**: 88 rows transcreated by `tools/creator/i18n-translate.py` (deepseek-v4-pro), then a review pass over the whole sidecar: one rendering per name (额石, 探海者, 温娜, 特雷加尔, 剥鲸铲, 溺亡者, 朝圣者之路, 窄口, 小艇, 打捞船, 渡屋, 山脊), no 你们 aimed at the party, and two meaning errors fixed (the flat read as an apartment; the launch read as the only boat that can sail out).
 - **Waits on the unreleased engine** (DESIGN.md, *Waiting on the engine*): the Figure, the lightning and the party's stand-ins in the reveal; the obfuscated line; a visible press object for every `use` trigger, and for the Customs House lock and the diaphragm; progress that does not hang on reading an object; tentacle lock, re-arm and perception range; the walk after detail.
 - **The walk record is stale**: `delvec allocation` refuses with `DW0841` because `walk-record.json` names layout graph `aa13434b…` and the graph now hashes `5ee5d3b4…` (round 2 changed the graph after the walk). Detail, and so the boats, cannot start until the blockout is walked again.
+
+### Round 3 — the branch chronicle, re-read
+
+The chronicles moved by six lines (the oarsman's three beats); both are identical to line 126 and differ only at the choice (line 128) and the ending (line 130). Claims this round changed or added:
+
+| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
+|---|---|---|---|
+| Marrack rows the party across (`dlg/marrack-skiff`) | both | 64, 66 `learns`; 70 `departs` (the launch); 72, 74 `arrives` (the two oarsmen) | cleared |
+| Davey by the heart says which valve is right (`dlg/davey-dream`) | both | 97 `learns`, 99 `opens` | cleared |
+| Marrack ashore after the crossing back, repeatable (`dlg/marrack-ashore`) | both | not dated: side dialogue with no objective, gated by `flag/reveal-seen` from the crossing trigger (139–143, undated `seals`) | cleared — the chronicle dates no side dialogue |
+| The keeping: "nothing comes up out of the sea" | `branch/the-keeping` | 128 `believes`, 130 `survives` | cleared |
+| The return: "what it kept asleep wakes … no Wrackham left" | `branch/the-return` | 128 `believes`, 130 `seals` | cleared for what is built; the rising itself waits on the Figure |
+
+### Round 3 — the machine ladder (delvec 1.8.2, project `dw-stranding-r3w`)
+
+- **Build**: exit 0 into an empty directory; validate and analyze exit 0.
+- **PackTest**: 269 tests, 6 failed — `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`: the same set as round 2's second run, the released engine's atmosphere proofs reading each other's paint in a shared batch. Not re-run.
+- **Bot**: red at step 2, stranded at the first camera (`bot at [177.5, 94.0, 655.4]`), the released engine's plan not waiting out a cutscene inside a `sequence`, as in round 2.
+- **Staging gate**: REFUSED, 1 of 122 — `bell-14` UNBOUND (no `kill` objective; 6 waves declared), as in round 2. 66 bound, 25 declared uncoverable, 30 out of stage.
