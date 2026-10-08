@@ -75,9 +75,8 @@ def skiff(x, y, z):
     if z == TRANSOM:  # the transom, with the tiller head over it
         if y == 0: return HULL
         if y == 1: return STRAKE if not side else HULL
-        if y == 2:
-            if dx == 0: return "TILLER"
-            return "RAIL"
+        if y == 2: return "RAIL"
+        if y == 3 and dx == 0: return "TILLER"   # the tiller head, on the rudder post over the transom rail
         return None
     bow_rows = z <= BOW + 2          # the sheer rises over the bow rows
     if y == 0:
@@ -253,11 +252,11 @@ def main():
     os.makedirs(out, exist_ok=True)
     raw = near_model()
     g = resolve_rails(raw)
-    near_marks = [("near-skiff", (CX, 1, 11), "north"), ("near-tiller", (CX, 2, TRANSOM), "north"),
+    near_marks = [("near-skiff", (CX, 1, 11), "north"), ("near-tiller", (CX, 3, TRANSOM), "north"),
                   ("node-near-ferry-house", (2, 1, 8), "south"), ("near-oars", (CX, 1, 7), "south"), ("near-door", (3, 2, 1), "north")]
     gf = resolve_rails(mirror_z(raw))
     f = lambda z: L - 1 - z
-    far_marks = [("far-skiff", (CX, 1, f(11)), "south"), ("far-tiller", (CX, 2, f(TRANSOM)), "south"),
+    far_marks = [("far-skiff", (CX, 1, f(11)), "south"), ("far-tiller", (CX, 3, f(TRANSOM)), "south"),
                  ("node-far-ferry-house", (2, 1, f(8)), "north"), ("far-oars", (CX, 1, f(7)), "north")]
     for name, gg, edge, dz, marks in (
             ("near-ferry-house", g, "stage-to-near-house", 0, near_marks),
