@@ -4744,6 +4744,12 @@
         "scope": "party"
       },
       {
+        "id": "state/valve-right",
+        "initial": 0,
+        "note": "Scratch for one valve press: 1 while the press being resolved is the right valve for the round, set and cleared inside the press.",
+        "scope": "party"
+      },
+      {
         "id": "state/narrows-tentacle-hits",
         "initial": 0,
         "note": "Blows the party has landed on narrows tentacle; 12 send it back down for good.",
@@ -5554,9 +5560,9 @@
         "audience": "presser",
         "effects": [
           {
-            "amount": 1,
-            "state": "state/heart-round",
-            "type": "add-state",
+            "state": "state/valve-right",
+            "type": "set-state",
+            "value": 1,
             "when": {
               "forbids_flags": [
                 "flag/beat-stopped"
@@ -5568,6 +5574,243 @@
                 {
                   "op": "equals",
                   "state": "state/heart-round",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/wound-south",
+            "type": "despawn-assembly",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/wound-north",
+            "type": "spawn-assembly",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/wound-middle",
+            "type": "despawn-assembly",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/wound-north",
+            "type": "spawn-assembly",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "audience": "actor",
+            "effect": "minecraft:nausea",
+            "hide_particles": true,
+            "seconds": 8,
+            "type": "give-effect",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "at": {
+              "at": "players",
+              "offset": [
+                0,
+                0,
+                -3
+              ]
+            },
+            "audience": "actor",
+            "sound": "minecraft:ambient.cave",
+            "type": "play-sound",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-heart-chamber",
+              "at": "anchor"
+            },
+            "pitch": 1.6,
+            "sound": "minecraft:entity.warden.heartbeat",
+            "type": "play-sound",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "Wrong valve. Start again from the first.",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "amount": 4,
+            "in": {
+              "anchor": "anchor/node-heart-chamber",
+              "extent": [
+                10,
+                3,
+                10
+              ]
+            },
+            "type": "damage-players",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/heart-round",
+            "type": "set-state",
+            "value": 0,
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
                   "value": 0
                 }
               ]
@@ -5591,8 +5834,8 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
+                  "state": "state/valve-right",
+                  "value": 1
                 }
               ]
             }
@@ -5610,8 +5853,8 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
+                  "state": "state/valve-right",
+                  "value": 1
                 }
               ]
             }
@@ -5629,369 +5872,36 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "audience": "actor",
-            "effect": "minecraft:nausea",
-            "hide_particles": true,
-            "seconds": 8,
-            "type": "give-effect",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 1
                 }
               ]
             }
           },
           {
-            "at": {
-              "at": "players",
-              "offset": [
-                0,
-                0,
-                -3
-              ]
-            },
-            "audience": "actor",
-            "sound": "minecraft:ambient.cave",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "anchor": "anchor/node-heart-chamber",
-              "at": "anchor"
-            },
-            "pitch": 1.6,
-            "sound": "minecraft:entity.warden.heartbeat",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "Wrong valve. Start again from the first.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "amount": 4,
-            "in": {
-              "anchor": "anchor/node-heart-chamber",
-              "extent": [
-                10,
-                3,
-                10
-              ]
-            },
-            "type": "damage-players",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
+            "amount": 1,
             "state": "state/heart-round",
+            "type": "add-state",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/valve-right",
             "type": "set-state",
-            "value": 0,
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/wound-south",
-            "type": "despawn-assembly",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/wound-north",
-            "type": "spawn-assembly",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "audience": "actor",
-            "effect": "minecraft:nausea",
-            "hide_particles": true,
-            "seconds": 8,
-            "type": "give-effect",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "at": "players",
-              "offset": [
-                0,
-                0,
-                -3
-              ]
-            },
-            "audience": "actor",
-            "sound": "minecraft:ambient.cave",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "anchor": "anchor/node-heart-chamber",
-              "at": "anchor"
-            },
-            "pitch": 1.6,
-            "sound": "minecraft:entity.warden.heartbeat",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "Wrong valve. Start again from the first.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "amount": 4,
-            "in": {
-              "anchor": "anchor/node-heart-chamber",
-              "extent": [
-                10,
-                3,
-                10
-              ]
-            },
-            "type": "damage-players",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "state": "state/heart-round",
-            "type": "set-state",
-            "value": 0,
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/wound-middle",
-            "type": "despawn-assembly",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/wound-north",
-            "type": "spawn-assembly",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
+            "value": 0
           }
         ],
         "id": "trigger/valve-west",
@@ -6008,130 +5918,9 @@
         "audience": "presser",
         "effects": [
           {
-            "audience": "actor",
-            "effect": "minecraft:nausea",
-            "hide_particles": true,
-            "seconds": 8,
-            "type": "give-effect",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "at": "players",
-              "offset": [
-                0,
-                0,
-                -3
-              ]
-            },
-            "audience": "actor",
-            "sound": "minecraft:ambient.cave",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "anchor": "anchor/node-heart-chamber",
-              "at": "anchor"
-            },
-            "pitch": 1.6,
-            "sound": "minecraft:entity.warden.heartbeat",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "Wrong valve. Start again from the first.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "amount": 4,
-            "in": {
-              "anchor": "anchor/node-heart-chamber",
-              "extent": [
-                10,
-                3,
-                10
-              ]
-            },
-            "type": "damage-players",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "state": "state/heart-round",
+            "state": "state/valve-right",
             "type": "set-state",
-            "value": 0,
+            "value": 1,
             "when": {
               "forbids_flags": [
                 "flag/beat-stopped"
@@ -6143,148 +5932,7 @@
                 {
                   "op": "equals",
                   "state": "state/heart-round",
-                  "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "audience": "actor",
-            "effect": "minecraft:nausea",
-            "hide_particles": true,
-            "seconds": 8,
-            "type": "give-effect",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "at": "players",
-              "offset": [
-                0,
-                0,
-                -3
-              ]
-            },
-            "audience": "actor",
-            "sound": "minecraft:ambient.cave",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "anchor": "anchor/node-heart-chamber",
-              "at": "anchor"
-            },
-            "pitch": 1.6,
-            "sound": "minecraft:entity.warden.heartbeat",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "Wrong valve. Start again from the first.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "amount": 4,
-            "in": {
-              "anchor": "anchor/node-heart-chamber",
-              "extent": [
-                10,
-                3,
-                10
-              ]
-            },
-            "type": "damage-players",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "state": "state/heart-round",
-            "type": "set-state",
-            "value": 0,
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
+                  "value": 2
                 }
               ]
             }
@@ -6300,6 +5948,11 @@
                 "flag/davey-found"
               ],
               "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
                 {
                   "op": "equals",
                   "state": "state/heart-round",
@@ -6321,6 +5974,11 @@
               "requires_state": [
                 {
                   "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
                   "state": "state/heart-round",
                   "value": 1
                 }
@@ -6328,9 +5986,11 @@
             }
           },
           {
-            "amount": 1,
-            "state": "state/heart-round",
-            "type": "add-state",
+            "audience": "actor",
+            "effect": "minecraft:nausea",
+            "hide_particles": true,
+            "seconds": 8,
+            "type": "give-effect",
             "when": {
               "forbids_flags": [
                 "flag/beat-stopped"
@@ -6341,8 +6001,127 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "at": {
+              "at": "players",
+              "offset": [
+                0,
+                0,
+                -3
+              ]
+            },
+            "audience": "actor",
+            "sound": "minecraft:ambient.cave",
+            "type": "play-sound",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-heart-chamber",
+              "at": "anchor"
+            },
+            "pitch": 1.6,
+            "sound": "minecraft:entity.warden.heartbeat",
+            "type": "play-sound",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "Wrong valve. Start again from the first.",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "amount": 4,
+            "in": {
+              "anchor": "anchor/node-heart-chamber",
+              "extent": [
+                10,
+                3,
+                10
+              ]
+            },
+            "type": "damage-players",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/heart-round",
+            "type": "set-state",
+            "value": 0,
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
                 }
               ]
             }
@@ -6365,11 +6144,36 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
+                  "state": "state/valve-right",
+                  "value": 1
                 }
               ]
             }
+          },
+          {
+            "amount": 1,
+            "state": "state/heart-round",
+            "type": "add-state",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/valve-right",
+            "type": "set-state",
+            "value": 0
           }
         ],
         "id": "trigger/valve-middle",
@@ -6386,6 +6190,74 @@
         "audience": "presser",
         "effects": [
           {
+            "state": "state/valve-right",
+            "type": "set-state",
+            "value": 1,
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/wound-middle",
+            "type": "despawn-assembly",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/wound-north",
+            "type": "spawn-assembly",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 0
+                },
+                {
+                  "op": "equals",
+                  "state": "state/heart-round",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
             "audience": "actor",
             "effect": "minecraft:nausea",
             "hide_particles": true,
@@ -6401,7 +6273,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 0
                 }
               ]
@@ -6429,7 +6301,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 0
                 }
               ]
@@ -6453,7 +6325,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 0
                 }
               ]
@@ -6473,7 +6345,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 0
                 }
               ]
@@ -6500,7 +6372,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 0
                 }
               ]
@@ -6520,28 +6392,8 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 0
-                }
-              ]
-            }
-          },
-          {
-            "amount": 1,
-            "state": "state/heart-round",
-            "type": "add-state",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 1
                 }
               ]
             }
@@ -6564,7 +6416,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 1
                 }
               ]
@@ -6583,7 +6435,7 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 1
                 }
               ]
@@ -6602,190 +6454,36 @@
               "requires_state": [
                 {
                   "op": "equals",
-                  "state": "state/heart-round",
+                  "state": "state/valve-right",
                   "value": 1
                 }
               ]
             }
           },
           {
-            "audience": "actor",
-            "effect": "minecraft:nausea",
-            "hide_particles": true,
-            "seconds": 8,
-            "type": "give-effect",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "at": "players",
-              "offset": [
-                0,
-                0,
-                -3
-              ]
-            },
-            "audience": "actor",
-            "sound": "minecraft:ambient.cave",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "at": {
-              "anchor": "anchor/node-heart-chamber",
-              "at": "anchor"
-            },
-            "pitch": 1.6,
-            "sound": "minecraft:entity.warden.heartbeat",
-            "type": "play-sound",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "Wrong valve. Start again from the first.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "amount": 4,
-            "in": {
-              "anchor": "anchor/node-heart-chamber",
-              "extent": [
-                10,
-                3,
-                10
-              ]
-            },
-            "type": "damage-players",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
+            "amount": 1,
             "state": "state/heart-round",
+            "type": "add-state",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ],
+              "requires_flags": [
+                "flag/davey-found"
+              ],
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/valve-right",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/valve-right",
             "type": "set-state",
-            "value": 0,
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/wound-middle",
-            "type": "despawn-assembly",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/wound-north",
-            "type": "spawn-assembly",
-            "when": {
-              "forbids_flags": [
-                "flag/beat-stopped"
-              ],
-              "requires_flags": [
-                "flag/davey-found"
-              ],
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/heart-round",
-                  "value": 2
-                }
-              ]
-            }
+            "value": 0
           }
         ],
         "id": "trigger/valve-east",
