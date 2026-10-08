@@ -1,0 +1,173 @@
+{
+  "campaign_id": "the-ferry-landing",
+  "content": {
+    "actors": [
+      {
+        "anchor": "anchor/node-landing",
+        "entity": "minecraft:zombie",
+        "facing": "south",
+        "id": "actor/zombie",
+        "offset": [
+          -5,
+          0,
+          1
+        ]
+      },
+      {
+        "anchor": "anchor/node-landing",
+        "entity": "minecraft:drowned",
+        "facing": "south",
+        "id": "actor/drowned",
+        "offset": [
+          -3,
+          0,
+          1
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/clerk": {
+            "at": {
+              "anchor": "anchor/node-landing",
+              "offset": [
+                7,
+                0,
+                1
+              ]
+            },
+            "dialogue": "dlg/clerk-root",
+            "doing": "waiting to close the harbour book"
+          },
+          "npc/ferryman": {
+            "at": {
+              "anchor": "anchor/node-landing",
+              "offset": [
+                2,
+                0,
+                -3
+              ]
+            },
+            "dialogue": "dlg/ferryman-root",
+            "doing": "standing at the edge of the landing by his boat"
+          },
+          "npc/morwen": {
+            "at": {
+              "anchor": "anchor/node-landing",
+              "offset": [
+                3,
+                0,
+                1
+              ]
+            },
+            "dialogue": "dlg/morwen-root",
+            "doing": "keeping the toll beside her sister"
+          },
+          "npc/pilgrim": {
+            "at": {
+              "anchor": "anchor/node-landing",
+              "offset": [
+                5,
+                0,
+                1
+              ]
+            },
+            "dialogue": "dlg/pilgrim-root",
+            "doing": "waiting for a boat"
+          },
+          "npc/wenna": {
+            "at": {
+              "anchor": "anchor/node-landing",
+              "offset": [
+                1,
+                0,
+                1
+              ]
+            },
+            "dialogue": "dlg/wenna-root",
+            "doing": "keeping the toll beside her sister"
+          }
+        },
+        "happening": {
+          "text": "The party comes down onto the landing stage after the last ferry has gone.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-last-boat",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/ferryman",
+              "text": "They hear from Hobb that the last crossing has gone.",
+              "verb": "learns"
+            },
+            "hint": "Hobb stands at the edge of the landing, by his boat.",
+            "id": "obj/hear-the-ferryman",
+            "npc": "npc/ferryman",
+            "title": "Talk to Hobb the ferryman",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-the-ferryman"
+            ],
+            "anchor": "anchor/node-quay",
+            "happening": {
+              "subject": "anchor/node-quay",
+              "text": "They climb the steps and look down over the landing from the top of the quay wall.",
+              "verb": "arrives"
+            },
+            "hint": "Take the steps up the quay wall.",
+            "id": "obj/up-on-the-quay",
+            "radius": 3,
+            "title": "Wait up on the quay",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "They settle on the quay to wait for the morning boat.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "spawn",
+        "effects": [
+          {
+            "actor": "actor/zombie",
+            "happening": {
+              "text": "A drowned man stands among the people on the landing.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "actor": "actor/drowned",
+            "happening": {
+              "text": "A second drowned body stands beside him, weed in its hair.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          }
+        ],
+        "id": "trigger/the-drowned-come-up",
+        "on": {
+          "on": "approach",
+          "range": 8
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.35.1",
+  "stage": "quests"
+}
