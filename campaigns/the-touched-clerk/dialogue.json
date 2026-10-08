@@ -1,0 +1,59 @@
+{
+  "campaign_id": "the-touched-clerk",
+  "content": {
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/clerk-root",
+            "options": [
+              {
+                "label": "What does it say?",
+                "next": "dlg/clerk-line"
+              },
+              {
+                "label": "What do you need?",
+                "next": "dlg/clerk-ask"
+              }
+            ],
+            "text": "\"You are the runners the house sent. Good. I am Tobin Hale, and I keep the ledger in this room. Every morning there is a new line at the foot of its last page. It is in my handwriting, and I did not write it.\""
+          },
+          {
+            "id": "dlg/clerk-line",
+            "options": [
+              {
+                "label": "What do you need?",
+                "next": "dlg/clerk-ask"
+              }
+            ],
+            "text": "\"This morning it says [[color=dark_red|Paid in full. Nothing more is owed.]] I keep only black ink in this room, and nobody has paid us anything.\""
+          },
+          {
+            "id": "dlg/clerk-ask",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-clerk",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "item/chest-key",
+                  "text": "Tobin hands them the key to the chest.",
+                  "verb": "gains"
+                },
+                "label": "Give me the key."
+              }
+            ],
+            "text": "\"I have put the ledger in the chest under the window. Take the key, lock it, and keep the key on you tonight. If nobody can open the book, nobody can write in it. Not even me.\""
+          }
+        ],
+        "npc": "npc/clerk",
+        "root": "dlg/clerk-root"
+      }
+    ]
+  },
+  "dsl_version": "0.35.1",
+  "stage": "dialogue"
+}

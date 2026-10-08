@@ -1,0 +1,105 @@
+{
+  "campaign_id": "the-touched-clerk",
+  "content": {
+    "quests": [
+      {
+        "cast": {
+          "npc/clerk": {
+            "at": "anchor/clerk",
+            "dialogue": "dlg/clerk-root",
+            "doing": "standing behind his desk, waiting for the runners the house sent"
+          }
+        },
+        "happening": {
+          "text": "the party hears what is happening to the ledger",
+          "verb": "learns"
+        },
+        "id": "quest/the-night-entries",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/clerk",
+              "text": "Tobin tells them about the line he did not write, and gives them the key.",
+              "verb": "learns"
+            },
+            "hint": "He stands behind the long desk, facing you.",
+            "id": "obj/hear-the-clerk",
+            "npc": "npc/clerk",
+            "title": "Talk to the clerk",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "count": 1,
+            "item": "minecraft:trial_key",
+            "name": "Chest Key",
+            "type": "give-item"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/clerk": {
+            "at": "anchor/clerk",
+            "dialogue": {
+              "barks": [
+                "Forty bales in, thirty-one out. Those lines I wrote myself.",
+                "The ledger is kept by [[obfuscated|someone else]] at night.",
+                "Keep the key on you. Do not give it back to me, whatever I say."
+              ]
+            },
+            "doing": "back at his desk, adding up the day's sales and not looking at the chest"
+          }
+        },
+        "happening": {
+          "text": "the party locks the ledger away for the night",
+          "verb": "seals"
+        },
+        "id": "quest/lock-it-away",
+        "objectives": [
+          {
+            "anchor": "anchor/strongbox",
+            "happening": {
+              "subject": "anchor/strongbox",
+              "text": "They turn the key on the ledger.",
+              "verb": "seals"
+            },
+            "hint": "Hold the Chest Key and use it on the chest under the window, behind the desk.",
+            "id": "obj/lock-the-ledger",
+            "missing_item_hint": "The lock needs its key. Hold the Chest Key in your hand.",
+            "prop": {
+              "block": "minecraft:chest[facing=south,type=single,waterlogged=false]"
+            },
+            "requires_item": "minecraft:trial_key",
+            "title": "Lock the [[bold|ledger]] in the chest",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "chat",
+            "text": "The key turns twice. The ledger stays in the chest tonight.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "text": "the delve is complete",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-night-entries",
+          "type": "quest-complete"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.35.1",
+  "stage": "quests"
+}
