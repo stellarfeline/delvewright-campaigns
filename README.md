@@ -1,9 +1,10 @@
 # Delvewright Campaigns
 
-**Delves** are self-contained Minecraft adventure maps: a story, a set of
-classes with the gear already in your hands, and two or three hours of dungeon
-for one to four players. No mining, no grinding, no building a base — you arrive
-equipped and you leave when the story is done.
+**Delves** are self-contained Minecraft adventure maps: story-driven RPG
+dungeons with quests and NPCs, a set of classes with the gear already in your
+hands, and two or three hours of co-op for one to four players. No mining, no
+grinding, no building a base — you arrive equipped and you leave when the story
+is done.
 
 This repository holds the campaigns themselves. Each finished one is published
 as a [**Release**](https://github.com/stellarfeline/delvewright-campaigns/releases),
