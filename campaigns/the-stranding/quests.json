@@ -45,23 +45,27 @@
         "initial": "idle",
         "rig": "rig/tentacle",
         "strikes": {
-          "aim": {
-            "facings": 8
-          },
           "pattern": [
             {
-              "hold": 0,
+              "hold": 10,
+              "lock": {
+                "pick": "nearest",
+                "reaches": [
+                  "strike-near",
+                  "strike-far"
+                ],
+                "within": {
+                  "anchor": "anchor/node-narrows-shelf",
+                  "extent": [
+                    6,
+                    0,
+                    5
+                  ]
+                }
+              },
               "on_land": [
                 {
                   "amount": 12,
-                  "in": {
-                    "anchor": "anchor/node-narrows-shelf",
-                    "extent": [
-                      0,
-                      1,
-                      3
-                    ]
-                  },
                   "type": "damage-players"
                 },
                 {
@@ -77,18 +81,25 @@
               "windup": "windup"
             },
             {
-              "hold": 0,
+              "hold": 10,
+              "lock": {
+                "pick": "nearest",
+                "reaches": [
+                  "strike-near",
+                  "strike-far"
+                ],
+                "within": {
+                  "anchor": "anchor/node-narrows-shelf",
+                  "extent": [
+                    6,
+                    0,
+                    5
+                  ]
+                }
+              },
               "on_land": [
                 {
                   "amount": 12,
-                  "in": {
-                    "anchor": "anchor/node-narrows-shelf",
-                    "extent": [
-                      0,
-                      1,
-                      3
-                    ]
-                  },
                   "type": "damage-players"
                 },
                 {
@@ -105,17 +116,24 @@
             },
             {
               "hold": 40,
+              "lock": {
+                "pick": "nearest",
+                "reaches": [
+                  "strike-near",
+                  "strike-far"
+                ],
+                "within": {
+                  "anchor": "anchor/node-narrows-shelf",
+                  "extent": [
+                    6,
+                    0,
+                    5
+                  ]
+                }
+              },
               "on_land": [
                 {
                   "amount": 12,
-                  "in": {
-                    "anchor": "anchor/node-narrows-shelf",
-                    "extent": [
-                      0,
-                      1,
-                      3
-                    ]
-                  },
                   "type": "damage-players"
                 },
                 {
@@ -134,26 +152,12 @@
           "while_in": {
             "anchor": "anchor/node-narrows-shelf",
             "extent": [
-              10,
+              13,
               2,
-              6
+              13
             ]
           }
         }
-      },
-      {
-        "at": {
-          "anchor": "anchor/node-narrows-shelf",
-          "offset": [
-            0,
-            0,
-            -12
-          ]
-        },
-        "facing": "south",
-        "id": "assembly/narrows-tentacle-sinking",
-        "initial": "retract",
-        "rig": "rig/tentacle"
       },
       {
         "at": {
@@ -338,6 +342,10 @@
         "rig": "rig/tentacle"
       }
     ],
+    "guidance": {
+      "announcements": "shown",
+      "markers": "hidden"
+    },
     "quests": [
       {
         "cast": {
@@ -1227,6 +1235,9 @@
             "hint": "Wenna's key opens it. It stands on the seawall.",
             "id": "obj/unlock-customs",
             "missing_item_hint": "Locked. You need the Customs House key.",
+            "prop": {
+              "block": "minecraft:heavy_core[waterlogged=false]"
+            },
             "requires_item": "minecraft:tripwire_hook",
             "title": "Open the Customs House",
             "type": "interact"
@@ -1513,6 +1524,19 @@
               "block": "minecraft:oak_sign"
             },
             "type": "interact"
+          },
+          {
+            "after": [
+              "obj/the-shipwright-note"
+            ],
+            "happening": {
+              "subject": "wave/drowned-hulls",
+              "text": "The party puts down the Drowned among the hulls.",
+              "verb": "dies"
+            },
+            "id": "obj/the-hull-drowned",
+            "type": "kill",
+            "wave": "wave/drowned-hulls"
           },
           {
             "after": [
@@ -1904,6 +1928,32 @@
             "after": [
               "obj/wenna-at-the-stair"
             ],
+            "happening": {
+              "subject": "wave/drowned-wrecks-1",
+              "text": "The party puts down the Drowned that climbed out of the hulls.",
+              "verb": "dies"
+            },
+            "id": "obj/the-wreck-drowned",
+            "type": "kill",
+            "wave": "wave/drowned-wrecks-1"
+          },
+          {
+            "after": [
+              "obj/wenna-at-the-stair"
+            ],
+            "happening": {
+              "subject": "wave/drowned-wrecks-2",
+              "text": "The party puts down the second band out of the hulls.",
+              "verb": "dies"
+            },
+            "id": "obj/the-wreck-drowned-2",
+            "type": "kill",
+            "wave": "wave/drowned-wrecks-2"
+          },
+          {
+            "after": [
+              "obj/wenna-at-the-stair"
+            ],
             "anchor": "anchor/wreck-nameboard",
             "happening": {
               "subject": "anchor/wreck-nameboard",
@@ -1964,24 +2014,6 @@
             {
               "flag": "flag/sent-out",
               "type": "set-flag"
-            },
-            {
-              "happening": {
-                "subject": "wave/drowned-wrecks-1",
-                "text": "The Drowned climb out of the hulls.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/drowned-wrecks-1"
-            },
-            {
-              "happening": {
-                "subject": "wave/drowned-wrecks-2",
-                "text": "More Drowned climb out of the hulls.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/drowned-wrecks-2"
             },
             {
               "actor": "actor/watcher-flat",
@@ -2617,20 +2649,24 @@
               "block": "minecraft:bone_block[axis=x]"
             },
             "type": "interact"
+          },
+          {
+            "after": [
+              "obj/the-wrong-rib"
+            ],
+            "happening": {
+              "subject": "wave/lice",
+              "text": "The party crushes the swarm of lice.",
+              "verb": "dies"
+            },
+            "id": "obj/the-lice",
+            "type": "kill",
+            "wave": "wave/lice"
           }
         ],
         "on_complete": [],
         "on_objective_complete": {
           "obj/the-wrong-rib": [
-            {
-              "happening": {
-                "subject": "wave/lice",
-                "text": "Lice swarm out of the walls of the vault.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/lice"
-            },
             {
               "at": {
                 "anchor": "anchor/wrong-rib",
@@ -2795,8 +2831,24 @@
             },
             "id": "obj/cut-the-diaphragm",
             "missing_item_hint": "Tough membrane. It needs a long, sharp blade.",
+            "prop": {
+              "block": "minecraft:nether_wart_block"
+            },
             "requires_item": "minecraft:iron_shovel",
             "type": "interact"
+          },
+          {
+            "after": [
+              "obj/cut-the-diaphragm"
+            ],
+            "happening": {
+              "subject": "wave/marracks-men",
+              "text": "The party puts down the two Drowned in oilskins.",
+              "verb": "dies"
+            },
+            "id": "obj/marracks-men",
+            "type": "kill",
+            "wave": "wave/marracks-men"
           },
           {
             "after": [
@@ -2818,15 +2870,6 @@
         "on_complete": [],
         "on_objective_complete": {
           "obj/cut-the-diaphragm": [
-            {
-              "happening": {
-                "subject": "wave/marracks-men",
-                "text": "Two Drowned in oilskins wait by the pool.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/marracks-men"
-            },
             {
               "anchor": "anchor/seam-diaphragm",
               "happening": {
@@ -4519,6 +4562,12 @@
         "initial": 0,
         "note": "Blows the party has landed on crown tentacle 3; 12 send it back down for good.",
         "scope": "party"
+      },
+      {
+        "id": "state/narrows-tentacle-down",
+        "initial": 0,
+        "note": "1 while the Narrows tentacle has been sent down and has not risen again.",
+        "scope": "party"
       }
     ],
     "triggers": [
@@ -4528,6 +4577,138 @@
             "amount": 1,
             "state": "state/narrows-tentacle-hits",
             "type": "add-state"
+          },
+          {
+            "state": "state/narrows-tentacle-down",
+            "type": "set-state",
+            "value": 1,
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/narrows-tentacle",
+            "clip": "retract",
+            "type": "play-clip",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 240,
+                "effects": [
+                  {
+                    "assembly": "assembly/narrows-tentacle",
+                    "clip": "rise",
+                    "type": "play-clip"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 421,
+                "effects": [
+                  {
+                    "assembly": "assembly/narrows-tentacle",
+                    "type": "arm-strikes"
+                  },
+                  {
+                    "state": "state/narrows-tentacle-down",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/narrows-tentacle-down",
+            "type": "set-state",
+            "value": 1,
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 8
+                }
+              ]
+            }
+          },
+          {
+            "assembly": "assembly/narrows-tentacle",
+            "clip": "retract",
+            "type": "play-clip",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 8
+                }
+              ]
+            }
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 240,
+                "effects": [
+                  {
+                    "assembly": "assembly/narrows-tentacle",
+                    "clip": "rise",
+                    "type": "play-clip"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 421,
+                "effects": [
+                  {
+                    "assembly": "assembly/narrows-tentacle",
+                    "type": "arm-strikes"
+                  },
+                  {
+                    "state": "state/narrows-tentacle-down",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/narrows-tentacle-hits",
+                  "value": 8
+                }
+              ]
+            }
           },
           {
             "flag": "flag/narrows-tentacle-gone",
@@ -4544,20 +4725,8 @@
           },
           {
             "assembly": "assembly/narrows-tentacle",
-            "type": "despawn-assembly",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/narrows-tentacle-hits",
-                  "value": 12
-                }
-              ]
-            }
-          },
-          {
-            "assembly": "assembly/narrows-tentacle-sinking",
-            "type": "spawn-assembly",
+            "clip": "retract",
+            "type": "play-clip",
             "when": {
               "requires_state": [
                 {
@@ -4574,7 +4743,7 @@
                 "at_ticks": 181,
                 "effects": [
                   {
-                    "assembly": "assembly/narrows-tentacle-sinking",
+                    "assembly": "assembly/narrows-tentacle",
                     "type": "despawn-assembly"
                   }
                 ]
@@ -4600,7 +4769,14 @@
           "assembly": "assembly/narrows-tentacle",
           "on": "strike-assembly"
         },
-        "once": false
+        "once": false,
+        "requires_state": [
+          {
+            "op": "equals",
+            "state": "state/narrows-tentacle-down",
+            "value": 0
+          }
+        ]
       },
       {
         "effects": [
@@ -5092,7 +5268,10 @@
         "on": {
           "on": "use"
         },
-        "once": false
+        "once": false,
+        "prop": {
+          "block": "minecraft:black_banner[rotation=8]"
+        }
       },
       {
         "at": "anchor/node-high-street",
@@ -5591,7 +5770,10 @@
         "on": {
           "on": "use"
         },
-        "once": false
+        "once": false,
+        "prop": {
+          "block": "minecraft:red_mushroom_block[down=true,east=true,north=true,south=true,up=true,west=true]"
+        }
       },
       {
         "at": "anchor/valve-middle",
@@ -5966,7 +6148,10 @@
         "on": {
           "on": "use"
         },
-        "once": false
+        "once": false,
+        "prop": {
+          "block": "minecraft:red_mushroom_block[down=true,east=true,north=true,south=true,up=true,west=true]"
+        }
       },
       {
         "at": "anchor/valve-east",
@@ -6379,7 +6564,10 @@
         "on": {
           "on": "use"
         },
-        "once": false
+        "once": false,
+        "prop": {
+          "block": "minecraft:red_mushroom_block[down=true,east=true,north=true,south=true,up=true,west=true]"
+        }
       },
       {
         "at": "anchor/near-tiller",
@@ -6519,6 +6707,9 @@
           "on": "use"
         },
         "once": false,
+        "prop": {
+          "block": "minecraft:bell[attachment=floor,facing=north,powered=false]"
+        },
         "requires_flags": [
           "flag/near-house-shut"
         ]
@@ -6678,13 +6869,13 @@
                         ]
                       }
                     ],
-                    "seconds": 22,
+                    "seconds": 10,
                     "type": "cutscene"
                   }
                 ]
               },
               {
-                "at_ticks": 445,
+                "at_ticks": 205,
                 "effects": [
                   {
                     "from": {
@@ -6778,6 +6969,9 @@
           "on": "use"
         },
         "once": false,
+        "prop": {
+          "block": "minecraft:bell[attachment=floor,facing=south,powered=false]"
+        },
         "requires_flags": [
           "flag/far-house-shut"
         ]
@@ -6876,7 +7070,10 @@
         "on": {
           "on": "use"
         },
-        "once": false
+        "once": false,
+        "prop": {
+          "block": "minecraft:chiseled_stone_bricks"
+        }
       },
       {
         "at": "anchor/coach-stop",
@@ -7262,6 +7459,84 @@
         "once": true,
         "requires_flags": [
           "flag/crossed-back"
+        ]
+      },
+      {
+        "at": "anchor/node-wreck-field",
+        "effects": [
+          {
+            "happening": {
+              "subject": "wave/drowned-wrecks-1",
+              "text": "The Drowned climb out of the hulls.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/drowned-wrecks-1"
+          },
+          {
+            "happening": {
+              "subject": "wave/drowned-wrecks-2",
+              "text": "More Drowned climb out of the hulls.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/drowned-wrecks-2"
+          }
+        ],
+        "id": "trigger/the-wreck-field",
+        "on": {
+          "on": "approach",
+          "range": 12
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/sent-out"
+        ]
+      },
+      {
+        "at": "anchor/node-rib-cathedral",
+        "effects": [
+          {
+            "happening": {
+              "subject": "wave/lice",
+              "text": "Lice swarm out of the walls of the vault.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/lice"
+          }
+        ],
+        "id": "trigger/the-lice",
+        "on": {
+          "on": "approach",
+          "range": 10
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/wrong-rib-struck"
+        ]
+      },
+      {
+        "at": "anchor/node-stomach",
+        "effects": [
+          {
+            "happening": {
+              "subject": "wave/marracks-men",
+              "text": "Two Drowned in oilskins wait by the pool.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/marracks-men"
+          }
+        ],
+        "id": "trigger/marracks-men",
+        "on": {
+          "on": "approach",
+          "range": 8
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/diaphragm-cut"
         ]
       }
     ],
