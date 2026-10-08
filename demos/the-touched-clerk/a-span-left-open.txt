@@ -1,0 +1,23 @@
+# delvec 1.8.2, dsl 0.35.1, mc 1.21.11, built from engine feat/a-span-of-text-carries-a-style 0552c7726852d9230b8eb9d5ea6d5d6e9de719b2
+# a-span-left-open/ is campaigns/the-touched-clerk/ with one edit: in quests.json the second bark of quest/lock-it-away reads
+#   "The ledger is kept by [[obfuscated|someone else at night."   (the span's closing ]] removed)
+$ delvec --prefabs <this repository>/prefabs validate a-span-left-open
+-- 2 refusal(s): these are yours to act on
+DW0975 [error] l10n #/cast.lock-it-away.clerk.0.bark.1: player-visible string `cast.lock-it-away.clerk.0.bark.1` has malformed style markup at character 22: `[[` opens a span that is never closed with `]]` — a span is `[[<styles>|<text>]]`, <styles> one or more of bold, italic, underlined, strikethrough, obfuscated, color=<name or #rrggbb>, comma-separated with no spaces. Correct the span, or remove the doubled brackets. Text: `The ledger is kept by [[obfuscated|someone else at night.`
+DW0187 [error] l10n l10n/zh-cn.json#/source/cast.lock-it-away.clerk.0.bark.1: `cast.lock-it-away.clerk.0.bark.1` was translated from "The ledger is kept by [[obfuscated|someone else]] at night." but now reads "The ledger is kept by [[obfuscated|someone else at night." — the translation in `content` still renders the old line and would ship attached to the new one. Re-translate `cast.lock-it-away.clerk.0.bark.1` and update its `source` (`tools/creator/i18n-translate.py <campaign> --lang zh-cn` does both). If a RENAME surprised you here: an entity display name's key belongs to the first body declaring that text, so renaming one body can hand its key to another
+-- what this run examined (14 line(s))
+equipment binding: 0 body(ies) dressed over 0 entity type(s), 0 piece(s) declared over 0 slot(s) in use, 0 piece(s) with a registry-declared slot, 0 with an allowed-entity list, 0 refused (DW0898).
+purchase binding: 0 charge(s) over 0 datum(s) bind 0 (list, datum) pair(s) of 2 effect list(s) walked, 0 of them behind a numeric gate, 0 refused (DW0901).
+health-bar binding: 0 of 0 fight(s) carry a bar (0 wave(s), 0 actor(s) declared); 0 of 0 boss-billed fight(s) carry one; 0 refused (DW0100/DW0909/DW0910), 0 advised (DW0912).
+on_kill binding: 0 of 0 fight(s) carry a bundle, 0 of them on a fight that comes back, 0 stating `every-kill`; 0 refused (DW0913/DW0914/DW0915).
+inline-style binding: 2 of 25 player-facing line(s) carry 2 span(s); 25 sidecar row(s) held to their English's spans
+textures: 0 row(s) resolved of 0 declared, against a census of 3517 vanilla texture(s)
+seating binding: horizon base `void`; areas[]: 1 of 1 area(s) name a piece set, examined over 1 member(s), 0 opening outward, 1 `.nbt` opened, 0 waterline declaration(s) examined, 0 borne out by the bytes; site plan: 0 of 0 box(es) judged against this base. byte-claim binding: 1 document(s) read, 1 `.nbt` opened; 5 declaration(s) of the class examined, 0 denied by the bytes (DW0888); per key examined/denied: structure.data_version=1/0, walk_y=1/0, anchors.*.pos=3/0, anchors.*.region=0/0, anchors.*.dispenser=0/0, anchors.*.trigger_block=0/0, anchors.*.furniture=0/0, connectors[].opening=0/0, connectors[].socket=0/0, jigsaw-declared=0/0.
+anchor-guarantee binding: 0 of 1 area(s) bind a pool, examined over 0 member(s) declaring 0 anchor name(s), of which 0 are guaranteed; 153 name(s) carried by this campaign's documents, 0 reported outside a guarantee.
+promise: 2 objective(s) examined — 0 `kill` (DW0863), 0 adopted container(s) (DW0861); 0 failure clock(s) (DW0860) over 11 effect root(s)
+contradiction binding: 0 branch(es) read in their exported order over 0 dated line(s); every legal order searched over 0 step(s) (0 quiet), 0 distinct play state(s) walked; 0 refused beyond the exported order (DW0485); 0 branch(es) unproven at the bound of 50000 state(s) per branch (DW0927)
+state path binding: 2 path(s) walked over 4 step(s); 0 numeric gate term(s) read, of which 0 against an undatable datum and 0 withheld (the order is not forced); 0 state write(s) replayed; 0 declared datum(s) of which 0 undatable
+design record: 0 reference(s) recorded over 0 image file(s) under `design/` (concept/ 0, reference/ 0); skies stated: none; world reaches times {noon} weathers {clear} (DW0890); showcase cameras: none (no design/cameras.json); 0 of 0 approved image(s) answered (DW0900)
+clock: world noon -> day 0 daytime 6000; sun +90.00°, moon below the horizon (full-moon); sky light judged 15, game 15; burns: yes
+clocks: 1 world + 0 cut(s); 0 celestial, 1 keyword; phases stated {}; days {0}
+exit 1
