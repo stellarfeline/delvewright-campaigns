@@ -57,7 +57,9 @@ if os.path.exists(body):
                    "shape": {"kind": "box", "frame": frame(meta["anchor"]),
                              "min": [lo[0] - ax, lo[1] - ay, lo[2] - az], "max": [hi[0] - ax, hi[1] - ay, hi[2] - az]}},
                   {"verb": "replace", "region": "region/on-the-body", "matching": massing, "recipe": hide}]})
-doc = {"campaign_id": "the-stranding", "dsl_version": "0.36.0", "stage": "world-edits",
+# the envelope states the surface world.json declares; delvec fmt re-stamps both
+dsl = json.load(open(os.path.join(camp, "world.json")))["dsl_version"]
+doc = {"campaign_id": "the-stranding", "dsl_version": dsl, "stage": "world-edits",
        "content": {"batches": batches}}
 with open(os.path.join(camp, "world-edits.json"), "w") as f:
     json.dump(doc, f, indent=2, sort_keys=True); f.write("\n")
