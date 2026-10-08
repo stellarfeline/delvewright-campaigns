@@ -171,3 +171,27 @@ The chronicles moved by six lines (the oarsman's three beats); both are identica
 - **PackTest**: 269 tests, 6 failed — `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`: the same set as round 2's second run, the released engine's atmosphere proofs reading each other's paint in a shared batch. Not re-run.
 - **Bot**: red at step 2, stranded at the first camera (`bot at [177.5, 94.0, 655.4]`), the released engine's plan not waiting out a cutscene inside a `sequence`, as in round 2.
 - **Staging gate**: REFUSED, 1 of 122 — `bell-14` UNBOUND (no `kill` objective; 6 waves declared), as in round 2. 66 bound, 25 declared uncoverable, 30 out of stage.
+
+## Round 4 — fights the story has announced become titled objectives, on the released engine
+
+Toolchain as round 3: `delvec--v1.8.2` (`11cd7c8a73b4b3b9c2383e67310ba6d49fc19903`), this clone's `prefabs/`.
+
+- **The fish-market wave is an objective**: `obj/the-slipway-drowned`, a `kill` on `wave/drowned-slipway`, first in `quest/the-fish-market`, bound to `node/fish-market` in `beats[]`. Its title and hint restate Wenna's warning in `dlg/wenna-start` and nothing more; the hint moved to it from the slate. zh-cn: 击退鱼市里的溺亡者, the hint carried with its key.
+- **The other five waves stay untitled beats.** No line names the fight among the hulls, the two out of the wrecks, the lice, or the two by the pool before it starts; under the journal ruling they carry no title, and `DW0863` refuses a `kill` without one, so they cannot be objectives.
+- **`DW0380` on `wave/drowned-hulls` stays.** Its own prescriptions are a real objective (refused above), or moving the wave off the walk / widening the boatyard, which is a placement decision this round was not given.
+- **The layout graph changed** (one beat), so the walk record is stale by one more edit; `DW0841` already refused allocation since round 2.
+
+### Round 4 — the branch chronicle, re-read
+
+Each chronicle gains two lines (the `dies` beat and its subject), so round 3's citations past line 22 move by two: identical to line 128, the choice at line 130, the ending at line 132.
+
+| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
+|---|---|---|---|
+| Wenna: the Drowned come up the slipway into the market (`dlg/wenna-start`), restated by `obj/the-slipway-drowned` | both | 20 `arrives` (the wave), 23 `dies` | cleared |
+
+### Round 4 — the machine ladder (delvec 1.8.2, project `dw-stranding-r4w`)
+
+- **validate / analyze / build**: exit 0, built into an empty directory. Promise line: 25 objectives, 1 `kill` (`DW0863`); round 3 had 24 and 0. Warnings unchanged: `DW0351` x5, `DW0379` x3, `DW0380` x1, `DW0781`, `DW0813`, `DW0821` x3, `DW0822` x2.
+- **PackTest**: 271 tests, 6 failed — `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`, the set round 3 recorded (the released engine's atmosphere proofs reading each other's paint). The two new tests, `verb_kill` and `verb_kill_uncredited`, pass. Not re-run.
+- **Bot**: red at step 2 as in round 3 (`bot at [177.5, 94.3, 655.4]`, the cutscene inside a `sequence`). The fish-market fight is step 3, so the muster reads `not-reached` and die-retry is UNBOUND (0 scripted deaths of 1 declared encounter): the run never reached it.
+- **Staging gate**: stageable, 122 of 122 — 67 bound, 25 declared uncoverable, 30 out of stage. `bell-14` is BOUND (1 `kill` objective) where rounds 2 and 3 were UNBOUND.
