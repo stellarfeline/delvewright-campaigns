@@ -3470,6 +3470,15 @@
               "type": "set-checkpoint"
             },
             {
+              "anchor": "anchor/seam-heart-to-spine",
+              "happening": {
+                "subject": "anchor/seam-heart-to-spine",
+                "text": "The stair down the spine shuts behind the party.",
+                "verb": "seals"
+              },
+              "type": "close-gate"
+            },
+            {
               "steps": [
                 {
                   "at_ticks": 0,
@@ -6861,7 +6870,22 @@
           {
             "style": "actionbar",
             "text": "Shut tight while the heart beats.",
-            "type": "narrate"
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/beat-stopped"
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "It has shut again, and it holds.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/stone-cut"
+              ]
+            }
           }
         ],
         "id": "trigger/spine-sealed",
