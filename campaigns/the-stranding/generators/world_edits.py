@@ -33,6 +33,23 @@ if os.path.exists(body):
         "note": "The body on its bank, sculpted from forms/the-stranding-body.json; its places are cut out of the form.",
         "edits": [{"verb": "fragment", "prefab": "prefab/the-stranding-body", "rotation": "none",
                    "frame": frame(meta["anchor"]), "at": meta["at"]}]})
+    # what the plan's massing left standing on the body (the open places' rims,
+    # their floors, a ceiling course) is skinned in the hide: stone bricks,
+    # smooth stone, the frame bricks and the floors' marker concrete, never a
+    # stair tread
+    hide = {"blocks": [{"block": "minecraft:gray_concrete", "weight": 8},
+                       {"block": "minecraft:gray_terracotta", "weight": 2}]}
+    massing = ["minecraft:stone_bricks", "minecraft:smooth_stone", "minecraft:polished_blackstone_bricks"] + \
+        [f"minecraft:{c}_concrete" for c in ("white", "light_gray", "black", "brown", "red", "orange", "yellow",
+                                              "lime", "green", "cyan", "light_blue", "blue", "purple", "magenta", "pink")]
+    ax, ay, az = meta["anchor_world"]
+    lo, hi = (128, 64, 599), (172, 116, 834)
+    batches.append({"id": "batch/the-body-skin", "area": "area/site",
+        "note": "The plan's massing left on the body, skinned in its hide.",
+        "edits": [{"verb": "select", "name": "region/on-the-body",
+                   "shape": {"kind": "box", "frame": frame(meta["anchor"]),
+                             "min": [lo[0] - ax, lo[1] - ay, lo[2] - az], "max": [hi[0] - ax, hi[1] - ay, hi[2] - az]}},
+                  {"verb": "replace", "region": "region/on-the-body", "matching": massing, "recipe": hide}]})
 doc = {"campaign_id": "the-stranding", "dsl_version": "0.36.0", "stage": "world-edits",
        "content": {"batches": batches}}
 with open(os.path.join(camp, "world-edits.json"), "w") as f:

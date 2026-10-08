@@ -97,7 +97,7 @@ for (z0, x0, y0, r0, s0), (z1, x1, y1, r1, s1) in zip(stations, stations[1:]):
 for (z0, z1, r0, r1) in ((700, 760, 31.0, 30.0), (760, 820, 30.0, 22.0)):
     capsule((149, 62, z0), (148, 62, z1), r0, r1, LOWER, stretch=0.5)
 # the spine ridge over the stair up the inside of the back (east side)
-capsule((164, 103, 700), (164, 100, 766), 5.0, 4.0, HIDE)
+capsule((164, 105, 698), (164, 104, 768), 7.0, 7.0, HIDE)
 # --- flippers, the jaw, the flukes ------------------------------------------
 capsule((172, 64, 712), (183, 63, 724), 3.3, 1.4, HIDE)           # east flipper, splayed on the mud
 capsule((163, 64, 600), (172, 64, 583), 2.2, 1.7, BONE, noisy=False)  # the lower jaw, bare bone, swung east
@@ -119,7 +119,7 @@ def frame(place):
     return m, [m[i] + e[i] - 1 for i in range(3)], a["datum_y"]
 for place in sorted(INSIDE):
     lo, hi, d = frame(place)
-    box((lo[0] - 2, lo[1] - 1, lo[2] - 2), (hi[0] + 3, hi[1] + 3, hi[2] + 3), FLESH)
+    box((lo[0] - 1, lo[1] - 1, lo[2] - 1), (hi[0] + 2, hi[1] + 2, hi[2] + 2), FLESH)
 # --- cut: every place's play space, and every seam's way through the wall ---
 for place in PLACES:
     lo, hi, d = frame(place)
