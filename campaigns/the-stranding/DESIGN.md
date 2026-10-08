@@ -181,7 +181,7 @@ When the third valve is opened the beat stops, Davey wakes and does not know whe
 
 | # | place | what the player does there |
 |---|---|---|
-| 31 | Spine Stair | up the inside of the neck on the vertebrae, built as steps; out through the blowhole onto the back |
+| 31 | Spine Stair | up the inside of the neck on the vertebrae, built as steps; out through the blowhole onto the back; when the Brow Stone is cut the door at the foot of the stair shuts again, so the only way off the head is down the back |
 | 32 | The Crown | the top of the head, forty blocks over the flat: the town's lights to the north, the tentacles standing out of the wounds all round (the Crown cutscene, as the party comes out of the blowhole); three of them stand by the way to the Brow, which passes between their reaches (optional fights); checkpoint |
 | 33 | The Brow | the Brow Stone in the forehead; holding the Flensing Spade, a player cuts it out (**the full perception bundle** for everyone on the Brow: darkness, nausea, the face, blindness, a second face, the warden's sound behind them). Then the disproportionate beat: every tentacle rises at once, the largest out of the blowhole and over the Brow, the eye below the Brow opens, the flat starts to go, and the moon turns red (the cut cutscene, played when the perception bundle has ended). The stone is carried by one player. |
 | 34 | The Run | down the back along the spine ridge, down the tail flank onto the bank and along it to the skiff's landing, under the red moon; the tentacles strike beside the way, each strike announced by its wind-up (see *Tentacles*); behind the party, the ground they have passed collapses into the sea, one section per marker passed (the lamp stakes Marrack's crew set along the bank); at the landing the bank's tiller is live: Davey is in the skiff, and the escape cutscene carries everyone aboard back to the Skiff Stage |
@@ -339,13 +339,12 @@ A red moon from the first minute would break the posture (acts 1 and 2 build slo
 
 ## Waiting on the engine
 
-These beats depend on engine work not in the released engine (1.9.0 / dsl 0.36.0). Everything around them is authored now.
+These beats depend on capabilities the engine does not have (current engine 1.10.0 / dsl 0.36.1). Everything around them is authored now.
 
 | beat | what is authored now | what the capability fills |
 |---|---|---|
 | the oarsman's rotating lines | his ordinary lines and the repeatable exchange | one line in obfuscated text inside his rotation (engine issue 957) |
-| the body and the figure, stamped whole | both are sculpted and stamped by the world edits, and every proof reads them | the engine writes world edits in one command chain, and the game stops a chain at 65,536 commands; the two stamps take about 84,700, so the world's setup stops part-way through them (engine finding, round 5) |
-| the tentacles of the Jaw Bank, the Rib Cathedral, the Crown and the Run | they rise, can be struck down and retract | striking, now that a lock derives where a blow lands (spec-0094), is authored in a later round |
+| the tentacles of the Jaw Bank, the Rib Cathedral, the Crown and the Run | they rise, can be struck down and retract | striking: a lock's landing region is a box centred on an anchor, every cell of it 5 to 19 blocks from the tentacle's mark, off the way and 3 blocks from any drop; on a massed place the only anchors are the place's centre and the engine's station stand-ins, and neither can be put there. The Narrows tentacle has a mud shelf of its own for this; each of the others needs a place of its own beside the way, or its place detailed with a piece that carries the anchor |
 
 ## Danger model
 
