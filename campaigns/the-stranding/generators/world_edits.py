@@ -18,8 +18,15 @@ def frame(anchor):
 
 batches = [
     {"id": "batch/sea-skiff", "area": "area/site",
-     "note": "The skiff on the open water, stamped over the plan's massing of node/open-water; its seat (8,1,5) on anchor/sea-skiff.",
-     "edits": [{"verb": "fragment", "prefab": "prefab/the-stranding-sea-skiff", "rotation": "none",
+     "note": "The skiff on the open water: the plan's massing of node/open-water carved away and the boat stamped on the sea in its place; its seat (8,1,5) on anchor/sea-skiff.",
+     "edits": [{"verb": "select", "name": "region/open-water-massing",
+                "shape": {"kind": "box", "frame": frame("anchor/sea-skiff"), "min": [-7, -2, -5], "max": [10, 8, 8]}},
+               {"verb": "carve", "region": "region/open-water-massing"},
+               {"verb": "select", "name": "region/open-water-sea",
+                "shape": {"kind": "box", "frame": frame("anchor/sea-skiff"), "min": [-7, -2, -5], "max": [10, -1, 8]}},
+               {"verb": "fill", "region": "region/open-water-sea",
+                "recipe": {"blocks": [{"block": "minecraft:water[level=0]", "weight": 1}]}},
+               {"verb": "fragment", "prefab": "prefab/the-stranding-sea-skiff", "rotation": "none",
                 "frame": frame("anchor/sea-skiff"), "at": [-8, -1, -5]}]},
     {"id": "batch/the-figure", "area": "area/site",
      "note": "What stands in the sea west of the black water, facing east toward the open water; never seen but in the crossing back and the return.",

@@ -19,6 +19,8 @@ def cell(v):  # a cell [x,y,z] spanning x..x+1
     return [v[2], v[1], X - 1 - v[0]]
 out = dict(src)
 out["id"] = "prefab/the-stranding-figure"
+# its feet stand on the sea floor: the apron is packed mud, not the demo's pale stone
+out["ground"] = dict(src["ground"], block="minecraft:packed_mud")
 out["box"] = [Z, Y, X]
 solids = []
 for s in src["solids"]:
