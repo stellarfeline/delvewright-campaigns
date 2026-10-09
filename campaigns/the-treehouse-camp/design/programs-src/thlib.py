@@ -229,6 +229,7 @@ class Model:
             "west": lambda k: k[0] == 0, "east": lambda k: k[0] == X - 1,
             "north": lambda k: k[2] == 0, "south": lambda k: k[2] == Z - 1,
             "up": lambda k: k[1] == Y - 1,
+            "down": lambda k: k[1] == 0,
         }
         for f, t in tests.items():
             if any(t(k) for k in self.cells):

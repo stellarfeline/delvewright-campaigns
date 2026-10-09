@@ -33,12 +33,12 @@
         "quest": "quest/the-gate"
       },
       {
-        "node": "node/watch-crown",
+        "node": "node/crown-lookout",
         "objective": "obj/climb-to-the-lookout",
         "quest": "quest/lantern-night"
       },
       {
-        "node": "node/watch-crown",
+        "node": "node/crown-lookout",
         "objective": "obj/hang-the-lantern",
         "quest": "quest/lantern-night"
       }
@@ -58,7 +58,8 @@
       "node/loom-house",
       "node/high-bridge",
       "node/watch-house",
-      "node/watch-crown"
+      "node/watch-crown",
+      "node/crown-lookout"
     ],
     "edges": [
       {
@@ -117,25 +118,31 @@
       },
       {
         "a": "node/watch-crown",
+        "b": "node/crown-lookout",
+        "class": "climb",
+        "id": "edge/lookout-ladder"
+      },
+      {
+        "a": "node/crown-lookout",
         "b": "node/hearth-house",
         "class": "vision",
         "id": "edge/lookout-hearth"
       },
       {
-        "a": "node/watch-crown",
+        "a": "node/crown-lookout",
         "b": "node/loom-house",
         "class": "vision",
         "id": "edge/lookout-loom"
       },
       {
-        "a": "node/watch-crown",
+        "a": "node/crown-lookout",
         "b": "node/seed-house",
         "class": "vision",
         "id": "edge/lookout-seed"
       }
     ],
     "entry": "node/root-glade",
-    "goal": "node/watch-crown",
+    "goal": "node/crown-lookout",
     "nodes": [
       {
         "id": "node/root-glade",
@@ -278,14 +285,20 @@
       },
       {
         "id": "node/watch-crown",
+        "intent": "fork",
+        "note": "The Watch Tree's crown. The ladder from the Watch House arrives on a plank landing at the first fork, and goes on up the bark inside the leaves.",
+        "size_class": "hall"
+      },
+      {
+        "id": "node/crown-lookout",
         "intent": "summit",
-        "note": "The Watch Tree's crown. The ladder from the Watch House arrives on a plank landing at the first fork; a second ladder climbs the trunk inside the leaves to the Crown Lookout ring with the lantern hook.",
-        "size_class": "hall",
+        "note": "The Crown Lookout: a ring of planks round the Watch Tree's trunk just under its last branches, over every other crown in the camp, with the lantern hook.",
+        "size_class": "room",
         "stations": [
           {
             "anchor": "anchor/lantern-hook",
             "kind": "point",
-            "note": "The iron hook at the top of the Crown Lookout ring, where the Night Lantern is hung."
+            "note": "The iron hook over the ring, where the Night Lantern is hung."
           }
         ]
       },
