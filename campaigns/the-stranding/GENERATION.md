@@ -288,3 +288,70 @@ Not done this round. A lock's landing region is a box centred on an anchor; ever
 - **Branch chronicle**: 158 lines each, identical but for the choice and the ending; the new line is 58, `seals` the stair at the cut, which `DESIGN.md` row 31 now carries. Cleared.
 - **Visual review**: 530 Chunky scenes emitted (432 POV); ten POV frames rendered at the scene budget, one per act stretch (legs 1, 3, 13, 18, 20, 22, 27, 31, 32, 34); the other 520 not rendered. The frames show the derived blockout — stone-brick boxes lit by torches — everywhere but the three detailed places: 50 of 53 places are massing, and the spine stair's frame is open to the sky.
 - **Staging gate**: stageable, 122 of 122 — 71 bound, 25 inapplicable, 26 declared uncoverable, 0 unbound. A site-plan build with any place detailed passes its detail clause; this one has 3 of 53.
+
+## Round 7 — paused
+
+Paused by the owner's decision while the way a place is built is redesigned (spec-0098, in progress: a structure owns its whole volume, outside included). Nothing here is a finished state. Toolchain as round 6: engine `ccbdfc0fb3042c8567bfb6579f9f86be0a30cc8e`, `delvec 1.10.0, dsl 0.36.1, mc 1.21.11`; I1b exits 0 in dev mode; this clone's `prefabs/`.
+
+### What was done
+
+- **51 of 53 places carry a detail-plan row** (`delvec detail --all`: "51 place(s) detailed of 51 named"). Not detailed: the open water (round 5, finding 2) and the Narrows (finding 3 below). The pieces come from builders in `generators/places_act1.py`, `places_act2.py`, `places_act34.py` over one kit, `generators/kit.py`, which asks `delvec allocation` for each frame, seam and owed name on every run (as `body_form.py` does) and reads the spatial contract back the way the engine does: one floor per space, a roofed cell of an open place in its own closed space, the tops of posts and walls nobody stands on out of walk.
+- **Light** is placed with each room; every piece's own probe reads `lit` except where the whole-world survey below says otherwise. Inside the body: glow lichen on the walls, cave vines with glow berries from the vault, lamps in niches under a lip of bone; the rib cathedral an arcade of rib columns carrying lamps.
+- **Anchors** stand where their things are (the tide board, the Rubbing, the chip's case, the lighthouse lamp at the top of the tower, the bells beside the ferry houses' doors, the valves on the heart's face, the Brow Stone at the forehead's edge, the end of the pier). Offsets the story stands bodies at were checked against each frame. `node/far-landing` stays where the plan stood it: the body's stamp is placed from it (`generators/body_place.json`); moving it moved the whole body 25 blocks (seen as dark cells on the back and the ridge) and was reverted. The far bell's ringer stands at a new station, `anchor/far-bell-stand`.
+- **The sea fog over the open water** is painted at the lamps beat instead of the notice: the coach stop is about 490 blocks from the fog's region, past the declared 480; the lighthouse, about 250 blocks away, is the first beat from which that water can be seen. `DESIGN.md` (both languages) says so.
+- `sleeper-street-1` stands one cell out of the door he stood inside (cast offset `[-2, 0, -8]`).
+- **The town's rework after review** (pitched undersides of the roofs over the chapel, the market, the cottage, the customs house, the lofts and the shed; awnings over the market's stalls; street fronts with plinths, sills, lintels, door jambs and hoods, chimney stacks) is written in `generators/places_act1.py` but **was never regenerated**: a syntax error in the same file (fixed at the pause) made the generator fail while a gate script that hid its stderr went on judging the old programs. The programs and pieces in the tree are the pre-review versions.
+
+| place | detailed | notes |
+|---|---|---|
+| Coach Road, Cliff Steps, High Street, Harbour Office, Coyle House, Fish Market, Seawall, Seamen's Chapel, Chapel Crypt, Customs House, Net Lofts, Boatyard, Whalers' Shed, Ropewalk, Breakwater, Lighthouse, Slipway Stair, Pier | yes | pre-review pieces; the review found flat lids for roofs and flat facades, see the exterior list and finding 1 |
+| Pilgrims' Way, Wreck Field, Mast Platform, Carved Pillars, Skiff Stage, five mud fields, Narrows Shelf, Far Landing, Jaw Bank, Flank Ridge | yes | walled by the blockout shell (finding 1) |
+| The Narrows | no | finding 3 |
+| Mouth, Throat, Rib Cathedral, Stomach, Heart Chamber, Breach, Spine Stair | yes | the Stomach's pool is two courses deep; no lethal volume was added |
+| Crown, Brow, Back (upper, middle, lower), Tail Flank, Tail Bank, Tail Road, Run Bank | yes | walled by the shell |
+| Near and far ferry houses, Marrack's launch | round 5 | re-made unchanged by `--all` |
+
+No place was rendered with Chunky and no place was judged at eye height in the game; draft frames (`delvec render piece`) only.
+
+### The exterior each place needs (for the pass after spec-0098)
+
+| place | open or enclosed | roof form | facade |
+|---|---|---|---|
+| Coach Road | open, no shell | none | drystone parapet on the drop, rock bank behind, the coach stop's timber shelter |
+| Cliff Steps | enclosed | slate roof stepping down the cliff with the flight | rubble walls |
+| High Street | open, no shell | the terraces behind its fronts: pitched slate roofs, ridges along the street, chimneys at party walls | its own street fronts |
+| Harbour Office | enclosed | slate gable, ridge east-west, chimney | two-storey stone house; street door on the upper floor; a window over the harbour |
+| Coyle House | enclosed | pitched slate roof, chimney | single-storey limewashed cottage, small window, plain door |
+| Fish Market | enclosed hall, open on the seawall side | long pitched plank and slate roof, ridge north-south | timber frame on a stone footing; open arcade with awnings to the seawall; sea doors to the slipway |
+| Seawall | open, no shell | none | parapet with bollards; the harbour fronts along the north |
+| Seamen's Chapel | enclosed | steep slate gable, ridge north-south, a bell-cote on the south gable | rubble stone, tall narrow windows, door in the gable end |
+| Chapel Crypt | below ground | none (buried) | none |
+| Customs House | enclosed | hipped slate roof | dressed stone, a door on the seawall with a lamp each side |
+| Net Lofts | enclosed | pitched plank roof | plank loft with a loading door over the harbour |
+| Boatyard | open (the emptied basin) | none | quay walls with their steps |
+| Whalers' Shed | enclosed | tall timber gable with a louvre | plank walls, big doors |
+| Ropewalk | enclosed | long low pitched roof, rising over the stair at its south end | timber |
+| Breakwater, Slipway Stair, Pier | open, no shell | none | stone arm with parapets; stone slip walls; timber deck on piles |
+| Lighthouse | enclosed tower | lantern room glazed all round under a cap | white stone tower with a gallery |
+| Pilgrims' Way, Wreck Field, mud fields, Narrows Shelf, Carved Pillars, Skiff Stage, Marrack's launch, Mast Platform | open, no shell | none | the flat itself; the mud fields must stay open to the sea to sink |
+| The Narrows | open, no shell | none | a ridge three stones wide between water |
+| Near and far ferry houses | enclosed | slate roof | stone walls down to the sea floor, the water gate shut |
+| Far Landing, Jaw Bank, Flank Ridge, Tail Bank, Tail Road, Run Bank | open, no shell | none | the body's bank |
+| Mouth to Spine Stair | inside the body | the body form | the body form |
+| Crown, Brow, Back, Tail Flank | open, no shell, on the body | none | the hide; drops at the edges visible |
+
+### Open items
+
+- **Build red** on `DW0308`: the first creep's cutscene (quest 2 `on_complete`, re-aimed this round to offsets `[-4,6,4]` → `[6,7,0]` of `anchor/node-fish-market`) clips a solid block at [128, 78, 107] in the market. Earlier reds this round, fixed: `DW0313` (gravel over no substrate), `DW0897` (pier offsets), `DW0210` (dark cells), `DW0322` (a pool that drained to the sea), `DW0833` (cathedral height), `DW0845`.
+- **The fog repaint distance**: moved to the lamps beat (above); not yet proved on a ladder run.
+- **Tentacle anchors and strikes**: landing stations exist and are marked (Jaw Bank, Rib Cathedral, Crown); the Jaw Bank's tentacles stand in their pits. The strikes written for them (`generators/strikes-parked.json`) are parked out of `quests.json`: at the time they were tried the landing anchors still resolved to stand-ins and `DW0968` refused every step ("no strike clip comes down on" those cells, and the blow must lie inside `while_in`). They have not been tried against the detailed anchors.
+- **The ladder** (PackTest, bot, branch runs, staging gate) was not run this round, nor the Chunky frames.
+
+### Engine findings (round 7)
+
+1. **A detailed place has no outside of its own** (capability gap; blocks staging). The blockout shell — every wall, every unshared face, the ceiling of a roofed box — stands outside every frame and is written whether or not the place is detailed (`crates/delvec/src/compiler/blockout.rs`, `Mass::holes`: "every vertical party plane, every wall, every unshared shell face and every ring of floor under a wall lie OUTSIDE the frame, so they are written exactly as they were at stage 5"). So every building reads from outside as a flat-topped stone box, and every open place (the flat, the mud that must sink to the sea, the Narrows "between open water", the breakwater, the coach road's view, the Crown's drops) stays walled six to twelve courses high (draft snapshot: round 5's detailed launch stands inside stone walls). `DW0821`'s text promises that "the detail pass will carve" a vista and turns refusing once every node is detailed, a remedy the detail pass cannot reach. Being answered by spec-0098.
+2. **An all-open piece is refused.** `contract-closure` reds a zero binding when no space is `enclosed` or `open_top` ("no space declares an envelope this gate can examine"), though a street or a mud field honestly encloses nothing; it is not among the gates whose zero is honest. Every open place here carries a real roofed element (a shelter, a hull's belly, a hood) so the gate binds. Direction: can only turn a proof red.
+3. **Two allocated seams share corner cells, and no piece can answer both** (the Narrows: `edge/pillars-to-narrows` x 0..2 z 0 and `edge/narrows-to-mud-west` x 0 z 0..63 share x 0 z 0; likewise at z 63 with `edge/narrows-to-stage`). A cell in two openings touches the room from neither (`contract-well-formed`); giving the corner to the room makes `DW0844` refuse both openings as not the plan's. Direction: can only turn a proof red.
+4. **The allocation hands a seam as its two corner cells**, not its cells (`"cells": [[0,9,0],[2,11,0]]` for a 3×3 opening), while the `/new-delve` page's detail reference says it hands "every seam with its cells".
+5. **The sculk family is not in the palette allowlist** (`DW0730`), while `DESIGN.md`'s mechanism table counts the heart's sculk sensors, shrieker and pulse floor as vanilla behaviour in the prefab. The Heart Chamber is built without them.
+6. **`delvec render piece` draws an eye frame facing away from its anchor's facing** (observed once): the Coyle House node at [5,1,4] facing west reports its frame "blind" within 4.5 blocks and shows the east door, five blocks from the west wall and two from the east. A review-medium defect; not checked further.

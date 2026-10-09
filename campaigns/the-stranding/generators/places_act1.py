@@ -170,6 +170,96 @@ def house_front(p, side, z0, z1, doors=(), windows=(), stone=None, open_doors=()
         p.put(x, y, z, pane("glass_pane", n=True, s=True))
 
 
+
+# ---- the town's craft: the roof's underside over a room, fronts with depth on a street ------
+def pitched(p, lo, hi, b0, b1, eave_y, along="z", stair_mat="spruce", board="minecraft:spruce_planks",
+            beams_every=4):
+    """The underside of a pitched roof over a room. The ridge runs `along` z (or x); across it,
+    from `lo` to `hi`, the ceiling rises one course a cell from the eaves (`eave_y`) toward the
+    ridge; its surface is upside-down stairs under roof boards; tie beams cross the room at the
+    eaves every `beams_every` cells along the ridge. Every surface over a body faces down."""
+    H = p.H
+    for a in range(lo, hi + 1):
+        d = min(a - lo, hi - a)
+        c = eave_y + d
+        if c >= H - 1:
+            continue
+        if a - lo < hi - a:
+            f = "west" if along == "z" else "north"
+        elif a - lo > hi - a:
+            f = "east" if along == "z" else "south"
+        else:
+            f = None
+        for b in range(b0, b1 + 1):
+            x, z = (a, b) if along == "z" else (b, a)
+            for y in range(c + 1, H):
+                p.put(x, y, z, board)
+            if f and p.get(x, c, z) is None:
+                p.put(x, c, z, stair(stair_mat, f, "top"))
+    if beams_every:
+        for b in range(b0 + 1, b1, beams_every):
+            for a in range(lo, hi + 1):
+                x, z = (a, b) if along == "z" else (b, a)
+                if p.get(x, eave_y, z) is None or "stairs" in str(p.get(x, eave_y, z)):
+                    p.put(x, eave_y, z, log("dark_oak_log", "x" if along == "z" else "z"))
+
+
+WALLMAT = {"stone": "minecraft:stone_bricks", "limewash": "minecraft:calcite",
+           "brick": "minecraft:bricks", "rubble": "minecraft:cobblestone"}
+
+
+def street_house(p, side, a0, a1, kind, door=None, windows=(), chimney=None, hood=True):
+    """One cottage front on a street's edge (`side`: the frame edge it stands on), from `a0`
+    to `a1` along that edge: a plinth course, the wall (stone, rubble, brick, or limewash in a
+    dark timber frame), windows with a sill under and a lintel over, a door between jambs with
+    a slate hood over it on the street side, the eaves and the slate roof course, a chimney
+    stack at a party wall."""
+    W, L = p.W, p.L
+    inward = OPP[side]
+    def cell(a, d=0):            # a along the edge, d cells in from it
+        return {"west": (d, a), "east": (W - 1 - d, a), "north": (a, d), "south": (a, L - 1 - d)}[side]
+    along_x = side in ("north", "south")
+    def put(a, y, b, d=0):
+        x, z = cell(a, d); p.put(x, y, z, b)
+    wallmat = WALLMAT[kind]
+    lo_dir, hi_dir = ("west", "east") if along_x else ("north", "south")
+    for a in range(a0, a1 + 1):
+        put(a, 1, "minecraft:polished_andesite")
+        for y in range(2, 5):
+            put(a, y, wallmat)
+        put(a, 5, stair(SLATE, side, "top"))
+        put(a, 6, stair(SLATE, side))
+    if kind == "limewash":
+        for a in (a0, a1):
+            for y in range(1, 5):
+                put(a, y, log("dark_oak_log"))
+        for a in range(a0, a1 + 1):
+            put(a, 4, log("dark_oak_log", "x" if along_x else "z"))
+    else:
+        for a in (a0, a1):
+            for y in range(2, 5):
+                put(a, y, "minecraft:stone_bricks" if kind != "stone" else "minecraft:polished_andesite")
+    for (a, y) in windows:
+        put(a, y, pane("glass_pane", e=along_x, w=along_x, n=not along_x, s=not along_x))
+        if kind == "limewash":
+            put(a, y - 1, log("dark_oak_log", "x" if along_x else "z"))
+        else:
+            put(a, y - 1, "minecraft:smooth_stone"); put(a, y + 1, "minecraft:polished_andesite")
+    if door is not None:
+        put(door, 1, f"minecraft:spruce_door[facing={inward},half=lower,hinge=left,open=false,powered=false]")
+        put(door, 2, f"minecraft:spruce_door[facing={inward},half=upper,hinge=left,open=false,powered=false]")
+        for sa in (door - 1, door + 1):
+            if a0 <= sa <= a1:
+                for y in (1, 2, 3):
+                    put(sa, y, log("stripped_spruce_log"))
+        put(door, 3, log("stripped_spruce_log", "x" if along_x else "z"))
+        if hood:
+            put(door, 3, slab(SLATE, "top"), d=1)
+    if chimney is not None:
+        for y in (5, 6):
+            put(chimney, y, "minecraft:bricks")
+
+
 # =============================================================================
 def coach_road():
     """The cliff-top coach road: a cart road of setts between a rock bank on the north and a
@@ -288,31 +378,31 @@ def cliff_steps():
 
 
 def high_street():
-    """The high street: a cobbled street between two rows of grey stone cottages with slate
-    eaves, their doors shut, lamp posts at the kerbs; the sleepers stand at doors facing the
-    sea."""
+    """The high street: a cobbled street between two terraces of cottages, each front its own
+    (grey stone, rubble, brick, or limewash in a dark timber frame), on a plinth course, with
+    windows set between sill and lintel, doors between jambs under slate hoods, slate eaves
+    and chimney stacks at the party walls; lamp posts at the kerbs; the sleepers stand at two
+    of the doors, facing the sea."""
     p = Place("high-street", envelope="open")
     W, H, L = p.W, p.H, p.L
     cob = p.role("cobbles", COBBLES)
-    stone = p.role("stone", TOWN_STONE)
     setts = p.role("setts", SETTS)
     p.box(0, 0, 0, W - 1, 0, L - 1, cob)
     for z in range(L):
         p.put(1, 0, z, setts); p.put(W - 2, 0, z, setts)
-    house_front(p, "west", 0, L - 1, doors=(4, 15, 22, 34, 41),
-                windows=[(z, 3) for z in (2, 7, 10, 19, 25, 31, 38, 44)] + [(z, 2) for z in (8, 26, 45)],
-                stone=stone)
-    house_front(p, "east", 0, L - 1, doors=(3, 9, 17, 29, 38, 45),
-                windows=[(z, 3) for z in (1, 6, 13, 20, 24, 33, 41)] + [(z, 2) for z in (12, 21, 35)],
-                stone=stone)
-    for (x, z) in ((1, 1), (W - 2, 7), (1, 12), (W - 2, 19), (1, 26), (W - 2, 32), (1, 38), (W - 2, 44), (1, 46)):
+    kinds = ["stone", "limewash", "rubble", "brick"]
+    west = [(0, 5, 3), (6, 11, 9), (12, 17, 15), (18, 23, 21), (24, 29, 27), (30, 35, 33), (36, 41, 39), (42, 47, 45)]
+    east = [(0, 4, 2), (5, 10, 8), (11, 16, 14), (17, 22, 20), (23, 26, 25), (27, 31, 29), (32, 37, 35), (38, 42, 40), (43, 47, 45)]
+    for k, (a0, a1, d) in enumerate(west):
+        wins = [(a, 3) for a in (d - 2, d + 2) if a0 < a < a1]
+        street_house(p, "west", a0, a1, kinds[k % 4], door=d, windows=wins, chimney=a0 if k % 2 == 0 else None)
+    for k, (a0, a1, d) in enumerate(east):
+        wins = [(a, 3) for a in (d - 2, d + 2) if a0 < a < a1]
+        street_house(p, "east", a0, a1, kinds[(k + 2) % 4], door=d, windows=wins, chimney=a1 if k % 2 else None)
+    for (x, z) in ((1, 1), (W - 2, 6), (1, 11), (W - 2, 18), (1, 24), (W - 2, 32), (1, 37), (W - 2, 43), (1, 47)):
         lamp_post(p, x, z, 2)
-    for (x, z) in ((1, 15), (W - 2, 29)):
-        p.put(x, 3, z, slab("stone_brick", "top"))
-        p.put(x, 3, z - 1, stair("stone_brick", "south", "top")); p.put(x, 3, z + 1, stair("stone_brick", "north", "top"))
-    p.put(1, 1, 22, slab("stone_brick")); p.put(W - 2, 1, 17, slab("stone_brick"))
     p.put(W - 2, 1, 26, "minecraft:water_cauldron[level=3]"); p.put(W - 2, 1, 27, "minecraft:cauldron")
-    p.put(1, 1, 36, barrel("east")); p.put(1, 1, 37, barrel("east"))
+    p.put(1, 1, 30, barrel("east")); p.put(1, 1, 31, barrel("east"))
     p.cut_seams(floor=cob)
     p.mark("node-high-street", (3, 1, 23), "south")
     return p
@@ -405,9 +495,8 @@ def fish_market():
     for x in range(W):
         for y in range(5, H - 1):
             p.put(x, y, 0, "minecraft:spruce_planks"); p.put(x, y, L - 1, "minecraft:spruce_planks")
+    pitched(p, 1, W - 2, 1, L - 2, 6, along="z", stair_mat="spruce", board="minecraft:spruce_planks", beams_every=4)
     for z in range(3, L - 1, 4):
-        for x in range(1, W - 1):
-            p.put(x, H - 3, z, log("dark_oak_log", "x"))
         for x in (1, W - 2):
             if x == W - 2 and 9 <= z <= 15:
                 continue
@@ -439,6 +528,14 @@ def fish_market():
         p.put(x, 1, L - 3, barrel("north"))
     for x in (4, 6, 8):
         p.put(x, 1, L - 3, "minecraft:water_cauldron[level=3]")
+    # striped awnings over the west stalls, on posts at their fronts
+    for z in range(2, L - 2):
+        p.put(3, 4, z, "minecraft:red_carpet" if z % 2 else "minecraft:white_carpet")
+        p.put(2, 4, z, "minecraft:red_carpet" if z % 2 else "minecraft:white_carpet")
+    for z in (2, 6, 10, 14, L - 3):
+        for y in (1, 2, 3):
+            if p.get(3, y, z) is None:
+                p.put(3, y, z, fence("spruce"))
     # the sea doors at the head of the slip, weed and wet stone before them
     for x in range(15, 20):
         for y in range(1, 5):
@@ -448,7 +545,7 @@ def fish_market():
     p.put(15, 1, L - 2, "minecraft:grindstone[face=floor,facing=north]")
     for (x, z) in ((5, 3), (9, 7), (18, 3), (14, 11), (6, 15), (20, 7)):
         p.put(x, H - 4, z, "minecraft:cobweb")
-    for (x, z) in ((7, 3), (16, 3), (21, 11), (9, 15), (14, 7), (21, 3), (5, 7), (18, 15), (12, 15), (19, 7), (5, 11)):
+    for (x, z) in ((7, 3), (16, 3), (21, 11), (9, 15), (14, 7), (21, 3), (5, 7), (18, 15), (12, 17), (19, 7), (5, 11)):
         hang(p, x, 5, z)
     for (x, z) in ((3, 6), (3, 12), (20, 15)):
         p.put(x, 1, z, LANTERN)
@@ -485,15 +582,31 @@ def seawall():
             p.put(x, y, L - 1, stone)
         p.put(x, 5, L - 1, stair(SLATE, "south"))
     p.put(clo[0], 3, L - 1, "minecraft:chiseled_stone_bricks")
-    for x in range(W):
-        if llo[0] - 1 <= x <= lhi[0] + 1 or plo[0] - 1 <= x <= phi[0] + 1:
-            continue
-        for y in range(1, 5):
-            p.put(x, y, 0, stone)
-        p.put(x, 5, 0, stair(SLATE, "north"))
-    for x in range(W):
-        if x % 7 == 3 and p.get(x, 1, 0) is not None:
-            p.put(x, 2, 0, pane("glass_pane", e=True, w=True))
+    # the harbour fronts along the north side, between the lanes to the lofts and the chapel
+    segs = []
+    gaps = sorted([(llo[0] - 1, lhi[0] + 1), (plo[0] - 1, phi[0] + 1)])
+    start = 0
+    for g0, g1 in gaps:
+        if g0 - 1 >= start:
+            segs.append((start, g0 - 1))
+        start = g1 + 1
+    segs.append((start, W - 1))
+    kinds = ["rubble", "limewash", "stone", "brick"]
+    k = 0
+    for (s0, s1) in segs:
+        a = s0
+        while a <= s1:
+            b = min(s1, a + 6)
+            if b - a >= 2:
+                d = (a + b) // 2
+                street_house(p, "north", a, b, kinds[k % 4], door=d if k % 2 == 0 else None,
+                             windows=[(w, 3) for w in (a + 1, b - 1) if w != d], chimney=a if k % 3 == 0 else None)
+            else:
+                for aa in range(a, b + 1):
+                    for y in range(1, 5):
+                        p.put(aa, y, 0, stone)
+            k += 1
+            a = b + 1
     # the steps up to the lofts: a landing under the loft door, a flight down to the wall
     xs = list(range(llo[0], lhi[0] + 1))
     for x in (llo[0] - 1, lhi[0] + 1):
@@ -543,9 +656,7 @@ def seamens_chapel():
     stone = p.role("stone", TOWN_STONE)
     plaster = p.role("plaster", PLASTER)
     room_shell(p, flags, plaster, "minecraft:spruce_planks", base=stone, posts=stone)
-    for z in range(1, L - 1):
-        for x in (1, W - 2):
-            p.put(x, H - 2, z, stair("spruce", "east" if x == 1 else "west", "top"))
+    pitched(p, 1, W - 2, 1, L - 2, 7, along="z", stair_mat="spruce", board="minecraft:spruce_planks", beams_every=4)
     for z in (4, 12, 16, 20):
         for y in (3, 4, 5, 6):
             p.put(0, y, z, pane("light_blue_stained_glass_pane", n=True, s=True))
@@ -655,9 +766,7 @@ def customs_house():
     stone = p.role("stone", TOWN_STONE)
     plaster = p.role("plaster", PLASTER)
     room_shell(p, boards, plaster, "minecraft:dark_oak_planks", base=stone, posts=log("stripped_dark_oak_log"))
-    for z in range(1, L - 1, 3):
-        for x in range(1, W - 1):
-            p.put(x, H - 2, z, log("dark_oak_log", "x"))
+    pitched(p, 1, L - 2, 1, W - 2, 4, along="x", stair_mat="dark_oak", board="minecraft:dark_oak_planks", beams_every=3)
     for x in range(3, W - 1):
         p.put(x, 1, 6, slab("dark_oak", "top") if x % 3 else barrel("north"))
     p.put(9, 2, 6, candle(3)); p.put(5, 2, 6, candle(2))
@@ -688,12 +797,7 @@ def net_lofts():
     W, H, L = p.W, p.H, p.L
     boards = p.role("boards", BOARDS)
     room_shell(p, boards, "minecraft:spruce_planks", "minecraft:spruce_planks", posts=log("stripped_spruce_log"))
-    for x in range(1, W - 1):
-        p.put(x, H - 2, 1, stair("spruce", "south", "top"))
-        p.put(x, H - 2, L - 2, stair("spruce", "north", "top"))
-    for x in (2, 6, 9):
-        for z in range(2, L - 2):
-            p.put(x, H - 2, z, log("spruce_log", "z"))
+    pitched(p, 1, L - 2, 1, W - 2, 3, along="x", beams_every=3)
     for (x, z) in ((2, 2), (2, 3), (6, 2), (6, 4), (9, 3), (9, 4), (2, 5)):
         p.put(x, H - 3, z, "minecraft:cobweb")
     for (x, z) in ((1, 1), (1, 2), (10, 1)):
@@ -812,9 +916,8 @@ def whalers_shed():
     W, H, L = p.W, p.H, p.L
     boards = p.role("boards", BOARDS)
     room_shell(p, boards, "minecraft:spruce_planks", "minecraft:dark_oak_planks", posts=log("spruce_log"))
+    pitched(p, 1, W - 2, 1, L - 2, 5, along="z", board="minecraft:dark_oak_planks", beams_every=4)
     for z in range(1, L - 1, 4):
-        for x in range(1, W - 1):
-            p.put(x, H - 2, z, log("dark_oak_log", "x"))
         for x in (1, W - 2):
             for y in range(1, H - 2):
                 p.put(x, y, z, log("spruce_log"))
@@ -1069,9 +1172,7 @@ def coyle_house():
     plaster = p.role("plaster", PLASTER)
     boards = p.role("boards", BOARDS)
     room_shell(p, boards, plaster, "minecraft:spruce_planks", base=stone, posts=log("stripped_spruce_log"))
-    for z in (2, 5):
-        for x in range(1, W - 1):
-            p.put(x, H - 2, z, log("dark_oak_log", "x"))
+    pitched(p, 1, W - 2, 1, L - 2, 3, along="z", beams_every=3)
     pic = {(z, y): "minecraft:black_wool" for z in range(1, 6) for y in range(2, 5)}
     for z in range(1, 6):
         pic[(z, 2)] = "minecraft:brown_wool"
@@ -1094,7 +1195,7 @@ def coyle_house():
     p.put(6, 2, 6, "minecraft:flower_pot")
     hang(p, 3, H - 3, 3)
     p.cut_seams(floor=boards)
-    p.mark("node-coyle-house", (3, 1, 3), "east")
+    p.mark("node-coyle-house", (5, 1, 4), "west")
     p.mark("wool-picture", (1, 1, 3), "west")
     return p
 
