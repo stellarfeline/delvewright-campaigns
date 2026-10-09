@@ -109,9 +109,9 @@ Every platform edge and every bridge deck has a rail at least fence height (1.5 
 
 ## 4. The design brief: geometric facts
 
-These numbers transcribe into `geometry-brief.json` at step 2, and `site-plan.json` is built to them. They are re-derived from reference view 4, which governs geometry. Seen from high in the north-east, view 4 puts the Loom Tree nearest, the Hearth Tree to the right and the Watch Tree to the left at the same depth, and the Seed Tree straight behind. In plan that is a square: Loom north-east, Hearth north-west, Seed south-west, Watch south-east. Bridges run along the north side (Loom–Hearth), the west side (Hearth–Seed) and the east side (Loom–Watch), with no bridge on the south side. View 4 also shows the Watch Tree's lookout above every other crown, the Hearth Tree as the widest with the highest house, the Loom house on top of a trunk with no crown over it, and the forest floor cut by gullies.
+These numbers are transcribed into `geometry-brief.json`, and `site-plan.json` is built to them. They are re-derived from reference view 4, which governs geometry. Seen from high in the north-east, view 4 puts the Loom Tree nearest, the Hearth Tree to the right and the Watch Tree to the left at the same depth, and the Seed Tree straight behind. In plan that is a square: Loom north-east, Hearth north-west, Seed south-west, Watch south-east. Bridges run along the north side (Loom–Hearth), the west side (Hearth–Seed) and the east side (Loom–Watch), with no bridge on the south side. View 4 also shows the Watch Tree's lookout above every other crown, the Hearth Tree as the widest with the highest house, the Loom house on top of a trunk with no crown over it, and the forest floor cut by gullies.
 
-All horizontal positions are region-local block coordinates: x runs east, z runs south, both measured from the region's north-west corner. Heights are absolute world `y`. Box corners sit on the metrics table's 4-block grid.
+All horizontal positions are region-local block coordinates: x runs east, z runs south, both measured from the region's north-west corner (the region stands at world x 0, z 0, so they are also world coordinates). Heights are absolute world `y`. Every box's horizontal extent is a multiple of the metrics table's 4-block grid (`DW0825`), so the narrowest way the plan can draw is 4 wide: each rope bridge is 4 wide and 20 or 24 long, and the trunk spacings follow from those lengths.
 
 ### 4.1 The site
 
@@ -119,11 +119,11 @@ All horizontal positions are region-local block coordinates: x runs east, z runs
 |---|---|
 | Region footprint | 112 × 112 blocks |
 | Region height | y 56 to y 143 |
-| Fill | `open`, heightmap terrain, 112 × 112 pixels |
-| Terrain range | ground top from y 60 (the gully floor at the Loom Tree's foot, lowest) to y 76 (the high shelf around the Hearth Tree) |
-| Terrain shape | a high shelf under the Hearth Tree (y 72–76), a mound under the Seed Tree (y 70), middle ground under the Watch Tree (y 66), and gullies between them down to y 60 under the Loom Tree. Gully walls are at most 8 blocks of sheer face, with walkable ramps (at most 1 rise in 2 run) at their ends. |
-| Terrain under the decks | never more than 20 blocks below the deck or platform above it |
-| Terrain surface and below | moss-and-podzol forest floor over dirt; no water anywhere (the nav model refuses water) |
+| Fill | `open`, heightmap terrain (`terrain/site.png`, 112 × 112 pixels, written by `terrain/heightmap.py`), moss over dirt |
+| Terrain range | surface block from y 61 (the gully floor under the Loom Tree and the Long and High Bridges) to y 71 (the high shelf under the Hearth Tree) |
+| Terrain shape | a high shelf under the Hearth Tree (surface 71), a mound under the Seed Tree (69), middle ground under the Watch Tree (65), a shallow gully under the Low Bridge (65), and the deep gully (61) under the Loom Tree and the Long and High Bridges. The region's edge meets the valley's gap floor at 63. Every place's footprint and ring is flat at one height, so the ground each place is handed is level. |
+| Terrain under the decks | never more than 19 blocks below the deck or platform above it |
+| Terrain surface and below | moss block over dirt; no water anywhere (the nav model refuses water) |
 | Giant trees | 4, at the corners of a square, 42–44 apart along its sides |
 | Boxes per tree | Watch 3, Hearth 3, Seed 1, Loom 1 |
 | Places | 11 boxes: 9 entered, 2 scenery-only (Watch Roots, Hearth Crown) |
@@ -133,55 +133,59 @@ All horizontal positions are region-local block coordinates: x runs east, z runs
 
 ### 4.2 The trees
 
-| Tree | Trunk centre (x, z) | Ground at trunk (y) | Trunk width at the house | Buttress-root spread | Crown top (y) | Crown width |
+| Tree | Trunk centre (x, z) | Walk plane at the trunk's foot (y) | Trunk width at the house | Buttress-root spread | Crown top (y) | Crown width |
 |---|---|---|---|---|---|---|
-| Hearth Tree | (35.5, 35.5) | 72 | 9 | 17 | 108 | 32 |
-| Loom Tree | (79.5, 35.5) | 60 | 9, cut flat at y 79 | 15 | none (topped) | none |
-| Seed Tree | (35.5, 77.5) | 70 | 7 | 13 | 104 | 24 |
-| Watch Tree | (79.5, 77.5) | 66 | 9 | 15 | 122 | 20 |
+| Hearth Tree | (35.5, 35.5) | 72 | 10 | 18 | 108 | 32 |
+| Loom Tree | (77.5, 35.5) | 62 | 10, cut flat at y 79 | 14 | none (topped) | none |
+| Seed Tree | (35.5, 77.5) | 70 | 8 | 14 | 104 | 26 |
+| Watch Tree | (77.5, 79.5) | 66 | 10 | 16 | 122 | 20 |
 
-Distances between trunk centres: Hearth–Loom 44, Seed–Watch 44, Hearth–Seed 42, Loom–Watch 42, diagonals 61.
+Distances between trunk centres: Hearth–Loom 42, Hearth–Seed 42, Loom–Watch 44, Seed–Watch 42, diagonals 59–61.
 
 The Watch Tree is the tallest. The Crown Lookout's ring stands at y 112, 4 above the next-highest crown (the Hearth Tree's, y 108). From the ring, a standing eye (y 113.6) looks down on every other tree. The crowns do not close over the camp. There is open sky over every bridge.
 
 ### 4.3 The boxes
 
-| Box | Place | Footprint (x range × z range, interior) | Size class | Floor (y) | Floor above its tree's ground | Headroom | Roof |
+| Box | Place | Footprint (x range × z range, interior) | Size class | Floor (y) | Floor above its ground | Headroom | Roof |
 |---|---|---|---|---|---|---|---|
-| 1 | Watch Roots (scenery) | x 72–87 × z 70–85 | 16 × 16, room | 66 | 0 | 17 (y 66–82); the Watch House floor course (y 83) is its top | — |
-| 2 | Watch House | x 70–89 × z 68–87 | 20 × 20, hall | 84 | 18 | 8 (y 84–91); the Watch Crown floor course (y 92) is its lid | — |
-| 3 | Watch Crown | x 70–89 × z 68–87 | 20 × 20, hall | 93 (the landing at the first fork) | 27 | 29 (y 93–121); lid y 122 is the crown top. The Crown Lookout ring is a second level inside it at y 112 | — |
-| 4 | Root Glade | x 24–47 × z 24–47 | 24 × 24, hall | 72 | 0 | 13 (y 72–84); the Hearth House floor course (y 85) is its cover | — |
+| 1 | Watch Roots (scenery) | x 70–85 × z 72–87 | 16 × 16, room | 66 | 0 | 17 (y 66–82); the Watch House floor course (y 83) is its top | — |
+| 2 | Watch House | x 68–87 × z 70–89 | 20 × 20, hall | 84 | 18 | 8 (y 84–91); the Watch Crown floor course (y 92) is its lid | — |
+| 3 | Watch Crown | x 68–87 × z 70–89 | 20 × 20, hall | 93 (the landing at the first fork) | 27 | 29 (y 93–121); lid y 122 is the crown top. The Crown Lookout ring is a second level inside it at y 112 | — |
+| 4 | Root Glade | x 26–45 × z 26–45 | 20 × 20, hall | 72 | 0 | 13 (y 72–84); the Hearth House floor course (y 85) is its cover | — |
 | 5 | Hearth House | x 24–47 × z 24–47 | 24 × 24, hall | 86 | 14 | 8 (y 86–93); the Hearth Crown floor course (y 94) is its lid | — |
 | 6 | Hearth Crown (scenery) | x 20–51 × z 20–51 | 32 × 32, hall | 95 | 23 | 13 (y 95–107); lid y 108 is the crown top | — |
 | 7 | Seed House | x 28–43 × z 70–85 | 16 × 16, room | 82 | 12 | 6 (y 82–87) | `roof` zone, 16 courses to y 104, eaves 4 |
-| 8 | Loom House | x 72–87 × z 28–43 | 16 × 16, room, sky-open | 80 | 20 | the class minimum, 4 | none (sky-open) |
-| 9 | Long Bridge | x 49–70 × z 34–36 | 22 long × 3 wide, corridor | 80 | — | 9 (y 80–88): the steps climb 6 inside it | declared ceiling, lid left as air |
-| 10 | Low Bridge | x 34–36 × z 49–68 | 20 long × 3 wide, corridor | 82 | — | 7 (y 82–88): the steps climb 4 inside it | declared ceiling, lid left as air |
-| 11 | High Bridge | x 78–80 × z 45–66 | 22 long × 3 wide, corridor | 80 | — | 7 (y 80–86): the steps climb 4 inside it | declared ceiling, lid left as air |
+| 8 | Loom House | x 70–85 × z 28–43 | 16 × 16, room | 80 | 18 | 6 (y 80–85); its lid is left as air, open to the sky | — |
+| 9 | Long Bridge | x 49–68 × z 34–37 | 20 long × 4 wide, corridor | 80 | — | 9 (y 80–88): the steps climb 6 inside it | lid left as air |
+| 10 | Low Bridge | x 34–37 × z 49–68 | 20 long × 4 wide, corridor | 82 | — | 7 (y 82–88): the steps climb 4 inside it | lid left as air |
+| 11 | High Bridge | x 76–79 × z 45–68 | 24 long × 4 wide, corridor | 80 | — | 7 (y 80–86): the steps climb 4 inside it | lid left as air |
+
+The Root Glade is 20 × 20 under the 24 × 24 Hearth House, so its ring stands two cells clear of the two bridges that leave the house: a bridge claims the ground under its deck, and a glade one cell from a bridge would share a wall with it that no connection awards (`DW0827`).
 
 Box floors take eight distinct values over the eleven boxes: 66, 72, 80 (Loom House, Long Bridge, High Bridge), 82 (Seed House, Low Bridge), 84, 86, 93 and 95. The Crown Lookout ring at y 112 is a second level inside box 3.
 
-Each bridge's deck runs from platform edge to platform edge across its run plus the two seam cells: Long Bridge 24, Low Bridge 22, High Bridge 24.
+Every box is placed by the plan from one pinned corner (the Root Glade's) and its seams; the two scenery boxes and the Hearth Crown carry their own pinned corners, since nothing connects them.
 
 ### 4.4 The seams
 
+Every bridge seam is a `passage` (3 wide, 3 tall); each ladder seam is a `door` opening through a floor (2 cells along the trunk's face, so both cells hold a rung). Each seam's first-named place is the house, so the house draws the plane where it meets its bridge (spec-0098 §2 rule 3c).
+
 | Seam | Joins | Kind | Rise | Declared `form` |
 |---|---|---|---|---|
-| glade-ladder | Root Glade → Hearth House | through the Hearth House floor | up 14 | "rope ladder, up 14, hung on the Hearth Tree's bark" |
-| loom-long | Loom House → Long Bridge | west face, arch opening | 0 | "rope bridge landing, level, 3 wide" |
-| long-hearth | Long Bridge → Hearth House | west face, arch opening, stair hosted on the bridge | up 6 | "rope bridge, climbs 6 by plank steps on its last 12 blocks, 3 wide" |
-| hearth-low | Hearth House → Low Bridge | south face, arch opening, stair hosted on the bridge | down 4 | "rope bridge, drops 4 by plank steps on its first 8 blocks, 3 wide" |
-| low-seed | Low Bridge → Seed House | south face, arch opening | 0 | "rope bridge landing, level, 3 wide" |
-| loom-high | Loom House → High Bridge | south face, arch opening, `barred` until Neve unties it | 0 | "rope gate across a rope bridge's mouth, tied shut, 3 wide" |
-| high-watch | High Bridge → Watch House | south face, arch opening, stair hosted on the bridge | up 4 | "rope bridge, climbs 4 by plank steps on its last 8 blocks, 3 wide" |
-| watch-ladder | Watch House → Watch Crown | through the Watch Crown floor | up 9 | "rope ladder, up 9, hung on the Watch Tree's bark through the Watch House roof to the first fork" |
+| glade-ladder | Root Glade → Hearth House | `climb`, through the Hearth House floor | up 14 | rope ladder, up 14, hung on the Hearth Tree's bark through a hole in the Hearth House floor |
+| hearth-long | Hearth House → Long Bridge | `stair`, east face, hosted on the bridge | down 6 | rope bridge landing on the Hearth House's east edge; the bridge climbs 6 to it by plank steps on its own deck |
+| loom-long | Loom House → Long Bridge | `walk`, west face | 0 | rope bridge landing on the Loom House's west edge, level |
+| hearth-low | Hearth House → Low Bridge | `stair`, south face, hosted on the bridge | down 4 | rope bridge landing on the Hearth House's south edge; the bridge drops 4 from it by plank steps on its own deck |
+| seed-low | Seed House → Low Bridge | `walk`, north face | 0 | rope bridge landing on the Seed House's north edge, level |
+| loom-high | Loom House → High Bridge | `barred`, south face, opened from the Loom side by `flag/gate-untied` | 0 | rope gate across the High Bridge's mouth on the Loom House's south edge, tied shut until Neve unties it |
+| watch-high | Watch House → High Bridge | `stair`, north face, hosted on the bridge | down 4 | rope bridge landing on the Watch House's north edge; the bridge climbs 4 to it by plank steps on its own deck |
+| watch-ladder | Watch House → Watch Crown | `climb`, through the Watch Crown floor | up 9 | rope ladder, up 9, hung on the Watch Tree's bark from the Watch House up through a hole in the crown's landing |
 
 The box joints with no seam are the scenery stacks: Watch Roots under Watch House (y 83), and Hearth Crown over Hearth House (y 94). They meet at a floor course and nothing crosses them. Inside the Watch Crown, a 19-rung ladder on the trunk joins the landing (y 93) to the Crown Lookout ring (y 112). That ladder is the crown piece's own and is not a seam.
 
-The Root Glade also opens onto the forest floor (the commons) between the buttress roots on its open sides. That opening is the place's own and is not a seam.
+Three `vision` edges run from the Crown Lookout to the Hearth, Loom and Seed Houses: the view of beat 7.
 
-Every ladder hangs on a full block: the trunk's bark, or a post where a ladder leaves the trunk. A vanilla ladder needs a sturdy face behind it (spec-0099 §2.3), so the camp has no free-hanging rope ladder.
+Every ladder hangs on a full block: the trunk's bark. A vanilla ladder needs a sturdy face behind it (spec-0099 §2.3), so the camp has no free-hanging rope ladder.
 
 ### 4.5 Heights at a glance
 
@@ -189,18 +193,18 @@ Every ladder hangs on a full block: the trunk's bark, or a post where a ladder l
 |---|---|---|
 | Watch Roots | 66–82 | on the ground |
 | Root Glade | 72 | on the high shelf |
-| Loom House floor | 80 | 20 over the gully floor (60) |
-| Long Bridge deck | 80–86 | 20 at the Loom end, 14 at the Hearth end |
-| High Bridge deck | 80–84 | 20 at the Loom end, 18 at the Watch end |
+| Loom House floor | 80 | 18 over the gully floor (walk 62) |
+| Long Bridge deck | 80–86 | 18 at the Loom end, 14 at the Hearth end |
+| High Bridge deck | 80–84 | 18 at the Loom end, 18 at the Watch end |
 | Seed House floor | 82 | 12 over the mound (70) |
-| Low Bridge deck | 82–86 | 14 at the Hearth end, 12 at the Seed end |
+| Low Bridge deck | 82–86 | 16 at the Hearth end, 16 at the Seed end |
 | Watch House floor | 84 | 18 over its ground (66) |
 | Hearth House floor | 86 | 14 over the shelf (72) |
 | Watch Crown landing | 93 | over the Watch House roof |
 | Hearth Crown (scenery) | 95–108 | over the Hearth House |
 | Crown Lookout ring | 112 | inside the Watch Crown, over its landing; reached only by ladder |
 
-The deepest drop off any deck or platform below the Watch Crown, rail aside, is 20 blocks (the Loom House and the Loom ends of both its bridges), under the 22-block survivable fall.
+The deepest drop off any deck or platform below the Watch Crown, rail aside, is 18 blocks (the Loom House and its two bridges), under the 22-block survivable fall.
 
 ## 5. Style, horizon, time and weather
 
