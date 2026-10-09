@@ -28,7 +28,7 @@ SWEEPS = 4000
 
 # (x0, z0, x1, z1) inclusive, surface y: each ground place's footprint and ring.
 PADS = [
-    ((23, 23, 48, 48), 71),  # Root Glade (Hearth Tree)
+    ((21, 21, 50, 50), 71),  # Root Glade (Hearth Tree)
     ((27, 69, 44, 86), 69),  # Seed House (Seed Tree)
     ((71, 69, 88, 86), 65),  # Watch Roots (Watch Tree)
     ((71, 27, 88, 44), 59),  # Loom House (Loom Tree)

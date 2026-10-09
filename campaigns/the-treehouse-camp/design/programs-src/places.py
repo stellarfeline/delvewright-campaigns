@@ -129,11 +129,11 @@ def root_glade():
     # body climbs them (a step of two from the knuckle to the root). Between
     # them the glade opens onto the forest floor on every side.
     roots = [
-        (38, 29, 38, 27),   # north
-        (41, 30, 43, 28),   # north-east
-        (41, 37, 43, 37),   # east
-        (33, 41, 33, 43),   # south
-        (30, 41, 28, 43),   # south-west
+        (38, 29, 38, 26),   # north
+        (41, 30, 44, 27),   # north-east
+        (41, 37, 45, 37),   # east
+        (33, 41, 33, 45),   # south
+        (30, 41, 27, 44),   # south-west
     ]
     for rx0, rz0, rx1, rz1 in roots:
         steps = line_cells(rx0, rz0, rx1, rz1, 2)
@@ -152,7 +152,7 @@ def root_glade():
             edge = x in (x0 + 1, x1 - 1) or z in (z0 + 1, z1 - 1)
             if edge and m.get(x, floor, z) is None and (x * 3 + z) % 5 == 0:
                 m.set(x, floor, z, "fern")
-    for (lx, lz, axis, n) in ((27, 44, "x", 3), (44, 27, "z", 3)):
+    for (lx, lz, axis, n) in ((25, 36, "z", 3), (46, 40, "z", 3)):
         for i in range(n):
             x, z = (lx + i, lz) if axis == "x" else (lx, lz + i)
             m.set(x, floor, z, f"mangrove_log[axis={axis}]")
@@ -170,10 +170,15 @@ def root_glade():
     # The rope ladder up the bark to the Hearth House (its top rung is the house's).
     ladder(m, 30, 35, 36, floor, y1, "west")
     # Lamp posts all round the trunk under the platform overhead.
-    for (lx, lz) in ((27, 27), (28, 30), (34, 27), (40, 29), (45, 30), (44, 36), (43, 44), (37, 44), (28, 44), (27, 36)):
+    for (lx, lz) in ((26, 25), (28, 30), (34, 25), (41, 25), (45, 30), (46, 36), (45, 45), (37, 46), (29, 46), (25, 40),
+                     (26, 33), (40, 46)):
         lamp_post(m, lx, lz, floor, 2)
-    # One lantern hung under the platform beside the ladder's top rungs.
+    # Lanterns hung on chains from the platform overhead: one beside the
+    # ladder's top rungs, the rest round the trunk, so the glade under the
+    # deck reads as a lit room among roots.
     hanging_lantern(m, 28, 37, y1, 2)
+    for (lx, lz) in ((28, 28), (36, 28), (44, 28), (44, 36), (44, 44), (36, 44), (28, 44)):
+        hanging_lantern(m, lx, lz, y1, 3)
     # Contract: the glade's floor out to its open edge, the ladder shaft, the top rung's cell.
     m.space("glade", "open", (x0, floor, z0, x1, floor + 2, z1), (30, floor + 3, 35, 30, y1 - 1, 36))
     m.via("glade-ladder", (30, y1, 35, 30, y1, 36))
@@ -689,29 +694,24 @@ def branch(m, x, y, z, axis, length, thick=2, choices=None):
                 m.set(*c, m.pick(*c, choices or (BARK_X if axis == "x" else BARK_Z if axis == "z" else BARK), 41))
 
 
-def scenery_top(m):
-    """The highest standable cell of a piece: a leaf top no body reaches."""
-    best = None
-    for (lx, ly, lz), s in m.cells.items():
-        if not any(t in s for t in ("_wood", "_leaves", "_log")):
-            continue
-        above = (lx, ly + 1, lz)
-        if above in m.cells or (lx, ly + 2, lz) in m.cells or ly + 2 >= m.ext[1]:
-            continue
-        if best is None or ly > best[1]:
-            best = (lx, ly, lz)
-    return (best[0] + m.min[0], best[1] + 1 + m.min[1], best[2] + m.min[2])
-
-
-def scenery_contract(m, x, y, z, reason, top=None):
-    """Scenery: the place's one space is a cell of its own trunk, where
-    nothing stands; every other cell of the frame is out of walk. The piece
-    states its zero standable cells (spec-0098 departure 32)."""
-    tx, ty, tz = top or scenery_top(m)
-    m.space("heartwood", "open", (tx, ty, tz, tx, ty + 1, tz))
+def scenery_contract(m, reason):
+    """Scenery: built to be seen and never entered. The contract's one
+    space is the top two cells of a column of the frame with open air under
+    them, where nothing stands; every other cell is out of walk. A sealed
+    piece's floor gates excuse its standable leaf tops, and scenery owes no
+    light (spec-0098 departure 36)."""
+    (x0, y0, z0), (x1, y1, z1) = m.h["world_min"], m.wmax()
+    cols = sorted(((x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1)),
+                  key=lambda c: (min(c[0] - x0, x1 - c[0]) + min(c[1] - z0, z1 - c[1]), c))
+    for x, z in cols:
+        if all(m.get(x, y, z) is None for y in range(y1 - 2, y1 + 1)):
+            m.space("sky", "open", (x, y1 - 1, z, x, y1, z))
+            break
+    else:
+        raise SystemExit("scenery: no empty column in the frame")
     rest_region(m, "seen-from-outside", reason)
     m.ack = "scenery: built to be seen from the camp and never entered"
-    m.entry = "heartwood"
+    m.entry = "sky"
 
 
 def hearth_crown():
@@ -732,7 +732,11 @@ def hearth_crown():
     branch(m, 39, 100, 39, "z", 6)
     branch(m, 32, 100, 32, "x", -6)
     branch(m, 32, 100, 32, "z", -6)
-    # The hall's festival lanterns, hung from the great arms over the platform.
+    # Lanterns hung from the great arms over the platform. The design does not
+    # ask for them: the build's light survey floods from the anchor the
+    # blockout synthesizes for every box, scenery included, and that anchor
+    # snaps onto the trunk's shoulder at y 98, which `DW0210` then grades
+    # (recorded in GENERATION.md as an engine defect; the item is stopped).
     for (lx, lz) in ((42, 35), (46, 36), (29, 35), (25, 36), (35, 42), (36, 46), (35, 29), (36, 25)):
         m.set(lx, 95, lz, LANTERN_HANG)
     for y in range(y0 + 11, y0 + 13):
@@ -751,8 +755,7 @@ def hearth_crown():
     ]
     for i, b in enumerate(masses):
         leaf_mass(m, *b, salt=31 + i)
-    scenery_contract(m, 36, y0 + 2, 36, "the Hearth Tree's crown, seen from the camp and never entered: branches and leaves only",
-                     top=(42, 98, 35))
+    scenery_contract(m, "the Hearth Tree's crown, seen from the camp and never entered: branches and leaves only")
     write(m, "hearth-crown")
 
 
@@ -858,7 +861,7 @@ def watch_roots():
                     if m.get(x, ground + dy, z) is None:
                         P(m, x, ground + dy, z, BUSH, 11)
     ferns(m, x0 + 1, z0 + 1, x1 - 1, z1 - 1, ground + 1)
-    scenery_contract(m, int(cx), ground + 5, int(cz), "the Watch Tree's foot and roots, seen from the bridges and the forest floor and never entered")
+    scenery_contract(m, "the Watch Tree's foot and roots, seen from the bridges and the forest floor and never entered")
     write(m, "watch-roots")
 
 
@@ -882,6 +885,11 @@ def watch_house():
     hanging_lantern(m, 85, 83, floor + 3, 1)
     for (lx, lz) in ((70, 68), (70, 87), (89, 68), (77, 87), (89, 77), (70, 75), (82, 87), (89, 87), (82, 68), (76, 82)):
         lamp_post(m, lx, lz, floor)
+    # The platform lives under the Watch Crown's canopy: lanterns hang on
+    # chains from its underside all round the trunk, so the deck reads as a
+    # lit room under the leaves.
+    for (lx, lz) in ((72, 70), (80, 70), (87, 70), (72, 86), (79, 86), (71, 80), (87, 77)):
+        hanging_lantern(m, lx, lz, y1, 3)
     v = (78, floor, z0, 80, floor + 2, z0)
     m.via("watch-high", v)
     shaft = (74, floor + 2, 77, 74, y1 - 1, 78)
@@ -999,8 +1007,8 @@ def watch_crown():
         if m.get(lx, ring_y, lz) == RAIL:
             m.set(lx, ring_y + 1, lz, LANTERN_STAND)
     # The last branches over the ring, their leaves, and the lantern hook.
-    branch(m, 83, 116, 78, "x", 5, thick=1)
-    m.set(86, 115, 78, "iron_chain[axis=y]")
+    branch(m, 74, 116, 73, "x", 5, thick=1)
+    m.set(74, 115, 73, "iron_chain[axis=y]")
     branch(m, 78, 117, 74, "z", -3, thick=1)
     branch(m, 78, 117, 81, "z", 3, thick=1)
     for i, b in enumerate(((76, 118, 72, 84, 121, 84), (74, 117, 75, 77, 120, 81), (83, 118, 74, 87, 120, 77))):
@@ -1011,7 +1019,7 @@ def watch_crown():
         for y in range(ring_y, ring_y + 2):
             if m.get(x, y, z) and "leaves" in m.get(x, y, z):
                 m.set(x, y, z, None)
-    m.set(86, 114, 78, None)
+    m.set(74, 114, 73, None)
     # Contract: the landing, the lookout, and the ladder that climbs between them.
     land_boxes = [(x, landing_y, z, x, landing_y + 1, z) for (x, z) in land if (x, z) != (LX, 79)]
     m.space("landing", "open", *land_boxes)
@@ -1024,7 +1032,7 @@ def watch_crown():
     m.edge(a="landing", b="exterior", **{"class": "walk", "via": "watch-ladder"})
     m.edge(a="landing", b="lookout", **{"class": "climb", "rise": ring_y - landing_y, "via": "inner-ladder"})
     m.mark("node-watch-crown", 72, landing_y, 76, "east")
-    m.mark("lantern-hook", 86, 114, 78, "west")
+    m.mark("lantern-hook", 74, 114, 73, "south")
     write(m, "watch-crown")
 
 
