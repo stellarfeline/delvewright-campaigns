@@ -169,9 +169,11 @@ def root_glade():
         m.set(x, floor, 44, "stripped_spruce_log[axis=x]")
     # The rope ladder up the bark to the Hearth House (its top rung is the house's).
     ladder(m, 30, 35, 36, floor, y1, "west")
-    # Lanterns hanging on chains from the platform overhead, all round the trunk.
-    for (lx, lz) in ((28, 30), (34, 27), (40, 29), (45, 30), (44, 36), (43, 44), (37, 44), (28, 44), (27, 36)):
-        hanging_lantern(m, lx, lz, y1, 8)
+    # Lamp posts all round the trunk under the platform overhead.
+    for (lx, lz) in ((27, 27), (28, 30), (34, 27), (40, 29), (45, 30), (44, 36), (43, 44), (37, 44), (28, 44), (27, 36)):
+        lamp_post(m, lx, lz, floor, 2)
+    # One lantern hung under the platform beside the ladder's top rungs.
+    hanging_lantern(m, 28, 37, y1, 2)
     # Contract: the glade's floor out to its open edge, the ladder shaft, the top rung's cell.
     m.space("glade", "open", (x0, floor, z0, x1, floor + 2, z1), (30, floor + 3, 35, 30, y1 - 1, 36))
     m.via("glade-ladder", (30, y1, 35, 30, y1, 36))
@@ -631,10 +633,10 @@ def loom_house():
     # Lamp posts.
     for (lx, lz) in ((72, 28), (72, 43), (87, 43), (87, 37), (77, 28)):
         lamp_post(m, lx, lz, floor)
-    # Under the deck, the forest floor round the trunk is walked: chain
-    # lanterns hang from the deck's underside all round it.
+    # Under the deck, the forest floor round the trunk is walked: lamp
+    # posts stand on it all round the trunk.
     for (lx, lz) in ((73, 30), (80, 28), (87, 30), (87, 36), (87, 42), (80, 43), (73, 42), (73, 36)):
-        hanging_lantern(m, lx, lz, fy - 1, 12)
+        lamp_post(m, lx, lz, ground + 1, 2)
     # Contract.
     v_long = (71, floor, 34, 71, floor + 2, 36)
     bar = (78, floor, 44, 80, floor + 2, 44)
@@ -808,10 +810,10 @@ def seed_house():
         hanging_lantern(m, lx, lz, lid - 1, 2)
     for (lx, lz) in ((28, 76), (43, 85), (28, 85), (34, 85), (43, 70)):
         lamp_post(m, lx, lz, floor)
-    # Under the deck, the mound round the trunk is walked: chain lanterns
-    # hang from the deck's underside all round it.
+    # Under the deck, the mound round the trunk is walked: lamp posts stand
+    # on it all round the trunk.
     for (lx, lz) in ((30, 72), (36, 71), (42, 72), (43, 78), (42, 84), (36, 85), (30, 84), (29, 78)):
-        hanging_lantern(m, lx, lz, fy - 1, 6)
+        lamp_post(m, lx, lz, ground + 1, 2)
     # The crown, in the declared roof zone: arms from the trunk, leaf masses.
     branch(m, 39, 90, 77, "x", 8)
     branch(m, 32, 90, 77, "x", -8)
