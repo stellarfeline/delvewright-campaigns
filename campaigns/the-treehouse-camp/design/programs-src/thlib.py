@@ -99,6 +99,8 @@ class Model:
         self.edges = []
         self.entry = None
         self.marks = []
+        self.ack = None
+        self.role_names = {}
 
     # -- coordinates -------------------------------------------------------
     def inside_w(self, x, y, z):
@@ -239,6 +241,8 @@ class Model:
         roles = {}
 
         def role(state):
+            if state not in roles and state in self.role_names:
+                roles[state] = self.role_names[state]
             if state not in roles:
                 bid, props = parse_state(state)
                 base = bid.split(":")[1].replace("_", "-")
@@ -327,7 +331,28 @@ class Model:
                     assert len(rl) + len(rh) == len(rs)
                     return split(axis, [p - bx[ai], bx[ai + 3] - p + 1],
                                  [compile_scope(lo, rl), compile_scope(hi, rh)])
-            raise SystemExit(f"{name}: regions not separable by a plane inside {bx}: {[r[0] for r in rs]}")
+            # No plane clears every box: cut the fewest boxes in two along the
+            # best plane. Claims of one name union, so a box cut in two is
+            # the same declaration.
+            best = None
+            for ai in range(3):
+                planes = sorted({p for _, b in rs for p in (b[ai], b[ai + 3] + 1) if bx[ai] < p <= bx[ai + 3]})
+                for p in planes:
+                    n = sum(1 for _, b in rs if b[ai] < p <= b[ai + 3])
+                    if best is None or n < best[0]:
+                        best = (n, ai, p)
+            if best is None:
+                raise SystemExit(f"{name}: no plane to cut inside {bx}: {[r[0] for r in rs]}")
+            _, ai, p = best
+            cut = []
+            for n_, b in rs:
+                if b[ai] < p <= b[ai + 3]:
+                    lo_b = list(b); lo_b[ai + 3] = p - 1
+                    hi_b = list(b); hi_b[ai] = p
+                    cut += [(n_, tuple(lo_b)), (n_, tuple(hi_b))]
+                else:
+                    cut.append((n_, b))
+            return compile_scope(bx, cut)
 
         root = (0, 0, 0, self.ext[0] - 1, self.ext[1] - 1, self.ext[2] - 1)
         for n, b in regs:
@@ -354,7 +379,35 @@ class Model:
         }
         if self.no_body:
             prog["contract"]["no_body"] = self.no_body
+        if self.ack:
+            prog["contract"]["no_body_majority_ack"] = self.ack
         return prog
+
+
+def subtract(box, holes):
+    """Disjoint boxes covering `box` minus every box in `holes` (world,
+    inclusive), cut along the holes' faces so the pieces stay guillotine-cut."""
+    box = tuple(box)
+    for h in holes:
+        if all(box[i] <= h[i + 3] and h[i] <= box[i + 3] for i in range(3)):
+            break
+    else:
+        return [box]
+    out = []
+    lo = list(box[:3]); hi = list(box[3:])
+    for i in range(3):
+        if lo[i] < h[i]:
+            piece = lo[:] + hi[:]
+            piece[i + 3] = h[i] - 1
+            out += subtract(tuple(piece), holes)
+            lo[i] = h[i]
+        if hi[i] > h[i + 3]:
+            piece = lo[:] + hi[:]
+            piece[i] = h[i + 3] + 1
+            out += subtract(tuple(piece), holes)
+            hi[i] = h[i + 3]
+    # what is left is inside h: dropped
+    return out
 
 
 def handout(campaign, place, prefabs):
