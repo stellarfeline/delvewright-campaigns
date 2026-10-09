@@ -1,22 +1,27 @@
-# delvec 1.8.2, dsl 0.35.1, mc 1.21.11, built from engine feat/a-span-of-text-carries-a-style 0552c7726852d9230b8eb9d5ea6d5d6e9de719b2
+# delvec 1.10.0, dsl 0.37.0, mc 1.21.11, built from engine integrate/styles-skins-dialogue 44ace65f10d9ce1497f5c20ba213e6483dac2dbc
 # a-translation-that-loses-its-blur/ is campaigns/the-touched-clerk/ with one edit: in l10n/zh-cn.json the row
 #   cast.lock-it-away.clerk.0.bark.1 reads "账本到了夜里，就换别的什么人来记。"   (its [[obfuscated|…]] span dropped)
 $ delvec --prefabs <this repository>/prefabs validate a-translation-that-loses-its-blur
 -- 1 refusal(s): these are yours to act on
 DW0976 [error] l10n l10n/zh-cn.json#/content/cast.lock-it-away.clerk.0.bark.1: `zh-cn` row `cast.lock-it-away.clerk.0.bark.1` does not carry the English's styled spans: the English carries span(s) [obfuscated] and the translation []. Keep every span of the English with its style unchanged and its text transcreated; it may move within the line. English: `The ledger is kept by [[obfuscated|someone else]] at night.`; translation: `账本到了夜里，就换别的什么人来记。`
--- what this run examined (14 line(s))
+-- what this run examined (19 line(s))
 equipment binding: 0 body(ies) dressed over 0 entity type(s), 0 piece(s) declared over 0 slot(s) in use, 0 piece(s) with a registry-declared slot, 0 with an allowed-entity list, 0 refused (DW0898).
 purchase binding: 0 charge(s) over 0 datum(s) bind 0 (list, datum) pair(s) of 2 effect list(s) walked, 0 of them behind a numeric gate, 0 refused (DW0901).
+read-after-write binding: 3 effect(s) over 2 bundle(s) walked, 0 gated write(s) recorded, 0 refused (DW0527).
 health-bar binding: 0 of 0 fight(s) carry a bar (0 wave(s), 0 actor(s) declared); 0 of 0 boss-billed fight(s) carry one; 0 refused (DW0100/DW0909/DW0910), 0 advised (DW0912).
 on_kill binding: 0 of 0 fight(s) carry a bundle, 0 of them on a fight that comes back, 0 stating `every-kill`; 0 refused (DW0913/DW0914/DW0915).
-inline-style binding: 3 of 25 player-facing line(s) carry 3 span(s); 25 sidecar row(s) held to their English's spans
+inline-style binding: 2 of 25 player-facing line(s) carry 2 span(s); 25 sidecar row(s) held to their English's spans
 textures: 0 row(s) resolved of 0 declared, against a census of 3517 vanilla texture(s)
+sheet binding: 0 of 0 sheet(s) judged against their model's boxes — 0 of 0 mannequin skin(s), 0 of 0 `world.textures[]` row(s) an entity model is drawn with; by model: none; 0 refused (DW0978/DW0979)
+name-tag binding (DW0983): 0 of 0 wave(s) carry a named member, 0 named actor(s); 0 name(s) tag a group; 0 wave(s) and 0 actor(s) refused
 seating binding: horizon base `void`; areas[]: 1 of 1 area(s) name a piece set, examined over 1 member(s), 0 opening outward, 1 `.nbt` opened, 0 waterline declaration(s) examined, 0 borne out by the bytes; site plan: 0 of 0 box(es) judged against this base. byte-claim binding: 1 document(s) read, 1 `.nbt` opened; 5 declaration(s) of the class examined, 0 denied by the bytes (DW0888); per key examined/denied: structure.data_version=1/0, walk_y=1/0, anchors.*.pos=3/0, anchors.*.region=0/0, anchors.*.dispenser=0/0, anchors.*.trigger_block=0/0, anchors.*.furniture=0/0, connectors[].opening=0/0, connectors[].socket=0/0, jigsaw-declared=0/0.
 anchor-guarantee binding: 0 of 1 area(s) bind a pool, examined over 0 member(s) declaring 0 anchor name(s), of which 0 are guaranteed; 153 name(s) carried by this campaign's documents, 0 reported outside a guarantee.
-promise: 2 objective(s) examined — 0 `kill` (DW0863), 0 adopted container(s) (DW0861); 0 failure clock(s) (DW0860) over 11 effect root(s)
+promise: 2 objective(s) examined — 2 announced, 0 marked (DW0862/DW0961/DW0962), 0 adopted container(s) (DW0861); 0 failure clock(s) (DW0860) over 11 effect root(s)
 contradiction binding: 0 branch(es) read in their exported order over 0 dated line(s); every legal order searched over 0 step(s) (0 quiet), 0 distinct play state(s) walked; 0 refused beyond the exported order (DW0485); 0 branch(es) unproven at the bound of 50000 state(s) per branch (DW0927)
 state path binding: 2 path(s) walked over 4 step(s); 0 numeric gate term(s) read, of which 0 against an undatable datum and 0 withheld (the order is not forced); 0 state write(s) replayed; 0 declared datum(s) of which 0 undatable
+name-told binding (DW0982): 4 declared name(s); 1 walk(s); 7 of 7 dialogue string(s) on screen on some walk; 0 use(s) of a name in them, 0 untold
 design record: 0 reference(s) recorded over 0 image file(s) under `design/` (concept/ 0, reference/ 0); skies stated: none; world reaches times {noon} weathers {clear} (DW0890); showcase cameras: none (no design/cameras.json); 0 of 0 approved image(s) answered (DW0900)
 clock: world noon -> day 0 daytime 6000; sun +90.00°, moon below the horizon (full-moon); sky light judged 15, game 15; burns: yes
 clocks: 1 world + 0 cut(s); 0 celestial, 1 keyword; phases stated {}; days {0}
-exit 1
+view distance binding: 10 chunk(s) (the engine's floor, undeclared) serve 160 blocks in every direction; 0 sightline(s) and 0 view(s) judged against it, 0 beyond it.
+# exit 1

@@ -27,13 +27,18 @@ at the foot of his ledger, in his handwriting, and he did not write it. He has
 put the ledger in the chest under the window. He gives you the key and asks you
 to lock it in, and to keep the key overnight.
 
-## The three spans
+## The two spans
 
 | Where | The English | The zh-cn row |
 | --- | --- | --- |
 | His second bark, after he hands over the key | `The ledger is kept by [[obfuscated\|someone else]] at night.` | `账本到了夜里，就换[[obfuscated\|别的什么人]]来记。` |
 | His dialogue, *What does it say?* | `"This morning it says [[color=dark_red\|Paid in full. Nothing more is owed.]] I keep only black ink in this room, and nobody has paid us anything."` | `"今天早上写的是[[color=dark_red\|已结清，再无欠款。]]我这屋里只备黑墨水。再说，根本没人付过我们一分钱。"` |
-| The second objective's title | `Lock the [[bold\|ledger]] in the chest` | `把[[bold\|账本]]锁进箱子` |
+
+The objective title `Lock the ledger in the chest` carries no span. Rule S6 of
+the engine's `docs/reference/game-writing.md` allows a style only for a fact
+about the text itself, and a bold word in an objective title is emphasis the
+words should carry, which S6 names as the defect. The level therefore shows
+`obfuscated` and `color`, and no `bold`.
 
 Each span is its own translated component under the line's key plus
 `.span.<i>`. The style rides on the component, never in the language file:
@@ -66,11 +71,7 @@ Walk it twice: once with the client in English, once in 简体中文.
    red, and only that line? In Chinese, does the red start and stop where the
    sentence puts the quote?
 3. Ask *What do you need?*, then *Give me the key.* You get a Chest Key. The
-   new objective is announced as **Lock the ledger in the chest**. Does the bold
-   *ledger* read as the name of a thing, or as the game raising its voice? The
-   writing rule allows a style only for a fact about the text itself, and a
-   bold word in an objective title has no reading under that rule. This one is
-   here because the row asks for it, and it is the one to judge.
+   new objective is announced as *Lock the ledger in the chest*, unstyled.
 4. Before you lock the chest, right-click Tobin three times. The second line's
    *someone else* (Chinese: *别的什么人*) is drawn as shifting glyphs. Does it
    read as a mind something has been in, or as a rendering fault? In Chinese,
@@ -78,8 +79,8 @@ Walk it twice: once with the client in English, once in 简体中文.
 5. Right-click the chest under the window with the key in your hand. The delve
    completes.
 6. Decline the resource-pack prompt once and walk it again in English. The
-   English fallback should still show every span styled: the red quote, the
-   bold word and the blur.
+   English fallback should still show every span styled: the red quote and the
+   blur.
 
 ## The refusals
 
@@ -107,22 +108,33 @@ DW0976 [error] l10n l10n/zh-cn.json#/content/cast.lock-it-away.clerk.0.bark.1: `
 
 ## The ladder
 
-Built with an engine that carries spec-0096, which no released engine does yet:
+Built with `delvec` 1.10.0 (dsl 0.37.0) from engine revision
+`44ace65f10d9ce1497f5c20ba213e6483dac2dbc`:
 
 - `delvec validate`, `delvec analyze`, `delvec build`: exit 0. The
-  inline-style binding reports 3 of 25 player-facing lines carrying 3 spans,
+  inline-style binding reports 2 of 25 player-facing lines carrying 2 spans,
   and 25 sidecar rows held to their English's spans. Two builds are identical
-  (106 files).
+  (110 files).
 - PackTest (`validation/packtest-run.sh`): all 22 required tests passed, 0 live
   bootstrap fetches.
-- Bot critical path (`validation/bot-run.sh`): passed, 4 steps. die-retry and
+- Bot critical path (`validation/bot-run.sh`): passed, 4 steps; the resource
+  pack was pushed and downloaded at the manifest's SHA-1. die-retry and
   death-loop did not run, because the level has no combat and no death.
 - Staging gate (`tools/creator/staging-gate.py`): **refused**, 2 of 122
   findings unbound, both for the same reason: the campaign has no design
-  record (`drill3-01`, `drill3-03`). The other 120 are 24 bound, 25 declared
-  uncoverable and 71 inapplicable. Clearing it needs an approved concept
+  record (`drill3-01`, `drill3-03`). The other 120 are 24 bound, 26 declared
+  uncoverable and 70 inapplicable. Clearing it needs an approved concept
   picture in `design.json` and a camera in `design/cameras.json` that answers
   it.
+
+Serve it with the engine's playtest server, from the engine tree, naming this
+repository's campaign and prefab library:
+
+    tools/creator/playtest-server.sh up <this repository>/campaigns/the-touched-clerk \
+      --prefabs <this repository>/prefabs --delvec <delvec 1.10.0, dsl 0.37.0> \
+      --stage-anyway "<reason>" --acknowledge-red 2
+
+The override is the gate's own and is never the default.
 
 ## What this level does not show
 
