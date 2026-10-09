@@ -68,6 +68,30 @@ Still bent (recorded here, not worked around):
 2. **A scenery piece with standable surfaces owes light.** Departure 32 lets a scenery piece state zero standable cells only when none of its cells is standable. A crown's leaf tops are standable, so its contract must declare one standable cell in a space (`contract-reachability` refuses a space with none), and the build's DW0210 then holds that cell to light 3. The Hearth Crown answers with the hall's festival lanterns, hung from its great arms over the platform, beside the declared cell on the east arm.
 3. **Toolchain defect: a climb is exported across two ladder columns.** Leg 6 of `validation/critical-path-waypoints.json` carries one climb with `bottom` [74, 84, 78] and `top` [74, 111, 79]. The body climbs the Watch House ladder (column z 78) into the landing's hole, steps over the top onto [74, 93, 79], which is both standable and the foot of the crown's own ladder (column z 79), and climbs that to the ring. The exporter does not end the climb at the standable cell, so the two columns are merged, and the harness refuses the record: `waypoints/legs/6/climbs/0 bottom and top must be one column, bottom not above top` (bot exit 1). The ladders are not moved to dodge it.
 
+### Visual review (Chunky, pinned core, 150 samples per frame)
+
+Rendered from the build tree `out/build-r4` and its world save; the frames stand in `out/renders/` beside the build, which is not tracked. 15 of the 178 scenes `render-shots.sh` emitted are rendered: the five showcase cameras, and one or two eye-height POVs per walkable place. The other 163 are not rendered. Every frame carries the declared hour (late afternoon); no frame shows the night of beat 7 as night.
+
+| Frame | Answers | Does it read as the thing |
+|---|---|---|
+| `camera_north-east-aerial` | view 4 | Yes. Four giant trees on a square; the Loom House in front on its topped trunk; bridges to the Hearth House (two thatched cabins) and to the Watch Tree, whose lookout ring stands over every crown; the Seed Tree behind. The forest floor round the camp is bare moss under the valley rim, not the forest the view draws (the horizon is `valley` until the engine has a forest one). |
+| `camera_from-the-south` | view 3 | Yes. The Seed Tree left, the Watch Tree right with its landing and the lookout above everything, the bridges between, lamp posts along the paths below. |
+| `camera_plan` | view 2 | Yes. North up: the Hearth crown north-west, the Loom platform north-east, the Seed Tree south-west, the Watch Tree south-east, three bridges, none on the south side. |
+| `camera_from-the-glade` | view 1 | Partly. Under the Hearth platform among the buttress roots, the Long Bridge leaving right toward the Loom House. Dark under the deck, and the rope ladder (on the trunk's west face) is out of frame. |
+| `camera_lantern-night` | concept/lantern-night | The lanterns, yes: from the lookout, every rail and bridge below is lined with lanterns, the Hearth Tree ahead. The night, no: the frame is drawn under the declared late-afternoon sky. |
+| `pov_leg0_wp6` | Root Glade | Close against the trunk and its two-wide rope ladder; the bark and roots read, the glade's space does not. |
+| `pov_leg2_wp3` | Hearth House | Wedged between the stone chimney and cabin B's door, under the thatch; reads as a hut by a hearth, cramped. |
+| `pov_leg2_wp16` | Long Bridge | Yes: a railed plank deck running to the Loom House's framed gateway, its thatch cap and lanterns. |
+| `pov_leg2_wp21` | Loom House | Yes: the topped trunk's red end grain in the deck, the lean-to's post, the rail and a lamp post, open to the sky. |
+| `pov_leg6_wp4` | High Bridge | Yes: plank steps climbing into the Watch House under its crown, the lookout ring high above. |
+| `pov_leg6_wp10` | Watch House | **No: nearly black.** The crown's leaf floor course, which `DW0836` requires closed over the Watch House (a stacked plane with a seam is wall except at its opening), roofs the platform; it reads as a dim box even by day. DW0210 passes there. A finding for the next round. |
+| `pov_leg6_wp24` | Watch Crown (the lookout) | Yes: the plank ring round the trunk under its last branches, a chain lantern, the rail. |
+| `pov_leg6_wp31` | Watch Crown (the hook) | Looks east, out over the valley rim, away from the camp: the height reads, the camp does not. |
+| `pov_leg4_wp11` | Low Bridge | Yes: the plank steps up into the Hearth House, the chimney ahead, the huge crown over it. |
+| `pov_leg4_wp1` | Seed House | Yes: the deck under its crown, a chain lantern, the gateway to the Low Bridge, the Hearth House beyond. |
+
+The two scenery places are seen, not entered: the Watch Roots in `camera_from-the-south`, the Hearth Crown in the aerial and the plan.
+
 ### Design decisions made in this round
 
 - Every rail is two fences high. A finale lantern line is a station, and a station stands in play space, so the ring rows are part of each floor's space; Lantern Night swaps the rail's top course for lanterns. A platform corner is a single fence.
