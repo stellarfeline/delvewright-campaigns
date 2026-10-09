@@ -12,6 +12,11 @@ The places (site-plan.json):
   landing stage  x 8200..8215, z 8188..8195, walk y 64 (deck block y 63)
   quay top       x 8200..8215, z 8197..8204, walk y 68 (paving y 67)
   quay wall face z 8196, y 63..67, between them
+
+Inside those two boxes every block is the place's own piece, which `delvec
+detail` expands from `programs/landing.json` and `programs/quay.json`
+(`build_pieces.py` writes both). This script builds only what stands outside
+them, and never selects a cell inside either box.
 """
 import json
 import pathlib
@@ -79,13 +84,16 @@ def masonry():
     # The quay body, sea floor (y 55) to the paving course; its north face is the wall.
     b.fill((8199, 55, 8196), (8216, 62, 8205), WET_STONE)
     b.fill((8199, 63, 8196), (8216, 66, 8205), STONE)
-    b.fill((8200, 67, 8197), (8215, 67, 8204), PAVING, scale=0.6)
     b.fill((8199, 67, 8196), (8216, 67, 8196), "minecraft:smooth_stone")
     b.fill((8199, 67, 8197), (8199, 67, 8205), "minecraft:smooth_stone")
     b.fill((8216, 67, 8197), (8216, 67, 8205), "minecraft:smooth_stone")
     b.fill((8200, 67, 8205), (8215, 67, 8205), "minecraft:smooth_stone")
-    # Clear the derived shell above the quay top, then the parapet: sides and back.
-    b.carve((8199, 68, 8196), (8216, 72, 8205))
+    # Clear the air round the quay top outside its box, then the parapet: sides and back.
+    b.carve((8199, 68, 8196), (8216, 72, 8196))
+    b.carve((8199, 68, 8197), (8199, 72, 8205))
+    b.carve((8216, 68, 8197), (8216, 72, 8205))
+    b.carve((8200, 68, 8205), (8215, 72, 8205))
+    b.carve((8200, 72, 8197), (8215, 72, 8204))
     b.fill((8199, 68, 8196), (8199, 68, 8205), "minecraft:stone_brick_wall")
     b.fill((8216, 68, 8196), (8216, 68, 8205), "minecraft:stone_brick_wall")
     # The head of the steps is a gateway through the wall: two piers and a lintel.
@@ -101,9 +109,14 @@ def landing():
               "The landing stage: a spruce deck on log piles over the water at the foot of "
               "the quay wall, railed on its three water sides, with stone steps up the "
               "wall face to the quay top.")
-    # Everything the derivation built above the deck goes: its roof and walls.
-    b.carve((8199, 64, 8187), (8216, 72, 8195))
-    b.fill((8199, 63, 8187), (8216, 63, 8195), DECK, scale=0.5)
+    # The air round the deck outside its box, and the deck's outer ring under the rail.
+    b.carve((8199, 64, 8187), (8199, 72, 8195))
+    b.carve((8216, 64, 8187), (8216, 72, 8195))
+    b.carve((8200, 64, 8187), (8215, 72, 8187))
+    b.carve((8200, 72, 8188), (8215, 72, 8195))
+    b.fill((8199, 63, 8187), (8199, 63, 8195), DECK, scale=0.5)
+    b.fill((8216, 63, 8187), (8216, 63, 8195), DECK, scale=0.5)
+    b.fill((8200, 63, 8187), (8215, 63, 8187), DECK, scale=0.5)
     # Piles down to the sea floor.
     for x in (8199, 8205, 8210, 8216):
         b.fill((x, 55, 8187), (x, 62, 8187), "minecraft:spruce_log")
@@ -114,32 +127,13 @@ def landing():
     b.fill((8199, 64, 8187), (8216, 64, 8187), "minecraft:spruce_fence")
     b.fill((8199, 64, 8188), (8199, 64, 8195), "minecraft:spruce_fence")
     b.fill((8216, 64, 8188), (8216, 64, 8195), "minecraft:spruce_fence")
-    # The steps: a two-wide flight against the wall face, rising west to a head at
-    # x 8201..8203 that opens south onto the quay top through the wall.
-    b.fill((8201, 64, 8194), (8203, 67, 8195), STONE)
-    for x, top in ((8206, 64), (8205, 65), (8204, 66)):
-        if top > 64:
-            b.fill((x, 64, 8194), (x, top - 1, 8195), STONE)
-        b.fill((x, top, 8194), (x, top, 8195), "minecraft:stone_brick_stairs[facing=west]")
-    # A low balustrade along the foot of the flight, so the bottom tread is taken
-    # from the east, the way it climbs.
-    b.fill((8201, 64, 8193), (8206, 64, 8193), "minecraft:stone_brick_wall")
     return b
 
 
 def lamps_and_furniture():
     b = Batch("batch/lamps",
-              "Lamps and the things on a quay: lantern posts at the rail, bracket lamps on "
-              "the wall face, lantern bollards along the quay edge, lamp standards at the back, "
-              "barrels and a bench where people wait.")
-    # Lantern posts on the deck, at the rail.
-    for x in (8200, 8207, 8215):
-        b.fill((x, 64, 8188), (x, 65, 8188), "minecraft:spruce_fence")
-        b.fill((x, 66, 8188), (x, 66, 8188), "minecraft:lantern")
-    # Bracket lamps on the wall face: a fence arm out of the wall, a lantern under it.
-    for x in (8200, 8209, 8213):
-        b.fill((x, 67, 8195), (x, 67, 8195), "minecraft:spruce_fence")
-        b.fill((x, 66, 8195), (x, 66, 8195), "minecraft:lantern[hanging=true]")
+              "Lamps on the wall line: lantern bollards along the quay edge and a lantern "
+              "on each pier of the gateway.")
     # Bollards along the open quay edge; the outer two carry lanterns.
     for x in (8207, 8211, 8214):
         b.fill((x, 68, 8196), (x, 68, 8196), "minecraft:polished_blackstone_wall")
@@ -148,14 +142,6 @@ def lamps_and_furniture():
     # A lantern on each pier of the gateway at the head of the steps.
     for x in (8200, 8203):
         b.fill((x, 72, 8196), (x, 72, 8196), "minecraft:lantern")
-    # Lamp standards along the back of the quay, in front of the buildings.
-    for x in (8202, 8209, 8215):
-        b.fill((x, 68, 8204), (x, 69, 8204), "minecraft:polished_blackstone_wall")
-        b.fill((x, 70, 8204), (x, 70, 8204), "minecraft:lantern")
-    # A bench facing the water and a few barrels, both stood off the parapet so
-    # neither is a step up onto it.
-    b.fill((8205, 68, 8202), (8207, 68, 8202), "minecraft:spruce_stairs[facing=south]")
-    b.fill((8212, 68, 8201), (8213, 68, 8202), "minecraft:barrel[facing=up]")
     return b
 
 
@@ -233,9 +219,9 @@ def main():
     # only lit once its lamps stand, so the masonry, the landing stage and the lamps
     # land together.
     whole = Batch("batch/the-quay",
-                  "The whole landing: the stone quay with its parapet, the spruce landing "
-                  "stage railed over the water with steps up the wall, the lamps and "
-                  "furniture of a working quay, and the shore and buildings behind it.")
+                  "Everything outside the two places: the stone quay's body, wall line and "
+                  "parapet, the landing stage's piles and rail over the water, the lamps on "
+                  "the wall line, and the shore and buildings behind it.")
     for part in (masonry(), landing(), lamps_and_furniture(), harbour_front()):
         for e in part.edits:
             whole.n += 1
@@ -249,7 +235,7 @@ def main():
             whole.edits.append(e)
     doc = {"campaign_id": "the-ferry-landing",
            "content": {"batches": [whole.doc()]},
-           "dsl_version": "0.35.1", "stage": "world-edits"}
+           "dsl_version": "0.37.0", "stage": "world-edits"}
     out = here / "world-edits.json"
     out.write_text(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
     print(f"wrote {out}")
