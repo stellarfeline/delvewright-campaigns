@@ -1,6 +1,6 @@
 # The Treehouse Camp — reference sheet
 
-**Status: drawn, waiting for the owner's style confirmation.** Nothing here is approved yet. `design.json` is written at step 4, after the design gate.
+**Status: style confirmed.** Build to these views for look and mood. `design.json` is written at step 4, after the design gate.
 
 These images are the authority on look and mood, never on position or size. The geometric facts are `../DESIGN.md` §4. Where an image and §4 disagree, §4 wins. Each view's drift from §4 is listed below so that nobody builds it.
 

@@ -169,7 +169,12 @@ Every ladder hangs on a full block: the trunk's bark, or a post where a ladder l
 
 The deepest drop off any deck or platform below the lookout, rail aside, is 20 blocks (the High Bridge's Watch end and the Watch House), under the 22-block survivable fall. The Crown Lookout stands over the Watch House platform, not over open ground.
 
-## 5. Time and weather
+## 5. Style, horizon, time and weather
+
+**The style is confirmed** on the reference sheet in `design/reference/` (style contract `design/reference/style.txt`). Build to it: look and mood from the images, sizes and positions from §4.
+
+The horizon is `valley` for now. A forest horizon is a recorded engine idea (the forest-horizon issue), and the camp takes it when the engine has it.
+
 
 Played in late afternoon, clear, with sun coming in low through the canopy. Beat 7 sets the time to nightfall. The reference views are drawn at late afternoon.
 
