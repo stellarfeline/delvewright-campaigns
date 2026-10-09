@@ -1,7 +1,288 @@
 {
   "campaign_id": "the-treehouse-camp",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/tobi-root",
+            "options": [
+              {
+                "label": "How do we get up?",
+                "next": "dlg/tobi-ladder"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/meet-tobi",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll go up."
+              }
+            ],
+            "text": "You're the guests! I'm Tobi. Oru sent me down to fetch you. She's waiting up in the Hearth House, on the big platform over our heads."
+          },
+          {
+            "id": "dlg/tobi-ladder",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/meet-tobi",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll go first."
+              }
+            ],
+            "text": "The rope ladder, on the trunk. Fourteen rungs. I climb it every day and I'm still afraid of it. You go first, and I'll come when you're up."
+          }
+        ],
+        "npc": "npc/tobi",
+        "root": "dlg/tobi-root"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/oru-ask",
+            "options": [
+              {
+                "label": "What is Lantern Night?",
+                "next": "dlg/oru-night"
+              }
+            ],
+            "text": "Welcome to the Hearth House. I am Oru, and I keep this hearth. You came on a good night: tonight is Lantern Night."
+          },
+          {
+            "id": "dlg/oru-night",
+            "options": [
+              {
+                "label": "And this year?",
+                "next": "dlg/oru-knee"
+              }
+            ],
+            "text": "Once a year, when the nuts are pressed and the new cloth is woven, we hang a new lantern at the top of the Watch Tree, the tallest tree in the camp. When it is lit, every house answers with lanterns of its own. I have carried it up and lit it for thirty years."
+          },
+          {
+            "id": "dlg/oru-knee",
+            "options": [
+              {
+                "label": "We'll carry it.",
+                "next": "dlg/oru-errand"
+              }
+            ],
+            "text": "This year my knee will not take the ladder. I am sad about it, and I would rather say so than pretend I am not. Will you carry the lantern up for me?"
+          },
+          {
+            "id": "dlg/oru-errand",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-oru",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll bring both."
+              }
+            ],
+            "text": "Thank you. Neve is the camp's weaver: she has the new lantern at the Loom House, across the Long Bridge. Hessel is the seed-keeper: he keeps the lamp oil at the Seed House, across the Low Bridge. Bring me both, and I will light it here at the hearth."
+          },
+          {
+            "id": "dlg/oru-waiting",
+            "options": [
+              {
+                "label": "We'll be back."
+              }
+            ],
+            "text": "The lantern is with Neve at the Loom House, across the Long Bridge. The oil is with Hessel at the Seed House, across the Low Bridge. Either first."
+          },
+          {
+            "id": "dlg/oru-light",
+            "options": [
+              {
+                "label": "Here they are.",
+                "next": "dlg/oru-lit"
+              }
+            ],
+            "text": "The lantern and the oil. Give them here."
+          },
+          {
+            "id": "dlg/oru-lit",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/light-the-lantern",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "To Neve, then."
+              }
+            ],
+            "text": "The oil is Hessel's, the shade is Neve's, and the flame is from this hearth, as it is every year. There: it is lit. Take it to Neve. When she sees it burning, she will untie the gate to the High Bridge, and the High Bridge goes to the Watch Tree."
+          }
+        ],
+        "npc": "npc/oru",
+        "root": "dlg/oru-ask"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/neve-lantern",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/fetch-the-lantern",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              },
+              {
+                "label": "What is that gate?",
+                "next": "dlg/neve-gate-about"
+              },
+              {
+                "label": "Is that bridge safe?",
+                "next": "dlg/neve-quarrel"
+              }
+            ],
+            "text": "Oru sent you for the lantern? Here. The shade is this year's cloth, off the loom this week."
+          },
+          {
+            "id": "dlg/neve-gate-about",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/fetch-the-lantern",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              },
+              {
+                "label": "Is that bridge safe?",
+                "next": "dlg/neve-quarrel"
+              }
+            ],
+            "text": "That's the High Bridge, to the Watch Tree. I keep it tied until the lantern is lit. It's an old rule, and I like it."
+          },
+          {
+            "id": "dlg/neve-quarrel",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/fetch-the-lantern",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              }
+            ],
+            "text": "The High Bridge is fine. The Low Bridge, to Hessel's, needs new rope. Hessel says it's the planks. It's the rope. If you see him, tell him I said so."
+          },
+          {
+            "id": "dlg/neve-gate",
+            "options": [
+              {
+                "label": "Untie the gate.",
+                "next": "dlg/neve-untied"
+              }
+            ],
+            "text": "It's lit. Oru's flame in my shade, same as every year. Then the gate comes open."
+          },
+          {
+            "id": "dlg/neve-untied",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/show-neve",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Up we go."
+              }
+            ],
+            "text": "There. The High Bridge goes to the Watch House. From there it's ladders, all the way to the top. Hang it on the iron hook at the very top."
+          }
+        ],
+        "npc": "npc/neve",
+        "root": "dlg/neve-lantern"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/hessel-oil",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/fetch-the-oil",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              },
+              {
+                "label": "Is that bridge safe?",
+                "next": "dlg/hessel-quarrel"
+              },
+              {
+                "label": "Who built all this?",
+                "next": "dlg/hessel-built"
+              }
+            ],
+            "text": "Oil for the lantern? Pressed last week from this year's nuts. Here, a full flask."
+          },
+          {
+            "id": "dlg/hessel-quarrel",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/fetch-the-oil",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              },
+              {
+                "label": "Who built all this?",
+                "next": "dlg/hessel-built"
+              }
+            ],
+            "text": "Neve will tell you the rope is going. The rope is fine. It's the planks. I have walked them sixty years and I can feel which ones are soft. If you see her, you can tell her that."
+          },
+          {
+            "id": "dlg/hessel-built",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/fetch-the-oil",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Thank you."
+              },
+              {
+                "label": "Is that bridge safe?",
+                "next": "dlg/hessel-quarrel"
+              }
+            ],
+            "text": "One tree at a time. The Hearth Tree first, my grandfather's grandmother's house. Then the Loom Tree, and they cut its top off for a flat place to weave. Then this one, the Seed Tree. The Watch Tree last, because somebody had to see the weather coming."
+          }
+        ],
+        "npc": "npc/hessel",
+        "root": "dlg/hessel-oil"
+      }
+    ]
   },
   "dsl_version": "0.38.0",
   "stage": "dialogue"
