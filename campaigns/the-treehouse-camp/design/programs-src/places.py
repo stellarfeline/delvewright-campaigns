@@ -126,7 +126,8 @@ def root_glade():
     for y in range(floor, floor + 3):
         trunk_layer(m, cx, cz, 6.0, y, keep=lambda x, z: x <= 31 and 33 <= z <= 38)
     # Buttress roots: tall walls of bark that end in one low knuckle, so no
-    # body climbs them (a step of two from the knuckle to the root).
+    # body climbs them (a step of two from the knuckle to the root). Between
+    # them the glade opens onto the forest floor on every side.
     roots = [
         (38, 29, 38, 27),   # north
         (41, 30, 43, 28),   # north-east
@@ -145,23 +146,16 @@ def root_glade():
                     P(m, x, floor + dy, z, BARK, 7)
                 if m.get(x, floor + hgt, z) is None:
                     m.set(x, floor + hgt, z, "moss_carpet")
-    # The hedge round the glade: fallen logs and bushes three high on the
-    # ring, so the glade is a room with open sky-light above its walls.
-    for x in range(x0, x1 + 1):
-        for z in range(z0, z1 + 1):
-            if x in (x0, x1) or z in (z0, z1):
-                for dy in range(3):
-                    if dy < 2 and (x + z) % 7 in (0, 1, 2):
-                        axis = "x" if z in (z0, z1) else "z"
-                        m.set(x, floor + dy, z, f"mangrove_log[axis={axis}]")
-                    else:
-                        P(m, x, floor + dy, z, BUSH, 11)
-    # Ferns along the inside of the hedge.
+    # Ferns and fallen logs scattered round the glade's edge, low enough to step over.
     for x in range(x0 + 1, x1):
         for z in range(z0 + 1, z1):
             edge = x in (x0 + 1, x1 - 1) or z in (z0 + 1, z1 - 1)
-            if edge and m.get(x, floor, z) is None and (x * 3 + z) % 4 != 0:
+            if edge and m.get(x, floor, z) is None and (x * 3 + z) % 5 == 0:
                 m.set(x, floor, z, "fern")
+    for (lx, lz, axis, n) in ((27, 44, "x", 3), (44, 27, "z", 3)):
+        for i in range(n):
+            x, z = (lx + i, lz) if axis == "x" else (lx, lz + i)
+            m.set(x, floor, z, f"mangrove_log[axis={axis}]")
     # The fire ring, south-east of the trunk, and two log seats.
     fx, fz = 42, 42
     for dx in (-1, 0, 1):
@@ -178,12 +172,11 @@ def root_glade():
     # Lanterns hanging on chains from the platform overhead, all round the trunk.
     for (lx, lz) in ((28, 30), (34, 27), (40, 29), (45, 30), (44, 36), (43, 44), (37, 44), (28, 44), (27, 36)):
         hanging_lantern(m, lx, lz, y1, 8)
-    # Contract: the glade's floor, the ladder shaft above it, the top rung's cell.
-    m.space("glade", "open", (x0 + 1, floor, z0 + 1, x1 - 1, floor + 2, z1 - 1),
-            (30, floor + 3, 35, 30, y1 - 1, 36))
+    # Contract: the glade's floor out to its open edge, the ladder shaft, the top rung's cell.
+    m.space("glade", "open", (x0, floor, z0, x1, floor + 2, z1), (30, floor + 3, 35, 30, y1 - 1, 36))
     m.via("glade-ladder", (30, y1, 35, 30, y1, 36))
     top = floor + 3
-    m.nobody("over-the-glade", "the tops of the buttress roots, the hedge and the hanging lanterns: nobody climbs up here",
+    m.nobody("over-the-glade", "the tops of the buttress roots and the hanging lanterns: nobody climbs up here",
              (x0, top, z0, 29, y1, z1), (31, top, z0, x1, y1, z1),
              (30, top, z0, 30, y1, 34), (30, top, 37, 30, y1, z1))
     m.entry = "glade"
@@ -416,10 +409,6 @@ def bridge(stem, node, axis, level, flight, facing, landing, via_top, top_y, end
     rb0, rb1 = b0 - 1, b1 + 1
     a_all = sorted([level[0], level[1], landing, via_top] + [a for a, _ in flight])
     a_lo, a_hi = a_all[0], a_all[-1]
-    # The forest floor under the bridge: the handed ground, one level.
-    for a in range(a_lo, a_hi + 1):
-        for b in range(b0, b1 + 1):
-            put(a, y0, b, pick(a, y0, b, FOREST_FLOOR, 3))
     # The level deck, the ring rows included, with its rail.
     for a in range(min(level), max(level) + 1):
         for b in range(rb0, rb1 + 1):
@@ -482,8 +471,7 @@ def bridge(stem, node, axis, level, flight, facing, landing, via_top, top_y, end
     m.region("flight", *box(min(fa), floor, b0, max(fa), top_y + 3, b1))
     m.via(edge_end.split("/")[1], v_end)
     m.via(edge_top.split("/")[1], v_top)
-    rest_region(m, "around", "the forest floor under the deck, the stringers and the rail tops: no way onto any of them")
-    m.ack = "a bridge is a narrow deck over open air: most of what it covers is the forest floor far below it"
+    rest_region(m, "around", "the beams under the deck, the stringers and the rail tops: no way onto any of them")
     m.entry = "deck"
     m.edge(a="deck", b="landing", **{"class": "stair", "rise": (top_y + 1) - floor, "via": "flight"})
     m.edge(a="landing", b="exterior", **{"class": "walk", "via": edge_top.split("/")[1]})
@@ -496,18 +484,18 @@ def bridge(stem, node, axis, level, flight, facing, landing, via_top, top_y, end
 
 
 def long_bridge():
-    bridge("long-bridge", "node/long-bridge", "x", (57, 68), [(56, 80), (55, 81), (54, 82), (53, 83), (52, 84), (51, 85)],
-           "west", 50, 49, 85, 68, (34, 36), (34, 37), 80, DECK, (57, 67), "edge/hearth-long", "edge/loom-long")
+    bridge("long-bridge", "node/long-bridge", "x", (57, 70), [(56, 80), (55, 81), (54, 82), (53, 83), (52, 84), (51, 85)],
+           "west", 50, 49, 85, 70, (34, 36), (34, 36), 80, DECK, (57, 69), "edge/hearth-long", "edge/loom-long")
 
 
 def low_bridge():
     bridge("low-bridge", "node/low-bridge", "z", (55, 68), [(54, 82), (53, 83), (52, 84), (51, 85)],
-           "north", 50, 49, 85, 68, (34, 36), (34, 37), 82, DECK_WORN, (55, 67), "edge/hearth-low", "edge/seed-low")
+           "north", 50, 49, 85, 68, (34, 36), (34, 36), 82, DECK_WORN, (55, 67), "edge/hearth-low", "edge/seed-low")
 
 
 def high_bridge():
-    bridge("high-bridge", "node/high-bridge", "z", (45, 62), [(63, 80), (64, 81), (65, 82), (66, 83)],
-           "south", 67, 68, 83, 45, (76, 78), (76, 79), 80, DECK, (46, 62), "edge/watch-high", "edge/loom-high")
+    bridge("high-bridge", "node/high-bridge", "z", (45, 60), [(61, 80), (62, 81), (63, 82), (64, 83)],
+           "south", 65, 66, 83, 45, (78, 80), (78, 80), 80, DECK, (46, 60), "edge/watch-high", "edge/loom-high")
 
 
 # ---------------------------------------------------------------- trees on the ground
@@ -566,7 +554,7 @@ def gateway(m, along, fixed, a0, a1, y0, y1):
 
 
 # ---------------------------------------------------------------- the Loom House
-LOOM = (78.0, 36.0)
+LOOM = (80.0, 36.0)
 
 
 def loom_house():
@@ -574,7 +562,7 @@ def loom_house():
     m = thlib.Model(h)
     (x0, y0, z0), (x1, y1, z1) = h["world_min"], m.wmax()
     cx, cz = LOOM
-    ground = y0               # 61, the gully floor
+    ground = y0               # 59, the gully floor
     fy = 79                   # the floor course, the trunk's cut top
     floor = 80
     ground_plot(m, x0 + 1, z0 + 1, x1 - 1, z1 - 1, ground)
@@ -603,36 +591,36 @@ def loom_house():
     for x, z in m.disc_cells(cx, cz, 5.0):
         m.set(x, fy, z, "mangrove_log[axis=y]")
     # Rail, open at the Long Bridge's mouth; the High Bridge's mouth is the rope gate.
-    west_gap = [(69, z) for z in (34, 35, 36)]
-    gate = [(x, 44) for x in (76, 77, 78)]
+    west_gap = [(71, z) for z in (34, 35, 36)]
+    gate = [(x, 44) for x in (78, 79, 80)]
     rail_ring(m, x0, z0, x1, z1, floor, west_gap + gate)
     gate_state = "oak_fence[east=true,north=false,south=false,waterlogged=false,west=true]"
     m.role_names[thlib.full_state(gate_state)] = "rope-gate"
     for (gx, gz) in gate:
         for dy in range(3):
             m.set(gx, floor + dy, gz, gate_state)
-    gateway(m, "x", 44, 75, 79, floor + 3, floor + 5)
-    gateway(m, "z", 69, 33, 37, floor + 3, floor + 5)
-    m.set(75, floor + 2, 43, "brown_wool")     # the knot, tied round the gate's west post
+    gateway(m, "x", 44, 77, 81, floor + 3, floor + 5)
+    gateway(m, "z", 71, 33, 37, floor + 3, floor + 5)
+    m.set(77, floor + 2, 43, "brown_wool")     # the knot, tied round the gate's west post
     # The lean-to over the two looms, thatched, open to the south.
-    for (px, pz, ph) in ((79, 28, 5), (85, 28, 5), (79, 32, 3), (85, 32, 3)):
+    for (px, pz, ph) in ((81, 28, 5), (87, 28, 5), (81, 32, 3), (87, 32, 3)):
         for dy in range(ph):
             m.set(px, floor + dy, pz, POST)
-    for x in range(79, 86):
+    for x in range(81, 88):
         m.set(x, floor + 5, 28, THATCH)
         for z in (29, 30):
             m.set(x, floor + 4, z, THATCH)
         for z in (31, 32):
             m.set(x, floor + 3, z, THATCH)
-    m.set(81, floor, 29, "loom[facing=south]")
     m.set(83, floor, 29, "loom[facing=south]")
+    m.set(85, floor, 29, "loom[facing=south]")
     for z in (29, 30):
-        m.set(85, floor, z, "red_wool" if z == 29 else "cyan_wool")
-    m.set(84, floor, 29, "white_wool")
-    hanging_lantern(m, 82, 30, floor + 3, 1)
+        m.set(87, floor, z, "red_wool" if z == 29 else "cyan_wool")
+    m.set(86, floor, 29, "white_wool")
+    hanging_lantern(m, 84, 30, floor + 3, 1)
     # Cloth drying on lines: posts, a line, the cloth hanging under it.
     colours = ["white_wool", "red_wool", "light_gray_wool", "brown_wool", "cyan_wool", "yellow_wool", "white_wool", "green_wool"]
-    for (lx0, lz0, lx1, lz1) in ((72, 29, 72, 33), (72, 39, 72, 42)):
+    for (lx0, lz0, lx1, lz1) in ((74, 29, 74, 33), (74, 39, 74, 42)):
         for (px, pz) in ((lx0, lz0 - 1), (lx1, lz1 + 1)):
             for dy in range(4):
                 m.set(px, floor + dy, pz, "spruce_fence")
@@ -641,11 +629,15 @@ def loom_house():
             if i % 2 == 0 or True:
                 m.set(lx0, floor + 2, z, colours[(z * 3) % len(colours)])
     # Lamp posts.
-    for (lx, lz) in ((70, 28), (70, 43), (85, 43), (85, 37), (75, 28)):
+    for (lx, lz) in ((72, 28), (72, 43), (87, 43), (87, 37), (77, 28)):
         lamp_post(m, lx, lz, floor)
+    # Under the deck, the forest floor round the trunk is walked: chain
+    # lanterns hang from the deck's underside all round it.
+    for (lx, lz) in ((73, 30), (80, 28), (87, 30), (87, 36), (87, 42), (80, 43), (73, 42), (73, 36)):
+        hanging_lantern(m, lx, lz, fy - 1, 12)
     # Contract.
-    v_long = (69, floor, 34, 69, floor + 2, 36)
-    bar = (76, floor, 44, 78, floor + 2, 44)
+    v_long = (71, floor, 34, 71, floor + 2, 36)
+    bar = (78, floor, 44, 80, floor + 2, 44)
     m.via("loom-long", v_long)
     m.region("seam-loom-high", *bar)
     platform_contract(m, x0, z0, x1, z1, floor, [v_long, bar])
@@ -654,8 +646,8 @@ def loom_house():
     m.entry = "room"
     m.edge(a="room", b="exterior", **{"class": "walk", "via": "loom-long"})
     m.edge(a="room", b="exterior", **{"class": "barred", "bar": {"region": "seam-loom-high", "block": "rope-gate"}})
-    m.mark("node-loom-house", 79, floor, 34, "west")
-    m.mark("unlock-loom-high", 77, floor, 42, "south")
+    m.mark("node-loom-house", 81, floor, 34, "west")
+    m.mark("unlock-loom-high", 79, floor, 42, "south")
     light_marks(m, "node/loom-house")
     write(m, "loom-house")
 
@@ -695,16 +687,29 @@ def branch(m, x, y, z, axis, length, thick=2, choices=None):
                 m.set(*c, m.pick(*c, choices or (BARK_X if axis == "x" else BARK_Z if axis == "z" else BARK), 41))
 
 
-def hollow_contract(m, x, y, z, reason):
-    """Scenery: one sealed hollow in the trunk is the place's space (no way
-    in, none owed); every other cell of the frame is out of walk."""
-    m.set(x, y - 1, z, "shroomlight")
-    m.set(x, y, z, None)
-    m.set(x, y + 1, z, None)
-    m.space("hollow", "enclosed", (x, y, z, x, y + 1, z))
+def scenery_top(m):
+    """The highest standable cell of a piece: a leaf top no body reaches."""
+    best = None
+    for (lx, ly, lz), s in m.cells.items():
+        if not any(t in s for t in ("_wood", "_leaves", "_log")):
+            continue
+        above = (lx, ly + 1, lz)
+        if above in m.cells or (lx, ly + 2, lz) in m.cells or ly + 2 >= m.ext[1]:
+            continue
+        if best is None or ly > best[1]:
+            best = (lx, ly, lz)
+    return (best[0] + m.min[0], best[1] + 1 + m.min[1], best[2] + m.min[2])
+
+
+def scenery_contract(m, x, y, z, reason, top=None):
+    """Scenery: the place's one space is a cell of its own trunk, where
+    nothing stands; every other cell of the frame is out of walk. The piece
+    states its zero standable cells (spec-0098 departure 32)."""
+    tx, ty, tz = top or scenery_top(m)
+    m.space("heartwood", "open", (tx, ty, tz, tx, ty + 1, tz))
     rest_region(m, "seen-from-outside", reason)
     m.ack = "scenery: built to be seen from the camp and never entered"
-    m.entry = "hollow"
+    m.entry = "heartwood"
 
 
 def hearth_crown():
@@ -725,6 +730,9 @@ def hearth_crown():
     branch(m, 39, 100, 39, "z", 6)
     branch(m, 32, 100, 32, "x", -6)
     branch(m, 32, 100, 32, "z", -6)
+    # The hall's festival lanterns, hung from the great arms over the platform.
+    for (lx, lz) in ((42, 35), (46, 36), (29, 35), (25, 36), (35, 42), (36, 46), (35, 29), (36, 25)):
+        m.set(lx, 95, lz, LANTERN_HANG)
     for y in range(y0 + 11, y0 + 13):
         trunk_layer(m, cx, cz, 2.5, y)
     # The leaf masses: at the arm ends, the higher arms, and the crown's head.
@@ -741,7 +749,8 @@ def hearth_crown():
     ]
     for i, b in enumerate(masses):
         leaf_mass(m, *b, salt=31 + i)
-    hollow_contract(m, 36, y0 + 2, 36, "the Hearth Tree's crown, seen from the camp and never entered: branches and leaves only")
+    scenery_contract(m, 36, y0 + 2, 36, "the Hearth Tree's crown, seen from the camp and never entered: branches and leaves only",
+                     top=(42, 98, 35))
     write(m, "hearth-crown")
 
 
@@ -799,6 +808,10 @@ def seed_house():
         hanging_lantern(m, lx, lz, lid - 1, 2)
     for (lx, lz) in ((28, 76), (43, 85), (28, 85), (34, 85), (43, 70)):
         lamp_post(m, lx, lz, floor)
+    # Under the deck, the mound round the trunk is walked: chain lanterns
+    # hang from the deck's underside all round it.
+    for (lx, lz) in ((30, 72), (36, 71), (42, 72), (43, 78), (42, 84), (36, 85), (30, 84), (29, 78)):
+        hanging_lantern(m, lx, lz, fy - 1, 6)
     # The crown, in the declared roof zone: arms from the trunk, leaf masses.
     branch(m, 39, 90, 77, "x", 8)
     branch(m, 32, 90, 77, "x", -8)
@@ -820,7 +833,7 @@ def seed_house():
 
 
 # ---------------------------------------------------------------- the Watch Tree
-WATCH = (78.0, 80.0)
+WATCH = (80.0, 78.0)
 
 
 def watch_roots():
@@ -833,8 +846,9 @@ def watch_roots():
     for y in range(ground, y1 + 1):
         r = 5.0 + (2.0 if y <= ground + 3 else (1.0 if y <= ground + 6 else 0.0))
         trunk_layer(m, cx, cz, r, y)
-    buttress_roots(m, cx, cz, 5.0, ground + 1, (0, 45, 90, 135, 180, 225, 270, 315), 9.0, top_h=7)
-    # Bushes and mossy logs close the ring between the roots, three high.
+    buttress_roots(m, cx, cz, 5.0, ground + 1, (0, 45, 90, 135, 180, 225, 270, 315), 7.6, top_h=7)
+    # Bushes and mossy logs close the ring between the roots, three high:
+    # the tree's foot is seen from the forest floor and never stood in.
     for x in range(x0, x1 + 1):
         for z in range(z0, z1 + 1):
             if x in (x0, x1) or z in (z0, z1):
@@ -842,7 +856,7 @@ def watch_roots():
                     if m.get(x, ground + dy, z) is None:
                         P(m, x, ground + dy, z, BUSH, 11)
     ferns(m, x0 + 1, z0 + 1, x1 - 1, z1 - 1, ground + 1)
-    hollow_contract(m, 78, ground + 2, 80, "the Watch Tree's foot and roots, seen from the bridges and never entered")
+    scenery_contract(m, int(cx), ground + 5, int(cz), "the Watch Tree's foot and roots, seen from the bridges and the forest floor and never entered")
     write(m, "watch-roots")
 
 
@@ -855,27 +869,27 @@ def watch_house():
     for y in range(fy, y1 + 1):
         trunk_layer(m, cx, cz, 5.0, y)
     deck(m, x0, z0, x1, z1, fy)
-    rail_ring(m, x0, z0, x1, z1, floor, [(x, 69) for x in (76, 77, 78)])
+    rail_ring(m, x0, z0, x1, z1, floor, [(x, z0) for x in (78, 79, 80)])
     # The ladder up the bark to the crown's landing; its top rung is the crown's.
-    ladder(m, 72, 79, 80, floor, y1, "west")
+    ladder(m, 74, 77, 78, floor, y1, "west")
     # The sentry hut, south-east of the trunk.
-    cabin(m, 81, 83, 86, 88, floor, 4, "x", doors=[(83, 83, 2)], windows=[(86, 85), (81, 86)])
-    m.set(85, floor, 86, "hay_block[axis=z]")
-    m.set(85, floor, 87, "hay_block[axis=z]")
-    m.set(82, floor, 87, "spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]")
-    hanging_lantern(m, 83, 85, floor + 3, 1)
-    for (lx, lz) in ((68, 70), (68, 89), (87, 70), (75, 89), (87, 79), (68, 77), (80, 89), (87, 89), (80, 70), (74, 84)):
+    cabin(m, 83, 81, 88, 86, floor, 4, "x", doors=[(85, 81, 2)], windows=[(88, 83), (83, 84)])
+    m.set(87, floor, 84, "hay_block[axis=z]")
+    m.set(87, floor, 85, "hay_block[axis=z]")
+    m.set(84, floor, 85, "spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]")
+    hanging_lantern(m, 85, 83, floor + 3, 1)
+    for (lx, lz) in ((70, 68), (70, 87), (89, 68), (77, 87), (89, 77), (70, 75), (82, 87), (89, 87), (82, 68), (76, 82)):
         lamp_post(m, lx, lz, floor)
-    v = (76, floor, 69, 78, floor + 2, 69)
+    v = (78, floor, z0, 80, floor + 2, z0)
     m.via("watch-high", v)
-    shaft = (72, floor + 2, 79, 72, y1 - 1, 80)
-    top = (72, y1, 79, 72, y1, 80)
+    shaft = (74, floor + 2, 77, 74, y1 - 1, 78)
+    top = (74, y1, 77, 74, y1, 78)
     m.via("watch-ladder", top)
     platform_contract(m, x0, z0, x1, z1, floor, [v], extra_space=[shaft], holes=[top])
     m.entry = "room"
     m.edge(a="room", b="exterior", **{"class": "walk", "via": "watch-high"})
     m.edge(a="room", b="exterior", **{"class": "walk", "via": "watch-ladder"})
-    m.mark("node-watch-house", 77, floor, 72, "north")
+    m.mark("node-watch-house", 79, floor, 70, "north")
     light_marks(m, "node/watch-house")
     write(m, "watch-house")
 
@@ -907,139 +921,115 @@ def watch_crown():
     cx, cz = WATCH
     fy = y0                   # 92, the landing's planks
     landing_y = fy + 1        # 93
-    top = y1 - 1              # 110, the last cell under the lookout's floor
-    for y in range(fy, y1 + 1):
+    ring_fy, ring_y = 111, 112
+    LX = 74                   # the ladder's column, on the trunk's west face
+    for y in range(fy, ring_fy + 1):
         trunk_layer(m, cx, cz, 5.0, y)
+    for y in range(ring_fy + 1, 119):
+        trunk_layer(m, cx, cz, 3.0 if y < 116 else 2.0, y)
     # The landing at the first fork, west of the trunk, round the ladder.
-    land = [(x, z) for x in range(68, 73) for z in range(75, 86)
+    land = [(x, z) for x in range(70, 75) for z in range(73, 84)
             if (x + 0.5 - cx) ** 2 + (z + 0.5 - cz) ** 2 > 25]
     for (x, z) in land:
         P(m, x, fy, z, DECK, 5)
     rail_around(m, land, landing_y, 2)
-    for (lx, lz) in ((68, 75), (68, 85)):
+    for (lx, lz) in ((70, 73), (70, 83)):
         for dy in range(2):
             m.set(lx, landing_y + dy, lz, POST)
         m.set(lx, landing_y + 2, lz, LANTERN_STAND)
     # Branches out from the fork and the crown's leaf masses round the climb.
-    branch(m, 83, 98, 79, "x", 5)
-    branch(m, 73, 101, 82, "x", -4)
-    branch(m, 77, 100, 85, "z", 5)
-    branch(m, 77, 97, 75, "z", -6)
+    branch(m, 85, 98, 77, "x", 5)
+    branch(m, 75, 101, 80, "x", -4)
+    branch(m, 79, 100, 83, "z", 5)
+    branch(m, 79, 97, 73, "z", -5)
     masses = [
-        (82, 96, 73, 87, 104, 86),   # east lobe
-        (75, 98, 85, 86, 105, 89),   # south lobe
-        (73, 95, 69, 84, 102, 74),   # north lobe
-        (68, 99, 69, 72, 106, 74),   # north-west, over the landing
-        (68, 99, 86, 72, 106, 89),   # south-west, over the landing
-        (68, 103, 75, 71, 107, 85),  # west, round the climb
-        (73, 104, 73, 86, 108, 87),  # the crown's top, two courses under the lookout
+        (84, 96, 71, 89, 104, 84),   # east lobe
+        (77, 98, 83, 88, 105, 87),   # south lobe
+        (75, 95, 68, 86, 102, 72),   # north lobe
+        (70, 99, 68, 74, 106, 72),   # north-west, over the landing
+        (70, 99, 84, 74, 106, 87),   # south-west, over the landing
+        (70, 103, 73, 73, 107, 83),  # west, round the climb
+        (75, 104, 71, 88, 108, 85),  # the crown's top, under the lookout
     ]
     for i, b in enumerate(masses):
         leaf_mass(m, *b, salt=51 + i)
-    # The rope ladder: the hole in the landing, then on up the bark.
-    for y in range(fy, top + 1):
-        for z in (79, 80):
-            m.set(72, y, z, "ladder[facing=west]")
+    # The Watch House's ladder tops out in the landing's hole; the crown's own
+    # ladder starts on the landing beside it and climbs the bark to the ring.
+    for z in (77, 78):
+        m.set(LX, fy, z, "ladder[facing=west]")
+    for y in range(landing_y, ring_fy + 1):
+        m.set(LX, y, 79, "ladder[facing=west]")
     for (x, z) in land:
         for y in range(landing_y, landing_y + 3):
             if m.get(x, y, z) and "leaves" in m.get(x, y, z):
                 m.set(x, y, z, None)
-    # The ladder runs in a flute of the bark: ribs either side of it to the
-    # lookout's floor, and clear air west of it down to the landing, so a
-    # climber has nothing to step off onto but the landing and the ring.
-    for y in range(landing_y, top + 1):
-        for z in (78, 81):
-            m.set(72, y, z, m.pick(72, y, z, BARK))
-        for z in (79, 80):
-            m.set(71, y, z, None)
-    # Lanterns hung off the leaves two cells from the ladder, every four rungs.
-    for y in range(landing_y + 4, top - 1, 4):
-        for z in (78, 81):
-            m.set(70, y + 1, z, m.pick(70, y + 1, z, LEAVES))
-            m.set(70, y, z, LANTERN_HANG)
-            m.set(70, y - 1, z, None)
-    for y in range(landing_y, top + 1):
-        for z in (78, 79, 80, 81):
-            if m.get(71, y, z) and "leaves" in m.get(71, y, z) and y < landing_y + 4:
-                m.set(71, y, z, None)
-    # The rest of the floor course is the crown's underside: leaves.
-    for x in range(67, 89):
-        for z in range(69, 91):
+    # The ladder runs in a flute of the bark: ribs either side of it, clear
+    # air west of it down to the landing, so a climber has nothing to step
+    # off onto but the landing and the ring.
+    for y in range(landing_y + 2, ring_fy + 1):
+        for z in (78, 80):
+            m.set(LX, y, z, m.pick(LX, y, z, BARK))
+    for y in range(landing_y, ring_fy):
+        m.set(LX - 1, y, 79, None)
+    for y in range(landing_y + 4, ring_fy - 1, 4):
+        for z in (78, 80):
+            m.set(LX - 2, y + 1, z, m.pick(LX - 2, y + 1, z, LEAVES))
+            m.set(LX - 2, y, z, LANTERN_HANG)
+            m.set(LX - 2, y - 1, z, None)
+    # The crown's floor course is its underside: leaves round the landing.
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
             if m.get(x, fy, z) is None:
                 P(m, x, fy, z, LEAVES, 61)
-    # Contract: the landing, the ladder shaft above it, the two holes.
-    land_boxes = [(x, landing_y, z, x, landing_y + 1, z) for (x, z) in land]
-    shaft = (72, landing_y + 2, 79, 72, top - 1, 80)
-    m.space("landing", "open", *(land_boxes + [shaft]))
-    m.via("watch-ladder", (72, fy, 79, 72, fy, 80))
-    m.via("lookout-ladder", (72, top, 79, 72, top, 80))
+    # The Crown Lookout: a ring of planks round the trunk, railed one fence high,
+    # over every other crown in the camp.
+    ring = [(x, z) for x, z in m.disc_cells(cx, cz, 7.5) if (x + 0.5 - cx) ** 2 + (z + 0.5 - cz) ** 2 > 9]
+    for (x, z) in ring:
+        if (x, z) == (LX, 79):
+            continue
+        if m.get(x, ring_fy, z) is None or (x + 0.5 - cx) ** 2 + (z + 0.5 - cz) ** 2 > 25:
+            P(m, x, ring_fy, z, DECK, 7)
+    for (x, z) in ring:
+        for y in range(ring_y, ring_y + 4):
+            m.set(x, y, z, None)
+    rail_around(m, ring, ring_y, 1)
+    for (lx, lz) in ((88, 78), (80, 86), (86, 72), (74, 84), (86, 84), (84, 70), (72, 82)):
+        if m.get(lx, ring_y, lz) == RAIL:
+            m.set(lx, ring_y + 1, lz, LANTERN_STAND)
+    # The last branches over the ring, their leaves, and the lantern hook.
+    branch(m, 83, 116, 78, "x", 5, thick=1)
+    m.set(86, 115, 78, "iron_chain[axis=y]")
+    branch(m, 78, 117, 74, "z", -3, thick=1)
+    branch(m, 78, 117, 81, "z", 3, thick=1)
+    for i, b in enumerate(((76, 118, 72, 84, 121, 84), (74, 117, 75, 77, 120, 81), (83, 118, 74, 87, 120, 77))):
+        leaf_mass(m, *b, salt=71 + i)
+    for (lx, lz) in ((82, 81), (78, 75), (82, 75), (78, 81)):
+        hanging_lantern(m, lx, lz, 117, 4)
+    for (x, z) in ring:
+        for y in range(ring_y, ring_y + 2):
+            if m.get(x, y, z) and "leaves" in m.get(x, y, z):
+                m.set(x, y, z, None)
+    m.set(86, 114, 78, None)
+    # Contract: the landing, the lookout, and the ladder that climbs between them.
+    land_boxes = [(x, landing_y, z, x, landing_y + 1, z) for (x, z) in land if (x, z) != (LX, 79)]
+    m.space("landing", "open", *land_boxes)
+    m.space("lookout", "open", *[(x, ring_y, z, x, ring_y + 2, z) for (x, z) in set(ring) | {(LX, 79)}])
+    m.via("inner-ladder", (LX, landing_y, 79, LX, ring_fy, 79))
+    m.via("watch-ladder", (LX, fy, 77, LX, fy, 78))
     rest_region(m, "leaves-and-bark", "the crown's leaves, branches and rails: the ladder is the only way through them")
     m.ack = "a tree's crown: most of what stands in it is leaves"
     m.entry = "landing"
     m.edge(a="landing", b="exterior", **{"class": "walk", "via": "watch-ladder"})
-    m.edge(a="landing", b="exterior", **{"class": "walk", "via": "lookout-ladder"})
-    m.mark("node-watch-crown", 70, landing_y, 78, "east")
+    m.edge(a="landing", b="lookout", **{"class": "climb", "rise": ring_y - landing_y, "via": "inner-ladder"})
+    m.mark("node-watch-crown", 72, landing_y, 76, "east")
+    m.mark("lantern-hook", 86, 114, 78, "west")
     write(m, "watch-crown")
-
-
-def crown_lookout():
-    h = thlib.handout(C, "node/crown-lookout", PREFABS)
-    m = thlib.Model(h)
-    (x0, y0, z0), (x1, y1, z1) = h["world_min"], m.wmax()
-    cx, cz = WATCH
-    fy, ring_y = y0, y0 + 1   # 111, 112
-    # The trunk: full width through the ring's floor, thinner above it.
-    trunk_layer(m, cx, cz, 5.0, fy)
-    for y in range(ring_y, 119):
-        trunk_layer(m, cx, cz, 3.0 if y < 116 else 2.0, y)
-    # The ring of planks round the trunk, the ladder's hole in it.
-    ring = [(x, z) for x, z in m.disc_cells(cx, cz, 7.5) if (x + 0.5 - cx) ** 2 + (z + 0.5 - cz) ** 2 > 9]
-    for (x, z) in ring:
-        if m.get(x, fy, z) is None:
-            P(m, x, fy, z, DECK, 7)
-    for z in (79, 80):
-        m.set(72, fy, z, "ladder[facing=west]")
-    rail_around(m, ring, ring_y, 1)
-    for x in range(70, 86):
-        for z in range(72, 88):
-            if m.get(x, fy, z) is None:
-                P(m, x, fy, z, LEAVES, 62)
-    # Lanterns round the rail, on four of its posts.
-    for (lx, lz) in ((86, 80), (78, 88), (84, 74), (72, 86), (84, 86), (82, 72), (70, 84)):
-        if m.get(lx, ring_y, lz) == RAIL:
-            m.set(lx, ring_y + 1, lz, LANTERN_STAND)
-    # The last branches and their leaves over the ring, and the lantern hook.
-    branch(m, 81, 116, 80, "x", 5, thick=1)
-    m.set(84, 115, 80, "iron_chain[axis=y]")
-    branch(m, 76, 117, 76, "z", -3, thick=1)
-    branch(m, 76, 117, 83, "z", 3, thick=1)
-    for i, b in enumerate(((74, 118, 74, 82, 121, 86), (72, 117, 77, 75, 120, 83), (81, 118, 76, 85, 120, 79))):
-        leaf_mass(m, *b, salt=71 + i)
-    for (x, z) in ring:
-        for y in range(ring_y, ring_y + 4):
-            if m.get(x, y, z) and "leaves" in m.get(x, y, z):
-                m.set(x, y, z, None)
-    for (lx, lz) in ((80, 83), (76, 77), (80, 77), (76, 83)):
-        hanging_lantern(m, lx, lz, 117, 4)
-    m.set(84, 114, 80, None)
-    # Contract: the ring, and the hole the ladder comes up through.
-    boxes = [(x, ring_y, z, x, ring_y + 2, z) for (x, z) in ring]
-    m.space("lookout", "open", *boxes)
-    m.via("lookout-ladder", (72, fy, 79, 72, fy, 80))
-    rest_region(m, "branches", "the last branches and leaves over the ring, and its rail: nothing to climb")
-    m.ack = "the top of a tree: most of what stands here is leaves"
-    m.entry = "lookout"
-    m.edge(a="lookout", b="exterior", **{"class": "walk", "via": "lookout-ladder"})
-    m.mark("node-crown-lookout", 74, ring_y, 76, "south")
-    m.mark("lantern-hook", 84, 114, 80, "west")
-    write(m, "crown-lookout")
 
 
 PLACES = {"root-glade": root_glade, "hearth-house": hearth_house, "long-bridge": long_bridge,
           "low-bridge": low_bridge, "high-bridge": high_bridge, "loom-house": loom_house,
           "hearth-crown": hearth_crown, "seed-house": seed_house, "watch-roots": watch_roots,
-          "watch-house": watch_house, "watch-crown": watch_crown,
-          "crown-lookout": crown_lookout}
+          "watch-house": watch_house, "watch-crown": watch_crown}
 
 if __name__ == "__main__":
     names = sys.argv[1:]

@@ -25,16 +25,16 @@
     {
       "id": "oriented-fills",
       "state": "pass",
-      "bound": 3108,
+      "bound": 3116,
       "undecided": 0,
-      "detail": "3108 fill(s) examined, 3107 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+      "detail": "3116 fill(s) examined, 3116 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
     },
     {
       "id": "non-empty",
       "state": "pass",
       "bound": 17340,
       "undecided": 0,
-      "detail": "4977 filled cell(s) of 17340 in the region"
+      "detail": "4987 filled cell(s) of 17340 in the region"
     },
     {
       "id": "contract-well-formed",
@@ -46,67 +46,60 @@
     {
       "id": "contract-coverage",
       "state": "pass",
-      "bound": 632,
+      "bound": 631,
       "undecided": 0,
-      "detail": "every one of 632 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
-    },
-    {
-      "id": "contract-closure",
-      "state": "pass",
-      "bound": 10,
-      "undecided": 0,
-      "detail": "10 boundary cell(s) examined; every one is accounted for"
+      "detail": "every one of 631 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
     },
     {
       "id": "contract-no-body",
       "state": "pass",
       "bound": 1,
       "undecided": 0,
-      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 631 cell(s) facade"
+      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 630 cell(s) facade"
     },
     {
       "id": "contract-reachability",
       "state": "pass",
       "bound": 1,
       "undecided": 0,
-      "detail": "every one of 1 standable cell(s) in declared space is reached from \"hollow\" through declared edges only"
+      "detail": "every one of 1 standable cell(s) in declared space is reached from \"heartwood\" through declared edges only"
     },
     {
       "id": "contract-no-body-majority",
       "state": "pass",
-      "bound": 632,
+      "bound": 631,
       "undecided": 0,
-      "detail": "631 of 632 standable cell(s) are out of walk, acknowledged: \"scenery: built to be seen from the camp and never entered\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
+      "detail": "630 of 631 standable cell(s) are out of walk, acknowledged: \"scenery: built to be seen from the camp and never entered\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
     }
   ],
   "measurements": {
-    "filled_cells": 4977,
+    "filled_cells": 4987,
     "region_cells": 17340,
     "distinct_states": 12,
-    "standable_cells": 632,
+    "standable_cells": 631,
     "footprint_area": 774,
     "footprint_perimeter": 162,
     "silhouette_complexity": 1.4557424382464186,
     "top_blocks": [
       [
         "minecraft:oak_leaves[distance=7,persistent=true,waterlogged=false]",
-        0.46614426361261807
+        0.46520954481652294
       ],
       [
         "minecraft:dark_oak_leaves[distance=7,persistent=true,waterlogged=false]",
-        0.26702833031946954
+        0.2664928814918789
       ],
       [
         "minecraft:azalea_leaves[distance=7,persistent=true,waterlogged=false]",
-        0.0916214587100663
+        0.09143773811910968
       ],
       [
         "minecraft:mangrove_wood[axis=y]",
-        0.07735583684950774
+        0.07760176458792861
       ],
       [
         "minecraft:spruce_wood[axis=y]",
-        0.03717098653807514
+        0.03709645077200722
       ]
     ],
     "stairs": 0,
@@ -115,14 +108,14 @@
     "fluid_at_edge": 0,
     "local_frame_fills": 0,
     "reachability": {
-      "standable": 632,
-      "sheltered": 52,
+      "standable": 631,
+      "sheltered": 51,
       "entry_cells": 0,
       "reachable": 0,
       "reachable_share": 0.0,
-      "unreachable_sheltered": 52,
+      "unreachable_sheltered": 51,
       "unreachable_open": 580,
-      "pockets": 48,
+      "pockets": 47,
       "largest_pockets": [
         {
           "cells": 10,
@@ -200,11 +193,14 @@
   "anchors": {},
   "findings": [
     "the contract declares one space and no edges: nothing about how a body moves through this piece is being claimed, so the edge and reachability obligations have almost nothing to prove",
-    "the reachability measurement found ZERO entry cells — no standable cell touches a side face of the region at grade, so there is nowhere for a body to walk in from and the measurement binds to nothing. The piece's 632 standable cell(s) form 48 component(s)",
+    "the reachability measurement found ZERO entry cells — no standable cell touches a side face of the region at grade, so there is nowhere for a body to walk in from and the measurement binds to nothing. The piece's 631 standable cell(s) form 47 component(s)",
     "the program declared no anchors: nothing in a campaign can name a place inside this piece"
   ],
   "enumeration": [
-    "no_body \"seen-from-outside\": facade — 631 standable cell(s), every one reached by the air outside the piece",
+    "envelope: space \"heartwood\" is declared `open` — no boundary claim, 2 cell(s)",
+    "envelope: space \"heartwood\" is declared `open` and 1 of its standable cell(s) have this piece's own blocks overhead ([23,4,16]) — a covered space, taken as declared; closure examines only the spaces declared `enclosed` or `open_top`",
+    "no_body \"seen-from-outside\": facade — 630 standable cell(s), every one reached by the air outside the piece",
+    "gate `contract-closure` is not emitted over this piece: 0 of 1 space(s) declare an envelope closure examines; every space is open",
     "gate `contract-edge-proof` is not emitted over this piece: the contract declares one space, so there is no interior edge that could have been proved: a room with a door makes no claim about moving BETWEEN spaces",
     "gate `contract-anchors` is not emitted over this piece: the piece declares no anchor, so no anchor can sit outside a declared element. Nothing in a campaign can name a place inside this piece either, which is a fact about the piece rather than a gate's verdict",
     "gate `contract-exterior-faces` is not emitted over this piece: 0 exterior edge(s): the place is scenery, built to be seen and never entered, so the piece claims no way in"

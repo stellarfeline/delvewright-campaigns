@@ -3,8 +3,9 @@
   "content": {
     "boxes": [
       {
+        "base": "ground",
         "ceiling": {
-          "clearance": 13
+          "open": 13
         },
         "extent": [
           20,
@@ -20,8 +21,11 @@
         "node": "node/root-glade"
       },
       {
+        "base": {
+          "aloft": 0
+        },
         "ceiling": {
-          "clearance": 8
+          "open": 8
         },
         "extent": [
           24,
@@ -33,6 +37,9 @@
         "node": "node/hearth-house"
       },
       {
+        "base": {
+          "aloft": 0
+        },
         "ceiling": {
           "clearance": 13
         },
@@ -50,12 +57,15 @@
         "node": "node/hearth-crown"
       },
       {
+        "base": {
+          "aloft": 1
+        },
         "ceiling": {
-          "clearance": 9
+          "open": 9
         },
         "extent": [
-          20,
-          4
+          22,
+          3
         ],
         "floor": {
           "datum": "datum/low-houses"
@@ -63,8 +73,9 @@
         "node": "node/long-bridge"
       },
       {
+        "base": "ground",
         "ceiling": {
-          "clearance": 6
+          "open": 6
         },
         "extent": [
           16,
@@ -76,12 +87,15 @@
         "node": "node/loom-house"
       },
       {
+        "base": {
+          "aloft": 1
+        },
         "ceiling": {
-          "clearance": 7
+          "open": 7
         },
         "extent": [
-          4,
-          24
+          3,
+          22
         ],
         "floor": {
           "datum": "datum/low-houses"
@@ -89,8 +103,11 @@
         "node": "node/high-bridge"
       },
       {
+        "base": {
+          "aloft": 0
+        },
         "ceiling": {
-          "clearance": 8
+          "open": 8
         },
         "extent": [
           20,
@@ -102,8 +119,11 @@
         "node": "node/watch-house"
       },
       {
+        "base": {
+          "aloft": 0
+        },
         "ceiling": {
-          "clearance": 18
+          "clearance": 29
         },
         "extent": [
           20,
@@ -115,21 +135,9 @@
         "node": "node/watch-crown"
       },
       {
+        "base": "ground",
         "ceiling": {
-          "clearance": 10
-        },
-        "extent": [
-          16,
-          16
-        ],
-        "floor": {
-          "datum": "datum/lookout"
-        },
-        "node": "node/crown-lookout"
-      },
-      {
-        "ceiling": {
-          "clearance": 17
+          "open": 17
         },
         "extent": [
           16,
@@ -139,17 +147,20 @@
           "y": 66
         },
         "min": [
-          70,
-          72
+          72,
+          70
         ],
         "node": "node/watch-roots"
       },
       {
+        "base": {
+          "aloft": 1
+        },
         "ceiling": {
-          "clearance": 7
+          "open": 7
         },
         "extent": [
-          4,
+          3,
           20
         ],
         "floor": {
@@ -158,6 +169,7 @@
         "node": "node/low-bridge"
       },
       {
+        "base": "ground",
         "ceiling": {
           "clearance": 6
         },
@@ -205,11 +217,6 @@
         "id": "datum/landing",
         "note": "The Watch Crown's landing at the first fork.",
         "y": 93
-      },
-      {
-        "id": "datum/lookout",
-        "note": "The Crown Lookout's ring.",
-        "y": 112
       }
     ],
     "fill": {
@@ -249,8 +256,8 @@
         }
       },
       {
-        "cmp": "ge",
-        "fact": "fact/side-least",
+        "cmp": "eq",
+        "fact": "fact/hearth-loom",
         "measure": {
           "from": "node/hearth-house",
           "of": "distance-xz",
@@ -258,44 +265,26 @@
         }
       },
       {
-        "cmp": "le",
-        "fact": "fact/side-most",
+        "cmp": "eq",
+        "fact": "fact/seed-watch",
         "measure": {
-          "from": "node/hearth-house",
-          "of": "distance-xz",
-          "to": "node/loom-house"
-        }
-      },
-      {
-        "cmp": "ge",
-        "fact": "fact/side-least",
-        "measure": {
-          "from": "node/hearth-house",
-          "of": "distance-xz",
-          "to": "node/seed-house"
-        }
-      },
-      {
-        "cmp": "le",
-        "fact": "fact/side-most",
-        "measure": {
-          "from": "node/hearth-house",
-          "of": "distance-xz",
-          "to": "node/seed-house"
-        }
-      },
-      {
-        "cmp": "ge",
-        "fact": "fact/side-least",
-        "measure": {
-          "from": "node/loom-house",
+          "from": "node/seed-house",
           "of": "distance-xz",
           "to": "node/watch-house"
         }
       },
       {
-        "cmp": "le",
-        "fact": "fact/side-most",
+        "cmp": "eq",
+        "fact": "fact/hearth-seed",
+        "measure": {
+          "from": "node/hearth-house",
+          "of": "distance-xz",
+          "to": "node/seed-house"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/loom-watch",
         "measure": {
           "from": "node/loom-house",
           "of": "distance-xz",
@@ -352,14 +341,6 @@
       },
       {
         "cmp": "eq",
-        "fact": "fact/lookout-floor",
-        "measure": {
-          "datum": "datum/lookout",
-          "of": "datum-y"
-        }
-      },
-      {
-        "cmp": "eq",
         "fact": "fact/crown-headroom",
         "measure": {
           "node": "node/watch-crown",
@@ -405,57 +386,78 @@
           6,
           11
         ],
-        "opening": "door"
+        "opening": {
+          "height": 2,
+          "width": 1
+        }
       },
       {
         "at": 10,
         "edge": "edge/hearth-long",
         "face": "east",
-        "form": "rope bridge landing on the Hearth House's east edge; the bridge climbs 6 to it by plank steps on its own deck, 4 wide",
+        "form": "rope bridge landing on the Hearth House's east edge; the bridge climbs 6 to it by plank steps on its own deck, 3 wide",
         "meets": 0,
-        "opening": "passage",
+        "opening": {
+          "height": 3,
+          "width": 3
+        },
         "stair_in": "node/long-bridge"
       },
       {
         "at": 6,
         "edge": "edge/loom-long",
         "face": "west",
-        "form": "rope bridge landing on the Loom House's west edge, level, 4 wide",
+        "form": "rope bridge landing on the Loom House's west edge, level, 3 wide",
         "meets": 0,
-        "opening": "passage"
+        "opening": {
+          "height": 3,
+          "width": 3
+        }
       },
       {
         "at": 10,
         "edge": "edge/hearth-low",
         "face": "south",
-        "form": "rope bridge landing on the Hearth House's south edge; the bridge drops 4 from it by plank steps on its own deck, 4 wide",
+        "form": "rope bridge landing on the Hearth House's south edge; the bridge drops 4 from it by plank steps on its own deck, 3 wide",
         "meets": 0,
-        "opening": "passage",
+        "opening": {
+          "height": 3,
+          "width": 3
+        },
         "stair_in": "node/low-bridge"
       },
       {
         "at": 6,
         "edge": "edge/seed-low",
         "face": "north",
-        "form": "rope bridge landing on the Seed House's north edge, level, 4 wide",
+        "form": "rope bridge landing on the Seed House's north edge, level, 3 wide",
         "meets": 0,
-        "opening": "passage"
+        "opening": {
+          "height": 3,
+          "width": 3
+        }
       },
       {
         "at": 6,
         "edge": "edge/loom-high",
         "face": "south",
-        "form": "rope gate across the High Bridge's mouth on the Loom House's south edge, tied shut until Neve unties it",
+        "form": "rope gate across the High Bridge's mouth on the Loom House's south edge, tied shut until Neve unties it, 3 wide",
         "meets": 0,
-        "opening": "passage"
+        "opening": {
+          "height": 3,
+          "width": 3
+        }
       },
       {
         "at": 8,
         "edge": "edge/watch-high",
         "face": "north",
-        "form": "rope bridge landing on the Watch House's north edge; the bridge climbs 4 to it by plank steps on its own deck, 4 wide",
+        "form": "rope bridge landing on the Watch House's north edge; the bridge climbs 4 to it by plank steps on its own deck, 3 wide",
         "meets": 0,
-        "opening": "passage",
+        "opening": {
+          "height": 3,
+          "width": 3
+        },
         "stair_in": "node/high-bridge"
       },
       {
@@ -465,35 +467,24 @@
         ],
         "edge": "edge/watch-ladder",
         "face": "up",
-        "form": "rope ladder, up 9, hung on the Watch Tree's bark from the Watch House up through a hole in the crown's landing",
+        "form": "rope ladder, up 9, hung on the Watch Tree's bark from the Watch House up through a hole in the crown's landing; inside the crown it goes on up 19 to the Crown Lookout",
         "meets": [
           4,
           9
         ],
-        "opening": "door"
-      },
-      {
-        "at": [
-          4,
-          9
-        ],
-        "edge": "edge/lookout-ladder",
-        "face": "up",
-        "form": "rope ladder, up 19, the same ladder going on up the Watch Tree's bark from the landing through the leaves to a hole in the Crown Lookout's ring",
-        "meets": [
-          2,
-          7
-        ],
-        "opening": "door"
+        "opening": {
+          "height": 2,
+          "width": 1
+        }
       }
     ],
     "sightlines": [
       {
         "edge": "edge/lookout-hearth",
         "from": [
-          73,
+          75,
           115,
-          75
+          73
         ],
         "to": [
           45,
@@ -504,12 +495,12 @@
       {
         "edge": "edge/lookout-loom",
         "from": [
-          78,
+          80,
           115,
-          73
+          71
         ],
         "to": [
-          80,
+          82,
           81,
           36
         ]
@@ -517,9 +508,9 @@
       {
         "edge": "edge/lookout-seed",
         "from": [
-          70,
+          72,
           115,
-          80
+          78
         ],
         "to": [
           42,
@@ -537,7 +528,7 @@
         ],
         "id": "view/from-the-glade",
         "look_at": [
-          70,
+          72,
           86,
           30
         ],
@@ -551,7 +542,7 @@
         ],
         "id": "view/north-east-aerial",
         "look_at": [
-          56,
+          58,
           84,
           56
         ],
@@ -559,13 +550,13 @@
       },
       {
         "eye": [
-          56,
+          58,
           96,
           110
         ],
         "id": "view/from-the-south",
         "look_at": [
-          56,
+          58,
           92,
           40
         ],

@@ -372,7 +372,7 @@ class Model:
             body = {"op": "mark", "mark": m, "body": body}
         rules["place"] = [{"weight": 1, "body": body}]
         prog = {
-            "version": "1.9.0", "name": name, "start": "place", "params": {},
+            "version": "1.10.0", "name": name, "start": "place", "params": {},
             "palette": {r: s for s, r in roles.items()},
             "rules": rules,
             "contract": {"entry": self.entry, "spaces": self.spaces, "edges": self.edges},
