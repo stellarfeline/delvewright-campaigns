@@ -100,3 +100,61 @@ The two scenery places are seen, not entered: the Watch Roots in `camera_from-th
 - The forest floor is lit by design: 29 lantern posts under the three bridges and round the trees' feet, set by the edit script. The plan declares no `lighting`, so the relight pass sets no torch.
 - The three vistas' eyes stand at y 115 on the lookout's rim: the DDA counts the one-fence rail as solid at a standing eye.
 - Lantern Night's sky is `{"moon": "high"}` under the world's new moon. `concept/lantern-night` records it: drawn earlier, and **waiting on the owner** (design/README.md).
+
+## Build round on engine f3d18699 (dsl 0.38.0, grammar program 1.10.0)
+
+Built with `delvec 1.11.0, dsl 0.38.0, mc 1.21.11`, force-rebuilt in release mode from the read-only engine tree at `f3d18699bc8ee651b7f69d67ac53f485efebd96e` (cargo exit 0; binary sha1 `5989d7cb…`) and invoked by path. The tree was first built on `cbf56248` the same day; that engine drew a setting sun as full night, so every frame rendered on it is void and none is cited here. The pieces did not move between the two engines: `detail --all` on `f3d18699` rewrote no prefab byte.
+
+### State (build tree `out/build-r7`)
+
+- `validate`, `build` and `detail --all` exit 0. Blockout: 11 places detailed, 0 stand-ins. Battery: 11 places reached, 2 of them scenery, proven not reached. All 15 identities re-measured with no DW0833.
+- DW0311: 8 of 8 legs walked. DW0921: 39,700 cells a body can reach, 0 it cannot leave.
+- PackTest: 41 of 41 required tests pass.
+- Bot critical path: **red** (exit 1), on the engine defect named first in the next list. Climbs driven: 1, the glade ladder (14 rungs, [30, 72, 36] to [29, 86, 36]). The two climbs leg 6 now exports, one per ladder column ([74, 84, 78] to [74, 92, 78], then [74, 93, 79] to [74, 111, 79]), were never reached.
+- Staging gate: stageable, no override (122 finding classes, 64 inapplicable). It admits this build with its bot red and its floors holed (below).
+- Showcase cameras: 5 of 5 approved images answered; the lens is clear of every block by 0.25 (0 flagged).
+
+### Undone on this engine
+
+- **The Root Glade is 24 × 24**, square under the Hearth House, at min [24, 24], with its ladder seam at [6, 11]. Spec-0098 departure 35 gives the bridges the cells of their undersides that hang in the glade's sky ring, and DW0827 does not fire. The terrain pad under it widens to x and z 21–50, so its ring ground meets the forest floor: at the old pad, DW0885 named 43 exposed ring cells.
+- **The scenery crowns declare no standable cell.** Each scenery contract's one space is two cells of air at the top of a column of its frame. `delvec detail` excludes 631 standable cells (Hearth Crown) and 244 (Watch Roots) from its light probe.
+- **The Watch House under its crown** carries seven lanterns on chains hung from the canopy round the trunk. The crown's leaf floor stays: the house is a platform under a canopy.
+- **The lantern hook** moves to the ring's north-west, at [74, 114, 73].
+- **The from-the-glade camera** stands at the glade's south-west, at (19.5, 75.5, 45.5) with yaw 228, pitch −14 and fov 80, above the lamp posts. From there it looks at the trunk's west face, where the ladder hangs.
+
+### What the engine still breaks or bends (recorded here, not worked around)
+
+1. **Engine defect: a piece's `structure_void` cells are written into the world.** `place_all` places each piece with `place template`, in site-plan order, and the game writes the `minecraft:structure_void` the piece holds at every frame cell its place does not own. Where the voiding piece is placed after the owner, its void replaces the owner's blocks. The engine's model reads those cells as showing the owner through (compiler.md, "the game places"), and so do the worlds `delvec cameras` writes. Measured with `tools/lib/anvil.py` (the engine's own reader):
+   - The server-saved world `out/build-r7/world` holds 6,607 structure_void blocks in four clusters:
+     - the Seed House frame, 6,527 cells over x 23–48 × y 69–88 × z 65–90, which takes out the Low Bridge's last four deck rows and rails (z 65–68);
+     - 20 cells at the Hearth House's south ring (x 33–37, y 85–88, z 48), the Low Bridge's mouth, floor course included;
+     - 20 cells at its east ring (x 48, y 85–88, z 33–37), the Long Bridge's mouth;
+     - 40 cells at the Loom House's south ring (x 77–81, y 78–85, z 44), the High Bridge's mouth.
+   - The world `delvec cameras` writes for the same build (`out/build-r7/showcase/worlds/at-load`) holds 0.
+   - `place_verify` tests a frame corner `if block … minecraft:structure_void`, so the datapack expects the void blocks to be there.
+   - The game reads a structure_void cell as air. The bot fell through the Low Bridge mouth at z 48 on build-r6: health 20 → 9, a 14-block fall to the forest floor. On build-r7 its pathfinder found no path south from the Hearth House ladder ([30.5, 86.0, 37.5], `No path to the goal!`). DW0311 and DW0921 pass, because they walk the model.
+2. **Engine defect: the light survey grades a scenery place through the anchor the blockout synthesizes for it.** `anchor/node-hearth-crown` is resolved at [35, 95, 35], inside the trunk (`out/build-r7/creator-datapack/layout.json`). `owed_anchors` excuses scenery, but the blockout writes a node anchor for every box, and DW0210 floods from every point anchor in the area. Without its lanterns, the Hearth Crown fails the build: "3 of the 3 reachable walkable cell(s) … [32..33, 98, 32..33] at light 1". No DW0837 fires, so no body reaches those cells. The crown's eight hung lanterns stay, with the reason in `places.py`. This item is stopped.
+3. **The hook frame does not face the camp.** A review frame's direction is the walk's last step, and the arrival frame `pov_leg6_wp15` looks out over the valley rim. The lookout's view of the camp is the showcase camera `lantern-night`.
+
+### Visual review (Chunky, pinned core, 150 samples per frame, engine f3d18699)
+
+The frames are in `out/renders-r7/`, beside the build, which is not tracked. 16 of the 157 scenes `render-shots.sh` emitted are rendered: the five showcase cameras and 11 eye-height POVs. The POVs load the server-saved world, holes included; the showcase cameras load the world `delvec cameras` writes, which has none.
+
+| Frame | Place or image | Does it read as the thing |
+|---|---|---|
+| `camera_north-east-aerial` | view 4 | Yes, under a sunset sky: the Watch Tree's lookout over every crown, the Loom House in front, the Hearth House's two thatched cabins, the Seed Tree, every rail and path lit. |
+| `camera_from-the-south` | view 3 | Yes: the Seed Tree left, the Watch Tree right with its landing and lookout, the bridges between, lamp posts on the forest floor. |
+| `camera_plan` | view 2 | Yes: four trees on a square, three bridges, none on the south side. |
+| `camera_from-the-glade` | view 1 | Yes: the Hearth Tree's trunk with its rope ladder, the platform’s underside with its hung lanterns, the buttress roots and lamp posts, the Low Bridge leaving right. |
+| `camera_lantern-night` | concept/lantern-night | Yes, as night: a black sky, the Hearth House ahead and every rail and bridge below lined with lit lanterns. |
+| `pov_leg0_wp1` | Root Glade | Partly: under the platform among the lamp posts, a hung lantern and the trunk; a post fills the near left. |
+| `pov_leg0_wp0` | Root Glade | No: it looks north out of the glade at the valley rim. |
+| `pov_leg3_wp13` | Hearth House | Partly: the railed deck, its lanterns and the stone chimney at sunset; a corner post fills the left, and the cabins are out of frame. |
+| `pov_leg2_wp16` | Long Bridge | Yes: a railed plank deck to the Loom House's thatched gateway. |
+| `pov_leg2_wp21` | Loom House | Yes: the open deck, the lean-to, the rail, a lamp post, under the sky. |
+| `pov_leg6_wp4` | High Bridge | Yes: the plank steps up into the Watch House under its crown, the lookout rail above. |
+| `pov_leg6_wp9` | Watch House | Yes: the deck under the canopy, lanterns on chains, the rail and lamp posts. It no longer reads as a dark box. |
+| `pov_leg6_wp14` | Watch Crown (the lookout) | Partly: the plank ring and its rail under the last branch, at sunset; the camp is below the frame. |
+| `pov_leg6_wp15` | Watch Crown (the hook) | No: sky and the valley rim (item 3 above). |
+| `pov_leg4_wp11` | Low Bridge | Yes: the plank steps up to the Hearth House, the chimney ahead, the crown over it. |
+| `pov_leg4_wp1` | Seed House | Yes: the deck under its crown, a hung lantern, the gateway, the Hearth House beyond. |

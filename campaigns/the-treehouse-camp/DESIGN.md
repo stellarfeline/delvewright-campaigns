@@ -151,7 +151,7 @@ The Watch Tree is the tallest. The Crown Lookout's ring stands at y 112, 4 above
 | 1 | Watch Roots (scenery) | x 72–87 × z 70–85 | 16 × 16, on the ground | 66 | 0 | 17 (y 66–82); the Watch House floor course (y 83) is its top | — |
 | 2 | Watch House | x 70–89 × z 68–87 | 20 × 20, aloft | 84 | 18 | 8 (y 84–91); the Watch Crown floor course (y 92) is its lid | — |
 | 3 | Watch Crown | x 70–89 × z 68–87 | 20 × 20, aloft | 93 (the landing at the first fork) | 27 | 29 (y 93–121); lid y 122 is the crown top. The Crown Lookout ring is a second level inside it at y 112 | — |
-| 4 | Root Glade | x 26–45 × z 26–45 | 20 × 20, on the ground | 72 | 0 | 13, open (y 72–84); the Hearth House floor course (y 85) is its cover | — |
+| 4 | Root Glade | x 24–47 × z 24–47 | 24 × 24, on the ground | 72 | 0 | 13, open (y 72–84); the Hearth House floor course (y 85) is its cover | — |
 | 5 | Hearth House | x 24–47 × z 24–47 | 24 × 24, aloft | 86 | 14 | 8 (y 86–93); the Hearth Crown floor course (y 94) is its lid | — |
 | 6 | Hearth Crown (scenery) | x 20–51 × z 20–51 | 32 × 32, aloft | 95 | 23 | 13 (y 95–107); lid y 108 is the crown top | — |
 | 7 | Seed House | x 28–43 × z 70–85 | 16 × 16, on the ground | 82 | 12 | 6 (y 82–87) | `roof` zone, 16 courses to y 104, eaves 4 |
@@ -164,7 +164,7 @@ Box floors take eight distinct values over the eleven boxes: 66, 72, 80 (Loom Ho
 
 Each bridge's deck runs from platform edge to platform edge across its run plus the two seam cells: Long Bridge 24, Low Bridge 22, High Bridge 24.
 
-A place on the ground owns the ground under it; a place aloft hangs, owning nothing under its floor (each bridge one course of beams), and the forest floor under it is the commons. The Root Glade is 20 × 20 under the 24 × 24 Hearth House: its open headroom must reach y 84 for the ladder, and at 24 × 24 its ring would share cells with both bridges' undersides that no connection awards (`DW0827`).
+A place on the ground owns the ground under it; a place aloft hangs, owning nothing under its floor (each bridge one course of beams), and the forest floor under it is the commons. The Root Glade is 24 × 24, square under the Hearth House; its open headroom reaches y 84 for the ladder, and where a bridge's underside hangs in the glade's sky ring the bridge owns those cells.
 
 ### 4.4 The seams
 
