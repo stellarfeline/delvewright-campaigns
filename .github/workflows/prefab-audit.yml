@@ -167,6 +167,30 @@ jobs:
       - name: the pinned engine is newer than every storybook's claim
         run: python3 tools/check-engine-pin.py
 
+      # Every campaign this pull request changes can have its release notes
+      # composed. `release.yml`'s "compose the release notes" step runs
+      # `tools/release-notes.py render` for the one campaign it releases, and
+      # refuses a campaign with no world.json, no storybook, a missing header
+      # row, a Playtime that disagrees with `target_minutes`, or no blurb — on
+      # a tag push, after the whole release ladder. `check` is the same judge
+      # over the campaign directories the diff against the pull request's base
+      # touches, and no others: a campaign is built only by the engine it pins,
+      # so an untouched one is not re-judged. In this job for the reason the
+      # steps above are: a new job is a new required context.
+      #
+      # The checkout is the one-commit merge ref, so the base revision is
+      # fetched by SHA (depth 1 is enough: the diff compares two trees). A
+      # manual dispatch has no base; the script then states a named zero.
+      - name: every campaign this change touches can have its release notes composed
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "$BASE_SHA" ]; then
+            git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          fi
+          python3 tools/release-notes.py check --base "$BASE_SHA"
+
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
       #
