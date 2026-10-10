@@ -1,0 +1,174 @@
+{
+  "campaign_id": "the-heart-under-the-floor",
+  "content": {
+    "pulses": [
+      {
+        "at": {
+          "anchor": "anchor/hearth",
+          "offset": [
+            0,
+            -1,
+            0
+          ]
+        },
+        "every": 30,
+        "floor": 0.4,
+        "id": "pulse/the-heart",
+        "place": "node/cottage",
+        "sound": "entity.warden.heartbeat",
+        "when": {
+          "forbids_flags": [
+            "flag/hearthstone-lifted"
+          ],
+          "requires_flags": [
+            "flag/door-shut"
+          ]
+        }
+      },
+      {
+        "at": {
+          "anchor": "anchor/hearth",
+          "offset": [
+            0,
+            -1,
+            0
+          ]
+        },
+        "every": 14,
+        "floor": 0.4,
+        "id": "pulse/the-heart-racing",
+        "pitch": 1.2,
+        "place": "node/cottage",
+        "sound": "entity.warden.heartbeat",
+        "when": {
+          "forbids_flags": [
+            "flag/heart-found"
+          ],
+          "requires_flags": [
+            "flag/hearthstone-lifted"
+          ]
+        }
+      }
+    ],
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "text": "The party finds the thing beating under the cottage floor, and it stops.",
+          "verb": "learns"
+        },
+        "id": "quest/the-heart",
+        "objectives": [
+          {
+            "anchor": "anchor/front-room",
+            "happening": {
+              "text": "The party steps into the cottage.",
+              "verb": "arrives"
+            },
+            "hint": "The front door stands open, straight ahead off the doorstep.",
+            "id": "obj/shut-the-door",
+            "radius": 2,
+            "title": "Go inside",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/shut-the-door"
+            ],
+            "anchor": "anchor/hearth",
+            "happening": {
+              "subject": "anchor/hearth",
+              "text": "The party lifts the hearthstone.",
+              "verb": "opens"
+            },
+            "hint": "It is loudest in the kitchen, at the far west end of the house, in front of the fire.",
+            "id": "obj/lift-the-hearthstone",
+            "title": "Follow the beat",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/lift-the-hearthstone"
+            ],
+            "anchor": "anchor/hearth",
+            "happening": {
+              "subject": "anchor/hearth",
+              "text": "The party lays a hand on what was beating under the floor.",
+              "verb": "learns"
+            },
+            "hint": "In the floor, where the hearthstone was.",
+            "id": "obj/find-what-beats",
+            "title": "Find what beats",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/find-what-beats"
+            ],
+            "anchor": "anchor/node-doorstep",
+            "happening": {
+              "text": "The party walks back out onto the lane.",
+              "verb": "departs"
+            },
+            "hint": "Back east through the parlour and the front room, and out of the front door.",
+            "id": "obj/walk-out",
+            "radius": 2,
+            "title": "Leave",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The party leaves the cottage.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/find-what-beats": [
+            {
+              "flag": "flag/heart-found",
+              "type": "set-flag"
+            },
+            {
+              "text": "You put your hand on it. It is warm. It beats once more under your palm, and then it is still.",
+              "type": "narrate"
+            }
+          ],
+          "obj/lift-the-hearthstone": [
+            {
+              "flag": "flag/hearthstone-lifted",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/hearth",
+              "block": "minecraft:air",
+              "type": "set-block"
+            },
+            {
+              "text": "The hearthstone comes up. Under it, set into the floor, is something grey and wet that moves. It is beating faster now, and you are afraid of it.",
+              "type": "narrate"
+            }
+          ],
+          "obj/shut-the-door": [
+            {
+              "flag": "flag/door-shut",
+              "type": "set-flag"
+            },
+            {
+              "text": "You step in off the lane and the house goes still. Then, somewhere under the floor, something beats.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.39.0",
+  "stage": "quests"
+}
