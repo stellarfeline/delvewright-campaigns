@@ -1,329 +1,56 @@
 # The Stranding — generation record
 
-The campaign's own decisions, as its author records them. `DESIGN.md` is the design of record; this file says which of its lines were pinned by the brief, which were invented, and what the toolchain was.
+The campaign's own decisions, as its author records them. `DESIGN.md` is the design of record; this file says what was pinned by the brief, what the toolchain is, which decisions stand, and where the map restarts.
 
 ## Toolchain
 
-- Engine release `delvec--v1.8.1` (commit `ff6bd4929a499d4eb7a1e55372912ea1ab2301fd`), binary `delvec 1.8.1, dsl 0.35.1, mc 1.21.11`, from the release archive `delvec-v1.8.1-aarch64-apple-darwin.tar.gz` (sha256 `f4074a8d0d20264155fb1bf856cab5be77384e4e79c99efa17809bdd6c22b671`).
-- Every document carries `dsl_version` `0.35.1`.
-- Prefab library: this content clone's own `prefabs/`; no prefab changed between the engine's pinned `[content].sha` `ff73411a1d7feabad57a4537e1384402a2b096d0` and the branch head the run started from.
-- Reference images: `gemini-native`, model `gemini-3.1-flash-image`, series anchored with `--chain-from` on map view 1, style contract in `--style-note`.
-- The engine's other half of its constitution (`CLAUDE.local.md`) is not available to this run; nothing here concerns dispatch, review, merge or staging.
+- Engine: `delvec` built from source at `507a5e0e20712c8c1e80f52ab1583b1ef91adaaa`, `dsl 0.38.0`, `mc 1.21.11`.
+- Prefab library: this content clone's `prefabs/`.
+- Reference images: `gemini-native`, model `gemini-3.1-flash-image`, series anchored with `--chain-from`, style contract in `--style-note`.
+- The engine's other half of its constitution (`CLAUDE.local.md`) is not available to a run; nothing here concerns dispatch, review, merge or staging.
 
 ## What the brief pinned
 
-`DESIGN.md` is a detailed brief, so it is honoured exactly and nothing is showcased beyond it: four acts and thirty-six places in the order it gives, the cast of four, the four classes and their kits, the fights and tentacle counts, twelve cutscenes, the two endings, the danger model, the light plan, the hour (`night`, `clear`, full moon) and the site-plan placement model.
-
-## Decisions made here
-
-- **Placement model: a site plan.** The thing the delve is named after (the stranded body, and the town on its terraces) has an exterior silhouette the player reads from the town and the flat; no prefab is either. `DESIGN.md` pins this too.
-- **Horizon: `ocean`.** `DESIGN.md` made `ocean` conditional on the library's sea pieces carrying `waterline_y`. The step-1 query found that the two sea-facing pieces do (`cave-shore` in `pool/cave-shore`, `island-beach-camp` in `pool/island`) and the rest of those pools, which are interiors, do not. A site plan places no pool piece, and it has no water surface of its own: the plan reads sea level from `horizon: ocean` (y 62), which is exactly the sea level `DESIGN.md` gives under the flat (mud at y 64 over water at y 62). A `void` horizon would leave the plan with no way to put the sea in the map, so the conditional's other branch is not buildable. `boundary` carries a message either way, as the brief asks.
-- **Seed** `1919`. **Difficulty** `normal`, which the brief's tuning line names.
-- **Atmospheres declared at step 1**: `wrong-place` (olive sky, close yellow fog, red clouds, no music), `inside-body` (dark red, close fog, no music), `red-night` (the body, the bank and the flat after the cut), `sea-fog` (the endings). The colours are first values, to be judged against the design images.
-
-## Posture
-
-`DESIGN.md` § Posture is the posture note: escalation is uneven, people name their fear, and the ending does not explain itself. Every line written at step 5 is held to it.
-
-## Step 2 — the site plan
-
-- **The map's reference** is five views under one style contract (`design/reference/style-contract.txt`), view 1 from the prompt alone and every later view chained on view 1: from above the coach road, a plan, a west elevation, the body from the Narrows, and from above the tail looking north. The plan view was drawn twice: the first return laid the body east-west, against the plan; the second, with the orientation stated, is the one kept. Reference images are style authority only; the geometry is `geometry-brief.json` and `site-plan.json`. The views stay drafts outside `design/` until the design gate: an image under `design/` is an approved image, and it owes a `design.json` row stating the sky it was approved under, which no one has given yet.
-- **The body lies north-south, head to the north**, facing the town across the black water, with the Flank Ridge along its west side. `DESIGN.md` does not state the heading; this one puts the mouth at the Jaw Bank where the crossing lands and the flank wounds in sight from the ridge and, obliquely, from the Narrows.
-- **Covered stairs.** A stair seam's opening has to lie inside both places' headroom, and a sky-open place claims only its size class's minimum headroom (a road six courses, a hall eight, an arena twelve). So every stair with a rise of eight is hosted in a roofed place: a covered flight of cliff steps between the coach road and the high street (a place `DESIGN.md` does not list), the harbour office, a covered fish market hall, the chapel crypt and the rope shed. The net lofts sit three courses above the seawall and the mast platform four above the launch's deck so that their open hosts can carry the stair.
-- **The Run's descent is four broad steps.** Forty blocks from the back to the bank cannot be one open-air stair under that rule, so the back falls in four arenas of eight courses each (`back-upper`, `back-middle`, `back-lower`, `tail-flank`) to the bank behind the tail, which lengthens the tail beyond the brief's 140 blocks. Recorded as a capability limit, not a design choice.
-- **No massif for the body.** A whole-owned volume may not contain a place, and the body's inside is places, so the blockout has no outer body mass. Its exterior shape is the sculpted form's (`delvec sculpt`), bound at step 13.
-- **Two placement components**: the town and the flat (pinned at the coach road) and the far bank with the body (pinned at the far landing), joined only by the `carry` crossing and the two ferry bells.
-- **Blockout lighting** (`lantern`, minimum 7) lights the derived massing for the walk only; detailed places carry their own placed light.
-
-## Step 3 — the story documents
-
-- **NPCs**: the four of `DESIGN.md`, each with one job. Wenna, Tregear and Marrack are `quest-giver`, Davey `flavor`. Davey stands by the heart from world load: the party first reaches him there, so he needs no deferred entrance. Each body is a `minecraft:mannequin`; the skins `DESIGN.md` asks for are made with the skin toolchain at step 5, so no `skin` is declared yet.
-- **Classes**: the four kits of `DESIGN.md`, nothing added. The Physician's splash potions carry `minecraft:healing`; the Scholar's brush is named "Scholar's Brush" and is in no other kit. No bonfire, so no flask.
-- **Quest plan**: the sixteen quests of `DESIGN.md`'s outline in one chain, all mandatory, finale `quest/the-pier`; one branch point at the pier, forking on `flag/stone-kept` and `flag/stone-returned` to `ending/the-keeping` and `ending/the-return`. `min_players` stays 1.
-- **Where step 3 ends**: `validate` carries only refusals whose messages name something stage 5 or 6 supplies — DW0816 ×36, DW0817 ×9 (every one "not open yet"), DW0818 ×13, DW0934 ×4, DW0930 ×2, DW0152 ×4, DW0172 ×2, DW0112 ×2, DW0482 ×2, DW0150 — plus the standing DW0813 and DW0822 warnings. DW0822 projects about 40 minutes of walking against the 150-minute target; the rest of the time is the beats.
-
-## Step 4 — the design gate (prepared, not approved)
-
-- The walkthrough holds the five map views and 38 scenes (the 36 places of `DESIGN.md` and the two endings' dawns), each with a near and a far view, every image labelled with the `time` and `weather` tokens it is declared under: `night` + `clear` for 74 images, `dawn` + `clear` and `dawn` + `rain` for the two endings. The painted skies (the wrong place, the inside of the body, the red night, the sea fog) are atmospheres under those tokens, named under each image.
-- Every scene is anchored on map view 1 under the same style contract. The first pass chained every call on view 1's interaction; eighteen far views came back as copies of view 1's framing or against the design, and were drawn a second time anchored on view 1's image (`--style-ref`) with the camera stated. Two views broke the contract or the design on both draws (readable lettering on the customs chart; the ferry house open to the sky) and are shown with both draws and the fault named.
-- Inside the body the light follows `docs/reference/interior-lighting.md` §7 of the engine (sources embedded in the walls and the vault, artificial sources hidden), which answers `DESIGN.md`'s open light question for the pictures; it is still owed a demo level.
-- The images are drafts in the gitignored `.refimg/stranding/gate/` until the user approves them; nothing is in `design/` and there is no `design.json`.
-
-## Conformance against `DESIGN.md` at the gate
-
-Deviations the run made, none requested, each forced or a gap-fill: the covered cliff steps (a place `DESIGN.md` does not list), the covered fish market hall, the net lofts three courses up and the mast platform four, the quay at y 72 rather than 66, the Narrows four blocks wide on the kit grid rather than three, the body's heading (head north) chosen where `DESIGN.md` is silent, the back descending in four broad steps that lengthen the tail past 140 blocks, and no body mass in the blockout until the sculpted form is bound at step 13.
-
-## Step 4 — decisions taken for the delegated review
-
-The review of the act 2–4 and ending images found three things `DESIGN.md` did not decide; each is now decided there (English and zh-cn) and the images are drawn to it:
-
-- **The wrong place stands over the body's bank and outside until the cut.** `DESIGN.md` made the whole flat the wrong place and was silent on the bank; for continuity the far landing, the Flank Ridge, the Jaw Bank, the back and the Crown stand under `atmosphere/wrong-place` from the first tick until the cut at the Brow, then under `atmosphere/red-night`. The site plan still carries the wrong place on the flat's boxes only: carried on the bank's boxes, its paint would meet the inside-body boxes' paint at the mouth and the breach, which the build refuses (`DW0929`), so whether the bank carries it with a gap or is painted by a beat is settled with the beats at step 5.
-- **One body.** The Fathomer has one silhouette, `DESIGN.md` § The body, in the stranded-creature language of the demo level The Beached Thing (head and dropped jaw on the mud, shoulder, spine ridge, ribs at the wounds, flippers, a long tail ending in flat flukes; hide, bone and flesh tones), with this campaign's own parts added: the Brow Stone in the forehead, the blowhole, three flank wounds.
-- **The inside's light** follows the engine's `interior-lighting.md` §7 and the owner's lighting rules: natural light set into the walls and vault, artificial sources hidden, placement staggered in three dimensions, the upper space lit. The comparison of soul lanterns and crying obsidian stays with The Beached Thing.
-- The Pier image is drawn to what `DESIGN.md` says happens there: one player holds the Brow Stone before Wenna, Davey and Tregear.
-
-## Design additions before step 5
-
-- **The approved design** is in `design/` (81 images) with `design/README.md` naming the set and its known flaws, and `design.json` holding one row per image.
-- **The body is a realistic rotting sperm whale** (`DESIGN.md` § The body), replacing the generic leviathan the concept images drew. Tentacles rising from its wounds are the wrongness and are not the whale's. The approved images stand as style; where they differ from § The body, the record wins. The sculpted form is bound at step 13, after the walk.
-- **The escape crossing is the climax reveal** (cutscene 10): the skiff out on a separate patch of open sea in fog and storm, the camera rising toward a vast shape, a lightning strike and a fog flash showing a colossal figure, then the landing in the near ferry house. Played once.
-- **The return is the bad ending**: by what it shows (the stone back in the sea, Wrackham under water on its bottom row) it reads as the bad one, and the same figure rises at the town's shore at its end. No player text labels either ending.
-- **Both figures wait on engine work** (the demo level The Thing Beyond the Fog, spec-0092: lightning at a mark, a timed fog flash, an open-backed sculpt form, glowing eyes). Authored now: the crossing link, the fog, the shots over open sea, the landing, and the return's shots. Marked placeholders: the figure, the lightning and the fog flash. The thunderstorm is part of the placeholder too: no approved image is drawn under `thunder`, and `DW0890` holds the world's reachable skies to the approved rows, so the weather is set with the capability and the image that shows it.
-
-## Steps 5 to 8b
-
-- **Stage 5 and 6** are written by one generator so ids, flags and anchors are spelled once: sixteen quests with a cast ledger each, six waves, three watcher actors, twelve tentacle assemblies, nine runtime data, twenty-odd triggers (the valves, the tentacle hit counts, the skiff tiller links and the two ferry bells, the sealed-door answers), and dialogue for the four characters, a second body for Davey once he is home (one character, two declarations, one spelling), and four sleepers with a bark pool. Every objective is bound to its place in the layout graph's `beats[]`.
-- **The Chinese** is the `zh-cn` sidecar transcreated by `tools/creator/i18n-translate.py` (deepseek-v4-pro), 441 keys, every line accepted by its fact check. The tool's own closing validate fails in a content clone, where the library is `prefabs/` and not `campaigns/prefabs`: it calls `delvec` without `--prefabs`. The sidecar validates when `delvec` is given the library.
-- **Skins** for the four characters from the skin toolchain (`skins/cast.json`). **Textures**, drawn for this campaign: the Drowned as fish-folk and their outer layer, the louse, and the red moon on the waning gibbous phase, which the cut advances to with `set-time` (the design rows of the four after-cut scenes state that sky).
-- **The tentacle rig** (`prefabs/rigs/tentacle/rig.json`) is written by the engine's own `prefabs/rig-generator` at `delvec--v1.8.1`, byte-identical to the rig on the pit demo's branch. The content library at its pinned revision has no rig, and the page names no step that produces one.
-- **The site plan grew** five mud places beside the way (the sinking stages clear them) and the Narrows shelf the first tentacle strikes: a clear or a blow is an anchor-centred box, so the thing cleared or struck needs a place of its own off the way.
-- **Build**: `delvec build` exits 0. Hashes: site plan `47bb3e57…`, layout graph `aa13434b…`, blockout `40174164…`, engine `ff6bd492` (delvec 1.8.1). Pacing measures 2970 blocks of route, about 50 minutes of walking, against 150 targeted; the rest of the budget is the fights, the dialogue and the twelve cutscenes, and it is the walk that judges it.
-- **Showcase cameras**: 81, one per approved image, estimated from the pictures and the plan's coordinates and checked with `delvec cameras --preview`; three lenses that clipped a block were moved. Against a blockout most frames show massing, not the picture; they are re-placed when the places are detailed, or by hand in the game.
-
-## What 1.8.1 could not carry, and what was authored instead
-
-- **The Scholar's reading** of the carvers' script: `DW0849` refuses an objective only one class can complete when its item is in only that class's kit. The script answers everyone with "nobody here can read it"; the Scholar-only line is not in the campaign.
-- **The endless Throat**: a loop needs a jogged, roofed hall whose view closes inside one period (`DW0947`), and the blockout's Throat is a straight corridor. The Throat is a corridor with the wrong rib to break; the loop comes with the Throat's detailed piece at step 13.
-- **The Run's killing volumes and the Stomach pool**: a staged lethal volume must sit three courses under a rim; the blockout's holes are two courses over the sea. The bank still falls behind the party; the kill volumes come with the detailed pieces.
-- **Tentacles that strike** beside the way at the Jaw Bank, in the Rib Cathedral, on the Crown and on the Run: a blow is a box centred on an anchor, so every striking tentacle needs a place of its own to land in. The Narrows tentacle strikes its shelf; the others can be struck down and retract, and do not strike back yet. The flank-wound tentacles stand at the ridge's edge, not in the wounds, because a mark may not leave its place.
-- **Tentacles rising**: a hitbox is judged against the spawn frame, and a tentacle spawned rising is underground; they spawn standing.
-- **Darkness and blindness** in the perception bundles: refused within reach of a drop (`DW0943`); the bundles use nausea, the face particle and sound.
-- **The watcher** stands at a fixed facing and vanishes or moves when approached; no body turns to follow a player.
-- **The far tiller's line before the Run**: a party trigger is visited by the critical path whenever it is live, so the tiller is gated on the Run and says nothing before it.
-- **The stake lamps** lit by the lighthouse are told, not set: the lamp posts are detail, and a `set-block` needs an anchor at each post.
-- **The view distance** the far views need (the body from the coach road, the lamps from the gallery, the town from the Crown): spec-0091. **Pictures of the world after a beat** for the after-beat cameras: spec-0089. **The figure beyond the fog**, its lightning, the fog flash and the storm: spec-0092 (placeholders in cutscenes 10 and 12).
-- **An engine emission defect**: a presser `use` trigger with a trigger-level flag gate emits an `execute` the 1.21.11 command tree refuses ("matches 1run" with no space). The valve triggers carry their gates on their effects instead, which is the DSL's own `when`.
-
-## Step 9 — the walk
-
-**Passed.** The route reads, and the walk found no design problem; the walker stopped there, so the walk is over. What it met were technical faults, and round 2 answers them (engine `delvec 1.8.2`, dsl 0.35.1, built on the same blockout `40174164…`):
-
-- **A design ruling** for this campaign: no objective or waypoint text and no reach steps; progress comes from reading, talking, using and taking (`DESIGN.md`, *Guidance and writing*). Every reach objective became a reading, a conversation, a use or a taking; arrivals that start something are approach triggers. The engine forces three things against it, recorded as gaps below.
-- **Change narration** is cut everywhere ("the way behind you narrows" and its kind); the changes that carry the story keep the cutscenes they already had (the first creep, the lamps, the first view, the mouth, the beat stopping, the Crown, the cut, the crossings, the endings). No new close-up was needed.
-- **The tentacle hit one fixed spot**: authoring — the strike had no `aim`. It now turns to the nearest player among 8 facings inside an arming region kept to the shelf side (the engine turns a blow to a facing; it does not track a player). **The retract looked wrong**: the emitted retract is the pit demo's, function for function; what differs is that a strike pattern begins its next wind-up over a played clip while anyone stands in the arming region. The striking tentacle now sinks through a non-striking twin spawned on its retract.
-- **The watcher did not vanish**: authoring — the street trigger was centred twenty blocks from the watcher, and both approach triggers could fire while the party watched the opening camera fly through. Each watcher now stands on its place's anchor, vanishes within a few blocks of it, and is armed only after the opening cutscene.
-- **The crossing did not carry the walker**: authoring — the teleport took one cell of the skiff, and the cutscene returns every player to where the presser stood, so anyone a step off that cell stayed on the stage; sneaking only frees the camera and changes nothing. The seat is now a five-cell row across the skiff. **The bell was missing**: authoring — a trigger on an empty anchor is an invisible box; the bells and tillers are now real blocks.
-- **Name plates on the Drowned**: authoring — the wave mobs were named; the names are gone. **The Drowned's head band**: the outer layer in 1.21.11 uses the base UV, so the old outer image drew nothing; the band was the base face's wide dark mouth row. The face is redrawn and the outer layer is transparent. Only a look in the game confirms a mob texture.
-
-## What round 2 could not carry, and why
-
-- **A fight cannot be an objective without text**: an untitled `kill` is refused (`DW0863`: "carries neither a `title` nor a `hint` … Give `<id>` both a `title` and a `hint` saying where the wave arrives"). The fights are now spawned by quest beats and are not objectives; `DW0380` warns that the hull fight has no bypass, and the staging gate is red on ledger row `bell-14`, whose check binds only to `kill` objectives.
-- **Every interact objective shows a glowing marker**: `activate_o_<obj>` emits `summon minecraft:item_display … {Glowing:1b,…,item:{id:"minecraft:lantern"}}` for every interact, titled or not, and nothing turns it off. It is a waypoint the ruling does not want.
-- **A wave spawned from a trigger is not placed**: `DW0310` ("its spawn anchor is not placed in any assembled area") refuses a `spawn-wave` an approach trigger fires, so a fight starts on a quest beat, not on arrival.
-- **A checkpoint set from an approach trigger** strands the route proof (`DW0315` named a coach-stop anchor after a far-landing checkpoint); checkpoints are set by objectives, so the Run has its landing checkpoint and none on the back or the bank.
-- **A talk beat that must follow another** meets the `DW0205`/`DW0191` pair: an ungated completing button is refused for being early, a gated one for being gated. The homecoming is a use at the pier end instead of a word with Wenna.
-
-## Step 10 — the machine ladder (round 2): red on two engine defects
-
-- **A rebuild leaves the last build's files behind.** `delvec build -o <dir>` writes every emitted file and removes none (`write_output` in `crates/delvec/src/main.rs`), so the reused `validation/delve-output` carried 134 files the current build does not emit — the removed objectives' functions, their PackTests (`verb_kill` asserting `dw.o_the_slipway_drowned`), and live advancements (`c_the_spade.json`, `press_pillar_script.json`). A build into an empty directory is byte-identical to the current emission; the output directory is now cleared before every build here.
-- **PackTest: the atmosphere tests share the world.** The generated `atmosphere_repaint_<n>` tests paint and read biomes at absolute coordinates and run in parallel batches of 50; one test's "kept" cell lies inside another's repaint box (`atmosphere_repaint_1` reads `162 74 130`, inside `atmosphere_repaint_4`'s `[142,52,123]..[173,87,154]`). Two runs of one build failed different sets: `atmosphere_repaint_5`, `atmosphere_places`; then `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`. An intermittent red is an under-specified test; it is not re-run and the campaign's paint is not moved to dodge it.
-- **Bot: a cutscene inside a `sequence` is not waited out.** `cutscene_seconds_in` (`crates/delvec/src/compiler/plan.rs`) reads only top-level `cutscene` effects, so the notice step, whose completion runs the opening cutscene from a `sequence` step, carries no `cutscene_seconds`; the bot walks its next leg while in spectator and is stranded at the first camera (`step 2 (talk-to) failed … bot at [177.5, 94.3, 655.4]`). A cutscene fired by an approach trigger is invisible to the plan the same way (the first run: `step 1 (interact) failed … bot at [177.5, 92.9, 637.4]`); the route's arrival cutscenes now play on the objectives beside them (the notice, the pillars, the chalk arrow) and the Crown's arrival shot is cut.
-- Not run past the first red: the die-retry and death-loop stages report unbound (the campaign has no mandatory combat and no lethal volume), and the branch runs wait for a green critical path.
-
-## Step 11 — the branch chronicle
-
-Branches `branch/the-keeping` and `branch/the-return`; the two chronicles are identical to line 120 and differ only at the choice (line 122) and the ending (line 124). No dialogue node is flag-gated; every node is reachable on both branches, and the campaign ends at the choice.
-
-| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
-|---|---|---|---|
-| Davey by the heart, "It's dreaming, and we dream it…" (`dlg/davey-dream`) | both | 91 `learns` (still dreaming) | cleared |
-| Davey in the skiff, "I don't remember any of it. Is my mother all right?" (`dlg/davey-awake`) | both | 93 `opens` (Davey wakes), 99 `arrives` (to the skiff), 110 `survives` | cleared |
-| Davey on the pier, "Mother says you came a long way for me." (`dlg/davey-home`) | both | 116 `arrives` (home on the pier) | cleared |
-| Wenna on the pier offers the choice (`dlg/wenna-pier`) | both | 105 `arrives` (Wenna to the pier), 107 `arrives` (Tregear), 116 | cleared |
-| Marrack, "I took two men in…" (`dlg/marrack-boy`) and the shore of the pool | both | 66 `learns`, 85 `learns` | cleared |
-| The keeping: "Tregear does not sleep: under his chapel the stone dreams" | `branch/the-keeping` | 122 `believes` (to Tregear), 124 `survives` | cleared |
-| The return: "Nobody in Wrackham dreams." | `branch/the-return` | 122 `believes` (into the sea), 124 `seals` | cleared |
-| DESIGN.md: Davey goes ahead along the causeway to the pier | both | 114 `departs`, 116 `arrives` | cleared — he goes to his mother when the party reaches the pier end |
-| DESIGN.md: the keeping ends at dawn, the town clear | `branch/the-keeping` | 124 | cleared |
-| DESIGN.md: the return shows the bottom row and the figure at the shore | `branch/the-return` | 124 | cleared for what is built; the figure and the bottom row wait on spec-0092 |
-
-One contradiction found and fixed before this table: line 91 read "Davey, awake, speaks the dream's words" two lines before "Davey wakes".
-
-## Round 3 — the owner's rulings (content issue 168), on the released engine
-
-Toolchain: engine release `delvec--v1.8.2` (commit `11cd7c8a73b4b3b9c2383e67310ba6d49fc19903`), binary `delvec 1.8.2, dsl 0.35.1, mc 1.21.11`; the `/new-delve` page's pin check (I1b) exits 0 against it. Prefab library: this clone's `prefabs/`.
-
-- **The journal** restates what the story has told: seventeen objectives carry a title (twelve a hint), each naming only what a person or a reading has said by then; objectives nothing has told stay untitled. Wenna's hire now says where to go (the chapel past the fish market, the Customs House key), and Marrack's says the road runs past the pillars and the Narrows to the ferry house.
-- **Props**: fourteen of the sixteen interact objectives sit on a prop block, which the 1.8.2 emitter places instead of the glowing lantern marker (`activate_o_*`: `setblock` and no `item_display`). The lighthouse lamp is lit by the beat that lights it; the Brow Stone's block leaves the socket empty when it is cut.
-- **The story frame and the endings**: the notice and Wenna say the party came to find out what is happening and stop it before it gets worse; the return's closing line says plainly that the catastrophe was not averted. The Figure is unnamed, mentioned obliquely, and never by the townsfolk.
-- **The man at the oars**: Marrack rows. The launch body leaves when the pillars are read and two more declarations of him (`npc/marrack-near`, `npc/marrack-far`, one skin seed) sit at the oars of each copy of the skiff, forward of the seat row, so the carry never moves him. After the crossing back (`flag/reveal-seen`) his talk opens on a repeatable exchange.
-- **Crossings**: the outbound crossing is one shot from the jetty out toward the far sea, then the carry; the crossing back plays its placeholder reveal once (the two in-house shots are gone: they framed an empty skiff), and any later press is an ordinary crossing.
-- **Writing**: Davey's line about the valves says plainly what the right valve is; no line narrates the heartbeat; every line addressed to the party reads right for one player or four.
-- **zh-cn**: 88 rows transcreated by `tools/creator/i18n-translate.py` (deepseek-v4-pro), then a review pass over the whole sidecar: one rendering per name (额石, 探海者, 温娜, 特雷加尔, 剥鲸铲, 溺亡者, 朝圣者之路, 窄口, 小艇, 打捞船, 渡屋, 山脊), no 你们 aimed at the party, and two meaning errors fixed (the flat read as an apartment; the launch read as the only boat that can sail out).
-- **Waits on the unreleased engine** (DESIGN.md, *Waiting on the engine*): the Figure, the lightning and the party's stand-ins in the reveal; the obfuscated line; a visible press object for every `use` trigger, and for the Customs House lock and the diaphragm; progress that does not hang on reading an object; tentacle lock, re-arm and perception range; the walk after detail.
-- **The walk record is stale**: `delvec allocation` refuses with `DW0841` because `walk-record.json` names layout graph `aa13434b…` and the graph now hashes `5ee5d3b4…` (round 2 changed the graph after the walk). Detail, and so the boats, cannot start until the blockout is walked again.
-
-### Round 3 — the branch chronicle, re-read
-
-The chronicles moved by six lines (the oarsman's three beats); both are identical to line 126 and differ only at the choice (line 128) and the ending (line 130). Claims this round changed or added:
-
-| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
-|---|---|---|---|
-| Marrack rows the party across (`dlg/marrack-skiff`) | both | 64, 66 `learns`; 70 `departs` (the launch); 72, 74 `arrives` (the two oarsmen) | cleared |
-| Davey by the heart says which valve is right (`dlg/davey-dream`) | both | 97 `learns`, 99 `opens` | cleared |
-| Marrack ashore after the crossing back, repeatable (`dlg/marrack-ashore`) | both | not dated: side dialogue with no objective, gated by `flag/reveal-seen` from the crossing trigger (139–143, undated `seals`) | cleared — the chronicle dates no side dialogue |
-| The keeping: "nothing comes up out of the sea" | `branch/the-keeping` | 128 `believes`, 130 `survives` | cleared |
-| The return: "what it kept asleep wakes … no Wrackham left" | `branch/the-return` | 128 `believes`, 130 `seals` | cleared for what is built; the rising itself waits on the Figure |
-
-### Round 3 — the machine ladder (delvec 1.8.2, project `dw-stranding-r3w`)
-
-- **Build**: exit 0 into an empty directory; validate and analyze exit 0.
-- **PackTest**: 269 tests, 6 failed — `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`: the same set as round 2's second run, the released engine's atmosphere proofs reading each other's paint in a shared batch. Not re-run.
-- **Bot**: red at step 2, stranded at the first camera (`bot at [177.5, 94.0, 655.4]`), the released engine's plan not waiting out a cutscene inside a `sequence`, as in round 2.
-- **Staging gate**: REFUSED, 1 of 122 — `bell-14` UNBOUND (no `kill` objective; 6 waves declared), as in round 2. 66 bound, 25 declared uncoverable, 30 out of stage.
-
-## Round 4 — fights the story has announced become titled objectives, on the released engine
-
-Toolchain as round 3: `delvec--v1.8.2` (`11cd7c8a73b4b3b9c2383e67310ba6d49fc19903`), this clone's `prefabs/`.
-
-- **The fish-market wave is an objective**: `obj/the-slipway-drowned`, a `kill` on `wave/drowned-slipway`, first in `quest/the-fish-market`, bound to `node/fish-market` in `beats[]`. Its title and hint restate Wenna's warning in `dlg/wenna-start` and nothing more; the hint moved to it from the slate. zh-cn: 击退鱼市里的溺亡者, the hint carried with its key.
-- **The other five waves stay untitled beats.** No line names the fight among the hulls, the two out of the wrecks, the lice, or the two by the pool before it starts; under the journal ruling they carry no title, and `DW0863` refuses a `kill` without one, so they cannot be objectives.
-- **`DW0380` on `wave/drowned-hulls` stays.** Its own prescriptions are a real objective (refused above), or moving the wave off the walk / widening the boatyard, which is a placement decision this round was not given.
-- **The layout graph changed** (one beat), so the walk record is stale by one more edit; `DW0841` already refused allocation since round 2.
-
-### Round 4 — the branch chronicle, re-read
-
-Each chronicle gains two lines (the `dies` beat and its subject), so round 3's citations past line 22 move by two: identical to line 128, the choice at line 130, the ending at line 132.
-
-| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
-|---|---|---|---|
-| Wenna: the Drowned come up the slipway into the market (`dlg/wenna-start`), restated by `obj/the-slipway-drowned` | both | 20 `arrives` (the wave), 23 `dies` | cleared |
-
-### Round 4 — the machine ladder (delvec 1.8.2, project `dw-stranding-r4w`)
-
-- **validate / analyze / build**: exit 0, built into an empty directory. Promise line: 25 objectives, 1 `kill` (`DW0863`); round 3 had 24 and 0. Warnings unchanged: `DW0351` x5, `DW0379` x3, `DW0380` x1, `DW0781`, `DW0813`, `DW0821` x3, `DW0822` x2.
-- **PackTest**: 271 tests, 6 failed — `atmosphere_repaint_1/2/3/5`, `atmosphere_places`, `v06_damage`, the set round 3 recorded (the released engine's atmosphere proofs reading each other's paint). The two new tests, `verb_kill` and `verb_kill_uncredited`, pass. Not re-run.
-- **Bot**: red at step 2 as in round 3 (`bot at [177.5, 94.3, 655.4]`, the cutscene inside a `sequence`). The fish-market fight is step 3, so the muster reads `not-reached` and die-retry is UNBOUND (0 scripted deaths of 1 declared encounter): the run never reached it.
-- **Staging gate**: stageable, 122 of 122 — 67 bound, 25 declared uncoverable, 30 out of stage. `bell-14` is BOUND (1 `kill` objective) where rounds 2 and 3 were UNBOUND.
-
-## Round 5 — the rest of content issue 168, on engine 1.9.0
-
-Toolchain: engine `657d65fca71ac4c8b4886100e04494dbe8dd8168` (to be tag `delvec--v1.9.0`), built from source into its own tree (`cargo build --release -p delvec`, exit 0): `delvec 1.9.0, dsl 0.36.0, mc 1.21.11`, binary sha256 `2c3a4bd33ac4bbdca37157b38d88e8a5ab0cafc48d9fbd1d640f4aa37054ff19`. The `/new-delve` page at that commit; its pin check (I1b) exits 0 in dev mode against that tree. Every document re-stamped to dsl `0.36.0` by `delvec fmt`. Prefab library: this clone's `prefabs/`; `rig/tentacle` regenerated by that commit's `prefabs/rig-generator`.
-
-### What changed, by ruling
-
-- **Far views (DW0956, new in 1.9.0).** The coach-road view of the body (643.7 blocks) and the Crown's view of the town (638.9) cannot be served at any declaration (vanilla serves at most 32 chunks, 512 blocks); they are re-aimed at the farthest thing the design names that can be served, and `world.view_distance` is 30, the number the check prescribes. The body is first seen whole from the Narrows.
-- **The walk record** of the round-1 blockout walk is removed (DW0974 refuses it: no detail half). The walk is no longer a step of this campaign's creation.
-- **Quiet fights (spec-0093).** Five untitled `kill` objectives: the hulls, the two wreck bands, the lice, Marrack's men. The wreck bands, the lice and Marrack's men spawn from approach triggers in the place they are fought, so each wave arrives within reach of the act that fires it. `DW0380` on the hull fight is gone from the build.
-- **The crossing back's ordinary branch** is one ten-second shot and the carry at tick 205; the 22-second pad is gone.
-- **Props on pressables (DW0963).** `guidance.markers: hidden`; props on the wool picture (a black banner), the three valves (a red mushroom block: a fleshy knot in the heart wall), the carvers' script, both ferry bells (a bell is its own detector), the Customs House lock (a heavy core: an iron padlock) and the diaphragm (a nether wart block). The tillers and the near door's seat are authored in the ferry-house pieces.
-- **The Narrows tentacle locks (spec-0094):** nearest player on 13 × 11 of its shelf (143 cells, every one proved), three reaches, arming region the whole shelf; every fourth blow the retract holds and the tentacle rises again (`arm-strikes`); the twelfth sends it down for good; no text. The other tentacles still do not strike (in the waiting table).
-- **The reveal mid-crossing** (cutscene 10) and **the rising in the return** (cutscene 12): see the commit history for the mechanism; the figure is the demo's form turned east in the form (`generators/figure_form.py`), the region reaches 64 blocks further west so the sea it stands in is painted sea fog from the first beat, and a third copy of the skiff lies on the open water with Marrack at its oars (`npc/marrack-sea`). The closing line of the return no longer narrates the rising.
-- **The body** is sculpted (`generators/body_form.py` → `forms/the-stranding-body.json`) with every bank place and seam cut out of the form, and stamped by `world-edits.json`; the plan's massing left on it is skinned in its hide.
-- **Boats.** The ferry houses grow to 12 × 16; each holds the skiff in a slip beside a quay (`generators/ferry_house.py`); the skiff on the open water is the same boat laid east-west (`generators/open_water.py`); Marrack's launch is detailed (`generators/launch.py`).
-
-### Small craft, as used (cited or authored)
-
-| feature | value used | source |
-|---|---|---|
-| the skiff's parts: stem, transom, keel line, sheer, gunwale, thwarts, tiller | all present at block scale | Wikipedia, *Whitehall rowboat* (stem almost upright, wine-glass transom, keel the length of the bottom); *Dory (boat)* (flat narrow bottom, flaring sides, narrow transom, removable thwarts) — CC BY-SA, ideas only |
-| the sheer rises forward | depth forward > aft > amidships | Glen-L 17' Whitehall: depth forward 2'6", amidships 1'10", aft 2'2" (glen-l.com, plan listing; ideas only) |
-| skiff length/beam | 10 × 5 (2.0) | authored: a pulling boat runs about 3.8 (Glen-L: 16'11" × 4'6"; WoodenBoat 17' × 3'10"); this one carries four and an oarsman and reads its length from a three-row bow taper |
-| launch length/beam | 20 × 6 (3.3) | between a 33 ft × 8 ft steam launch of 1874 and Branksome, 49.97 × 9.31 ft (National Historic Ships register no. 2); authored to fit the 16 × 24 place beside the way |
-| the launch's deckhouse aft, mast, rubbing strake, bow bulwark | present | authored |
-
-### Engine findings (evidence in the round's commits and below)
-
-1. **World edits overrun the game's command chain** (lets a broken world ship). The emitter writes every world edit into one `world_edits` function called from `setup_finish`; the two sculpted stamps take 84,780 commands (body 61,620, figure 23,101), past the game's `max_command_sequence_length` of 65,536. Same campaign, PackTest: with the stamps, 288 tests in 9.9 min, 13 failed, the server log repeating `Command execution stopped due to limit (executed 65536 commands)`; without the body and figure batches, 288 tests in 52 s, 3 failed, no such line. The bot on the full build spawned at (8.5, −63, 8.5): the world's setup never finished. `validate`, `build` and the staging gate are green over it. Not worked round in the campaign.
-2. **A carry-only place cannot be detailed.** A spatial contract demands an exterior way into its entry space, and `DW0844` refuses a face that answers no seam; `node/open-water` (reached only by links) is massed and its boat stamped.
-3. **DW0315 reads a two-carry chain as a walk.** The far-landing checkpoint set after the Run was refused because the next walked position (the pier) lies past two links; the landing checkpoint, which guarded no hazard, is removed. Direction: can only turn a proof red.
-4. **A zero y-extent carry fails its own PackTest.** `teleport_<id>` summons five bodies at the volume's floor plane and counts three: a marker and a text display have no height and fall outside a `dy=0` box. The carries now take a one-course y extent.
-5. **DW0956 prescribes a remedy it refuses**: "declare `world.view_distance: 32`" for a reach of 643.7 and 599.9 blocks, which 32 chunks (512 blocks) does not serve.
-6. **The page's pin** at `657d65fc` still names `delvec--v1.8.2` (`versions.toml`); a creator-mode I1b against the 1.9.0 binary refuses until the release bumps it.
-7. **A grammar piece cannot host a gate station** (grammar.md, the rule cannot express a region anchor); `anchor/near-door` is a point shut and opened by fills.
-8. **The heart's valve puzzle is not on the bot's path.** `obj/davey-wakes` waits on `state/heart-round`, which only the valve triggers write; the plan dates no trigger press for a numeric gate ("3 against an undatable datum"), so the critical path stops at step 28. First reached this round (earlier rounds stopped at step 2).
-
-### Round 5 — the branch chronicle, re-read
-
-Both chronicles are 156 lines and identical to line 66; they differ only at the choice (line 67) and the ending (line 68). Claims this round changed or added:
-
-| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
-|---|---|---|---|
-| the fights among the hulls, out of the wrecks, the lice and Marrack's men are required and found where they arrive | both | 19–20, 29–30, 43, 47; arrivals undated (ambient, triggers 32–34) | cleared |
-| Marrack at the oars of the skiff on the open water | both | 38 `arrives` (`npc/marrack-sea`) | cleared |
-| the reveal: lightning beside what stands in the sea, the fog torn away | both | ambient (trigger 35), undated | cleared — the chronicle dates no trigger |
-| the return: the stone goes back, what it kept asleep wakes, Wrackham is lost | `branch/the-return` | 68 `seals` | cleared |
-
-### Round 5 — the machine ladder (delvec 1.9.0)
-
-- **validate / analyze / build**: exit 0, built into an empty directory. Warnings: `DW0351` ×6, `DW0379` ×3, `DW0781`, `DW0810`, `DW0813`, `DW0821` ×3, `DW0822` ×2. `DW0311`: 35 legs, 33 walked, 2 carried by a link. `DW0921`: 0 of 129,649 reachable cells cannot be left. `DW0863`: 6 kill objectives, 1 announced, 5 found by the party. Assembly: 429 locked cells, 0 refused. Stand-ins: 12 of 12 cutscenes present. Lightning: 1 strike, 0 refused. Detail: 3 places bound.
-- **PackTest** (`dw-stranding-r5`): 288 tests, 13 failed, under finding 1. Control without the two stamps (`dw-stranding-r5c`): 288 tests, 3 failed, the three zero-extent carries of finding 4, since fixed; round 4's six atmosphere failures are gone.
-- **Bot**: the full build fails at step 1 (finding 1: spawn at (8.5, −63, 8.5)). The control build walks steps 1–27 — the outbound crossing's link, the quiet fights, die-retry respawns at steps 3, 10, 14, 15, 23 and 25 — and fails at step 28 (finding 8), before the crossing back and the reveal.
-- **Branch runs**: not run; each walks the critical path to the choice, which stops at step 28.
-- **Visual review**: draft frames (`delvec cameras --preview`, `delvec snapshot`) of the body, the launch, the ferry houses and the reveal's key frames; Chunky renders need a world save, which waits on the datapack's setup and is blocked by finding 1.
-- **Staging gate**: stageable, 122 of 122 — 71 bound, 26 inapplicable, 25 declared uncoverable, 0 unbound. The gate does not see finding 1.
-
-Machine record: the validation loop hit `DW0956` ×8, `DW0974` ×1, `DW0932` ×4, `DW0542` ×2, `DW0963` ×2, `DW0863` ×2, `DW0825` ×4, `DW0832` ×2, `DW0845` ×2, `DW0842` ×1, `DW0322` ×1, `DW0311` ×4, `DW0315` ×1, `DW0929` ×2, `DW0819` ×1, `DW0818` ×1, `DW0934` ×2, `DW0152` ×1, `DW0190` ×1, `DW0180` ×6, `DW0181` ×3, `DW0187` ×3, `DW0952` ×2, `DW0951` ×1, `DW0724` ×1, over about 40 build iterations.
-
-## Round 6 — the first version, on engine 1.10.0
-
-Toolchain: engine `ccbdfc0fb3042c8567bfb6579f9f86be0a30cc8e` (to be tag `delvec--v1.10.0`), built from source into its own tree (`cargo build --release -p delvec`, exit 0): `delvec 1.10.0, dsl 0.36.1, mc 1.21.11`, binary sha256 `2171f4b8ad56773a084ea25feb33e3a22eded6d4f1e6ffbf830838541ef68095`. The `/new-delve` page at that commit; I1b exits 0 in dev mode against that tree. Every document re-stamped to dsl `0.36.1` by `delvec fmt`; the world-edits generator reads the number from `world.json`. Prefab library: this clone's `prefabs/`.
-
-### What changed
-
-- **The heart's valves.** Each valve's bundle advanced the round and then ran, in the same bundle, a reset gated on the value it had just written, so a right press undid itself (`DW0985`: values reached {0}). Reordering cannot repair it: on the west and east valves the advance and the reset from the next round each undo the other in either order. Each bundle now reads the round once into a scratch datum (`state/valve-right`), takes back the standing wound while it still reads the round, runs the wrong press's lines and reset or the right press's beat, wound swap and advance off the scratch datum, and clears it. Order, wounds and feedback are as designed. `DW0527`: 41 refused before, 0 after.
-- **The spine stair.** Its treads filled the doorway's width (x 162-164 of a 4-wide place), and the heart's seam opens under the upper flight, so past the opened bar a body met solid treads; the plan routed out of the body and round the far bank instead. `edge/spine-to-crown` moves one column (at 1, meets 13) so x 162 is a walk from the seam to the stair's foot; the body form and piece follow. With the spine open both ways the leg to the landing went back down it and skipped the Run, so at the cut the bar falls again (`close-gate`, happening `seals`), as `DESIGN.md` row 31 now says.
-- `DESIGN.zh.md` carried a stale second copy of sections 5-11 from an earlier round; removed. Both design files' waiting tables are brought to 1.10.0: the stamps' command-chain row is gone (setup completes), and the tentacles' row says what striking needs.
-
-### The tentacles that do not strike yet (issue 168, item 4)
-
-Not done this round. A lock's landing region is a box centred on an anchor; every cell of it must be 5 to 19 blocks from the mark (the rig's three reaches: `delvec rig describe rig/tentacle`), off the way, and 3 blocks from any drop (`DESIGN.md` § Tentacles). On a massed place the anchors are the place's centre and the engine's station stand-ins, and neither can be put there: the Jaw Bank's tentacles stand 4 blocks in from its side walls with the way between them, the Rib Cathedral's reaches lie on the rib walk 40 blocks up, and the Crown is a 16 x 24 top with drops on every side. The Narrows tentacle has a shelf of its own for this. Each of the others needs a place of its own beside the way, or its place detailed with a piece that carries the anchor; 1.10.0 adds nothing that changes this.
-
-### Engine findings (evidence below)
-
-1. **The bot cannot follow a proven leg whose waypoints are farther apart than the client loads** (can only turn a proof red). The waypoints are corner-thinned, so a straight run is one hop: the Run's bank is 268 blocks in one hop, the walk home 343. The harness creates its bot with mineflayer's default view distance (`far`, 12 chunks, 192 blocks) and the pathfinder answers "No path to the goal" about ten blocks into such a hop ("nothing within 12 blocks — the refusal is about blocks"), on the bank going south (r6) and going north (r6b). Hops of 99 and 160 blocks pass. Second method: the same build, the same harness with `viewDistance: 32` added to its one `createHarnessBot` call (a probe tree, not shipped), walks every step to the end.
-2. **The repaint check binds to whichever chunks the client happens to hold when the bundle fires** (can only turn a proof red). The far-sea fog painted at the notice lies about 490 blocks from the coach stop; on the probe harness the keeping branch read "the client held none of the 76 chunk(s) … a zero binding is not a pass" and the return branch held 24 and passed, on one build. The painted chunks reach the client with their biome when it loads them. Under finding 1's default view distance nothing beyond 192 blocks is ever held.
-3. **The muster finds nothing of a wave an approach trigger spawns** (lets a declared fight ship unread). The three waves spawned by approach triggers (the wrecks, the lice, Marrack's men) are reported "nothing of this wave was standing when the muster ran, so none of its declared fact(s) could be checked", on every run; the bot then fights them.
-4. **A barred seam that opens onto solid ground is not refused** (lets a broken way ship). The spine seam opened onto treads; the seam battery, `DW0837` and every route proof were green, and the plan quietly took a 600-block way round.
-5. **The page's pin** at `ccbdfc0f` still names `delvec--v1.9.0`; a creator-mode I1b against the 1.10.0 binary refuses until the release bumps it.
-
-### Round 6 — the machine ladder (delvec 1.10.0)
-
-- **validate / analyze**: exit 0; `DW0351` ×6, `DW0813`, `DW0822`. **build**: exit 0 into an empty directory; also `DW0379` ×1 (was ×3), `DW0781`, `DW0810`, `DW0821` ×3, a second `DW0822` (measured route 2282 blocks, about 39 minutes). Read-after-write: 202 effects over 77 bundles, 0 gated writes, 0 refused (`DW0527`). Chain binding: 3689 shipped functions, 6 world-build steps, longest chain 21857 of 65536, 0 refused (`DW0984`). `DW0311`: 38 legs, 36 walked, 2 carried by a link. `DW0921`: 0 of 142932 reachable cells cannot be left. `DW0863`: 6 kill objectives, 1 announced, 5 found. Assembly: 429 locked cells, 0 refused. Stand-ins: 12 of 12. Detail: 3 of 53 places.
-- **World setup**: completes; `world-save.sh` read `#placed dw.sys = 1` and wrote 8 region files.
-- **PackTest**: 289 of 289 required tests passed (`dw-stranding-r6`, and again on the final build as `dw-stranding-r6b`); no command-chain line in the log.
-- **Bot, critical path** (`dw-stranding-r6b`): steps 1-32 pass, the valves (29-31), the waking and the cut included, with die-retry respawns at steps 3, 10, 14, 15, 23 and 25; step 33 fails on the Run's bank ("No path to the goal", engine finding 1). On the probe harness of finding 1 the same build walks every step to the end; its only red is finding 2.
-- **Branch runs** (`dw-stranding-r6br`): both branches fail at step 33, as the critical path. On the probe harness (`dw-stranding-r6pb`): `branch/the-return` passed, `branch/the-keeping` red on finding 2 alone (0 branch findings).
-- **Muster**: three waves unread on every run (engine finding 3).
-- **Branch chronicle**: 158 lines each, identical but for the choice and the ending; the new line is 58, `seals` the stair at the cut, which `DESIGN.md` row 31 now carries. Cleared.
-- **Visual review**: 530 Chunky scenes emitted (432 POV); ten POV frames rendered at the scene budget, one per act stretch (legs 1, 3, 13, 18, 20, 22, 27, 31, 32, 34); the other 520 not rendered. The frames show the derived blockout — stone-brick boxes lit by torches — everywhere but the three detailed places: 50 of 53 places are massing, and the spine stair's frame is open to the sky.
-- **Staging gate**: stageable, 122 of 122 — 71 bound, 25 inapplicable, 26 declared uncoverable, 0 unbound. A site-plan build with any place detailed passes its detail clause; this one has 3 of 53.
-
-## Round 7 — paused
-
-Paused by the owner's decision while the way a place is built is redesigned (spec-0098, in progress: a structure owns its whole volume, outside included). Nothing here is a finished state. Toolchain as round 6: engine `ccbdfc0fb3042c8567bfb6579f9f86be0a30cc8e`, `delvec 1.10.0, dsl 0.36.1, mc 1.21.11`; I1b exits 0 in dev mode; this clone's `prefabs/`.
-
-### What was done
-
-- **51 of 53 places carry a detail-plan row** (`delvec detail --all`: "51 place(s) detailed of 51 named"). Not detailed: the open water (round 5, finding 2) and the Narrows (finding 3 below). The pieces come from builders in `generators/places_act1.py`, `places_act2.py`, `places_act34.py` over one kit, `generators/kit.py`, which asks `delvec allocation` for each frame, seam and owed name on every run (as `body_form.py` does) and reads the spatial contract back the way the engine does: one floor per space, a roofed cell of an open place in its own closed space, the tops of posts and walls nobody stands on out of walk.
-- **Light** is placed with each room; every piece's own probe reads `lit` except where the whole-world survey below says otherwise. Inside the body: glow lichen on the walls, cave vines with glow berries from the vault, lamps in niches under a lip of bone; the rib cathedral an arcade of rib columns carrying lamps.
-- **Anchors** stand where their things are (the tide board, the Rubbing, the chip's case, the lighthouse lamp at the top of the tower, the bells beside the ferry houses' doors, the valves on the heart's face, the Brow Stone at the forehead's edge, the end of the pier). Offsets the story stands bodies at were checked against each frame. `node/far-landing` stays where the plan stood it: the body's stamp is placed from it (`generators/body_place.json`); moving it moved the whole body 25 blocks (seen as dark cells on the back and the ridge) and was reverted. The far bell's ringer stands at a new station, `anchor/far-bell-stand`.
-- **The sea fog over the open water** is painted at the lamps beat instead of the notice: the coach stop is about 490 blocks from the fog's region, past the declared 480; the lighthouse, about 250 blocks away, is the first beat from which that water can be seen. `DESIGN.md` (both languages) says so.
-- `sleeper-street-1` stands one cell out of the door he stood inside (cast offset `[-2, 0, -8]`).
-- **The town's rework after review** (pitched undersides of the roofs over the chapel, the market, the cottage, the customs house, the lofts and the shed; awnings over the market's stalls; street fronts with plinths, sills, lintels, door jambs and hoods, chimney stacks) is written in `generators/places_act1.py` but **was never regenerated**: a syntax error in the same file (fixed at the pause) made the generator fail while a gate script that hid its stderr went on judging the old programs. The programs and pieces in the tree are the pre-review versions.
-
-| place | detailed | notes |
-|---|---|---|
-| Coach Road, Cliff Steps, High Street, Harbour Office, Coyle House, Fish Market, Seawall, Seamen's Chapel, Chapel Crypt, Customs House, Net Lofts, Boatyard, Whalers' Shed, Ropewalk, Breakwater, Lighthouse, Slipway Stair, Pier | yes | pre-review pieces; the review found flat lids for roofs and flat facades, see the exterior list and finding 1 |
-| Pilgrims' Way, Wreck Field, Mast Platform, Carved Pillars, Skiff Stage, five mud fields, Narrows Shelf, Far Landing, Jaw Bank, Flank Ridge | yes | walled by the blockout shell (finding 1) |
-| The Narrows | no | finding 3 |
-| Mouth, Throat, Rib Cathedral, Stomach, Heart Chamber, Breach, Spine Stair | yes | the Stomach's pool is two courses deep; no lethal volume was added |
-| Crown, Brow, Back (upper, middle, lower), Tail Flank, Tail Bank, Tail Road, Run Bank | yes | walled by the shell |
-| Near and far ferry houses, Marrack's launch | round 5 | re-made unchanged by `--all` |
-
-No place was rendered with Chunky and no place was judged at eye height in the game; draft frames (`delvec render piece`) only.
-
-### The exterior each place needs (for the pass after spec-0098)
+`DESIGN.md` is a detailed brief, so it is honoured exactly and nothing is showcased beyond it: four acts and thirty-six places in the order it gives, the cast of four, the four classes and their kits, the fights and tentacle counts, twelve cutscenes, the two endings, the danger model, the light plan, the hour (`night`, `clear`, full moon). `DESIGN.md` § Posture is the posture note: escalation is uneven, people name their fear, and the ending does not explain itself.
+
+## Map restart
+
+The map is rebuilt from the site-plan step on the new route. Nothing from the previous map is reused: no site plan, layout graph, geometry brief, detail plan, world edits, program, piece, form, generator or `the-stranding-*` prefab remains in the tree (git history keeps them). The story documents (`world.json`, `npcs.json`, `classes.json`, `quest-plan.json`, `quests.json`, `dialogue.json`, `l10n/`), `design/`, `design.json`, `skins/`, `textures/` and both design files stay; ids in them that named the old map's anchors, boxes and places are re-bound by the new map, not kept alive by it. `design/cameras.json` positions are in the old map's coordinates and are re-aimed with the new map.
+
+## Standing decisions
+
+Story and mechanic decisions that do not concern map geometry.
+
+- **Seed** `1919`. **Difficulty** `normal`. **Horizon** `ocean` (sea level y 62 under the flat's mud at y 64), `boundary` carries a message.
+- **Atmospheres**: `wrong-place` (olive sky, close yellow fog, red clouds, no music), `inside-body` (dark red, close fog, no music), `red-night` (the body, the bank and the flat after the cut), `sea-fog` (the endings). The wrong place stands over the body's bank and outside until the cut at the Brow, then `red-night`; whether the bank carries it or a beat paints it is settled with the new map (a shared paint boundary at the mouth and breach is refused, `DW0929`).
+- **NPCs**: Wenna, Tregear and Marrack are `quest-giver`, Davey `flavor`; Davey stands by the heart from world load. Each body is a `minecraft:mannequin` with the skins in `skins/`.
+- **Classes**: the four kits of `DESIGN.md`, nothing added; the Physician's splash potions carry `minecraft:healing`; the Scholar's brush is in no other kit; no bonfire, no flask.
+- **Quest plan**: sixteen quests in one chain, all mandatory, finale `quest/the-pier`; one branch point at the pier forking on `flag/stone-kept` and `flag/stone-returned` to `ending/the-keeping` and `ending/the-return`. `min_players` 1.
+- **One body**: a realistic rotting sperm whale (`DESIGN.md` § The body); tentacles rising from its wounds are the wrongness and are not the whale's. Approved images stand as style; where they differ from § The body, the record wins.
+- **The escape crossing is the climax reveal** (cutscene 10), played once. **The return is the bad ending**: by what it shows, and the same figure rises at the town's shore at its end. No player text labels either ending. The Figure is unnamed, mentioned obliquely, never by the townsfolk.
+- **Inside light** follows the engine's `interior-lighting.md` §7 and the owner's lighting rules: natural light set into walls and vault, artificial sources hidden, placement staggered in three dimensions, the upper space lit.
+- **Round 3 rulings (content issue 168)**: the journal restates only what the story has told (seventeen objectives titled, twelve with a hint; untold objectives untitled); fourteen of the sixteen interact objectives sit on a prop block; the notice and Wenna say the party came to find out what is happening and stop it, the return's closing line says plainly that the catastrophe was not averted; Marrack rows, with his declarations at the oars of each skiff copy so a carry never moves him, and after the crossing back his talk opens on a repeatable exchange; the outbound crossing is one shot then the carry, the crossing back plays its reveal once; Davey says plainly which valve is right, no line narrates the heartbeat, every line addressed to the party reads right for one player or four.
+- **zh-cn**: one rendering per name (额石, 探海者, 温娜, 特雷加尔, 剥鲸铲, 溺亡者, 朝圣者之路, 窄口, 小艇, 打捞船, 渡屋, 山脊), no 你们 aimed at the party; transcreated, not translated.
+- **Round 4**: the fish-market wave is a titled objective restating Wenna's warning and nothing more; fights no line has announced stay untitled beats (`DW0863` refuses a titled-less `kill`).
+- **Round 5**: far views the engine cannot serve (`DW0956`, 512 blocks) are re-aimed at the farthest servable thing, `world.view_distance` 30, and the body is first seen whole from the Narrows; quiet fights (spec-0093) spawn from approach triggers in the place they are fought; `guidance.markers: hidden`, with props on pressables (black banner on the wool picture, red mushroom block on the valves, a bell as its own detector, heavy core as the Customs House padlock, nether wart block as the diaphragm); the crossing back's ordinary branch is one ten-second shot and the carry. The Narrows tentacle locks nearest player on its shelf, three reaches, every fourth blow the retract holds, the twelfth sends it down for good, no text.
+- **Round 6**: the heart's valves read the round once into a scratch datum (`state/valve-right`), take back the standing wound, run the wrong press's lines and reset or the right press's beat, wound swap and advance off the scratch datum, then clear it (a right press must not undo itself, `DW0985`; `DW0527` clean). With the spine open both ways the leg to the landing skipped the Run, so at the cut the bar falls again (`close-gate`, happening `seals`), as `DESIGN.md` row 31 says.
+- **Round 7**: the sea fog over the open water is painted at the lamps beat, not the notice (the coach stop lies past the declared 480 blocks from the fog's region; the lighthouse is the first beat from which that water is seen). The far bell's ringer stands at its own station.
+- **Tentacle strikes**: only the Narrows tentacle strikes. The Jaw Bank, Rib Cathedral and Crown tentacles do not strike yet: a lock's landing region is a box centred on an anchor, every cell 5 to 19 blocks from the mark (`delvec rig describe rig/tentacle`), off the way, 3 blocks from any drop, so each owes a landing station of its own beside the way. Strikes written for them were parked and are deleted with the old map; they are rewritten against the new map's anchors (`DW0968`: the blow must lie inside `while_in`). Ranged hits on tentacle hitboxes are settled as melee only (spec-0082 §8).
+- **Small craft** (cited or authored; ideas only): the skiff has stem, transom, keel line, sheer, gunwale, thwarts and tiller at block scale (Wikipedia, *Whitehall rowboat*, *Dory (boat)*, CC BY-SA); the sheer rises forward, depth forward > aft > amidships (Glen-L 17' Whitehall plan listing); skiff 10 x 5 is authored (a pulling boat runs about 3.8; this one carries four and an oarsman); the launch is about 20 x 6, between a 33 x 8 ft steam launch of 1874 and *Branksome* (National Historic Ships register no. 2); its deckhouse aft, mast, rubbing strake and bow bulwark are authored.
+
+## The exterior each place needs
+
+A design requirement for the new map: a building reads from outside as the thing it is, and an open place stays open.
 
 | place | open or enclosed | roof form | facade |
 |---|---|---|---|
-| Coach Road | open, no shell | none | drystone parapet on the drop, rock bank behind, the coach stop's timber shelter |
+| Coach Road | open | none | drystone parapet on the drop, rock bank behind, the coach stop's timber shelter |
 | Cliff Steps | enclosed | slate roof stepping down the cliff with the flight | rubble walls |
-| High Street | open, no shell | the terraces behind its fronts: pitched slate roofs, ridges along the street, chimneys at party walls | its own street fronts |
+| High Street | open | the terraces behind its fronts: pitched slate roofs, ridges along the street, chimneys at party walls | its own street fronts |
 | Harbour Office | enclosed | slate gable, ridge east-west, chimney | two-storey stone house; street door on the upper floor; a window over the harbour |
 | Coyle House | enclosed | pitched slate roof, chimney | single-storey limewashed cottage, small window, plain door |
 | Fish Market | enclosed hall, open on the seawall side | long pitched plank and slate roof, ridge north-south | timber frame on a stone footing; open arcade with awnings to the seawall; sea doors to the slipway |
-| Seawall | open, no shell | none | parapet with bollards; the harbour fronts along the north |
+| Seawall | open | none | parapet with bollards; the harbour fronts along the north |
 | Seamen's Chapel | enclosed | steep slate gable, ridge north-south, a bell-cote on the south gable | rubble stone, tall narrow windows, door in the gable end |
 | Chapel Crypt | below ground | none (buried) | none |
 | Customs House | enclosed | hipped slate roof | dressed stone, a door on the seawall with a lamp each side |
@@ -331,27 +58,21 @@ No place was rendered with Chunky and no place was judged at eye height in the g
 | Boatyard | open (the emptied basin) | none | quay walls with their steps |
 | Whalers' Shed | enclosed | tall timber gable with a louvre | plank walls, big doors |
 | Ropewalk | enclosed | long low pitched roof, rising over the stair at its south end | timber |
-| Breakwater, Slipway Stair, Pier | open, no shell | none | stone arm with parapets; stone slip walls; timber deck on piles |
+| Breakwater, Slipway Stair, Pier | open | none | stone arm with parapets; stone slip walls; timber deck on piles |
 | Lighthouse | enclosed tower | lantern room glazed all round under a cap | white stone tower with a gallery |
-| Pilgrims' Way, Wreck Field, mud fields, Narrows Shelf, Carved Pillars, Skiff Stage, Marrack's launch, Mast Platform | open, no shell | none | the flat itself; the mud fields must stay open to the sea to sink |
-| The Narrows | open, no shell | none | a ridge three stones wide between water |
+| Pilgrims' Way, Wreck Field, mud fields, Narrows Shelf, Carved Pillars, Skiff Stage, Marrack's launch, Mast Platform | open | none | the flat itself; the mud fields stay open to the sea to sink |
+| The Narrows | open | none | a ridge three stones wide between water |
 | Near and far ferry houses | enclosed | slate roof | stone walls down to the sea floor, the water gate shut |
-| Far Landing, Jaw Bank, Flank Ridge, Tail Bank, Tail Road, Run Bank | open, no shell | none | the body's bank |
+| Far Landing, Jaw Bank, Flank Ridge, Tail Bank, Tail Road, Run Bank | open | none | the body's bank |
 | Mouth to Spine Stair | inside the body | the body form | the body form |
-| Crown, Brow, Back, Tail Flank | open, no shell, on the body | none | the hide; drops at the edges visible |
+| Crown, Brow, Back, Tail Flank | open, on the body | none | the hide; drops at the edges visible |
 
-### Open items
+## Open items
 
-- **Build red** on `DW0308`: the first creep's cutscene (quest 2 `on_complete`, re-aimed this round to offsets `[-4,6,4]` → `[6,7,0]` of `anchor/node-fish-market`) clips a solid block at [128, 78, 107] in the market. Earlier reds this round, fixed: `DW0313` (gravel over no substrate), `DW0897` (pier offsets), `DW0210` (dark cells), `DW0322` (a pool that drained to the sea), `DW0833` (cathedral height), `DW0845`.
-- **The fog repaint distance**: moved to the lamps beat (above); not yet proved on a ladder run.
-- **Tentacle anchors and strikes**: landing stations exist and are marked (Jaw Bank, Rib Cathedral, Crown); the Jaw Bank's tentacles stand in their pits. The strikes written for them (`generators/strikes-parked.json`) are parked out of `quests.json`: at the time they were tried the landing anchors still resolved to stand-ins and `DW0968` refused every step ("no strike clip comes down on" those cells, and the blow must lie inside `while_in`). They have not been tried against the detailed anchors.
-- **The ladder** (PackTest, bot, branch runs, staging gate) was not run this round, nor the Chunky frames.
-
-### Engine findings (round 7)
-
-1. **A detailed place has no outside of its own** (capability gap; blocks staging). The blockout shell — every wall, every unshared face, the ceiling of a roofed box — stands outside every frame and is written whether or not the place is detailed (`crates/delvec/src/compiler/blockout.rs`, `Mass::holes`: "every vertical party plane, every wall, every unshared shell face and every ring of floor under a wall lie OUTSIDE the frame, so they are written exactly as they were at stage 5"). So every building reads from outside as a flat-topped stone box, and every open place (the flat, the mud that must sink to the sea, the Narrows "between open water", the breakwater, the coach road's view, the Crown's drops) stays walled six to twelve courses high (draft snapshot: round 5's detailed launch stands inside stone walls). `DW0821`'s text promises that "the detail pass will carve" a vista and turns refusing once every node is detailed, a remedy the detail pass cannot reach. Being answered by spec-0098.
-2. **An all-open piece is refused.** `contract-closure` reds a zero binding when no space is `enclosed` or `open_top` ("no space declares an envelope this gate can examine"), though a street or a mud field honestly encloses nothing; it is not among the gates whose zero is honest. Every open place here carries a real roofed element (a shelter, a hull's belly, a hood) so the gate binds. Direction: can only turn a proof red.
-3. **Two allocated seams share corner cells, and no piece can answer both** (the Narrows: `edge/pillars-to-narrows` x 0..2 z 0 and `edge/narrows-to-mud-west` x 0 z 0..63 share x 0 z 0; likewise at z 63 with `edge/narrows-to-stage`). A cell in two openings touches the room from neither (`contract-well-formed`); giving the corner to the room makes `DW0844` refuse both openings as not the plan's. Direction: can only turn a proof red.
-4. **The allocation hands a seam as its two corner cells**, not its cells (`"cells": [[0,9,0],[2,11,0]]` for a 3×3 opening), while the `/new-delve` page's detail reference says it hands "every seam with its cells".
-5. **The sculk family is not in the palette allowlist** (`DW0730`), while `DESIGN.md`'s mechanism table counts the heart's sculk sensors, shrieker and pulse floor as vanilla behaviour in the prefab. The Heart Chamber is built without them.
-6. **`delvec render piece` draws an eye frame facing away from its anchor's facing** (observed once): the Coyle House node at [5,1,4] facing west reports its frame "blind" within 4.5 blocks and shows the east door, five blocks from the west wall and two from the east. A review-medium defect; not checked further.
+- **Engine capabilities not yet built** (engine work is in progress before map building resumes): the out-of-sight check for the two skiffs, the watcher, and the heartbeat. A part of the campaign that needs one waits for the release and is not worked around.
+- **Waits on the engine** (see `DESIGN.md`, *Waiting on the engine*): the Figure, the lightning and the party's stand-ins in the reveal; the obfuscated line; a visible press object for every `use` trigger and for the Customs House lock and the diaphragm; progress that does not hang on reading an object; tentacle lock, re-arm and perception range.
+- **Sculk (engine issue #1007)**: `sculk` and `sculk_vein` are allowed. `sculk_catalyst`, `sculk_sensor`, `calibrated_sculk_sensor` and `sculk_shrieker` stay refused until a spec exists; `DESIGN.md`'s heart mechanism counts on sensors and a shrieker, and a mechanism that counts on them is blocked.
+- **Engine issues #1004-#1006** are fixed in engine main and no longer constrain the campaign.
+- **The fog repaint distance** (lamps beat) is not proved on a ladder run.
+- **Far-landing placement**: the body's stamp was placed from `node/far-landing`; the new map states what the body is placed from.
+- **The ladder** (PackTest, bot, branch runs, muster, staging gate, Chunky frames) is run on the new map; none of an earlier map's results carry over.
