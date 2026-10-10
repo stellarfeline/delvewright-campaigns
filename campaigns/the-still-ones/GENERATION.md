@@ -87,13 +87,9 @@ world save carries no entities, so no frame shows a figure.
 - The square is a paved yard ringed by a hedge three high, the well a block
   of mossy brick round a full cauldron, a lantern at each corner.
 
-## Machine findings carried into the hand-over
+## Machine proofs (round 1, after the torch fix)
 
-- The bot judges a watcher only at the corner-thinned waypoints of the
-  proven path. The first leg runs straight from the gate to the top of the
-  row with no waypoint between, so the tailor (3.5 blocks from the path at
-  its nearest) and the dry one (4.5) are reported "never within reach",
-  though the path passes inside both reaches. Their turn is proved by their
-  PackTests only.
-- The written-world record cannot be produced from this build: `delvec
-  cameras` refuses a campaign without `design/cameras.json` (`DW0721`).
+- Every row torch hangs on plaster or a post: on panes the server dropped
+  four of them, which the written-world check (DW0955) caught.
+- The bot asserts all four watchers on the proven path, and the written-world
+  record compares the server's world with the engine's model and passes.
