@@ -221,3 +221,20 @@ Built with `delvec 1.11.0, dsl 0.38.0, mc 1.21.11`, force-rebuilt in release mod
 | `pov_leg6_wp15` | Watch Crown (the hook) | No: sky and the valley rim. A review frame faces along the walk's last step. |
 | `pov_leg4_wp11` | Low Bridge | Yes. |
 | `pov_leg4_wp1` | Seed House | Yes. |
+
+## Handover round on engine 9e000f96
+
+`delvec 1.11.0, dsl 0.38.0, mc 1.21.11`, force-rebuilt in release mode (`cargo clean -p delvec`, then build; exit 0) from the read-only engine tree at `9e000f965c5d4abda9e45599b6fadc281ea1f797`. The bot image is rebuilt from that tree by `validation/bot-run.sh` under a fresh compose project. The revision changes only the harness: the pathfinder aimed a ladder node walked along the face one block high, and now aims it at the feet.
+
+- **Build tree `out/build-r10`: byte-identical to build-r9.** Manifest sha256 `6f0d62281d89c1c514df7d76af5f6b24e2e95942de5f4997ffa97ee38e2f70c4` on both; the datapacks show no difference (`diff -rq`); `detail --all` rewrote no piece.
+- **Bot critical path: green**, exit 0 (`out/run-report-r10.json`, `build.manifest_sha256` as above). It passes 10 steps. **3 climbs driven**:
+  - the glade ladder, [30, 72, 36] to [29, 86, 36];
+  - the Watch House ladder into the landing, [74, 84, 78] to [74, 93, 79];
+  - the crown's ladder to the lookout, [74, 93, 79] to [74, 112, 78].
+- **Bot advisories:** 2, both stating the campaign declares neither combat nor a death plan, so those stages bind nothing.
+- **PackTest:** 41 of 41 required tests pass.
+- **Server-saved world:** 0 structure_void.
+- **DW0955:** green (`out/written-world-r10.json`). Of 71,333 cells: 0 model, 0 clock, 0 gravity, 0 fluid, 0 random-tick, 6,996 re-derived.
+- **Staging gate:** admitted with both records (`--run-report`, `--written-world`): 122 finding classes, 64 inapplicable. Token: `out/build-r10/staging-admission.json`.
+- The renders of build-r9 (`out/renders-r9/`) stand for build-r10, which is the same bytes.
+- The hook and lookout POVs not facing the camp is an open engine gap, left as it is.
