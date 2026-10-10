@@ -19,10 +19,21 @@
   party is shut inside. That device is not in this level; the beat is the party
   stepping past the front door into the front room, and the flag keeps the
   row's name, `flag/door-shut`.
-- **The hearthstone**: the piece lays a stone slab on the floor in front of the
-  fire, over a block of sculk catalyst set into the floor course. Lifting the
-  stone is a `set-block` of air on `anchor/hearth`; what is under it is then in
-  plain sight, and the pulses sound from that block's cell.
+- **The hearthstone**: the piece lays a smooth stone slab on the floor in
+  front of the fire, over a small barrel set lid-up into the floor course.
+  Lifting the stone is a `set-block` of air on `anchor/hearth`; the barrel is
+  then in plain sight, and the pulses sound from its cell
+  (`anchor/hearth` + `[0, -1, 0]`). Finding what beats is a `collect` that
+  adopts that barrel (`anchor/heart`): the party takes the thing out of it.
+  It was first written as a second `interact` on `anchor/hearth`, and the build
+  refused the two hitboxes as coincident (`DW0878`) although the second is armed
+  only after the first is gone.
+- **The garden**: the doorstep is a small front garden closed by a hedge two
+  blocks high, so the party's only outside is the garden; without it the open
+  ground runs to the region's edge and a body walks off the world (`DW0322`).
+- **Detail**: both places are detailed from `programs/<place>.json`, written by
+  `design/programs-src/cottage.py` from `delvec allocation`; re-run it, then
+  `delvec fmt` and `delvec detail . --all`, after any plan edit.
 - **The exit beat**: a fourth objective, on the doorstep, so the party has
   somewhere to stand and listen to the silence after the beat stops, and so the
   bot has a cell outside the cottage to stand on.
