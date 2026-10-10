@@ -1,7 +1,76 @@
 {
   "campaign_id": "the-still-ones",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/reeve-greeting",
+            "options": [
+              {
+                "label": "Who are they?",
+                "next": "dlg/reeve-who"
+              },
+              {
+                "label": "Why do they watch?",
+                "next": "dlg/reeve-why"
+              },
+              {
+                "label": "The old one didn't.",
+                "next": "dlg/reeve-keeper",
+                "tooltip": "The old one at the watch-house only looked at some of us."
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-reeve",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Light the lamps."
+              }
+            ],
+            "text": "You came up the row at dusk. They watched you all the way, didn't they? Every head turning as you passed. Don't mind them. They do it to everyone."
+          },
+          {
+            "id": "dlg/reeve-who",
+            "options": [
+              {
+                "label": "And the others?",
+                "next": "dlg/reeve-why"
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/reeve-greeting"
+              }
+            ],
+            "text": "The still ones. The tailor's sister. Old Brand from the cooper's, who dried out years ago and never noticed. They stand in their doors from sundown until the lamps are lit."
+          },
+          {
+            "id": "dlg/reeve-why",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/reeve-greeting"
+              }
+            ],
+            "text": "So that nobody walks the row unseen. Whoever is nearest, that's who they look at, and they keep looking until you're past. Once you're gone they hold the last look, facing where you were."
+          },
+          {
+            "id": "dlg/reeve-keeper",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/reeve-greeting"
+              }
+            ],
+            "text": "The keeper of the watch-house. He was a warder once. He only ever looks at a warder. The rest of you, he doesn't see at all."
+          }
+        ],
+        "npc": "npc/the-reeve",
+        "root": "dlg/reeve-greeting"
+      }
+    ]
   },
   "dsl_version": "0.39.0",
   "stage": "dialogue"

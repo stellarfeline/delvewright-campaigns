@@ -1,7 +1,195 @@
 {
   "campaign_id": "the-still-ones",
   "content": {
-    "quests": []
+    "actors": [
+      {
+        "anchor": "anchor/tailors-door",
+        "entity": "minecraft:mannequin",
+        "facing": "east",
+        "id": "actor/the-tailor",
+        "skin": {
+          "model": "slim",
+          "texture_id": "tailor"
+        },
+        "watch": {
+          "who": "nearest",
+          "within": 7
+        }
+      },
+      {
+        "anchor": "anchor/coopers-door",
+        "entity": "minecraft:husk",
+        "facing": "west",
+        "id": "actor/the-dry-one",
+        "watch": {
+          "who": "nearest",
+          "within": 7
+        }
+      },
+      {
+        "anchor": "anchor/watch-house-door",
+        "entity": "minecraft:villager",
+        "facing": "east",
+        "id": "actor/the-keeper",
+        "watch": {
+          "who": {
+            "class": "class/warder"
+          },
+          "within": 8
+        }
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/the-reeve": [
+            {
+              "at": "anchor/row-head",
+              "dialogue": "dlg/reeve-greeting",
+              "doing": "standing at the top of Lantern Row in the last of the light, watching the strangers come up the street",
+              "forbids_flags": [
+                "flag/reeve-at-well"
+              ]
+            },
+            {
+              "at": "anchor/by-the-well",
+              "dialogue": "dlg/reeve-greeting",
+              "doing": "standing by the well in the square, watching the strangers she has walked ahead of",
+              "requires_flags": [
+                "flag/reeve-at-well"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "subject": "npc/the-reeve",
+          "text": "Strangers come in at the bottom of Lantern Row at dusk.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-row",
+        "objectives": [
+          {
+            "anchor": "anchor/row-head",
+            "happening": {
+              "text": "The party walks the length of the row, past every doorway.",
+              "verb": "arrives"
+            },
+            "hint": "Walk up the street to the woman waiting at the top of it.",
+            "id": "obj/walk-the-row",
+            "radius": 2,
+            "title": "Walk up Lantern Row",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/walk-the-row"
+            ],
+            "happening": {
+              "subject": "npc/the-reeve",
+              "text": "The reeve tells the party who the still ones are.",
+              "verb": "learns"
+            },
+            "hint": "The reeve walked up into the square. She is standing by the well.",
+            "id": "obj/hear-the-reeve",
+            "npc": "npc/the-reeve",
+            "title": "Speak with the reeve",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "Down the row, the lamps are lit.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "text": "The lamps are lit and the still ones go in.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-gate",
+        "effects": [
+          {
+            "actor": "actor/the-tailor",
+            "happening": {
+              "subject": "actor/the-tailor",
+              "text": "The tailor's sister is standing in the tailor's open door.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "actor": "actor/the-dry-one",
+            "happening": {
+              "subject": "actor/the-dry-one",
+              "text": "Something dry and still is standing in the cooper's door.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "actor": "actor/the-keeper",
+            "happening": {
+              "subject": "actor/the-keeper",
+              "text": "The old keeper is standing in the watch-house door.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "style": "subtitle",
+            "text": "Someone stands in every door.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/dusk-on-the-row",
+        "on": {
+          "on": "approach",
+          "range": 4
+        }
+      },
+      {
+        "at": "anchor/row-head",
+        "effects": [
+          {
+            "happening": {
+              "subject": "npc/the-reeve",
+              "text": "The reeve turns from the top of the row and walks up to the well.",
+              "verb": "departs"
+            },
+            "npc": "npc/the-reeve",
+            "to": {
+              "anchor": "anchor/by-the-well"
+            },
+            "type": "move-npc"
+          },
+          {
+            "flag": "flag/reeve-at-well",
+            "type": "set-flag"
+          },
+          {
+            "style": "actionbar",
+            "text": "The woman at the top of the row turns and walks up to the well.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-reeve-walks",
+        "on": {
+          "on": "approach",
+          "range": 7
+        }
+      }
+    ]
   },
   "dsl_version": "0.39.0",
   "stage": "quests"
