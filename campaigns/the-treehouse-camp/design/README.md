@@ -19,7 +19,7 @@ The plan-view call returned two images. The second (not kept) was an unrequested
 
 ## Lantern Night (`concept/`)
 
-**Status: drawn, waiting on the owner's confirmation.** The four map views are drawn at late afternoon, and beat 7 sets the time to night (`{"moon": "high"}` under the world's new moon). The design record holds every sky the delve reaches to a picture of it (`DW0890`), so the night has its own view. Until the owner confirms it, this is the one picture in `design.json` nobody has said yes to.
+**Status: confirmed by the owner.** The four map views are drawn at late afternoon, and beat 7 sets the time to night (`{"moon": "high"}` under the world's new moon). The design record holds every sky the delve reaches to a picture of it (`DW0890`), so the night has its own view.
 
 | View | Frame | Prompt | What it shows | Drift from §4 |
 |---|---|---|---|---|
