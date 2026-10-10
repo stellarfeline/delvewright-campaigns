@@ -108,20 +108,25 @@ prerelease/<campaign>/v<major>.<minor>.<patch>-<suffix>    e.g. prerelease/vespe
 ```
 
 Pushing either runs `.github/workflows/release.yml`, which builds the campaign
-with the engine release tag pinned in `versions.toml` `[engine].ref`, runs the
+with the engine release pinned in `versions.toml` `[engine].ref` — the `delvec`
+binary that release published, downloaded and checked against the release's
+`SHA256SUMS`, never compiled here; a pin that is not a published
+`delvec--v<version>` release refuses the run — runs the
 full release-tier ladder (PackTest + a complete bot playthrough against the
 shipped image), and — only on green — publishes the GitHub Release (with
 `resourcepack.zip`) and the multi-arch delve image on GHCR. A red ladder
 publishes nothing.
 
-Before the build, the same pinned engine runs `delvec grammar audit
+Before the build, the same downloaded binary runs `delvec grammar audit
 --campaign-root` over the released campaign alone (a temp content root holding
 `campaigns/<id>`), for both families, and refuses the release on a red audit. A
 campaign with `design/programs/` must carry a `zones.json` that maps every
 program to a region and seed, and every program must pass its gates; a campaign
 with no `design/programs/` passes, and the log states a zero binding. To check
-before tagging, run the same command from the pinned engine against a root that
-holds only your campaign under `campaigns/`.
+before tagging, run the same command with the pinned release's `delvec` against
+a root that holds only your campaign under `campaigns/`; `python3
+tools/fetch-delvec.py --dest <empty dir>` downloads and verifies that binary for
+your machine exactly as the release does.
 
 The family decides only how it is published:
 

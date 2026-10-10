@@ -216,12 +216,19 @@ bound_by = "tools/check-engine-pin.py"
 bound_key = "engine.ref"
 why = """
 The engine release a delve image is built and validated with (versions.toml
-[engine]). A released delve reproduces through its own pinned engine and through
-nothing else, so this pin must never move for the sake of newer behaviour — it
+[engine]). `release.yml` never compiles `delvec`: `tools/fetch-delvec.py`
+downloads this release's archive for the runner's target, refuses it unless its
+sha256 equals the release's own `SHA256SUMS` line and the unpacked binary reports
+the tag's version, and the build runs that binary. The engine is still checked
+out at this tag for what the archive does not carry (the validation rig and the
+storybook check). A released delve reproduces through its own pinned engine and
+through nothing else, so this pin must never move for the sake of newer behaviour — it
 moves only when a release deliberately adopts a newer engine. `release` is
 checked, not asserted: the value must BE a release tag in the engine's own
 grammar (`<name>--v<major>.<minor>.<patch>`, ADR-0028), naming a tag the engine
-carries whose commit's tree states that same version. A commit somebody merely
+carries whose commit's tree states that same version; and `check-engine-pin.py`
+additionally holds it to the `delvec` line, the only line whose release carries
+the binary. A commit somebody merely
 stopped looking at cannot supply that, and neither can a hand-written tag.
 
 WHY IT NAMES A TAG AND NOT A COMMIT. The value used to be `70eea629`, the commit
@@ -291,10 +298,7 @@ why = "GitHub's own checkout action, held at its major tag."
 [[pin]]
 id = "action-rust-cache"
 value = "Swatinem/rust-cache@v2"
-sites = [
-    ".github/workflows/prefab-audit.yml",
-    ".github/workflows/release.yml",
-]
+sites = [".github/workflows/prefab-audit.yml"]
 policy = "floating"
 why = "Cargo cache action, held at its major tag. Affects build time, not output."
 

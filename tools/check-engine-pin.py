@@ -2,9 +2,12 @@
 """The engine a release is built with is newer than every claim a storybook makes.
 
 `versions.toml` `[engine] ref` names the engine release `.github/workflows/
-release.yml` checks out to build and validate a delve image. It is a RELEASE TAG
-in the engine's own grammar (`<name>--v<major>.<minor>.<patch>`), registered as
-`engine-release` in `.github/pins.toml`.
+release.yml` builds and validates a delve image with: the workflow downloads that
+release's `delvec` archive, verified against its `SHA256SUMS`
+(`tools/fetch-delvec.py`). It is a RELEASE TAG of the `delvec` line in the engine's
+own grammar (`delvec--v<major>.<minor>.<patch>`), registered as `engine-release`
+in `.github/pins.toml`; a tag of another line is refused here, because it carries
+no `delvec` binary.
 
 ## Why this script exists at all
 
@@ -109,6 +112,15 @@ def main() -> int:
         print(
             f"check-engine-pin: FINDING — versions.toml `{BOUND_KEY}` is not a "
             f"release tag: {exc}",
+            file=sys.stderr,
+        )
+        return 1
+    if name != "delvec":
+        print(
+            f"check-engine-pin: FINDING — versions.toml `{BOUND_KEY}` = {ref} is a "
+            f"release of `{name}`, not of `delvec`: `release.yml` downloads the "
+            f"`delvec` binary from the pinned release (`tools/fetch-delvec.py`), and "
+            f"only a `delvec--v<version>` release carries it.",
             file=sys.stderr,
         )
         return 1

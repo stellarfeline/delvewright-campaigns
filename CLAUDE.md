@@ -31,7 +31,9 @@ engine's text.
   their policies by `tools/ci/check-pins.py`: `admit-ref` (site:
   `.github/workflows/prefab-audit.yml`) names the engine commit the NBT audit is
   built from, and `engine-release` (site: `versions.toml` `[engine].ref`) names
-  the tagged engine release a delve image is built and validated with. They are
+  the `delvec` engine release a delve image is built and validated with —
+  `release.yml` downloads that release's binary, verified against its
+  `SHA256SUMS` by `tools/fetch-delvec.py`, and never compiles the engine. They are
   deliberately different and are never collapsed — a released delve must
   reproduce through an engine that never moves, while the audit's judge is
   adopted when the library is ready for it. Holding the same revision is a

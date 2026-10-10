@@ -7,7 +7,8 @@
 # one commit id and one release tag and nothing else (ADR-0006).
 #
 # RE-PIN CONVENTION: bump `[engine].ref` in a normal reviewed PR when a release
-# needs newer compiler behaviour. A release tag always builds with whatever this
+# needs newer compiler behaviour; the new value must be a published `delvec`
+# engine release. A release tag always builds with whatever this
 # file names at the tagged commit — never with "latest".
 #
 # NOTE: `.github/workflows/prefab-audit.yml` carries its own, deliberately
@@ -20,18 +21,20 @@
 # terms.
 
 [engine]
-# The main repo and the ref `release.yml` checks out to build + validate a
-# release. It is a public repo, so the checkout needs no credential of its own;
-# the default GITHUB_TOKEN reaches it, same as prefab-audit.yml.
+# The main repo whose GitHub Release `release.yml` downloads `delvec` from, and
+# which it checks out at the same tag for the validation rig. It is a public
+# repo, so neither needs a credential of its own.
 repo = "stellarfeline/delvewright"
-# A RELEASE TAG in the engine's own grammar (`<name>--v<semver>`, ADR-0028), not
-# a main tip: the pin names something immutable and published, and the registry
-# holds it to a tag the engine really carries whose commit's tree states that
-# same version. This pin's only reader is `release.yml`, so nothing else can
-# notice it going stale — which is why its terms are registered rather than
-# written here, and why `release.yml` additionally refuses to publish when the
-# engine it checks out is older than the version the campaign's storybook says
-# it was verified with.
+# A `delvec` RELEASE TAG in the engine's own grammar (`delvec--v<semver>`,
+# ADR-0028), not a main tip. `release.yml` never builds `delvec`: it runs the
+# binary this release published, verified against the release's `SHA256SUMS`
+# (`tools/fetch-delvec.py`), and refuses a pin that names no such release. The
+# pin names something immutable and published, and the registry holds it to a
+# tag the engine really carries whose commit's tree states that same version.
+# This pin's only reader is `release.yml`, so nothing else can notice it going
+# stale — which is why its terms are registered rather than written here, and
+# why `release.yml` additionally refuses to publish when the pinned engine is
+# older than the version the campaign's storybook says it was verified with.
 ref = "delvec--v1.12.0"
 # The engine an author works with is NOT pinned here any more. The `/new-delve`
 # page left this repository (spec-0063): it ships as a Claude Code plugin from
