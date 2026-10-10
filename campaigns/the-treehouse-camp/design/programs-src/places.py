@@ -256,9 +256,10 @@ def deck(m, x0, z0, x1, z1, y, choices=DECK, skip=None, salt=5):
 
 
 def rail_ring(m, x0, z0, x1, z1, y, gaps=()):
-    """A fence rail round a rectangle (the ring row), with gaps [(x, z), ...]
-    left open for a seam; stripped-log posts two high at the corners and at
-    each side of a gap."""
+    """A fence rail one course high round a rectangle (the ring row), with
+    gaps [(x, z), ...] left open for a seam, and stripped-log posts at each
+    side of a gap. A fence stands 1.5 blocks to a body, above a jump's
+    reach, so one course keeps a body on the deck."""
     gaps = set(gaps)
     for x in range(x0, x1 + 1):
         for z in range(z0, z1 + 1):
@@ -266,7 +267,6 @@ def rail_ring(m, x0, z0, x1, z1, y, gaps=()):
                 if (x, z) in gaps:
                     continue
                 m.set(x, y, z, RAIL)
-                m.set(x, y + 1, z, RAIL)
     corners = {(x0, z0), (x0, z1), (x1, z0), (x1, z1)}
     for (px, pz) in corners:
         m.set(px, y, pz, RAIL)
@@ -473,7 +473,6 @@ def bridge(stem, node, axis, level, flight, facing, landing, via_top, top_y, end
             put(a, floor - 1, b, pick(a, floor - 1, b, deck_mix, 5))
         for b in (rb0, rb1):
             put(a, floor, b, RAIL)
-            put(a, floor + 1, b, RAIL)
     # Cross-beams under the deck every five blocks.
     for a in range(min(level), max(level) + 1):
         if (a - min(level)) % 5 == 2:
@@ -488,7 +487,6 @@ def bridge(stem, node, axis, level, flight, facing, landing, via_top, top_y, end
             put(a, ty, b, "spruce_planks")
             put(a, ty - 1, b, "spruce_planks")
             put(a, ty + 1, b, RAIL)
-            put(a, ty + 2, b, RAIL)
     # The landing and the seam's floor at the top of the flight.
     for a in (landing, via_top):
         for b in range(rb0, rb1 + 1):
@@ -496,9 +494,8 @@ def bridge(stem, node, axis, level, flight, facing, landing, via_top, top_y, end
         put(a, top_y - 1, b0, "spruce_planks")
         put(a, top_y - 1, b1, "spruce_planks")
     for b in (rb0, rb1):
-        for dy in (1, 2):
-            put(landing, top_y + dy, b, RAIL)
-            put(via_top, top_y + dy, b, RAIL)
+        put(landing, top_y + 1, b, RAIL)
+        put(via_top, top_y + 1, b, RAIL)
     # Posts with lanterns: at the ends of the level deck and at the landing.
     for a in posts_at:
         for b in (rb0, rb1):
@@ -986,7 +983,7 @@ def watch_crown():
             if (x + 0.5 - cx) ** 2 + (z + 0.5 - cz) ** 2 > 25]
     for (x, z) in land:
         P(m, x, fy, z, DECK, 5)
-    rail_around(m, land, landing_y, 2)
+    rail_around(m, land, landing_y, 1)
     for (lx, lz) in ((70, 73), (70, 83)):
         for dy in range(2):
             m.set(lx, landing_y + dy, lz, POST)
