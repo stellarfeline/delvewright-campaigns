@@ -278,3 +278,16 @@ The owner played the camp and left two notes; a third came with them. Built with
 - DW0955: green (`out/written-world-r12.json`). Of 70,917 cells: 0 model, 0 clock, 0 gravity, 0 fluid, 0 random-tick, 6,984 re-derived.
 - Staging gate: admitted with both records (122 finding classes, 61 inapplicable).
 - Railing renders (Chunky, 150 samples): `out/renders-r11/`. Build-r11 has the same geometry; build-r12 adds only the boots. They show the one-course rails along the Long Bridge to the Loom House gateway, on the Watch House and Hearth House platform edges, and up the Low Bridge's flight.
+
+## Release ladder on engine release delvec--v1.12.0
+
+The `aarch64-apple-darwin` archive of the released `delvec--v1.12.0` (sha256 checked against the release's `SHA256SUMS`), printing `delvec 1.12.0, dsl 0.38.0, mc 1.21.11`; the validation stack and gate tools from the engine tree at that tag (`3fd5371f`). Manifest sha256 `2502ca4e35d165c9b77ea7f7a617757637b44a7eb7247293bfcc18e3d830d8b8`.
+
+- validate, build: exit 0. Two builds into separate trees are byte-identical (`diff -r`, no difference).
+- The datapack digest (sha256 over the manifest's `datapack/` hashes, 237 files) is `a9a2fed2…`, the same as build-r12, the build the owner played. The resource pack sha1 `326c391d…` is unchanged.
+- Zone audit: the campaign carries no `design/programs/`, so 0 zone programs and the audit is not run.
+- Storybook check: 1 campaign checked against delvec 1.12.0, 2 storybook files.
+- PackTest: 42 of 42 required tests pass.
+- Bot critical path: green, exit 0, 10 steps, 3 climbs driven (the glade ladder and both Watch Tree ladders). Die-retry and death loop have nothing to run: the campaign declares no combat and no death plan. Server log: 0 ERROR lines.
+- DW0955: green. Of 70,917 cells: 0 model, 0 clock, 0 gravity, 0 fluid, 0 random-tick, 6,367 re-derived.
+- Staging gate: admitted with both records (122 finding classes, 61 inapplicable).
