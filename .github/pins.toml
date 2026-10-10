@@ -216,12 +216,13 @@ bound_by = "tools/check-engine-pin.py"
 bound_key = "engine.ref"
 why = """
 The engine release a delve image is built and validated with (versions.toml
-[engine]). `release.yml` never compiles `delvec`: `tools/fetch-delvec.py`
-downloads this release's archive for the runner's target, refuses it unless its
-sha256 equals the release's own `SHA256SUMS` line and the unpacked binary reports
-the tag's version, and the build runs that binary. The engine is still checked
-out at this tag for what the archive does not carry (the validation rig and the
-storybook check). A released delve reproduces through its own pinned engine and
+[engine]). `release.yml` never compiles `delvec`: it checks the engine out at
+this tag and runs that release's own acquisition script
+(`.claude/skills/delvewright/skills/new-delve/scripts/fetch-delvec.py`), which
+downloads the release's archive for the runner's target, refuses it unless its
+sha256 equals the release's own `SHA256SUMS` row and the unpacked binary reports
+the tag's version; the build runs that binary. The same checkout supplies what
+the archive does not carry (the validation rig and the storybook check). A released delve reproduces through its own pinned engine and
 through nothing else, so this pin must never move for the sake of newer behaviour — it
 moves only when a release deliberately adopts a newer engine. `release` is
 checked, not asserted: the value must BE a release tag in the engine's own

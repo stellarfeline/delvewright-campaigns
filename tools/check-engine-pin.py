@@ -3,9 +3,9 @@
 
 `versions.toml` `[engine] ref` names the engine release `.github/workflows/
 release.yml` builds and validates a delve image with: the workflow downloads that
-release's `delvec` archive, verified against its `SHA256SUMS`
-(`tools/fetch-delvec.py`). It is a RELEASE TAG of the `delvec` line in the engine's
-own grammar (`delvec--v<major>.<minor>.<patch>`), registered as `engine-release`
+release's `delvec` archive, verified against its `SHA256SUMS` by the engine
+release's own `fetch-delvec.py`. It is a RELEASE TAG of the `delvec` line in the
+engine's own grammar (`delvec--v<major>.<minor>.<patch>`), registered as `engine-release`
 in `.github/pins.toml`; a tag of another line is refused here, because it carries
 no `delvec` binary.
 
@@ -119,7 +119,7 @@ def main() -> int:
         print(
             f"check-engine-pin: FINDING — versions.toml `{BOUND_KEY}` = {ref} is a "
             f"release of `{name}`, not of `delvec`: `release.yml` downloads the "
-            f"`delvec` binary from the pinned release (`tools/fetch-delvec.py`), and "
+            f"`delvec` binary from the pinned release, and "
             f"only a `delvec--v<version>` release carries it.",
             file=sys.stderr,
         )

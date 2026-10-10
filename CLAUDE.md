@@ -33,7 +33,8 @@ engine's text.
   built from, and `engine-release` (site: `versions.toml` `[engine].ref`) names
   the `delvec` engine release a delve image is built and validated with —
   `release.yml` downloads that release's binary, verified against its
-  `SHA256SUMS` by `tools/fetch-delvec.py`, and never compiles the engine. They are
+  `SHA256SUMS` by the engine release's own `fetch-delvec.py` (run from an engine
+  checkout at the pinned tag), and never compiles the engine. They are
   deliberately different and are never collapsed — a released delve must
   reproduce through an engine that never moves, while the audit's judge is
   adopted when the library is ready for it. Holding the same revision is a

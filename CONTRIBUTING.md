@@ -124,9 +124,11 @@ campaign with `design/programs/` must carry a `zones.json` that maps every
 program to a region and seed, and every program must pass its gates; a campaign
 with no `design/programs/` passes, and the log states a zero binding. To check
 before tagging, run the same command with the pinned release's `delvec` against
-a root that holds only your campaign under `campaigns/`; `python3
-tools/fetch-delvec.py --dest <empty dir>` downloads and verifies that binary for
-your machine exactly as the release does.
+a root that holds only your campaign under `campaigns/`. The release obtains that
+binary with the engine release's own acquisition script, run from an engine
+checkout at the pinned tag: `python3 <engine>/.claude/skills/delvewright/skills/new-delve/scripts/fetch-delvec.py
+--pin versions.toml --engine <engine> --into <dir>` does the same on your
+machine.
 
 The family decides only how it is published:
 

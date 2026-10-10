@@ -28,7 +28,8 @@ repo = "stellarfeline/delvewright"
 # A `delvec` RELEASE TAG in the engine's own grammar (`delvec--v<semver>`,
 # ADR-0028), not a main tip. `release.yml` never builds `delvec`: it runs the
 # binary this release published, verified against the release's `SHA256SUMS`
-# (`tools/fetch-delvec.py`), and refuses a pin that names no such release. The
+# (the engine release's own `fetch-delvec.py`, run from a checkout at this tag),
+# and refuses a pin that names no such release. The
 # pin names something immutable and published, and the registry holds it to a
 # tag the engine really carries whose commit's tree states that same version.
 # This pin's only reader is `release.yml`, so nothing else can notice it going
