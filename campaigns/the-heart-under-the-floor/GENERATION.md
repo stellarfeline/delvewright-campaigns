@@ -52,6 +52,11 @@
 
 ## Verification (engine `integrate/sculk-sound-sight`, `delvec 1.12.0, dsl 0.39.0`)
 
+`delvec` built at `6ee70c1`; the bot ladder's harness at `6560650` (harness and
+docs changes only over `6ee70c1`). Build manifest sha256
+`f2857e88d833fad68fb8917d9594893d5f7a316d3c3dacd7a427bf4bb72d1f9b`, the same
+on two builds.
+
 - `validate`, `analyze`, `build`: exit 0. `pulse binding: 2 pulse(s), 2 staged;
   far 22.30..22.30 block(s) over 144..144 standable cell(s), range
   37.17..37.17 (volume 2.323..2.323); 2 of 2 live on the forced route in some
