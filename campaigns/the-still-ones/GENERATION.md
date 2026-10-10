@@ -66,3 +66,34 @@ written.
 one minute of walking); the rest of the time is the level's content — stopping
 in front of each door, stepping out of reach and back, changing class, and a
 second player walking beside the first.
+
+## Visual review (round 1)
+
+Rendered at each scene's own budget: the POV frames leg 0 waypoints 0 and 1
+(the row from the gate; arriving at the top of the row), leg 1 waypoints 4
+and 7 (round the well to the reeve), the square's interior shot and the
+whole-map panorama; the other 19 scenes of the 25 were not rendered. The
+world save carries no entities, so no frame shows a figure.
+
+- The row reads as a street from the gate: plastered timber fronts on both
+  sides, torches between the doors, the three doorways dark openings in the
+  frontage, the square's hedge closing the far end.
+- A strip of grass crosses the street at each contact seam (gate to row, row
+  to square): the plane cells there are the whole's fixed ring ground, which
+  no piece may paint.
+- From above, the fronts are one-block walls standing on open grass with the
+  three small houses behind them; from the street, where the player stands,
+  nothing behind them is seen.
+- The square is a paved yard ringed by a hedge three high, the well a block
+  of mossy brick round a full cauldron, a lantern at each corner.
+
+## Machine findings carried into the hand-over
+
+- The bot judges a watcher only at the corner-thinned waypoints of the
+  proven path. The first leg runs straight from the gate to the top of the
+  row with no waypoint between, so the tailor (3.5 blocks from the path at
+  its nearest) and the dry one (4.5) are reported "never within reach",
+  though the path passes inside both reaches. Their turn is proved by their
+  PackTests only.
+- The written-world record cannot be produced from this build: `delvec
+  cameras` refuses a campaign without `design/cameras.json` (`DW0721`).
