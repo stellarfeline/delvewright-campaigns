@@ -1,0 +1,125 @@
+{
+  "campaign_id": "the-still-ones",
+  "content": {
+    "beats": [
+      {
+        "node": "node/square",
+        "objective": "obj/follow-the-reeve",
+        "quest": "quest/the-row"
+      },
+      {
+        "node": "node/square",
+        "objective": "obj/hear-the-reeve",
+        "quest": "quest/the-row"
+      }
+    ],
+    "critical_path": [
+      "node/gate",
+      "node/row",
+      "node/square"
+    ],
+    "edges": [
+      {
+        "a": "node/row",
+        "b": "node/gate",
+        "class": "walk",
+        "id": "edge/gate-way"
+      },
+      {
+        "a": "node/square",
+        "b": "node/row",
+        "class": "walk",
+        "id": "edge/row-head"
+      },
+      {
+        "a": "node/row",
+        "b": "node/tailors",
+        "class": "walk",
+        "id": "edge/tailors-door"
+      },
+      {
+        "a": "node/row",
+        "b": "node/coopers",
+        "class": "walk",
+        "id": "edge/coopers-door"
+      },
+      {
+        "a": "node/row",
+        "b": "node/watch-house",
+        "class": "walk",
+        "id": "edge/watch-house-door"
+      }
+    ],
+    "entry": "node/gate",
+    "goal": "node/square",
+    "nodes": [
+      {
+        "id": "node/gate",
+        "intent": "threshold",
+        "note": "The bottom of the row: a gap in a low wall where the party comes in, with the whole street ahead of them."
+      },
+      {
+        "id": "node/row",
+        "intent": "the walk",
+        "note": "Lantern Row: a cobbled street five wide between house fronts, every house door open, a figure standing inside each one.",
+        "stations": [
+          {
+            "anchor": "anchor/row-head",
+            "kind": "point",
+            "note": "Where the reeve first stands: the top of the row, at the mouth of the square, facing down the street toward the gate."
+          }
+        ]
+      },
+      {
+        "id": "node/tailors",
+        "intent": "doorway",
+        "note": "The tailor's front room, first on the left. A figure in a grey apron stands just inside the open door.",
+        "stations": [
+          {
+            "anchor": "anchor/tailors-door",
+            "kind": "point",
+            "note": "Just inside the door, where the figure stands framed by it."
+          }
+        ]
+      },
+      {
+        "id": "node/coopers",
+        "intent": "doorway",
+        "note": "The cooper's shop, on the right. Something dry and still stands inside the door.",
+        "stations": [
+          {
+            "anchor": "anchor/coopers-door",
+            "kind": "point",
+            "note": "Just inside the door, where the figure stands framed by it."
+          }
+        ]
+      },
+      {
+        "id": "node/watch-house",
+        "intent": "doorway",
+        "note": "The old watch-house, last on the left. Its keeper stands inside the door and looks only at the warder.",
+        "stations": [
+          {
+            "anchor": "anchor/watch-house-door",
+            "kind": "point",
+            "note": "Just inside the door, where the keeper stands framed by it."
+          }
+        ]
+      },
+      {
+        "id": "node/square",
+        "intent": "goal",
+        "note": "The square at the top of the row, with the well in the middle of it. The reeve walks here when the party comes near, and stands by the well.",
+        "stations": [
+          {
+            "anchor": "anchor/by-the-well",
+            "kind": "point",
+            "note": "Beside the well, facing back down the row: where the reeve stops."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.39.0",
+  "stage": "layout-graph"
+}
