@@ -13,6 +13,10 @@ join.
 
 Want to write one instead of play one? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+[![Vesperhold, the whole hold on its crag from high in the south-west](https://raw.githubusercontent.com/stellarfeline/delvewright/main/docs/media/vesperhold/01-hero-whole-map-southwest.jpg)](campaigns/vesperhold/README.md)
+
+**[Vesperhold](campaigns/vesperhold/README.md)** is the flagship: a souls-like castle for one to four hired blades, about an hour long, from a fire at the foot of the causeway to the throne. **[Every campaign, with pictures](https://github.com/stellarfeline/delvewright/blob/main/docs/media/README.md)** — Vesperhold, The Treehouse Camp and Doune Castle, a picture and a few lines each.
+
 ---
 
 ## Play
