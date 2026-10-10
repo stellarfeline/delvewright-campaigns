@@ -198,7 +198,7 @@ the row exists to prevent.
 
 [[pin]]
 id = "engine-release"
-value = "delvec--v1.8.1"
+value = "delvec--v1.12.0"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "release"
@@ -236,13 +236,13 @@ campaign storybook's `last verified with delvec` claim is judged against the
 release this pin names, one-directionally, because a delve is built with the
 pinned engine and nothing else. The same refusal exists in `release.yml`, where
 it fires on a tag push; this one fires on every pull request, out of the two
-files that already state it. It binds 3 storybook claims over 5 storybooks in
-`campaigns/`, and a binding of zero is a finding.
+files that already state it. It prints its binding, storybook claims judged over
+storybooks in `campaigns/`, on every run, and a binding of zero is a finding.
 
 WHAT ADOPTING IT COSTS, AND WHY IT COSTS NOTHING ALREADY SHIPPED. This pin
 decides which engine the NEXT release of this content is built with; it never
 reaches one already out, because a release builds from what `versions.toml` says
-at its own tag and three shipped delves each carry their own. Moving it forward
+at its own tag and every shipped delve carries its own. Moving it forward
 with a release is this pin's normal cadence, not an exception to it. The engine
 it now names is newer than the one this repository's audit judge is built from
 (`admit-ref`): the two are different decisions, and the audit judge follows when

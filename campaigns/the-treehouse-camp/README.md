@@ -1,6 +1,6 @@
 # The Treehouse Camp
 
-> **Requires delve engine 0.38.0 or newer** — last verified with delvec 1.11.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.38.0 or newer** — last verified with delvec 1.12.0 on Minecraft Java 1.21.11.
 
 A short, gentle delve for a small party of guests: a forest clan's camp of treehouses on four giant trees, rope bridges between them, rope ladders up their trunks, and one night of the year when every house hangs out its lanterns.
 

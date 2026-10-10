@@ -1,6 +1,6 @@
 # 树屋营地
 
-> **Requires delve engine 0.38.0 or newer** — last verified with delvec 1.11.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.38.0 or newer** — last verified with delvec 1.12.0 on Minecraft Java 1.21.11.
 
 一场写给几位客人的轻松短途冒险：一个森林部族把家安在四棵巨树上，树与树之间拉着绳桥，树干上挂着绳梯。一年里只有一个夜晚，家家户户都把灯笼挂出来。
 

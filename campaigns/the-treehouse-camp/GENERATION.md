@@ -2,7 +2,7 @@
 
 ## Toolchain
 
-- Built on spec-0098 (a place owns its outside; boxes as cuboids; `fill: open` over heightmap terrain; seam `form`; the per-place handout; the contract `climb` edge; ADR-0032) and spec-0099 (a body climbs), at the engine revision the last section names. No release carries them yet.
+- Built on spec-0098 (a place owns its outside; boxes as cuboids; `fill: open` over heightmap terrain; seam `form`; the per-place handout; the contract `climb` edge; ADR-0032) and spec-0099 (a body climbs). Released with the engine release `delvec--v1.12.0` (`delvec 1.12.0, dsl 0.38.0, mc 1.21.11`), the first release that carries both, with `dsl_version` 0.38.0 on every stage document and the `zh-cn` sidecar. The rounds below were built from unreleased engine revisions, each named in its section.
 - Placement: a site plan. The camp's exterior is the whole point: four giant trees and their houses, seen from the ground, from each other and from the top.
 - The reference views were drawn with `tools/creator/refimg.py` on `gemini-native` (`gemini-3.1-flash-image`). Before the series, the provider's image input was checked two ways. First, a probe image of a red triangle and a magenta square on yellow was passed as `--style-ref` with a prompt that named neither shape nor colour, and it came back as the same picture. Second, the probe call's sidecar reports 1120 image input tokens.
 - The engine constitution's operating half (`CLAUDE.local.md`) was in force for this run.
