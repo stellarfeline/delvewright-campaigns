@@ -27,7 +27,7 @@ street.
 |---|---|---|---|
 | `actor/the-tailor` | actor, skinned mannequin (`skins/tailor.png`) | inside the tailor's door | the nearest player within 7 |
 | `actor/the-dry-one` | actor, a plain husk | inside the cooper's door | the nearest player within 7 |
-| `actor/the-keeper` | actor, a plain villager | inside the watch-house door | the nearest **warder** within 8 |
+| `actor/the-keeper` | actor, a plain villager holding a lantern (a warder's, as the Warder class carries) | inside the watch-house door | the nearest **warder** within 8 |
 | `npc/the-reeve` | NPC, skinned mannequin (`skins/annick.png`) | the top of the row, then by the well | the nearest player within 10 |
 
 The three actors are summoned when the first player comes within 4 of the
