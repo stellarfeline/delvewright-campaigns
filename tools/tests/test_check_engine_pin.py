@@ -118,6 +118,15 @@ class EnginePinBinder(unittest.TestCase):
             self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
             self.assertIn("is not a release tag", r.stderr)
 
+    def test_a_release_of_another_line_is_refused(self) -> None:
+        """Only a `delvec` release carries the binary `release.yml` downloads."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repo"
+            build(root, "delvewright--v1.4.3", {"alpha": "1.0.0"})
+            r = run(root)
+            self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+            self.assertIn("not of `delvec`", r.stderr)
+
     def test_a_binding_of_zero_is_a_finding(self) -> None:
         """The vacuous shape: nothing states a claim, so nothing was compared."""
         with tempfile.TemporaryDirectory() as tmp:

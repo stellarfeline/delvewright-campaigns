@@ -46,7 +46,7 @@ on:
         default: "0.0.0-dryrun"
         type: string
       engine_ref:
-        description: "override versions.toml [engine].ref (optional)"
+        description: "a delvec--v<version> engine release to use instead of versions.toml [engine].ref (optional; refused unless it is one)"
         required: false
         default: ""
         type: string
@@ -168,36 +168,99 @@ jobs:
           echo "declared translations: ${langs:-(none)}"
 
       # ---- 2. the pinned engine -------------------------------------------
-      - name: read the pinned engine from versions.toml
+      # A release of this content pins an engine RELEASE, so this job never
+      # compiles `delvec`: it runs the binary that release published. The pin
+      # must be a `delvec--v<version>` release tag (`tools/lib/release_tags.py`,
+      # the engine's grammar, vendored); anything else refuses here, before the
+      # engine is touched. A dry run's `engine_ref` passes through the same
+      # refusal, so it too can name only a release.
+      - name: read the pinned engine release from versions.toml
         id: engine
         env:
           OVERRIDE_REF: ${{ inputs.engine_ref }}
         run: |
           set -euo pipefail
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import os, tomllib
-          e = tomllib.load(open("versions.toml", "rb"))["engine"]
-          print(f"repo={e['repo']}")
-          print(f"ref={os.environ.get('OVERRIDE_REF') or e['ref']}")
-          PY
-          cat "$GITHUB_OUTPUT"
+          repo=$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml", "rb"))["engine"]["repo"])')
+          pinned=$(python3 -c 'import tomllib; print(tomllib.load(open("versions.toml", "rb"))["engine"]["ref"])')
+          tag="${OVERRIDE_REF:-$pinned}"
+          if ! parsed=$(python3 tools/lib/release_tags.py parse "$tag"); then
+            echo "::error::engine pin '$tag' is not a release: a delve is built by a published delvec--v<major>.<minor>.<patch> engine release and by nothing else"
+            exit 1
+          fi
+          if [ "${parsed%% *}" != "delvec" ]; then
+            echo "::error::engine pin '$tag' is a release of '${parsed%% *}', not of delvec: only a delvec--v<version> release carries the binary a delve is built with"
+            exit 1
+          fi
+          pin="versions.toml"
+          if [ -n "${OVERRIDE_REF:-}" ]; then
+            pin="$RUNNER_TEMP/engine-pin.toml"
+            printf '[engine]\nrepo = "%s"\nref = "%s"\n' "$repo" "$tag" > "$pin"
+          fi
+          {
+            echo "repo=$repo"
+            echo "tag=$tag"
+            echo "pin=$pin"
+          } >> "$GITHUB_OUTPUT"
+          echo "engine release: $tag ($repo), pin read from $pin"
 
-      # The pipeline that compiles this content is GPL code in the main repo.
-      # That repo is public, so the default GITHUB_TOKEN reaches it and the
-      # cross-repo PAT this step used to carry is gone — the exit condition the
-      # old note wrote down for itself, now met. Same change as prefab-audit.yml.
-      - name: check out the pinned engine
+      # The release archive carries `delvec` and its LICENSE and nothing else.
+      # The acquisition script, the validation rig (`validation/compose.yaml`,
+      # `Dockerfile.delve`, the `harness/` bot compose builds) and the storybook
+      # check (`tools/creator/check-storybook-version.py`) are engine files
+      # outside the archive, so the engine is still checked out for them — at
+      # the pinned release tag, the commit the archive was built from. The repo
+      # is public, so the default GITHUB_TOKEN reaches it.
+      - name: check out the pinned engine release (acquisition script, validation rig, storybook check)
         uses: actions/checkout@v4
         with:
           repository: ${{ steps.engine.outputs.repo }}
-          ref: ${{ steps.engine.outputs.ref }}
+          ref: ${{ steps.engine.outputs.tag }}
           path: engine
 
-      - name: record the engine commit + compiler version
+      - name: record the engine commit
         id: engine_id
         run: |
           set -euo pipefail
           echo "sha=$(git -C engine rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # The engine release's own acquisition script — the one its `/new-delve`
+      # Init runs — read from the checkout AT the pinned tag, so this repository
+      # holds no second copy of how a release archive is chosen and verified. It
+      # maps this runner to a target in the engine's `[engine].targets` at the
+      # tag, downloads `delvec-v<version>-<target>.tar.gz` and the release's
+      # `SHA256SUMS`, refuses a missing asset, a missing SUMS row or a digest
+      # mismatch, unpacks, and refuses a binary whose `--version` is not the
+      # tag's. Every non-zero exit refuses the release: the exits the creator's
+      # page falls through to a source build (3, 4) are refusals here too —
+      # there is no fallback to building.
+      - name: download the pinned engine release's delvec (verified against SHA256SUMS)
+        id: delvec
+        env:
+          PIN: ${{ steps.engine.outputs.pin }}
+        run: |
+          set -euo pipefail
+          script=engine/.claude/skills/delvewright/skills/new-delve/scripts/fetch-delvec.py
+          if [ ! -f "$script" ]; then
+            echo "::error::the pinned engine release carries no $script; this workflow names where the release keeps it, and must follow it"
+            exit 1
+          fi
+          into="$RUNNER_TEMP/delvec-bin"
+          out=$(python3 "$script" --pin "$PIN" --engine engine --into "$into")
+          echo "$out"
+          re='^fetch-delvec: ok — target ([^ ,]+), archive ([^ ,]+), sha256 ([0-9a-f]{64}), delvec ([0-9.]+) at (.+)$'
+          line=$(grep -E "$re" <<<"$out" || true)
+          if [ -z "$line" ] || [[ ! "$line" =~ $re ]]; then
+            echo "::error::fetch-delvec exited 0 without its ok line; nothing says which archive was verified"
+            exit 1
+          fi
+          {
+            echo "target=${BASH_REMATCH[1]}"
+            echo "archive=${BASH_REMATCH[2]}"
+            echo "archive_sha256=${BASH_REMATCH[3]}"
+            echo "version=${BASH_REMATCH[4]}"
+            echo "bin=${BASH_REMATCH[5]}"
+          } >> "$GITHUB_OUTPUT"
+          "${BASH_REMATCH[5]}" --version
 
       # The pin is the one input to a release that nothing else reads, so nothing
       # else can notice it going stale. It sat 75 commits behind for the whole of
@@ -234,16 +297,12 @@ jobs:
           ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$scope/$CAMPAIGN"
           python3 engine/tools/creator/check-storybook-version.py --campaigns "$scope"
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: engine
-
       # The engine's CI no longer judges this repo's campaigns; each campaign is
       # judged at its own release by the engine it pins. A campaign's zone
       # programs (`design/programs/`) are artifacts of record that no other
       # command invokes, so `delvec grammar audit` is the only judge they have,
-      # and nothing ran it here. The audit runs from the same pinned engine
-      # checkout the build uses, scoped like the storybook check to this
+      # and nothing ran it here. The audit runs with the same downloaded
+      # release binary the build uses, scoped like the storybook check to this
       # release's own campaign: a temp content root holding `campaigns/<id>` as
       # a symlink, so another campaign's programs neither block this release nor
       # are exempted from it. Both tag families pass through it.
@@ -258,6 +317,7 @@ jobs:
         working-directory: engine
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          DELVEC: ${{ steps.delvec.outputs.bin }}
         run: |
           set -euo pipefail
           programs="$GITHUB_WORKSPACE/campaigns/$CAMPAIGN/design/programs"
@@ -269,37 +329,27 @@ jobs:
           rm -rf "$root"
           mkdir -p "$root/campaigns"
           ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$root/campaigns/$CAMPAIGN"
-          cargo run -p delvec --bin delvec -- grammar audit --campaign-root "$root"
+          "$DELVEC" grammar audit --campaign-root "$root"
 
       # ---- 3. build --------------------------------------------------------
       # The build is a function of the campaign directory, the prefab directory
       # and the flags below it, and of nothing else — no file above the working
       # directory, no environment (ADR-0006, `docs/reference/compiler.md`
-      # Determinism). So the engine checkout is used exactly as it was pinned and
-      # this job writes nothing into it. Which content commit the delve was built
-      # from is stated where the party that knows it can state it: the image's
+      # Determinism). The build writes only its output tree under the engine
+      # checkout's `validation/`, where the rig reads it. Which content commit
+      # the delve was built from is stated where the party that knows it can state it: the image's
       # `org.opencontainers.image.revision` and
       # `ca.stellarfeline.delvewright.campaign-commit` labels, both `github.sha`.
 
-      # The PACKAGE is `delvec`, not `delvewright-compiler` (ADR-0017 §1): a
-      # crate is installed by package name, so the compiler had to BE `delvec`
-      # for `cargo install delvec` to work. Only the LIB TARGET keeps the old
-      # name (`delvewright_compiler`), which is why in-tree `use` paths did not
-      # churn — and why this line kept looking plausible after the rename.
-      #
-      # This broke the v1.1.0 release and nothing else: the content repo is the
-      # only consumer that names the engine's package, and only this workflow
-      # runs it. Same shape as the `--locked` gap — a defect whose sole
-      # exercise is the release path, so it is discovered at the most expensive
-      # possible moment.
       - name: build the delve (implies validate + analyze — the static ladder)
         working-directory: engine
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          DELVEC: ${{ steps.delvec.outputs.bin }}
         run: |
           set -euo pipefail
-          cargo run -p delvec --bin delvec -- --version
-          cargo run -p delvec --bin delvec -- \
+          "$DELVEC" --version
+          "$DELVEC" \
             build "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" \
             -o "$GITHUB_WORKSPACE/engine/validation/delve-output" \
             --prefabs "$GITHUB_WORKSPACE/prefabs"
@@ -590,6 +640,9 @@ jobs:
             ca.stellarfeline.delvewright.campaign-commit=${{ github.sha }}
             ca.stellarfeline.delvewright.content-license=CC-BY-SA-4.0
             ca.stellarfeline.delvewright.engine-repo=${{ steps.engine.outputs.repo }}
+            ca.stellarfeline.delvewright.engine-release=${{ steps.engine.outputs.tag }}
+            ca.stellarfeline.delvewright.engine-archive=${{ steps.delvec.outputs.archive }}
+            ca.stellarfeline.delvewright.engine-archive-sha256=${{ steps.delvec.outputs.archive_sha256 }}
             ca.stellarfeline.delvewright.engine-commit=${{ steps.engine_id.outputs.sha }}
             ca.stellarfeline.delvewright.engine-version=delvec ${{ steps.build.outputs.delvec_version }}
             ca.stellarfeline.delvewright.dsl-version=${{ steps.build.outputs.dsl_version }}
@@ -622,6 +675,9 @@ jobs:
           PACK_URL: ${{ steps.pack.outputs.url }}
           PREDICTED: ${{ steps.rel.outputs.asset_url }}
           PACK_SHA1: ${{ steps.build.outputs.resourcepack_sha1 }}
+          ENGINE_TAG: ${{ steps.engine.outputs.tag }}
+          ENGINE_ARCHIVE: ${{ steps.delvec.outputs.archive }}
+          ENGINE_ARCHIVE_SHA256: ${{ steps.delvec.outputs.archive_sha256 }}
           ENGINE_SHA: ${{ steps.engine_id.outputs.sha }}
         run: |
           {
@@ -634,7 +690,9 @@ jobs:
             echo "| image | \`${IMAGE:-?}:v${VERSION:-?}\` |"
             echo "| image tags | \`${IMAGE_TAGS:-?}\` |"
             echo "| translations | \`${TRANSLATIONS:-none}\` |"
-            echo "| engine commit | \`${ENGINE_SHA:-?}\` |"
+            echo "| engine release | \`${ENGINE_TAG:-?}\` |"
+            echo "| engine archive sha256 | \`${ENGINE_ARCHIVE:-?}\` \`${ENGINE_ARCHIVE_SHA256:-?}\` |"
+            echo "| engine commit (tag's, validation rig) | \`${ENGINE_SHA:-?}\` |"
             echo "| campaign commit | \`${GITHUB_SHA}\` |"
             echo "| resource pack sha1 | \`${PACK_SHA1:-none}\` |"
             echo "| resource pack URL | \`${PACK_URL:-${PREDICTED} (predicted)}\` |"
