@@ -92,7 +92,58 @@ def light_marks(m, node):
         m.mark(anchor.split("/", 1)[1], x, y, z, "south")
 
 
+def unhung_lanterns(m):
+    """Every hanging lantern whose block above cannot hold it. The game drops
+    a hanging lantern on the first update unless the block over it has a full
+    face under it or is a chain, fence, wall or bar (vanilla `LanternBlock
+    .canSurvive`, via `Block.canSupportCenter`); leaves, air, a lantern or a
+    trapdoor do not hold one."""
+    bad = []
+    holds = ("_planks", "_log", "_wood", "chain", "_fence", "_wall", "_slab[type=top", "_slab[type=double",
+             "hay_block", "cobblestone", "stone", "bricks", "_stairs")
+    for (lx, ly, lz), b in m.cells.items():
+        if not b.startswith("lantern[hanging=true"):
+            continue
+        x, y, z = lx + m.min[0], ly + m.min[1], lz + m.min[2]
+        above = m.get(x, y + 1, z)
+        if above is None or "leaves" in above or not any(t in above for t in holds) or "fence_gate" in above:
+            bad.append(((x, y, z), above))
+    return bad
+
+
+def hang_lanterns(m):
+    """Give every hanging lantern something to hang from: a leaf over it
+    becomes a stub of branch; open air over it is chained up to the first block
+    within five cells that holds a chain; a lantern with nothing over it stands
+    on a post instead, down to the floor under it."""
+    for (x, y, z), above in unhung_lanterns(m):
+        if above is not None and "leaves" in above:
+            m.set(x, y + 1, z, m.pick(x, y + 1, z, BARK_X, 43))
+            continue
+        top = None
+        for dy in range(1, 6):
+            b = m.get(x, y + dy, z)
+            if b is not None:
+                top = y + dy if (b and not any(t in b for t in ("leaves", "lantern", "trapdoor"))) else None
+                break
+        if top is not None:
+            for yy in range(y + 1, top):
+                m.set(x, yy, z, CHAIN_Y)
+            continue
+        m.set(x, y, z, None)
+        fy = y - 1
+        while fy > m.min[1] and m.get(x, fy, z) is None:
+            fy -= 1
+        for yy in range(fy + 1, fy + 3):
+            m.set(x, yy, z, POST)
+        m.set(x, fy + 3, z, LANTERN_STAND)
+
+
 def write(m, stem):
+    hang_lanterns(m)
+    bad = unhung_lanterns(m)
+    if bad:
+        raise SystemExit(f"{stem}: {len(bad)} hanging lantern(s) with nothing to hang from: {sorted(bad)}")
     prog = m.program(f"{CAMPAIGN}-{stem}")
     path = os.path.join(C, "programs", f"{stem}.json")
     json.dump(prog, open(path, "w"), indent=1)
@@ -732,13 +783,6 @@ def hearth_crown():
     branch(m, 39, 100, 39, "z", 6)
     branch(m, 32, 100, 32, "x", -6)
     branch(m, 32, 100, 32, "z", -6)
-    # Lanterns hung from the great arms over the platform. The design does not
-    # ask for them: the build's light survey floods from the anchor the
-    # blockout synthesizes for every box, scenery included, and that anchor
-    # snaps onto the trunk's shoulder at y 98, which `DW0210` then grades
-    # (recorded in GENERATION.md as an engine defect; the item is stopped).
-    for (lx, lz) in ((42, 35), (46, 36), (29, 35), (25, 36), (35, 42), (36, 46), (35, 29), (36, 25)):
-        m.set(lx, 95, lz, LANTERN_HANG)
     for y in range(y0 + 11, y0 + 13):
         trunk_layer(m, cx, cz, 2.5, y)
     # The leaf masses: at the arm ends, the higher arms, and the crown's head.
@@ -786,13 +830,13 @@ def seed_house():
     # The storehouse hut in the south-west corner.
     cabin(m, 28, 80, 33, 84, floor, 4, "x", doors=[(33, 82, 2)], windows=[(30, 84)])
     for x in (29, 30, 31):
-        m.set(x, floor, 81, "composter[level=7]")
+        m.set(x, floor, 81, "composter[level=6]")
     m.set(29, floor, 83, "hay_block[axis=x]")
     m.set(30, floor, 83, "hay_block[axis=x]")
     hanging_lantern(m, 31, 82, floor + 3, 1)
     # Baskets of nuts along the east rail, drying racks on the west side.
     for z in (73, 74, 76, 78, 79):
-        m.set(43, floor, z, "composter[level=7]")
+        m.set(43, floor, z, "composter[level=6]")
     for z in (71, 74):
         m.set(28, floor, z, "spruce_fence")
     for z in range(71, 75):
