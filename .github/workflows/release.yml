@@ -442,117 +442,12 @@ jobs:
           PRERELEASE: ${{ steps.rel.outputs.prerelease }}
         run: |
           set -euo pipefail
-          python3 - <<'PY' > notes.md
-          # The reader-facing facts come from the STORYBOOK, which is the reviewed
-          # artifact, and from nowhere else.
-          #
-          # They used to be re-derived here from `world.json`, which made the notes a
-          # SECOND rendering of the same facts with nothing binding it to the first.
-          # v1.0.0 shipped that way and said "A delve for 1–4 players, about 120
-          # minutes" for a single-player ~20-minute delve: the storybook had been
-          # corrected by hand and the correction never reached anything else. The
-          # player count was worse than stale — it was a constant in this script, and
-          # no campaign document has ever declared one.
-          #
-          # So there is one source now. A campaign whose storybook does not carry the
-          # header table fails the release loudly rather than shipping a blank or a
-          # guess.
-          import json, os, re, sys
-          camp = os.environ["CAMPAIGN"]
-          # `campaigns/<id>/` is not proof of a campaign: `the-drowned-bell` is a
-          # directory of media and build output with no stage documents at all,
-          # because its remake has not been authored yet. Name that, rather than
-          # ending a release in a KeyError on someone's screen.
-          try:
-              c = json.load(open(f"campaigns/{camp}/world.json"))["content"]
-          except FileNotFoundError:
-              sys.exit(f"error: {camp} has no world.json, so it is a directory rather "
-                       f"than a campaign — nothing here is releasable. If you meant a "
-                       f"different campaign, check the tag.")
-          # A campaign with no storybook cannot release: spec-0007 makes the
-          # storybook the reader-facing artifact, and since the notes render it,
-          # its absence is now a release-stopping fact rather than a missing file
-          # someone notices later. Say so — an unguarded open() here would end a
-          # release in a Python traceback, which reads as "the pipeline broke"
-          # rather than "this campaign is not ready to ship".
-          try:
-              book = open(f"campaigns/{camp}/README.md", encoding="utf-8").read()
-          except FileNotFoundError:
-              sys.exit(f"error: {camp} has no README.md. The release notes are rendered "
-                       f"FROM the storybook (spec-0007), so a campaign without one has "
-                       f"nothing to announce and cannot be released. Write the storybook "
-                       f"first — title, blurb, and a header table carrying **Players** "
-                       f"and **Playtime**.")
-          image, version = os.environ["IMAGE"], os.environ["VERSION"]
-          has_pack = os.environ["HAS_PACK"] == "true"
-          prerelease = os.environ["PRERELEASE"] == "true"
-
-          def row(label):
-              m = re.search(rf"^\|\s*\*\*{label}\*\*\s*\|\s*(.+?)\s*\|\s*$", book, re.M)
-              if not m:
-                  sys.exit(f"error: {camp}/README.md has no **{label}** row — the release "
-                           f"notes take their reader-facing facts from the storybook, so a "
-                           f"missing row is a missing fact, not a blank line.")
-              return m.group(1)
-
-          title = (re.search(r"^#\s+(.+)$", book, re.M) or [None, c.get("title", camp)])[1]
-          players, playtime = row("Players"), row("Playtime")
-          languages = row("Languages")
-
-          # The storybook and the campaign document must agree about length. This is the
-          # drift that shipped in v1.0.0; nothing was checking it.
-          declared = c.get("target_minutes")
-          book_mins = re.search(r"(\d+)\s*minute", playtime)
-          if declared and book_mins and int(book_mins.group(1)) != int(declared):
-              sys.exit(f"error: {camp} storybook says {playtime!r} but world.json declares "
-                       f"target_minutes={declared}. One of them is wrong; fix the source, "
-                       f"not this script.")
-
-          # The blurb is the storybook's own one-paragraph pitch: what follows the
-          # last blockquote (the engine-version marker and the epigraph both use one)
-          # and precedes the header table. Anchoring on "after the last quote" rather
-          # than "first ordinary line" is what keeps it from picking up the `**vX.Y.Z**`
-          # stamp, which is the line it grabbed the first time this was written.
-          head = book.split("| |")[0]
-          after_quotes = head[head.rindex("\n>") :] if "\n>" in head else head
-          blurb = next(
-              (ln.strip() for ln in after_quotes.split("\n")
-               if ln.strip() and not ln.lstrip().startswith((">", "!", "#", "|", "*"))),
-              None,
-          )
-          if not blurb:
-              sys.exit(f"error: {camp}/README.md has no blurb paragraph between its "
-                       f"epigraph and its header table — a release with no description "
-                       f"is a defect, not a shorter release.")
-          print(f"## {title}\n")
-          if prerelease:
-              print(f"> **Pre-release.** v{version} is published for testing ahead "
-                    f"of a release; it passed the same machine checks a release does.\n")
-          print(blurb + "\n")
-          noun = "player" if players.strip() == "1" else "players"
-          print(f"For {players} {noun}, {playtime}.\n")
-          print("### Host it\n")
-          print("```")
-          print(f"docker run -it -p 25565:25565 -e EULA=TRUE {image}:v{version}")
-          print("```\n")
-          print("Players join at `<your-address>:25565` with a vanilla Minecraft "
-                "Java 1.21.11 client.\n")
-          if has_pack:
-              print("The resource pack (character skins and in-game art) is served "
-                    "by the delve itself — accept the prompt when you join. "
-                    "Nothing to install by hand.\n")
-          print(f"Languages: {languages}. In-game text follows your Minecraft "
-                f"client's language where the delve has been translated; accept "
-                f"the resource-pack prompt and it happens by itself.\n")
-          print("### Terms\n")
-          print("This release contains **no Minecraft server software**. The server "
-                "is downloaded by the container on first start, and you accept "
-                "[Mojang's EULA](https://aka.ms/MinecraftEULA) yourself by passing "
-                "`EULA=TRUE`. Delvewright is not affiliated with Mojang or Microsoft.\n")
-          print("Campaign content is licensed "
-                "[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); "
-                "see the repository README for the full picture.\n")
-          PY
+          # The notes, and every check they rest on, are ONE script that the
+          # pull-request gate (`prefab-audit.yml`) also runs over every campaign,
+          # so a storybook a pull request admits is one this step accepts.
+          python3 tools/release-notes.py render \
+            --campaign "$CAMPAIGN" --image "$IMAGE" --version "$VERSION" \
+            --has-pack "$HAS_PACK" --prerelease "$PRERELEASE" > notes.md
           cat notes.md
           # The Release is named for the delve, not for its directory.
           python3 - <<'PY' >> "$GITHUB_OUTPUT"

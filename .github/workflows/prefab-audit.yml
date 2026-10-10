@@ -167,6 +167,17 @@ jobs:
       - name: the pinned engine is newer than every storybook's claim
         run: python3 tools/check-engine-pin.py
 
+      # Every campaign's release notes can be composed. `release.yml`'s "compose
+      # the release notes" step runs `tools/release-notes.py render`, which
+      # refuses a campaign with no world.json, no storybook, a missing header
+      # row, a Playtime that disagrees with `target_minutes`, or no blurb — on a
+      # tag push, after the whole release ladder. `check` is the same judge over
+      # every campaign directory on the tree, here, on every pull request, in
+      # this job for the reason the steps above are: a new job is a new required
+      # context. It states its binding; zero campaign directories is a finding.
+      - name: every campaign's release notes can be composed
+        run: python3 tools/release-notes.py check
+
       # The audit tool's source, pinned. Public repo -> the default GITHUB_TOKEN
       # reaches it, and a fork PR gets the same checkout the owner's PRs do.
       #
