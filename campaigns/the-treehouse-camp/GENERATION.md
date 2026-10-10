@@ -158,3 +158,66 @@ The frames are in `out/renders-r7/`, beside the build, which is not tracked. 16 
 | `pov_leg6_wp15` | Watch Crown (the hook) | No: sky and the valley rim (item 3 above). |
 | `pov_leg4_wp11` | Low Bridge | Yes: the plank steps up to the Hearth House, the chimney ahead, the crown over it. |
 | `pov_leg4_wp1` | Seed House | Yes: the deck under its crown, a hung lantern, the gateway, the Hearth House beyond. |
+
+## Build round on engine 3c5f1e81 (dsl 0.38.0, grammar program 1.10.0)
+
+Built with `delvec 1.11.0, dsl 0.38.0, mc 1.21.11`, force-rebuilt in release mode from the read-only engine tree at `3c5f1e810d6a68805c9501fc7e5e42de370ae9e8` (cargo exit 0) and invoked by path. The bot image is built by `validation/bot-run.sh` from that tree under a fresh compose project. Every result below is from build tree `out/build-r9`, manifest sha256 `6f0d6228…`, unless it names another build.
+
+### State
+
+- `validate`, `build` and `detail --all` exit 0. All 15 identities hold. DW0311: 8 of 8 legs walked. DW0921: 39,700 cells a body can reach, 0 it cannot leave.
+- The shipped templates in `datapack/` hold 0 structure_void blocks across 11 pieces. The server-saved world `out/build-r9/world` holds 0 (build-r7 held 6,607).
+- PackTest: 41 of 41 required tests pass.
+- DW0955, the written world against the server's world: green (`out/written-world-r9.json`). Of 71,333 cells in the layout box:
+
+  | Class | Differing cells |
+  |---|---|
+  | model | 0 |
+  | clock | 0 |
+  | gravity | 0 |
+  | fluid | 0 |
+  | random-tick | 0 |
+  | re-derived (fence and leaf properties a block update sets) | 6,996 |
+
+- Bot critical path: **red** (exit 1); see item 1 below.
+  - Steps 1–6 pass: talks to Tobi, Oru, Neve, Hessel, Oru and Neve.
+  - Climbs driven: 1, the glade ladder ([30, 72, 36] to [29, 86, 36]).
+  - Leg 6 exports two one-column climbs ([74, 84, 78]→[74, 92, 78], then [74, 93, 79]→[74, 111, 79]), and the harness plans both as climb hops. It never reaches the first.
+- The step-4 refusal on build-r7 (`No path to the goal!` from the Hearth House) is gone. It was the void blocks at the Low Bridge's mouth (z 48).
+- Staging gate: **refused**, given both records (`--run-report`, `--written-world`): "critical path: stage `critical-path` is RED". The written-world record is accepted.
+
+### Content fixed this round
+
+- **The Hearth Crown carries no lanterns.** The engine no longer synthesizes an anchor for a scenery place, and the design never asked for them.
+- **Every hanging lantern hangs from something.** On build-r8, DW0955 named 12 hanging lanterns the server drops to air. Four hung under nothing: two on the Hearth House, one each at the Seed and Watch House huts. Eight in the Watch Crown's ladder flute hung under leaves, which cannot hold a hanging lantern (vanilla `LanternBlock.canSurvive`, via `Block.canSupportCenter`). `places.py` now refuses, at write, a piece with a hanging lantern that nothing holds; its check listed exactly those 12 cells. The four now hang on chains from the block above them. The eight hang from a stub of branch where the leaf was.
+- **The Seed House composters are level 6.** A level-7 composter ticks itself to 8 (all 8 cells, DW0955).
+
+### What still stops the ladder (recorded here, not worked around)
+
+1. **Toolchain: the bot cannot walk along a ladder's face to reach the climb's bottom.** The Watch House ladder is two columns wide (x 74, z 77–78, facing west, on the trunk). Leg 6's route comes south along x 74, and its first climb starts at the far column, [74, 84, 78]. The harness walks to a climb's `from` with the pathfinder (range 1). The bot stops at [74.5, 84.0, 76.5], at the edge of ladder cell (74, 77), and times out after 60 s. The log says "nothing within 12 blocks — the refusal is about blocks".
+   - Reproduced on build-r8 and build-r9.
+   - In the server-saved world the cells are clear: deck at y 83, the ladder panel on the cell's east face, air above.
+   - The glade climb passes because its route enters the ladder column from the side opposite the panel.
+   - Unverified hypothesis: the pathfinder will not step into a ladder cell from the side, so the climb's `from` is reachable only from within the column itself. The two-wide ladder is the design (the seam's 1 × 2 opening) and is not narrowed to dodge this.
+
+### Visual review (Chunky, pinned core, 150 samples per frame, engine 3c5f1e81, build-r9)
+
+15 frames are in `out/renders-r9/`. The POVs load the server-saved world, which now equals the model.
+
+| Frame | Place or image | Does it read as the thing |
+|---|---|---|
+| `camera_north-east-aerial` | view 4 | Yes, under a sunset sky. |
+| `camera_from-the-south` | view 3 | Yes. |
+| `camera_plan` | view 2 | Yes. |
+| `camera_from-the-glade` | view 1 | Yes: the trunk, its rope ladder, the deck's underside with its hung lanterns, the Low Bridge leaving right. |
+| `camera_lantern-night` | concept/lantern-night | Yes, as night: black sky, every rail and bridge lined with lanterns. |
+| `pov_leg0_wp1` | Root Glade | Partly: under the platform among lamp posts; a post fills the near left. |
+| `pov_leg3_wp13` | Hearth House | Partly: the railed deck and chimney at sunset; a corner post fills the left, and the cabins are out of frame. |
+| `pov_leg2_wp16` | Long Bridge | Yes. |
+| `pov_leg2_wp21` | Loom House | Yes. |
+| `pov_leg6_wp4` | High Bridge | Yes. |
+| `pov_leg6_wp9` | Watch House | Yes: the deck under the canopy, lanterns on chains. |
+| `pov_leg6_wp14` | Watch Crown (the lookout) | Partly: the ring and its rail; the camp is below the frame. |
+| `pov_leg6_wp15` | Watch Crown (the hook) | No: sky and the valley rim. A review frame faces along the walk's last step. |
+| `pov_leg4_wp11` | Low Bridge | Yes. |
+| `pov_leg4_wp1` | Seed House | Yes. |
