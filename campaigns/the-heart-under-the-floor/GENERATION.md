@@ -46,3 +46,36 @@
   record is approved: `design.json` does not exist, and the staging gate
   counts that as a zero. The design of record is the demo-levels row and
   `DESIGN.md`; the level is handed over built, for its first walk.
+- **The garden's headroom**: the doorstep is `open: 4`. At `open: 6` its claim
+  rose into the cottage's eave over the front door, and the roof was clipped
+  there.
+
+## Verification (engine `integrate/sculk-sound-sight`, `delvec 1.12.0, dsl 0.39.0`)
+
+- `validate`, `analyze`, `build`: exit 0. `pulse binding: 2 pulse(s), 2 staged;
+  far 22.30..22.30 block(s) over 144..144 standable cell(s), range
+  37.17..37.17 (volume 2.323..2.323); 2 of 2 live on the forced route in some
+  configuration; 2 of 2 with a listening station`.
+- PackTest: 23 of 23 required tests passed, the four pulse templates among them.
+- Critical-path bot: 6 steps passed; `pulse_stations` — `pulse/the-heart`
+  heard 2 beats as written at the front room's listening station
+  [8219, 64, 8203] over 70 ticks; `pulse/the-heart-racing` heard 3 beats as
+  written at the hearth [8200, 64, 8202] over 38 ticks; both `failure: null`.
+  Neither pulse has a silent station: the forced route leaves the cottage only
+  after both are off.
+- Written world (`DW0955`): not compared. `delvec cameras` writes the at-load
+  world only from a camera record, and a camera answers an approved design
+  image; this level has none.
+- Staging gate: 2 of 122 findings unbound — `drill3-01`, `drill3-03` (no design
+  record) — and no admission without a written-world record.
+
+## Visual review
+
+Read in route order at 64 spp (all 32 scenes), then the panorama at 300 and
+four POV frames at 500. The cottage reads as a cottage from the lane: plaster
+over a cobble course, spruce corner posts, a gabled roof with the chimney in
+the west gable, a hedged garden with two lanterns at the door. Inside, each
+room is lit by one hanging lantern, the kitchen by the fire as well; the frames
+read dim under the dusk sky and are legible. The kitchen arrival frame shows the
+fireplace, the hearthstone slab before it and the table. The four
+`interior_site_*` frames show the roof from outside, not a room.

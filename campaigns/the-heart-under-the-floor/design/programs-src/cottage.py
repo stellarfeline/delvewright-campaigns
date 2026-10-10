@@ -267,6 +267,9 @@ def cottage():
                     f.set(x, yy, z, PLANK)
         if y + 1 <= top:
             roof_air.append(((0, y + 1, z), (X - 1, top, z)))
+    # The chimney: the fireplace's brick breast carried up through the roof in
+    # the west gable to the ridge.
+    f.box((wx0, lid, mz - 1), (wx0, top, mz + 1), BRICK)
     # The front doorway: the handed cells, open.
     seam = h["seams"][0]
     (dx0, dy0, dz0), (dx1, dy1, dz1) = seam["cells"]
