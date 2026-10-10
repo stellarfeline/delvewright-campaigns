@@ -238,3 +238,43 @@ Built with `delvec 1.11.0, dsl 0.38.0, mc 1.21.11`, force-rebuilt in release mod
 - **Staging gate:** admitted with both records (`--run-report`, `--written-world`): 122 finding classes, 64 inapplicable. Token: `out/build-r10/staging-admission.json`.
 - The renders of build-r9 (`out/renders-r9/`) stand for build-r10, which is the same bytes.
 - The hook and lookout POVs not facing the camp is an open engine gap, left as it is.
+
+## Owner-notes round on engine 9e000f96
+
+The owner played the camp and left two notes; a third came with them. Built with `delvec 1.11.0, dsl 0.38.0, mc 1.21.11` from `9e000f965c5d4abda9e45599b6fadc281ea1f797`, unchanged. Build tree `out/build-r12`, manifest sha256 `5c55abe366cc2b7bf11a2f2093ce39c2aac89c2f80db94eeb38b07b1456f330b`.
+
+### The notes and what changed
+
+1. **Railings one course, platforms and bridges.**
+   - Every platform ring, all three bridge decks and their stepped flights, and the Watch Crown's landing now carry one fence course. The lookout ring was one course already.
+   - A fence's collision box is 1.5 blocks tall, above the 1.25 a standing jump reaches, so one course still keeps a body on the deck. DW0921 is unchanged: 39,700 cells a body can reach, 0 it cannot leave (build-r9 had the same with two courses).
+   - Stays three high: the rope gate across the High Bridge's mouth, a barred doorway, not a railing. Unchanged: the stripped-log posts at each bridge mouth.
+   - The finale's lantern lines now stand on top of the single course, where they used to replace a second one.
+2. **The finale as a camera sequence.** `design/programs-src/finale.py` writes it into the `quest/lantern-night` timeline: one multi-shot `cutscene` of 15 shots, 1,735 ticks (86.8 s), starting 2 s after the lantern is hung.
+   - Five sunset shots: over the camp from the north-east and from the south (wide); along the Long Bridge to the Hearth House, the Low Bridge and the Seed Tree, and the lookout (close).
+   - One wide shot from over the lookout. `set-time` brings night 2 s into it.
+   - One shot per place along the lighting route (`lights.ORDER`: Watch House, High Bridge, Loom House, Long Bridge, Hearth House, Low Bridge, Seed House, Root Glade). Each place's lines light 1 s into its shot.
+   - A last wide shot of the camp lit. The closing line and the campaign's completion follow the cutscene.
+   - Each shot is a straight dolly between two points with the camera held on one subject. The build judges all 15 shots: no camera clip (`DW0308`) or pan (`DW0347`) refusal, none beyond view distance. The skies the world can reach are unchanged, so `DW0890` needs no new design row, and no new picture is drawn. The closing narration's l10n key moves from step 10 to step 11.
+3. **The kit and its description.** The class blurb ("good boots, a little food, nothing to fight with"), the storybook ("good boots and a little food") and Hessel's line ("You brought good boots") all name boots, and the kit had none. The design states no kit. The boots are the fact the camp's own lines lean on, so the kit gains them, not the text losing them: `minecraft:leather_boots`, named Good Boots (zh-cn 好靴子, the rendering the blurb already uses).
+
+   | What the text names | What `classes.json` gives |
+   |---|---|
+   | good boots | Good Boots (leather boots) ×1, added this round |
+   | a little food | Nut Bread ×4 and apple ×3 |
+   | nothing to fight with | no weapon in the kit |
+
+### Gaps recorded, not worked around
+
+- **No render surface for a cutscene shot.** No `delvec` subcommand or ladder step renders a cutscene shot as a still. `render-shots.sh` emits none of the 15 (157 scenes, all POV, interior, NPC, gate, spawn or interact), and `cameras` renders only `design/cameras.json` rows. The shots are reviewed in game, by playing the sequence or through the human rehearsal flow (`validation/rehearsal-flow.sh`).
+- **The route is followed in hard cuts, by choice.** The engine can express one continuous dolly as a single many-point path; it was not tried. The cuts let each place's lines light on its own shot.
+
+### Ladder (build-r12)
+
+- validate, build and `detail --all` exit 0. DW0311: 8 of 8 legs walked. DW0921: 39,700 reachable cells, 0 a body cannot leave.
+- Bot critical path: **green**, exit 0, 10 steps. **3 climbs driven**: the glade ladder, and both Watch Tree ladders ([74, 84, 78]→[74, 93, 79] and [74, 93, 79]→[74, 112, 78]). The bot sits through the 89-second cutscene (`cutscene_seconds` in `critical-path.json`). Its run report (`out/run-report-r12.json`) names the manifest above.
+- PackTest: 42 of 42 required tests pass.
+- Server-saved world: 0 structure_void.
+- DW0955: green (`out/written-world-r12.json`). Of 70,917 cells: 0 model, 0 clock, 0 gravity, 0 fluid, 0 random-tick, 6,984 re-derived.
+- Staging gate: admitted with both records (122 finding classes, 61 inapplicable).
+- Railing renders (Chunky, 150 samples): `out/renders-r11/`. Build-r11 has the same geometry; build-r12 adds only the boots. They show the one-course rails along the Long Bridge to the Loom House gateway, on the Watch House and Hearth House platform edges, and up the Low Bridge's flight.
