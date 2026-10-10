@@ -5,8 +5,10 @@ ONE implementation, two callers:
 
 * `release.yml`'s "compose the release notes" step runs `render` for the one
   campaign a release tag names, and publishes what it prints;
-* `prefab-audit.yml`'s required job runs `check` on every pull request, over
-  every campaign directory on the tree.
+* `prefab-audit.yml`'s required job runs `check --base <the PR's base>` on
+  every pull request, over the campaign directories that pull request changes.
+  The release judges only the campaign it releases, built by the engine it
+  pins, so an untouched campaign is not re-judged here.
 
 Both go through `judge()` below, so a storybook the pull-request gate admits is
 one the release step accepts, and a refusal is made at the pull request rather
@@ -27,9 +29,10 @@ What `judge()` refuses, per campaign directory:
 * a Playtime row whose minutes disagree with `world.json` `target_minutes`;
 * no blurb paragraph between the epigraph and the header table.
 
-`check` states its binding with its denominator: campaign directories judged,
-of the directories under `campaigns/` in git's index. A binding of zero is a
-finding. Stdlib only, offline.
+`check` states its binding with its denominator: changed campaign directories
+judged, of the campaign directories in git's index. A change touching no
+campaign, or a run with no base (a push or a dispatch), judges zero and says so
+by name. Stdlib only, offline.
 
 Exit 0 = pass, 1 = a finding.
 """
@@ -175,27 +178,56 @@ def render(facts: Facts, image: str, version: str, has_pack: bool, prerelease: b
     return "\n".join(out) + "\n"
 
 
-def campaign_dirs(root: pathlib.Path) -> tuple[list[str], int]:
-    """Every directory directly under `campaigns/` that git's index holds a file in,
-    and how many tracked files under `campaigns/` the walk read."""
+def _git_z(root: pathlib.Path, *args: str) -> list[str]:
     out = subprocess.run(
-        ["git", "-C", str(root), "ls-files", "-z", "--", "campaigns/"],
-        capture_output=True,
-        check=True,
+        ["git", "-C", str(root), *args], capture_output=True, check=True
     ).stdout.decode("utf-8")
-    files = [rel for rel in out.split("\0") if rel]
-    dirs = set()
-    for rel in files:
-        parts = pathlib.PurePosixPath(rel).parts
-        if len(parts) >= 3 and parts[0] == "campaigns":
-            dirs.add(parts[1])
-    return sorted(dirs), len(files)
+    return [rel for rel in out.split("\0") if rel]
 
 
-def cmd_check(root: pathlib.Path) -> int:
-    camps, nfiles = campaign_dirs(root)
+def _campaign_of(rel: str) -> str | None:
+    parts = pathlib.PurePosixPath(rel).parts
+    if len(parts) >= 3 and parts[0] == "campaigns":
+        return parts[1]
+    return None
+
+
+def campaign_dirs(root: pathlib.Path) -> list[str]:
+    """Every directory directly under `campaigns/` that git's index holds a file in."""
+    files = _git_z(root, "ls-files", "-z", "--", "campaigns/")
+    return sorted({c for c in map(_campaign_of, files) if c})
+
+
+def changed_campaigns(root: pathlib.Path, base: str) -> tuple[list[str], int]:
+    """Campaign directories with a file changed between `base` and HEAD, and how
+    many changed paths under `campaigns/` the diff listed."""
+    files = _git_z(root, "diff", "--name-only", "-z", "--no-renames", base, "HEAD",
+                   "--", "campaigns/")
+    return sorted({c for c in map(_campaign_of, files) if c}), len(files)
+
+
+def cmd_check(root: pathlib.Path, base: str) -> int:
+    """Judge the campaign directories a pull request changes.
+
+    The release step judges exactly one campaign, the one its tag names, and a
+    campaign is only ever built by the engine revision it pins. So the
+    pull-request arm judges what the release would judge of THIS change: every
+    campaign directory the diff against the pull request's base touches, and
+    no other. An untouched campaign is not re-judged here.
+    """
+    on_tree = campaign_dirs(root)
+    if not base:
+        print(
+            f"release-notes: 0 changed campaign director(ies) judged of {len(on_tree)} "
+            f"on the tree — no pull-request base was given (a push or a manual "
+            f"dispatch has none), so no change exists to judge. Named zero binding."
+        )
+        return 0
+    changed, npaths = changed_campaigns(root, base)
+    present = [c for c in changed if c in on_tree]
+    gone = [c for c in changed if c not in on_tree]
     refused = 0
-    for camp in camps:
+    for camp in present:
         try:
             facts = judge(root, camp)
         except Refused as exc:
@@ -204,15 +236,18 @@ def cmd_check(root: pathlib.Path) -> int:
             continue
         print(f"release-notes: ok      {camp}: Playtime {facts.playtime!r}, "
               f"target_minutes={facts.content.get('target_minutes')}")
+    for camp in gone:
+        print(f"release-notes: removed {camp}: changed by this diff and no longer on "
+              f"the tree, so there is nothing to release and nothing to judge")
     print(
-        f"release-notes: {len(camps)} campaign director(ies) judged of {len(camps)} "
-        f"under campaigns/ ({nfiles} tracked file(s) read from git's index); "
-        f"{len(camps) - refused} composable, {refused} refused"
+        f"release-notes: {len(present)} changed campaign director(ies) judged of "
+        f"{len(on_tree)} on the tree ({npaths} changed path(s) under campaigns/ "
+        f"against base {base[:12]}; {len(gone)} changed director(ies) removed); "
+        f"{len(present) - refused} composable, {refused} refused"
     )
-    if not camps:
-        print("release-notes: FINDING — zero campaign directories bound; a walk that "
-              "found none is not a pass")
-        return 1
+    if not present:
+        print("release-notes: this change touches no campaign on the tree — a named "
+              "zero binding, not a pass over campaigns it did not change")
     return 1 if refused else 0
 
 
@@ -221,7 +256,9 @@ def main() -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--root", default=None, help="repo root (default: this repo)")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("check", help="judge every campaign directory on the tree")
+    c = sub.add_parser("check", help="judge the campaign directories changed since --base")
+    c.add_argument("--base", required=True,
+                   help="the pull request's base revision; empty = no base (judges 0, says so)")
     r = sub.add_parser("render", help="print one campaign's release notes")
     r.add_argument("--campaign", required=True)
     r.add_argument("--image", required=True)
@@ -232,7 +269,7 @@ def main() -> int:
     root = pathlib.Path(args.root).resolve() if args.root else ROOT
 
     if args.cmd == "check":
-        return cmd_check(root)
+        return cmd_check(root, args.base)
     try:
         facts = judge(root, args.campaign)
     except Refused as exc:

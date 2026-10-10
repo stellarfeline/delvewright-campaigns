@@ -2,10 +2,11 @@
 
 `release.yml` renders the notes through it on a tag push and `prefab-audit.yml`
 runs `check` through it on every pull request. Each refusal it claims is planted
-here and the gate is required to red on it; the clean campaign must pass, and a
-tree with no campaign directory is the vacuous shape and must red too.
+here and the gate is required to red on it; the clean campaign must pass. The
+pull-request arm judges only campaigns the change touches, so an untouched
+campaign is not judged, and a change touching none states its zero by name.
 
-The fixtures are real git repositories, because `check` walks git's index.
+The fixtures are real git repositories, because `check` diffs against a base.
 """
 
 from __future__ import annotations
@@ -34,25 +35,40 @@ A short walk among the trees.
 """
 
 
-def git(repo: Path, *args: str) -> None:
-    subprocess.run(["git", "-C", str(repo), *args], capture_output=True, check=True)
+def git(repo: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args], capture_output=True, text=True, check=True
+    ).stdout.strip()
 
 
-def build(root: Path, book: str | None, world: bool = True, minutes: int = 20) -> None:
+def init(root: Path) -> None:
     root.mkdir(parents=True, exist_ok=True)
     git(root, "init", "-q")
-    camp = root / "campaigns" / "a-camp"
-    camp.mkdir(parents=True)
+    git(root, "config", "user.email", "t@example.invalid")
+    git(root, "config", "user.name", "t")
+    (root / "README.md").write_text("repo\n", encoding="utf-8")
+    commit(root, "base")
+
+
+def commit(root: Path, msg: str) -> str:
+    git(root, "add", "-A")
+    git(root, "commit", "-q", "--allow-empty", "-m", msg)
+    return git(root, "rev-parse", "HEAD")
+
+
+def write_camp(root: Path, camp: str, book: str | None, world: bool = True,
+               minutes: int = 20) -> None:
+    base = root / "campaigns" / camp
+    base.mkdir(parents=True, exist_ok=True)
     if world:
-        (camp / "world.json").write_text(
+        (base / "world.json").write_text(
             json.dumps({"content": {"title": "A Camp", "target_minutes": minutes}}),
             encoding="utf-8",
         )
     else:
-        (camp / "notes.txt").write_text("media only\n", encoding="utf-8")
+        (base / "notes.txt").write_text("media only\n", encoding="utf-8")
     if book is not None:
-        (camp / "README.md").write_text(book, encoding="utf-8")
-    git(root, "add", "-A")
+        (base / "README.md").write_text(book, encoding="utf-8")
 
 
 def run(root: Path, *args: str) -> subprocess.CompletedProcess:
@@ -63,63 +79,99 @@ def run(root: Path, *args: str) -> subprocess.CompletedProcess:
     )
 
 
+GOOD = BOOK.format(playtime="~20 minutes")
+
+
 class ReleaseNotes(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name) / "repo"
+        init(self.root)
+        self.base = git(self.root, "rev-parse", "HEAD")
 
     def tearDown(self) -> None:
         self.tmp.cleanup()
 
-    def assertRefused(self, needle: str) -> None:
-        res = run(self.root, "check")
+    def change(self, book: str | None, **kw) -> subprocess.CompletedProcess:
+        """Commit `a-camp` as the pull request's change, then check against base."""
+        write_camp(self.root, "a-camp", book, **kw)
+        commit(self.root, "change")
+        return run(self.root, "check", "--base", self.base)
+
+    def assertRefused(self, res: subprocess.CompletedProcess, needle: str) -> None:
         self.assertEqual(res.returncode, 1, res.stdout + res.stderr)
         self.assertIn("REFUSED a-camp", res.stdout)
         self.assertIn(needle, res.stdout)
         self.assertIn("1 refused", res.stdout)
 
-    def test_clean_campaign_passes_and_states_binding(self) -> None:
-        build(self.root, BOOK.format(playtime="~20 minutes"))
-        res = run(self.root, "check")
+    def test_clean_changed_campaign_passes_and_states_binding(self) -> None:
+        res = self.change(GOOD)
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
-        self.assertIn("1 campaign director(ies) judged of 1", res.stdout)
+        self.assertIn("1 changed campaign director(ies) judged of 1 on the tree", res.stdout)
+        self.assertIn("1 composable, 0 refused", res.stdout)
 
     def test_playtime_disagreeing_with_target_minutes_reds(self) -> None:
-        build(self.root, BOOK.format(playtime="15–30 minutes"))
-        self.assertRefused("target_minutes=20")
+        self.assertRefused(self.change(BOOK.format(playtime="15–30 minutes")),
+                           "target_minutes=20")
 
     def test_no_world_json_reds(self) -> None:
-        build(self.root, BOOK.format(playtime="~20 minutes"), world=False)
-        self.assertRefused("has no world.json")
+        self.assertRefused(self.change(GOOD, world=False), "has no world.json")
 
     def test_no_storybook_reds(self) -> None:
-        build(self.root, None)
-        self.assertRefused("has no README.md")
+        self.assertRefused(self.change(None), "has no README.md")
 
     def test_missing_header_row_reds(self) -> None:
-        build(self.root, BOOK.format(playtime="~20 minutes").replace("| **Languages** | English |\n", ""))
-        self.assertRefused("no **Languages** row")
+        self.assertRefused(self.change(GOOD.replace("| **Languages** | English |\n", "")),
+                           "no **Languages** row")
 
     def test_missing_blurb_reds(self) -> None:
-        build(self.root, BOOK.format(playtime="~20 minutes").replace("A short walk among the trees.\n", ""))
-        self.assertRefused("no blurb paragraph")
+        self.assertRefused(self.change(GOOD.replace("A short walk among the trees.\n", "")),
+                           "no blurb paragraph")
 
-    def test_no_campaign_directory_is_a_finding(self) -> None:
-        self.root.mkdir(parents=True)
-        git(self.root, "init", "-q")
-        res = run(self.root, "check")
-        self.assertEqual(res.returncode, 1, res.stdout + res.stderr)
-        self.assertIn("zero campaign directories bound", res.stdout)
+    def test_untouched_campaign_without_storybook_is_not_judged(self) -> None:
+        write_camp(self.root, "old-camp", None)
+        self.base = commit(self.root, "an old campaign with no storybook, on the base")
+        res = self.change(GOOD)
+        self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
+        self.assertNotIn("old-camp", res.stdout)
+        self.assertIn("1 changed campaign director(ies) judged of 2 on the tree", res.stdout)
+
+    def test_zero_changed_campaigns_states_its_zero(self) -> None:
+        write_camp(self.root, "old-camp", None)
+        self.base = commit(self.root, "base with a campaign")
+        (self.root / "README.md").write_text("changed\n", encoding="utf-8")
+        commit(self.root, "a change outside campaigns/")
+        res = run(self.root, "check", "--base", self.base)
+        self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
+        self.assertIn("0 changed campaign director(ies) judged of 1 on the tree", res.stdout)
+        self.assertIn("named zero binding", res.stdout)
+
+    def test_no_base_states_its_zero(self) -> None:
+        write_camp(self.root, "old-camp", None)
+        commit(self.root, "a campaign")
+        res = run(self.root, "check", "--base", "")
+        self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
+        self.assertIn("0 changed campaign director(ies) judged of 1", res.stdout)
+        self.assertIn("no pull-request base was given", res.stdout)
+
+    def test_removed_campaign_is_named_not_judged(self) -> None:
+        write_camp(self.root, "a-camp", None)
+        self.base = commit(self.root, "a campaign")
+        git(self.root, "rm", "-r", "-q", "campaigns/a-camp")
+        commit(self.root, "remove it")
+        res = run(self.root, "check", "--base", self.base)
+        self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
+        self.assertIn("removed a-camp", res.stdout)
 
     def test_render_refuses_what_check_refuses(self) -> None:
-        build(self.root, BOOK.format(playtime="15–30 minutes"))
+        write_camp(self.root, "a-camp", BOOK.format(playtime="15–30 minutes"))
         res = run(self.root, "render", "--campaign", "a-camp", "--image", "img",
                   "--version", "1.0.0", "--has-pack", "false", "--prerelease", "false")
         self.assertEqual(res.returncode, 1)
         self.assertIn("target_minutes=20", res.stderr)
 
     def test_render_prints_the_notes(self) -> None:
-        build(self.root, BOOK.format(playtime="~20 minutes"))
+        write_camp(self.root, "a-camp", GOOD)
         res = run(self.root, "render", "--campaign", "a-camp", "--image", "img",
                   "--version", "1.0.0", "--has-pack", "true", "--prerelease", "false")
         self.assertEqual(res.returncode, 0, res.stderr)
