@@ -9,7 +9,7 @@ A short, gentle delve for a small party of guests: a forest clan's camp of treeh
 | | |
 |---|---|
 | **Players** | 1–4 |
-| **Playtime** | 15–30 minutes |
+| **Playtime** | ~20 minutes |
 | **Mode** | adventure, no combat |
 | **Languages** | English, 简体中文 (`zh-cn`) |
 | **Class** | one — Guest of the Clan |
