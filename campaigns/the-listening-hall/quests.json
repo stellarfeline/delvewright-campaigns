@@ -1,7 +1,146 @@
 {
   "campaign_id": "the-listening-hall",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "happening": {
+          "text": "The party stands at the door of a hall that has been sealed for a long time.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-hall",
+        "objectives": [
+          {
+            "anchor": "anchor/node-hall",
+            "happening": {
+              "text": "Someone stands on the glass over the well.",
+              "verb": "arrives"
+            },
+            "hint": "Walk up the hall to the glass in the middle of its floor.",
+            "id": "obj/stand-over-the-well",
+            "radius": 1,
+            "title": "Stand over the well",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/stand-over-the-well"
+            ],
+            "anchor": "anchor/node-far-door",
+            "happening": {
+              "text": "They leave the hall by its far door.",
+              "verb": "departs"
+            },
+            "hint": "The low arch at the north end of the hall.",
+            "id": "obj/reach-the-far-door",
+            "radius": 1,
+            "title": "Go out by the far door",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "steps": [
+              {
+                "at_ticks": 200,
+                "effects": [
+                  {
+                    "happening": {
+                      "text": "The hall lets them go.",
+                      "verb": "survives"
+                    },
+                    "type": "campaign-complete"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/reach-the-far-door": [
+            {
+              "block": "minecraft:sculk_vein[down=true]",
+              "region": {
+                "anchor": "anchor/node-hall",
+                "extent": [
+                  3,
+                  0,
+                  10
+                ]
+              },
+              "type": "fill-region"
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-hall",
+                "offset": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "count": 120,
+              "particle": "minecraft:sculk_charge_pop",
+              "speed": 0.02,
+              "spread": [
+                3.0,
+                0.2,
+                10.0
+              ],
+              "type": "particle"
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-hall",
+                "offset": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "count": 40,
+              "particle": "minecraft:sculk_soul",
+              "speed": 0.02,
+              "spread": [
+                3.0,
+                0.5,
+                10.0
+              ],
+              "type": "particle"
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-hall",
+                "at": "anchor",
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ]
+              },
+              "sound": "minecraft:block.sculk_catalyst.bloom",
+              "type": "play-sound",
+              "volume": 2.0
+            },
+            {
+              "style": "subtitle",
+              "text": "Behind you, the hall floor blooms.",
+              "type": "narrate"
+            }
+          ],
+          "obj/stand-over-the-well": [
+            {
+              "style": "chat",
+              "text": "Under the glass, far down, something glows and does not move. The floor is still listening.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
   },
   "dsl_version": "0.39.0",
   "stage": "quests"
