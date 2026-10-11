@@ -100,6 +100,26 @@ def hang(pc, x, y, z):
     pc.set(x, y, z, arch.lantern(True))
 
 
+def hang_under(pc, x, z, y_top):
+    """a lantern hung from whatever is overhead at column (x, z), below y_top"""
+    y = y_top
+    while y > pc.dy and pc.get(x, y, z) != AIR:
+        y -= 1
+    if y > pc.dy + 2 and (x, y, z) not in pc.prog.region:
+        pc.set(x, y, z, arch.lantern(True))
+
+
+def lamp_grid(pc, y, step=5):
+    """lanterns hung in a grid that reaches every edge of the room"""
+    (sx0, _, sz0), (sx1, _, sz1) = pc.space
+    xs = sorted(set(list(range(sx0 + 2, sx1 - 1, step)) + [sx1 - 2]))
+    zs = sorted(set(list(range(sz0 + 2, sz1 - 1, step)) + [sz1 - 2]))
+    for x in xs:
+        for z in zs:
+            if (x, y, z) not in pc.prog.region:
+                hang(pc, x, y, z)
+
+
 def finish_building(pc, entry="room"):
     stations(pc)
     space_claim(pc, entry)
@@ -174,13 +194,26 @@ def cliff_steps(node):
                     pc.set(x, y, z, mix(r, RUBBLE))
             if (x, ceil_y, z) not in pc.prog.region:
                 pc.set(x, ceil_y, z, PLANK)
+    # the stairwell is as wide as its flight: the walls close in beside it
+    fcells = flight.get("flight", []) + flight.get("landing", [])
+    fx = {x for (x, y, z) in fcells}
+    fz = {z for (x, y, z) in fcells}
+    low = min((y for (x, y, z) in fcells), default=fy)
+    for z in fz:
+        for x in range(x0 + 1, x1):
+            if x in fx:
+                continue
+            for y in range(fy, top + 1):
+                if (x, y, z) not in pc.prog.region and pc.get(x, y, z) == AIR:
+                    pc.set(x, y, z, mix(r, RUBBLE))
     # slate over the top
     rr = pc.roof
     arch.gable(pc, x0 - 1, z0 - 1, x1 + 1, z1 + 1, rr["lid_y"], "z", SLATE, mix(r, RUBBLE), max_courses=rr["courses"] + 1)
     for z in range(sz0 + 2, sz1, 4):
         windows(pc, "west", [z], fy + 1)
-    hang(pc, sx0 + 2, fy + 3, sz1 - 1)
-    hang(pc, sx0 + 2, top - 1, sz0 + 1)
+    for z in sorted(set(list(range(sz0 + 1, sz1, 4)) + [sz1 - 1])):
+        hang_under(pc, sx0 + 2, z, top - 1)
+        hang_under(pc, sx1 - 1, z, top - 1)
     space_claim(pc, "room")
     node_mark(pc)
     roof_no_body(pc)
@@ -325,9 +358,7 @@ def fish_market(node):
             pc.set(x, fy, z, BARREL)
         for x in range(sx0 + 2, sx1 - 1, 4):
             pc.set(x, pc.roof["lid_y"] - 1, sz0 + 4, S("minecraft:cobweb"))
-        for x in range(sx0 + 3, sx1, 6):
-            for z in range(sz0 + 3, sz1, 6):
-                hang(pc, x, pc.roof["lid_y"] - 1, z)
+        lamp_grid(pc, pc.roof["lid_y"] - 1)
     pc = building(node, wall_fn, "gable", "z", COBBLE, PLANK, furnish, corner=LOG, plinth=STONE)
     space_claim(pc, "room", "open")
     stations(pc)
@@ -372,8 +403,7 @@ def seamens_chapel(node):
         pc.set(cx, fy + 1, sz0 + 1, arch.candle(3))
         for (x, z) in [(sx0, sz0), (sx1, sz0), (sx0, sz1 - 1), (sx1, sz1 - 1), (sx0, sz0 + 8), (sx1, sz0 + 8)]:
             pc.set(x, fy, z, arch.candle(3))
-        for z in range(sz0 + 2, sz1, 5):
-            hang(pc, cx, lid_y - 1, z)
+        lamp_grid(pc, lid_y - 1, step=4)
     pc = building(node, rubble_fn, "gable", "z", STONE, PLANK, furnish, corner=MOSSY,
                   wins=[("west", [109, 113, 117, 121], 0, 0)] and [], gable_block=COBBLE)
     # tall narrow windows down both sides, a bell-cote on the south gable
@@ -470,6 +500,12 @@ def chapel_crypt(node):
             pc.edge(a="landing-chapel-to-crypt", b="exterior", **{"class": "stair"}, rise=0,
                     via="door-chapel-to-crypt")
             entry = "landing-chapel-to-crypt"
+            # a lamp left on the floor beside the stair's foot and one along its side
+            for (x, z) in [(ax + (top - fy) // 2, max(zs) + 1), (ax + (top - fy) // 2, min(zs) - 1),
+                           (ax + top - fy + 1, max(zs) + 1)]:
+                if pc.get(x, fy, z) == AIR and (x, fy, z) not in pc.prog.region:
+                    pc.set(x, fy, z, arch.lantern(False))
+    pc.set(sx0 + 1, fy, sz0 + 1, arch.lantern(False)) if (sx0 + 1, fy, sz0 + 1) not in pc.prog.region else None
     for (x, z) in [(sx0 + 1, sz1 - 1), (sx1 - 1, sz0 + 2), (sx1 - 1, sz1 - 2)]:
         pc.set(x, fy, z, arch.candle(3))
     pc.set(sx0 + 4, fy, sz0 + 6, arch.candle(2))
@@ -526,9 +562,7 @@ def whalers_shed(node):
             pc.set(sx0 - 1, fy + 2, z, S("minecraft:iron_chain", axis="y")) if False else None
         for z in range(sz0, sz1 + 1):
             pc.set(sx1, fy, z, BARREL) if z in (sz0, sz0 + 1) else None
-        for x in range(sx0 + 3, sx1, 6):
-            for z in range(sz0 + 3, sz1, 6):
-                hang(pc, x, lid_y - 1, z)
+        lamp_grid(pc, lid_y - 1)
     pc = building(node, wall_fn, "gable", "x", PLANK, PLANK, furnish, corner=DLOG, plinth=COBBLE,
                   roof_fam="dark_oak", gable_block=DARK, wins=[("north", [6, 12], 3, 1)])
     return finish_building(pc)

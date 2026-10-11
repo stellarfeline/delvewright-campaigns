@@ -77,6 +77,60 @@ def dome_cells(pc, box=None, y_floor=None, height=None, inset=0):
     return out
 
 
+def hang_lights(pc, cavity, spacing=5, wall_every=4):
+    """what grows in the dark is what lights it: strands of glow berries hanging
+    from the vault to just over a body's reach, a grid of them over the floor;
+    where the vault is low, a shroomlight grown into it; and shroomlight grown
+    into the walls at shoulder height"""
+    cav = set(c for c in cavity if pc.get(*c) == AIR)
+    fy = pc.dy
+    cols = {}
+    for (x, y, z) in cav:
+        cols.setdefault((x, z), []).append(y)
+    def pick(x, z):
+        # one strand per tile, at a place in the tile that differs tile to tile
+        tx, tz = x // spacing, z // spacing
+        h = (tx * 92821 ^ tz * 68917 ^ 0x5bd1) & 0xFFFF
+        c = spacing // 2
+        return x == tx * spacing + c + (h % 3) - 1 and z == tz * spacing + c + ((h // 3) % 3) - 1
+
+    for (x, z), ys in cols.items():
+        if not pick(x, z):
+            continue
+        ys = sorted(ys)
+        floor = ys[0]
+        if pc.get(x, floor - 1, z) == AIR:
+            continue
+        top = floor
+        while (x, top + 1, z) in cav:
+            top += 1
+        if any((x, y, z) in pc.prog.region for y in range(floor, top + 1)) and top - floor < 6:
+            continue
+        if top >= floor + 5:
+            for y in range(floor + 4, top + 1):
+                if (x, y, z) in pc.prog.region:
+                    break
+            else:
+                tip = floor + 4
+                for y in range(tip, top + 1):
+                    pc.set(x, y, z, cave_vine(True, tip=(y == tip)))
+                continue
+        v = (x, top + 1, z)
+        if pc.owned(v) and v not in pc.prog.region and is_full(pc.get(*v)):
+            pc.set(*v, SHROOM)
+    k = 0
+    for (x, y, z) in sorted(cav):
+        if pc.get(x, y - 1, z) != AIR or pc.get(x, y - 2, z) == AIR or (x, y - 1, z) not in cav:
+            continue
+        for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            n = (x + dx, y, z + dz)
+            if n in cav or not pc.owned(n) or n in pc.prog.region or not is_full(pc.get(*n)):
+                continue
+            if ((n[0] * 7 + n[2] * 13) % (wall_every * 3)) == 0:
+                pc.set(*n, SHROOM)
+            break
+
+
 def light_surfaces(pc, r, cavity, every=5, shroom_every=11, vine_every=9):
     """natural light set into the surface: lichen on walls and vault, berries
     hanging from the vault, shroomlight embedded where the vault is thin"""
@@ -197,6 +251,7 @@ def mouth(node):
             if (x, fy, z) in set(cav):
                 pc.set(x, fy, z, BONE_Y)
     light_surfaces(pc, r, cav)
+    hang_lights(pc, cav)
     for (wx, wz, d) in [(sx0 + 2, sz1 - 3, "east"), (sx1 - 2, sz1 - 4, "west")]:
         if pc.get(wx, fy + 1, wz) == AIR:
             pass
@@ -205,31 +260,75 @@ def mouth(node):
 
 
 def throat(node):
+    """a corridor of ribs, every six blocks the same: everything in it repeats
+    with the ribs, so a walker returned twelve blocks back sees no seam; only
+    the wrong rib is not like the others"""
     pc = Piece(node)
     r = rng(node)
     (sx0, sy0, sz0), (sx1, sy1, sz1) = pc.space
     fy = pc.dy
-    flesh_fill(pc, r)
+    for c in boxcells((0, 0, 0), (pc.X - 1, pc.Y - 1, pc.Z - 1)):
+        if pc.owned(c):
+            k = (c[0], c[1], (c[2] - sz0) % 6)
+            h = (k[0] * 73856093 ^ k[1] * 19349663 ^ k[2] * 83492791) & 0xFFFF
+            pc.set(*c, FLESH[h % len(FLESH)][0] if h % 3 else FLESH[0][0])
     cx = (sx0 + sx1) / 2.0
+    half = (sx1 - sx0) / 2.0 - 0.5
     cav = []
     for x in range(sx0, sx1 + 1):
         for z in range(sz0, sz1 + 1):
             for y in range(fy, sy1 + 1):
-                dx = (x - cx) / ((sx1 - sx0) / 2.0 + 0.5)
+                dx = (x - cx) / (half + 0.5)
                 dy = (y - fy + 0.5) / (sy1 - fy + 1.25)
                 if dx * dx + dy * dy <= 1.0:
                     cav.append((x, y, z))
     carve(pc, cav)
     cav += tunnels(pc)
-    # a corridor of ribs, every six blocks the same
-    ribs(pc, cav, "z", list(range(sz0 + 2, sz1, 6)))
-    light_surfaces(pc, r, cav, every=4, shroom_every=97, vine_every=97)
+    cavs = set(cav)
+    ribs(pc, cav, "z", [z for z in range(sz0, sz1 + 1) if (z - sz0) % 6 == 2])
+    # lichen on the walls, the same in every six-block bay
+    for (x, y, z) in sorted(cavs):
+        if pc.get(x, y, z) != AIR or y == fy:
+            continue
+        k = (x * 7 + y * 11 + ((z - sz0) % 6) * 5) % 9
+        for d, (ddx, ddz) in (("west", (-1, 0)), ("east", (1, 0))):
+            n = (x + ddx, y, z + ddz)
+            if n not in cavs and pc.owned(n) and is_full(pc.get(*n)) and k == 0:
+                pc.set(x, y, z, glow_lichen(d))
     # Marrack's chalk-marked lanterns, set back into the flesh between the ribs
-    for z in range(sz0 + 5, sz1, 6):
-        for x, d in ((sx0, "east"), (sx1, "west")):
-            wall = (x - 1, fy + 1, z) if d == "east" else (x + 1, fy + 1, z)
-            if pc.owned(wall):
-                pc.set(*wall, S("minecraft:red_nether_brick_slab", type="top", waterlogged=False)) if False else None
+    # behind a lip of flesh, so the light shows and the lamp does not
+    wx = {}
+    for (x, y, z) in cavs:
+        if y == fy + 1:
+            wx.setdefault(z, []).append(x)
+    for z in range(sz0, sz1 + 1):
+        if (z - sz0) % 6 != 5 or z not in wx:
+            continue
+        lo, hi = min(wx[z]), max(wx[z])
+        for (lip, lamp) in (((lo - 1, fy + 1, z), (lo - 2, fy + 1, z)), ((hi + 1, fy + 1, z), (hi + 2, fy + 1, z))):
+            if pc.owned(lamp) and lip not in pc.prog.region and lamp not in pc.prog.region:
+                pc.set(*lamp, arch.lantern(False))
+                pc.set(*lip, S("minecraft:red_nether_brick_slab", type="top", waterlogged=False))
+    # glowworm points in the vault over every rib
+    tops = {}
+    for (x, y, z) in cavs:
+        if (z - sz0) % 6 == 2 and abs(x - cx) < 1:
+            tops[z] = max(tops.get(z, y), y)
+    for z, y in tops.items():
+        v = (int(cx), y + 1, z)
+        if pc.owned(v) and v not in pc.prog.region:
+            pc.set(*v, SHROOM)
+    # the wrong rib: broken and set askew in the west wall
+    wr = pc.L(*M.STATIONS["anchor/wrong-rib"][:3])
+    z = wr[2]
+    for y in range(fy, sy1 + 1):
+        xs = [x for (x, yy, zz) in cavs if yy == y and zz == z]
+        if not xs:
+            continue
+        n = (min(xs) - 1, y, z)
+        if pc.owned(n) and n not in pc.prog.region:
+            pc.set(*n, BONE_Z if (y - fy) % 2 else BONE_X)
+    pc.set(wr[0] - 2, fy + 2, z, S("minecraft:red_nether_bricks")) if pc.owned((wr[0] - 2, fy + 2, z)) else None
     wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"))
     claim_room(pc)
     return pc.finish("room")
@@ -259,6 +358,7 @@ def rib_cathedral(node):
     built = wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"),
                        bar_block=S("minecraft:nether_wart_block"))
     light_surfaces(pc, r, cav, every=4, shroom_every=9, vine_every=7)
+    hang_lights(pc, cav)
     claim_room(pc, envelope="open")
     return pc.finish("room")
 
@@ -282,7 +382,9 @@ def stomach(node):
             if edge:
                 pc.set(x, fy, z, BONE_Y)
             else:
-                pc.set(x, fy - 1, z, WATER)
+                for y in (fy - 1, fy - 2):
+                    if pc.owned((x, y, z)):
+                        pc.set(x, y, z, WATER)
     # what earlier visitors left on its shore
     shore = pc.L(*M.STATIONS["anchor/stomach-shore"][:3])
     for (x, z, b) in [(sx0 + 3, sz0 + 6, arch.lantern(False)), (sx0 + 5, sz0 + 8, S("minecraft:brown_carpet")),
@@ -292,6 +394,7 @@ def stomach(node):
             pc.set(x, fy, z, b)
     built = wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"))
     light_surfaces(pc, r, cav, every=4, shroom_every=8, vine_every=8)
+    hang_lights(pc, cav)
     claim_room(pc)
     return pc.finish("room")
 
@@ -331,6 +434,7 @@ def heart_chamber(node):
         pc.set(sx_, fy, sz_, S("minecraft:sculk_shrieker", can_summon=False, shrieking=False, waterlogged=False))
     built = wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"), bar_block=S("minecraft:bone_block", axis="y"))
     light_surfaces(pc, r, cav, every=4, shroom_every=9, vine_every=9)
+    hang_lights(pc, cav)
     # the lanterns Davey's dream did not put out
     for (x, z) in [(sx0, sz0 + 6), (sx1, sz0 + 3)]:
         if (x, fy, z) in cavs:
@@ -362,6 +466,7 @@ def breach(node):
             pc.set(x, fy - 1, z, S("minecraft:mud") if pc.W(x, 0, 0)[0] < 150 else S("minecraft:nether_wart_block"))
     wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"))
     light_surfaces(pc, r, cav, every=3, shroom_every=97, vine_every=97)
+    hang_lights(pc, cav)
     pc.set(sx0 + 7, fy + 2, sz0 + 1, SHROOM) if False else None
     claim_room(pc)
     return pc.finish("room")
@@ -382,9 +487,37 @@ def spine_stair(node):
                 cav.append((x, y, z))
     carve(pc, cav)
     ribs(pc, cav, "z", list(range(sz0 + 2, sz1, 4)))
-    wall_seams(pc, "room", tread_fam="polished_diorite", fill=S("minecraft:bone_block", axis="y"))
+    built = wall_seams(pc, "room", tread_fam="polished_diorite", fill=S("minecraft:bone_block", axis="y"))
     cav += tunnels(pc)
+    # the flesh closes in beside the vertebrae: the neck is as wide as its stair,
+    # shroomlight grown into its sides at a climber's shoulder
+    for b in built.values():
+        fc = b.get("flight", []) + b.get("landing", [])
+        if not fc:
+            continue
+        fx = {x for (x, y, z) in fc}
+        rows = {}
+        for (x, y, z) in fc:
+            rows[z] = min(rows.get(z, y), y)
+        for z, ty in rows.items():
+            for x in range(sx0, sx1 + 1):
+                if x in fx:
+                    continue
+                for y in range(fy, sy1 + 1):
+                    if (x, y, z) not in pc.prog.region:
+                        pc.set(x, y, z, mix(r, FLESH))
+            if z % 3 == 0:
+                for x in (min(fx) - 1, max(fx) + 1):
+                    c = (x, ty + 1, z)
+                    if pc.owned(c) and c not in pc.prog.region:
+                        pc.set(*c, SHROOM)
+    for z in range(sz0, sz1 + 1, 4):
+        for x in (sx0 - 1, sx1 + 1):
+            c = (x, fy + 2, z)
+            if pc.owned(c) and c not in pc.prog.region and pc.get(x + (1 if x < sx0 else -1), fy + 2, z) == AIR:
+                pc.set(*c, SHROOM)
     light_surfaces(pc, r, cav, every=3, shroom_every=11, vine_every=97)
+    hang_lights(pc, cav)
     claim_room(pc)
     return pc.finish("room")
 
@@ -436,6 +569,7 @@ def spine_top(node):
     wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"))
     cav += tunnels(pc)
     light_surfaces(pc, r, [c for c in cav if pc.get(*c) == AIR], every=3, shroom_every=11, vine_every=97)
+    hang_lights(pc, [c for c in cav if pc.get(*c) == AIR])
     space_claim(pc, "room", "enclosed")
     node_mark(pc)
     leftovers_no_body(pc)
@@ -488,8 +622,9 @@ def jaw_bank(node):
                 pc.set(x, fy - 1, z, mix(r, [(S("minecraft:nether_wart_block"), 2), (S("minecraft:red_terracotta"), 1)]))
                 if z % 3 == 0:
                     pc.set(x, fy, z, BONE_Y)
-        # the crew's lamps on the bank
-        for (x, z) in [(sx0 + 3, sz0 + 2), (sx0 + 22, sz0 + 3), (sx1 - 4, sz0 + 9)]:
+        # the crew's lamps on the bank, one each side of the way into the mouth
+        for (x, z) in [(sx0 + 3, sz0 + 2), (sx0 + 22, sz0 + 3), (sx1 - 4, sz0 + 9),
+                       (pc.L(165, 0, 0)[0], sz1 - 1), (pc.L(188, 0, 0)[0], sz1 - 1)]:
             stake(pc, x, z)
     return bank_place(node, extra)
 

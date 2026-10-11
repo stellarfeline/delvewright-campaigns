@@ -123,6 +123,8 @@ def hull(pc, r, x0, z0, L, W, axis, lean, broken=0):
                     continue
                 edge = j in (0, w - 1) or y == fy + h
                 if not edge:
+                    # silted up to its gunwales: the mud fills the hull
+                    pc.set(*c, MUD)
                     continue
                 b = S("minecraft:dark_oak_log", axis="y") if (i % 4 == 0 and y < fy + h) else mix(r, [(DARK, 3), (PLANK, 2), (S("minecraft:stripped_dark_oak_log", axis=axis), 1)])
                 pc.set(*c, b)
@@ -457,8 +459,10 @@ def ferry_house(node, door_face):
             if x != sx0:
                 pc.set(x, y, screen_z, PLANK)
     # Marrack's lanterns hung from the beams
-    for (x, z) in [(sx0 + 1, sz0 + 5), (sx0 + 1, sz1 - 3), (skx + 2, sz0 + 6), (sx1, sz1 - 1)]:
-        pc.set(x, lid_y - 1, z, arch.lantern(True))
+    for (x, z) in [(sx0 + 1, sz0 + 5), (sx0 + 1, sz1 - 3), (skx + 2, sz0 + 6), (sx1, sz1 - 1),
+                   (sx1 - 1, sz0 + 1), (sx1 - 2, sz1 - 1)]:
+        if pc.get(x, lid_y - 1, z) == AIR and (x, lid_y - 1, z) not in pc.prog.region:
+            pc.set(x, lid_y - 1, z, arch.lantern(True))
     for st in M.P[node]["stations"]:
         station_mark(pc, st["anchor"], clear=not st["anchor"].endswith("tiller"))
     # the spaces: the quay and the skiff are one floor, at the walk plane

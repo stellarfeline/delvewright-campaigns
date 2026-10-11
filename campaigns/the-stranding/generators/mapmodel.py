@@ -210,13 +210,16 @@ place("node/mouth", 168, 521, 20, 16, "datum/flat", ("clearance", 8),
       stations=[ST("anchor/chalk-arrow", "Marrack's chalk arrow on a tooth")])
 place("node/throat", 174, 538, 7, 30, "datum/flat", ("clearance", 5),
       intent="corridor", note="A corridor of ribs, every six blocks the same, that returns the walker twelve blocks back until the wrong rib is struck.",
-      stations=[ST("anchor/wrong-rib", "the broken rib set wrong")])
+      stations=[ST("anchor/wrong-rib", "the broken rib set wrong"),
+                ST("anchor/throat-loop", "where the throat returns the walker, between two ribs"),
+                ST("anchor/throat-return", "twelve blocks back, between the same two ribs")])
 place("node/rib-cathedral", 167, 569, 29, 39, "datum/flat", ("clearance", 30),
       intent="vault", note="The chest: a vault of ribs, moonlight through two roof wounds, the diaphragm closing the way down.",
       stations=[ST("anchor/diaphragm", "the membrane of the diaphragm")])
 place("node/stomach", 171, 609, 22, 20, "datum/flat", ("clearance", 10),
       intent="arena", note="A black pool behind a curb of bone; on its shore what earlier visitors left.",
-      stations=[ST("anchor/stomach-shore", "Marrack's men's lamp on the shore")])
+      stations=[ST("anchor/stomach-shore", "Marrack's men's lamp on the shore"),
+                ST("anchor/stomach-pool", "over the black pool behind its curb of bone")])
 place("node/heart-chamber", 157, 610, 13, 20, "datum/flat", ("clearance", 14),
       intent="living-room", note="Sculk over bone, sensors and a shrieker, the heart with three valves, Davey standing awake by it.",
       stations=[ST("anchor/davey-heart", "where Davey stands by the heart"),
@@ -249,7 +252,9 @@ place("node/tail-bank", 160, 666, 40, 12, "datum/flat", ("open", 9),
 place("node/tail-road", 201, 655, 10, 24, "datum/flat", ("open", 6),
       intent="run", note="Round the flukes onto the east bank.")
 place("node/run-bank", 212, 505, 8, 160, "datum/flat", ("open", 6),
-      intent="run", note="The east bank back north to the head, Marrack's crew's lamp stakes along it; it falls into the sea behind the party.")
+      intent="run", note="The east bank back north to the head, Marrack's crew's lamp stakes along it; it falls into the sea behind the party.",
+      stations=[ST("anchor/run-marker-%d" % k, "lamp stake %d of the Run" % k) for k in (1, 2, 3, 4)]
+      + [ST("anchor/run-section-%d" % k, "the middle of the bank behind lamp stake %d" % k) for k in (1, 2, 3, 4)])
 
 # ---------------------------------------------------------------------------
 # where each station stands in the world: the cell a body's feet are in (or the
@@ -283,14 +288,25 @@ STATIONS = {
     "anchor/jaw-west-pit": (167, 64, 511, "south"),
     "anchor/jaw-east-pit": (189, 64, 511, "south"),
     "anchor/chalk-arrow": (176, 64, 524, "south"),
-    "anchor/wrong-rib": (174, 65, 556, "east"),
+    "anchor/wrong-rib": (175, 64, 556, "west"),
+    "anchor/throat-loop": (177, 64, 561, "south"),
+    "anchor/throat-return": (177, 64, 549, "south"),
     "anchor/diaphragm": (181, 64, 606, "south"),
     "anchor/stomach-shore": (176, 64, 614, "south"),
+    "anchor/stomach-pool": (186, 64, 618, "south"),
     "anchor/davey-heart": (163, 64, 616, "north"),
     "anchor/valve-west": (160, 64, 625, "south"),
     "anchor/valve-middle": (163, 64, 625, "south"),
     "anchor/valve-east": (166, 64, 625, "south"),
     "anchor/brow-stone": (173, 104, 520, "north"),
+    "anchor/run-marker-1": (215, 64, 639, "north"),
+    "anchor/run-marker-2": (215, 64, 591, "north"),
+    "anchor/run-marker-3": (215, 64, 543, "north"),
+    "anchor/run-marker-4": (215, 64, 511, "north"),
+    "anchor/run-section-1": (215, 64, 655, "north"),
+    "anchor/run-section-2": (215, 64, 622, "north"),
+    "anchor/run-section-3": (215, 64, 574, "north"),
+    "anchor/run-section-4": (215, 64, 534, "north"),
 }
 
 

@@ -102,8 +102,11 @@ def solids():
     S.append(capsule((157, 95, 523), (157, 95, 560), 3.5, 3.5, 1.0, noisy=False))
     S.append(capsule((203, 95, 523), (203, 95, 560), 3.5, 3.5, 1.0, noisy=False))
     # wrinkled hide over the head's flanks below the top
-    for x in (153.5, 206.5):
+    for x in (155.5, 204.5):
         S.append(capsule((x, 78, 526), (x, 78, 558), 4.0, 4.0, 3.5, noisy=True))
+    # the flanks fall sheer to the mud, so nothing overhangs the ground
+    S.append(box(151, 62, 522, 153, 79, 561, noisy=True))
+    S.append(box(207, 62, 522, 209, 79, 561, noisy=True))
     # -- the back: a low hump falling in steps toward the tail
     S.append(capsule((180, 62, 563), (180, 62, 590), 30, 30, 38 / 30, noisy=True))
     S.append(capsule((180, 62, 590), (180, 62, 619), 29.5, 28, 34 / 29.5, noisy=True))
@@ -116,7 +119,9 @@ def solids():
         S.append(box(p["x"] - 1, fl - 6, p["z"] - 1, M.x1(p) + 1, fl - 1, M.z1(p) + 1, noisy=False))
     # the knuckles along the spine toward the tail
     for z in (628, 634, 640):
-        S.append(ellipsoid((187.5, 85.0, z), (2.0, 1.2, 2.0), noisy=False))
+        S.append(capsule((187.5, 76, z), (187.5, 84, z), 2.0, 1.2, 1.0, noisy=False))
+    # the flank stands thick beside the heart, so its chamber is walled, not shelled
+    S.append(box(150, 62, 600, 156, 77, 640, noisy=True))
     # -- the flippers, splayed on the mud
     S.append(capsule((154, 65, 584), (149, 63, 597), 3.0, 1.5, 0.5, noisy=False))
     S.append(capsule((206, 65, 584), (210, 63, 597), 3.0, 1.5, 0.5, noisy=False))
@@ -138,10 +143,25 @@ def solids():
     S.append(ellipsoid((196, 92, 576), (3.0, 1.8, 4.0), op="cut", noisy=True))
     S.append(ellipsoid((196, 91.5, 576), (2.0, 1.5, 3.0), material=FLESH, noisy=True))
     # -- every place inside the body is cut out whole: its own piece draws it
-    for nid in INSIDE:
-        x0, y0, z0, x1, y1, z1 = claim_box(nid)
+    # one cell wider than the claim all round: the sculpt dresses a cut's faces
+    # with slabs and stairs in the cells just inside it, and the stamp would lay
+    # those over the place's own walls and lid
+    # Where a place opens out of the body (the mouth's front, the breach) the
+    # wider cut would leave a gap round its walls open to the outside, so there
+    # the cut is the claim itself.
+    def cut(x0, y0, z0, x1, y1, z1):
         S.append(box(max(x0, ORIGIN[0]), max(y0, BODY_Y0), max(z0, ORIGIN[2]),
                      min(x1, ORIGIN[0] + BOX[0] - 1), y1, min(z1, ORIGIN[2] + BOX[2] - 1), op="cut"))
+
+    for nid in INSIDE:
+        x0, y0, z0, x1, y1, z1 = claim_box(nid)
+        if nid == "node/breach":
+            cut(x0, y0, z0, x1, y1, z1)
+        elif nid == "node/mouth":
+            cut(x0, y0, z0, x1, y1, z0 + 2)
+            cut(x0 - 1, y0, z0 + 3, x1 + 1, y1 + 1, z1 + 1)
+        else:
+            cut(x0 - 1, y0, z0 - 1, x1 + 1, y1 + 1, z1 + 1)
     # the Brow Stone: a tall pale carved tablet driven into the forehead
     S.append(box(172, 99, 521, 175, 102, 521, material=STONE_TABLET))
     return S
