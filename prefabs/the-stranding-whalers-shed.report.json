@@ -1,0 +1,200 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 15,
+      "undecided": 0,
+      "detail": "15 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 15,
+      "undecided": 0,
+      "detail": "15 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 15,
+      "undecided": 0,
+      "detail": "15 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 422,
+      "undecided": 0,
+      "detail": "422 fill(s) examined, 133 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "stair-shape",
+      "state": "pass",
+      "bound": 320,
+      "undecided": 0,
+      "detail": "320 stair(s), every written `shape` the one vanilla derives from that stair's own neighbours"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 6080,
+      "undecided": 0,
+      "detail": "1562 filled cell(s) of 6080 in the region"
+    },
+    {
+      "id": "contract-well-formed",
+      "state": "pass",
+      "bound": 4,
+      "undecided": 0,
+      "detail": "1 space(s), 1 out-of-walk region(s) and 2 edge(s) hold together: no overlap, one floor each, every opening on the boundary it claims"
+    },
+    {
+      "id": "contract-coverage",
+      "state": "pass",
+      "bound": 752,
+      "undecided": 0,
+      "detail": "every one of 752 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
+    },
+    {
+      "id": "contract-closure",
+      "state": "pass",
+      "bound": 1013,
+      "undecided": 0,
+      "detail": "1013 boundary cell(s) examined; every one is accounted for"
+    },
+    {
+      "id": "contract-no-body",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 340 cell(s) facade, 160 cell(s) sealed"
+    },
+    {
+      "id": "contract-reachability",
+      "state": "pass",
+      "bound": 252,
+      "undecided": 0,
+      "detail": "every one of 252 standable cell(s) in declared space is reached from \"room\" through declared edges only"
+    },
+    {
+      "id": "contract-anchors",
+      "state": "pass",
+      "bound": 2,
+      "undecided": 0,
+      "detail": "2 anchor(s), every one landing in a contract element: 2 in a space"
+    },
+    {
+      "id": "contract-exterior-faces",
+      "state": "pass",
+      "bound": 2,
+      "undecided": 0,
+      "detail": "2 exterior edge(s) export 2 face(s): south walk, east walk"
+    },
+    {
+      "id": "contract-no-body-majority",
+      "state": "pass",
+      "bound": 752,
+      "undecided": 0,
+      "detail": "500 of 752 standable cell(s) are out of walk, acknowledged: \"a building that owns its outside owns its roof, and a pitched roof is more standable surface than the room under it; nobody walks it\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 1562,
+    "region_cells": 6080,
+    "distinct_states": 15,
+    "standable_cells": 752,
+    "footprint_area": 320,
+    "footprint_perimeter": 72,
+    "silhouette_complexity": 1.0062305898749053,
+    "top_blocks": [
+      [
+        "minecraft:spruce_planks",
+        0.41613316261203587
+      ],
+      [
+        "minecraft:dark_oak_planks",
+        0.2093469910371319
+      ],
+      [
+        "minecraft:dark_oak_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+        0.10243277848911651
+      ],
+      [
+        "minecraft:dark_oak_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
+        0.10243277848911651
+      ],
+      [
+        "minecraft:stripped_dark_oak_log[axis=y]",
+        0.0499359795134443
+      ]
+    ],
+    "stairs": 320,
+    "fluid_cells": 0,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 0,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 752,
+      "sheltered": 432,
+      "entry_cells": 64,
+      "reachable": 340,
+      "reachable_share": 0.4521276595744681,
+      "unreachable_sheltered": 412,
+      "unreachable_open": 0,
+      "pockets": 2,
+      "largest_pockets": [
+        {
+          "cells": 252,
+          "sheltered": 252,
+          "min": [
+            1,
+            1,
+            1
+          ],
+          "max": [
+            18,
+            2,
+            14
+          ]
+        },
+        {
+          "cells": 160,
+          "sheltered": 160,
+          "min": [
+            2,
+            10,
+            3
+          ],
+          "max": [
+            17,
+            10,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  "anchors": {
+    "anchor/node-whalers-shed": [
+      8,
+      1,
+      7
+    ],
+    "anchor/spade-rack": [
+      3,
+      1,
+      7
+    ]
+  },
+  "findings": [
+    "412 standable cell(s) UNDER A ROOF have no walking route from the entrance — floor in a space a body cannot get to. 2 pocket(s) of unreachable floor in all; the largest: 252 cell(s), 252 sheltered — x 1..18 y 1..2 z 1..14 · 160 cell(s), 160 sheltered — x 2..17 y 10..10 z 3..12"
+  ],
+  "enumeration": [
+    "no_body \"roof\": mixed — 160 standable cell(s) sealed, 340 standable cell(s) facade, the kind computed per cell",
+    "exterior face: walk on the south side, via space \"room\", 2 cell(s)",
+    "exterior face: walk on the east side, via space \"room\", 9 cell(s)",
+    "gate `contract-edge-proof` is not emitted over this piece: the contract declares one space, so there is no interior edge that could have been proved: a room with a door makes no claim about moving BETWEEN spaces"
+  ]
+}

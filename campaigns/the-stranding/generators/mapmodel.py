@@ -41,7 +41,7 @@ DATUMS = {
     "datum/back-upper": 100,
     "datum/back-middle": 96,
     "datum/back-lower": 86,
-    "datum/tail-flank": 74,
+    "datum/tail-flank": 68,
     "datum/mast": 75,
 }
 
@@ -87,49 +87,49 @@ place("node/coach-road", 196, 6, 84, 8, "datum/coach-road", ("open", 6),
       intent="arrival", note="The cobbled coach road along the cliff top, a drystone parapet on the drop and the rock bank behind; the coach stop's timber shelter at its east end.",
       stations=[ST("anchor/coach-stop", "the notice on the coach stop's post")])
 place("node/cliff-steps", 200, 15, 5, 15, "datum/cliff-steps", ("clearance", 14),
-      roof={"courses": 3, "eaves": 1}, intent="descent",
+      roof={"courses": 4, "eaves": 0}, intent="descent",
       note="The covered steps down the cliff from the coach road to the head of the High Street.")
 place("node/high-street", 192, 31, 22, 56, "datum/high-street", ("open", 24),
       intent="street", note="The High Street between two terraces of tall slate-roofed houses; sleepers stand in the open doorways facing the sea.")
 place("node/harbour-lane", 118, 88, 96, 14, "datum/harbour", ("open", 14),
       intent="quay", note="The harbour lane along the north quay: the office, the cottage, the lofts and the market open off it; the basin lies below its quay edge.")
 place("node/harbour-office", 168, 79, 9, 8, "datum/harbour", ("clearance", 6),
-      roof={"courses": 5, "eaves": 1}, intent="office",
+      roof={"courses": 6, "eaves": 0}, intent="office",
       note="Wenna Coyle's office: the tide board stuck at low, the desk, a window over the harbour.")
 place("node/coyle-house", 124, 81, 7, 6, "datum/harbour", ("clearance", 4),
       roof={"courses": 4, "eaves": 1}, intent="cottage",
       note="A single-storey limewashed cottage: Davey's room, the soaked bed, the footprints, the wool picture.",
       stations=[ST("anchor/wool-picture", "Davey's picture of the dream in coloured wool")])
 place("node/net-lofts", 136, 80, 12, 7, "datum/lofts", ("clearance", 5),
-      roof={"courses": 4, "eaves": 1}, intent="loft",
+      roof={"courses": 5, "eaves": 0}, intent="loft",
       note="A plank loft over the harbour up a stair, nets and floats, a sleeper at the loft door.")
 place("node/boatyard", 124, 103, 44, 37, "datum/basin", ("open", 10),
       intent="arena", note="The emptied harbour basin: the town's boats lie on their sides on the mud.",
       stations=[ST("anchor/shipwright-note", "the shipwright's note nailed to a hull")])
 place("node/fish-market", 169, 103, 21, 22, "datum/harbour", ("clearance", 7),
-      roof={"courses": 6, "eaves": 1}, intent="arena",
+      roof={"courses": 12, "eaves": 0}, intent="arena",
       note="The covered fish market hall: stone slabs, barrels, nets; its sea doors open on the slipway up out of the basin.",
       stations=[ST("anchor/market-slate", "the market slate where the day's catch is chalked")])
 place("node/seawall", 170, 126, 90, 9, "datum/harbour", ("open", 7),
       intent="threshold", note="The seawall along the town's south front, a parapet over the flat; the threshold of the wrong place.",
       stations=[ST("anchor/customs-lock", "the padlock on the Customs House door")])
 place("node/seamens-chapel", 226, 106, 11, 19, "datum/chapel", ("clearance", 9),
-      roof={"courses": 7, "eaves": 1}, intent="chapel",
+      roof={"courses": 7, "eaves": 0}, intent="chapel",
       note="A small rubble-stone chapel, the Rubbing on its wall.",
       stations=[ST("anchor/rubbing-script", "the carvers' script under the Rubbing's second panel")])
 place("node/chapel-crypt", 227, 108, 9, 15, "datum/crypt", ("clearance", 5),
       intent="crypt", note="The crypt under the chapel: niches of the drowned and the founders' cupboard.")
 place("node/customs-house", 196, 109, 14, 16, "datum/harbour", ("clearance", 6),
-      roof={"courses": 6, "eaves": 1}, intent="records",
+      roof={"courses": 7, "eaves": 0}, intent="records",
       note="The town's records: the night ledger, the chart of the old road, the chip of the stone under glass.",
       stations=[ST("anchor/customs-chart", "the chart of the Pilgrims' Way"),
                 ST("anchor/stone-chip", "the chip of the Brow Stone under glass")])
 place("node/whalers-shed", 105, 106, 18, 14, "datum/harbour", ("clearance", 8),
-      roof={"courses": 7, "eaves": 1}, intent="store",
+      roof={"courses": 9, "eaves": 0}, intent="store",
       note="The last whaling crew's flensing tools; the Flensing Spade on its rack.",
       stations=[ST("anchor/spade-rack", "the Flensing Spade on its rack")])
 place("node/ropewalk", 108, 121, 7, 40, "datum/harbour", ("clearance", 4),
-      roof={"courses": 3, "eaves": 1}, intent="passage",
+      roof={"courses": 3, "eaves": 0}, intent="passage",
       note="The long low rope shed, a sleeper at each end.")
 place("node/breakwater", 107, 162, 9, 44, "datum/harbour", ("open", 5),
       intent="causeway", note="The stone arm out into the bay with the flat on both sides of it.")
@@ -178,7 +178,7 @@ place("node/skiff-stage", 164, 393, 19, 12, "datum/flat", ("open", 6),
       stations=[ST("anchor/near-bell", "the ferry bell beside the near house's land door"),
                 ST("anchor/near-bell-stand", "where the ringer of the near bell stands")])
 place("node/near-ferry-house", 166, 406, 12, 16, "datum/flat", ("clearance", 6),
-      roof={"courses": 5, "eaves": 1}, intent="ferry",
+      roof={"courses": 8, "eaves": 0}, intent="ferry",
       note="The old road's near ferry house: a stone quay beside the slip, Marrack's skiff inside.",
       stations=[ST("anchor/near-skiff", "the skiff's seat row"),
                 ST("anchor/near-tiller", "the near skiff's tiller"),
@@ -187,7 +187,7 @@ place("node/sea-skiff", 62, 448, 5, 10, "datum/flat", ("open", 4), base={"aloft"
       intent="reveal", note="The third copy of the skiff on the open water west of the ferry houses, in the sea fog; reached only by the crossing back.",
       stations=[ST("anchor/sea-skiff", "the seat row of the skiff on the open water")])
 place("node/far-ferry-house", 140, 482, 12, 16, "datum/flat", ("clearance", 6),
-      roof={"courses": 5, "eaves": 1}, intent="ferry",
+      roof={"courses": 8, "eaves": 0}, intent="ferry",
       note="The far ferry house that came up with the trench floor, built like the near one; the skiff's twin inside.",
       stations=[ST("anchor/far-skiff", "the far skiff's seat row"),
                 ST("anchor/far-tiller", "the far skiff's tiller"),
@@ -224,7 +224,7 @@ place("node/heart-chamber", 157, 610, 13, 20, "datum/flat", ("clearance", 14),
                 ST("anchor/valve-east", "the east valve")])
 place("node/breach", 141, 618, 15, 4, "datum/flat", ("clearance", 4),
       intent="tunnel", note="A short tunnel of torn flesh from the heart chamber out through a wound to the flank ridge.")
-place("node/spine-stair", 160, 556, 5, 53, "datum/flat", ("clearance", 39),
+place("node/spine-stair", 159, 528, 5, 81, "datum/flat", ("clearance", 39),
       intent="climb", note="Up the inside of the neck on the vertebrae, out through the blowhole.")
 
 # ---- Act 4: the brow and the escape -------------------------------------
@@ -239,9 +239,9 @@ place("node/back-middle", 168, 591, 9, 28, "datum/back-middle", ("open", 8), bas
       intent="run", note="The hump of the back.")
 place("node/back-lower", 168, 620, 9, 26, "datum/back-lower", ("open", 13), base={"aloft": 0},
       intent="run", note="The knuckles of the spine toward the tail.")
-place("node/tail-flank", 168, 647, 9, 18, "datum/tail-flank", ("open", 15), base={"aloft": 0},
+place("node/tail-flank", 168, 647, 9, 18, "datum/tail-flank", ("open", 21), base={"aloft": 0},
       intent="run", note="Down the tail flank onto the bank.")
-place("node/tail-bank", 160, 666, 40, 12, "datum/flat", ("open", 13),
+place("node/tail-bank", 160, 666, 40, 12, "datum/flat", ("open", 8),
       intent="run", note="The bank under the flukes.")
 place("node/tail-road", 201, 655, 10, 24, "datum/flat", ("open", 6),
       intent="run", note="Round the flukes onto the east bank.")
@@ -253,7 +253,7 @@ place("node/run-bank", 212, 505, 8, 160, "datum/flat", ("open", 6),
 # prop's cell), and the way it faces. Every piece marks its stations here.
 STATIONS = {
     "anchor/coach-stop": (270, 96, 9, "north"),
-    "anchor/wool-picture": (127, 66, 82, "north"),
+    "anchor/wool-picture": (127, 66, 81, "north"),
     "anchor/shipwright-note": (150, 64, 118, "south"),
     "anchor/market-slate": (186, 66, 107, "east"),
     "anchor/customs-lock": (204, 66, 127, "north"),
@@ -387,7 +387,7 @@ edge("edge/crown-to-back", "node/crown", "node/back-upper", "stair")
 edge("edge/back-upper-to-middle", "node/back-upper", "node/back-middle", "stair")
 edge("edge/back-middle-to-lower", "node/back-middle", "node/back-lower", "stair")
 edge("edge/back-lower-to-tail", "node/back-lower", "node/tail-flank", "stair")
-edge("edge/tail-flank-to-bank", "node/tail-flank", "node/tail-bank", "stair")
+edge("edge/tail-flank-to-bank", "node/tail-flank", "node/tail-bank", "drop", falls="a-to-b")
 edge("edge/tail-bank-to-road", "node/tail-bank", "node/tail-road", "walk")
 edge("edge/road-to-run-bank", "node/tail-road", "node/run-bank", "walk")
 edge("edge/run-bank-to-jaw", "node/run-bank", "node/jaw-bank", "walk")
@@ -457,14 +457,14 @@ seam("edge/diaphragm", "south", 180, "the diaphragm, a wall of membrane cut open
 seam("edge/stomach-to-heart", "west", 618, "a fold of flesh from the stomach into the heart chamber", PASS)
 seam("edge/heart-to-breach", "west", 619, "the torn opening from the heart chamber into the breach", DOOR)
 seam("edge/breach-to-ridge", "west", 619, "the wound's mouth onto the flank ridge", DOOR)
-seam("edge/heart-to-spine", "north", 161, "the foot of the spine stair, closed by a fold of bone until the beat stops", {"width": 3, "height": 3})
-seam("edge/spine-to-crown", "up", (161, 557), "the vertebra stair up 40 through the blowhole onto the crown", PASS, stair_in="node/spine-stair")
+seam("edge/heart-to-spine", "north", 160, "the foot of the spine stair, closed by a fold of bone until the beat stops", {"width": 3, "height": 3})
+seam("edge/spine-to-crown", "up", (160, 531), "the vertebra stair up 40 through the blowhole onto the crown", PASS, stair_in="node/spine-stair")
 seam("edge/crown-to-brow", "north", 172, "the crown falls forward onto the brow", contact=[6, 5])
 seam("edge/crown-to-back", "south", 171, "down the back from the crown, the spine's steps", PASS, stair_in="node/back-upper")
 seam("edge/back-upper-to-middle", "south", 171, "the spine's steps down onto the hump", PASS, stair_in="node/back-middle")
 seam("edge/back-middle-to-lower", "south", 171, "the spine's steps down the knuckles", PASS, stair_in="node/back-lower")
 seam("edge/back-lower-to-tail", "south", 171, "the spine's steps down onto the tail flank", PASS, stair_in="node/tail-flank")
-seam("edge/tail-flank-to-bank", "south", 171, "down the tail flank onto the bank", PASS, stair_in="node/tail-bank")
+seam("edge/tail-flank-to-bank", "south", 171, "the end of the tail flank, a drop of 4 onto the bank", PASS)
 seam("edge/tail-bank-to-road", "east", 668, "the bank round the flukes", contact=[6, 5])
 seam("edge/road-to-run-bank", "east", 656, "the bank turns north", contact=[6, 5])
 seam("edge/run-bank-to-jaw", "west", 506, "the east bank comes round under the head", contact=[12, 5])
@@ -554,11 +554,13 @@ ATMOS = {}  # node -> atmosphere carried from the first tick (filled by set_atmo
 
 
 def set_atmospheres():
+    # the flat carries the wrong place from the first tick; the body's bank and
+    # its outside are painted by the lamps beat, because their paint meets the
+    # inside's at the mouth and the breach (DW0929)
     wrong = ["node/pilgrims-way", "node/wreck-field", "node/carved-pillars", "node/marracks-launch",
              "node/mast-platform", "node/narrows", "node/narrows-shelf", "node/skiff-stage",
-             "node/far-landing", "node/jaw-bank", "node/flank-ridge", "node/crown", "node/brow",
-             "node/back-upper", "node/back-middle", "node/back-lower", "node/tail-flank",
-             "node/tail-bank", "node/tail-road", "node/run-bank"]
+             "node/mud-wrecks-west", "node/mud-wrecks-east", "node/mud-pillars-west",
+             "node/mud-pillars-east", "node/mud-narrows-west"]
     inside = ["node/mouth", "node/throat", "node/rib-cathedral", "node/stomach",
               "node/heart-chamber", "node/breach", "node/spine-stair"]
     for n in wrong:
@@ -571,16 +573,21 @@ def set_atmospheres():
 # terrain
 
 
-def terrain(x, z):
-    """Surface y of the site's ground at a column (world)."""
+TOWN_PADS = ["node/coach-road", "node/cliff-steps", "node/high-street", "node/harbour-lane",
+             "node/harbour-office", "node/coyle-house", "node/net-lofts", "node/boatyard",
+             "node/fish-market", "node/seawall", "node/seamens-chapel", "node/customs-house",
+             "node/whalers-shed", "node/ropewalk", "node/slipway-stair"]
+
+
+def _base_terrain(x, z):
     # the town on its cliff: the land north of the seawall
     if 118 <= x <= 300 and z <= 138:
         if z <= 14:
             return 95
         if z <= 30:
-            return 85 + (30 - z) * 10 // 16
-        if z <= 87:
-            return 75 + (87 - z) * 10 // 57
+            return 85
+        if z <= 75:
+            return 75
         return 65
     # the west harbour arm (shed, ropewalk) stands on land at 65
     if (100 <= x <= 123 and 103 <= z <= 140) or (100 <= x <= 117 and 141 <= z <= 161):
@@ -599,6 +606,26 @@ def terrain(x, z):
     if 120 <= x <= 232 and 492 <= z <= 696:
         return 62
     return 46
+
+
+_PAD_CACHE = {}
+
+
+def terrain(x, z):
+    """Surface y of the site's ground at a column (world): the base landform,
+    with every town place's plot and ring padded to one under its floor."""
+    if not _PAD_CACHE:
+        for nid in TOWN_PADS:
+            p = P[nid]
+            for xx in range(p["x"] - 1, x1(p) + 2):
+                for zz in range(p["z"] - 1, z1(p) + 2):
+                    if any(q["base"] and q["x"] - 1 <= xx <= x1(q) + 1 and q["z"] - 1 <= zz <= z1(q) + 1
+                           for q in P.values()):
+                        continue
+                    _PAD_CACHE[(xx, zz)] = fy(p) - 1
+    if (x, z) in _PAD_CACHE:
+        return _PAD_CACHE[(x, z)]
+    return _base_terrain(x, z)
 
 
 def heightmap():

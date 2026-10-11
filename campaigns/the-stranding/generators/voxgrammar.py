@@ -27,6 +27,7 @@ class Program:
         self.marks = {}  # (x,y,z) -> list of (stem, facing, role)
         self.contract = None
         self.shown_faces = None
+        self.named_roles = {}  # role name -> block (a bar or a way names its block by role)
 
     # -- authoring --------------------------------------------------------
     def inside(self, x, y, z):
@@ -64,9 +65,11 @@ class Program:
         rules = {}
         rule_of_body = {}
 
+        named_rev = {b: r for r, b in self.named_roles.items()}
+
         def role_for(block):
             if block not in roles:
-                roles[block] = "b%d" % len(roles)
+                roles[block] = named_rev.get(block, "b%d" % len(roles))
             return roles[block]
 
         def leaf(block, region, marks):
@@ -156,7 +159,7 @@ class Program:
             "name": self.name,
             "start": "piece",
             "params": {},
-            "palette": {r: b for b, r in roles.items()},
+            "palette": dict(sorted(({r: b for b, r in roles.items()} | {r: b for r, b in self.named_roles.items()}).items())),
             "rules": rules,
         }
         if self.contract is not None:
