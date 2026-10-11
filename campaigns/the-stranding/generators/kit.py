@@ -118,13 +118,21 @@ class Piece:
         return self.L(x, y, z), f
 
     # -- the spatial contract ------------------------------------------------
-    def claim(self, cells, region, only_air=False):
+    def claim(self, cells, region, only_air=False, share=False):
         """only_air: claim the cells a body can be in (air and the thin and
-        partial blocks it stands in or on), leaving the full blocks."""
+        partial blocks it stands in or on), leaving the full blocks. share: a
+        cell already claimed by another opening is claimed by both (two
+        openings meeting at a corner column)."""
         for c in cells:
             if not self.owned(c):
                 continue
             if only_air and blocks.is_full(self.prog.get(*c)):
+                continue
+            old = self.prog.region.get(c)
+            if share and old and old != region:
+                olds = old if isinstance(old, tuple) else (old,)
+                if region not in olds:
+                    self.prog.region[c] = olds + (region,)
                 continue
             self.prog.region[c] = region
 
@@ -219,7 +227,7 @@ def answer_wall_seam(pc, s, space, tread=None, fill=None, threshold=None, bar_bl
     region = "door-" + est
     hosts = cls == "stair" and s["rise"] > 0 and "stair" in s["answer_with"]
     if not hosts:
-        pc.claim(cells, region)
+        pc.claim(cells, region, share=True)
         if threshold is not None and s["owns_plane"]:
             for (x, y, z) in cells:
                 if y == y0:

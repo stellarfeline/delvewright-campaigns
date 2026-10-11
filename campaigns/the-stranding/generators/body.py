@@ -30,8 +30,9 @@ BODY_Y0 = 62
 FORM = os.path.join(CAMPAIGN, "forms", "the-stranding-body.json")
 PID = "prefab/the-stranding-body"
 
+ROOF_WOUNDS = ((192, 583), (194, 601))
 INSIDE = ["node/mouth", "node/throat", "node/rib-cathedral", "node/stomach",
-          "node/heart-chamber", "node/breach", "node/spine-stair"]
+          "node/heart-chamber", "node/breach", "node/spine-stair", "node/spine-top"]
 OUTSIDE = ["node/crown", "node/brow", "node/back-upper", "node/back-middle",
            "node/back-lower", "node/tail-flank"]
 
@@ -107,10 +108,15 @@ def solids():
     S.append(capsule((180, 62, 563), (180, 62, 590), 30, 30, 38 / 30, noisy=True))
     S.append(capsule((180, 62, 590), (180, 62, 619), 29.5, 28, 34 / 29.5, noisy=True))
     S.append(capsule((180, 62, 619), (180, 62, 646), 27, 21, 24 / 27, noisy=True))
-    S.append(capsule((180, 62, 646), (180, 62, 664), 15, 8, 6 / 15, noisy=True))
+    S.append(capsule((180, 62, 646), (180, 62, 664), 15, 8, 8 / 15, noisy=True))
+    # the spine walk: each place on the back stands on a flat course of hide
+    for nid, (fl,) in (("node/back-upper", (100,)), ("node/back-middle", (96,)),
+                       ("node/back-lower", (86,)), ("node/tail-flank", (70,))):
+        p = M.P[nid]
+        S.append(box(p["x"] - 1, fl - 6, p["z"] - 1, M.x1(p) + 1, fl - 1, M.z1(p) + 1, noisy=False))
     # the knuckles along the spine toward the tail
     for z in (628, 634, 640):
-        S.append(ellipsoid((172.5, 85.5, z), (2.5, 1.2, 2.0), noisy=False))
+        S.append(ellipsoid((187.5, 85.0, z), (2.0, 1.2, 2.0), noisy=False))
     # -- the flippers, splayed on the mud
     S.append(capsule((154, 65, 584), (149, 63, 597), 3.0, 1.5, 0.5, noisy=False))
     S.append(capsule((206, 65, 584), (210, 63, 597), 3.0, 1.5, 0.5, noisy=False))
@@ -127,8 +133,8 @@ def solids():
         for dz in (-2.5, 0, 2.5):
             S.append(capsule((151.5, 69, z + dz), (151.5, 79, z + dz), 0.7, 0.7, 1.0, material=BONE, noisy=False))
     # wounds torn along the back, the cathedral's two roof wounds among them
-    for (x, z) in ((187, 583), (191, 601)):
-        S.append(capsule((x, 88, z), (x, 101, z), 3.0, 3.8, 1.0, op="cut", noisy=True))
+    for (x, z) in ROOF_WOUNDS:
+        S.append(capsule((x, 85, z), (x, 101, z), 3.0, 3.8, 1.0, op="cut", noisy=True))
     S.append(ellipsoid((196, 92, 576), (3.0, 1.8, 4.0), op="cut", noisy=True))
     S.append(ellipsoid((196, 91.5, 576), (2.0, 1.5, 3.0), material=FLESH, noisy=True))
     # -- every place inside the body is cut out whole: its own piece draws it

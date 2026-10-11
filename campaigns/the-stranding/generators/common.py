@@ -6,12 +6,24 @@ from blocks import S, stairs, slab, is_full
 import arch
 
 
+def opening_top(pc):
+    """the highest course any wall seam's opening reaches"""
+    t = pc.dy + 1
+    for s in pc.seams:
+        if s["face"] in ("up", "down"):
+            continue
+        (x0, y0, z0), (x1, y1, z1) = s["cells"]
+        t = max(t, y0, y1)
+    return t
+
+
 def space_claim(pc, name="room", envelope="enclosed", box=None, only_free=True, cap=None):
     """Claim every cell a body can be in (non-full) in the play space (or `box`)
-    that no opening, landing or flight has claimed already."""
+    that no opening, landing or flight has claimed already. `cap` limits the
+    claim's height (open places); it never falls under the openings' tops."""
     (sx0, sy0, sz0), (sx1, sy1, sz1) = box or pc.space
     if cap is not None:
-        sy1 = min(sy1, cap)
+        sy1 = min(sy1, max(cap, opening_top(pc)))
     pc.space_decl(name, envelope)
     for c in boxcells((sx0, sy0, sz0), (sx1, sy1, sz1)):
         if not pc.owned(c) or c in pc.prog.region:
@@ -60,12 +72,15 @@ def node_mark(pc, prefer=None):
     name = "node-" + pc.node.split("/")[1]
     best = None
     (sx0, sy0, sz0), (sx1, sy1, sz1) = pc.space
-    if standable(pc, want) and pc.prog.region.get(want) not in (None,) and not pc.prog.region.get(want, "").startswith(("flight", "door", "landing", "seam")):
+    def rname(c):
+        r = pc.prog.region.get(c)
+        return r[0] if isinstance(r, tuple) else r
+    if standable(pc, want) and rname(want) is not None and not rname(want).startswith(("flight", "door", "landing", "seam")):
         best = want
     else:
         cands = []
         for c in boxcells((sx0, sy0, sz0), (sx1, sy1, sz1)):
-            r = pc.prog.region.get(c)
+            r = rname(c)
             if r is None or r.startswith(("flight", "door", "landing", "seam")):
                 continue
             if pc.no_body and r in pc.no_body:

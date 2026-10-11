@@ -78,7 +78,8 @@ class Program:
             else:
                 body = {"op": "fill", "material": {"role": role_for(block)}}
             if region:
-                body = {"op": "claim", "region": region, "body": body}
+                for rg in (region if isinstance(region, tuple) else (region,)):
+                    body = {"op": "claim", "region": rg, "body": body}
             for stem, facing, role in sorted(marks or [], key=lambda m: m[0]):
                 mk = {"anchor": stem, "at": "corner_min"}
                 if facing:

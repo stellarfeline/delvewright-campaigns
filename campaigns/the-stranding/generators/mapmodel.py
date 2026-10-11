@@ -41,8 +41,9 @@ DATUMS = {
     "datum/back-upper": 100,
     "datum/back-middle": 96,
     "datum/back-lower": 86,
-    "datum/tail-flank": 68,
+    "datum/tail-flank": 70,
     "datum/mast": 75,
+    "datum/spine-top": 84,
 }
 
 # ---------------------------------------------------------------------------
@@ -154,7 +155,7 @@ place("node/carved-pillars", 165, 289, 17, 50, "datum/flat", ("open", 12),
       stations=[ST("anchor/pillar-script", "the carvers' script at the foot of a pillar")])
 place("node/marracks-launch", 140, 289, 24, 50, "datum/flat", ("open", 10),
       intent="camp", note="A salvage launch grounded on the mud beside the way, Marrack's lanterns on its rail.")
-place("node/mast-platform", 149, 296, 5, 5, "datum/mast", ("open", 3), base={"aloft": 0},
+place("node/mast-platform", 155, 302, 5, 5, "datum/mast", ("open", 3), base={"aloft": 0},
       intent="lookout", note="Marrack's mast platform, reached by a timber stair from the mud; it looks along the body's flank.")
 MUD = "A field of wet mud over the sea water that the rising left; it goes under when the flat sinks."
 place("node/mud-wrecks-west", 120, 149, 50, 98, "datum/flat", ("open", 4), base={"aloft": 0},
@@ -224,8 +225,10 @@ place("node/heart-chamber", 157, 610, 13, 20, "datum/flat", ("clearance", 14),
                 ST("anchor/valve-east", "the east valve")])
 place("node/breach", 141, 618, 15, 4, "datum/flat", ("clearance", 4),
       intent="tunnel", note="A short tunnel of torn flesh from the heart chamber out through a wound to the flank ridge.")
-place("node/spine-stair", 159, 528, 5, 81, "datum/flat", ("clearance", 39),
-      intent="climb", note="Up the inside of the neck on the vertebrae, out through the blowhole.")
+place("node/spine-stair", 159, 564, 5, 45, "datum/flat", ("clearance", 24),
+      intent="climb", note="Up the inside of the neck on the vertebrae, from the heart's door.")
+place("node/spine-top", 159, 529, 5, 34, "datum/spine-top", ("clearance", 19),
+      intent="climb", note="The upper neck, the vertebra stair climbing to the blowhole.")
 
 # ---- Act 4: the brow and the escape -------------------------------------
 place("node/crown", 156, 530, 30, 32, "datum/crown", ("open", 6), base={"aloft": 0},
@@ -233,15 +236,15 @@ place("node/crown", 156, 530, 30, 32, "datum/crown", ("open", 6), base={"aloft":
 place("node/brow", 166, 520, 16, 9, "datum/crown", ("open", 6), base={"aloft": 0},
       intent="climax", note="The forehead, the Brow Stone driven into its face.",
       stations=[ST("anchor/brow-stone", "the Brow Stone")])
-place("node/back-upper", 168, 563, 9, 27, "datum/back-upper", ("open", 8), base={"aloft": 0},
+place("node/back-upper", 176, 563, 9, 27, "datum/back-upper", ("open", 8), base={"aloft": 0},
       intent="run", note="The back behind the head, falling along the spine ridge.")
-place("node/back-middle", 168, 591, 9, 28, "datum/back-middle", ("open", 8), base={"aloft": 0},
+place("node/back-middle", 176, 591, 9, 28, "datum/back-middle", ("open", 8), base={"aloft": 0},
       intent="run", note="The hump of the back.")
-place("node/back-lower", 168, 620, 9, 26, "datum/back-lower", ("open", 13), base={"aloft": 0},
+place("node/back-lower", 176, 620, 9, 26, "datum/back-lower", ("open", 13), base={"aloft": 0},
       intent="run", note="The knuckles of the spine toward the tail.")
-place("node/tail-flank", 168, 647, 9, 18, "datum/tail-flank", ("open", 21), base={"aloft": 0},
+place("node/tail-flank", 176, 647, 9, 18, "datum/tail-flank", ("open", 21), base={"aloft": 0},
       intent="run", note="Down the tail flank onto the bank.")
-place("node/tail-bank", 160, 666, 40, 12, "datum/flat", ("open", 8),
+place("node/tail-bank", 160, 666, 40, 12, "datum/flat", ("open", 9),
       intent="run", note="The bank under the flukes.")
 place("node/tail-road", 201, 655, 10, 24, "datum/flat", ("open", 6),
       intent="run", note="Round the flukes onto the east bank.")
@@ -271,8 +274,8 @@ STATIONS = {
     "anchor/near-bell-stand": (176, 64, 402, "south"),
     "anchor/near-skiff": (174, 64, 413, "north"),
     "anchor/near-tiller": (174, 64, 418, "north"),
-    "anchor/near-door": (170, 64, 405, "south"),
-    "anchor/sea-skiff": (64, 64, 453, "north"),
+    "anchor/near-door": (170, 64, 406, "south"),
+    "anchor/sea-skiff": (64, 64, 452, "north"),
     "anchor/far-skiff": (148, 64, 489, "north"),
     "anchor/far-tiller": (148, 64, 494, "north"),
     "anchor/far-bell": (147, 64, 500, "north"),
@@ -381,7 +384,8 @@ edge("edge/heart-to-breach", "node/heart-chamber", "node/breach", "walk")
 edge("edge/breach-to-ridge", "node/breach", "node/flank-ridge", "walk")
 edge("edge/heart-to-spine", "node/heart-chamber", "node/spine-stair", "barred",
      gating={"flags": ["flag/beat-stopped"]}, opens_from="a")
-edge("edge/spine-to-crown", "node/spine-stair", "node/crown", "stair")
+edge("edge/spine-up", "node/spine-stair", "node/spine-top", "stair")
+edge("edge/spine-to-crown", "node/spine-top", "node/crown", "stair")
 edge("edge/crown-to-brow", "node/crown", "node/brow", "walk")
 edge("edge/crown-to-back", "node/crown", "node/back-upper", "stair")
 edge("edge/back-upper-to-middle", "node/back-upper", "node/back-middle", "stair")
@@ -425,32 +429,32 @@ seam("edge/breakwater-to-lighthouse", "south", 111, "the lighthouse door at the 
 seam("edge/seawall-to-slipway", "south", 172, "the slipway stair's head: stone steps down 2 off the seawall", PASS, stair_in="node/slipway-stair")
 seam("edge/lane-to-pier", "west", 93, "the pier's landward end off the lane", PASS)
 seam("edge/slipway-to-way", "south", 172, "a rope across the foot of the stair, where the old road begins", PASS)
-seam("edge/way-to-wrecks", "south", 171, "the way runs on into the wreck field", contact=[5, 5])
-seam("edge/wrecks-to-pillars", "south", 171, "the way runs on past the wrecks", contact=[5, 5])
-seam("edge/pillars-to-launch", "west", 292, "the mud beside the way to Marrack's launch", contact=[6, 5])
-seam("edge/launch-to-mast", "up", (150, 297), "a timber stair up 11 from the mud to the mast platform", DOOR, stair_in="node/marracks-launch")
-seam("edge/way-to-mud-wrecks-west", "west", 149, "the way's west shoulder down onto the mud", contact=[98, 4])
-seam("edge/way-to-mud-wrecks-east", "east", 149, "the way's east shoulder down onto the mud", contact=[98, 4])
-seam("edge/mud-wrecks-west-to-wrecks", "south", 120, "the mud runs on among the wrecks", contact=[50, 4])
-seam("edge/mud-wrecks-east-to-wrecks", "south", 177, "the mud runs on among the wrecks", contact=[64, 4])
-seam("edge/wrecks-to-mud-pillars-west", "south", 120, "the mud runs on south of the wrecks", contact=[19, 4])
-seam("edge/wrecks-to-launch", "south", 140, "the mud runs on to Marrack's launch", contact=[24, 5])
-seam("edge/wrecks-to-mud-pillars-east", "south", 183, "the mud runs on south of the wrecks", contact=[58, 4])
-seam("edge/mud-pillars-west-to-launch", "east", 289, "the mud runs on to Marrack's launch", contact=[50, 4])
-seam("edge/pillars-to-mud-pillars-east", "east", 289, "the mud behind the eastern pillars", contact=[50, 4])
-seam("edge/mud-pillars-west-to-narrows-mud", "south", 120, "the mud runs on toward the narrows", contact=[19, 4])
-seam("edge/launch-to-narrows-mud", "south", 140, "the mud runs on toward the narrows", contact=[24, 4])
-seam("edge/pillars-to-narrows-mud", "south", 165, "the mud runs on toward the narrows", contact=[6, 4])
-seam("edge/narrows-to-narrows-mud", "west", 340, "the ridge's west shoulder down onto the mud", contact=[52, 4])
-seam("edge/narrows-mud-to-stage", "south", 164, "the mud up to the stone stage", contact=[7, 4])
-seam("edge/pillars-to-narrows", "south", 172, "the way narrowing to the ridge", contact=[3, 5])
-seam("edge/narrows-to-shelf", "east", 352, "the mud shelf off the side of the ridge", contact=[14, 5])
-seam("edge/narrows-to-stage", "south", 172, "the ridge onto the stone stage", contact=[3, 5])
+seam("edge/way-to-wrecks", "south", 171, "the way runs on into the wreck field", contact=[5, 2])
+seam("edge/wrecks-to-pillars", "south", 171, "the way runs on past the wrecks", contact=[5, 2])
+seam("edge/pillars-to-launch", "west", 292, "the mud beside the way to Marrack's launch", contact=[6, 2])
+seam("edge/launch-to-mast", "up", (156, 303), "a timber stair up 11 from the mud to the mast platform", DOOR, stair_in="node/marracks-launch")
+seam("edge/way-to-mud-wrecks-west", "west", 149, "the way's west shoulder down onto the mud", contact=[98, 2])
+seam("edge/way-to-mud-wrecks-east", "east", 149, "the way's east shoulder down onto the mud", contact=[98, 2])
+seam("edge/mud-wrecks-west-to-wrecks", "south", 120, "the mud runs on among the wrecks", contact=[50, 2])
+seam("edge/mud-wrecks-east-to-wrecks", "south", 177, "the mud runs on among the wrecks", contact=[64, 2])
+seam("edge/wrecks-to-mud-pillars-west", "south", 120, "the mud runs on south of the wrecks", contact=[19, 2])
+seam("edge/wrecks-to-launch", "south", 140, "the mud runs on to Marrack's launch", contact=[24, 2])
+seam("edge/wrecks-to-mud-pillars-east", "south", 183, "the mud runs on south of the wrecks", contact=[58, 2])
+seam("edge/mud-pillars-west-to-launch", "east", 289, "the mud runs on to Marrack's launch", contact=[50, 2])
+seam("edge/pillars-to-mud-pillars-east", "east", 289, "the mud behind the eastern pillars", contact=[50, 2])
+seam("edge/mud-pillars-west-to-narrows-mud", "south", 120, "the mud runs on toward the narrows", contact=[19, 2])
+seam("edge/launch-to-narrows-mud", "south", 140, "the mud runs on toward the narrows", contact=[24, 2])
+seam("edge/pillars-to-narrows-mud", "south", 165, "the mud runs on toward the narrows", contact=[6, 2])
+seam("edge/narrows-to-narrows-mud", "west", 340, "the ridge's west shoulder down onto the mud", contact=[52, 2])
+seam("edge/narrows-mud-to-stage", "south", 164, "the mud up to the stone stage", contact=[7, 2])
+seam("edge/pillars-to-narrows", "south", 172, "the way narrowing to the ridge", contact=[3, 2])
+seam("edge/narrows-to-shelf", "east", 352, "the mud shelf off the side of the ridge", contact=[14, 2])
+seam("edge/narrows-to-stage", "south", 172, "the ridge onto the stone stage", contact=[3, 2])
 seam("edge/stage-to-near-house", "south", 170, "the near ferry house's land door", DOOR)
 seam("edge/far-house-door", "south", 144, "the far ferry house's land door, shut from the start", DOOR)
-seam("edge/landing-to-jaw", "east", 503, "the bank runs on under the head", contact=[10, 5])
-seam("edge/landing-to-ridge", "south", 128, "the bank runs on along the west flank", contact=[12, 5])
-seam("edge/jaw-to-mouth", "south", 175, "between the teeth onto the tongue", {"width": 6, "height": 4})
+seam("edge/landing-to-jaw", "east", 503, "the bank runs on under the head", contact=[10, 2])
+seam("edge/landing-to-ridge", "south", 128, "the bank runs on along the west flank", contact=[12, 2])
+seam("edge/jaw-to-mouth", "south", 175, "between the teeth onto the tongue", {"width": 6, "height": 3})
 seam("edge/mouth-to-throat", "south", 176, "the mouth narrows into the throat", PASS)
 seam("edge/throat-to-cathedral", "south", 176, "the throat opens into the chest", PASS)
 seam("edge/diaphragm", "south", 180, "the diaphragm, a wall of membrane cut open with the Flensing Spade", {"width": 3, "height": 3})
@@ -458,16 +462,17 @@ seam("edge/stomach-to-heart", "west", 618, "a fold of flesh from the stomach int
 seam("edge/heart-to-breach", "west", 619, "the torn opening from the heart chamber into the breach", DOOR)
 seam("edge/breach-to-ridge", "west", 619, "the wound's mouth onto the flank ridge", DOOR)
 seam("edge/heart-to-spine", "north", 160, "the foot of the spine stair, closed by a fold of bone until the beat stops", {"width": 3, "height": 3})
-seam("edge/spine-to-crown", "up", (160, 531), "the vertebra stair up 40 through the blowhole onto the crown", PASS, stair_in="node/spine-stair")
-seam("edge/crown-to-brow", "north", 172, "the crown falls forward onto the brow", contact=[6, 5])
-seam("edge/crown-to-back", "south", 171, "down the back from the crown, the spine's steps", PASS, stair_in="node/back-upper")
-seam("edge/back-upper-to-middle", "south", 171, "the spine's steps down onto the hump", PASS, stair_in="node/back-middle")
-seam("edge/back-middle-to-lower", "south", 171, "the spine's steps down the knuckles", PASS, stair_in="node/back-lower")
-seam("edge/back-lower-to-tail", "south", 171, "the spine's steps down onto the tail flank", PASS, stair_in="node/tail-flank")
-seam("edge/tail-flank-to-bank", "south", 171, "the end of the tail flank, a drop of 4 onto the bank", PASS)
-seam("edge/tail-bank-to-road", "east", 668, "the bank round the flukes", contact=[6, 5])
-seam("edge/road-to-run-bank", "east", 656, "the bank turns north", contact=[6, 5])
-seam("edge/run-bank-to-jaw", "west", 506, "the east bank comes round under the head", contact=[12, 5])
+seam("edge/spine-up", "north", 160, "the vertebra stair up 20 into the upper neck", PASS, stair_in="node/spine-stair")
+seam("edge/spine-to-crown", "up", (160, 531), "the vertebra stair up 20 through the blowhole onto the crown", PASS, stair_in="node/spine-top")
+seam("edge/crown-to-brow", "north", 172, "the crown falls forward onto the brow", contact=[6, 2])
+seam("edge/crown-to-back", "south", 179, "down the back from the crown, the spine's steps", PASS, stair_in="node/back-upper")
+seam("edge/back-upper-to-middle", "south", 179, "the spine's steps down onto the hump", PASS, stair_in="node/back-middle")
+seam("edge/back-middle-to-lower", "south", 179, "the spine's steps down the knuckles", PASS, stair_in="node/back-lower")
+seam("edge/back-lower-to-tail", "south", 179, "the spine's steps down onto the tail flank", PASS, stair_in="node/tail-flank")
+seam("edge/tail-flank-to-bank", "south", 179, "the end of the tail flank, a drop of 6 onto the bank", PASS)
+seam("edge/tail-bank-to-road", "east", 668, "the bank round the flukes", contact=[6, 2])
+seam("edge/road-to-run-bank", "east", 656, "the bank turns north", contact=[6, 2])
+seam("edge/run-bank-to-jaw", "west", 506, "the east bank comes round under the head", contact=[12, 2])
 
 # ---------------------------------------------------------------------------
 # what each place's walk is judged against (the brief)
@@ -509,7 +514,7 @@ CRITICAL = [
     "node/marracks-launch", "node/carved-pillars", "node/narrows", "node/skiff-stage",
     "node/near-ferry-house", "node/far-ferry-house", "node/far-landing", "node/jaw-bank",
     "node/mouth", "node/throat", "node/rib-cathedral", "node/stomach", "node/heart-chamber",
-    "node/spine-stair", "node/crown", "node/brow", "node/crown", "node/back-upper",
+    "node/spine-stair", "node/spine-top", "node/crown", "node/brow", "node/crown", "node/back-upper",
     "node/back-middle", "node/back-lower", "node/tail-flank", "node/tail-bank",
     "node/tail-road", "node/run-bank", "node/jaw-bank", "node/far-landing",
     "node/far-ferry-house", "node/sea-skiff", "node/near-ferry-house", "node/skiff-stage",
@@ -562,7 +567,7 @@ def set_atmospheres():
              "node/mud-wrecks-west", "node/mud-wrecks-east", "node/mud-pillars-west",
              "node/mud-pillars-east", "node/mud-narrows-west"]
     inside = ["node/mouth", "node/throat", "node/rib-cathedral", "node/stomach",
-              "node/heart-chamber", "node/breach", "node/spine-stair"]
+              "node/heart-chamber", "node/breach", "node/spine-stair", "node/spine-top"]
     for n in wrong:
         ATMOS[n] = "atmosphere/wrong-place"
     for n in inside:
@@ -731,7 +736,7 @@ def main():
         "boxes": [box_doc(P[n]) for n in ORDER],
         "seams": [seam_doc(e) for e in E if e["cls"] not in ("vision", "carry")],
         "identities": [{"fact": f, "cmp": c, "measure": m} for f, c, m in IDENT],
-        "max_drop": 4,
+        "max_drop": 6,
     }))
 
 

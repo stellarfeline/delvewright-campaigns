@@ -7,9 +7,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 import places_town  # noqa: E402
+import places_flat  # noqa: E402
+import places_body  # noqa: E402
 
 BUILDERS = {}
-for mod in (places_town,):
+for mod in (places_town, places_flat, places_body):
     BUILDERS.update(mod.BUILDERS)
 
 

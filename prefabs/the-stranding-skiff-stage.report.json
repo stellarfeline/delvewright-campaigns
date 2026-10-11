@@ -1,0 +1,192 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 10,
+      "undecided": 0,
+      "detail": "10 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 10,
+      "undecided": 0,
+      "detail": "10 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 10,
+      "undecided": 0,
+      "detail": "10 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 1243,
+      "undecided": 0,
+      "detail": "1243 fill(s) examined, 6 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 7056,
+      "undecided": 0,
+      "detail": "5408 filled cell(s) of 7056 in the region"
+    },
+    {
+      "id": "contract-well-formed",
+      "state": "pass",
+      "bound": 5,
+      "undecided": 0,
+      "detail": "1 space(s), 1 out-of-walk region(s) and 3 edge(s) hold together: no overlap, one floor each, every opening on the boundary it claims"
+    },
+    {
+      "id": "contract-coverage",
+      "state": "pass",
+      "bound": 255,
+      "undecided": 0,
+      "detail": "every one of 255 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
+    },
+    {
+      "id": "contract-no-body",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 29 cell(s) facade"
+    },
+    {
+      "id": "contract-reachability",
+      "state": "pass",
+      "bound": 226,
+      "undecided": 0,
+      "detail": "every one of 226 standable cell(s) in declared space is reached from \"stage\" through declared edges only"
+    },
+    {
+      "id": "contract-anchors",
+      "state": "pass",
+      "bound": 3,
+      "undecided": 0,
+      "detail": "3 anchor(s), every one landing in a contract element: 3 in a space"
+    },
+    {
+      "id": "contract-exterior-faces",
+      "state": "pass",
+      "bound": 3,
+      "undecided": 0,
+      "detail": "3 exterior edge(s) export 3 face(s): north walk, north walk, south walk"
+    },
+    {
+      "id": "contract-no-body-majority",
+      "state": "pass",
+      "bound": 255,
+      "undecided": 0,
+      "detail": "29 of 255 standable cell(s) are out of walk — the piece is mostly play space"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 5408,
+    "region_cells": 7056,
+    "distinct_states": 10,
+    "standable_cells": 263,
+    "footprint_area": 294,
+    "footprint_perimeter": 70,
+    "silhouette_complexity": 1.0206207261596574,
+    "top_blocks": [
+      [
+        "minecraft:structure_void",
+        0.5077662721893491
+      ],
+      [
+        "minecraft:stone_bricks",
+        0.35613905325443784
+      ],
+      [
+        "minecraft:cobblestone",
+        0.11168639053254438
+      ],
+      [
+        "minecraft:mossy_stone_bricks",
+        0.01238905325443787
+      ],
+      [
+        "minecraft:cracked_stone_bricks",
+        0.0073964497041420114
+      ]
+    ],
+    "stairs": 0,
+    "fluid_cells": 0,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 0,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 263,
+      "sheltered": 0,
+      "entry_cells": 35,
+      "reachable": 261,
+      "reachable_share": 0.9923954372623575,
+      "unreachable_sheltered": 0,
+      "unreachable_open": 2,
+      "pockets": 2,
+      "largest_pockets": [
+        {
+          "cells": 1,
+          "sheltered": 0,
+          "min": [
+            1,
+            21,
+            12
+          ],
+          "max": [
+            1,
+            21,
+            12
+          ]
+        },
+        {
+          "cells": 1,
+          "sheltered": 0,
+          "min": [
+            19,
+            21,
+            12
+          ],
+          "max": [
+            19,
+            21,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  "anchors": {
+    "anchor/near-bell": [
+      12,
+      18,
+      11
+    ],
+    "anchor/near-bell-stand": [
+      13,
+      18,
+      10
+    ],
+    "anchor/node-skiff-stage": [
+      10,
+      18,
+      6
+    ]
+  },
+  "findings": [],
+  "enumeration": [
+    "envelope: space \"stage\" is declared `open` — no boundary claim, 662 cell(s)",
+    "no_body \"tops\": facade — 29 standable cell(s), every one reached by the air outside the piece",
+    "exterior face: walk on the north side, via space \"stage\", 14 cell(s)",
+    "exterior face: walk on the north side, via space \"stage\", 6 cell(s)",
+    "exterior face: walk on the south side, via space \"stage\", 2 cell(s)",
+    "gate `contract-closure` is not emitted over this piece: 0 of 1 space(s) declare an envelope closure examines; every space is open",
+    "gate `contract-edge-proof` is not emitted over this piece: the contract declares one space, so there is no interior edge that could have been proved: a room with a door makes no claim about moving BETWEEN spaces"
+  ]
+}
