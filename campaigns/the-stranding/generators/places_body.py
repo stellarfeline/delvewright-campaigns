@@ -740,11 +740,12 @@ def brow(node):
         # its top standing out of the brow at the forehead's edge
         bx, by, bz = pc.L(*M.STATIONS["anchor/brow-stone"][:3])
         for x in range(bx - 1, bx + 3):
-            for y in range(fy, fy + 6):
-                if (x, y, bz) == (bx, by, bz):
-                    continue
-                pc.set(x, y, bz, S("minecraft:chiseled_quartz_block") if (x + y) % 2 else S("minecraft:quartz_block"))
-            pc.set(x, fy - 1, bz, S("minecraft:quartz_block"))
+            for z in (bz - 1, bz):
+                for y in range(fy, fy + 6):
+                    if (x, y, z) == (bx, by, bz) or not pc.owned((x, y, z)):
+                        continue
+                    pc.set(x, y, z, S("minecraft:chiseled_quartz_block") if (x + y + z) % 2 else S("minecraft:quartz_block"))
+                pc.set(x, fy - 1, z, S("minecraft:quartz_block")) if pc.owned((x, fy - 1, z)) else None
         # the lip of the forehead over the jaw bank
         for x in range(sx0 - 1, sx1 + 2):
             if pc.owned((x, fy - 1, sz0)) and not is_full(pc.get(x, fy - 1, sz0)):

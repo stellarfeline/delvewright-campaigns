@@ -353,6 +353,67 @@
       "announcements": "shown",
       "markers": "hidden"
     },
+    "lethal_volumes": [
+      {
+        "damage_type": "drown",
+        "id": "lethal/stomach-pool",
+        "message": "The black pool behind the bone has no bottom you would come up from.",
+        "region": {
+          "anchor": "anchor/stomach-pool",
+          "extent": [
+            1,
+            1,
+            3
+          ]
+        }
+      }
+    ],
+    "pulses": [
+      {
+        "at": {
+          "anchor": "anchor/davey-heart"
+        },
+        "every": 30,
+        "floor": 0.25,
+        "id": "pulse/heartbeat",
+        "region": {
+          "anchor": "anchor/node-rib-cathedral",
+          "extent": [
+            24,
+            25,
+            67
+          ]
+        },
+        "sound": "minecraft:entity.warden.heartbeat",
+        "when": {
+          "forbids_flags": [
+            "flag/beat-stopped"
+          ],
+          "requires_flags": [
+            "flag/crossed-out"
+          ]
+        }
+      },
+      {
+        "at": {
+          "anchor": "anchor/davey-heart"
+        },
+        "every": 14,
+        "floor": 0.4,
+        "id": "pulse/heartbeat-quick",
+        "pitch": 1.2,
+        "place": "node/heart-chamber",
+        "sound": "minecraft:entity.warden.heartbeat",
+        "when": {
+          "forbids_flags": [
+            "flag/beat-stopped"
+          ],
+          "requires_flags": [
+            "flag/davey-found"
+          ]
+        }
+      }
+    ],
     "quests": [
       {
         "cast": {
@@ -3047,7 +3108,7 @@
               "type": "narrate"
             },
             {
-              "anchor": "anchor/node-throat",
+              "anchor": "anchor/stomach-shore",
               "type": "set-checkpoint"
             },
             {
@@ -4883,12 +4944,6 @@
         "initial": 0,
         "note": "1 while the Narrows tentacle has been sent down and has not risen again.",
         "scope": "party"
-      },
-      {
-        "id": "state/throat-loops",
-        "initial": 0,
-        "scope": "party",
-        "note": "How many times the throat has returned the party; the walls answer the second and the fourth."
       }
     ],
     "triggers": [
@@ -7651,50 +7706,72 @@
         ]
       },
       {
-        "id": "trigger/run-stake-1",
         "at": "anchor/run-marker-1",
-        "on": {
-          "on": "approach",
-          "range": 4
-        },
-        "once": true,
-        "requires_flags": [
-          "flag/stone-cut"
-        ],
         "effects": [
           {
-            "type": "set-checkpoint",
-            "anchor": "anchor/run-marker-1"
+            "anchor": "anchor/run-marker-1",
+            "type": "set-checkpoint"
           },
           {
-            "type": "clear-region",
             "region": {
               "anchor": "anchor/run-section-1",
               "extent": [
                 4,
-                2,
+                1,
                 9
               ]
-            }
+            },
+            "type": "clear-region"
           },
           {
-            "type": "set-flag",
-            "flag": "flag/run-fallen-1"
-          },
-          {
-            "type": "play-sound",
-            "sound": "minecraft:block.mud.break",
-            "pitch": 0.5,
             "at": {
               "anchor": "anchor/run-section-1",
               "at": "anchor"
-            }
+            },
+            "pitch": 0.5,
+            "sound": "minecraft:block.mud.break",
+            "type": "play-sound"
           }
+        ],
+        "id": "trigger/run-stake-1",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/stone-cut"
         ]
       },
       {
-        "id": "trigger/run-stake-2",
         "at": "anchor/run-marker-2",
+        "effects": [
+          {
+            "anchor": "anchor/run-marker-2",
+            "type": "set-checkpoint"
+          },
+          {
+            "region": {
+              "anchor": "anchor/run-section-2",
+              "extent": [
+                4,
+                1,
+                24
+              ]
+            },
+            "type": "clear-region"
+          },
+          {
+            "at": {
+              "anchor": "anchor/run-section-2",
+              "at": "anchor"
+            },
+            "pitch": 0.5,
+            "sound": "minecraft:block.mud.break",
+            "type": "play-sound"
+          }
+        ],
+        "id": "trigger/run-stake-2",
         "on": {
           "on": "approach",
           "range": 4
@@ -7702,83 +7779,37 @@
         "once": true,
         "requires_flags": [
           "flag/stone-cut"
-        ],
-        "effects": [
-          {
-            "type": "set-checkpoint",
-            "anchor": "anchor/run-marker-2"
-          },
-          {
-            "type": "clear-region",
-            "region": {
-              "anchor": "anchor/run-section-2",
-              "extent": [
-                4,
-                2,
-                24
-              ]
-            }
-          },
-          {
-            "type": "set-flag",
-            "flag": "flag/run-fallen-2"
-          },
-          {
-            "type": "play-sound",
-            "sound": "minecraft:block.mud.break",
-            "pitch": 0.5,
-            "at": {
-              "anchor": "anchor/run-section-2",
-              "at": "anchor"
-            }
-          }
         ]
       },
       {
-        "id": "trigger/run-stake-3",
         "at": "anchor/run-marker-3",
-        "on": {
-          "on": "approach",
-          "range": 4
-        },
-        "once": true,
-        "requires_flags": [
-          "flag/stone-cut"
-        ],
         "effects": [
           {
-            "type": "set-checkpoint",
-            "anchor": "anchor/run-marker-3"
+            "anchor": "anchor/run-marker-3",
+            "type": "set-checkpoint"
           },
           {
-            "type": "clear-region",
             "region": {
               "anchor": "anchor/run-section-3",
               "extent": [
                 4,
-                2,
+                1,
                 24
               ]
-            }
+            },
+            "type": "clear-region"
           },
           {
-            "type": "set-flag",
-            "flag": "flag/run-fallen-3"
-          },
-          {
-            "type": "play-sound",
-            "sound": "minecraft:block.mud.break",
-            "pitch": 0.5,
             "at": {
               "anchor": "anchor/run-section-3",
               "at": "anchor"
-            }
+            },
+            "pitch": 0.5,
+            "sound": "minecraft:block.mud.break",
+            "type": "play-sound"
           }
-        ]
-      },
-      {
-        "id": "trigger/run-stake-4",
-        "at": "anchor/run-marker-4",
+        ],
+        "id": "trigger/run-stake-3",
         "on": {
           "on": "approach",
           "range": 4
@@ -7786,36 +7817,44 @@
         "once": true,
         "requires_flags": [
           "flag/stone-cut"
-        ],
+        ]
+      },
+      {
+        "at": "anchor/run-marker-4",
         "effects": [
           {
-            "type": "set-checkpoint",
-            "anchor": "anchor/run-marker-4"
+            "anchor": "anchor/run-marker-4",
+            "type": "set-checkpoint"
           },
           {
-            "type": "clear-region",
             "region": {
               "anchor": "anchor/run-section-4",
               "extent": [
                 4,
-                2,
+                1,
                 16
               ]
-            }
+            },
+            "type": "clear-region"
           },
           {
-            "type": "set-flag",
-            "flag": "flag/run-fallen-4"
-          },
-          {
-            "type": "play-sound",
-            "sound": "minecraft:block.mud.break",
-            "pitch": 0.5,
             "at": {
               "anchor": "anchor/run-section-4",
               "at": "anchor"
-            }
+            },
+            "pitch": 0.5,
+            "sound": "minecraft:block.mud.break",
+            "type": "play-sound"
           }
+        ],
+        "id": "trigger/run-stake-4",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/stone-cut"
         ]
       }
     ],
@@ -7901,189 +7940,6 @@
             }
           }
         ]
-      }
-    ],
-    "pulses": [
-      {
-        "id": "pulse/heartbeat",
-        "sound": "minecraft:entity.warden.heartbeat",
-        "at": {
-          "anchor": "anchor/davey-heart"
-        },
-        "region": {
-          "anchor": "anchor/node-rib-cathedral",
-          "extent": [
-            24,
-            25,
-            67
-          ]
-        },
-        "every": 30,
-        "floor": 0.25,
-        "when": {
-          "requires_flags": [
-            "flag/crossed-out"
-          ],
-          "forbids_flags": [
-            "flag/beat-stopped"
-          ]
-        }
-      },
-      {
-        "id": "pulse/heartbeat-quick",
-        "sound": "minecraft:entity.warden.heartbeat",
-        "at": {
-          "anchor": "anchor/davey-heart"
-        },
-        "place": "node/heart-chamber",
-        "every": 14,
-        "floor": 0.4,
-        "pitch": 1.2,
-        "when": {
-          "requires_flags": [
-            "flag/davey-found"
-          ],
-          "forbids_flags": [
-            "flag/beat-stopped"
-          ]
-        }
-      }
-    ],
-    "loops": [
-      {
-        "id": "loop/throat",
-        "region": {
-          "anchor": "anchor/throat-loop",
-          "extent": [
-            2,
-            2,
-            0
-          ]
-        },
-        "to": {
-          "anchor": "anchor/throat-return"
-        },
-        "forbids_flags": [
-          "flag/wrong-rib-struck"
-        ],
-        "counts": "state/throat-loops",
-        "on_cross": [
-          {
-            "type": "play-sound",
-            "sound": "minecraft:block.sculk.spread",
-            "pitch": 0.6,
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/throat-loops",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "type": "play-sound",
-            "sound": "minecraft:entity.warden.heartbeat",
-            "pitch": 0.5,
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/throat-loops",
-                  "value": 4
-                }
-              ]
-            }
-          }
-        ]
-      }
-    ],
-    "lethal_volumes": [
-      {
-        "id": "lethal/stomach-pool",
-        "region": {
-          "anchor": "anchor/stomach-pool",
-          "extent": [
-            1,
-            1,
-            3
-          ]
-        },
-        "message": "The black pool behind the bone has no bottom you would come up from.",
-        "damage_type": "drown"
-      },
-      {
-        "id": "lethal/run-hole-1",
-        "region": {
-          "anchor": "anchor/run-section-1",
-          "extent": [
-            3,
-            1,
-            8
-          ]
-        },
-        "message": "The bank went into the sea, and the sea took what fell with it.",
-        "damage_type": "drown",
-        "when": {
-          "requires_flags": [
-            "flag/run-fallen-1"
-          ]
-        }
-      },
-      {
-        "id": "lethal/run-hole-2",
-        "region": {
-          "anchor": "anchor/run-section-2",
-          "extent": [
-            3,
-            1,
-            23
-          ]
-        },
-        "message": "The bank went into the sea, and the sea took what fell with it.",
-        "damage_type": "drown",
-        "when": {
-          "requires_flags": [
-            "flag/run-fallen-2"
-          ]
-        }
-      },
-      {
-        "id": "lethal/run-hole-3",
-        "region": {
-          "anchor": "anchor/run-section-3",
-          "extent": [
-            3,
-            1,
-            23
-          ]
-        },
-        "message": "The bank went into the sea, and the sea took what fell with it.",
-        "damage_type": "drown",
-        "when": {
-          "requires_flags": [
-            "flag/run-fallen-3"
-          ]
-        }
-      },
-      {
-        "id": "lethal/run-hole-4",
-        "region": {
-          "anchor": "anchor/run-section-4",
-          "extent": [
-            3,
-            1,
-            15
-          ]
-        },
-        "message": "The bank went into the sea, and the sea took what fell with it.",
-        "damage_type": "drown",
-        "when": {
-          "requires_flags": [
-            "flag/run-fallen-4"
-          ]
-        }
       }
     ]
   },
