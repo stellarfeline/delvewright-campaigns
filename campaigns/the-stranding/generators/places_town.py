@@ -685,7 +685,8 @@ def slipway_stair(node):
     (sx0, sy0, sz0), (sx1, sy1, sz1) = pc.space
     fy = pc.dy
     ground(pc, lambda x, z: mix(r, [(STONE, 3), (MOSSY, 1), (CRACKED, 1)]), lambda x, z: STONE)
-    built = wall_seams(pc, "stair", tread_fam="stone_brick", fill=STONE, threshold=STONE, bar_block=S("minecraft:iron_bars"))
+    # the shortcut is shut with planks: a full block the gate opens by id (bars re-connect and the gate misses them)
+    built = wall_seams(pc, "stair", tread_fam="stone_brick", fill=STONE, threshold=STONE, bar_block=S("minecraft:dark_oak_planks"))
     door_cells = {c for b in built.values() for c in b["cells"]}
     # the side walls; on the basin side a single course, so its top is no
     # step from the basin's high quay edge into the stair
