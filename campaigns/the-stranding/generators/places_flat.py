@@ -417,7 +417,10 @@ def skiff(pc, x0, z0, deck_y, hull=True):
                 gap = (j == 0 and i in (5, 6))      # where the party steps aboard from the quay
                 pc.set(x, deck_y + 1, z, AIR if gap else DFENCE)
             if stern and not side:
-                pc.set(x, deck_y + 1, z, DFENCE if j != W // 2 else AIR)
+                pc.set(x, deck_y + 1, z, DFENCE)
+                if j == W // 2:
+                    # the rudder post the tiller's head stands on
+                    pc.set(x, deck_y + 2, z, DFENCE)
     # the stem post at the bow
     pc.set(x0 + W // 2, deck_y, z0, S("minecraft:dark_oak_log", axis="y"))
     pc.set(x0 + W // 2, deck_y + 1, z0, DFENCE)

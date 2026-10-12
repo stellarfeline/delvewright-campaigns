@@ -288,6 +288,17 @@ def answer_wall_seam(pc, s, space, tread=None, fill=None, threshold=None, bar_bl
         per[d] = cs
         per.setdefault("treads", []).extend((cx + ix * d, ty, cz + iz * d) for (cx, cz) in cols)
     pc.claim(cells, region)
+    # cheeks: the flight is walled at both sides up past a climber's head, so
+    # it is climbed from its foot and never stepped onto from beside (DW0430)
+    side = [(cx - iz, cz + ix) for (cx, cz) in cols] + [(cx + iz, cz - ix) for (cx, cz) in cols]
+    side = [c for c in side if c not in cols]
+    for d, ty in rows:
+        for (sx, sz) in side:
+            x, z = sx + ix * d, sz + iz * d
+            for y in range(pc.dy, ty + 3):
+                c = (x, y, z)
+                if pc.owned(c) and c not in pc.prog.region and not blocks.is_full(pc.get(*c)):
+                    pc.set(*c, fill)
     treads = per.pop("treads")
     land_d = d0 if owned else 1
     flight_ds = [d for d, _ in rows if d > land_d]

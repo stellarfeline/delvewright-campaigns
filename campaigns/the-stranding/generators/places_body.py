@@ -442,9 +442,12 @@ def heart_chamber(node):
         x, z = sx0 + dx, sz0 + dz
         if (x, fy, z) in cavs and pc.get(x, fy, z) == AIR:
             pc.set(x, fy, z, S("minecraft:sculk_sensor", power=0, sculk_sensor_phase="inactive", waterlogged=False))
-    sx_, sz_ = sx0 + 1, sz0 + 1
-    if (sx_, fy, sz_) in cavs:
-        pc.set(sx_, fy, sz_, S("minecraft:sculk_shrieker", can_summon=False, shrieking=False, waterlogged=False))
+    # the shrieker in the dark of the chamber's far side, summoning off
+    for (dx, dz) in [(2, 2), (3, 2), (2, 3), (3, 3), (4, 3), (3, 4)]:
+        sx_, sz_ = sx0 + dx, sz0 + dz
+        if (sx_, fy, sz_) in cavs and pc.get(sx_, fy, sz_) == AIR and (sx_, fy, sz_) not in pc.prog.region:
+            pc.set(sx_, fy, sz_, S("minecraft:sculk_shrieker", can_summon=False, shrieking=False, waterlogged=False))
+            break
     built = wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"), bar_block=S("minecraft:bone_block", axis="y"))
     light_surfaces(pc, r, cav, every=4, shroom_every=9, vine_every=9)
     hang_lights(pc, cav)

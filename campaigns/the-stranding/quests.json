@@ -38,9 +38,9 @@
         "facing": "north",
         "id": "actor/watcher-heart",
         "offset": [
-          -4,
+          4,
           0,
-          7
+          -5
         ],
         "watch": {
           "who": "nearest",
@@ -355,9 +355,7 @@
     },
     "lethal_volumes": [
       {
-        "damage_type": "drown",
         "id": "lethal/stomach-pool",
-        "message": "The black pool behind the bone has no bottom you would come up from.",
         "region": {
           "anchor": "anchor/stomach-pool",
           "extent": [
@@ -365,17 +363,18 @@
             1,
             4
           ]
-        }
+        },
+        "message": "The black pool behind the bone has no bottom you would come up from.",
+        "damage_type": "drown"
       }
     ],
     "pulses": [
       {
+        "id": "pulse/heartbeat",
+        "sound": "minecraft:entity.warden.heartbeat",
         "at": {
           "anchor": "anchor/davey-heart"
         },
-        "every": 30,
-        "floor": 0.25,
-        "id": "pulse/heartbeat",
         "region": {
           "anchor": "anchor/node-rib-cathedral",
           "extent": [
@@ -384,32 +383,27 @@
             67
           ]
         },
-        "sound": "minecraft:entity.warden.heartbeat",
+        "every": 30,
+        "floor": 0.25,
         "when": {
           "forbids_flags": [
             "flag/beat-stopped"
-          ],
-          "requires_flags": [
-            "flag/crossed-out"
           ]
         }
       },
       {
+        "id": "pulse/heartbeat-quick",
+        "sound": "minecraft:entity.warden.heartbeat",
         "at": {
           "anchor": "anchor/davey-heart"
         },
+        "place": "node/heart-chamber",
         "every": 14,
         "floor": 0.4,
-        "id": "pulse/heartbeat-quick",
         "pitch": 1.2,
-        "place": "node/heart-chamber",
-        "sound": "minecraft:entity.warden.heartbeat",
         "when": {
           "forbids_flags": [
             "flag/beat-stopped"
-          ],
-          "requires_flags": [
-            "flag/davey-found"
           ]
         }
       }
@@ -6815,6 +6809,9 @@
           "on": "use"
         },
         "once": false,
+        "prop": {
+          "block": "minecraft:dark_oak_fence"
+        },
         "requires_flags": [
           "flag/skiff-lent"
         ]
@@ -6994,6 +6991,9 @@
           "on": "use"
         },
         "once": false,
+        "prop": {
+          "block": "minecraft:dark_oak_fence"
+        },
         "requires_flags": [
           "flag/run-done"
         ]
@@ -7794,13 +7794,23 @@
         ]
       },
       {
+        "id": "trigger/run-stake-1",
         "at": "anchor/run-marker-1",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/stone-cut"
+        ],
         "effects": [
           {
-            "anchor": "anchor/run-marker-1",
-            "type": "set-checkpoint"
+            "type": "set-checkpoint",
+            "anchor": "anchor/run-marker-1"
           },
           {
+            "type": "clear-region",
             "region": {
               "anchor": "anchor/run-section-1",
               "extent": [
@@ -7808,58 +7818,22 @@
                 1,
                 9
               ]
-            },
-            "type": "clear-region"
+            }
           },
           {
+            "type": "play-sound",
+            "sound": "minecraft:block.mud.break",
+            "pitch": 0.5,
             "at": {
               "anchor": "anchor/run-section-1",
               "at": "anchor"
-            },
-            "pitch": 0.5,
-            "sound": "minecraft:block.mud.break",
-            "type": "play-sound"
+            }
           }
-        ],
-        "id": "trigger/run-stake-1",
-        "on": {
-          "on": "approach",
-          "range": 4
-        },
-        "once": true,
-        "requires_flags": [
-          "flag/stone-cut"
         ]
       },
       {
-        "at": "anchor/run-marker-2",
-        "effects": [
-          {
-            "anchor": "anchor/run-marker-2",
-            "type": "set-checkpoint"
-          },
-          {
-            "region": {
-              "anchor": "anchor/run-section-2",
-              "extent": [
-                4,
-                1,
-                24
-              ]
-            },
-            "type": "clear-region"
-          },
-          {
-            "at": {
-              "anchor": "anchor/run-section-2",
-              "at": "anchor"
-            },
-            "pitch": 0.5,
-            "sound": "minecraft:block.mud.break",
-            "type": "play-sound"
-          }
-        ],
         "id": "trigger/run-stake-2",
+        "at": "anchor/run-marker-2",
         "on": {
           "on": "approach",
           "range": 4
@@ -7867,16 +7841,52 @@
         "once": true,
         "requires_flags": [
           "flag/stone-cut"
+        ],
+        "effects": [
+          {
+            "type": "set-checkpoint",
+            "anchor": "anchor/run-marker-2"
+          },
+          {
+            "type": "clear-region",
+            "region": {
+              "anchor": "anchor/run-section-2",
+              "extent": [
+                4,
+                1,
+                24
+              ]
+            }
+          },
+          {
+            "type": "play-sound",
+            "sound": "minecraft:block.mud.break",
+            "pitch": 0.5,
+            "at": {
+              "anchor": "anchor/run-section-2",
+              "at": "anchor"
+            }
+          }
         ]
       },
       {
+        "id": "trigger/run-stake-3",
         "at": "anchor/run-marker-3",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true,
+        "requires_flags": [
+          "flag/stone-cut"
+        ],
         "effects": [
           {
-            "anchor": "anchor/run-marker-3",
-            "type": "set-checkpoint"
+            "type": "set-checkpoint",
+            "anchor": "anchor/run-marker-3"
           },
           {
+            "type": "clear-region",
             "region": {
               "anchor": "anchor/run-section-3",
               "extent": [
@@ -7884,20 +7894,22 @@
                 1,
                 24
               ]
-            },
-            "type": "clear-region"
+            }
           },
           {
+            "type": "play-sound",
+            "sound": "minecraft:block.mud.break",
+            "pitch": 0.5,
             "at": {
               "anchor": "anchor/run-section-3",
               "at": "anchor"
-            },
-            "pitch": 0.5,
-            "sound": "minecraft:block.mud.break",
-            "type": "play-sound"
+            }
           }
-        ],
-        "id": "trigger/run-stake-3",
+        ]
+      },
+      {
+        "id": "trigger/run-stake-4",
+        "at": "anchor/run-marker-4",
         "on": {
           "on": "approach",
           "range": 4
@@ -7905,16 +7917,14 @@
         "once": true,
         "requires_flags": [
           "flag/stone-cut"
-        ]
-      },
-      {
-        "at": "anchor/run-marker-4",
+        ],
         "effects": [
           {
-            "anchor": "anchor/run-marker-4",
-            "type": "set-checkpoint"
+            "type": "set-checkpoint",
+            "anchor": "anchor/run-marker-4"
           },
           {
+            "type": "clear-region",
             "region": {
               "anchor": "anchor/run-section-4",
               "extent": [
@@ -7922,27 +7932,17 @@
                 1,
                 16
               ]
-            },
-            "type": "clear-region"
+            }
           },
           {
+            "type": "play-sound",
+            "sound": "minecraft:block.mud.break",
+            "pitch": 0.5,
             "at": {
               "anchor": "anchor/run-section-4",
               "at": "anchor"
-            },
-            "pitch": 0.5,
-            "sound": "minecraft:block.mud.break",
-            "type": "play-sound"
+            }
           }
-        ],
-        "id": "trigger/run-stake-4",
-        "on": {
-          "on": "approach",
-          "range": 4
-        },
-        "once": true,
-        "requires_flags": [
-          "flag/stone-cut"
         ]
       }
     ],
