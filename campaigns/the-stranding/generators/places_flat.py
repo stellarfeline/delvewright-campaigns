@@ -82,6 +82,8 @@ def mud_field(node):
             if r.random() < 0.35:
                 pc.set(x, fy, z, S("minecraft:spruce_fence"))
             elif r.random() < 0.3:
+                # a dead bush lives on mud, never on packed mud
+                pc.set(x, fy - 1, z, MUD)
                 pc.set(x, fy, z, S("minecraft:dead_bush"))
     wall_seams(pc, "mud", fill=MUD)
     # where the field meets the open sea, its edge is a step down a swimmer
@@ -234,7 +236,9 @@ def marracks_launch(node):
         pc.set(mx, y, mz, S("minecraft:spruce_log", axis="y"))
     # lanterns hung from the rail
     for i in (2, 8, 13):
-        pc.set(hx0 - 1 if i % 2 else hx0 + W, fy + 2, hz0 + i, arch.lantern(False))
+        lx = hx0 - 1 if i % 2 else hx0 + W
+        pc.set(lx, fy + 1, hz0 + i, S("minecraft:spruce_fence"))
+        pc.set(lx, fy + 2, hz0 + i, arch.lantern(False))
     # the stair up to the mast platform (through its floor)
     for s in pc.seams:
         if s["face"] == "up":

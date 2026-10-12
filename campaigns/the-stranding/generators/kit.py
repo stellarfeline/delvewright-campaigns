@@ -19,6 +19,26 @@ import blocks  # noqa: E402
 import mapmodel as M  # noqa: E402
 
 AIR = "minecraft:air"
+VINE = "minecraft:cave_vines"
+
+
+def settle_vines(cells):
+    """a hanging vine stays only under a sturdy block or another vine (the server
+    breaks it otherwise), and the lowest cell of each strand is its tip"""
+    vines = sorted((c for c, s in cells.items() if s.startswith(VINE)), key=lambda c: -c[1])
+    for (x, y, z) in vines:
+        above = cells.get((x, y + 1, z), AIR)
+        if not (above.startswith(VINE) or blocks.is_full(above)):
+            cells[(x, y, z)] = AIR
+    for (x, y, z) in vines:
+        s = cells[(x, y, z)]
+        if not s.startswith(VINE):
+            continue
+        berries = "true" if "berries=true" in s else "false"
+        if cells.get((x, y - 1, z), AIR).startswith(VINE):
+            cells[(x, y, z)] = "minecraft:cave_vines_plant[berries=%s]" % berries
+        else:
+            cells[(x, y, z)] = "minecraft:cave_vines[age=25,berries=%s]" % berries
 VOID = "minecraft:structure_void"
 
 
@@ -173,6 +193,7 @@ class Piece:
                 if not s["owns_plane"]:
                     c = (min(x0, x1) + ix, min(y0, y1), min(z0, z1) + iz)
                 self.mark(st, c, facing=s["face"])
+        settle_vines(self.prog.cells)
         blocks.derive(self.prog.cells)
         for c in self.voids:
             self.prog.cells[c] = VOID

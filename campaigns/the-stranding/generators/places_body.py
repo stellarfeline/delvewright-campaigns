@@ -436,7 +436,7 @@ def heart_chamber(node):
         for z in range(hz0, sz1 + 2):
             for y in range(fy, fy + 8):
                 if (x, y, z) not in cavs and pc.owned((x, y, z)) and ((x - (sx0 + sx1) / 2) ** 2 / 30 + (y - fy - 3) ** 2 / 14 + (z - sz1) ** 2 / 20) <= 1.6:
-                    pc.set(x, y, z, mix(r, [(S("minecraft:nether_wart_block"), 3), (S("minecraft:red_mushroom_block", down=True, east=True, north=True, south=True, up=True, west=True), 1), (S("minecraft:crimson_hyphae", axis="y"), 1)]))
+                    pc.set(x, y, z, mix(r, [(S("minecraft:nether_wart_block"), 4), (S("minecraft:crimson_hyphae", axis="y"), 1)]))
     # sensors at every few steps across the floor, the shrieker in the dark
     for (dx, dz) in [(2, 3), (5, 6), (8, 4), (3, 9), (9, 9), (6, 12)]:
         x, z = sx0 + dx, sz0 + dz
