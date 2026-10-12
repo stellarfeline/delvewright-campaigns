@@ -5,7 +5,7 @@ import mapmodel as M
 from kit import Piece, AIR, boxcells, ground, seam_box, INWARD
 from blocks import S, stairs, slab, is_full
 import arch
-from common import (close_rings, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
+from common import (free_sides, close_rings, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
                     shell_box, roof, roof_no_body, chimney, lantern_post)
 from places_town import rng, mix, walls, lid, windows, hang, COBBLE, STONE, MOSSY, CRACKED, PLANK, DARK, \
     LOG, DLOG, FENCE, DFENCE, PACKED, RUBBLE, SLATE, PANE, BARREL, rubble_fn
@@ -39,8 +39,14 @@ def ledge_ring(pc, r, sides=("north", "south", "east", "west"), skip=()):
     for (x, z) in cells:
         if (x, fy - 1, z) in skip or not pc.owned((x, fy - 1, z)):
             continue
-        pc.set(x, fy - 1, z, AIR)
-        pc.set(x, fy - 2, z, mix(r, [(MUD, 3), (PACKED, 1)]))
+        if pc.owned((x, fy - 2, z)):
+            pc.set(x, fy - 1, z, AIR)
+            pc.set(x, fy - 2, z, mix(r, [(MUD, 3), (PACKED, 1)]))
+        else:
+            # a place laid over the water: every other cell of the edge is a step
+            # whose stone the sea batch of world-edits.json lays under it
+            # (generators/edits.py), the rest a half step of the crust
+            pc.set(x, fy - 1, z, AIR if (x + z) % 2 else slab("mud_brick", "bottom"))
 
 
 def stake(pc, x, z, y=None, lamp=True):
@@ -78,6 +84,9 @@ def mud_field(node):
             elif r.random() < 0.3:
                 pc.set(x, fy, z, S("minecraft:dead_bush"))
     wall_seams(pc, "mud", fill=MUD)
+    # where the field meets the open sea, its edge is a step down a swimmer
+    # climbs out by
+    ledge_ring(pc, r, sides=tuple(free_sides(pc)))
     stations(pc)
     close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "mud", "open", cap=fy + 1)

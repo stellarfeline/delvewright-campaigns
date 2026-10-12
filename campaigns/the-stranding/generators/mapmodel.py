@@ -159,15 +159,20 @@ place("node/mast-platform", 155, 302, 5, 5, "datum/mast", ("open", 3), base={"al
       intent="lookout", note="Marrack's mast platform, reached by a timber stair from the mud; it looks along the body's flank.")
 MUD = "A field of wet mud over the sea water that the rising left; it goes under when the flat sinks."
 place("node/mud-wrecks-west", 120, 149, 50, 98, "datum/flat", ("open", 4), base={"aloft": 0},
-      intent="mud", note=MUD + " Beside the first stretch of the way, west.")
+      intent="mud", note=MUD + " Beside the first stretch of the way, west.",
+      stations=[ST("anchor/sink-wrecks-west-col", "the strip of the field the sinking takes last"), ST("anchor/sink-wrecks-west-row", "the strip of the field the sinking takes last")])
 place("node/mud-wrecks-east", 177, 149, 64, 98, "datum/flat", ("open", 4), base={"aloft": 0},
-      intent="mud", note=MUD + " Beside the first stretch of the way, east.")
+      intent="mud", note=MUD + " Beside the first stretch of the way, east.",
+      stations=[ST("anchor/sink-wrecks-east-col", "the strip of the field the sinking takes last"), ST("anchor/sink-wrecks-east-row", "the strip of the field the sinking takes last")])
 place("node/mud-pillars-west", 120, 289, 19, 50, "datum/flat", ("open", 4), base={"aloft": 0},
-      intent="mud", note=MUD + " West of Marrack's launch.")
+      intent="mud", note=MUD + " West of Marrack's launch.",
+      stations=[ST("anchor/sink-pillars-west-row", "the strip of the field the sinking takes last")])
 place("node/mud-pillars-east", 183, 289, 58, 50, "datum/flat", ("open", 4), base={"aloft": 0},
-      intent="mud", note=MUD + " East of the carved pillars.")
+      intent="mud", note=MUD + " East of the carved pillars.",
+      stations=[ST("anchor/sink-pillars-east-col", "the strip of the field the sinking takes last"), ST("anchor/sink-pillars-east-row", "the strip of the field the sinking takes last")])
 place("node/mud-narrows-west", 120, 340, 51, 52, "datum/flat", ("open", 4), base={"aloft": 0},
-      intent="mud", note=MUD + " West of the narrows.")
+      intent="mud", note=MUD + " West of the narrows.",
+      stations=[ST("anchor/sink-narrows-west-row", "the strip of the field the sinking takes last")])
 place("node/narrows", 172, 340, 3, 52, "datum/flat", ("open", 5),
       intent="ridge", note="The way narrowed to a ridge three blocks wide between open water.")
 place("node/narrows-shelf", 176, 350, 24, 18, "datum/flat", ("open", 14),
@@ -278,11 +283,11 @@ STATIONS = {
     "anchor/near-bell": (175, 64, 403, "south"),
     "anchor/near-bell-stand": (176, 64, 402, "south"),
     "anchor/near-skiff": (174, 64, 413, "north"),
-    "anchor/near-tiller": (174, 64, 418, "north"),
+    "anchor/near-tiller": (174, 66, 418, "north"),
     "anchor/near-door": (170, 64, 406, "south"),
     "anchor/sea-skiff": (64, 64, 452, "north"),
     "anchor/far-skiff": (148, 64, 489, "north"),
-    "anchor/far-tiller": (148, 64, 494, "north"),
+    "anchor/far-tiller": (148, 66, 494, "north"),
     "anchor/far-bell": (147, 64, 500, "north"),
     "anchor/far-bell-stand": (148, 64, 501, "north"),
     "anchor/jaw-west-pit": (167, 64, 511, "south"),
@@ -294,6 +299,14 @@ STATIONS = {
     "anchor/diaphragm": (181, 64, 606, "south"),
     "anchor/stomach-shore": (176, 64, 614, "south"),
     "anchor/stomach-pool": (186, 64, 618, "south"),
+    "anchor/sink-wrecks-west-col": (168, 64, 197, "north"),
+    "anchor/sink-wrecks-west-row": (144, 64, 246, "north"),
+    "anchor/sink-wrecks-east-col": (240, 64, 197, "north"),
+    "anchor/sink-wrecks-east-row": (208, 64, 246, "north"),
+    "anchor/sink-pillars-west-row": (129, 64, 338, "north"),
+    "anchor/sink-pillars-east-col": (240, 64, 313, "north"),
+    "anchor/sink-pillars-east-row": (211, 64, 338, "north"),
+    "anchor/sink-narrows-west-row": (145, 64, 391, "north"),
     "anchor/davey-heart": (163, 64, 616, "north"),
     "anchor/valve-west": (160, 64, 625, "south"),
     "anchor/valve-middle": (163, 64, 625, "south"),

@@ -105,8 +105,8 @@ def solids():
     for x in (155.5, 204.5):
         S.append(capsule((x, 78, 526), (x, 78, 558), 4.0, 4.0, 3.5, noisy=True))
     # the flanks fall sheer to the mud, so nothing overhangs the ground
-    S.append(box(151, 62, 522, 153, 79, 561, noisy=True))
-    S.append(box(207, 62, 522, 209, 79, 561, noisy=True))
+    S.append(box(151, 62, 522, 153, 79, 561, noisy=False))
+    S.append(box(207, 62, 522, 209, 79, 561, noisy=False))
     # -- the back: a low hump falling in steps toward the tail
     S.append(capsule((180, 62, 563), (180, 62, 590), 30, 30, 38 / 30, noisy=True))
     S.append(capsule((180, 62, 590), (180, 62, 619), 29.5, 28, 34 / 29.5, noisy=True))
@@ -135,11 +135,12 @@ def solids():
     S.append(ellipsoid((153.2, 70, 556), (1.2, 1.0, 1.6), material=EYE, noisy=False))
     S.append(ellipsoid((206.8, 70, 556), (1.2, 1.0, 1.6), material=EYE, noisy=False))
     # -- the three wounds torn in the west flank: red flesh, pale ribs standing out
+    # (painted into the hide, not hollowed: a hollow in the flank is a pit a
+    # body on the flank drops into and cannot climb out of, DW0921)
     for z in (548, 572, 596):
-        S.append(ellipsoid((152, 74, z), (3.5, 6.5, 5.0), op="cut", noisy=True))
-        S.append(ellipsoid((153.5, 74, z), (2.0, 5.5, 4.0), material=FLESH, noisy=True))
+        S.append(ellipsoid((154.5, 74, z), (3.0, 6.0, 4.5), material=FLESH, noisy=False))
         for dz in (-2.5, 0, 2.5):
-            S.append(capsule((151.5, 69, z + dz), (151.5, 79, z + dz), 0.7, 0.7, 1.0, material=BONE, noisy=False))
+            S.append(capsule((153.0, 69, z + dz), (153.0, 79, z + dz), 0.7, 0.7, 1.0, material=BONE, noisy=False))
     # wounds torn along the back, the cathedral's two roof wounds among them
     for (x, z) in ROOF_WOUNDS:
         S.append(capsule((x, 85, z), (x, 101, z), 3.0, 3.8, 1.0, op="cut", noisy=True))
@@ -152,7 +153,8 @@ def solids():
     # Where a place opens out of the body (the mouth's front, the breach) the
     # wider cut would leave a gap round its walls open to the outside, so there
     # the cut is the claim itself.
-    def cut(x0, y0, z0, x1, y1, z1):
+    def cut(x0, y0, z0, x1, y1, z1, under=1):
+        y0 = y0 - under   # the dressing of the cut's floor face lies under the floor course
         S.append(box(max(x0, ORIGIN[0]), max(y0, BODY_Y0), max(z0, ORIGIN[2]),
                      min(x1, ORIGIN[0] + BOX[0] - 1), y1, min(z1, ORIGIN[2] + BOX[2] - 1), op="cut"))
 
@@ -171,7 +173,7 @@ def solids():
     # the stamp lays nothing on the walk.
     for nid in OUTSIDE:
         x0, y0, z0, x1, y1, z1 = claim_box(nid)
-        cut(x0, M.fy(M.P[nid]) - 2, z0, x1, y1 + 1, z1)
+        cut(x0, M.fy(M.P[nid]) - 2, z0, x1, y1 + 1, z1, under=0)
     # the Brow Stone: a tall pale carved tablet driven into the forehead
     S.append(box(172, 99, 521, 175, 102, 521, material=STONE_TABLET))
     return S

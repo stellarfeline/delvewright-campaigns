@@ -271,3 +271,19 @@ def close_rings(pc, block):
             c = (x, y, z)
             if pc.owned(c) and c not in pc.prog.region and not is_full(pc.get(*c)):
                 pc.set(*c, block(c))
+
+
+def free_sides(pc):
+    """the sides of this place whose ring touches no other place's claim: the
+    sides that face the commons, the sea or the edge of the site"""
+    me = M.P[pc.node]
+    out = []
+    others = [_claim_xz(p) for n, p in M.P.items() if n != pc.node]
+    x0, z0, x1, z1 = me["x"], me["z"], M.x1(me), M.z1(me)
+    rows = {"north": [(x, z0 - 1) for x in range(x0, x1 + 1)], "south": [(x, z1 + 1) for x in range(x0, x1 + 1)],
+            "west": [(x0 - 1, z) for z in range(z0, z1 + 1)], "east": [(x1 + 1, z) for z in range(z0, z1 + 1)]}
+    for side, cells in rows.items():
+        if not any(a <= x <= c and b <= z <= d for (x, z) in cells for (a, b, c, d) in others):
+            out.append(side)
+    return out
+

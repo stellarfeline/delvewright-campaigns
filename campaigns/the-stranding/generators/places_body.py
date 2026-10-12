@@ -16,7 +16,7 @@ import body as B
 from kit import Piece, AIR, boxcells, ground, seam_box, INWARD
 from blocks import S, stairs, slab, is_full
 import arch
-from common import (close_rings, close_fronts, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
+from common import (free_sides, close_rings, close_fronts, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
                     shell_box, lantern_post, standable)
 from places_town import rng, mix, COBBLE, STONE, MOSSY, PLANK, DARK, FENCE, DFENCE, PACKED
 from places_flat import MUD, WET, ledge_ring, stake, WATER
@@ -373,18 +373,20 @@ def stomach(node):
     carve(pc, cav)
     cav += tunnels(pc)
     # the black pool behind a curb of bone, in the chamber's east part
-    px0, px1, pz0, pz1 = sx1 - 9, sx1 - 2, sz0 + 4, sz1 - 4
+    px0, px1, pz0, pz1 = sx1 - 9, sx1 - 3, sz0 + 4, sz1 - 5
+    curb_tops = []
     for x in range(px0, px1 + 1):
         for z in range(pz0, pz1 + 1):
             edge = x in (px0, px1) or z in (pz0, pz1)
             if (x, fy, z) not in set(cav):
                 continue
             if edge:
+                # the curb stands two high: the Drowned that fight on the
+                # shore cannot step over it into the pool (DW0922)
                 pc.set(x, fy, z, BONE_Y)
-            elif (x, z) == (px1 - 1, pz1 - 1):
-                # one stone under the surface in the far corner: a way out
-                pc.set(x, fy - 2, z, BONE_Y)
-                pc.set(x, fy - 1, z, WATER)
+                if (x, fy + 1, z) in set(cav):
+                    pc.set(x, fy + 1, z, BONE_Y)
+                    curb_tops.append((x, fy + 2, z))
             else:
                 for y in (fy - 1, fy - 2):
                     if pc.owned((x, y, z)):
@@ -399,6 +401,12 @@ def stomach(node):
     built = wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"))
     light_surfaces(pc, r, cav, every=4, shroom_every=8, vine_every=8)
     hang_lights(pc, cav)
+    tops = [c for c in curb_tops if not is_full(pc.get(*c)) and c not in pc.prog.region]
+    for c in tops:
+        pc.set(*c, AIR)
+    if tops:
+        pc.claim(tops, "tops")
+        pc.no_body["tops"] = {"reason": "the top of the pool's bone curb"}
     claim_room(pc)
     return pc.finish("room", shown_faces=ALL_FACES)
 
@@ -589,8 +597,8 @@ def bank_place(node, extra=None, sides=None, stakes=None):
     fy = pc.dy
     ground(pc, lambda x, z: mix(r, WET), lambda x, z: PACKED)
     wall_seams(pc, "bank", fill=PACKED)
-    if sides:
-        ledge_ring(pc, r, sides=sides)
+    # every side the bank turns to the open sea is a step down to climb out by
+    ledge_ring(pc, r, sides=tuple(free_sides(pc)))
     if extra:
         extra(pc, r)
     stations(pc)
