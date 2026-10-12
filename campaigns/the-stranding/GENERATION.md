@@ -82,10 +82,17 @@ A design requirement for the new map: a building reads from outside as the thing
 - **The neck** is two places of 20 rise each (the spine stair and the spine top), because one place may hold at most one floor and a stair's rise is an edge's.
 - **The Brow Stone** is a two-block-deep tablet in the forehead, its face toward the crown; the cut is made standing on the brow.
 - **The basin** is entered by dropping two from the quay edge (a one-way contact); it is left by the slipway into the market. The pier meets the lane along its whole landward end; the market's arcade meets the seawall along its whole south side.
-- **Slip steps**: each ferry house's slip has a stone at each end a swimmer climbs out by; the stomach pool has one bone step in its far corner (DW0322).
+- **The sea** stands in every hollow of the site under y 62 and under each mud field's crust (world-edits batch `the-sea`, after the body): the open fill lays ground and nothing over it.
+- **The sinking** takes each mud field whole (each centred clear is joined by the strip it leaves, stations `anchor/sink-*`); a course of stone one under each field's crust, under its ring and first row, is the step a swimmer climbs out by once the mud has gone, and a field's edge on the open sea alternates such steps with a half step of crust.
+- **Slip steps**: each ferry house's slip has a stone at each end a swimmer climbs out by (DW0322).
+- **The stomach pool**'s bone curb stands two high, because the Drowned fight on its shore and would step into the killing volume (DW0922); the whole pool is the killing volume, so the pool cannot be entered — a departure from `DESIGN.md` row 28's "entered only by climbing over the curb".
+- **The tail** stands sheer out of the mud and the tail flank comes down to the bank by steps of hide (a stair, not a drop): the back is reached only by the spine stair.
+- **Hosted stairs** are walled at both sides past a climber's head, so a flight is climbed from its foot (DW0430).
+- **The skiffs**: each carry takes the whole skiff and its tiller's reach; the tiller's head stands on the rudder post over the carried volume (DW0932, DW0542, DW0963).
+- **Showcase cameras** (`design/cameras.json`): all 81 re-aimed at the new map as estimates, each lens in open air (`delvec cameras --preview`: 81 of 81 clear, 81 of 81 approved images answered).
 - **The Run**: the bank falls behind the party one section per lamp stake, each stake setting a checkpoint at itself; the hole is one course deep and carries no killing volume (see *Engine findings*).
 - **The throat** keeps its six-block bays, everything in it repeating with the ribs, ready for the endless corridor; the loop itself is not authored (see *Waiting*).
-- **The watchers** turn to face the nearest player within 16 (street), 24 (flat) and 10 (heart) blocks (spec-0101). **The heartbeat** sounds through the inside every 30 ticks while the party is in the body before the beat stops, and every 14 ticks, higher, in the heart chamber once Davey is found (spec-0102). **Sculk**: sensors across the heart chamber floor and one shrieker in its corner, summoning off (spec-0100).
+- **The watchers** turn to face the nearest player within 16 (street), 24 (flat) and 10 (heart) blocks (spec-0101). **The heartbeat** sounds through the inside every 30 ticks inside the body once the skiff is lent and until the beat stops, and every 14 ticks, higher, in the heart chamber (spec-0102). **Sculk**: sensors across the heart chamber floor and one shrieker in its corner, summoning off (spec-0100).
 
 ## Waiting on the engine
 
