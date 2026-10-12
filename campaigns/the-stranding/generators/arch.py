@@ -24,7 +24,7 @@ def fill(pc, x0, y0, z0, x1, y1, z1, block):
     pc.box(x0, y0, z0, x1, y1, z1, block)
 
 
-def gable(pc, x0, z0, x1, z1, ybase, ridge_axis, fam, gable_block, top_block=None, max_courses=None):
+def gable(pc, x0, z0, x1, z1, ybase, ridge_axis, fam, gable_block, top_block=None, max_courses=None, inset=1):
     """A pitched roof over the rectangle x0..x1 / z0..z1 (eaves included), its
     first course at ybase, the ridge running along `ridge_axis` ('x' or 'z').
     The triangle under the slopes at the two gable ends is walled with
@@ -55,7 +55,7 @@ def gable(pc, x0, z0, x1, z1, ybase, ridge_axis, fam, gable_block, top_block=Non
                         for z in range(a + 1, b):
                             pc.set(x, y, z, top_block)
             # gable ends: the wall lines one in from the eave ends
-            for xg in (x0 + 1, x1 - 1):
+            for xg in (x0 + inset, x1 - inset):
                 for z in range(a + 1, b):
                     pc.set(xg, y, z, gable_block)
         else:
@@ -68,7 +68,7 @@ def gable(pc, x0, z0, x1, z1, ybase, ridge_axis, fam, gable_block, top_block=Non
                     if i == n - 1 and b - a > 1:
                         for x in range(a + 1, b):
                             pc.set(x, y, z, top_block)
-            for zg in (z0 + 1, z1 - 1):
+            for zg in (z0 + inset, z1 - inset):
                 for x in range(a + 1, b):
                     pc.set(x, y, zg, gable_block)
 

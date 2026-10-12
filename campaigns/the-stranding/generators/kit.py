@@ -161,6 +161,8 @@ class Piece:
     def finish(self, entry, shown_faces=None):
         # an owed unlock affordance stands on this side of its barred seam
         for name in self.a.get("owed_anchors", []):
+            if "/" not in name:
+                continue
             st = name.split("/", 1)[1]
             if st.startswith("unlock-") and st not in self.marks_done:
                 eid = "edge/" + st[len("unlock-"):]

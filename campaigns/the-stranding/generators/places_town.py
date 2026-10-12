@@ -11,7 +11,7 @@ import mapmodel as M
 from kit import Piece, AIR, boxcells, ground, ring_cells, INWARD, seam_box
 from blocks import S, stairs, slab, is_full
 import arch
-from common import (leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams, shell_box,
+from common import (close_rings, close_fronts, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams, shell_box,
                     roof, roof_no_body, chimney, lantern_post)
 
 SLATE = "deepslate_tile"
@@ -163,6 +163,7 @@ def coach_road(node):
         lantern_post(pc, x, sz1)
     wall_seams(pc, "road", tread_fam="cobblestone", fill=COBBLE)
     stations(pc)
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "road", "open", cap=fy + 2)
     node_mark(pc)
     sx, sy, sz = pc.L(265, 96, 10)
@@ -343,23 +344,23 @@ def fish_market(node):
                 for y in range(fy, pc.roof["lid_y"]):
                     if (x, y, z) not in pc.prog.region:
                         pc.set(x, y, z, LOG)
-        # the arcade to the seawall: rails between the posts, open over them
+        # the arcade to the seawall: open between the posts
         for x in range(x0 + 1, x1):
-            if (x, fy, z1) not in pc.prog.region and pc.get(x, fy, z1) != LOG:
-                pc.set(x, fy, z1, DFENCE)
-                for y in range(fy + 1, pc.roof["lid_y"] - 1):
+            if pc.get(x, fy, z1) != LOG and (x, fy, z1) not in pc.prog.region:
+                for y in range(fy, pc.roof["lid_y"] - 1):
                     if pc.get(x, y, z1) != LOG and (x, y, z1) not in pc.prog.region:
                         pc.set(x, y, z1, AIR)
         # stone slabs on cobble legs, barrels, nets
         for z in range(sz0 + 3, sz1 - 2, 5):
             for x in range(sx0 + 4, sx1 - 3):
                 pc.set(x, fy, z, SMOOTH_SLAB if x % 3 else COBBLE)
-        for (x, z) in [(sx0, sz0), (sx0, sz0 + 1), (sx1, sz1 - 1), (sx1 - 1, sz1), (sx1, sz0 + 6)]:
+        for (x, z) in [(sx0, sz0), (sx0, sz0 + 1), (sx1, sz1 - 3), (sx1, sz1 - 4), (sx1, sz0 + 6)]:
             pc.set(x, fy, z, BARREL)
         for x in range(sx0 + 2, sx1 - 1, 4):
             pc.set(x, pc.roof["lid_y"] - 1, sz0 + 4, S("minecraft:cobweb"))
         lamp_grid(pc, pc.roof["lid_y"] - 1)
     pc = building(node, wall_fn, "gable", "z", COBBLE, PLANK, furnish, corner=LOG, plinth=STONE)
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "room", "open")
     stations(pc)
     node_mark(pc)
@@ -392,10 +393,18 @@ def seamens_chapel(node):
                         continue
                     b = S("minecraft:%s" % cols[ch]) if ch in cols and ch != " " else S("minecraft:white_terracotta")
                     pc.set(x, y, sz0 - 1, b)
-        # pews facing north, an altar, candles in numbers
+        # pews facing north, an altar, candles in numbers; the pews stand clear
+        # of the hole over the crypt stair, so a climber's head comes up free
+        clear = set()
+        for sm in pc.seams:
+            if sm["face"] == "down":
+                (ax, ay, az), (bx, by, bz) = sm["cells"]
+                clear = {(x, z) for x in range(min(ax, bx) - 2, max(ax, bx) + 3)
+                         for z in range(min(az, bz) - 2, max(az, bz) + 3)}
         for z in range(sz0 + 4, sz1 - 3, 2):
             for x in list(range(sx0, cx - 1)) + list(range(cx + 2, sx1 + 1)):
-                pc.set(x, fy, z, stairs("spruce", "south"))
+                if (x, z) not in clear:
+                    pc.set(x, fy, z, stairs("spruce", "south"))
         for x in range(cx - 1, cx + 2):
             pc.set(x, fy, sz0 + 1, S("minecraft:chiseled_stone_bricks"))
         for x in (cx - 1, cx + 1):
@@ -425,7 +434,8 @@ def seamens_chapel(node):
         if s["face"] == "down":
             (ax, ay, az), (bx, by, bz) = s["cells"]
             cells = list(boxcells((ax, ay, az), (bx, by, bz)))
-            well = [(x + 1, y, z) for (x, y, z) in cells]
+            # the climber's head clears the floor over the stair's two top treads
+            well = [(x + k, y, z) for (x, y, z) in cells for k in (1, 2)]
             for c in cells + well:
                 pc.set(*c, AIR)
             pc.claim(cells, "door-chapel-to-crypt")
@@ -510,6 +520,7 @@ def chapel_crypt(node):
         pc.set(x, fy, z, arch.candle(3))
     pc.set(sx0 + 4, fy, sz0 + 6, arch.candle(2))
     stations(pc)
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "room", "open")
     node_mark(pc)
     leftovers_no_body(pc)
@@ -620,6 +631,8 @@ def harbour_lane(node):
         if (x, fy, sz1) not in pc.prog.region:
             lantern_post(pc, x, sz1)
     stations(pc)
+    close_fronts(pc, lambda c: mix(r, RUBBLE))
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "lane", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -658,6 +671,8 @@ def seawall(node):
         if pc.get(x, fy, sz1) == AIR and (x, fy, sz1) not in pc.prog.region:
             lantern_post(pc, x, sz1)
     stations(pc)
+    close_fronts(pc, lambda c: mix(r, RUBBLE))
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "seawall", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -685,6 +700,8 @@ def slipway_stair(node):
     lantern_post(pc, sx0, sz1 - 1)
     lantern_post(pc, sx1, sz1 - 1)
     stations(pc)
+    close_fronts(pc, lambda c: mix(r, RUBBLE))
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "stair", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -711,6 +728,7 @@ def pier(node):
     for x in range(sx0 + 2, sx1, 8):
         lantern_post(pc, x, sz0 - 1, y=fy)
     stations(pc)
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "pier", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -734,6 +752,7 @@ def breakwater(node):
     for z in range(sz0 + 3, sz1, 10):
         lantern_post(pc, sx0, z)
     stations(pc)
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "arm", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -821,6 +840,8 @@ def high_street(node):
             if c not in door_cells and pc.owned(c) and pc.get(*c) == AIR and wx0 <= x <= wx1:
                 pc.set(*c, mix(r, RUBBLE))
     stations(pc)
+    close_fronts(pc, lambda c: mix(r, RUBBLE))
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "street", "open", cap=fy + 2,
                 box=((wx0 - 1, fy, sz0), (wx1 + 1, sy1, sz1)))
     node_mark(pc)
@@ -882,6 +903,7 @@ def boatyard(node):
     for x in range(sx0 + 2, sx1, 10):
         lantern_post(pc, x, sz1, post=S("minecraft:spruce_fence"))
     stations(pc)
+    close_rings(pc, lambda c: mix(r, RUBBLE))
     space_claim(pc, "basin", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the hulls lying on the mud and the tops of the quay walls")

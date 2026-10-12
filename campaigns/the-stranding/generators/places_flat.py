@@ -5,7 +5,7 @@ import mapmodel as M
 from kit import Piece, AIR, boxcells, ground, seam_box, INWARD
 from blocks import S, stairs, slab, is_full
 import arch
-from common import (leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
+from common import (close_rings, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
                     shell_box, roof, roof_no_body, chimney, lantern_post)
 from places_town import rng, mix, walls, lid, windows, hang, COBBLE, STONE, MOSSY, CRACKED, PLANK, DARK, \
     LOG, DLOG, FENCE, DFENCE, PACKED, RUBBLE, SLATE, PANE, BARREL, rubble_fn
@@ -79,6 +79,7 @@ def mud_field(node):
                 pc.set(x, fy, z, S("minecraft:dead_bush"))
     wall_seams(pc, "mud", fill=MUD)
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "mud", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the tops of old stakes in the mud")
@@ -92,17 +93,11 @@ def pilgrims_way(node):
     fy = pc.dy
     ground(pc, lambda x, z: mix(r, OLD_ROAD), lambda x, z: mix(r, [(PACKED, 3), (S("minecraft:stone"), 1)]))
     built = wall_seams(pc, "way", fill=PACKED)
-    # the shoulders: a step down either side, which the water reaches when the mud goes
-    x0, z0, x1, z1 = shell_box(pc)
-    for z in range(sz0 + 2, sz1 + 1):
-        for x in (x0, x1):
-            if pc.owned((x, fy - 1, z)):
-                pc.set(x, fy - 1, z, AIR)
-                pc.set(x, fy - 2, z, mix(r, [(MUD, 2), (COBBLE, 1)]))
     # the marker stakes along its east edge
     for z in range(sz0 + 4, sz1 + 1, 9):
-        stake(pc, sx1, z)
+        stake(pc, sx1 - 1, z)
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "way", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc, reason="the tops of the marker stakes")
@@ -151,6 +146,7 @@ def wreck_field(node):
         hull(pc, r, x, z, L, W, axis, lean, broken=5)
     ledge_ring(pc, r, sides=("west", "east"))
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "field", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the wrecks' sides and the tops of the stakes")
@@ -188,6 +184,7 @@ def carved_pillars(node):
     for z in range(sz0 + 2, sz1, 9):
         stake(pc, wx1 + 1, z)
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "road", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the tops of the pillars and stakes")
@@ -266,6 +263,7 @@ def marracks_launch(node):
             pc.edge(a="landing-launch-to-mast", b="exterior", **{"class": "stair"}, rise=0,
                     via="door-launch-to-mast")
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "camp", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the launch's deck and deckhouse, and the space under the stair")
@@ -290,9 +288,10 @@ def mast_platform(node):
         if s["face"] == "down":
             (ax, ay, az), (bx, by, bz) = s["cells"]
             cells = list(boxcells((ax, ay, az), (bx, by, bz)))
-            well = [(x - 1, y, z) for (x, y, z) in cells]
+            well = [(x - k, y, z) for (x, y, z) in cells for k in (1, 2)]
             for c in cells + well:
                 pc.set(*c, AIR)
+                pc.set(c[0], c[1] + 1, c[2], AIR)
             pc.claim(cells, "door-launch-to-mast")
             pc.claim(well, "deck")
             pc.edge(a="deck", b="exterior", **{"class": "walk"}, via="door-launch-to-mast")
@@ -301,6 +300,7 @@ def mast_platform(node):
         pc.set(mx, y, mz, S("minecraft:spruce_log", axis="y"))
     pc.set(mx, fy + 2, mz - 1, arch.lantern(True)) if False else None
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "deck", "open")
     node_mark(pc)
     leftovers_no_body(pc, reason="the rail and the masthead")
@@ -325,9 +325,16 @@ def narrows(node):
         if (x1, z) not in shelf:
             pc.set(x1, fy - 1, z, AIR)
             pc.set(x1, fy - 2, z, MUD)
-    for z in range(sz0 + 3, sz1 + 1, 8):
-        stake(pc, sx1, z)
+    # the marker stakes stand down in the step on the open-water side, clear
+    # of the ways onto the shelf and the stage
+    shelf_z = {z for (_, z) in shelf}
+    for z in range(sz0 + 3, sz1 - 1, 8):
+        for zz in (z, z + 1, z + 2, z + 3):
+            if all(q not in shelf_z for q in (zz - 1, zz, zz + 1)):
+                stake(pc, x1, zz, y=fy - 1)
+                break
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "ridge", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc, reason="the tops of the marker stakes")
@@ -351,6 +358,7 @@ def narrows_shelf(node):
     ledge_ring(pc, r, sides=("north", "south", "east"))
     stations(pc)
     pc.set(px, py, pz, AIR)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "shelf", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -368,6 +376,7 @@ def skiff_stage(node):
     for (x, z) in [(sx0, sz1), (sx1, sz1)]:
         lantern_post(pc, x, z)
     stations(pc)
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "stage", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)
@@ -446,6 +455,18 @@ def ferry_house(node, door_face):
     # the skiff, at the same place in both houses
     skx, skz = sx0 + 6, sz0 + 3
     skiff(pc, skx, skz, fy - 1)
+    # slip steps: at each end of the slip, a stone a swimmer climbs out by
+    steps = []
+    for z in (sz0, sz1):
+        for x in (qx1 + 1, qx1 + 2):
+            if pc.get(x, fy - 2, z) == WATER:
+                pc.set(x, fy - 2, z, STONE)
+                for y in range(fy - 5, fy - 2):
+                    pc.set(x, y, z, STONE)
+                steps += [(x, fy - 1, z), (x, fy, z)]
+    if steps:
+        pc.claim(steps, "slip-steps")
+        pc.no_body["slip-steps"] = {"reason": "the stones a swimmer in the slip climbs out by, under the quay's edge"}
     # the water under and round the skiff stays water; above the sea it is air
     # the passage from the land door turns behind a screen before the slip
     built = wall_seams(pc, "quay", fill=STONE, threshold=STONE)
@@ -487,6 +508,7 @@ def sea_skiff(node):
     fy = pc.dy
     skiff(pc, sx0, sz0, fy - 1, hull=False)
     station_mark(pc, "anchor/sea-skiff")
+    close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "skiff", "open", cap=fy + 2)
     node_mark(pc)
     leftovers_no_body(pc)

@@ -25,9 +25,9 @@
     {
       "id": "oriented-fills",
       "state": "pass",
-      "bound": 238,
+      "bound": 222,
       "undecided": 0,
-      "detail": "238 fill(s) examined, 95 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+      "detail": "222 fill(s) examined, 82 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
     },
     {
       "id": "stair-shape",
@@ -41,7 +41,7 @@
       "state": "pass",
       "bound": 3321,
       "undecided": 0,
-      "detail": "1413 filled cell(s) of 3321 in the region"
+      "detail": "1405 filled cell(s) of 3321 in the region"
     },
     {
       "id": "contract-well-formed",
@@ -53,9 +53,9 @@
     {
       "id": "contract-coverage",
       "state": "pass",
-      "bound": 549,
+      "bound": 552,
       "undecided": 0,
-      "detail": "every one of 549 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
+      "detail": "every one of 552 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
     },
     {
       "id": "contract-closure",
@@ -69,7 +69,7 @@
       "state": "pass",
       "bound": 1,
       "undecided": 0,
-      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 167 cell(s) facade, 114 cell(s) sealed"
+      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 284 cell(s) facade"
     },
     {
       "id": "contract-reachability",
@@ -95,39 +95,39 @@
     {
       "id": "contract-no-body-majority",
       "state": "pass",
-      "bound": 549,
+      "bound": 552,
       "undecided": 0,
-      "detail": "281 of 549 standable cell(s) are out of walk, acknowledged: \"a building that owns its outside owns its roof, and a pitched roof is more standable surface than the room under it; nobody walks it\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
+      "detail": "284 of 552 standable cell(s) are out of walk, acknowledged: \"a building that owns its outside owns its roof, and a pitched roof is more standable surface than the room under it; nobody walks it\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
     }
   ],
   "measurements": {
-    "filled_cells": 1413,
+    "filled_cells": 1405,
     "region_cells": 3321,
     "distinct_states": 11,
-    "standable_cells": 549,
+    "standable_cells": 552,
     "footprint_area": 369,
     "footprint_perimeter": 100,
     "silhouette_complexity": 1.3014480157383839,
     "top_blocks": [
       [
         "minecraft:spruce_planks",
-        0.5633404104741684
+        0.5601423487544483
       ],
       [
         "minecraft:spruce_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
-        0.11606510969568294
+        0.11672597864768683
       ],
       [
         "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
-        0.11606510969568294
+        0.11672597864768683
       ],
       [
         "minecraft:structure_void",
-        0.0629865534324133
+        0.06334519572953737
       ],
       [
         "minecraft:cobblestone",
-        0.06086341118188252
+        0.06120996441281139
       ]
     ],
     "stairs": 328,
@@ -136,41 +136,27 @@
     "fluid_at_edge": 0,
     "local_frame_fills": 0,
     "reachability": {
-      "standable": 549,
-      "sheltered": 385,
+      "standable": 552,
+      "sheltered": 388,
       "entry_cells": 7,
       "reachable": 268,
-      "reachable_share": 0.48816029143898,
-      "unreachable_sheltered": 117,
+      "reachable_share": 0.4855072463768116,
+      "unreachable_sheltered": 120,
       "unreachable_open": 164,
-      "pockets": 4,
+      "pockets": 3,
       "largest_pockets": [
         {
-          "cells": 114,
-          "sheltered": 114,
+          "cells": 120,
+          "sheltered": 120,
           "min": [
             3,
             6,
-            1
+            0
           ],
           "max": [
             5,
             6,
-            38
-          ]
-        },
-        {
-          "cells": 3,
-          "sheltered": 3,
-          "min": [
-            3,
-            6,
-            40
-          ],
-          "max": [
-            5,
-            6,
-            40
+            39
           ]
         },
         {
@@ -212,10 +198,10 @@
     ]
   },
   "findings": [
-    "117 standable cell(s) UNDER A ROOF have no walking route from the entrance — floor in a space a body cannot get to. 4 pocket(s) of unreachable floor in all; the largest: 114 cell(s), 114 sheltered — x 3..5 y 6..6 z 1..38 · 3 cell(s), 3 sheltered — x 3..5 y 6..6 z 40..40"
+    "120 standable cell(s) UNDER A ROOF have no walking route from the entrance — floor in a space a body cannot get to. 3 pocket(s) of unreachable floor in all; the largest: 120 cell(s), 120 sheltered — x 3..5 y 6..6 z 0..39"
   ],
   "enumeration": [
-    "no_body \"roof\": mixed — 114 standable cell(s) sealed, 167 standable cell(s) facade, the kind computed per cell",
+    "no_body \"roof\": facade — 284 standable cell(s), every one reached by the air outside the piece",
     "exterior face: walk on the north side, via space \"room\", 2 cell(s)",
     "exterior face: walk on the south side, via space \"room\", 2 cell(s)",
     "gate `contract-edge-proof` is not emitted over this piece: the contract declares one space, so there is no interior edge that could have been proved: a room with a door makes no claim about moving BETWEEN spaces"

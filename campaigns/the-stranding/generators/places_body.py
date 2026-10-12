@@ -16,7 +16,7 @@ import body as B
 from kit import Piece, AIR, boxcells, ground, seam_box, INWARD
 from blocks import S, stairs, slab, is_full
 import arch
-from common import (leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
+from common import (close_rings, close_fronts, leftovers_no_body, space_claim, node_mark, station_mark, stations, wall_seams,
                     shell_box, lantern_post, standable)
 from places_town import rng, mix, COBBLE, STONE, MOSSY, PLANK, DARK, FENCE, DFENCE, PACKED
 from places_flat import MUD, WET, ledge_ring, stake, WATER
@@ -381,6 +381,10 @@ def stomach(node):
                 continue
             if edge:
                 pc.set(x, fy, z, BONE_Y)
+            elif (x, z) == (px1 - 1, pz1 - 1):
+                # one stone under the surface in the far corner: a way out
+                pc.set(x, fy - 2, z, BONE_Y)
+                pc.set(x, fy - 1, z, WATER)
             else:
                 for y in (fy - 1, fy - 2):
                     if pc.owned((x, y, z)):
@@ -589,6 +593,7 @@ def bank_place(node, extra=None, sides=None, stakes=None):
     if extra:
         extra(pc, r)
     stations(pc)
+    close_rings(pc, lambda c: mix(r, HIDE))
     space_claim(pc, "bank", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the tops of the crew's lamp stakes and what lies on the bank")
@@ -656,7 +661,7 @@ def tail_bank(node):
 
 
 def tail_road(node):
-    return bank_place(node, None, sides=("south", "east"))
+    return bank_place(node, None, sides=("south",))
 
 
 # -- on the body ------------------------------------------------------------
@@ -704,6 +709,8 @@ def on_body(node, extra=None):
     if extra:
         extra(pc, r)
     stations(pc)
+    close_fronts(pc, lambda c: mix(r, HIDE))
+    close_rings(pc, lambda c: mix(r, HIDE))
     space_claim(pc, "back", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the hide's ridges and the tops of the steps")
@@ -731,7 +738,7 @@ def crown(node):
             (ax, ay, az), (bx, by, bz) = s["cells"]
             cells = list(boxcells((ax, ay, az), (bx, by, bz)))
             zs = sorted({c[2] for c in cells})
-            well = [(x, y, z + k) for (x, y, z) in cells if z == zs[-1] for k in (1, 2)]
+            well = []
             for c in cells + well:
                 pc.set(*c, AIR)
             pc.claim(cells, "door-spine-to-crown")
@@ -745,6 +752,8 @@ def crown(node):
                         pc.set(*n, slab("cobbled_deepslate", "bottom")) if (x + z) % 2 else None
     wall_seams(pc, "crown", tread_fam="cobbled_deepslate", fill=S("minecraft:cobbled_deepslate"))
     stations(pc)
+    close_fronts(pc, lambda c: mix(r, HIDE))
+    close_rings(pc, lambda c: mix(r, HIDE))
     space_claim(pc, "crown", "open", cap=fy + 1)
     node_mark(pc)
     leftovers_no_body(pc, reason="the rim of the blowhole and the hide's ridges")

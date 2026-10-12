@@ -122,6 +122,9 @@ def solids():
         S.append(capsule((187.5, 76, z), (187.5, 84, z), 2.0, 1.2, 1.0, noisy=False))
     # the flank stands thick beside the heart, so its chamber is walled, not shelled
     S.append(box(150, 62, 600, 156, 77, 640, noisy=True))
+    # the east flank meets the run bank: a low apron of hide fills the strip
+    # between them, so no channel of sea water lies along the bank
+    S.append(box(206, 62, 521, 210, 63, 664, noisy=False))
     # -- the flippers, splayed on the mud
     S.append(capsule((154, 65, 584), (149, 63, 597), 3.0, 1.5, 0.5, noisy=False))
     S.append(capsule((206, 65, 584), (210, 63, 597), 3.0, 1.5, 0.5, noisy=False))

@@ -338,7 +338,7 @@ edge("edge/street-to-lane", "node/high-street", "node/harbour-lane", "stair")
 edge("edge/lane-to-office", "node/harbour-lane", "node/harbour-office", "walk")
 edge("edge/lane-to-coyle", "node/harbour-lane", "node/coyle-house", "walk")
 edge("edge/lane-to-lofts", "node/harbour-lane", "node/net-lofts", "stair")
-edge("edge/lane-to-basin", "node/harbour-lane", "node/boatyard", "stair")
+edge("edge/lane-to-basin", "node/harbour-lane", "node/boatyard", "drop", falls="a-to-b")
 edge("edge/lane-to-market", "node/harbour-lane", "node/fish-market", "walk")
 edge("edge/slipway", "node/boatyard", "node/fish-market", "stair")
 edge("edge/market-to-seawall", "node/fish-market", "node/seawall", "walk")
@@ -431,10 +431,10 @@ seam("edge/street-to-lane", "south", 201, "the High Street's last flight, a ston
 seam("edge/lane-to-office", "north", 171, "the Harbour Office's street door off the lane", DOOR)
 seam("edge/lane-to-coyle", "north", 127, "the Coyles' cottage door off the lane", DOOR)
 seam("edge/lane-to-lofts", "north", 140, "a timber stair up 6 from the lane to the loft door", DOOR, stair_in="node/harbour-lane")
-seam("edge/lane-to-basin", "south", 140, "quay steps down 2 into the emptied basin", PASS, stair_in="node/boatyard")
+seam("edge/lane-to-basin", "south", 124, "the quay edge, a drop of 2 into the emptied basin", contact=[1, 1])
 seam("edge/lane-to-market", "south", 178, "the market's north doors off the lane", ARCH)
 seam("edge/slipway", "east", 112, "the slipway: a stone ramp up 2 from the basin mud through the market's sea doors", PASS, stair_in="node/boatyard")
-seam("edge/market-to-seawall", "south", 175, "the market's open arcade onto the seawall", ARCH)
+seam("edge/market-to-seawall", "south", 170, "the market's open arcade onto the seawall", contact=[20, 7])
 seam("edge/seawall-to-chapel", "north", 231, "stone steps up 4 from the seawall to the chapel door in its south gable", DOOR, stair_in="node/seawall")
 seam("edge/chapel-to-crypt", "down", (229, 120), "a stone stair down 6 through the chapel floor into the crypt", DOOR, stair_in="node/chapel-crypt")
 seam("edge/seawall-to-customs", "north", 202, "the Customs House door on the seawall, padlocked", DOOR)
@@ -443,7 +443,7 @@ seam("edge/shed-to-ropewalk", "south", 110, "the doorway from the shed into the 
 seam("edge/ropewalk-to-breakwater", "south", 110, "the ropewalk's south door onto the breakwater", DOOR)
 seam("edge/breakwater-to-lighthouse", "south", 111, "the lighthouse door at the end of the breakwater", DOOR)
 seam("edge/seawall-to-slipway", "south", 172, "the slipway stair's head: stone steps down 2 off the seawall", PASS, stair_in="node/slipway-stair")
-seam("edge/lane-to-pier", "west", 93, "the pier's landward end off the lane", PASS)
+seam("edge/lane-to-pier", "west", 92, "the pier's landward end off the lane", contact=[1, 1])
 seam("edge/slipway-to-way", "south", 172, "a rope across the foot of the stair, where the old road begins", PASS)
 seam("edge/way-to-wrecks", "south", 171, "the way runs on into the wreck field", contact=[5, 2])
 seam("edge/wrecks-to-pillars", "south", 171, "the way runs on past the wrecks", contact=[5, 2])
@@ -670,7 +670,25 @@ def faces(p, face):
     raise NotImplementedError
 
 
+def open_contact(e):
+    """A contact between two open places is their whole shared front, as high
+    as the lower of their open skies: above the walk nothing walls an open
+    place, so every cell of the wall between two of them is the way across."""
+    s = S[e["id"]]
+    a, b = P[e["a"]], P[e["b"]]
+    if s["contact"] is None or a["ceiling"][0] != "open" or b["ceiling"][0] != "open":
+        return
+    if s["face"] in ("north", "south"):
+        lo, hi = max(a["x"], b["x"]), min(x1(a), x1(b))
+    else:
+        lo, hi = max(a["z"], b["z"]), min(z1(a), z1(b))
+    s["lo"] = lo
+    top = min(fy(a) + a["ceiling"][1], fy(b) + b["ceiling"][1])
+    s["contact"] = [hi - lo + 1, top - max(fy(a), fy(b))]
+
+
 def seam_doc(e):
+    open_contact(e)
     s = S[e["id"]]
     a, b = P[e["a"]], P[e["b"]]
     face = s["face"]
