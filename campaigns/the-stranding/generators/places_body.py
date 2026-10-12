@@ -677,12 +677,30 @@ def on_body(node, extra=None):
     # the walk plane is the hide's own: where the body's top dips, a course of hide
     for x in range(sx0 - 1, sx1 + 2):
         for z in range(sz0 - 1, sz1 + 2):
-            if pc.owned((x, fy - 1, z)) and not is_full(pc.get(x, fy - 1, z)):
-                pc.set(x, fy - 1, z, mix(r, HIDE))
+            for y in (fy - 2, fy - 1):
+                if pc.owned((x, y, z)) and not is_full(pc.get(x, y, z)):
+                    pc.set(x, y, z, mix(r, HIDE))
             for y in range(fy, pc.Y):
                 if pc.owned((x, y, z)) and pc.get(x, y, z) != AIR and (x, y, z) not in pc.prog.region:
                     pc.set(x, y, z, AIR)
     wall_seams(pc, "back", tread_fam="cobbled_deepslate", fill=S("minecraft:cobbled_deepslate"))
+    # under a way that comes in high, the hide stands solid to the walk
+    for sm in pc.seams:
+        if sm["face"] in ("up", "down") or sm.get("rise", 0) <= 0:
+            continue
+        (x0, y0, z0), (x1, y1, z1) = sm["cells"]
+        ix, _, iz = INWARD[sm["face"]]
+        # the seam's own columns, and the whole edge row outside them: the
+        # step up to the higher back is a face of hide, not a slot under it
+        if ix == 0:
+            ring = [(x, z0 - iz) for x in range(0, pc.X)] + [(x, z0) for x in range(x0, x1 + 1)]
+        else:
+            ring = [(x0 - ix, z) for z in range(0, pc.Z)] + [(x0, z) for z in range(z0, z1 + 1)]
+        for (x, z) in ring:
+            for y in range(fy, y0):
+                c = (x, y, z)
+                if pc.owned(c) and c not in pc.prog.region and pc.get(*c) == AIR:
+                    pc.set(*c, mix(r, HIDE))
     if extra:
         extra(pc, r)
     stations(pc)
@@ -700,8 +718,9 @@ def crown(node):
     body_slice(pc)
     for x in range(0, pc.X):
         for z in range(0, pc.Z):
-            if pc.owned((x, fy - 1, z)):
-                pc.set(x, fy - 1, z, pc.get(x, fy - 1, z) if is_full(pc.get(x, fy - 1, z)) else mix(r, HIDE))
+            for y in (fy - 2, fy - 1):
+                if pc.owned((x, y, z)) and not is_full(pc.get(x, y, z)):
+                    pc.set(x, y, z, mix(r, HIDE))
             for y in range(fy, pc.Y):
                 if pc.owned((x, y, z)):
                     pc.set(x, y, z, AIR)

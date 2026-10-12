@@ -162,6 +162,13 @@ def solids():
             cut(x0 - 1, y0, z0 + 3, x1 + 1, y1 + 1, z1 + 1)
         else:
             cut(x0 - 1, y0, z0 - 1, x1 + 1, y1 + 1, z1 + 1)
+    # The places on the body walk its hide, which their own pieces draw: the
+    # form is cut over each claim from a course under the floor course, so the
+    # slabs the sculpt dresses a top face with lie under the piece's floor and
+    # the stamp lays nothing on the walk.
+    for nid in OUTSIDE:
+        x0, y0, z0, x1, y1, z1 = claim_box(nid)
+        cut(x0, M.fy(M.P[nid]) - 2, z0, x1, y1 + 1, z1)
     # the Brow Stone: a tall pale carved tablet driven into the forehead
     S.append(box(172, 99, 521, 175, 102, 521, material=STONE_TABLET))
     return S
