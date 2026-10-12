@@ -256,7 +256,7 @@ def mouth(node):
         if pc.get(wx, fy + 1, wz) == AIR:
             pass
     claim_room(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 def throat(node):
@@ -331,7 +331,7 @@ def throat(node):
     pc.set(wr[0] - 2, fy + 2, z, S("minecraft:red_nether_bricks")) if pc.owned((wr[0] - 2, fy + 2, z)) else None
     wall_seams(pc, "room", fill=S("minecraft:nether_wart_block"))
     claim_room(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 def rib_cathedral(node):
@@ -360,7 +360,7 @@ def rib_cathedral(node):
     light_surfaces(pc, r, cav, every=4, shroom_every=9, vine_every=7)
     hang_lights(pc, cav)
     claim_room(pc, envelope="open")
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 def stomach(node):
@@ -400,9 +400,10 @@ def stomach(node):
     light_surfaces(pc, r, cav, every=4, shroom_every=8, vine_every=8)
     hang_lights(pc, cav)
     claim_room(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
+ALL_FACES = ["north", "south", "east", "west", "up", "down"]
 BARREL_OPEN = S("minecraft:barrel", facing="up", open=True)
 
 
@@ -444,7 +445,7 @@ def heart_chamber(node):
         if (x, fy, z) in cavs:
             pc.set(x, fy, z, arch.lantern(False))
     claim_room(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 def breach(node):
@@ -473,7 +474,7 @@ def breach(node):
     hang_lights(pc, cav)
     pc.set(sx0 + 7, fy + 2, sz0 + 1, SHROOM) if False else None
     claim_room(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 def spine_stair(node):
@@ -523,7 +524,7 @@ def spine_stair(node):
     light_surfaces(pc, r, cav, every=3, shroom_every=11, vine_every=97)
     hang_lights(pc, cav)
     claim_room(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 def spine_top(node):
@@ -577,7 +578,7 @@ def spine_top(node):
     space_claim(pc, "room", "enclosed")
     node_mark(pc)
     leftovers_no_body(pc)
-    return pc.finish("room")
+    return pc.finish("room", shown_faces=ALL_FACES)
 
 
 # -- the bank ---------------------------------------------------------------

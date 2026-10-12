@@ -16,7 +16,9 @@ for mod in (places_town, places_flat, places_body):
 
 
 def main(argv):
-    names = argv or sorted(BUILDERS)
+    # node/sea-skiff is reached only by a carry and cannot be detailed (see
+    # GENERATION.md); its builder is kept, its program is not written by default
+    names = argv or sorted(n for n in BUILDERS if n != "node/sea-skiff")
     for n in names:
         if not n.startswith("node/"):
             n = "node/" + n

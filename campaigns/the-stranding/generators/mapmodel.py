@@ -201,7 +201,7 @@ place("node/jaw-bank", 161, 500, 50, 20, "datum/flat", ("open", 24),
       intent="arena", note="The bank of mud under the head: the open jaw, teeth like posts, a tentacle in a pit on each side of the mouth.",
       stations=[ST("anchor/jaw-west-pit", "the west tentacle's pit"),
                 ST("anchor/jaw-east-pit", "the east tentacle's pit")])
-place("node/flank-ridge", 128, 515, 12, 126, "datum/flat", ("open", 8),
+place("node/flank-ridge", 128, 515, 20, 126, "datum/flat", ("open", 12),
       intent="post", note="A mud ridge along the body's west side, out of the tentacles' reach; the three flank wounds in plain sight.")
 
 # ---- Act 3: inside the body ----------------------------------------------
@@ -226,7 +226,7 @@ place("node/heart-chamber", 157, 610, 13, 20, "datum/flat", ("clearance", 14),
                 ST("anchor/valve-west", "the west valve"),
                 ST("anchor/valve-middle", "the middle valve"),
                 ST("anchor/valve-east", "the east valve")])
-place("node/breach", 141, 618, 15, 4, "datum/flat", ("clearance", 4),
+place("node/breach", 149, 618, 7, 4, "datum/flat", ("clearance", 4),
       intent="tunnel", note="A short tunnel of torn flesh from the heart chamber out through a wound to the flank ridge.")
 place("node/spine-stair", 159, 564, 5, 45, "datum/flat", ("clearance", 24),
       intent="climb", note="Up the inside of the neck on the vertebrae, from the heart's door.")

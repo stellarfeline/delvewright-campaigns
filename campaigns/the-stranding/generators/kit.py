@@ -182,7 +182,25 @@ class Piece:
         if self.majority_ack:
             self.prog.contract["no_body_majority_ack"] = self.majority_ack
         if shown_faces:
-            self.prog.shown_faces = shown_faces
+            # a face is shown only when the piece has something on it; a place
+            # standing aloft shows its underside too (DW0885)
+            def has(face):
+                X, Y, Z = self.X, self.Y, self.Z
+                rng = {"up": (range(X), [Y - 1], range(Z)), "down": (range(X), [0], range(Z)),
+                       "north": (range(X), range(Y), [0]), "south": (range(X), range(Y), [Z - 1]),
+                       "west": ([0], range(Y), range(Z)), "east": ([X - 1], range(Y), range(Z))}[face]
+                for x in rng[0]:
+                    for y in rng[1]:
+                        for z in rng[2]:
+                            if self.get(x, y, z) not in (AIR, VOID):
+                                return True
+                return False
+            faces = list(shown_faces)
+            if "up" not in faces:
+                faces.append("up")
+            if M.P[self.node]["base"] and "down" not in faces:
+                faces.append("down")
+            self.prog.shown_faces = [f for f in faces if f not in ("up", "down") or has(f)]
         os.makedirs(os.path.join(CAMPAIGN, "programs"), exist_ok=True)
         path = os.path.join(CAMPAIGN, "programs", stem(self.node) + ".json")
         self.prog.write(path)

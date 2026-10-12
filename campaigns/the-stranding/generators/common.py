@@ -256,8 +256,12 @@ def close_rings(pc, block):
                 continue
             for n, (ox0, oz0, ox1, oz1) in others:
                 if ox0 <= nx <= ox1 and oz0 <= nz <= oz1:
-                    touch = True
-                    break
+                    # where two rings lie side by side, one of them carries
+                    # the posts: two rows of posts side by side are a path
+                    # along their tops from one place into the other
+                    if (dx, dz) == (0, 0) or not (ox0 <= wx <= ox1 and oz0 <= wz <= oz1) and pc.node < n:
+                        touch = True
+                        break
             if touch:
                 break
         if not touch:

@@ -687,9 +687,11 @@ def slipway_stair(node):
     ground(pc, lambda x, z: mix(r, [(STONE, 3), (MOSSY, 1), (CRACKED, 1)]), lambda x, z: STONE)
     built = wall_seams(pc, "stair", tread_fam="stone_brick", fill=STONE, threshold=STONE, bar_block=S("minecraft:iron_bars"))
     door_cells = {c for b in built.values() for c in b["cells"]}
+    # the side walls; on the basin side a single course, so its top is no
+    # step from the basin's high quay edge into the stair
     for z in range(sz0, sz1 + 1):
         for x in (sx0 - 1, sx1 + 1):
-            for y in range(fy, fy + 3):
+            for y in range(fy, fy + (1 if x == sx0 - 1 else 3)):
                 if (x, y, z) not in door_cells and pc.owned((x, y, z)):
                     pc.set(x, y, z, mix(r, [(STONE, 3), (MOSSY, 1)]))
     for x in range(sx0 - 1, sx1 + 2):
