@@ -28,6 +28,7 @@ The classes are:
 | 12 | Carried paint meeting the inside's paint at the body's mouth is refused (`DW0929`). | Two atmosphere zones, one carried, meeting at a place boundary. | capability | The far bank and the body's outside take the inside's atmosphere beat. | No. A simplification of the atmosphere layout. |
 | 13 | Two skiffs are never proven out of sight of each other. | The brief asks for the check, and the engine has no out-of-sight proof. | capability | Recorded. | It does not block the build. Do not judge it. |
 | 14 | A delve-killing volume needs an `on_death` bundle, or the death plan is `UNBOUND`, and the death-loop stage is skipped. | `lethal/stomach-pool` with no `on_death`. | doc | Left. The design declares no death consequence. | No. The death-loop stage is reported skipped. |
+| 30 | Critical-path stage red on the muster: `wave/drowned-wrecks-2: wave seating: the campaign declares 6 body/bodies … the muster read 5: 1 of the missing 1 were felled by the party since this seating, before the muster read them`. | Two waves seated close together in `node/mud-wrecks-east`/`-west`, so a body of the second reaches the bot during the first. | mine (spacing) or engine (muster ordering), undecided | Recorded. Not re-run. | Yes. The critical-path stage is red. Every step was walked. |
 
 ## Tooling friction and skill-doc gaps
 

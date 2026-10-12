@@ -118,6 +118,18 @@ Each is recorded with its diagnostic and a minimal reproduction; none was worked
 - **The written world leaves stone out under two stretches of sea**: `DW0955`'s model class holds 3744 cells, written air and server stone, at y47..54 in x61..67 z447..458 and x69..116 z91..98 (the server holds stone to y54 and water above; the model holds air from y47 up). The two stretches are exactly the footprints, with their one-cell rings, of the two places that stand over open sea: `node/pier` and `node/sea-skiff`.
 - **Friction**: one global `~/.delvewright/env.sh` names one engine tree; detailing one place re-runs the whole build (about ten minutes on this map) while `--all` re-makes all 54 places in about the same time; adding stations to two places at once deadlocks per-place detail; the light probe needs a side entrance on top-entered pieces; through-floor stair contract patterns (top tread in the hole, head clearance over the two top treads) are undocumented.
 
+## Ladder results (engine a7f3f621, campaign head built by it)
+
+- `validate`, `analyze` and `build` exit 0.
+- **PackTest**: red, 1 required test, the engine finding above (`pulse_heartbeat_shut`).
+- **Critical-path bot**: every step walked to the end. The stage is red on one muster finding: `wave/drowned-wrecks-2` has 6 declared bodies and 5 were read. One body came to the bot during the fight before it and was felled before the muster read it.
+- **Die-retry**: green, 12 of 12 trials and 6 of 6 encounters engaged.
+- **Pulses**: 2 of 2 heard at a listening station.
+- **Watch**: 1 within reach, 1 asserted (26 judgements). `actor/watcher-street` and `actor/watcher-flat` were never within reach.
+- **Sculk**: every predicted sensor and shrieker was heard.
+- **Branch runs**: not run on this head. The one earlier attempt hit the default 20-minute budget.
+- **Written world**: `DW0955` red, 3744 model cells. This is the engine finding above.
+
 ## Open items
 
 - **The fog repaint distance** (lamps beat) is proved by the build, not walked on a ladder run.
