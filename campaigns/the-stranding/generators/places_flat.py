@@ -481,7 +481,8 @@ def ferry_house(node, door_face):
         pc.no_body["slip-steps"] = {"reason": "the stones a swimmer in the slip climbs out by, under the quay's edge"}
     # the water under and round the skiff stays water; above the sea it is air
     # the passage from the land door turns behind a screen before the slip
-    built = wall_seams(pc, "quay", fill=STONE, threshold=STONE)
+    # the land door is shut with planks from inside (a full block: the gate opens it by block id)
+    built = wall_seams(pc, "quay", fill=STONE, threshold=STONE, bar_block=S("minecraft:dark_oak_planks"))
     door = [c for b in built.values() for c in b["cells"]]
     dx = door[0][0]
     inward = 1 if door_face == "north" else -1
