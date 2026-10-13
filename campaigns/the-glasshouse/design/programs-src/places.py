@@ -371,6 +371,9 @@ def garden():
         hedge(29, zz, 32, zz)
         hedge(36, zz, 42, zz)
         hedge(46, zz, x1 - 2, zz)
+    # An oak bench against the potting room's front, between the two doors.
+    for x in (31, 32, 33):
+        m.set(x, G, z0 + 1, "oak_stairs[facing=north,half=bottom]")
     # The fruit trees, one to a quarter.
     for i, (tx, tz) in enumerate(FRUIT_TREES):
         fruit_tree(m, tx, tz, 20 + i)
