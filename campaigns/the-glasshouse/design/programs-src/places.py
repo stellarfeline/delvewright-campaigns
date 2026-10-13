@@ -288,7 +288,230 @@ def stoke_hole():
     write(m, "stoke-hole")
 
 
-PLACES = {"glasshouse": glasshouse, "potting-room": potting_room, "stoke-hole": stoke_hole}
+
+# ---------------------------------------------------------------- the walled garden
+POOL = (25, 42, 28, 32)          # x0, x1, z0, z1 of the water
+FRUIT_TREES = ((19, 20), (49, 20), (19, 39), (49, 39))
+POSTS = ((23, 26), (44, 26), (23, 34), (44, 34), (26, 17), (29, 17), (43, 17), (45, 17), (51, 27), (51, 31),
+         (33, 43), (35, 43))
+
+
+def fruit_tree(m, tx, tz, salt):
+    for y in range(G, G + 3):
+        m.set(tx, y, tz, "oak_log[axis=y]")
+    for y, r in ((G + 2, 2.3), (G + 3, 2.5), (G + 4, 2.3), (G + 5, 1.5)):
+        for x, z in m.disc_cells(tx + 0.5, tz + 0.5, r):
+            if (x, z) == (tx, tz) and y < G + 3:
+                continue
+            m.set(x, y, z, m.pick(x, y, z, LEAVES, salt))
+    # A lantern hung from a low branch on the path side, for the evening.
+    m.set(tx + 1, G + 2, tz, "oak_log[axis=x]")
+    m.set(tx + 1, G + 1, tz, LANTERN_HANG)
+
+
+def lantern_post(m, x, z):
+    m.set(x, G, z, "stone_brick_wall")
+    m.set(x, G + 1, z, LANTERN_STAND)
+
+
+def garden():
+    h, m, x0, y0, z0, x1, y1, z1 = frame("node/garden")
+    W = 68                      # the wall's top course, under its coping
+    px0, px1, pz0, pz1 = POOL
+    # The walls: brick on the ring with a stone coping, where the ring is the garden's.
+    def wall(x, z, top=W, skip=()):
+        for y in range(G, top + 1):
+            if y not in skip:
+                m.set(x, y, z, BRICK)
+        if top + 1 not in skip:
+            m.set(x, top + 1, z, COPING)
+    for x in range(x0, x1 + 1):
+        if not (18 <= x <= 39 or 41 <= x <= 52):
+            wall(x, z0)
+        wall(x, z1)
+    for z in range(z0 + 1, z1):
+        if not (22 <= z <= 37):
+            wall(x1, z)
+        if 25 <= z <= 34:
+            # Under the belvedere: brick to its floor course; over it a clipped
+            # yew screen between the terrace and the garden, arched over the
+            # opening at the head of the steps.
+            for y in range(G, 67):
+                m.set(x0, y, z, BRICK)
+            for y in range(68, y1 + 1):
+                if not 28 <= z <= 30:
+                    m.set(x0, y, z, HEDGE)
+        else:
+            wall(x0, z)
+    # Paths: round the pool, along the axis, to each door, and south.
+    def path(xa, za, xb, zb):
+        for x in range(min(xa, xb), max(xa, xb) + 1):
+            for z in range(min(za, zb), max(za, zb) + 1):
+                m.set(x, G - 1, z, m.pick(x, G - 1, z, GRAVEL_PATH, 2))
+    path(px0 - 3, pz0 - 3, px1 + 3, pz1 + 3)      # the pool surround
+    path(px1 + 3, 28, x1 - 1, 30)                   # to the east gate
+    path(x0 + 1, 28, px0 - 3, 30)                   # to the belvedere steps
+    path(27, z0 + 1, 28, pz0 - 3)                   # to the conservatory door
+    path(43, z0 + 1, 45, pz0 - 3)                   # to the potting room door
+    path(33, pz1 + 3, 35, z1 - 1)                   # south, to the wall
+    # The reflecting pool: one course of still water edged in pale stone.
+    for x in range(px0 - 1, px1 + 2):
+        for z in range(pz0 - 1, pz1 + 2):
+            edge = x in (px0 - 1, px1 + 1) or z in (pz0 - 1, pz1 + 1)
+            m.set(x, G - 1, z, PALE if edge else "water[level=0]")
+    # Low clipped hedges framing the four lawn quarters, open where a path crosses.
+    def hedge(xa, za, xb, zb):
+        for x in range(min(xa, xb), max(xa, xb) + 1):
+            for z in range(min(za, zb), max(za, zb) + 1):
+                if m.get(x, G - 1, z) is None:
+                    m.set(x, G, z, HEDGE)
+    for zz in (pz0 - 4, pz1 + 4):
+        hedge(x0 + 2, zz, px0 - 5, zz)
+        hedge(px0, zz, 26, zz)
+        hedge(29, zz, 32, zz)
+        hedge(36, zz, 42, zz)
+        hedge(46, zz, x1 - 2, zz)
+    # The fruit trees, one to a quarter.
+    for i, (tx, tz) in enumerate(FRUIT_TREES):
+        fruit_tree(m, tx, tz, 20 + i)
+    # Lanterns on short posts along the paths.
+    for (x, z) in POSTS:
+        lantern_post(m, x, z)
+    # The steps up to the belvedere, against the west wall, 5 wide.
+    for i, x in enumerate((17, 16, 15, 14)):
+        for z in range(27, 32):
+            for y in range(G, G + i + 1):
+                m.set(x, y, z, PALE if z in (27, 31) else "smooth_sandstone")
+    for z in range(27, 32):
+        m.set(18, G - 1, z, PALE)
+    # Contract: one open garden; the steps are a flight up to a landing at the wall.
+    crowns = [(tx - 3, G + 2, tz - 3, tx + 3, y1, tz + 3) for (tx, tz) in FRUIT_TREES]
+    posts = [(x, G, z, x, y1, z) for (x, z) in POSTS]
+    flight = (15, G, 27, 17, y1, 31)
+    top = (14, 68, 27, 14, y1, 31)
+    under_top = (14, G, 27, 14, 67, 31)
+    interior = (x0 + 1, G, z0 + 1, x1 - 1, y1, z1 - 1)
+    doors = {"east-gate": (x1 - 1, G, 28, x1 - 1, G + 3, 30),
+             "glass-door": (27, G, z0 + 1, 28, G + 2, z0 + 1),
+             "potting-door": (44, G, z0 + 1, 44, G + 1, z0 + 1)}
+    m.space("garden", "open", *vox.subtract(interior, posts + [flight, top, under_top] + list(doors.values())))
+    for name, box in doors.items():
+        m.via(name, box)
+    m.space("steps-top", "open", top)
+    m.via("flight", flight, under_top)
+    m.via("terrace-steps", (x0, 68, 28, x0, 69, 30))
+    m.nobody("posts", "the lantern posts along the paths: a wall post with a lantern on it, too tall to stand on", *posts)
+    m.entry = "garden"
+    m.edge(a="garden", b="steps-top", **{"class": "stair", "rise": 4, "via": "flight"})
+    m.edge(a="steps-top", b="exterior", **{"class": "walk", "via": "terrace-steps"})
+    for name in doors:
+        m.edge(a="garden", b="exterior", **{"class": "walk", "via": name})
+    m.mark("node-garden", 33, G, 37, "north")
+    write(m, "garden")
+
+
+
+# ---------------------------------------------------------------- the belvedere
+def belvedere():
+    h, m, x0, y0, z0, x1, y1, z1 = frame("node/belvedere")
+    F = 68                      # the terrace's walk plane
+    gx = x1                     # x 13: the garden's wall column, of which the terrace owns its floor course
+    # The raised terrace: a stone-faced platform up to its paving.
+    for x in range(x0, gx):
+        for z in range(z0, z1 + 1):
+            ring = x == x0 or z in (z0, z1)
+            for y in range(G, F - 1):
+                m.set(x, y, z, m.pick(x, y, z, [(5, STONE), (1, "mossy_stone_bricks"), (1, "cracked_stone_bricks")], 9)
+                      if ring else "dirt")
+            m.set(x, F - 1, z, STONE if ring else ("smooth_stone" if (x + z) % 2 else PALE))
+    for z in range(z0, z1 + 1):
+        m.set(gx, F - 1, z, PALE if 28 <= z <= 30 else STONE)
+    # The balustrade on the three open sides, with lanterns on its west corners.
+    for x in range(x0, gx):
+        m.set(x, F, z0, "sandstone_wall")
+        m.set(x, F, z1, "sandstone_wall")
+    for z in range(z0, z1 + 1):
+        m.set(x0, F, z, "sandstone_wall")
+    m.set(x0, F + 1, z0, LANTERN_STAND)
+    m.set(x0, F + 1, z1, LANTERN_STAND)
+    # Two stone urns and an oak bench looking west.
+    m.set(x0 + 1, F, z0 + 1, "decorated_pot[cracked=false,facing=east,waterlogged=false]")
+    m.set(x0 + 1, F, z1 - 1, "decorated_pot[cracked=false,facing=east,waterlogged=false]")
+    for z in (29, 30, 31):
+        m.set(9, F, z, "oak_stairs[facing=east,half=bottom]")
+    # Contract.
+    steps = (gx - 1, F, 28, gx - 1, F + 1, 30)
+    terrace = (x0 + 1, F, z0 + 1, gx - 1, y1, z1 - 1)
+    m.space("terrace", "open", *vox.subtract(terrace, [steps]))
+    m.via("terrace-steps", steps)
+    m.nobody("balustrade", "the balustrade's top and the lanterns on it, at the terrace's edge over the drop",
+             (x0, F, z0, gx - 1, y1, z0), (x0, F, z1, gx - 1, y1, z1), (x0, F, z0 + 1, x0, y1, z1 - 1))
+    m.entry = "terrace"
+    m.edge(a="terrace", b="exterior", **{"class": "walk", "via": "terrace-steps"})
+    m.mark("node-belvedere", 7, F, 30, "west")
+    write(m, "belvedere")
+
+
+
+# ---------------------------------------------------------------- the lime walk
+LIMES = ((58, 26), (62, 26), (66, 26), (58, 33), (62, 33), (66, 33))
+
+
+def lime_tree(m, tx, tz, salt, lamp_dz=0):
+    for y in range(G, G + 4):
+        m.set(tx, y, tz, "birch_log[axis=y]")
+    for y, r in ((G + 3, 2.0), (G + 4, 2.5), (G + 5, 2.5), (G + 6, 2.3), (G + 7, 1.8), (G + 8, 1.0)):
+        for x, z in m.disc_cells(tx + 0.5, tz + 0.5, r):
+            if (x, z) == (tx, tz) and y < G + 4:
+                continue
+            m.set(x, y, z, m.pick(x, y, z, LIME_LEAVES, salt))
+    if lamp_dz:
+        m.set(tx, G + 3, tz + lamp_dz, "birch_log[axis=z]")
+        m.set(tx, G + 2, tz + lamp_dz, LANTERN_HANG)
+
+
+def lime_walk():
+    h, m, x0, y0, z0, x1, y1, z1 = frame("node/lime-walk")
+    gx = x0                     # x 54: the garden's east wall, which the lime walk owns here
+    # The garden wall and its gateway: brick, stone-capped piers with lanterns.
+    for z in range(z0, z1 + 1):
+        if 28 <= z <= 30:
+            m.set(gx, 68, z, BRICK)
+            m.set(gx, 69, z, COPING)
+            continue
+        pier = z in (27, 31)
+        top = 70 if pier else 69
+        for y in range(G, top):
+            m.set(gx, y, z, PALE if pier else BRICK)
+        m.set(gx, top, z, "smooth_stone" if pier else COPING)
+        if pier:
+            m.set(gx, top + 1, z, LANTERN_STAND)
+    # The gravel walk from the open grass to the gate.
+    for x in range(gx + 1, x1):
+        for z in range(28, 31):
+            m.set(x, G - 1, z, m.pick(x, G - 1, z, GRAVEL_PATH, 4))
+    # Lime trees either side of it, two with lanterns hung toward the walk.
+    for i, (tx, tz) in enumerate(LIMES):
+        dz = (2 if tz < 29 else -2) if tx == 62 else 0
+        lime_tree(m, tx, tz, 30 + i, dz)
+    # Contract.
+    crowns = [(gx + 1, G + 4, z0, x1, y1, 29), (gx + 1, G + 4, 30, x1, y1, z1)]
+    trunks = [(tx, G, tz, tx, G + 2, tz) for (tx, tz) in LIMES]
+    walk = (gx + 1, G, z0 + 1, x1 - 1, y1, z1 - 1)
+    m.space("walk", "open", *vox.subtract(walk, crowns + trunks))
+    m.via("east-gate", (gx, G, 28, gx, G + 3, 30))
+    m.nobody("crowns", "the lime trees' crowns over the walk", *(crowns + trunks))
+    m.nobody("wall", "the top of the garden wall and its gate piers", (gx, G, z0, gx, y1, 27), (gx, G, 31, gx, y1, z1),
+             (gx, G + 4, 28, gx, y1, 30))
+    m.ack = "an avenue of trees: their crowns hold more standable tops than the walk under them"
+    m.entry = "walk"
+    m.edge(a="walk", b="exterior", **{"class": "walk", "via": "east-gate"})
+    m.mark("spawn", 67, G, 29, "west", role="entry")
+    m.mark("node-lime-walk", 60, G, 29, "west")
+    write(m, "lime-walk")
+
+
+PLACES = {"lime-walk": lime_walk, "belvedere": belvedere, "garden": garden, "glasshouse": glasshouse, "potting-room": potting_room, "stoke-hole": stoke_hole}
 
 if __name__ == "__main__":
     names = sys.argv[1:]

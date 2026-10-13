@@ -19,7 +19,7 @@ Nothing here is hostile. The pressure is the frost, and it never arrives on stag
 3. **The potting room** (quest 1). Wenna, among plank benches, clay pots and seed drawers, lit by a hanging lantern over the bench, candles on the shelf and sill, and a wall torch by the cellar hatch. She explains the frost and asks for the vents.
 4. **The conservatory** (quest 2). Back across the garden and in through the glass doors. Inside, sky light falls through the glass roof onto plank staging, ferns and the lemon tree; the vent winding gear is at the east end. Winding it shuts the roof lights.
 5. **The stove cellar** (quest 3). Back to the potting room; Wenna hands over the matches and points at the hatch. A narrow stone stair down to a low stone cellar lit by one lantern at the foot of the stair: the coal heap, the iron furnace, flue pipes leading off under the conservatory. The party light the furnace; its glow becomes the room's second light.
-6. **The belvedere** (quest 4, finale). Wenna sends them to the west wall. Up the stone steps to the terrace: a balustrade, two urns, a bench, and the valley — level grassland running far west to low hills, the sun on the horizon, the sky deep blue overhead shading to gold and rose. The delve ends there.
+6. **The belvedere** (quest 4, finale). Wenna sends them to the west wall. Up four stone steps to the terrace, through a gap in the clipped yew screen: a balustrade, two urns, a bench, and the valley — level grassland running far west to low hills, the sun on the horizon, the sky deep blue overhead shading to gold and rose. The delve ends there.
 
 ## 3. Geometry
 
@@ -27,18 +27,18 @@ The site is one row west to east — belvedere, walled garden, lime walk — wit
 
 | place | box (play space) | floor | overhead | joined by |
 |---|---|---|---|---|
-| lime walk | 14 × 8, at [55, 26] (pinned) | y 64 | open 12 | east gate, 3 wide, to the garden |
-| garden | 40 × 30, at [14, 15] | y 64 | open 10 | gate; glass door; potting door; terrace steps |
+| lime walk | 16 × 14, at [55, 23] (pinned) | y 64 | open 12 | east gate, 3 wide, to the garden |
+| garden | 40 × 30, at [14, 15] | y 64 | open 6 | gate; glass door; potting door; terrace steps |
 | conservatory | 20 × 10, at [19, 4] | y 64 | 7 of headroom, glass lean-to roof 4 courses | double glass door, 2 wide, to the garden |
 | potting room | 10 × 8, at [42, 6] | y 64 | 4 of headroom, tiled roof 3 courses | plank door, 1 wide, to the garden; hatch stair down |
-| stove cellar | 8 × 6, at [42, 6] | y 59 | 4 of headroom | stone stair, 2 wide, up through the potting room floor |
-| belvedere | 8 × 8, at [5, 26] | y 69 | open 6 | stone steps, 3 wide, hosted in the garden against its west wall |
+| stove cellar | 10 × 8, at [42, 6] | y 59 | 4 of headroom | stone stair, 2 wide, up through the potting room floor |
+| belvedere | 8 × 8, at [5, 26] | y 68 | open 6 | stone steps, 3 wide, four up, hosted in the garden against its west wall |
 
-Inside the garden: the reflecting pool, 18 × 5 of still water edged in pale stone, centred on the long axis; gravel paths round it and to each door; four lawn quarters with clipped hedges; four fruit trees in leaf; lanterns on stone posts along the paths. The lime walk carries six to eight lime trees. Region 72 × 32 × 52 from [0, 54, 0].
+Inside the garden: the reflecting pool, 18 × 5 of still water edged in pale stone, centred on the long axis; gravel paths round it and to each door; four lawn quarters with clipped hedges; four fruit trees in leaf; lanterns on stone posts along the paths. The lime walk carries six lime trees, two with lanterns hung from a low branch. The garden walls are brick, six courses with a stone coping; over the belvedere's side of the west wall they give way to a low clipped yew screen with a gap at the head of the steps. The stove cellar is lined in stone inside its 10 × 8 box, so its walking floor is smaller than the box. Region 72 × 32 × 52 from [0, 54, 0].
 
 ## 4. Light, designed with the rooms
 
-- **Outdoors** is lit by the sky, with placed light designed in: lantern posts along the garden paths, lanterns on the gate piers, and the conservatory and potting room windows glowing from inside. At night the garden still reads by these.
+- **Outdoors** is lit by the sky, with placed light designed in: lantern posts along the garden paths, lanterns on the gate piers and the belvedere's corners, a lantern hung under each fruit tree and from two of the limes, and the conservatory and potting room windows glowing from inside. At night the garden still reads by these.
 - **The conservatory** is lit by the sky through glass. A pair of lanterns hangs from the ridge for the night.
 - **The potting room** is lit only by placed light of three kinds: a hanging lantern over the bench, candles on the shelf and window sill, and a wall torch by the cellar hatch.
 - **The stove cellar** has one light: a lantern at the foot of the stair. Lighting the furnace adds the second.
