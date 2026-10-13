@@ -54,11 +54,11 @@ Each camera is placed at step 8b; the render round re-shoots each under clear su
 | render item | where | camera |
 |---|---|---|
 | open sky: grass, trees, path, still water showing the sky | garden, from inside the east gate looking west along the pool | `garden-pool` |
-| known material tones: oak planks, red brick, pale stone, glass | the garden's north side: the potting room's brick front and plank door, the stone path and pool edge, the conservatory's glass front | `north-front` |
+| known material tones: oak planks, red brick, pale stone, glass | the garden's north side: the conservatory's glass front in white quartz frames, the brick walls, the oak bench against the potting room, the pale stone pool edge | `north-front` |
 | sky light falling inside under glass | conservatory interior, looking along the staging to the lemon tree under the glass roof | `under-glass` |
 | a room lit only by placed light, of at least two kinds | potting room interior: lantern, candles, torch | `potting-room` |
 | a dark low place lit by one source | stove cellar from the stair foot, the lantern and the furnace | `stoke-hole` |
-| a long view: distance and the sky at the horizon | belvedere, looking west over the balustrade | `long-view` |
+| a long view: distance and the sky at the horizon | over the belvedere, looking west across the valley floor to the rim and the sky above it; the lens stands 15 blocks over the terrace, because from the terrace's own eye the valley rim stands above the eye line | `long-view` |
 | the whole map | high to the south-east, looking north-west and down | `whole-site` |
 
 ## 7. Cast and classes

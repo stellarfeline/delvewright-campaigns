@@ -36,3 +36,11 @@ Wenna Hale wears her own skin (`skins/cast.json`, composed with the engine's ski
 | The lawns were sunk one block: a piece's own floor-course cell left unset is air | fixed in the pieces (`lawn`); no gate caught it, a render did |
 | From the belvedere the valley rim hides the horizon at every rim height the engine allows | the long-view camera stands above the rim; open as an engine limit |
 | A stair through a floor cannot be entered from the side the treads face when its top tread sits in the upper place's floor course — the route is only found from a side with no rail | the potting room's hatch has no rail on its west side; open, not understood |
+
+## Visual review
+
+Rendered on the pinned Chunky core, each at its camera's or scene's own budget: the seven render-item showcase cameras (garden-pool, north-front, under-glass, long-view, whole-site at 300 samples; potting-room and stoke-hole at 1024) and seven POV frames (the walk's first frame and the arrival frame of each of the six legs, at the scene's 500). Not rendered: the other 126 of the build's 133 scenes, and the nine remaining showcase cameras.
+
+- Every showcase frame is the place its approved image shows: the pool mirrors the sunset sky between lantern posts with the conservatory on the right; the conservatory front shows glass, white frames, brick, the oak bench and the pale pool edge together; sky light falls through the glass roof onto the lemon tree; the potting room reads by its lantern, candles and torch; the cellar reads by its one lantern; the whole site stands in its valley.
+- The long view shows the sun on the valley rim and the sky's gradient over it; from the terrace's own eye the rim hides the true horizon (Findings).
+- The POV frames inside the potting room and the cellar read near-black at the scene's exposure 1, as showcase-shots section 3.7 says a lamp-lit room does in the path tracer; the room's light passes DW0210 in the game. No body is drawn (Wenna is an entity).
