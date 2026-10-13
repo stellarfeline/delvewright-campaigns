@@ -528,8 +528,8 @@ def sea_skiff(node):
     close_rings(pc, lambda c: S("minecraft:spruce_log", axis="y"))
     space_claim(pc, "skiff", "open", cap=fy + 2)
     node_mark(pc)
-    leftovers_no_body(pc)
-    return pc.finish("skiff", shown_faces=["north", "south", "east", "west"])
+    # nothing here is out of the walk, and only its underside and its east side show
+    return pc.finish("skiff", shown_faces=["down", "east"])
 
 
 BUILDERS = {
