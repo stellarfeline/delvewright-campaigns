@@ -49,6 +49,15 @@ def hang(m, x, z, y_from, drop):
     m.set(x, y_from - drop + 1, z, LANTERN_HANG)
 
 
+def lawn(m, x0, z0, x1, z1):
+    """Grass over every floor-course cell of an open place that nothing else
+    paved: the floor course is the place's own, and a cell left unset is air."""
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            if m.get(x, G - 1, z) is None:
+                m.set(x, G - 1, z, LAWN)
+
+
 def settle_paths(m):
     """A dirt path stays a path only under air: the game turns one with a block
     over it to dirt, so a path cell under a step, a post or a bench is laid as
@@ -381,6 +390,7 @@ def garden():
         hedge(29, zz, 32, zz)
         hedge(36, zz, 42, zz)
         hedge(46, zz, x1 - 2, zz)
+    lawn(m, x0 + 1, z0 + 1, x1 - 1, z1 - 1)
     # An oak bench against the potting room's front, between the two doors.
     for x in (31, 32, 33):
         m.set(x, G, z0 + 1, "oak_stairs[facing=north,half=bottom]")
@@ -503,6 +513,7 @@ def lime_walk():
     for x in range(gx + 1, x1):
         for z in range(28, 31):
             m.set(x, G - 1, z, m.pick(x, G - 1, z, GRAVEL_PATH, 4))
+    lawn(m, gx + 1, z0 + 1, x1 - 1, z1 - 1)
     # Lime trees either side of it, two with lanterns hung toward the walk.
     for i, (tx, tz) in enumerate(LIMES):
         dz = (2 if tz < 29 else -2) if tx == 62 else 0
