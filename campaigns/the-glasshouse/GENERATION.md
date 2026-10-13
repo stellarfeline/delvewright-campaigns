@@ -16,4 +16,8 @@
 
 ## Posture note
 
-Quiet, warm and domestic: an errand done for someone who cannot do it herself, at the hour the light is best. No combat and no threat; the only pressure is the frost, and it never arrives on stage.
+Three axes pushed off the default for this campaign: **emotion named outright** — Wenna says she is frightened for the tree, in those words, and no one clenches anything; **resolution left open** — the delve ends before morning and never says whether the lemon tree lives; **thematic explicitness low** — no line states what the evening means, and the one confession (she has never watched the sun go from the belvedere) is handed to the party as an errand, not explained. Quiet and domestic otherwise; no combat, and the frost never arrives on stage.
+
+## Faces
+
+Wenna Hale wears her own skin (`skins/cast.json`, composed with the engine's skin toolchain, slim model).

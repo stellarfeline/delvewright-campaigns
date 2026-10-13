@@ -1,7 +1,121 @@
 {
   "campaign_id": "the-glasshouse",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/wenna-ask",
+            "options": [
+              {
+                "label": "What happened?",
+                "next": "dlg/wenna-hand"
+              },
+              {
+                "label": "What needs doing?",
+                "next": "dlg/wenna-frost"
+              }
+            ],
+            "text": "You'll be the walkers from the big house. Good. I need two good hands tonight, and one of mine is no use."
+          },
+          {
+            "id": "dlg/wenna-hand",
+            "options": [
+              {
+                "label": "What needs doing?",
+                "next": "dlg/wenna-frost"
+              }
+            ],
+            "text": "Burnt it on the stove door this afternoon. My own fault. I was hurrying, and you should never hurry a stove."
+          },
+          {
+            "id": "dlg/wenna-frost",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-wenna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll shut them."
+              }
+            ],
+            "text": "The sky's clearing, and when it clears at sundown the frost comes down the valley. The lemon tree in the glasshouse is older than my time here, and I'm frightened for it. First the roof vents want shutting. The winding wheel is on the back wall, at this end."
+          },
+          {
+            "id": "dlg/wenna-matches",
+            "options": [
+              {
+                "label": "Is it dark down there?",
+                "next": "dlg/wenna-dark"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/take-the-matches",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll light it."
+              }
+            ],
+            "text": "Vents shut? Good. Now the stove. It's down the hatch there, under our feet. Take these: stove matches, the long kind, for lighting the firebox. It's laid; it only wants a flame."
+          },
+          {
+            "id": "dlg/wenna-dark",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/take-the-matches",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll light it."
+              }
+            ],
+            "text": "There's one lantern at the foot of the stair. It's enough once your eyes come round. Mind the coal heap."
+          },
+          {
+            "id": "dlg/wenna-done",
+            "options": [
+              {
+                "label": "Come with us?",
+                "next": "dlg/wenna-stay"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/tell-wenna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll watch it."
+              }
+            ],
+            "text": "I can hear it drawing. That's the sound I wanted. Forty years I've been shutting and lighting at this hour, and I've never once watched the sun go down from the belvedere. Go up and watch it for me. Tell me what colour it goes."
+          },
+          {
+            "id": "dlg/wenna-stay",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/tell-wenna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll watch it."
+              }
+            ],
+            "text": "Someone has to feed that stove every two hours till dawn, and it may as well be the one who knows its temper. Go on, before it sets."
+          }
+        ],
+        "npc": "npc/wenna",
+        "root": "dlg/wenna-ask"
+      }
+    ]
   },
   "dsl_version": "0.39.0",
   "stage": "dialogue"

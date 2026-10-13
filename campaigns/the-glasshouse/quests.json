@@ -1,7 +1,235 @@
 {
   "campaign_id": "the-glasshouse",
   "content": {
-    "quests": []
+    "guidance": {
+      "announcements": "shown",
+      "markers": "hidden"
+    },
+    "quests": [
+      {
+        "cast": {
+          "npc/wenna": {
+            "at": "anchor/node-potting-room",
+            "dialogue": "dlg/wenna-ask",
+            "doing": "at her potting bench with her burnt hand bound up, watching the sky clear through the window"
+          }
+        },
+        "happening": {
+          "text": "Visitors walking the estate come up the lime walk into the walled garden as the sun goes down.",
+          "verb": "arrives"
+        },
+        "id": "quest/first-frost",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/wenna",
+              "text": "Wenna explains that frost is coming tonight and asks the visitors to shut the conservatory's roof vents.",
+              "verb": "learns"
+            },
+            "hint": "Walk past the pool to the brick potting room with the lit window, beside the glasshouse.",
+            "id": "obj/find-wenna",
+            "npc": "npc/wenna",
+            "title": "Find the head gardener",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/wenna": {
+            "at": "anchor/node-potting-room",
+            "dialogue": {
+              "barks": [
+                "The wheel is stiff. Lean your weight on it.",
+                "Every light shut. A crack open is as bad as wide open, on a night like this."
+              ]
+            },
+            "doing": "sorting seed packets one-handed while the visitors see to the vents"
+          }
+        },
+        "happening": {
+          "subject": "anchor/vent-wheel",
+          "text": "The visitors wind the conservatory's roof vents shut against the night.",
+          "verb": "seals"
+        },
+        "id": "quest/shut-the-glass",
+        "objectives": [
+          {
+            "anchor": "anchor/vent-wheel",
+            "happening": {
+              "subject": "anchor/vent-wheel",
+              "text": "The roof lights of the conservatory close.",
+              "verb": "seals"
+            },
+            "hint": "The iron winding wheel is on the brick back wall inside the glasshouse, at the end nearest the potting room.",
+            "id": "obj/wind-the-vents",
+            "title": "Wind the roof vents shut",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "sound": "minecraft:block.iron_trapdoor.close",
+            "type": "play-sound"
+          },
+          {
+            "style": "actionbar",
+            "text": "The roof lights swing down and shut, one after another, along the glass.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/first-frost",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/wenna": {
+            "at": "anchor/node-potting-room",
+            "dialogue": "dlg/wenna-matches",
+            "doing": "by the cellar hatch, waiting to hand over the matches"
+          }
+        },
+        "happening": {
+          "subject": "anchor/furnace",
+          "text": "The visitors go down to the stove cellar and light the furnace that heats the conservatory.",
+          "verb": "opens"
+        },
+        "id": "quest/light-the-stove",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "item/matches",
+              "text": "Wenna gives the visitors the stove matches and sends them down the hatch.",
+              "verb": "gains"
+            },
+            "hint": "She is in the potting room beside the glasshouse.",
+            "id": "obj/take-the-matches",
+            "npc": "npc/wenna",
+            "title": "Go back to Wenna",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/take-the-matches"
+            ],
+            "anchor": "anchor/furnace",
+            "happening": {
+              "subject": "anchor/furnace",
+              "text": "The fire catches in the furnace.",
+              "verb": "opens"
+            },
+            "hint": "Go down the stone stair through the hatch in the potting room floor. The furnace is across the cellar from the lantern.",
+            "id": "obj/light-the-furnace",
+            "missing_item_hint": "The firebox is laid with coal, but you have nothing to light it with. Hold the stove matches in your hand.",
+            "requires_item": "minecraft:flint_and_steel",
+            "title": "Light the stove",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "anchor": "anchor/furnace",
+            "block": "minecraft:furnace[facing=south,lit=true]",
+            "type": "set-block"
+          },
+          {
+            "sound": "minecraft:item.firecharge.use",
+            "type": "play-sound"
+          },
+          {
+            "style": "chat",
+            "text": "The coal catches. Warm air begins to move along the flues under the glasshouse floor.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/take-the-matches": [
+            {
+              "count": 1,
+              "item": "minecraft:flint_and_steel",
+              "name": "Stove Matches",
+              "type": "give-item"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/shut-the-glass",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/wenna": {
+            "at": "anchor/node-potting-room",
+            "dialogue": "dlg/wenna-done",
+            "doing": "at the hatch, listening to the stove draw, with something to ask"
+          }
+        },
+        "happening": {
+          "text": "With the stove drawing, Wenna sends the visitors up to the belvedere to watch the sun go down over the valley.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-long-view",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/wenna",
+              "text": "Wenna hears the stove is lit and asks the visitors to watch the sunset from the belvedere for her.",
+              "verb": "learns"
+            },
+            "hint": "Climb back up the stair into the potting room.",
+            "id": "obj/tell-wenna",
+            "npc": "npc/wenna",
+            "title": "Tell Wenna the stove is lit",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/tell-wenna"
+            ],
+            "anchor": "anchor/node-belvedere",
+            "happening": {
+              "text": "The visitors stand on the belvedere and look out over the valley at sunset.",
+              "verb": "arrives"
+            },
+            "hint": "Climb the stone steps at the far end of the pool to the terrace on the garden wall.",
+            "id": "obj/watch-the-valley",
+            "radius": 3,
+            "title": "Watch the sun go down",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "title",
+            "text": "First Frost",
+            "type": "narrate"
+          },
+          {
+            "style": "chat",
+            "text": "Out over the valley the sky goes from gold to rose to blue. Somewhere down there the frost is already settling in the hollows. Whether the lemon tree sees the morning is the stove's business now.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "text": "The conservatory is shut, the stove is lit, and the visitors watch the sun go down from the belvedere.",
+              "verb": "arrives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/light-the-stove",
+          "type": "quest-complete"
+        }
+      }
+    ]
   },
   "dsl_version": "0.39.0",
   "stage": "quests"
