@@ -49,7 +49,17 @@ def hang(m, x, z, y_from, drop):
     m.set(x, y_from - drop + 1, z, LANTERN_HANG)
 
 
+def settle_paths(m):
+    """A dirt path stays a path only under air: the game turns one with a block
+    over it to dirt, so a path cell under a step, a post or a bench is laid as
+    coarse dirt, which is what the game would leave there."""
+    for (lx, ly, lz), b in list(m.cells.items()):
+        if b.startswith("dirt_path") and m.cells.get((lx, ly + 1, lz)) not in (None, "air"):
+            m.cells[(lx, ly, lz)] = "coarse_dirt"
+
+
 def write(m, stem):
+    settle_paths(m)
     prog = m.program(f"{CAMPAIGN}-{stem}")
     path = os.path.join(C, "programs", f"{stem}.json")
     json.dump(prog, open(path, "w"), indent=1)
