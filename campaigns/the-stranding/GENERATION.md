@@ -118,17 +118,21 @@ Each is recorded with its diagnostic and a minimal reproduction; none was worked
 - **The written world leaves stone out under two stretches of sea**: `DW0955`'s model class holds 3744 cells, written air and server stone, at y47..54 in x61..67 z447..458 and x69..116 z91..98 (the server holds stone to y54 and water above; the model holds air from y47 up). The two stretches are exactly the footprints, with their one-cell rings, of the two places that stand over open sea: `node/pier` and `node/sea-skiff`.
 - **Friction**: one global `~/.delvewright/env.sh` names one engine tree; detailing one place re-runs the whole build (about ten minutes on this map) while `--all` re-makes all 54 places in about the same time; adding stations to two places at once deadlocks per-place detail; the light probe needs a side entrance on top-entered pieces; through-floor stair contract patterns (top tread in the hole, head clearance over the two top treads) are undocumented.
 
-## Ladder results (engine a7f3f621, campaign head built by it)
+## Ladder results (playtest build)
 
-- `validate`, `analyze` and `build` exit 0.
-- **PackTest**: red, 1 required test, the engine finding above (`pulse_heartbeat_shut`).
-- **Critical-path bot**: every step walked to the end. The stage is red on one muster finding: `wave/drowned-wrecks-2` has 6 declared bodies and 5 were read. One body came to the bot during the fight before it and was felled before the muster read it.
-- **Die-retry**: green, 12 of 12 trials and 6 of 6 encounters engaged.
-- **Pulses**: 2 of 2 heard at a listening station.
-- **Watch**: 1 within reach, 1 asserted (26 judgements). `actor/watcher-street` and `actor/watcher-flat` were never within reach.
+These were run on the campaign at `8f5c580`. The build was made by the pin plus the seabed fix: `delvec 1.12.0` from `fix/written-world-over-open-sea-on-pin` @ `a7c99f62d49ff1973874096db25c12303a7ae8f1`, binary sha256 `3f2e6a04900bf4ceb75a536d7c670531c2721d378206eb584dd4114ca2af7898`. The ladder ran from engine `main` @ `c8d879197c3b8e6da2694162c47497043bc23a3a`, whose harness waits for placement. The campaign's engine pin is unchanged.
+
+- `validate`, `analyze` and `build` exit 0. The bot report's `build.manifest_sha256` is `4cd315c728eddf99b1e5cc15b8d3601750da4a35d2f9000834090c0df0abeff8`.
+- **World save**: 9 region files, none empty, 61472 KiB.
+- **Written world (`DW0955`)**: pass. 3042956 cells were compared. The model and fluid classes have 0 differing cells. There are 58 re-derived and 2 random-tick cells.
+- **Critical-path bot**: pass. The placement was read 6946 ms after spawn.
+- **Die-retry**: pass. 12 of 12 trials ran, and all 6 encounters were engaged.
+- **Pulses**: 2 of 2 were heard at a listening station.
+- **Watch**: 1 watcher was within reach and 1 was asserted (26 judgements).
 - **Sculk**: every predicted sensor and shrieker was heard.
-- **Branch runs**: not run on this head. The one earlier attempt hit the default 20-minute budget.
-- **Written world**: `DW0955` red, 3744 model cells. This is the engine finding above.
+- **Death plan**: unbound. No `on_death` is declared, so the death-loop stage is skipped.
+- **PackTest**: red, 1 required test, `pulse_heartbeat_shut` (engine finding above).
+- **Staging gate**: refused. `node/sea-skiff` is a stand-in no piece fills ("a stand-in never ships"), and a carry-only place cannot be detailed (engine finding above). `--stage-anyway` does not reach this refusal.
 
 ## Open items
 
