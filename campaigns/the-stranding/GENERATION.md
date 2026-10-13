@@ -100,7 +100,6 @@ A design requirement for the new map: a building reads from outside as the thing
 - **`DESIGN.md` *Waiting on the engine***: the oarsman's obfuscated line; the striking of the Jaw Bank, Rib Cathedral, Crown and Run tentacles (they rise, can be struck down and retract; only the Narrows tentacle strikes).
 - **The endless throat**: the loop (spec-0086) holds until the wrong rib is struck, and the wrong rib's interaction body stands inside the loop's span, which `DW0948` refuses (a body moved a bay back would see it twice). The release `DESIGN.md` gives cannot be declared; the throat is walked straight.
 - **The Run's killing volume**: `DW0891` refuses a staged volume whose keep-out reaches the floor in the configuration before its flip, and prescribes a volume on an anchor at the pit's bottom; the pit's bottom is a sealed hollow under the bank until the fall, and `DW0845` refuses an owed anchor that resolves into a `no_body` region. The collapse and its checkpoints stand; a fall costs nothing.
-- **The sea skiff** (`node/sea-skiff`, reached only by the crossing's carry) stays a stand-in: a place joined only by a `carry` edge cannot be detailed (the contract owes an exterior walk edge on its entry while `DW0844` refuses any face no seam allocates).
 
 ## Engine findings (met while building this map)
 
@@ -120,19 +119,16 @@ Each is recorded with its diagnostic and a minimal reproduction; none was worked
 
 ## Ladder results (playtest build)
 
-These were run on the campaign at `8f5c580`. The build was made by the pin plus the seabed fix: `delvec 1.12.0` from `fix/written-world-over-open-sea-on-pin` @ `a7c99f62d49ff1973874096db25c12303a7ae8f1`, binary sha256 `3f2e6a04900bf4ceb75a536d7c670531c2721d378206eb584dd4114ca2af7898`. The ladder ran from engine `main` @ `c8d879197c3b8e6da2694162c47497043bc23a3a`, whose harness waits for placement. The campaign's engine pin is unchanged.
+These were run on the campaign at `f42fefe`, with all 55 places detailed. The build was made by the pin plus the seabed and carry-only fixes: `delvec 1.12.0` from `fix/carry-only-place-detailed-on-pin` @ `4fdcc3d517c2e65ca1382215cce45a26555728c6`, binary sha256 `75411daa61a64e7a34d1af6f72c43820846c7c44da31ab27ecfb01f23f64c6ff`. The bot run, PackTest and world save ran from engine `main` @ `c8d879197c3b8e6da2694162c47497043bc23a3a`. The written-world checker ran from `main` @ `662ff6719fca839162197cc508409f27bf3113a5`. The campaign's engine pin is unchanged.
 
-- `validate`, `analyze` and `build` exit 0. The bot report's `build.manifest_sha256` is `4cd315c728eddf99b1e5cc15b8d3601750da4a35d2f9000834090c0df0abeff8`.
-- **World save**: 9 region files, none empty, 61472 KiB.
-- **Written world (`DW0955`)**: pass. 3042956 cells were compared. The model and fluid classes have 0 differing cells. There are 58 re-derived and 2 random-tick cells.
-- **Critical-path bot**: pass. The placement was read 6946 ms after spawn.
+- `validate`, `analyze` and `build` exit 0.
+- **Blockout**: `55 place(s) massed (55 detailed, so 0 massed by the derivation …)`.
+- **Critical-path bot**: red at step 30. `trigger trigger/valve-middle (use): the compiler predicted this leg sets off sculk it did not hear — the sensor at [163, 64, 622] never turned active`. That sensor is predicted on both the `valve-east` leg and the `valve-middle` leg that follows it. The same legs passed on the previous build, whose valve room is identical. It was not re-run.
 - **Die-retry**: pass. 12 of 12 trials ran, and all 6 encounters were engaged.
-- **Pulses**: 2 of 2 were heard at a listening station.
-- **Watch**: 1 watcher was within reach and 1 was asserted (26 judgements).
-- **Sculk**: every predicted sensor and shrieker was heard.
-- **Death plan**: unbound. No `on_death` is declared, so the death-loop stage is skipped.
 - **PackTest**: red, 1 required test, `pulse_heartbeat_shut` (engine finding above).
-- **Staging gate**: refused. `node/sea-skiff` is a stand-in no piece fills ("a stand-in never ships"), and a carry-only place cannot be detailed (engine finding above). `--stage-anyway` does not reach this refusal.
+- **World save**: 9 region files, none empty, 61452 KiB.
+- **Written world (`DW0955`)**: pass. 3042818 cells were compared. The model, fluid, gravity and clock classes have 0 differing cells. There are 58 re-derived and 1 random-tick cells. The checkers at `c8d87919` and `662ff671` agree.
+- **Staging gate**: refused on the critical path only (`stage critical-path is RED (1 failure(s)): step 30 …`). The stand-in refusal is gone.
 
 ## Open items
 
