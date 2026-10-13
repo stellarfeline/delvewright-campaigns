@@ -12,7 +12,7 @@
 - Engine release `delvec 1.13.0`, `dsl_version` `0.39.0`, skill page of plugin version 1.13.0 (its own pin, `delvec--v1.13.0`).
 - Placement model: site plan. The thing the delve is named after — the conservatory — has an exterior silhouette the player reads against the sky, and the shipped library holds no piece that is it.
 - Prefab library: the content repository's own `prefabs/`, at the revision the engine pin names.
-- Languages: English only.
+- Languages: English only, confirmed at the design gate.
 
 ## Posture note
 
