@@ -1,7 +1,78 @@
 {
   "campaign_id": "the-thing-across-the-water",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/keeper-root",
+            "options": [
+              {
+                "label": "What is out there?",
+                "next": "dlg/keeper-what"
+              },
+              {
+                "label": "What is the bell for?",
+                "next": "dlg/keeper-bell"
+              }
+            ],
+            "text": "Evening. You came along the shore, so you will have seen the stack out in the bay. Don't look at it from in here. I don't."
+          },
+          {
+            "id": "dlg/keeper-what",
+            "options": [
+              {
+                "label": "What is the bell for?",
+                "next": "dlg/keeper-bell"
+              }
+            ],
+            "text": "Rock. Gulls, in summer. My keeper said there was more than rock, and that the bell would show it. He rang it once. He never told me what he saw."
+          },
+          {
+            "id": "dlg/keeper-bell",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-keeper",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "I will ring it."
+              }
+            ],
+            "text": "It hangs at the end of the jetty. Ring it once and look at the stack. I have kept it thirty winters and never touched the rope. Walk out there, and come back and tell me."
+          },
+          {
+            "id": "dlg/keeper-after",
+            "options": [
+              {
+                "label": "It is standing.",
+                "next": "dlg/keeper-standing"
+              }
+            ],
+            "text": "I heard it. Don't tell me it was empty. Is it standing?"
+          },
+          {
+            "id": "dlg/keeper-standing",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/tell-the-keeper",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "I'll leave it open."
+              }
+            ],
+            "text": "Then my keeper was right, and I have kept a bell for it for thirty years. I'm frightened. Leave the door open when you go."
+          }
+        ],
+        "npc": "npc/keeper",
+        "root": "dlg/keeper-root"
+      }
+    ]
   },
   "dsl_version": "0.48.0",
   "stage": "dialogue"

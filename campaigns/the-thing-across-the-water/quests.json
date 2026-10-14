@@ -1,7 +1,278 @@
 {
   "campaign_id": "the-thing-across-the-water",
   "content": {
-    "quests": []
+    "assemblies": [
+      {
+        "at": {
+          "anchor": "anchor/stack-top"
+        },
+        "facing": "south",
+        "id": "assembly/the-thing",
+        "initial": "rise",
+        "rig": "rig/tentacle"
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/keeper": {
+            "at": "anchor/keeper",
+            "dialogue": "dlg/keeper-root",
+            "doing": "standing behind his desk at the back of the hall, facing the open door and not the window"
+          }
+        },
+        "happening": {
+          "text": "The party comes up the coast road to the harbour hall at dusk.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-bay",
+        "objectives": [
+          {
+            "anchor": "anchor/door-step",
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "They see the keeper through the open door.",
+              "verb": "arrives"
+            },
+            "hint": "The hall's door stands open at the foot of the jetty.",
+            "id": "obj/at-the-door",
+            "radius": 1,
+            "title": "Go to the hall door",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/at-the-door"
+            ],
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "The keeper tells them what the bell is for.",
+              "verb": "learns"
+            },
+            "hint": "He stands at the back of the hall, facing the door.",
+            "id": "obj/hear-the-keeper",
+            "npc": "npc/keeper",
+            "title": "Speak to the keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-the-keeper"
+            ],
+            "anchor": "anchor/jetty-end",
+            "happening": {
+              "text": "They stand at the end of the jetty and look out at the stack.",
+              "verb": "arrives"
+            },
+            "hint": "Walk out to the bell at the end of the jetty.",
+            "id": "obj/jetty-end",
+            "radius": 1,
+            "title": "Walk to the end of the jetty",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/jetty-end"
+            ],
+            "anchor": "anchor/bell",
+            "happening": {
+              "subject": "anchor/bell",
+              "text": "They ring the bell, and something stands up on the stack.",
+              "verb": "opens"
+            },
+            "hint": "The bell stands at the very end of the jetty.",
+            "id": "obj/ring-the-bell",
+            "prop": {
+              "block": "minecraft:bell[attachment=floor,facing=north,powered=false]"
+            },
+            "title": "Ring the bell",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/at-the-door": [
+            {
+              "party": "present",
+              "shots": [
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/door-step",
+                      "offset": [
+                        0,
+                        1,
+                        -3
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/door-step",
+                      "offset": [
+                        0,
+                        1,
+                        -1
+                      ]
+                    }
+                  ],
+                  "seconds": 4,
+                  "subject": {
+                    "npc": "npc/keeper"
+                  }
+                }
+              ],
+              "type": "cutscene"
+            }
+          ],
+          "obj/jetty-end": [
+            {
+              "party": "present",
+              "shots": [
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/jetty-end",
+                      "offset": [
+                        0,
+                        6,
+                        2
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/jetty-end",
+                      "offset": [
+                        0,
+                        4,
+                        -44
+                      ]
+                    }
+                  ],
+                  "seconds": 6,
+                  "subject": "landscape"
+                },
+                {
+                  "look_at": {
+                    "anchor": "anchor/stack-top",
+                    "offset": [
+                      0,
+                      3,
+                      0
+                    ]
+                  },
+                  "path": [
+                    {
+                      "anchor": "anchor/stack-top",
+                      "offset": [
+                        18,
+                        2,
+                        26
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/stack-top",
+                      "offset": [
+                        10,
+                        4,
+                        24
+                      ]
+                    }
+                  ],
+                  "seconds": 5,
+                  "subject": {
+                    "place": "node/stack"
+                  }
+                }
+              ],
+              "type": "cutscene"
+            }
+          ],
+          "obj/ring-the-bell": [
+            {
+              "assembly": "assembly/the-thing",
+              "type": "spawn-assembly"
+            },
+            {
+              "party": "present",
+              "shots": [
+                {
+                  "path": [
+                    {
+                      "anchor": "anchor/jetty-end",
+                      "offset": [
+                        0,
+                        3,
+                        4
+                      ]
+                    },
+                    {
+                      "anchor": "anchor/jetty-end",
+                      "offset": [
+                        0,
+                        3,
+                        1
+                      ]
+                    }
+                  ],
+                  "seconds": 10,
+                  "subject": {
+                    "assembly": "assembly/the-thing"
+                  }
+                }
+              ],
+              "type": "cutscene"
+            },
+            {
+              "style": "chat",
+              "text": "Out on the stack, the thing is still standing. It has not gone back down.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/keeper": {
+            "at": "anchor/keeper",
+            "dialogue": "dlg/keeper-after",
+            "doing": "still behind his desk, listening to the bell die away, his back to the north window"
+          }
+        },
+        "happening": {
+          "text": "The party walks back up the jetty with the thing standing behind them.",
+          "verb": "believes"
+        },
+        "id": "quest/what-stood-up",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "They tell the keeper what stood up.",
+              "verb": "learns"
+            },
+            "hint": "The keeper is waiting in the hall.",
+            "id": "obj/tell-the-keeper",
+            "npc": "npc/keeper",
+            "title": "Tell the keeper",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The keeper knows the stack is not empty.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-bay",
+          "type": "quest-complete"
+        }
+      }
+    ]
   },
   "dsl_version": "0.48.0",
   "stage": "quests"
