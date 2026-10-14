@@ -130,20 +130,27 @@ reference/<level>/v<major>.<minor>.<patch>                 e.g. reference/the-be
 ```
 
 Pushing any of them runs `.github/workflows/release.yml`, which builds the level
-with the engine release tag pinned in `versions.toml` `[engine].ref`, runs the
+with the engine release pinned in `versions.toml` `[engine].ref` — the `delvec`
+binary that release published, downloaded and checked against the release's
+`SHA256SUMS`, never compiled here; a pin that is not a published
+`delvec--v<version>` release refuses the run — runs the
 full release-tier ladder (PackTest + a complete bot playthrough against the
 shipped image), and — only on green — publishes the GitHub Release (with
 `resourcepack.zip`) and the multi-arch delve image on GHCR. A red ladder
 publishes nothing.
 
-Before the build, the same pinned engine runs `delvec grammar audit
+Before the build, the same downloaded binary runs `delvec grammar audit
 --campaign-root` over the released level alone (a temp content root holding
 it as `campaigns/<id>`), for every family, and refuses the release on a red audit. A
 campaign with `design/programs/` must carry a `zones.json` that maps every
 program to a region and seed, and every program must pass its gates; a campaign
 with no `design/programs/` passes, and the log states a zero binding. To check
-before tagging, run the same command from the pinned engine against a root that
-holds only your level under `campaigns/` (a reference level too).
+before tagging, run the same command with the pinned release's `delvec` against
+a root that holds only your level under `campaigns/` (a reference level too). The release obtains that
+binary with the engine release's own acquisition script, run from an engine
+checkout at the pinned tag: `python3 <engine>/.claude/skills/delvewright/skills/new-delve/scripts/fetch-delvec.py
+--pin versions.toml --engine <engine> --into <dir>` does the same on your
+machine.
 
 The family decides how it is published:
 
