@@ -41,8 +41,20 @@ manifest = lib / "vesperhold.json"
 meta = json.loads(manifest.read_text())
 for name, g in json.loads((HERE / "gates.json").read_text()).items():
     meta["anchors"][name] = {"region": {"from": g["from"], "to": g["to"]}, "block": g["block"]}
+# The piece is the whole site of a place its plan allocates no seam
+# (spec-0106 §6): one open space over the whole, entered by the `spawn`, so its
+# contract declares zero exterior edges.
+size = [int(n) for n in SIZE.split("x")]
+meta["spatial_contract"] = {
+    "entry": "site",
+    "spaces": {"site": {"envelope": "open",
+                        "boxes": [{"from": [0, 0, 0], "to": [n - 1 for n in size]}]}},
+    "no_body": {},
+    "edges": [],
+    "faces": [],
+}
 manifest.write_text(json.dumps(meta, indent=2) + "\n")
-print(f"wrote {len(json.loads((HERE / 'gates.json').read_text()))} gate anchor(s) into {manifest.name}")
+print(f"wrote {len(json.loads((HERE / 'gates.json').read_text()))} gate anchor(s) and the whole-site contract into {manifest.name}")
 run("delvec", "--prefabs", str(lib), "prefab", "planes", str(manifest), "--write")
 run("delvec", "--prefabs", str(lib), "prefab", "lighting", str(manifest), "--write")
 run("delvec", "--prefabs", str(lib), "prefab", "audit", str(manifest))

@@ -91,7 +91,7 @@ def well_house(g):
     g.set(x0 + 5, C, z0, LANTERN)
     g.set(19, L.UNDER, 78, LANTERN)
     g.mark("well-house", 23, C, 66, "east")
-    g.mark("unlock-well-house-door", 24, C, 67, "east")
+    g.mark("well-house-door-latch", 24, C, 67, "east")
     g.mark("well-stair", 19, L.UNDER, 77, "north")
 
 

@@ -199,7 +199,7 @@ def ringers_stair(g):
     g.box(32, 32, C - 1, C - 1, 21, 22, FLOOR)
     g.gate("ringers-stair", 33, 33, C, C + 1, 21, 22, "minecraft:dark_oak_planks", GATE_WOOD)
     g.box(33, 33, C + 2, C + 2, 20, 23, TRIM_TUFF)
-    g.mark("unlock-ringers-stair", 31, C, 22, "east")
+    g.mark("ringers-stair-door", 31, C, 22, "east")
 
 
 def founders_yard(g):

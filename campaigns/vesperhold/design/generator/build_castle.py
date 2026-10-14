@@ -80,6 +80,23 @@ def build():
                                 "quoin", "pillar", "flag", "floor")}
     railed = settle_rails(g, sturdy)
     print(f"wall blocks: {railed} side(s) and post(s) derived from their neighbours")
+    # A lantern stands on a block or hangs from one, or the server drops it at
+    # the first shape update (the engine refuses the build: DW1002). One that
+    # a later part left over air, or under it, is not placed.
+    standing = {i for i, n in enumerate(PAL.blocks) if n and "lantern" in n and "hanging=true" not in n}
+    hanging = {i for i, n in enumerate(PAL.blocks) if n and "lantern" in n and "hanging=true" in n}
+    unheld = []
+    for z in range(Z):
+        for y in range(Y):
+            for x in range(X):
+                r = g.get(x, y, z)
+                if (r in standing and g.get(x, y - 1, z) == AIR) or (
+                    r in hanging and g.get(x, y + 1, z) == AIR
+                ):
+                    unheld.append((x, y, z))
+    for (x, y, z) in unheld:
+        g.set(x, y, z, AIR)
+    print(f"lanterns: {len(unheld)} with nothing to stand on or hang from, not placed: {unheld}")
     marks, bad = {}, []
     for name, (x, y, z, facing, role) in g.anchors.items():
         if name in g.furniture:
