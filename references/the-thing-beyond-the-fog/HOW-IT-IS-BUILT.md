@@ -188,9 +188,12 @@ cannot show is looked at in a real client.
 
 ## What to look for
 
-Serve it with the engine's playtest server, from the engine branch
-`feat/the-thing-beyond-the-fog` (neither the verb nor the stand-ins are in a
-released engine), and look at it in a real client — the fog, the bolt and the
+Serve it with the engine's playtest server, from an engine checkout at a
+release no older than 1.13.0 whose `campaigns/` is this repository:
+
+    tools/creator/playtest-server.sh up campaigns/references/the-thing-beyond-the-fog --prefabs campaigns/references/the-thing-beyond-the-fog/prefabs
+
+and look at it in a real client — the fog, the bolt and the
 stand-ins are client-side and no render here can show them.
 
 1. **You arrive on the near jetty** (8205, 64, 8299) in fog and rain under a
@@ -225,14 +228,14 @@ stand-ins are client-side and no render here can show them.
 
 ## What the compile says
 
-On the engine branch (delvec 1.8.1):
+With the released delvec 1.13.0:
 
     stand-in binding: 1 cutscene(s) examined, 1 present (stand-ins placed and removed), 0 absent (none placed)
     lightning binding: 1 strike(s) declared, 1 struck block(s) read, 1 post(s) within reach examined, 0 refused
     boundary binding: the region does not return; 4 place(s) a body is put examined, 0 outside; 378 reachable cell(s) examined for a way out; 0 refused
     link gathering binding: 1 link(s) carried after their root's cutscene, 0 press cell(s) outside their volumes over 378 walk cell(s)
     DW0311 binding: 4 leg(s); 3 walked, 0 carried by a crossing, 1 carried by a link, 0 carried by a loop; 1 link(s) declared, 1 live on some leg, 1 taken; 0 gather(s) declared
-    DW0921 binding: 1 quest configuration(s), 19 route cell(s), 392 cell(s) a body can reach by walking, falling, jumping or swimming (14 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
+    DW0921 binding: 1 quest configuration(s), 19 route cell(s), 392 cell(s) a body can reach by walking, falling, jumping, swimming or climbing (14 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
 
 The camera's clip check (`DW0308`) and angular budget (`DW0347`) pass on both
 shots: the climb passes 0.7 of a block over the stem post's arm and 1.7 over the party's heads, and the

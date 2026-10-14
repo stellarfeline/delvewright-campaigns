@@ -4,7 +4,9 @@
     "boxes": [
       {
         "atmosphere": "atmosphere/sea-fog",
-        "ceiling": "open",
+        "ceiling": {
+          "open": 4
+        },
         "extent": [
           12,
           16
@@ -20,7 +22,9 @@
       },
       {
         "atmosphere": "atmosphere/sea-fog",
-        "ceiling": "open",
+        "ceiling": {
+          "open": 4
+        },
         "extent": [
           12,
           16
@@ -36,7 +40,9 @@
       },
       {
         "atmosphere": "atmosphere/sea-fog",
-        "ceiling": "open",
+        "ceiling": {
+          "open": 3
+        },
         "extent": [
           8,
           8
@@ -56,8 +62,22 @@
         "id": "datum/deck",
         "note": "The jetties' deck, one course above the sea.",
         "y": 64
+      },
+      {
+        "id": "datum/sea-floor",
+        "note": "The sea floor the ocean horizon lays: its top stone course is y 54, so a body would walk at y 55.",
+        "y": 55
       }
     ],
+    "fill": {
+      "below": "minecraft:stone",
+      "kind": "open",
+      "surface": "minecraft:stone",
+      "terrain": {
+        "datum": "datum/sea-floor",
+        "kind": "flat"
+      }
+    },
     "identities": [
       {
         "cmp": "eq",
@@ -98,11 +118,12 @@
         "at": 9,
         "edge": "edge/gangway",
         "face": "east",
+        "form": "a gap in the jetty's east rail onto a pier on piles",
         "meets": 6,
         "opening": "arch"
       }
     ]
   },
-  "dsl_version": "0.36.0",
+  "dsl_version": "0.39.0",
   "stage": "site-plan"
 }
