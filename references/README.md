@@ -1,0 +1,1 @@
+Reference level directories live here, one per level id. A reference level shows how to build one kind of map, and its directory holds the whole level: the campaign documents, its own prefabs, and how it is built.
