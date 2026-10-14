@@ -72,3 +72,39 @@ the owner looks at.
   hidden below entity distance 0.23`.
 - The five refusals: `refusals/`, each the primary plus one declared edit, each
   refused with its named code and no other error.
+- PackTest (`validation/packtest-run.sh`): 27 of 27 required
+  tests passed.
+- Critical-path bot (`validation/bot-run.sh`, run report for
+  manifest `38d82cff2bd0…`): every leg walked and every objective met, and the
+  stage is RED on its two `shot_subjects` rows alone — both `spawned_before: true`,
+  `spawned_through: false`. Not a campaign defect, and not repaired here: the
+  harness's observer (`harness/src/shot-subjects.ts`) counts client physics ticks
+  from the first tick the bot stands at the cutscene's first lens and records a
+  shot when its count reaches `start_tick + ticks`; the cutscene's end function
+  restores every player's gamemode in the same server tick as the last driver
+  tick, so the last tick of a cutscene's last shot is never seen in spectator, and
+  `finish()` records the unfinished shot as a body that left. Both body shots here
+  end their cutscenes. Three runs over three builds: keeper false and figure true on the first,
+  both false on the second and on this one. Varying only that, a scratch copy with
+  a one-second `"landscape"` shot appended after each body shot (never shipped)
+  ran both rows true and the critical path PASSED. The direction
+  is a false red: it can only refuse a build, never let one through.
+- Written world (`validation/world-save.sh`, `delvec written-world`,
+  `tools/ci/check-written-world.py`): 0 differing cells of 19632 in every class.
+- Staging gate (ledger at the engine revision above): REFUSED, 2 of 124 findings
+  unbound — `drill3-01`, `drill3-03` (no design record). Not overridden, and the
+  critical path's red run report is out of an override's reach.
+
+## Visual review
+
+The POV sequence (10 frames), the keeper, the spawn and the whole-map panorama,
+rendered by Chunky at 64 spp (denoised) on the world the server wrote; the
+interior, interact and seam scenes were not rendered. Chunky draws no entities,
+so neither the keeper nor the figure is in any frame; the cutscene framing was
+read on `delvec snapshot` drafts at the emitted lens poses. The hall reads from
+the jetty as a stone harbour hall under a low spruce roof, its wide door open
+onto a lit interior with two counters and shelves; the jetty's railings and
+lantern posts lead the eye to it. From the end of the jetty the stack stands
+alone on the horizon over open water, small and plain at ninety blocks. The
+panorama shows the sea round the pieces and the stack; it is dim under the dusk
+sky and legible.
