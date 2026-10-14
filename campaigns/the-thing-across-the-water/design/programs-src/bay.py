@@ -418,43 +418,59 @@ def stack():
     X, Y, Z = f.ext
     (sx0, sy0, sz0), (sx1, sy1, sz1) = h["space"]
     fy = sy0 - 1
-    cx, cz = (X - 1) / 2, (Z - 1) / 2
-    # A rock pillar from the sea floor to the flat top: the full frame wide at the
-    # waterline, its corners eaten away higher up, so it reads as a stack and not
-    # a box.
+    cx, cz = (sx0 + sx1) // 2, (sz0 + sz1) // 2
+    sea = SEA_TOP_WORLD_Y - f.y0  # local y of the sea's top course
+    # A rock stack from the sea floor: the frame's full width at the waterline,
+    # stepping in as it rises to a seven-wide top. Each column stands to its own
+    # height, so the flanks read as weathered rock, not a box; every column is
+    # solid at least to the sea's top course, so no cell of the sea is emptied.
+    top_r = 3
     for x in range(X):
         for z in range(Z):
             d = max(abs(x - cx), abs(z - cz))
-            corner = abs(x - cx) == cx and abs(z - cz) == cz
-            for y in range(1, fy + 1):
-                if corner and y > fy - 6 - ((x * 3 + z) % 4):
-                    continue
+            j = (x * 5 + z * 3) % 3
+            if d <= top_r:
+                height = fy
+            elif d == top_r + 1:
+                height = fy - 3 - j
+            elif d == top_r + 2:
+                height = fy - 8 - j
+            else:
+                height = sea + 2 - j
+            height = max(height, sea)
+            for y in range(1, height + 1):
                 k = (x * 5 + y * 3 + z * 7) % len(ROCK)
-                f.set(x, y, z, ROCK[k] if y < fy else ROCK_TOP)
-    # A broken crown of rock two courses high round the top, so the flat middle
+                block = ROCK[k]
+                if y == height and y > sea:
+                    block = ROCK_TOP
+                if sea - 1 <= y <= sea + 1 and (x + y + z) % 3 == 0:
+                    block = "minecraft:mossy_cobblestone"
+                f.set(x, y, z, block)
+    # A broken crown of rock two courses high round the top's edge, so the middle
     # where the thing rises is a hollow, and the top is closed: nothing stood on
     # it could step off into the sea.
-    for x in range(X):
-        for z in range(Z):
-            ring = x in (0, X - 1) or z in (0, Z - 1)
-            corner = x in (0, X - 1) and z in (0, Z - 1)
-            if ring and not corner:
-                for y in (sy0, sy0 + 1):
-                    k = (x * 3 + y + z * 5) % len(ROCK)
-                    f.set(x, y, z, ROCK[k])
-            if ring and not corner and (x * 7 + z * 3) % 4 == 0:
+    for x in range(cx - top_r, cx + top_r + 1):
+        for z in range(cz - top_r, cz + top_r + 1):
+            if max(abs(x - cx), abs(z - cz)) != top_r:
+                continue
+            corner = abs(x - cx) == top_r and abs(z - cz) == top_r
+            for y in (sy0, sy0 + 1):
+                k = (x * 3 + y + z * 5) % len(ROCK)
+                f.set(x, y, z, ROCK[k])
+            if not corner and (x * 7 + z * 3) % 4 == 0:
                 f.set(x, sy0 + 2, z, ROCK_TOP)
-    f.claim("top", (sx0, sy0, sz0), (sx1, Y - 1, sz1))
-    f.claim("crown", (0, sy0, 0), (0, Y - 1, Z - 1))
-    f.claim("crown", (X - 1, sy0, 0), (X - 1, Y - 1, Z - 1))
-    f.claim("crown", (1, sy0, 0), (X - 2, Y - 1, 0))
-    f.claim("crown", (1, sy0, Z - 1), (X - 2, Y - 1, Z - 1))
-    f.mark("stack-top", (sx0 + sx1) // 2, sy0, (sz0 + sz1) // 2, "south")
+    r = top_r - 1
+    f.claim("top", (cx - r, sy0, cz - r), (cx + r, Y - 1, cz + r))
+    f.claim("crown", (0, sy0, 0), (cx - r - 1, Y - 1, Z - 1))
+    f.claim("crown", (cx + r + 1, sy0, 0), (X - 1, Y - 1, Z - 1))
+    f.claim("crown", (cx - r, sy0, 0), (cx + r, Y - 1, cz - r - 1))
+    f.claim("crown", (cx - r, sy0, cz + r + 1), (cx + r, Y - 1, Z - 1))
+    f.mark("stack-top", cx, sy0, cz, "south")
     contract = {
         "entry": "top",
         "spaces": {"top": {"envelope": "open"}},
         "edges": [],
-        "no_body": {"crown": {"reason": "the broken rock crown round the stack's top, seen from the jetty and never stood on"}},
+        "no_body": {"crown": {"reason": "the stack's broken rock crown and its stepped flanks, seen from the jetty and never stood on"}},
         "no_body_majority_ack": "scenery: built to be seen from the jetty and never entered",
     }
     return f.program("the-thing-across-the-water-stack", contract, ["east", "north", "south", "west"])
