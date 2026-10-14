@@ -1,0 +1,52 @@
+{
+  "campaign_id": "the-bell-changes-the-tune",
+  "content": {
+    "boxes": [
+      {
+        "atmosphere": "atmosphere/yard",
+        "ceiling": {"open": 10},
+        "extent": [24, 20],
+        "floor": {"datum": "datum/grade"},
+        "min": [8184, 8200],
+        "node": "node/yard"
+      },
+      {
+        "atmosphere": "atmosphere/chapel",
+        "ceiling": {"clearance": 5},
+        "extent": [7, 13],
+        "floor": {"datum": "datum/grade"},
+        "node": "node/chapel",
+        "roof": {"courses": 4, "eaves": 1}
+      }
+    ],
+    "datums": [
+      {
+        "id": "datum/grade",
+        "note": "The churchyard's walk plane; the chapel floor stands on it too, so the door has no step.",
+        "y": 64
+      }
+    ],
+    "fill": {
+      "below": "minecraft:dirt",
+      "kind": "open",
+      "surface": "minecraft:grass_block",
+      "terrain": {"datum": "datum/grade", "kind": "flat"}
+    },
+    "identities": [
+      {"cmp": "eq", "fact": "fact/yard-depth", "measure": {"axis": "z", "node": "node/yard", "of": "box-extent"}},
+      {"cmp": "eq", "fact": "fact/nave-length", "measure": {"axis": "z", "node": "node/chapel", "of": "box-extent"}}
+    ],
+    "lighting": {"fixture": "lantern", "min_light": 7},
+    "region": {"extent": [48, 40, 48], "min": [8176, 48, 8176]},
+    "seams": [
+      {
+        "edge": "edge/chapel-door",
+        "face": "north",
+        "form": "an open arched doorway in the middle of the chapel's south front, level with the flagstone path",
+        "opening": "arch"
+      }
+    ]
+  },
+  "dsl_version": "0.47.0",
+  "stage": "site-plan"
+}
