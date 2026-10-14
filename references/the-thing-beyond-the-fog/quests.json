@@ -1,0 +1,317 @@
+{
+  "campaign_id": "the-thing-beyond-the-fog",
+  "content": {
+    "quests": [
+      {
+        "happening": {
+          "text": "The party stands on the near jetty in the fog, the ferry moored in its slip below.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-crossing",
+        "objectives": [
+          {
+            "anchor": "anchor/hull",
+            "happening": {
+              "text": "They step down into the ferry.",
+              "verb": "arrives"
+            },
+            "hint": "Step down into the ferry.",
+            "id": "obj/board",
+            "radius": 1,
+            "title": "Board the ferry",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/board"
+            ],
+            "anchor": "anchor/node-far",
+            "happening": {
+              "text": "They climb onto the far jetty.",
+              "verb": "arrives"
+            },
+            "hint": "Ring the bell at the bow to cross.",
+            "id": "obj/far-shore",
+            "radius": 2,
+            "title": "Cross the strait",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The crossing is made.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/board": [
+            {
+              "flag": "flag/boarded",
+              "happening": {
+                "text": "The bell answers anyone aboard.",
+                "verb": "gains"
+              },
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/bell",
+        "effects": [
+          {
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "at": {
+                      "anchor": "anchor/bell",
+                      "at": "anchor"
+                    },
+                    "sound": "minecraft:block.bell.use",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  },
+                  {
+                    "atmosphere": "atmosphere/sea-fog",
+                    "region": {
+                      "anchor": "anchor/node-slip",
+                      "extent": [
+                        54,
+                        40,
+                        100
+                      ]
+                    },
+                    "type": "set-atmosphere",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  },
+                  {
+                    "party": "present",
+                    "shots": [
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-slip",
+                          "offset": [
+                            -1,
+                            24,
+                            -76
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-slip",
+                            "offset": [
+                              -1,
+                              2,
+                              8
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-slip",
+                            "offset": [
+                              -1,
+                              8,
+                              -36
+                            ]
+                          }
+                        ],
+                        "seconds": 6
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-slip",
+                          "offset": [
+                            -1,
+                            24,
+                            -76
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-slip",
+                            "offset": [
+                              -1,
+                              8,
+                              -36
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-slip",
+                            "offset": [
+                              15,
+                              22,
+                              47
+                            ]
+                          }
+                        ],
+                        "seconds": 8
+                      }
+                    ],
+                    "type": "cutscene",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  },
+                  {
+                    "effect": "minecraft:blindness",
+                    "hide_particles": true,
+                    "in": {
+                      "anchor": "anchor/well",
+                      "extent": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "seconds": 15,
+                    "type": "give-effect",
+                    "when": {
+                      "requires_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  },
+                  {
+                    "in": {
+                      "anchor": "anchor/well",
+                      "extent": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "style": "subtitle",
+                    "text": "The ferry slides out into the fog.",
+                    "type": "narrate",
+                    "when": {
+                      "requires_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "at_ticks": 120,
+                "effects": [
+                  {
+                    "at": {
+                      "anchor": "anchor/node-slip",
+                      "offset": [
+                        52,
+                        -1,
+                        -102
+                      ]
+                    },
+                    "happening": {
+                      "text": "Lightning strikes beside the thing in the sea.",
+                      "verb": "survives"
+                    },
+                    "type": "lightning",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  },
+                  {
+                    "atmosphere": "atmosphere/clearing",
+                    "region": {
+                      "anchor": "anchor/node-slip",
+                      "extent": [
+                        50,
+                        36,
+                        80
+                      ]
+                    },
+                    "type": "set-atmosphere",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "at_ticks": 282,
+                "effects": [
+                  {
+                    "atmosphere": "atmosphere/sea-fog",
+                    "region": {
+                      "anchor": "anchor/node-slip",
+                      "extent": [
+                        50,
+                        36,
+                        80
+                      ]
+                    },
+                    "type": "set-atmosphere",
+                    "when": {
+                      "forbids_flags": [
+                        "flag/seen"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "at_ticks": 283,
+                "effects": [
+                  {
+                    "from": {
+                      "anchor": "anchor/well",
+                      "extent": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "to": {
+                      "anchor": "anchor/far-landing"
+                    },
+                    "type": "teleport"
+                  },
+                  {
+                    "flag": "flag/seen",
+                    "happening": {
+                      "text": "The crossing has been seen; the ferry carries whoever is aboard without it.",
+                      "verb": "gains"
+                    },
+                    "type": "set-flag"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "requires_flags": [
+          "flag/boarded"
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.39.0",
+  "stage": "quests"
+}

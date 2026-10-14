@@ -1,4 +1,4 @@
-"""Guards for `tools/release-notes.py`, the one judge of a campaign's release notes.
+"""Guards for `tools/release-notes.py`, the one judge of a level's release notes.
 
 `release.yml` renders the notes through it on a tag push and `prefab-audit.yml`
 runs `check` through it on every pull request. Each refusal it claims is planted
@@ -57,8 +57,8 @@ def commit(root: Path, msg: str) -> str:
 
 
 def write_camp(root: Path, camp: str, book: str | None, world: bool = True,
-               minutes: int = 20) -> None:
-    base = root / "campaigns" / camp
+               minutes: int = 20, home: str = "campaigns") -> None:
+    base = root / home / camp
     base.mkdir(parents=True, exist_ok=True)
     if world:
         (base / "world.json").write_text(
@@ -100,14 +100,14 @@ class ReleaseNotes(unittest.TestCase):
 
     def assertRefused(self, res: subprocess.CompletedProcess, needle: str) -> None:
         self.assertEqual(res.returncode, 1, res.stdout + res.stderr)
-        self.assertIn("REFUSED a-camp", res.stdout)
+        self.assertIn("REFUSED campaigns/a-camp", res.stdout)
         self.assertIn(needle, res.stdout)
         self.assertIn("1 refused", res.stdout)
 
     def test_clean_changed_campaign_passes_and_states_binding(self) -> None:
         res = self.change(GOOD)
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
-        self.assertIn("1 changed campaign director(ies) judged of 1 on the tree", res.stdout)
+        self.assertIn("1 changed level director(ies) judged of 1 on the tree", res.stdout)
         self.assertIn("1 composable, 0 refused", res.stdout)
 
     def test_playtime_disagreeing_with_target_minutes_reds(self) -> None:
@@ -134,7 +134,7 @@ class ReleaseNotes(unittest.TestCase):
         res = self.change(GOOD)
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
         self.assertNotIn("old-camp", res.stdout)
-        self.assertIn("1 changed campaign director(ies) judged of 2 on the tree", res.stdout)
+        self.assertIn("1 changed level director(ies) judged of 2 on the tree", res.stdout)
 
     def test_zero_changed_campaigns_states_its_zero(self) -> None:
         write_camp(self.root, "old-camp", None)
@@ -143,7 +143,7 @@ class ReleaseNotes(unittest.TestCase):
         commit(self.root, "a change outside campaigns/")
         res = run(self.root, "check", "--base", self.base)
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
-        self.assertIn("0 changed campaign director(ies) judged of 1 on the tree", res.stdout)
+        self.assertIn("0 changed level director(ies) judged of 1 on the tree", res.stdout)
         self.assertIn("named zero binding", res.stdout)
 
     def test_no_base_states_its_zero(self) -> None:
@@ -151,7 +151,7 @@ class ReleaseNotes(unittest.TestCase):
         commit(self.root, "a campaign")
         res = run(self.root, "check", "--base", "")
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
-        self.assertIn("0 changed campaign director(ies) judged of 1", res.stdout)
+        self.assertIn("0 changed level director(ies) judged of 1", res.stdout)
         self.assertIn("no pull-request base was given", res.stdout)
 
     def test_removed_campaign_is_named_not_judged(self) -> None:
@@ -161,23 +161,49 @@ class ReleaseNotes(unittest.TestCase):
         commit(self.root, "remove it")
         res = run(self.root, "check", "--base", self.base)
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
-        self.assertIn("removed a-camp", res.stdout)
+        self.assertIn("removed campaigns/a-camp", res.stdout)
 
     def test_render_refuses_what_check_refuses(self) -> None:
         write_camp(self.root, "a-camp", BOOK.format(playtime="15–30 minutes"))
-        res = run(self.root, "render", "--campaign", "a-camp", "--image", "img",
+        res = run(self.root, "render", "--dir", "campaigns/a-camp", "--image", "img",
                   "--version", "1.0.0", "--has-pack", "false", "--prerelease", "false")
         self.assertEqual(res.returncode, 1)
         self.assertIn("target_minutes=20", res.stderr)
 
     def test_render_prints_the_notes(self) -> None:
         write_camp(self.root, "a-camp", GOOD)
-        res = run(self.root, "render", "--campaign", "a-camp", "--image", "img",
+        res = run(self.root, "render", "--dir", "campaigns/a-camp", "--image", "img",
                   "--version", "1.0.0", "--has-pack", "true", "--prerelease", "false")
         self.assertEqual(res.returncode, 0, res.stderr)
         self.assertTrue(res.stdout.startswith("## A Camp\n\nA short walk among the trees.\n"))
         self.assertIn("For 1–4 players, ~20 minutes.", res.stdout)
         self.assertIn("img:v1.0.0", res.stdout)
+
+    def test_changed_reference_level_is_judged_like_a_campaign(self) -> None:
+        write_camp(self.root, "a-ref", None, home="references")
+        commit(self.root, "a reference level with no storybook")
+        res = run(self.root, "check", "--base", self.base)
+        self.assertEqual(res.returncode, 1, res.stdout + res.stderr)
+        self.assertIn("REFUSED references/a-ref", res.stdout)
+        self.assertIn("has no README.md", res.stdout)
+        self.assertIn("1 changed level director(ies) judged of 1 on the tree", res.stdout)
+
+    def test_clean_reference_level_passes_beside_a_campaign_of_the_same_id(self) -> None:
+        write_camp(self.root, "same", GOOD)
+        write_camp(self.root, "same", GOOD, home="references")
+        commit(self.root, "a campaign and a reference level sharing an id")
+        res = run(self.root, "check", "--base", self.base)
+        self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
+        self.assertIn("ok      campaigns/same", res.stdout)
+        self.assertIn("ok      references/same", res.stdout)
+        self.assertIn("2 changed level director(ies) judged of 2 on the tree", res.stdout)
+
+    def test_render_reads_a_reference_level(self) -> None:
+        write_camp(self.root, "a-ref", GOOD, home="references")
+        res = run(self.root, "render", "--dir", "references/a-ref", "--image", "img",
+                  "--version", "1.0.0", "--has-pack", "false", "--prerelease", "false")
+        self.assertEqual(res.returncode, 0, res.stderr)
+        self.assertTrue(res.stdout.startswith("## A Camp\n"))
 
 
 if __name__ == "__main__":

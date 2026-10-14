@@ -25,8 +25,9 @@ Re-reading `engine.ref` and comparing it to the registry would be circular: the
 pin gate already verifies the value stands in every declared site. So the binding
 is the obligation a reader of that key actually has.
 
-A campaign's storybook marker states the compiler the campaign was last verified
-with:
+A level's storybook marker — a campaign's under `campaigns/`, a reference
+level's under `references/`, both released with the pinned engine — states the
+compiler the level was last verified with:
 
     > **Requires delve engine 1.5.0 or newer** — last verified with delvec 1.5.0 …
 
@@ -128,7 +129,9 @@ def main() -> int:
 
     files = tracked(root)
     storybooks = [
-        f for f in files if f.startswith("campaigns/") and pathlib.PurePath(f).name.startswith("README")
+        f
+        for f in files
+        if f.startswith(("campaigns/", "references/")) and pathlib.PurePath(f).name.startswith("README")
     ]
 
     print(
@@ -161,7 +164,7 @@ def main() -> int:
 
     print(
         f"-- binding: {examined} storybook claim(s) judged over {len(storybooks)} "
-        f"storybook(s) in campaigns/, against one pinned engine release"
+        f"storybook(s) in campaigns/ and references/, against one pinned engine release"
     )
 
     if not examined and not errors:

@@ -160,28 +160,29 @@ jobs:
       # `engine-release` names a release TAG, and a tag name has no shape the pin
       # scan can find — so that entry may not rest on `sites` alone and names
       # this file as `bound_by`. It is not a restatement of the pin gate: it
-      # judges every campaign storybook's `last verified with delvec` claim
+      # judges every level storybook's (campaigns/ and references/) `last verified with delvec` claim
       # against the engine release the pin names. The same refusal lives in
       # `release.yml`, where it fires on a tag push; here it fires on every pull
       # request, which is where a wrong answer is cheap.
       - name: the pinned engine is newer than every storybook's claim
         run: python3 tools/check-engine-pin.py
 
-      # Every campaign this pull request changes can have its release notes
+      # Every level this pull request changes — a campaign under `campaigns/`
+      # or a reference level under `references/` — can have its release notes
       # composed. `release.yml`'s "compose the release notes" step runs
-      # `tools/release-notes.py render` for the one campaign it releases, and
-      # refuses a campaign with no world.json, no storybook, a missing header
+      # `tools/release-notes.py render` for the one level it releases, and
+      # refuses a level with no world.json, no storybook, a missing header
       # row, a Playtime that disagrees with `target_minutes`, or no blurb — on
       # a tag push, after the whole release ladder. `check` is the same judge
-      # over the campaign directories the diff against the pull request's base
-      # touches, and no others: a campaign is built only by the engine it pins,
+      # over the level directories the diff against the pull request's base
+      # touches, and no others: a level is built only by the engine it pins,
       # so an untouched one is not re-judged. In this job for the reason the
       # steps above are: a new job is a new required context.
       #
       # The checkout is the one-commit merge ref, so the base revision is
       # fetched by SHA (depth 1 is enough: the diff compares two trees). A
       # manual dispatch has no base; the script then states a named zero.
-      - name: every campaign this change touches can have its release notes composed
+      - name: every level this change touches can have its release notes composed
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
