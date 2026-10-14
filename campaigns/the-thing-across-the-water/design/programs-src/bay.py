@@ -277,6 +277,14 @@ def jetty():
             if f.mine(x, rail_y, z):
                 lamps.append((x, z))
     f.connect("fence")
+    # The railing's last posts meet the hall's front wall, which stands one cell
+    # beyond this frame on the face the handout names; the game joins a fence to
+    # that wall, so the piece writes the join too.
+    if any(n["face"] == "south" and n["kind"] == "roofed" for n in h["neighbours"]):
+        for x in (0, X - 1):
+            st = f.get(x, rail_y, Z - 1)
+            if isinstance(st, str) and "fence" in st:
+                f.cells[(x, rail_y, Z - 1)] = st.replace("south=false", "south=true")
     for x, z in lamps:
         f.set(x, rail_y + 1, z, LANTERN_UP)
     # The bell, at the very end of the jetty in the middle of the deck: the
