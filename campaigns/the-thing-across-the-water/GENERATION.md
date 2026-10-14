@@ -1,0 +1,74 @@
+# The Thing Across the Water — generation record
+
+- **Brief**: the engine's `docs/demo-levels.md` row for spec-0110 (a shot frames
+  its subject). It pins a jetty on an ocean horizon, a hall with a keeper behind
+  it, a figure of block displays on a sea-stack ninety blocks off that rises when
+  a bell is rung, the three cutscenes (an establishing shot over the bay declared
+  `"landscape"`; the bell's cutscene framing the figure as it rises, spawned by
+  the beat before; the keeper through the hall's open door), the five refusals,
+  and the walk's two questions (does the figure read at ninety blocks; is it
+  still there at entity distance 50% and render distance 8). Everything else here
+  is invented.
+- **Engine**: `delvec 1.13.0, dsl 0.48.0`, built from the unreleased engine
+  branch that carries spec-0110 (`feature/shots-frame-their-subject`). `dsl_version`
+  is `0.48.0` on every document. The page's own pin (`versions.toml`) names the
+  release `delvec--v1.13.0`, whose dsl is 0.39.0; no field of the page or of this
+  campaign can name an unreleased engine revision, so the revision is recorded
+  here and in the storybook's marker only by its version numbers.
+- **Placement**: a site plan of three places. `node/jetty` (5 × 24, the entry),
+  `node/hall` hung off its south face by the seam for the hall's door (a declared
+  opening 3 wide and 3 high, so the keeper is in plain sight from the jetty), and
+  `node/stack`, scenery (`reached: false`), pinned ninety blocks north and seen
+  along the vision edge `edge/across-the-water`. The vista's far end is at y 79,
+  above the stack's crown.
+- **Below the sea**: every frame is solid masonry or rock up to the sea's top
+  course (y 62), so no cell of the ocean is replaced by air when a template is
+  placed. The jetty is a stone mole; the hall stands on a stone footing; the stack
+  is rock from the sea floor.
+- **The stack's crown**: the stack's top is a hollow ringed by a broken rock crown
+  two courses high. `DW0322` roots its stranding proof at every anchor, the
+  scenery stack's own `anchor/stack-top` included; with an open top it refused 20
+  cells from which a body could step into the sea. The crown closes the top.
+- **The stack's shape**: drawn first as a 7 × 7 shaft, which the draft frames read
+  as a chimney. The box is 11 × 11, and each column of rock stands to its own
+  height, stepping in from the full width at the waterline to a seven-wide top.
+- **The figure**: no rig in the library is a figure on a rock, and a rig is a
+  generator's output, never campaign JSON. The figure is the library's
+  `rig/tentacle` (34 `block_display` segments; its `rise` clip brings it out of
+  the rock to stand 25 blocks over the mark), regenerated into `prefabs/rigs/` by
+  the engine's `prefabs/rig-generator`. It faces south, leaning toward the jetty.
+  `initial: "rise"`, and the bell's beat spawns it in the same effect list ahead
+  of its cutscene, one tick before the first `spectate`. No `seen_from` is
+  declared: the build derives `view_range` 3.87 (the walked place's term won,
+  3.861, over the shots' 3.012).
+- **The keeper**: a villager body. A skinned mannequin is the page's default; for
+  a one-character demo whose subject is a shot of him, the villager's box
+  (cull radius 67.2) is part of what the build reports, and no skin was drawn.
+- **The keeper's two talks**: two quests, because the keeper's cast row names a
+  different entry node in each (`dlg/keeper-root`, `dlg/keeper-after`); one
+  dialogue tree holds both.
+- **Detail**: all three places are detailed from `programs/<place>.json`, written
+  by `design/programs-src/bay.py` from `delvec allocation`; re-run it, then
+  `delvec fmt` and `delvec detail . --all`, after any plan edit.
+- **Languages**: English and zh-cn. The zh-cn sidecar was written through
+  `delvec l10n-inventory` / `delvec l10n-apply`, every line transcreated by the
+  agent from the English's intent; the provider path was not used.
+- **Posture note**: (1) the keeper names his fear outright once, at the end;
+  (2) nothing explains what the thing is or why the bell calls it; (3) the
+  ending is unresolved — the thing is still standing when the delve ends.
+- **The design gate**: not held. No reference art was drawn and no design record
+  is approved: `design.json` does not exist, and the staging gate counts that as
+  a zero. The design of record is the demo-levels row and `DESIGN.md`.
+
+## Verification (engine `feature/shots-frame-their-subject` at `d4e6cb577df6`, `delvec 1.13.0, dsl 0.48.0`)
+
+The numbers below are from the build the ladder ran; the storybook names what
+the owner looks at.
+
+- `validate`, `analyze`, `build`: exit 0. `shot subjects: 4 shot(s) in 3
+  cutscene(s), 4 declare a subject (1 landscape, 0 marks, 1 bodies, 1 assemblies,
+  1 places, 0 regions); 383 tick(s) judged, 0 out of frame, 0 occluded, clear
+  lines 2643 of 3447; bodies: 2 present, sent, drawn — farthest 96.4 blocks,
+  hidden below entity distance 0.23`.
+- The five refusals: `refusals/`, each the primary plus one declared edit, each
+  refused with its named code and no other error.
