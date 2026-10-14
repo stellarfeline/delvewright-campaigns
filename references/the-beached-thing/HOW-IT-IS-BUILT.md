@@ -284,10 +284,13 @@ not used here: it is an extinct baleen whale, and a skeleton, not a body.
 
 ## State
 
-Built with the released `delvec` 1.8.1 (dsl 0.35.1). The quest walks the
+Builds with the released `delvec` 1.13.0 (dsl 0.39.0). The quest walks the
 vantage, bay A, bay B and the back in order. The build proves the route (4 legs
 walked) and finds no place a body can get into and not out of (`DW0921`: 0 of
-31137 reachable cells). It measures every walkable cell lit (`DW0210` silent).
+31137 reachable cells). It measures every walkable cell lit (`DW0210` silent),
+and every block that needs a neighbour to stay has one (`DW1002`: 7517 held,
+0 dropped): each recessed lantern stands on the top half of the stair that
+hides it.
 
 `delvec sculpt` itself reports:
 
@@ -305,8 +308,9 @@ Serve it with the engine's playtest server, from an engine checkout whose
 
 It is never copied into a singleplayer save.
 
-The machine ladder on the `validation/` image, from the engine tree at the
-1.8.1 release tag:
+The machine ladder was last run on the `validation/` image from the engine
+tree at the 1.8.1 release tag, before the lanterns' stairs were turned; it has
+not been run on 1.13.0:
 
 - PackTest passed (17 of 17 required tests).
 - The mineflayer critical path passed in 6 steps: spawn, the vantage, bay A,
