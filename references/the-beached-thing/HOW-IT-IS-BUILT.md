@@ -1,24 +1,27 @@
 # The Beached Thing
 
-The demo level for **a body the size of a hill** (spec-0087): a prefab sculpted
-by `delvec sculpt` from a declared form, lying on its own ground, walked inside
-and onto its back by the proofs the engine already has. The body is a rotting
-sperm whale, stranded on a mud flat.
+The reference level for **an organic structure the party enters**: a body the
+size of a hill (spec-0087), a prefab sculpted by `delvec sculpt` from a declared
+form, lying on its own ground, walked inside and onto its back by the proofs the
+engine already has. The body is a rotting sperm whale, stranded on a mud flat.
 
-The level is a campaign, so it lives where every campaign lives:
+The whole level lives in one directory, `references/the-beached-thing/`: the
+campaign documents at its top, and beside them its one piece, sculpted from a
+committed form, which is the artifact of record; the structure parts are what
+the form sculpts to:
 
-    campaigns/the-beached-thing/
-
-Its one piece is sculpted from a committed form, which is the artifact of
-record; the structure parts beside it are what the form sculpts to:
-
-    demos/the-beached-thing/forms/the-beached-thing.json   # the form
-    demos/the-beached-thing/prefabs/                        # its output, regenerated, never edited
+    references/the-beached-thing/forms/the-beached-thing.json   # the form
+    references/the-beached-thing/prefabs/                        # its output, regenerated, never edited
 
 Regenerate the piece (the same form and seed always write the same bytes):
 
-    rm -rf demos/the-beached-thing/prefabs
-    delvec sculpt demos/the-beached-thing/forms/the-beached-thing.json -o demos/the-beached-thing/prefabs
+    rm -rf references/the-beached-thing/prefabs
+    delvec sculpt references/the-beached-thing/forms/the-beached-thing.json -o references/the-beached-thing/prefabs
+
+Build it with the level's own prefab directory, which holds the one piece it
+places:
+
+    delvec --prefabs references/the-beached-thing/prefabs build references/the-beached-thing -o out/
 
 ## What it is
 
@@ -295,9 +298,10 @@ walked) and finds no place a body can get into and not out of (`DW0921`: 0 of
 Sculpted without the stair (the form minus its last solid), the walk from grade
 reaches 4 of 5 anchors, and the back is not among them.
 
-Serve it with the engine's playtest server:
+Serve it with the engine's playtest server, from an engine checkout whose
+`campaigns/` is this repository:
 
-    tools/creator/playtest-server.sh up campaigns/the-beached-thing --prefabs demos/the-beached-thing/prefabs
+    tools/creator/playtest-server.sh up campaigns/references/the-beached-thing --prefabs campaigns/references/the-beached-thing/prefabs
 
 It is never copied into a singleplayer save.
 
