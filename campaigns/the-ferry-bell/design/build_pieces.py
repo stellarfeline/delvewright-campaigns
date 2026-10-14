@@ -179,18 +179,27 @@ def shore():
     p.put((9, 3, 6), (9, 3, 6), "hull")
     p.put((22, 3, 2), (23, 3, 2), "crate")
     p.put((24, 3, 3), (24, 3, 3), "barrel")
+    # The net-menders' fence carries on down the shore's east edge, so the
+    # beach ends at a fence and not at a drop into the sea.
+    p.put((41, 3, 0), (41, 3, 10), "fence-ns")
+    # East of the jetty the beach is fenced along the water too, from the
+    # jetty foot to the spit: the dead come round by the sand, not the cove.
+    p.put((17, 2, 0), (28, 2, 0), "sand")
+    p.put((17, 3, 0), (30, 3, 0), "fence-ew")
     # The contract: the jetty foot and the spit's neck are the two ways out.
     p.claim_box((14, 3, 0), (16, 6, 0), "jetty-foot")
     p.claim_box((31, 3, 0), (40, 6, 0), "spit-neck")
     p.claim_box((12, 6, 2), (12, 6, 2), "lamp-caps")
     p.claim_box((18, 6, 2), (18, 6, 2), "lamp-caps")
-    p.claim_box((0, 2, 0), (28, 2, 0), "strand", only_air=True)
+    p.claim_box((0, 2, 0), (16, 2, 0), "strand", only_air=True)
     p.claim_box((0, 3, 0), (41, 8, 11), "beach")
     palette = {
         "bank": "minecraft:sandstone",
         "barrel": "minecraft:barrel[facing=up,open=false]",
         "crate": "minecraft:spruce_planks",
         "deck": "minecraft:spruce_planks",
+        "fence-ew": "minecraft:oak_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
+        "fence-ns": "minecraft:oak_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
         "hull": "minecraft:dark_oak_slab[type=bottom,waterlogged=false]",
         "lantern": LANTERN,
         "pile": "minecraft:spruce_log[axis=y]",
@@ -211,7 +220,7 @@ def shore():
         ("spawn", (19, 3, 7), "north"),
         ("node-shore", (20, 3, 6), "north"),
         ("nell", (13, 3, 1), "south"),
-        ("notice", (17, 3, 1), "south"),
+        ("notice", (19, 3, 1), "south"),
     ]
     return program("ferry-bell-shore", p, palette, contract, marks, ["east", "north", "west"])
 
@@ -279,15 +288,14 @@ def ferry_house():
     p.put((1, 5, 1), (9, 5, 8), "lid")
     # The door: its bar fills the opening the seam allocated.
     p.put((5, 1, 8), (5, 2, 8), "door-bar")
-    # Windows: the east one an open shutter-hole high in the wall, over the
-    # cove to the spit (a body cannot climb to it; the bell is rung beside
-    # it); the west one glazed, over the open water.
-    p.put((9, 3, 3), (9, 4, 5), None)
+    # Windows: the east one an open slit, one course high at eye level, over
+    # the cove to the spit (too low for a body to pass); the west one glazed,
+    # over the open water.
+    p.put((9, 2, 3), (9, 2, 5), None)
     p.put((1, 2, 3), (1, 3, 5), "pane-ns")
-    # The beam the bell hangs from, and two lanterns hung from the lid.
-    p.put((2, 3, 4), (8, 3, 4), "beam")
-    p.put((3, 4, 6), (3, 4, 6), "hanging")
-    p.put((7, 4, 6), (7, 4, 6), "hanging")
+    # Two lanterns hung from the lid.
+    p.put((3, 4, 3), (3, 4, 3), "hanging")
+    p.put((7, 4, 7), (7, 4, 7), "hanging")
     # A bench along the west wall, and a coil of rope by the door.
     p.put((2, 1, 2), (2, 1, 3), "bench")
     p.put((7, 1, 7), (7, 1, 7), "rope")
@@ -309,10 +317,8 @@ def ferry_house():
     # The contract.
     p.claim_box((5, 1, 8), (5, 2, 8), "seam-ferry-door")
     p.claim_box((2, 1, 2), (8, 4, 7), "hall", only_air=False)
-    p.claim_box((9, 3, 3), (9, 4, 5), "window-sill", only_air=True)
     p.claim_box((0, 5, 0), (10, 8, 9), "roof-top", only_air=True)
     palette = {
-        "beam": "minecraft:stripped_spruce_log[axis=x]",
         "bench": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
         "corner": "minecraft:spruce_log[axis=y]",
         "door-bar": "minecraft:dark_oak_planks",
@@ -335,13 +341,12 @@ def ferry_house():
         "no_body_majority_ack": "A one-room house under a gabled roof: most of what a body could stand on is the outside of the roof, its slopes and eaves, which nobody reaches.",
         "no_body": {
             "roof-top": {"reason": "the ferry house's roof and eaves: weather on the outside of the building"},
-            "window-sill": {"reason": "the sill of the east shutter-hole, two courses above the floor: a window, not a way"},
         },
         "spaces": {"hall": {"envelope": "open"}},
     }
     marks = [
         ("node-ferry-house", (5, 1, 5), "south"),
-        ("bell", (7, 2, 4), "east"),
+        ("bell", (5, 1, 3), "south"),
     ]
     return program("ferry-bell-ferry-house", p, palette, contract, marks,
                    ["east", "north", "south", "up", "west"])
