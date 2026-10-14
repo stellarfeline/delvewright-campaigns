@@ -1,0 +1,130 @@
+{
+  "campaign_id": "the-ferry-bell",
+  "content": {
+    "beats": [
+      {
+        "node": "node/shore",
+        "objective": "obj/hear-nell",
+        "quest": "quest/ring-for-the-ferry"
+      },
+      {
+        "node": "node/shore",
+        "objective": "obj/read-the-notice",
+        "quest": "quest/ring-for-the-ferry"
+      },
+      {
+        "node": "node/jetty",
+        "objective": "obj/draw-the-bolt",
+        "quest": "quest/ring-for-the-ferry"
+      },
+      {
+        "node": "node/ferry-house",
+        "objective": "obj/ring-the-bell",
+        "quest": "quest/ring-for-the-ferry"
+      },
+      {
+        "node": "node/far-bank",
+        "objective": "obj/fight-off-the-drowned",
+        "quest": "quest/ring-for-the-ferry"
+      }
+    ],
+    "critical_path": [
+      "node/shore",
+      "node/jetty",
+      "node/ferry-house",
+      "node/jetty",
+      "node/shore",
+      "node/far-bank"
+    ],
+    "edges": [
+      {
+        "a": "node/shore",
+        "b": "node/jetty",
+        "class": "walk",
+        "id": "edge/jetty-foot"
+      },
+      {
+        "a": "node/jetty",
+        "b": "node/ferry-house",
+        "class": "barred",
+        "gating": {
+          "flags": [
+            "flag/bolt-drawn"
+          ]
+        },
+        "id": "edge/ferry-door"
+      },
+      {
+        "a": "node/shore",
+        "b": "node/far-bank",
+        "class": "walk",
+        "id": "edge/spit-neck"
+      },
+      {
+        "a": "node/ferry-house",
+        "b": "node/far-bank",
+        "class": "vision",
+        "id": "edge/bell-window"
+      }
+    ],
+    "entry": "node/shore",
+    "goal": "node/far-bank",
+    "nodes": [
+      {
+        "id": "node/shore",
+        "intent": "landing shore",
+        "note": "The sandy shore at the foot of the jetty, where Nell waits by the jetty mouth and the ferry notice stands on its post.",
+        "stations": [
+          {
+            "anchor": "anchor/nell",
+            "kind": "point",
+            "note": "Nell's place, west of the jetty mouth, facing up the shore the way the party arrives."
+          },
+          {
+            "anchor": "anchor/notice",
+            "kind": "point",
+            "note": "The ferry notice on its post, east of the jetty mouth, its face to the shore."
+          }
+        ]
+      },
+      {
+        "id": "node/jetty",
+        "intent": "jetty",
+        "note": "A plank jetty three wide over the shallows, a spruce rail along both sides, running out to the ferry-house door.",
+        "stations": [
+          {
+            "anchor": "anchor/bolt-lever",
+            "kind": "point",
+            "note": "The lever that draws the ferry-house bolt, on the deck beside the door."
+          }
+        ]
+      },
+      {
+        "id": "node/ferry-house",
+        "intent": "ferry house",
+        "note": "A small timber house on piles at the jetty's end. The bell hangs from a beam inside, by the east window that looks across the cove at the spit.",
+        "stations": [
+          {
+            "anchor": "anchor/bell",
+            "kind": "point",
+            "note": "The ferry bell, hung from a beam by the east window."
+          }
+        ]
+      },
+      {
+        "id": "node/far-bank",
+        "intent": "spit",
+        "note": "The low spit of sand that closes the cove on the east, joined to the shore at its root. The drowned come up out of the water here.",
+        "stations": [
+          {
+            "anchor": "anchor/drowned-muster",
+            "kind": "point",
+            "note": "Where the drowned form up, at the spit's edge facing the ferry house across the water."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.42.0",
+  "stage": "layout-graph"
+}
