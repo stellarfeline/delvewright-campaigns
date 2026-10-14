@@ -2,12 +2,15 @@ name: release
 
 # spec-0024 — from a green campaign branch to a joinable delve.
 #
-# A release is a TAG on this repo, in one of two families:
-#   `release/<campaign>/v<major>.<minor>.<patch>`               a release;
-#   `prerelease/<campaign>/v<major>.<minor>.<patch>-<suffix>`   a pre-release.
+# A release is a TAG on this repo, in one of three families:
+#   `release/<campaign>/v<major>.<minor>.<patch>`               a campaign release;
+#   `prerelease/<campaign>/v<major>.<minor>.<patch>-<suffix>`   a campaign pre-release;
+#   `reference/<level>/v<major>.<minor>.<patch>`                a reference level release.
 # `tools/lib/campaign_tags.py` is the one judge of that grammar and of what the
-# family decides; a tag whose version disagrees with its family is refused
-# before anything is built. The tag proves nothing by itself; the FULL
+# family decides: the category (campaign or reference level), and with it the
+# level's directory, the prefab directory it builds with, its image name and
+# its Release title. A tag whose version disagrees with its family is refused
+# before anything is built. Both categories pass every gate below. The tag proves nothing by itself; the FULL
 # release-tier ladder run on the tag is the gate (ADR-0008), the same for both
 # families. Nothing is published unless it is green — a red ladder produces
 # zero artifacts.
@@ -17,8 +20,9 @@ name: release
 #     font) and auto-generated notes — for a pre-release, a GitHub pre-release
 #     that is never marked latest;
 #   * a multi-arch (linux/amd64 + linux/arm64 — workstation and Pi) delve image
-#     at `ghcr.io/stellarfeline/delve-<campaign>:v<version>` — plus `:latest`
-#     for a release, never for a pre-release — whose baked
+#     at `ghcr.io/stellarfeline/delve-<campaign>:v<version>` (a reference
+#     level: `delve-reference-<level>`) — plus `:latest` for a release, never
+#     for a pre-release — whose baked
 #     `RESOURCE_PACK` / `RESOURCE_PACK_SHA1` point at that Release asset, so a
 #     joining vanilla client is prompted for the pack with no hand-fed files.
 #
@@ -33,15 +37,21 @@ name: release
 
 on:
   push:
-    tags: ["release/*/v*", "prerelease/*/v*"]
+    tags: ["release/*/v*", "prerelease/*/v*", "reference/*/v*"]
   workflow_dispatch:
     inputs:
+      category:
+        description: "campaign (under campaigns/) or reference (a reference level, under references/) (dry run)"
+        required: true
+        default: campaign
+        type: choice
+        options: [campaign, reference]
       campaign:
-        description: "campaign id under campaigns/ (dry run)"
+        description: "the level's id: its directory name under campaigns/ or references/ (dry run)"
         required: true
         type: string
       version:
-        description: "semver to simulate, no leading v (dry run); a prerelease suffix simulates a pre-release"
+        description: "semver to simulate, no leading v (dry run); for a campaign a prerelease suffix simulates a pre-release; a reference level takes none"
         required: true
         default: "0.0.0-dryrun"
         type: string
@@ -93,27 +103,30 @@ jobs:
       - name: parse the release coordinates
         id: rel
         env:
+          IN_CATEGORY: ${{ inputs.category }}
           IN_CAMPAIGN: ${{ inputs.campaign }}
           IN_VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
           # `tools/lib/campaign_tags.py` is the one judge of the tag grammar and of
-          # everything the family decides (pre-release or not, which image tags);
-          # this step only hands it the tag, or a dry run's campaign + version.
+          # everything the family decides (the category and its directory, prefab
+          # directory and image; pre-release or not; which image tags); this step
+          # only hands it the tag, or a dry run's category + id + version.
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             dry_run=true
             out=$(python3 tools/lib/campaign_tags.py outputs \
                     --campaign "$IN_CAMPAIGN" --version "$IN_VERSION" \
+                    --category "$IN_CATEGORY" \
                     --owner "$GITHUB_REPOSITORY_OWNER")
           else
             dry_run=false
             out=$(python3 tools/lib/campaign_tags.py outputs \
                     --tag "$GITHUB_REF_NAME" --owner "$GITHUB_REPOSITORY_OWNER")
           fi
-          campaign=$(sed -n 's/^campaign=//p' <<<"$out")
+          dir=$(sed -n 's/^dir=//p' <<<"$out")
           tag=$(sed -n 's/^tag=//p' <<<"$out")
-          if [ ! -f "campaigns/${campaign}/world.json" ]; then
-            echo "::error::campaigns/${campaign}/world.json does not exist"; exit 1
+          if [ ! -f "${dir}/world.json" ]; then
+            echo "::error::${dir}/world.json does not exist"; exit 1
           fi
 
           {
@@ -127,7 +140,7 @@ jobs:
       - name: derive the declared translations
         id: lang
         env:
-          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          LEVEL_DIR: ${{ steps.rel.outputs.dir }}
         run: |
           set -euo pipefail
           # i18n v2 (spec-0029) RETIRED the baked language, and this workflow was
@@ -158,9 +171,9 @@ jobs:
           # notes saying it was authored in `zh-cn`. The reader-facing language
           # fact now comes from the storybook's own **Languages** row, which is
           # the artifact a person reviewed.
-          langs=$(python3 - "$CAMPAIGN" <<'PY'
+          langs=$(python3 - "$LEVEL_DIR" <<'PY'
           import json, sys
-          w = json.load(open(f"campaigns/{sys.argv[1]}/world.json"))
+          w = json.load(open(f"{sys.argv[1]}/world.json"))
           print(",".join(w.get("content", {}).get("languages") or []))
           PY
           )
@@ -226,12 +239,13 @@ jobs:
       - name: the release refuses a storybook its own check refuses
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          LEVEL_DIR: ${{ steps.rel.outputs.dir }}
         run: |
           set -euo pipefail
           scope="$RUNNER_TEMP/storybook-scope"
           rm -rf "$scope"
           mkdir -p "$scope"
-          ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$scope/$CAMPAIGN"
+          ln -s "$GITHUB_WORKSPACE/$LEVEL_DIR" "$scope/$CAMPAIGN"
           python3 engine/tools/creator/check-storybook-version.py --campaigns "$scope"
 
       - uses: Swatinem/rust-cache@v2
@@ -246,7 +260,8 @@ jobs:
       # checkout the build uses, scoped like the storybook check to this
       # release's own campaign: a temp content root holding `campaigns/<id>` as
       # a symlink, so another campaign's programs neither block this release nor
-      # are exempted from it. Both tag families pass through it.
+      # are exempted from it. Every tag family passes through it; a reference
+      # level is linked in under `campaigns/<id>` the same way.
       #
       # `audit` refuses a corpus of nothing, and a campaign with no zone
       # programs is a legitimate release, so that case is decided here and
@@ -258,9 +273,10 @@ jobs:
         working-directory: engine
         env:
           CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          LEVEL_DIR: ${{ steps.rel.outputs.dir }}
         run: |
           set -euo pipefail
-          programs="$GITHUB_WORKSPACE/campaigns/$CAMPAIGN/design/programs"
+          programs="$GITHUB_WORKSPACE/$LEVEL_DIR/design/programs"
           if [ ! -d "$programs" ]; then
             echo "zone audit: campaign $CAMPAIGN carries 0 zone programs (no design/programs/) -- zero binding, nothing to judge; the audit is not run"
             exit 0
@@ -268,7 +284,7 @@ jobs:
           root="$RUNNER_TEMP/zone-audit-scope"
           rm -rf "$root"
           mkdir -p "$root/campaigns"
-          ln -s "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" "$root/campaigns/$CAMPAIGN"
+          ln -s "$GITHUB_WORKSPACE/$LEVEL_DIR" "$root/campaigns/$CAMPAIGN"
           cargo run -p delvec --bin delvec -- grammar audit --campaign-root "$root"
 
       # ---- 3. build --------------------------------------------------------
@@ -292,17 +308,22 @@ jobs:
       # runs it. Same shape as the `--locked` gap — a defect whose sole
       # exercise is the release path, so it is discovered at the most expensive
       # possible moment.
+      #
+      # The prefab directory is the category's: a campaign builds with the
+      # shared library `prefabs/`, a reference level with its own
+      # `references/<id>/prefabs/` (`campaign_tags.py` decides it).
       - name: build the delve (implies validate + analyze — the static ladder)
         working-directory: engine
         env:
-          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          LEVEL_DIR: ${{ steps.rel.outputs.dir }}
+          PREFABS: ${{ steps.rel.outputs.prefabs }}
         run: |
           set -euo pipefail
           cargo run -p delvec --bin delvec -- --version
           cargo run -p delvec --bin delvec -- \
-            build "$GITHUB_WORKSPACE/campaigns/$CAMPAIGN" \
+            build "$GITHUB_WORKSPACE/$LEVEL_DIR" \
             -o "$GITHUB_WORKSPACE/engine/validation/delve-output" \
-            --prefabs "$GITHUB_WORKSPACE/prefabs"
+            --prefabs "$GITHUB_WORKSPACE/$PREFABS"
 
       # Everything the image labels and the release notes need comes from the
       # build's own manifest.json, not from re-deriving it: the manifest IS the
@@ -435,7 +456,8 @@ jobs:
         id: notes
         if: steps.rel.outputs.dry_run == 'false'
         env:
-          CAMPAIGN: ${{ steps.rel.outputs.campaign }}
+          LEVEL_DIR: ${{ steps.rel.outputs.dir }}
+          TAG: ${{ steps.rel.outputs.tag }}
           VERSION: ${{ steps.rel.outputs.version }}
           IMAGE: ${{ steps.rel.outputs.image }}
           HAS_PACK: ${{ steps.build.outputs.resourcepack }}
@@ -446,15 +468,18 @@ jobs:
           # pull-request gate (`prefab-audit.yml`) also runs over every campaign,
           # so a storybook a pull request admits is one this step accepts.
           python3 tools/release-notes.py render \
-            --campaign "$CAMPAIGN" --image "$IMAGE" --version "$VERSION" \
+            --dir "$LEVEL_DIR" --image "$IMAGE" --version "$VERSION" \
             --has-pack "$HAS_PACK" --prerelease "$PRERELEASE" > notes.md
           cat notes.md
-          # The Release is named for the delve, not for its directory.
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          # The Release is named for the delve, not for its directory; a
+          # reference level's title says so (`campaign_tags.py title`).
+          world_title=$(python3 - <<'PY'
           import json, os
-          c = json.load(open(f"campaigns/{os.environ['CAMPAIGN']}/world.json"))["content"]
-          print(f"title={c.get('title') or os.environ['CAMPAIGN']} v{os.environ['VERSION']}")
+          c = json.load(open(f"{os.environ['LEVEL_DIR']}/world.json"))["content"]
+          print(c.get("title") or os.path.basename(os.environ["LEVEL_DIR"]))
           PY
+          )
+          echo "title=$(python3 tools/lib/campaign_tags.py title --tag "$TAG" --world-title "$world_title")" >> "$GITHUB_OUTPUT"
 
       - name: publish the GitHub Release (+ resource pack asset)
         id: release
@@ -468,9 +493,9 @@ jobs:
         run: |
           set -euo pipefail
           # The supplied body is the blurb; the generated changelog follows it,
-          # starting from the previous tag of THIS campaign (the one parser,
-          # `campaign_tags.py previous`), so it never lists another campaign's
-          # history. A campaign's first release has no such tag and carries no
+          # starting from the previous tag of THIS level (the one parser,
+          # `campaign_tags.py previous`), so it never lists another level's
+          # history. A level's first release has no such tag and carries no
           # generated changelog.
           start=$(git ls-remote --tags origin 'refs/tags/*' \
             | sed -n 's|.*refs/tags/\([^^]*\)$|\1|p' \
@@ -480,7 +505,7 @@ jobs:
             echo "changelog starts from $start"
             args+=(--generate-notes --notes-start-tag "$start")
           else
-            echo "first release of this campaign: no generated changelog"
+            echo "first release of this level: no generated changelog"
           fi
           if [ "$PRERELEASE" = "true" ]; then
             args+=(--prerelease --latest=false)
@@ -580,12 +605,13 @@ jobs:
           # The parser decides the list: `latest` moves for a release only.
           tags: ${{ steps.rel.outputs.image_tags }}
           labels: |
-            org.opencontainers.image.title=delve-${{ steps.rel.outputs.campaign }}
+            org.opencontainers.image.title=${{ steps.rel.outputs.image }}
             org.opencontainers.image.version=v${{ steps.rel.outputs.version }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.licenses=CC-BY-SA-4.0
             org.opencontainers.image.vendor=Delvewright
+            ca.stellarfeline.delvewright.category=${{ steps.rel.outputs.category }}
             ca.stellarfeline.delvewright.campaign=${{ steps.rel.outputs.campaign }}
             ca.stellarfeline.delvewright.campaign-commit=${{ github.sha }}
             ca.stellarfeline.delvewright.content-license=CC-BY-SA-4.0
@@ -617,6 +643,7 @@ jobs:
           IMAGE: ${{ steps.rel.outputs.image }}
           DRY_RUN: ${{ steps.rel.outputs.dry_run }}
           FAMILY: ${{ steps.rel.outputs.family }}
+          CATEGORY: ${{ steps.rel.outputs.category }}
           IMAGE_TAGS: ${{ steps.rel.outputs.image_tags }}
           TRANSLATIONS: ${{ steps.lang.outputs.translations }}
           PACK_URL: ${{ steps.pack.outputs.url }}
@@ -631,6 +658,7 @@ jobs:
             echo "|---|---|"
             echo "| dry run | \`${DRY_RUN:-?}\` |"
             echo "| family | \`${FAMILY:-?}\` |"
+            echo "| category | \`${CATEGORY:-?}\` |"
             echo "| image | \`${IMAGE:-?}:v${VERSION:-?}\` |"
             echo "| image tags | \`${IMAGE_TAGS:-?}\` |"
             echo "| translations | \`${TRANSLATIONS:-none}\` |"
