@@ -1,7 +1,138 @@
 {
   "campaign_id": "the-stripped-town",
   "content": {
-    "quests": []
+    "containers": {
+      "decoration_notice": {
+        "sound": "minecraft:block.barrel.close",
+        "style": "chat",
+        "text": "Saltlow went inland in the autumn and took everything that would carry. Its barrels and chests stand empty now; only what was left on purpose is still here."
+      }
+    },
+    "loot": [
+      {
+        "anchor": "anchor/the-smoker",
+        "id": "loot/the-last-firing",
+        "items": [
+          {
+            "count": 1,
+            "item": "minecraft:salmon"
+          },
+          {
+            "count": 1,
+            "item": "minecraft:charcoal"
+          },
+          {
+            "count": 2,
+            "item": "minecraft:cooked_cod",
+            "name": "Smoked cod"
+          }
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/ansel": [
+            {
+              "at": "anchor/at-the-boat",
+              "dialogue": "dlg/ansel-hello",
+              "doing": "waiting at the head of the quay steps with one eye on the tide, for the carriers his letter sent for",
+              "forbids_flags": [
+                "flag/parcel-in-hand"
+              ]
+            },
+            {
+              "at": "anchor/at-the-boat",
+              "dialogue": "dlg/ansel-return",
+              "doing": "watching the carriers come back down the street with his sister's parcel, the mooring rope already in his hand",
+              "requires_flags": [
+                "flag/parcel-in-hand"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "subject": "npc/ansel",
+          "text": "Carriers come down the cart road into Saltlow, answering the ferryman's letter.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-parcel",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/ansel",
+              "text": "Ansel asks the carriers to fetch his sister's parcel from her house.",
+              "verb": "learns"
+            },
+            "hint": "Walk down the street to the man waiting on the quay at the far end.",
+            "id": "obj/meet-ansel",
+            "npc": "npc/ansel",
+            "title": "Find the ferryman",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/meet-ansel"
+            ],
+            "anchor": "anchor/marras-chest",
+            "container": "anchor/marras-chest",
+            "count": 1,
+            "happening": {
+              "subject": "item/marras-parcel",
+              "text": "The carriers take Marra's parcel from the chest at the foot of her bed.",
+              "verb": "gains"
+            },
+            "hint": "Marra's house is the last on the north side of the street, nearest the quay. The chest is at the foot of her bed.",
+            "id": "obj/fetch-the-parcel",
+            "item": "minecraft:bundle",
+            "item_name": "Marra's parcel",
+            "title": "Fetch Marra's parcel",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/fetch-the-parcel"
+            ],
+            "happening": {
+              "subject": "npc/ansel",
+              "text": "The carriers bring the parcel to Ansel at the quay.",
+              "verb": "gains"
+            },
+            "hint": "Take the parcel back down the street to Ansel on the quay.",
+            "id": "obj/hand-it-over",
+            "npc": "npc/ansel",
+            "title": "Bring the parcel to Ansel",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The ferry casts off.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "npc/ansel",
+              "text": "Ansel sails from Saltlow with the parcel and the carriers aboard.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/fetch-the-parcel": [
+            {
+              "flag": "flag/parcel-in-hand",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
   },
   "dsl_version": "0.43.0",
   "stage": "quests"
