@@ -1,7 +1,190 @@
 {
   "campaign_id": "the-ferry-bell",
   "content": {
-    "quests": []
+    "guidance": {
+      "teaching": {
+        "attack-body": "When they reach you, press [[key|attack]] and keep at it. They are slow, and they do not stop.",
+        "use-block": "Signs, levers and bells on this shore answer when you press [[key|use]] on them.",
+        "use-body": "If you want a word with anyone on this shore, stand close and press [[key|use]]."
+      }
+    },
+    "quests": [
+      {
+        "cast": {
+          "npc/nell": {
+            "at": "anchor/nell",
+            "dialogue": "dlg/nell-root",
+            "doing": "standing in the rain by the jetty mouth with her bad arm tucked into her coat"
+          }
+        },
+        "happening": {
+          "subject": "npc/nell",
+          "text": "The party comes down to the jetty in the rain, and the ferry-keeper is waiting for someone to ring the bell for her.",
+          "verb": "arrives"
+        },
+        "id": "quest/ring-for-the-ferry",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/nell",
+              "text": "Nell tells them the ferry only comes for the bell, and what came the last three times it rang.",
+              "verb": "learns"
+            },
+            "id": "obj/hear-nell",
+            "npc": "npc/nell",
+            "title": "Talk to the ferry-keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-nell"
+            ],
+            "anchor": "anchor/notice",
+            "happening": {
+              "subject": "anchor/notice",
+              "text": "The ferry notice says how the ferry house is bolted.",
+              "verb": "learns"
+            },
+            "id": "obj/read-the-notice",
+            "prop": {
+              "block": "minecraft:spruce_sign[rotation=0]"
+            },
+            "title": "Read the ferry notice",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/read-the-notice"
+            ],
+            "anchor": "anchor/bolt-lever",
+            "happening": {
+              "subject": "anchor/bolt-lever",
+              "text": "The bolt on the ferry-house door slides back.",
+              "verb": "opens"
+            },
+            "id": "obj/draw-the-bolt",
+            "prop": {
+              "block": "minecraft:lever[face=floor,facing=north,powered=false]"
+            },
+            "title": "Pull the bolt lever by the ferry-house door",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/draw-the-bolt"
+            ],
+            "anchor": "anchor/bell",
+            "happening": {
+              "subject": "anchor/bell",
+              "text": "The ferry bell rings out over the cove.",
+              "verb": "learns"
+            },
+            "hint": "Inside the ferry house, hung from the beam by the east window.",
+            "id": "obj/ring-the-bell",
+            "prop": {
+              "block": "minecraft:bell[attachment=ceiling,facing=east,powered=false]"
+            },
+            "title": "Ring the ferry bell",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/ring-the-bell"
+            ],
+            "happening": {
+              "subject": "anchor/muster",
+              "text": "The dead that answered the bell are put back in the water.",
+              "verb": "dies"
+            },
+            "hint": "They are forming up on the spit across the cove.",
+            "id": "obj/fight-off-the-dead",
+            "title": "Fight off the dead",
+            "type": "kill",
+            "wave": "wave/the-dead"
+          }
+        ],
+        "on_complete": [
+          {
+            "ending": "The ferry is coming.",
+            "happening": {
+              "subject": "npc/nell",
+              "text": "The shore is quiet again and the ferry is on its way across the sound.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/draw-the-bolt": [
+            {
+              "flag": "flag/bolt-drawn",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-ferry-door",
+              "happening": {
+                "subject": "anchor/seam-ferry-door",
+                "text": "The ferry-house door stands unbolted.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "at": {
+                "anchor": "anchor/bolt-lever",
+                "at": "anchor"
+              },
+              "sound": "minecraft:block.iron_door.open",
+              "type": "play-sound"
+            },
+            {
+              "style": "actionbar",
+              "text": "The bolt slides back. The ferry-house door is open.",
+              "type": "narrate"
+            }
+          ],
+          "obj/read-the-notice": [
+            {
+              "style": "chat",
+              "text": "FERRY. Ring the bell once and wait on the jetty. The ferry-house door is bolted from outside: the lever is on the deck beside the door. Never ring after dark.",
+              "type": "narrate"
+            }
+          ],
+          "obj/ring-the-bell": [
+            {
+              "happening": {
+                "subject": "anchor/muster",
+                "text": "Across the water the dead come up out of the cove onto the spit and form up, facing the bell.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/the-dead"
+            },
+            {
+              "style": "chat",
+              "text": "Across the water, on the spit, something comes up out of the cove. Then another.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "waves": [
+      {
+        "anchor": "anchor/muster",
+        "id": "wave/the-dead",
+        "mobs": [
+          {
+            "count": 3,
+            "entity": "minecraft:zombie"
+          }
+        ],
+        "summon": "anchor"
+      }
+    ]
   },
   "dsl_version": "0.42.0",
   "stage": "quests"
