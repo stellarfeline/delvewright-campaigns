@@ -14,10 +14,10 @@ the sea on the north and west. Grid: x east, z south; the walk plane is y 64.
 
 | place | box | what it is |
 |---|---|---|
-| `node/shore` (entry) | x 8196–8235, z 8209–8218, open | the beach at the jetty foot: Nell stands west of the jetty mouth, the ferry notice on its post east of it |
-| `node/jetty` | x 8209–8211, z 8192–8207, hung over the shallows | a plank jetty three wide with a spruce rail along both sides, running sixteen blocks out to the ferry-house door; the bolt lever on the deck beside the door |
-| `node/ferry-house` | x 8207–8213, z 8185–8190, on piles, roofed | a small timber house at the jetty's end; a plank door in its south wall, bolted; the ferry bell hung from a beam by the east window |
-| `node/far-bank` | x 8226–8235, z 8186–8207, open | the spit of sand that closes the cove on the east, joined to the shore at its root; the drowned form up at its west edge, facing the ferry house across nine blocks of water |
+| `node/shore` (entry) | x 8196–8235, z 8209–8218, open | the beach at the jetty foot: Nell stands west of the jetty mouth, the ferry notice on its post east of it, a lamp post either side of the mouth; an upturned boat, crates and a barrel on the sand; a sand step down to the shallows west of the jetty, a fence along the water east of it and down the beach's east edge |
+| `node/jetty` | x 8209–8211, z 8192–8207, hung over the shallows | a plank jetty three wide with a spruce rail along both sides and a lantern on the rail at each end, running sixteen blocks out to the ferry-house door; the bolt lever on the deck beside the door |
+| `node/ferry-house` | x 8207–8213, z 8185–8190, hung over the cove, roofed | a small timber house at the jetty's end under a gabled dark-oak roof; a plank door in its south wall, bolted; the ferry bell on its floor frame in the middle of the house; a one-course slit window in the east wall over the cove, a glazed window in the west wall, two hanging lanterns |
+| `node/far-bank` | x 8226–8235, z 8186–8207, open | the spit of sand that closes the cove on the east, joined to the shore at its root, fenced along its other three edges where nets are dried; driftwood and dry bushes; the dead form up at its west edge, facing the ferry house across nine blocks of water |
 
 The water is the cove: six courses deep, with three cells of shallows at the
 foot of each bank. The sea outside the region is the ocean horizon.
@@ -29,11 +29,12 @@ foot of each bank. The sea outside the region is the ocean horizon.
 | 1 | talk to Nell at the jetty foot | `talk-to` | use-body | sight, from the spawn |
 | 2 | read the ferry notice on its post | `interact`, sign prop | use-block | sight, from Nell |
 | 3 | pull the bolt lever by the ferry-house door | `interact`, lever prop | use-block | sight, from the notice, along the jetty |
-| 4 | ring the ferry bell inside the house | `interact`, bell prop | use-block | a hint (the bell is inside, round the door jamb) |
-| 5 | fight off the drowned that form up on the spit | `kill` | attack-body | sight through the east window and the drowned's reach, plus a hint |
+| 4 | ring the ferry bell inside the house | `interact`, bell prop | use-block | a hint (the bell is inside, behind the door) |
+| 5 | fight off the dead that form up on the spit | `kill` | attack-body | sight through the east slit and the dead's reach (`follow_range` 24) |
 
-The quest completes on the last drowned, and the campaign ends: the outro says
-the ferry is coming.
+Ringing the bell sets the party's checkpoint on the jetty. The quest completes
+on the last of the dead, and the campaign ends: the outro says the ferry is
+coming.
 
 ## Teaching
 
@@ -45,10 +46,10 @@ fight is). `attack-block` is not declared, because no act needs it.
 ## The refusal the level is built to show
 
 The lever is first built on the jetty rail, among the rail's spruce fence
-posts. It is then moved off the rail to the deck beside the door. The README
-records both builds.
+posts, and refused. It is then moved off the rail to the deck beside the door.
+The README records the refusal and two variants of it.
 
 ## Hour and weather
 
-Day, in rain. The rain is what lets the drowned stand on open sand at day
-without burning (`DW0496`), and it is the weather the level is about.
+Day, in rain. The rain is what lets the dead — zombies — stand on open sand by
+day without burning (`DW0496`), and it is the weather the level is about.
