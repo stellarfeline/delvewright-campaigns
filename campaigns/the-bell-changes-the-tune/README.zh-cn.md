@@ -1,0 +1,38 @@
+# 钟声改变曲调
+
+> **Requires delve engine 0.47.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+
+霍林小教堂立在一圈石墙围起的墓园里，堂里那口丧钟四十年没人敲过了。守夜簿上写着：黄昏时敲一次，为碑上的名字。穿过墓园，到祭坛前敲响它，然后听听墓园拿这钟声做了什么。
+
+单人，十分钟左右。你的身份是**敲钟人**，带一盏照路的提灯，一角守夜时垫肚子的面包。
+
+## 怎么玩
+
+启动服务器后，用上面那行标注的版本打开 Minecraft Java 版：多人游戏 → 直接连接 → `localhost:25565`。请接受服务器的资源包，中文文本在里面。把客户端语言设为简体中文即可用中文游玩。
+
+**开始前先把音乐调大。** 选项 → 音乐和声音：*音乐*调到 100%，打开*显示音乐提示*。音乐频率保持默认。这一关是用来听的。
+
+## 这一关是做什么的
+
+这是“每个场景都说明自己放什么音乐”的演示关。关里每个地方，连同脚下的地面，都写明了自己放什么——一首曲子，或者寂静；剧情要换音乐，就换掉那个地方本身。这些没有一样能靠机器确认：音乐由你的客户端决定，渐弱、循环和提示框，只能你自己去听。
+
+## 要听什么
+
+1. **墓园的曲子响起，走进小教堂后渐渐淡去。** 你在停柩门边进入游戏，几秒后响起一段草甸组曲里的轻柔曲子。沿石板路走进门。进到屋顶下以后，音乐是慢慢淡出，而不是一下子断掉吗？淡出大约用了多久？（游戏自带的曲线约十五秒，从门口开始计时。）
+2. **“正在播放”提示框显示什么。** 墓园的曲子开始时，以及钟声之后那首曲子开始时，屏幕角落会弹出提示框，写着曲名和作者。它出现了吗？写的就是你听到的那首吗？
+3. **走回门外时的那一下切换。** 在祭坛前敲钟，再从门口走出去。墓园这时放的是另一首更刺耳的曲子。你一跨出门槛它就立刻切进来、掐断还在淡出的音乐，而不是排队等着吗？敲得快一点（进门十五秒内），出门时墓园原来那首还在淡出：新曲子会把它掐断吗？
+4. **循环的接缝。** 在墓园里待两分钟。新曲子很短，一遍接一遍，中间不留空。你听得出它在哪儿结束、又从哪儿重新开始吗？
+5. **刺耳的曲子在教堂门口戛然而止。** 再走回去。一进门，那首刺耳的曲子是立刻停下，而不像第一首那样花十五秒淡出吗？
+6. **最后俯瞰墓园的镜头。** 这一关以一个镜头收尾：从墓园上方望向小教堂。刺耳的曲子在镜头下又响起来了吗？
+
+## 被拒绝的写法
+
+一个没说明自己放什么的地方，在构建任何东西之前就会被拒绝。`transcripts/a-chapel-that-leaves-the-music-to-the-game.txt` 是把成品战役删掉一行——小教堂的 `audio/background_music`——之后跑 `delvec validate` 的原始输出：
+
+```
+DW1031 [error] world /content/atmospheres/1/attributes: atmosphere `atmosphere/chapel` does not state its music: its `attributes` carry no `audio/background_music`. A biome that declares none inherits the overworld dimension's, vanilla's calm overworld music, so a camera standing in this place would hear a track nobody chose. Add `audio/background_music`: `{}` for silence, or `{"default": {"sound": <id>, "min_delay": <ticks>, "max_delay": <ticks>, "replace_current_music": <bool>}}` for a track.
+```
+
+## 架设服务器
+
+加上 `-e DELVE_RESET_WHEN_EMPTY=90`，只要连续 90 秒没人在线，世界就会被丢弃并从镜像重建，下一个进来的人拿到的是一局没人碰过的冒险——但这样每次启动都会重置，在有人游玩时重启容器就会结束他们这一局。不加这一项，世界会被保留。下限是 60 秒，低于它服务器拒绝启动。

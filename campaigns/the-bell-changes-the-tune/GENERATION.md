@@ -1,0 +1,74 @@
+# The Bell Changes the Tune — generation record
+
+## What the brief pinned, and what was invented
+
+- **Pinned**: the demo-level row for spec-0109 — a chapel and its yard; the
+  yard's atmosphere a soft spaced track (`min_delay` 2400, `max_delay` 6000);
+  the chapel's `{}` with `audio/music_volume` 0.0; a dread atmosphere on a
+  single-file disc with no gap that replaces; the ground's own silence on
+  `horizon`; an `interact` at the bell whose bundle repaints the yard with the
+  dread; an environment trigger at the chapel door carrying
+  `stop-sound {category: music}`; a final cutscene over the yard declaring
+  `hears: atmosphere/dread`; one refusal transcript (an atmosphere with no
+  music stated, `DW1031`); English and `zh-cn`.
+- **Invented**: Hollin Chapel, the forty years of silence and the vigil book;
+  the tracks (`music.overworld.meadow` for the yard, `music_disc.11` for the
+  dread — short, so its loop seam comes round inside two minutes); the beat
+  out to the yew, which arms the door trigger only after the dread has been
+  heard, so the yard's first track is left to fade on the way in; the trigger
+  setting `flag/back-under-the-roof`, read by the last objective, so the forced
+  route performs it; no cast.
+- **Languages**: English and `zh-cn`. The sidecar was transcreated by
+  `tools/creator/i18n-translate.py` (DeepSeek; 16 of 16 rows accepted by its
+  fact check) and one row, the class blurb, rewritten through
+  `delvec l10n-apply`. `README.zh-cn.md` was written in-agent.
+
+## Engine
+
+- An unreleased engine revision, built from source (Init I3b, dev mode):
+  `delvec 1.13.0, dsl 0.47.0, mc 1.21.11`, from engine branch
+  `feature/music-per-scene` at `8ed5a3abe6da70fd5cdcd9e4740b68e905bead20`.
+  Every document carries `dsl_version` 0.47.0. The released `delvec--v1.13.0`
+  answers `delvec 1.13.0, dsl 0.39.0` and refuses this level: only the `dsl`
+  number and the revision tell the two apart.
+- The skill page used is the one in that engine tree
+  (`.claude/skills/delvewright/skills/new-delve/`), which pins
+  `delvec--v1.13.0`.
+- The prefab library is this repository's own `prefabs/`; the level's two
+  pieces are `prefabs/the-bell-changes-the-tune-*`.
+
+## Design gate
+
+Not held. A demo level is confirmed by its owner on the finished thing; no
+reference images were drawn, so there is no `design.json` and no
+`design/cameras.json`.
+
+## Posture
+
+Functional text first. The objective titles say where to go; the two
+narration lines say only what the party can hear, never what the engine does.
+The storybook's what-to-listen-for list is the level's real content.
+
+## Machine ladder (round 1)
+
+- `delvec validate` / `delvec build`: exit 0. Build line:
+  `music binding: 4 biome(s) a camera can stand in — 3 atmosphere(s) and the
+  ground declared (2 with a track, 2 silent: 1 fading, 1 playing out), 0 band
+  biome(s) undeclared; 1 cutscene(s), 1 declare what they hear, 1 of 1
+  confirmed; 1 stop-sound effect(s), 1 of 1 cut a play-out, 0 a stinger, 0 a
+  hiccup; 0 sound(s) in a category other than master`.
+- PackTest: 21 of 21 required tests passed, `music_hears_0` among them.
+- Written world: exit 0, the server's world equal to the engine's model at
+  every compared cell outside the named classes.
+- Bot: **red**, on two harness findings, neither a defect of this campaign:
+  1. *The dread's listening station* reads `atmosphere/yard` where the ledger
+     says `atmosphere/dread`. The repaint reached the client (`4 of 4 held
+     chunk(s) told by chunk_biomes`), but the pinned mineflayer 4.37.1 has no
+     handler for `chunk_biomes`, so the bot's own world keeps the biome it had
+     when the chunk loaded, and any station read after a repaint of an
+     already-loaded chunk reads the old biome.
+  2. *The door trigger* (`approach`, range 1) is not performed: the harness
+     walks to `max(1, range − 1)` of the anchor, which for range 1 leaves no
+     margin, and the bot stopped 1.1 blocks from the threshold. A diagnostic
+     copy with range 2 (not shipped) performed the trigger, heard the
+     `stop_sound` packet and completed the campaign, red only on finding 1.
