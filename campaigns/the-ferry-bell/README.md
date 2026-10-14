@@ -23,7 +23,7 @@ above names: Multiplayer → Direct Connect → `localhost:25565`. Accept the
 server's resource pack: it carries Nell's face and the Chinese text. Set the
 client to 简体中文 to play it in Chinese.
 
-![The view from where you arrive](media/arrival.jpg)
+![The jetty and the ferry house from the shore](media/jetty.jpg)
 
 ## What this level is for
 
@@ -143,3 +143,8 @@ name-told binding (DW0982): 4 declared name(s); 1 walk(s); 10 of 10 dialogue str
   the game it is raining all through.
 - **The dead are zombies** — the dead of this shore, kept from burning in the
   daylight by the rain.
+- **The pressables and the people, in a picture.** The review renders are of
+  the world as it stands at load: they show no sign, lever or bell and no
+  Nell, and the frame on the way through the ferry-house door is black (its
+  camera stands in the shut door). Whether the lever and the bell read is
+  judged in the game.
