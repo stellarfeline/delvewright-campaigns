@@ -17,9 +17,13 @@ above names: Multiplayer → Direct Connect → `localhost:25565`. Accept the
 server's resource pack: it carries the Chinese text. Set the client to 简体中文
 to play it in Chinese.
 
-**Turn the music up before you start.** Options → Music & Sounds: *Music* at
-100%, and *Show Music Toast* on. Leave the music frequency at its default. This
-level is for listening.
+This level is for listening, so have the music loud enough to hear before you
+start.
+
+**The yard's first track is spaced, as the game's own background music is.**
+It waits between two and five minutes between plays. Step into the chapel and
+back out before you ring the bell, and the yard may be silent for a while: that
+silence is the wait the yard declares, not a fault.
 
 ## What this level is for
 
@@ -37,9 +41,10 @@ loop and the toast are yours to hear.
    once you are under the roof, rather than stopping dead? Roughly how long does
    the fade take? (The game's own curve is about fifteen seconds; time it from
    the doorway.)
-2. **What the now-playing toast shows.** When the yard's track starts, and
-   again when the bell's tune starts, a toast names the piece and its artist in
-   the corner of the screen. Is it there, and is it the piece you hear?
+2. **What the now-playing toast shows.** If your client shows the now-playing
+   toast, it names the piece and its artist in the corner of the screen when
+   the yard's track starts, and again when the bell's tune starts. Is it the
+   piece you hear?
 3. **The cut when you walk back out.** Ring the bell at the altar, then go back
    out of the door. The yard now plays a different, harsher piece. Does it come
    in at once as you cross the threshold — cutting off anything still fading,
@@ -52,8 +57,13 @@ loop and the toast are yours to hear.
 5. **The dread stops at the chapel door.** Walk back in. Does the harsh piece
    stop dead as you step inside, instead of fading out over fifteen seconds the
    way the first track did?
-6. **The last look over the yard.** The level ends with a camera looking down
-   over the yard toward the chapel. Does the harsh piece come back under it?
+6. **The last look over the yard has its own music.** The level ends with a
+   camera looking down over the yard toward the chapel, and the shot is scored
+   with a slow lament of its own. Does the lament come in at once with the
+   shot, rather than after a pause? When the shot ends you are back where you
+   stood, inside the chapel: does the lament fade there, as the yard's first
+   track did? Step back out into the yard: does the harsh piece take it back at
+   once?
 
 ## The refusal
 
