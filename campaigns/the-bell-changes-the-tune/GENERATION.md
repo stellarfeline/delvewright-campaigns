@@ -72,3 +72,30 @@ The storybook's what-to-listen-for list is the level's real content.
      margin, and the bot stopped 1.1 blocks from the threshold. A diagnostic
      copy with range 2 (not shipped) performed the trigger, heard the
      `stop_sound` packet and completed the campaign, red only on finding 1.
+
+## Round 2
+
+- **What changed**: the door trigger is an `approach` of range 3 around the
+  same `anchor/threshold` mark (range 1 could be walked past, so the ending
+  never fired); the ending cutscene declares its own `music`, the lament
+  `minecraft:music_disc.mellohi`, with `replace_current_music: true` and no
+  delay, beside its `hears: atmosphere/dread`; the storybook in both languages
+  states the yard's two-to-five-minute wait between plays, asks for no client
+  setting, and listens to the lament's way in and out.
+- **Engine**: `delvec 1.13.0, dsl 0.47.0`, built from engine branch
+  `feature/music-per-scene` at `4a13c8b5b65bda660605a1c35347fdf05eeb20af`.
+- `delvec validate` / `delvec build`: exit 0. Build line:
+  `music binding: 6 biome(s) a camera can stand in — 3 atmosphere(s) and the
+  ground declared (2 with a track, 2 silent: 1 fading, 1 playing out), 0 band
+  biome(s) undeclared; 1 cutscene(s), 1 declare what they hear, 1 of 1
+  confirmed, 1 declare their music over 5 painted 4-cell(s) in 4 paint line(s)
+  and 2 variant biome(s); 1 stop-sound effect(s), 1 of 1 cut a play-out, 0 a
+  stinger, 0 a hiccup; 0 sound(s) in a category other than master`.
+- PackTest: 21 of 21 required tests passed, `cutscene_music_0` among them.
+- Bot: critical path PASSED, 7 steps, the door trigger performed by approach;
+  run report for manifest `0abb88b6d979…`.
+- Written world: exit 0, 2150 cells compared, the server's world equal to the
+  engine's model at every compared cell outside the named classes.
+- Staging gate: REFUSED, 2 of 123 findings unbound — `drill3-01`, `drill3-03`
+  (no design record; the design gate was not held for this demo level). Not
+  overridden here.
