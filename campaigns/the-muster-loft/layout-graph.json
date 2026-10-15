@@ -1,0 +1,167 @@
+{
+  "campaign_id": "the-muster-loft",
+  "content": {
+    "beats": [
+      {
+        "node": "node/hall",
+        "objective": "obj/try-the-loft-stair",
+        "quest": "quest/the-bars"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/look-down-the-hatch",
+        "quest": "quest/the-bars"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/try-the-grating",
+        "quest": "quest/the-bars"
+      },
+      {
+        "node": "node/stores",
+        "objective": "obj/try-the-stores-stair",
+        "quest": "quest/the-bars"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/put-down-the-muster",
+        "quest": "quest/the-muster"
+      },
+      {
+        "node": "node/cellar",
+        "objective": "obj/take-the-roll",
+        "quest": "quest/the-roll"
+      },
+      {
+        "node": "node/cellar",
+        "objective": "obj/try-the-ladder",
+        "quest": "quest/the-roll"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/draw-the-grating",
+        "quest": "quest/the-roll"
+      },
+      {
+        "node": "node/loft",
+        "objective": "obj/lay-the-roll",
+        "quest": "quest/the-roll"
+      }
+    ],
+    "critical_path": [
+      "node/hall",
+      "node/stores",
+      "node/hall",
+      "node/cellar",
+      "node/stores",
+      "node/hall",
+      "node/loft"
+    ],
+    "edges": [
+      {
+        "a": "node/hall",
+        "b": "node/stores",
+        "class": "walk",
+        "id": "edge/stores-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/loft",
+        "class": "stair",
+        "gating": {
+          "flags": [
+            "flag/muster-fallen"
+          ]
+        },
+        "id": "edge/loft-stair"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/cellar",
+        "class": "drop",
+        "falls": "a-to-b",
+        "gating": {
+          "flags": [
+            "flag/muster-fallen"
+          ]
+        },
+        "id": "edge/cellar-shaft"
+      },
+      {
+        "a": "node/stores",
+        "b": "node/cellar",
+        "class": "stair",
+        "gating": {
+          "flags": [
+            "flag/muster-fallen"
+          ]
+        },
+        "id": "edge/cellar-stair"
+      },
+      {
+        "a": "node/cellar",
+        "b": "node/hall",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/grating-drawn"
+          ],
+          "opens_from": "b"
+        },
+        "id": "edge/cellar-ladder",
+        "one_way": "a-to-b",
+        "shortcut": true
+      }
+    ],
+    "entry": "node/hall",
+    "goal": "node/loft",
+    "nodes": [
+      {
+        "id": "node/hall",
+        "intent": "hub",
+        "note": "The muster hall: the party arrives here, the levy falls in here, and every way out of it is barred until the muster falls.",
+        "stations": [
+          {
+            "anchor": "anchor/stair-head",
+            "kind": "point",
+            "note": "The top tread of the loft stair, under the bars across its head."
+          },
+          {
+            "anchor": "anchor/hatch-rim",
+            "kind": "point",
+            "note": "The floor beside the barred hatch over the cellar shaft."
+          }
+        ]
+      },
+      {
+        "id": "node/loft",
+        "intent": "goal-chamber",
+        "note": "Where the levy's names are kept. Up the loft stair, behind bars until the muster falls."
+      },
+      {
+        "id": "node/stores",
+        "intent": "side-room",
+        "note": "The hall's stores, through an open door. The stairwell in its floor down to the cellar is barred until the muster falls; it is the long way round out of the cellar."
+      },
+      {
+        "id": "node/cellar",
+        "intent": "cache",
+        "note": "Under the hall and the stores. The roll is kept here. In by the shaft or the stores stair once the muster falls; the ladder up to the hall is shut by a grating drawn from the hall only.",
+        "stations": [
+          {
+            "anchor": "anchor/roll-shelf",
+            "kind": "point",
+            "note": "The shelf the levy's roll is kept on."
+          },
+          {
+            "anchor": "anchor/ladder-foot",
+            "kind": "point",
+            "note": "The foot of the ladder up to the hall."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.45.0",
+  "stage": "layout-graph"
+}

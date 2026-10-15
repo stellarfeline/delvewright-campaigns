@@ -1,0 +1,208 @@
+{
+  "campaign_id": "the-muster-loft",
+  "content": {
+    "boxes": [
+      {
+        "ceiling": {
+          "clearance": 8
+        },
+        "extent": [
+          16,
+          12
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "min": [
+          10,
+          16
+        ],
+        "node": "node/hall"
+      },
+      {
+        "ceiling": {
+          "clearance": 3
+        },
+        "extent": [
+          8,
+          6
+        ],
+        "floor": {
+          "datum": "datum/loft"
+        },
+        "node": "node/loft"
+      },
+      {
+        "ceiling": {
+          "clearance": 4
+        },
+        "extent": [
+          8,
+          12
+        ],
+        "floor": {
+          "datum": "datum/grade"
+        },
+        "node": "node/stores"
+      },
+      {
+        "ceiling": {
+          "clearance": 3
+        },
+        "extent": [
+          16,
+          8
+        ],
+        "floor": {
+          "y": 60
+        },
+        "node": "node/cellar"
+      }
+    ],
+    "datums": [
+      {
+        "id": "datum/grade",
+        "note": "The hall's floor and the stores' floor.",
+        "y": 64
+      },
+      {
+        "id": "datum/loft",
+        "note": "The loft floor, five over the hall's.",
+        "y": 69
+      }
+    ],
+    "fill": {
+      "block": "minecraft:tuff",
+      "kind": "solid"
+    },
+    "identities": [
+      {
+        "cmp": "eq",
+        "fact": "fact/site-span",
+        "measure": {
+          "axis": "x",
+          "of": "region-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/site-depth",
+        "measure": {
+          "axis": "z",
+          "of": "region-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/site-height",
+        "measure": {
+          "axis": "y",
+          "of": "region-extent"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/hall-headroom",
+        "measure": {
+          "node": "node/hall",
+          "of": "box-height"
+        }
+      },
+      {
+        "cmp": "eq",
+        "fact": "fact/hall-span",
+        "measure": {
+          "axis": "x",
+          "node": "node/hall",
+          "of": "box-extent"
+        }
+      }
+    ],
+    "lighting": {
+      "fixture": "torch",
+      "min_light": 7
+    },
+    "region": {
+      "extent": [
+        40,
+        32,
+        40
+      ],
+      "min": [
+        0,
+        48,
+        0
+      ]
+    },
+    "seams": [
+      {
+        "at": 3,
+        "edge": "edge/stores-door",
+        "face": "east",
+        "form": "an open doorway in the hall's east wall, into the stores",
+        "meets": 3,
+        "opening": "door"
+      },
+      {
+        "at": 6,
+        "edge": "edge/loft-stair",
+        "face": "north",
+        "form": "a stone stair up the hall's north wall to a passage into the loft, barred across its head",
+        "meets": 1,
+        "opening": "passage",
+        "stair_in": "node/hall"
+      },
+      {
+        "at": [
+          5,
+          3
+        ],
+        "edge": "edge/cellar-shaft",
+        "face": "down",
+        "form": "a shaft through the hall floor into the cellar, four down, under a hatch of bars",
+        "meets": [
+          1,
+          1
+        ],
+        "opening": {
+          "height": 2,
+          "width": 2
+        }
+      },
+      {
+        "at": [
+          4,
+          6
+        ],
+        "edge": "edge/cellar-ladder",
+        "face": "up",
+        "form": "a ladder up through the hall floor out of the cellar, a grating over its hole drawn from the hall",
+        "meets": [
+          8,
+          8
+        ],
+        "opening": {
+          "height": 1,
+          "width": 1
+        }
+      },
+      {
+        "at": [
+          0,
+          6
+        ],
+        "edge": "edge/cellar-stair",
+        "face": "down",
+        "form": "a stairwell in the stores floor over a stone stair down to the cellar, under a hatch of bars",
+        "meets": [
+          13,
+          4
+        ],
+        "opening": "passage",
+        "stair_in": "node/cellar"
+      }
+    ]
+  },
+  "dsl_version": "0.45.0",
+  "stage": "site-plan"
+}
