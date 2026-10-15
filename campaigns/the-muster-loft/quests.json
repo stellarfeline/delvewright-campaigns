@@ -1,7 +1,316 @@
 {
   "campaign_id": "the-muster-loft",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-hall",
+          "text": "The warden comes down into the muster hall under the hill at dusk, and finds every way out of it barred.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-bars",
+        "objectives": [
+          {
+            "anchor": "anchor/stair-head",
+            "happening": {
+              "subject": "anchor/seam-loft-stair",
+              "text": "The warden finds the head of the loft stair barred.",
+              "verb": "learns"
+            },
+            "hint": "The stone stair climbs the wall at the back of the hall, toward the loft.",
+            "id": "obj/try-the-loft-stair",
+            "radius": 1,
+            "title": "Try the loft stair",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/try-the-loft-stair"
+            ],
+            "anchor": "anchor/hatch-rim",
+            "happening": {
+              "subject": "anchor/seam-cellar-shaft",
+              "text": "The warden finds the hatch over the cellar shaft barred.",
+              "verb": "learns"
+            },
+            "hint": "The hatch is in the hall floor, near the foot of the loft stair.",
+            "id": "obj/look-down-the-hatch",
+            "radius": 2,
+            "title": "Look down the cellar hatch",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/look-down-the-hatch"
+            ],
+            "anchor": "anchor/unlock-cellar-ladder",
+            "happening": {
+              "subject": "anchor/seam-cellar-ladder",
+              "text": "The warden finds the grating over the cellar ladder shut.",
+              "verb": "learns"
+            },
+            "hint": "A grating lies in the hall floor between the hatch and the stores door, with a ladder under it.",
+            "id": "obj/try-the-grating",
+            "radius": 2,
+            "title": "Look at the grating",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/try-the-grating"
+            ],
+            "anchor": "anchor/node-stores",
+            "happening": {
+              "subject": "anchor/seam-cellar-stair",
+              "text": "The warden finds the stairwell in the stores floor barred.",
+              "verb": "learns"
+            },
+            "hint": "Go through the open door into the stores. The stair down to the cellar is in its floor.",
+            "id": "obj/try-the-stores-stair",
+            "radius": 3,
+            "title": "Try the stores stair",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "anchor": "anchor/node-stores",
+            "type": "set-checkpoint"
+          },
+          {
+            "happening": {
+              "subject": "wave/the-levy",
+              "text": "The dead of the Harrowgate levy fall in on the hall floor.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/the-levy"
+          }
+        ],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {},
+        "happening": {
+          "subject": "wave/the-levy",
+          "text": "The muster stands on the hall floor between the warden and every barred way.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-muster",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "wave/the-levy",
+              "text": "The muster falls, and the levy lies still on the hall floor.",
+              "verb": "dies"
+            },
+            "hint": "The levy stands on the hall floor, back through the stores door.",
+            "id": "obj/put-down-the-muster",
+            "title": "Put down the muster",
+            "type": "kill",
+            "wave": "wave/the-levy"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "chat",
+            "text": "The muster has fallen. The loft stair, the cellar hatch and the stores stair stand open. The grating over the cellar ladder has not moved.",
+            "type": "narrate"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/put-down-the-muster": [
+            {
+              "flag": "flag/muster-fallen",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-loft-stair",
+              "happening": {
+                "subject": "anchor/seam-loft-stair",
+                "text": "The bars at the head of the loft stair lift as the muster falls.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "anchor": "anchor/seam-cellar-shaft",
+              "happening": {
+                "subject": "anchor/seam-cellar-shaft",
+                "text": "The hatch over the cellar shaft opens with them.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "anchor": "anchor/seam-cellar-stair",
+              "happening": {
+                "subject": "anchor/seam-cellar-stair",
+                "text": "The hatch over the stores stair opens with them.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-bars",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {},
+        "happening": {
+          "subject": "item/the-levy-roll",
+          "text": "The warden goes down for the levy's roll, which is kept in the cellar.",
+          "verb": "learns"
+        },
+        "id": "quest/the-roll",
+        "objectives": [
+          {
+            "anchor": "anchor/roll-shelf",
+            "count": 1,
+            "happening": {
+              "subject": "item/the-levy-roll",
+              "text": "The warden takes the levy's roll from its chest in the cellar.",
+              "verb": "gains"
+            },
+            "hint": "Drop through the open hatch into the cellar. The roll is in the chest on the shelf.",
+            "id": "obj/take-the-roll",
+            "item": "minecraft:paper",
+            "item_name": "The levy's roll",
+            "title": "Take the levy's roll",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/take-the-roll"
+            ],
+            "anchor": "anchor/ladder-foot",
+            "happening": {
+              "subject": "anchor/seam-cellar-ladder",
+              "text": "The warden finds the ladder stops under the grating, which does not lift from below.",
+              "verb": "learns"
+            },
+            "hint": "The ladder at the far end of the cellar goes up to the hall floor.",
+            "id": "obj/try-the-ladder",
+            "radius": 1,
+            "title": "Climb the cellar ladder",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/try-the-ladder"
+            ],
+            "anchor": "anchor/unlock-cellar-ladder",
+            "happening": {
+              "subject": "anchor/seam-cellar-ladder",
+              "text": "The warden draws the grating from the hall side, and the ladder is a way up again.",
+              "verb": "opens"
+            },
+            "hint": "Go up the stores stair, back through the stores door into the hall, and draw the grating over the ladder.",
+            "id": "obj/draw-the-grating",
+            "title": "Draw the grating from the hall",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/draw-the-grating"
+            ],
+            "anchor": "anchor/node-loft",
+            "happening": {
+              "subject": "item/the-levy-roll",
+              "text": "The warden lays the levy's roll in the loft, where the names are kept.",
+              "verb": "loses"
+            },
+            "hint": "Climb the loft stair at the back of the hall. The bars at its head are gone.",
+            "id": "obj/lay-the-roll",
+            "radius": 2,
+            "title": "Lay the roll in the loft",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The levy is stood down.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "wave/the-levy",
+              "text": "With its roll laid in the loft, the levy does not fall in again.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/draw-the-grating": [
+            {
+              "flag": "flag/grating-drawn",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-cellar-ladder",
+              "happening": {
+                "subject": "anchor/seam-cellar-ladder",
+                "text": "The grating comes up off the ladder's hole.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            }
+          ],
+          "obj/try-the-ladder": [
+            {
+              "style": "chat",
+              "text": "The ladder ends under the grating. It is drawn from the hall, and there is no way to it from here but the long way round, up the stores stair.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-muster",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-hall",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "The Harrowgate levy mustered in this hall a hundred years ago and never came home. At dusk the dead still fall in on its floor. The reeve barred every way out of the hall so they could not leave, and the bars lift only when the muster falls.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-hall-at-dusk",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true
+      }
+    ],
+    "waves": [
+      {
+        "anchor": "anchor/node-hall",
+        "id": "wave/the-levy",
+        "mobs": [
+          {
+            "attributes": {
+              "max_health": 20
+            },
+            "count": 3,
+            "entity": "minecraft:zombie"
+          }
+        ]
+      }
+    ]
   },
   "dsl_version": "0.45.0",
   "stage": "quests"
