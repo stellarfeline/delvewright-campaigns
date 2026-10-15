@@ -1,0 +1,93 @@
+{
+  "campaign_id": "the-reckoning",
+  "content": {
+    "branch_points": [
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/tobin-freed"
+            ],
+            "id": "branch/freed",
+            "leads_to": "quest/the-reckoning"
+          },
+          {
+            "flags": [
+              "flag/tobin-left"
+            ],
+            "id": "branch/left",
+            "leads_to": "quest/the-reckoning"
+          }
+        ],
+        "forks_on": [
+          "flag/tobin-freed",
+          "flag/tobin-left"
+        ],
+        "id": "branch-point/the-cell",
+        "opens_at": "quest/the-cell"
+      }
+    ],
+    "endings_read": {
+      "at_least": 3,
+      "deeds_at_least": 2
+    },
+    "finale": "quest/the-reckoning",
+    "quests": [
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [],
+        "goal": "Come into the Tallyhouse and hear from its keeper what she has asked you here to do.",
+        "id": "quest/the-summons",
+        "mandatory": true,
+        "npcs": [
+          "npc/ysolde",
+          "npc/tobin"
+        ]
+      },
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-summons"
+        ],
+        "goal": "Go to the cell off the porch, hear the man chained there, and free him or leave him.",
+        "id": "quest/the-cell",
+        "mandatory": true,
+        "npcs": [
+          "npc/ysolde",
+          "npc/tobin"
+        ]
+      },
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-summons"
+        ],
+        "goal": "Burn the ledger of the valley's debts in the brazier beside its stand, if you think it should burn.",
+        "id": "quest/the-ledger",
+        "mandatory": false,
+        "npcs": [
+          "npc/ysolde"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-cell"
+        ],
+        "goal": "Go back to the keeper in the sanctum and hear her reckon the house by what you did with the bell, the cell and the ledger.",
+        "id": "quest/the-reckoning",
+        "mandatory": true,
+        "npcs": [
+          "npc/ysolde",
+          "npc/tobin"
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.46.0",
+  "stage": "quest-plan"
+}
