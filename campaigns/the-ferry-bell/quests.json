@@ -2,10 +2,12 @@
   "campaign_id": "the-ferry-bell",
   "content": {
     "guidance": {
-      "teaching": {
-        "attack-body": "When they reach you, press [[key|attack]] and keep at it. They are slow, and they do not stop.",
-        "use-block": "Signs, levers and bells on this shore answer when you press [[key|use]] on them.",
-        "use-body": "If you want a word with anyone on this shore, stand close and press [[key|use]]."
+      "manual": {
+        "pages": [
+          "The ferry-house door is bolted from the jetty side. The lever is on the deck beside the door: stand close and [[key|use]] on it, and the bolt slides back.",
+          "Ring the bell once, then wait on the jetty. If the dead come up on the spit across the water, they come for whoever rang it. Keep your blade out."
+        ],
+        "title": "The Ferry-Keeper's Notes"
       }
     },
     "quests": [
@@ -42,25 +44,29 @@
             "anchor": "anchor/notice",
             "happening": {
               "subject": "anchor/notice",
-              "text": "The ferry notice says how the ferry house is bolted.",
+              "text": "The ferry slate says how the ferry-house door is bolted and when the bell may be rung.",
               "verb": "learns"
             },
-            "id": "obj/read-the-notice",
+            "hint": "On its post at the jetty's head, right of the planks.",
+            "id": "obj/read-the-slate",
             "prop": {
-              "block": "minecraft:spruce_sign[rotation=0]"
+              "block": "minecraft:dark_oak_sign[rotation=0]"
             },
-            "title": "Read the ferry notice",
+            "title": "Read the ferry slate",
             "type": "interact"
           },
           {
             "after": [
-              "obj/read-the-notice"
+              "obj/hear-nell"
             ],
             "anchor": "anchor/bolt-lever",
             "happening": {
               "subject": "anchor/bolt-lever",
               "text": "The bolt on the ferry-house door slides back.",
               "verb": "opens"
+            },
+            "highlight": {
+              "within": 6
             },
             "id": "obj/draw-the-bolt",
             "prop": {
@@ -79,7 +85,7 @@
               "text": "The ferry bell rings out over the cove.",
               "verb": "learns"
             },
-            "hint": "Inside the ferry house, on its stand in the middle of the floor.",
+            "hint": "Inside the ferry house at the end of the jetty, on its stand in the middle of the floor.",
             "id": "obj/ring-the-bell",
             "prop": {
               "block": "minecraft:bell[attachment=floor,facing=south,powered=false]"
@@ -142,10 +148,10 @@
               "type": "narrate"
             }
           ],
-          "obj/read-the-notice": [
+          "obj/read-the-slate": [
             {
               "style": "chat",
-              "text": "FERRY. Ring the bell once and wait on the jetty. The ferry-house door is bolted from outside: the lever is on the deck beside the door. Never ring after dark.",
+              "text": "FERRY, in chalk. Ring the bell once and wait on the jetty. The ferry-house door is bolted from outside: the lever is on the deck beside the door. Never ring after dark.",
               "type": "narrate"
             }
           ],
