@@ -26,19 +26,26 @@ the sea on the north and west. Grid: x east, z south; the walk plane is y 64.
 |---|---|---|---|---|
 | 1 | talk to Nell at the jetty foot | `talk-to` | announced | sight, from the spawn |
 | 2 | read the ferry slate at the jetty's head | `interact`, dark-oak sign prop | announced, with a hint | opens with 3, when the talk ends |
-| 3 | ring the ferry bell inside the house | `interact`, bell prop | announced, with a hint | the hint (the bell is inside, behind the bolted door) |
-| — | pull the bolt lever by the ferry-house door | `interact`, lever prop, `highlight {within: 6}` | not announced: no title, so no compass, no journal page | sight, from the slate, along the jetty |
-| 4 | fight off the dead that form up on the spit | `kill`, after the bell | announced | sight through the east slit and the dead's reach (`follow_range` 24) |
+| 3 | pull the bolt lever by the ferry-house door | `interact`, lever prop, `highlight {within: 6}` | announced | sight, from the slate, along the jetty |
+| 4 | ring the ferry bell inside the house | `interact`, bell prop, after 3 | announced, with a hint | the hint (the bell is inside, behind the door) |
+| 5 | fight off the dead that form up on the spit | `kill`, after 4 | announced | sight through the east slit and the dead's reach (`follow_range` 24) |
 
-Talking to Nell opens the slate and the bell at once, so two objectives are
-open together and each player's compass follows the one they pick: at Nell's
-side the slate is a few steps to one side and the bell straight out along the
-jetty. The lever opens with them, unannounced: it is the way to the bell, which
-the bell's hint names, and it glows only while a player is within six blocks of
-it — the last stretch of the jetty deck. The bell carries no highlight, because
-a bell reads as a bell. The bell sets the party's checkpoint on the jetty and
+Talking to Nell opens the slate and the lever at once, so two objectives are
+open together and each player's compass follows the one they pick from its
+menu: at Nell's side the slate is a few steps to one side and the lever
+straight out along the jetty. The lever glows only while a player is within six
+blocks of it — the last stretch of the jetty deck; on the deck a lever does not
+say *bolt*. The bell carries no highlight, because a bell reads as a bell. The
+bell opens once the bolt is drawn, sets the party's checkpoint on the jetty and
 calls the fight. The quest completes when every objective is done, and the
 campaign ends: every compass spins and every journal holds only done pages.
+
+The demo-level row asks for the slate and the bell to open together with the
+lever as the way in. This engine refuses that shape: as an objective the lever
+is not a causal ancestor of the bell, so the route proof (`DW0317`) refuses the
+walk into the bolted house; as a `use` trigger, the layout graph credits no
+flag to a trigger, so `DW0816`/`DW0817` refuse the ferry-house edge. The bell
+therefore follows the lever.
 
 ## The journal
 
@@ -52,7 +59,7 @@ derived from the objectives.
 
 The lever is first built on the jetty rail, among the rail's spruce fence
 posts, and refused by `DW0863`: from the slate, the next post hides it, and an
-act nobody announces has no hint to fall back on. It is moved off the rail to
+act with no hint has nothing to fall back on. It is moved off the rail to
 the deck beside the door.
 
 ## Hour and weather
