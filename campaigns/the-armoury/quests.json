@@ -1,7 +1,158 @@
 {
   "campaign_id": "the-armoury",
   "content": {
-    "quests": []
+    "loot": [
+      {
+        "anchor": "anchor/helm-stand",
+        "id": "loot/the-watch-helmet",
+        "items": [
+          {
+            "item": "minecraft:iron_helmet",
+            "name": "Watch helmet",
+            "slot": "armor.head"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/shield-stand",
+        "id": "loot/the-watch-shield",
+        "items": [
+          {
+            "item": "minecraft:shield",
+            "name": "Watch shield",
+            "slot": "weapon.offhand"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/map-frame",
+        "id": "loot/the-moor-map",
+        "items": [
+          {
+            "item": "minecraft:map",
+            "name": "Map of the moor road"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/arrow-chest",
+        "id": "loot/the-arrow-chest",
+        "items": [
+          {
+            "count": 16,
+            "item": "minecraft:arrow"
+          },
+          {
+            "count": 16,
+            "item": "minecraft:arrow"
+          }
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/ide": [
+            {
+              "at": "anchor/warden-post",
+              "dialogue": "dlg/ide-hello",
+              "doing": "waiting beside the armoury door with her pack already at her feet, for the new watch to come up the road",
+              "forbids_flags": [
+                "flag/sword-in-hand"
+              ]
+            },
+            {
+              "at": "anchor/warden-post",
+              "dialogue": "dlg/ide-return",
+              "doing": "watching the new watch come out of the armoury with the post sword, her pack on her shoulder",
+              "requires_flags": [
+                "flag/sword-in-hand"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "subject": "npc/ide",
+          "text": "The new watch comes up the moor road to Greyholt to relieve the warden.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-post-sword",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/ide",
+              "text": "Ide tells the new watch the post goes with its sword, and the sword is on the rack.",
+              "verb": "learns"
+            },
+            "hint": "She is waiting beside the armoury door, across the yard.",
+            "id": "obj/meet-the-warden",
+            "npc": "npc/ide",
+            "title": "Meet the warden",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/meet-the-warden"
+            ],
+            "anchor": "anchor/sword-stand",
+            "count": 1,
+            "happening": {
+              "subject": "item/the-post-sword",
+              "text": "The new watch takes the post sword from its stand.",
+              "verb": "gains"
+            },
+            "hint": "Through the armoury door, on the middle stand of the rack.",
+            "holder": "anchor/sword-stand",
+            "id": "obj/take-the-sword",
+            "item": "minecraft:iron_sword",
+            "item_name": "The post sword",
+            "title": "Take the post sword",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/take-the-sword"
+            ],
+            "happening": {
+              "subject": "npc/ide",
+              "text": "The new watch brings the post sword out to Ide.",
+              "verb": "gains"
+            },
+            "hint": "Carry it out to Ide, beside the armoury door in the yard.",
+            "id": "obj/bring-the-sword",
+            "npc": "npc/ide",
+            "title": "Bring the sword to Ide",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The post is yours.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "npc/ide",
+              "text": "Ide hands the post over and goes down the moor road.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/take-the-sword": [
+            {
+              "flag": "flag/sword-in-hand",
+              "type": "set-flag"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
   },
   "dsl_version": "0.49.0",
   "stage": "quests"

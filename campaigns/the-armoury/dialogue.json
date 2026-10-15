@@ -1,7 +1,111 @@
 {
   "campaign_id": "the-armoury",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/ide-hello",
+            "options": [
+              {
+                "forbids_flags": [
+                  "flag/asked-for-sword"
+                ],
+                "label": "We're your relief.",
+                "next": "dlg/ide-handover"
+              },
+              {
+                "label": "What is Greyholt?",
+                "next": "dlg/ide-post"
+              },
+              {
+                "label": "Where's the sword?",
+                "next": "dlg/ide-where",
+                "requires_flags": [
+                  "flag/asked-for-sword"
+                ]
+              }
+            ],
+            "text": "You'll be the new watch. Good. I've had my pack by the door since the thaw."
+          },
+          {
+            "id": "dlg/ide-handover",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/asked-for-sword",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/meet-the-warden",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/ide",
+                  "text": "Ide asks the new watch to bring the post sword out of the armoury.",
+                  "verb": "learns"
+                },
+                "label": "We'll bring it."
+              },
+              {
+                "label": "Which one is it?",
+                "next": "dlg/ide-where"
+              }
+            ],
+            "text": "Then it's done properly. The post goes with its sword, and the sword is on the rack in the armoury, behind me. Bring it out here and I'll give it over. The rest in there is the watch's, and the watch is you now."
+          },
+          {
+            "id": "dlg/ide-where",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/ide-hello"
+              }
+            ],
+            "text": "Through that door. Three stands on the rack. The sword is on the middle one."
+          },
+          {
+            "id": "dlg/ide-post",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/ide-hello"
+              }
+            ],
+            "text": "A watch-house on the top. One lamp, one log, one sword. You write down who comes over the moor road and who doesn't. Thirty winters I've written it."
+          },
+          {
+            "id": "dlg/ide-return",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/bring-the-sword",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Here it is.",
+                "next": "dlg/ide-farewell"
+              }
+            ],
+            "text": "That's the one. My hand wore the grip smooth."
+          },
+          {
+            "id": "dlg/ide-farewell",
+            "options": [
+              {
+                "label": "Safe road."
+              }
+            ],
+            "text": "No. Keep it. It's the post's, and you're the post. Light the lamp at dusk. I'll be in the valley by dark."
+          }
+        ],
+        "npc": "npc/ide",
+        "root": "dlg/ide-hello"
+      }
+    ]
   },
   "dsl_version": "0.49.0",
   "stage": "dialogue"
