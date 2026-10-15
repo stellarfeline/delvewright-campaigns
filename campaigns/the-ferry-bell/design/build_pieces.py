@@ -219,7 +219,7 @@ def shore():
     marks = [
         ("spawn", (19, 3, 7), "north"),
         ("node-shore", (20, 3, 6), "north"),
-        ("nell", (13, 3, 1), "south"),
+        ("nell", (14, 3, 2), "south"),
         ("notice", (19, 3, 1), "south"),
     ]
     return program("ferry-bell-shore", p, palette, contract, marks, ["east", "north", "west"])
