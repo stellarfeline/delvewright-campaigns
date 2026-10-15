@@ -30,7 +30,7 @@ refuses scenery among containers that matter; those rules are the design.
 
 Built with `delvec 1.13.0, dsl 0.43.0, mc 1.21.11` from the engine's
 `feature/containers-are-declared` at
-`adc9a8d14740fc736c805880c8505696ff17ceaf` — an unreleased tree, the only one
+`d91c620d93fc8053176f746b4c56e0c2a2dccc32` — an unreleased tree, the only one
 carrying spec-0105. Its version string is the same number as the released
 `delvec--v1.13.0` (which answers `dsl 0.39.0`), so the version alone does not
 say which engine built this level; the revision does.
@@ -70,7 +70,10 @@ engine revision: creator mode pins a release tag, and dev mode reads the
 engine checkout's `campaigns/` link, which points at another content checkout.
 The run used that tree's own binary, `target/release/delvec`, built with
 `cargo build --release -p delvec` (exit 0), through an environment file of its
-own rather than the machine's shared `~/.delvewright/env.sh`.
+own rather than the machine's shared `~/.delvewright/env.sh`. Init's pin check
+(I1b) refuses that arrangement (exit 3): it reads the shared `env.sh`, which
+names the released engine, and offers no way to name this tree without
+rewriting it.
 
 ## Container census, as built
 
@@ -80,26 +83,43 @@ own rather than the machine's shared `~/.delvewright/env.sh`.
 node/chandlers: 2, node/marras-house: 1, node/net-house: 2,
 node/smokehouse: 1; arrangement: 0 mixed place(s), 0 over the cap of 2
 decoration cell(s) per place.` The ledger's `census_input_sha256` is
-`bf00eb8dbc99fd01f32da516b1fdaae10f42b7d3374803e405c4325feb4bf9a5`.
+`c290ddc8ade2eae4914827fe567f41b907e9e1f01a1b898f4a59ed96e06d9942`, and it
+lists no place still standing in its stand-in (`stand_ins: []`). The fill
+binding: `container binding: 2 container fill(s) (1 loot, 1 adopting
+collect), 2 judged against the assembled world, 0 deferred to the detail of a
+place still standing in its stand-in.`
 
 A copy with one extra barrel in Marra's house was refused `DW1024` (mixed);
-the transcript is in the storybook.
+the transcript is in the storybook. On this engine, a copy whose program puts
+a barrel where Marra's table stands is refused by `delvec detail` and by
+`delvec build` (exit 3) with the same message, the barrel named at
+`[8226, 64, 8195]`.
 
-## Machine ladder (round 1)
+## Machine ladder
 
 On the build whose manifest sha256 is
-`c6c4e03c1f59942a7c1ce7a807e798912fb31aa8c780e82df18fd8ae76cc0b00` (two
+`4be62646b24550fc068ccab6dbacb1d4ff0778757b2a9448d332ac472d2dfe63` (two
 builds byte-identical):
 
-- PackTest: 21 of 21 required tests passed.
+- PackTest: 21 of 21 required tests passed, `v06_loot_smoker` among them.
 - Bot: critical path passed, 5 steps; `container notice: ok — the chat notice
-  arrived between the class command and the warp in`. Die-retry is unbound
-  (no combat, no death plan), stated by the run.
+  arrived in the class step's window; its sound minecraft:block.barrel.close
+  arrived at [8195.5,64,8202.5], the bot at [8195.5,64,8202.5] after the
+  warp`. Die-retry is unbound (no combat, no death plan), stated by the run.
 - Written world (`DW0955`): 1447 non-air cells compared, 0 differing in the
-  model class; the differences are the named server re-derivations (leaf
-  distance, pane and wall connections) and grass under blocks turning to dirt.
+  model class; the differences are the named server re-derivations (85 cells:
+  leaf distance and wall connections) and grass under blocks turning to dirt
+  (3 cells, random tick).
 
-## Visual review (round 1)
+## Visual review
+
+The frames were drawn from the world save of the build at manifest
+`c6c4e03c1f59942a7c1ce7a807e798912fb31aa8c780e82df18fd8ae76cc0b00`. That
+build and this one emit the same structures and the same render plan, and the
+engine's at-load world model of both is
+`460a35459eaedc34902ff6922d154c412b21c650132bdc9afe7fa7823a554d9e`; the two
+differ only in the class function, its PackTest and the ledgers, so the frames
+are this build's.
 
 Rendered at each scene's own budget: the POV frames leg 0 waypoints 0 and 1
 (the street from the road; arriving at Ansel), leg 1 waypoint 10 (arriving at

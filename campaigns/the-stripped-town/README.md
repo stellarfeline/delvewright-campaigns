@@ -38,7 +38,8 @@ The machine has proved the census — six containers: four scenery (a chest and
 a barrel in each of the two stripped houses), one loot (the smoker), one
 `collect` (the parcel chest) — that no place mixes scenery with a container
 that matters, that no place holds more than two scenery containers, and that
-the arrival line reaches the bot between its class command and the warp in.
+the arrival line reaches the bot as it arrives, with its sound played where
+the bot stands after the warp.
 What it cannot say is how any of it **reads**. Walk it once as a Carrier, and
 open whatever you would naturally open.
 
@@ -65,9 +66,9 @@ open whatever you would naturally open.
    mode.** The chest by Marra's bed and the smoker in the smokehouse are the
    two that hold something. Each should look like furniture that belongs in
    its room, not a box added beside it, and each should open and let you take
-   its stacks in adventure mode. (Item frames, armour stands and brewing
-   stands are not built: the engine places none of them as a holder yet, and
-   the brewing stand is not in the block palette pieces may use.)
+   its stacks in adventure mode. (Item frames and armour stands are not
+   built: the engine places neither as a holder yet. This level has no
+   brewing stand.)
 
 ### The refusal this level stays inside
 
