@@ -1,7 +1,298 @@
 {
   "campaign_id": "the-reckoning",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/ysolde-summons",
+            "options": [
+              {
+                "label": "Why send for us?",
+                "next": "dlg/ysolde-why"
+              },
+              {
+                "label": "What do you need?",
+                "next": "dlg/ysolde-ask"
+              }
+            ],
+            "text": "You came. I am Ysolde Marrow, and I keep this house. It is the Tallyhouse: what the valley owes is written here, and once a year, while the mere is let out, I reckon it."
+          },
+          {
+            "id": "dlg/ysolde-why",
+            "options": [
+              {
+                "label": "What do you need?",
+                "next": "dlg/ysolde-ask"
+              }
+            ],
+            "text": "I have reckoned this house my own way for thirty years, and I no longer know whether it does any good. You owe it nothing. I want to see what people who owe it nothing do with it."
+          },
+          {
+            "id": "dlg/ysolde-ask",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-keeper",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll walk it.",
+                "tooltip": "You go to walk the house. Ysolde will reckon it by what you do."
+              }
+            ],
+            "text": "Walk the house before I reckon it. The callbell hangs in the porch: ring it, and the valley comes down onto the mud to hear me. A man is chained in the cell off the porch, against his family's debt. And the ledger is here on its stand. The brazier beside it is cold. Lay the ledger in it and it burns. Do with each what you think right. I will ask you after."
+          },
+          {
+            "id": "dlg/ysolde-walking",
+            "options": [
+              {
+                "label": "The bell?",
+                "next": "dlg/ysolde-bell"
+              },
+              {
+                "label": "The ledger?",
+                "next": "dlg/ysolde-ledger"
+              },
+              {
+                "label": "We'll go."
+              }
+            ],
+            "text": "The man in the cell is Tobin Reave. Go and hear him first. The bell and the ledger are yours to do or leave, whenever you like."
+          },
+          {
+            "id": "dlg/ysolde-bell",
+            "options": [
+              {
+                "label": "The ledger?",
+                "next": "dlg/ysolde-ledger"
+              },
+              {
+                "label": "We'll go."
+              }
+            ],
+            "text": "It hangs from the beam in the porch. Ring it and the valley hears it and comes down. Leave it, and the reckoning is mine alone."
+          },
+          {
+            "id": "dlg/ysolde-ledger",
+            "options": [
+              {
+                "label": "The bell?",
+                "next": "dlg/ysolde-bell"
+              },
+              {
+                "label": "We'll go."
+              }
+            ],
+            "text": "Every debt in this valley is written in it, my mother's hand and then mine. If it burns, nobody owes this house anything."
+          },
+          {
+            "id": "dlg/ysolde-reckoning",
+            "options": [
+              {
+                "label": "Reckon it.",
+                "next": "dlg/ysolde-r-bell-yes",
+                "requires_flags": [
+                  "flag/bell-rung"
+                ],
+                "tooltip": "Ysolde reckons the house now, by what you did with the bell, the cell and the ledger."
+              },
+              {
+                "forbids_flags": [
+                  "flag/bell-rung"
+                ],
+                "label": "Reckon it.",
+                "next": "dlg/ysolde-r-bell-no",
+                "tooltip": "Ysolde reckons the house now, by what you did with the bell, the cell and the ledger."
+              },
+              {
+                "label": "Not yet."
+              }
+            ],
+            "text": "Have you done with the house what you meant to? Once I reckon it, it is reckoned."
+          },
+          {
+            "id": "dlg/ysolde-r-bell-yes",
+            "options": [
+              {
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-cell-yes",
+                "requires_flags": [
+                  "flag/tobin-freed"
+                ]
+              },
+              {
+                "forbids_flags": [
+                  "flag/tobin-freed"
+                ],
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-cell-no"
+              }
+            ],
+            "text": "You rang the callbell. The valley came down onto the mud to hear me, more of them than I have seen in years."
+          },
+          {
+            "id": "dlg/ysolde-r-bell-no",
+            "options": [
+              {
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-cell-yes",
+                "requires_flags": [
+                  "flag/tobin-freed"
+                ]
+              },
+              {
+                "forbids_flags": [
+                  "flag/tobin-freed"
+                ],
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-cell-no"
+              }
+            ],
+            "text": "Nobody rang the callbell. The valley stayed at home, and it will hear about this from me tomorrow."
+          },
+          {
+            "id": "dlg/ysolde-r-cell-yes",
+            "options": [
+              {
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-ledger-yes",
+                "requires_flags": [
+                  "flag/ledger-burned"
+                ]
+              },
+              {
+                "forbids_flags": [
+                  "flag/ledger-burned"
+                ],
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-ledger-no"
+              }
+            ],
+            "text": "You let Tobin Reave go. He is halfway home by now, and his family's debt went out of the door with him."
+          },
+          {
+            "id": "dlg/ysolde-r-cell-no",
+            "options": [
+              {
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-ledger-yes",
+                "requires_flags": [
+                  "flag/ledger-burned"
+                ]
+              },
+              {
+                "forbids_flags": [
+                  "flag/ledger-burned"
+                ],
+                "label": "Go on.",
+                "next": "dlg/ysolde-r-ledger-no"
+              }
+            ],
+            "text": "Tobin Reave is still chained in his cell. You heard him out, and you left him there."
+          },
+          {
+            "id": "dlg/ysolde-r-ledger-yes",
+            "options": [
+              {
+                "label": "And the house?",
+                "next": "dlg/ysolde-r-verdict"
+              }
+            ],
+            "text": "And the ledger is ash in the brazier. Every debt in this valley was written in it, and now none of them is."
+          },
+          {
+            "id": "dlg/ysolde-r-ledger-no",
+            "options": [
+              {
+                "label": "And the house?",
+                "next": "dlg/ysolde-r-verdict"
+              }
+            ],
+            "text": "The ledger is still on its stand. Every debt in the valley is still written in it."
+          },
+          {
+            "id": "dlg/ysolde-r-verdict",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/hear-the-reckoning",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "So be it.",
+                "tooltip": "Ysolde gives her verdict on the house, and does what it says."
+              }
+            ],
+            "text": "Then the house is reckoned, and I will tell you what becomes of it. Stand where you are."
+          }
+        ],
+        "npc": "npc/ysolde",
+        "root": "dlg/ysolde-summons"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/tobin-plea",
+            "options": [
+              {
+                "label": "What happens to you?",
+                "next": "dlg/tobin-fear"
+              }
+            ],
+            "text": "You're not the keeper. Good. I'm Tobin Reave. My family owes this house three years of grain, and it keeps one of us chained in here until the reckoning. This year it's me."
+          },
+          {
+            "id": "dlg/tobin-fear",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/tobin-freed",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/speak-to-tobin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/tobin",
+                  "text": "The strangers pull the pin out of the ring and free Tobin from his chain.",
+                  "verb": "gains"
+                },
+                "label": "Pull the pin.",
+                "tooltip": "You free Tobin. He walks out of the house and home."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/tobin-left",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/speak-to-tobin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/tobin",
+                  "text": "The strangers leave Tobin chained in his cell.",
+                  "verb": "survives"
+                },
+                "label": "Leave him chained.",
+                "tooltip": "You leave Tobin in the cell for the reckoning."
+              }
+            ],
+            "text": "I don't know, and that's what frightens me. Nobody who was in here talks about the reckoning after. The chain comes off if you pull the pin out of the ring. I can't reach it from here."
+          }
+        ],
+        "npc": "npc/tobin",
+        "root": "dlg/tobin-plea"
+      }
+    ]
   },
   "dsl_version": "0.46.0",
   "stage": "dialogue"

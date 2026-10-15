@@ -1,7 +1,779 @@
 {
   "campaign_id": "the-reckoning",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "cast": {
+          "npc/tobin": [
+            {
+              "at": "anchor/tobin-stand",
+              "dialogue": {
+                "barks": [
+                  "Is that the keeper? No. Sorry. I thought you were her.",
+                  "There's no key to this chain. It's a pin. I just can't reach it."
+                ]
+              },
+              "doing": "chained by the ring in the cell wall, listening for the keeper's step",
+              "forbids_flags": [
+                "flag/tobin-freed"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tobin-freed"
+              ]
+            }
+          ],
+          "npc/ysolde": {
+            "at": "anchor/keeper-stand",
+            "dialogue": "dlg/ysolde-summons",
+            "doing": "waiting by the altar for the strangers she sent for, the ledger open on its stand beside her"
+          }
+        },
+        "happening": {
+          "subject": "npc/ysolde",
+          "text": "Strangers come across the dry mere to the Tallyhouse, answering its keeper's summons.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-summons",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/ysolde",
+              "text": "Ysolde asks the strangers to walk the house before she reckons it: the bell, the man in the cell, the ledger.",
+              "verb": "learns"
+            },
+            "hint": "Go in at the shrine door and on through the arch to the room at the back.",
+            "id": "obj/hear-the-keeper",
+            "npc": "npc/ysolde",
+            "title": "Find the keeper",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/tobin": [
+            {
+              "at": "anchor/tobin-stand",
+              "dialogue": "dlg/tobin-plea",
+              "doing": "chained in the cell, hoping whoever comes in is not the keeper",
+              "forbids_flags": [
+                "flag/tobin-freed"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tobin-freed"
+              ]
+            }
+          ],
+          "npc/ysolde": {
+            "at": "anchor/keeper-stand",
+            "dialogue": "dlg/ysolde-walking",
+            "doing": "standing by the altar, letting the strangers walk her house without her"
+          }
+        },
+        "happening": {
+          "subject": "npc/tobin",
+          "text": "The strangers go to the cell and hear why Tobin Reave is chained there.",
+          "verb": "learns"
+        },
+        "id": "quest/the-cell",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/tobin",
+              "text": "Tobin asks to be let out before the reckoning, and the strangers decide.",
+              "verb": "learns"
+            },
+            "hint": "The cell is through the low door on the left of the porch, under the bell.",
+            "id": "obj/speak-to-tobin",
+            "npc": "npc/tobin",
+            "title": "Hear the man in the cell",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/speak-to-tobin": [
+            {
+              "amount": 1,
+              "state": "state/tally",
+              "type": "add-state",
+              "when": {
+                "requires_flags": [
+                  "flag/tobin-freed"
+                ]
+              }
+            },
+            {
+              "style": "chat",
+              "text": "The pin comes out of the ring. Tobin is past you and out through the porch before the chain stops swinging.",
+              "type": "narrate",
+              "when": {
+                "requires_flags": [
+                  "flag/tobin-freed"
+                ]
+              }
+            },
+            {
+              "happening": {
+                "subject": "npc/tobin",
+                "text": "Tobin walks out of the cell, through the porch and out onto the mud.",
+                "verb": "survives"
+              },
+              "npc": "npc/tobin",
+              "on_arrive": [
+                {
+                  "happening": {
+                    "subject": "npc/tobin",
+                    "text": "Tobin walks out across the mud and home to his farm.",
+                    "verb": "departs"
+                  },
+                  "npc": "npc/tobin",
+                  "type": "despawn-npc"
+                }
+              ],
+              "to": {
+                "anchor": "anchor/before-the-door"
+              },
+              "type": "move-npc",
+              "when": {
+                "requires_flags": [
+                  "flag/tobin-freed"
+                ]
+              }
+            },
+            {
+              "style": "chat",
+              "text": "You leave Tobin where he is. Behind you he says nothing at all.",
+              "type": "narrate",
+              "when": {
+                "requires_flags": [
+                  "flag/tobin-left"
+                ]
+              }
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-summons",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/tobin": [
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tobin-freed"
+              ]
+            },
+            {
+              "at": "anchor/tobin-stand",
+              "dialogue": "unchanged",
+              "doing": "chained in the cell off the porch, waiting on whatever the strangers decide",
+              "forbids_flags": [
+                "flag/tobin-freed"
+              ]
+            }
+          ],
+          "npc/ysolde": {
+            "at": "anchor/keeper-stand",
+            "dialogue": "unchanged",
+            "doing": "standing by the altar a step from the ledger, not looking at it"
+          }
+        },
+        "happening": {
+          "text": "The strangers decide the ledger of the valley's debts should burn.",
+          "verb": "believes"
+        },
+        "id": "quest/the-ledger",
+        "objectives": [
+          {
+            "anchor": "anchor/brazier",
+            "announcement": "hidden",
+            "happening": {
+              "subject": "anchor/ledger-stand",
+              "text": "The ledger goes into the brazier and burns.",
+              "verb": "loses"
+            },
+            "id": "obj/burn-the-ledger",
+            "marker": "hidden",
+            "title": "Burn the ledger",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "flag": "flag/ledger-burned",
+            "type": "set-flag"
+          },
+          {
+            "anchor": "anchor/ledger-stand",
+            "block": "minecraft:lectern[facing=east,has_book=false,powered=false]",
+            "type": "set-block"
+          },
+          {
+            "anchor": "anchor/brazier",
+            "block": "minecraft:campfire[facing=east,lit=true,signal_fire=false,waterlogged=false]",
+            "type": "set-block"
+          },
+          {
+            "at": {
+              "anchor": "anchor/brazier",
+              "at": "anchor"
+            },
+            "sound": "minecraft:item.firecharge.use",
+            "type": "play-sound"
+          },
+          {
+            "style": "chat",
+            "text": "You lay the ledger in the brazier. The old pages catch at once and burn down to nothing.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-summons",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/tobin": [
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tobin-freed"
+              ]
+            },
+            {
+              "at": "anchor/tobin-stand",
+              "dialogue": {
+                "barks": [
+                  "Is it over? It sounds like she's started.",
+                  "You could still pull the pin. No. You've decided. Fine."
+                ]
+              },
+              "doing": "still chained in the cell, listening to the keeper's voice through the wall",
+              "requires_flags": [
+                "flag/tobin-left"
+              ]
+            }
+          ],
+          "npc/ysolde": {
+            "at": "anchor/keeper-stand",
+            "dialogue": "dlg/ysolde-reckoning",
+            "doing": "waiting by the altar to be told the strangers are done, so that she can reckon the house"
+          }
+        },
+        "happening": {
+          "subject": "npc/ysolde",
+          "text": "Ysolde reckons the house by what the strangers did with the bell, the cell and the ledger.",
+          "verb": "learns"
+        },
+        "id": "quest/the-reckoning",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/ysolde",
+              "text": "The strangers tell Ysolde they are done, and she reckons the house.",
+              "verb": "learns"
+            },
+            "hint": "Ysolde is waiting by the altar in the room at the back. Tell her when you are done with the house.",
+            "id": "obj/hear-the-reckoning",
+            "npc": "npc/ysolde",
+            "title": "Go back to the keeper",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "chat",
+            "text": "Ysolde: \"There is nothing left for this house to keep, and I will not leave it standing empty. Out, all of you.\"",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/ledger-burned"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Ysolde: \"This house did some good this year. It can stand another.\"",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/ledger-burned"
+              ],
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/tally",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Ysolde: \"A house that called nobody and let nobody go is a house nobody needs. I am opening the sluice and leaving the doors open. The mere can have it.\"",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/ledger-burned"
+              ],
+              "requires_state": [
+                {
+                  "op": "at-most",
+                  "state": "state/tally",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "look_at": {
+              "anchor": "anchor/keeper-stand",
+              "offset": [
+                0,
+                1,
+                0
+              ]
+            },
+            "party": "present",
+            "path": [
+              {
+                "anchor": "anchor/node-sanctum",
+                "offset": [
+                  0,
+                  2,
+                  3
+                ]
+              },
+              {
+                "anchor": "anchor/node-sanctum",
+                "offset": [
+                  0,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "seconds": 5,
+            "then": [
+              {
+                "from": {
+                  "anchor": "anchor/node-sanctum",
+                  "extent": [
+                    2,
+                    2,
+                    3
+                  ]
+                },
+                "to": {
+                  "anchor": "anchor/before-the-door"
+                },
+                "type": "teleport",
+                "when": {
+                  "requires_flags": [
+                    "flag/ledger-burned"
+                  ]
+                }
+              },
+              {
+                "block": "minecraft:fire",
+                "region": {
+                  "anchor": "anchor/sanctum-floor",
+                  "extent": [
+                    2,
+                    0,
+                    2
+                  ]
+                },
+                "type": "fill-region",
+                "when": {
+                  "requires_flags": [
+                    "flag/ledger-burned"
+                  ]
+                }
+              },
+              {
+                "at": {
+                  "anchor": "anchor/sanctum-floor",
+                  "at": "anchor"
+                },
+                "sound": "minecraft:block.fire.ambient",
+                "type": "play-sound",
+                "when": {
+                  "requires_flags": [
+                    "flag/ledger-burned"
+                  ]
+                }
+              },
+              {
+                "style": "subtitle",
+                "text": "The Tallyhouse burns.",
+                "type": "narrate",
+                "when": {
+                  "requires_flags": [
+                    "flag/ledger-burned"
+                  ]
+                }
+              },
+              {
+                "block": "minecraft:white_candle[candles=3,lit=true,waterlogged=false]",
+                "region": {
+                  "anchor": "anchor/altar-candles",
+                  "extent": [
+                    2,
+                    0,
+                    0
+                  ]
+                },
+                "type": "fill-region",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tally",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "at": {
+                  "anchor": "anchor/callbell",
+                  "at": "anchor"
+                },
+                "sound": "minecraft:block.bell.resonate",
+                "type": "play-sound",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tally",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "style": "subtitle",
+                "text": "The Tallyhouse stands.",
+                "type": "narrate",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tally",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "block": "minecraft:water",
+                "region": {
+                  "anchor": "anchor/sanctum-floor",
+                  "extent": [
+                    2,
+                    0,
+                    2
+                  ]
+                },
+                "type": "fill-region",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tally",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "at": {
+                  "anchor": "anchor/sanctum-floor",
+                  "at": "anchor"
+                },
+                "sound": "minecraft:block.water.ambient",
+                "type": "play-sound",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tally",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "style": "subtitle",
+                "text": "The mere comes in.",
+                "type": "narrate",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tally",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "happening": {
+                  "subject": "npc/tobin",
+                  "text": "Ysolde pulls Tobin's pin herself on her way past the cell, and he goes out ahead of the water.",
+                  "verb": "departs"
+                },
+                "npc": "npc/tobin",
+                "type": "despawn-npc",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_flags": [
+                    "flag/tobin-left"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tally",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "happening": {
+                  "subject": "npc/tobin",
+                  "text": "Ysolde pulls Tobin's pin herself on her way out of the burning house.",
+                  "verb": "departs"
+                },
+                "npc": "npc/tobin",
+                "type": "despawn-npc",
+                "when": {
+                  "requires_flags": [
+                    "flag/tobin-left",
+                    "flag/ledger-burned"
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "The callbell brought the valley down onto the mud. Its people saw the reckoning with their own eyes.",
+                "type": "narrate",
+                "when": {
+                  "requires_flags": [
+                    "flag/bell-rung"
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "Nobody heard a bell. The valley will learn of the reckoning tomorrow, from Ysolde.",
+                "type": "narrate",
+                "when": {
+                  "forbids_flags": [
+                    "flag/bell-rung"
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "Tobin Reave is home before dark. You let him go.",
+                "type": "narrate",
+                "when": {
+                  "requires_flags": [
+                    "flag/tobin-freed"
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "Tobin Reave stays chained in the cell, held for next year's reckoning.",
+                "type": "narrate",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_flags": [
+                    "flag/tobin-left"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/tally",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "Ysolde pulled Tobin's pin herself on her way past the cell. A house that is finished holds nobody.",
+                "type": "narrate",
+                "when": {
+                  "forbids_flags": [
+                    "flag/ledger-burned"
+                  ],
+                  "requires_flags": [
+                    "flag/tobin-left"
+                  ],
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/tally",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "Ysolde pulled Tobin's pin herself on her way out. She would not burn a man with her house.",
+                "type": "narrate",
+                "when": {
+                  "requires_flags": [
+                    "flag/tobin-left",
+                    "flag/ledger-burned"
+                  ]
+                }
+              }
+            ],
+            "type": "cutscene"
+          },
+          {
+            "ending": "ending/the-house-burns",
+            "happening": {
+              "subject": "anchor/sanctum-floor",
+              "text": "Ysolde puts the Tallyhouse to the torch and walks the party out onto the mud to watch it burn.",
+              "verb": "loses"
+            },
+            "type": "campaign-complete",
+            "when": {
+              "requires_flags": [
+                "flag/ledger-burned"
+              ]
+            }
+          },
+          {
+            "ending": "ending/the-house-stands",
+            "happening": {
+              "subject": "anchor/altar-candles",
+              "text": "Ysolde lights the altar candles, and the Tallyhouse stands for another year.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete",
+            "when": {
+              "forbids_flags": [
+                "flag/ledger-burned"
+              ],
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/tally",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "ending": "ending/the-house-floods",
+            "happening": {
+              "subject": "anchor/sanctum-floor",
+              "text": "Ysolde opens the sluice with the doors left open, and the mere comes in over the sanctum floor.",
+              "verb": "loses"
+            },
+            "type": "campaign-complete",
+            "when": {
+              "forbids_flags": [
+                "flag/ledger-burned"
+              ],
+              "requires_state": [
+                {
+                  "op": "at-most",
+                  "state": "state/tally",
+                  "value": 0
+                }
+              ]
+            }
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-cell",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "state": [
+      {
+        "id": "state/tally",
+        "initial": 0,
+        "note": "How many of the house's people the party answered for: the valley, called by the bell; Tobin, let out of the cell. 0, 1 or 2.",
+        "scope": "party"
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/callbell",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "The callbell's note goes out over the dry mere. Up the valley, doors open, and people start down towards the mud.",
+            "type": "narrate"
+          },
+          {
+            "flag": "flag/bell-rung",
+            "type": "set-flag"
+          },
+          {
+            "amount": 1,
+            "state": "state/tally",
+            "type": "add-state"
+          }
+        ],
+        "id": "trigger/ring-the-callbell",
+        "on": {
+          "on": "use"
+        },
+        "once": true,
+        "prop": {
+          "block": "minecraft:bell[attachment=ceiling,facing=north,powered=false]"
+        }
+      }
+    ]
   },
   "dsl_version": "0.46.0",
   "stage": "quests"
