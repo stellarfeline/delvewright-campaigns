@@ -26,13 +26,8 @@ text.
 ## For the owner: what to look for
 
 This level is the demo for **a cutscene shot that shows what it is meant to
-show**. Walk it once with the client set as below; each line is one thing to
+show**. Walk it once with the client as it comes; each line is one thing to
 look at.
-
-**Set first** (Options → Video Settings): **Render Distance 8**, and **Entity
-Distance 50%**. Those are the two settings the walk is asked under: the lowest
-entity distance the engine sizes the figure for, and a render distance below
-the game's default.
 
 1. **Does the keeper show through the open door?** Walk to the hall's door. The
    first cutscene stands on the jetty outside the door and looks straight in:
@@ -49,12 +44,15 @@ the game's default.
    ninety blocks of water at the stack for ten seconds while the thing rises out
    of its top, about nine seconds from start to standing. Look for: the figure
    there from the first frame it clears the rock to the last frame of the shot,
-   never popping out or flickering at Entity Distance 50%, and whether it reads
-   at ninety blocks.
+   never popping out or flickering, and whether it reads at ninety blocks. The
+   build sizes the figure for a client at the lowest Entity Distance the game
+   allows (50%): it is drawn out to about 124 blocks there, and the camera is
+   never more than 96.4 blocks from it in this shot (the build's
+   `validation/shot-subjects.json`: `view_range` 3.87, `farthest` 96.376).
 4. **Does any shot frame empty sea, sky or a wall?** Across all three cutscenes.
 5. **After the cutscene, is it still there?** Walk back up the jetty and look
-   north: the thing should still be standing on the stack, at the same settings.
-   Then tell the keeper.
+   north: the thing should still be standing on the stack. Then tell the
+   keeper.
 
 Beside the walk, the five shots the engine refuses — each the level as it ships
 plus one edit, printed whole by the same `delvec` in [`refusals/`](refusals/):
