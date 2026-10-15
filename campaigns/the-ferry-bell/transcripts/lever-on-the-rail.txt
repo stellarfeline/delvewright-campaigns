@@ -1,8 +1,8 @@
-# delvec 1.13.0, dsl 0.42.0, mc 1.21.11, built from engine feature/guidance-can-be-followed a4e6639c5652174b8ccd17c63de90ee08fbf71e4
+# delvec 1.13.0, dsl 0.42.0, mc 1.21.11, built from engine sync/main-into-guidance f6c553a9ee0554f934d2cc398d8e29f9f26da63a
 # campaigns/the-ferry-bell/ with the bolt lever's mark on the jetty's west rail, among the rail's spruce fence posts:
-#   python3 campaigns/the-ferry-bell/design/build_pieces.py --lever-on-rail && delvec --prefabs prefabs detail campaigns/the-ferry-bell --all
-# the lever is a vanilla lever, minecraft:lever[face=floor,facing=north,powered=false], placed at [8208, 64, 8198] in the rail's line; the rail's posts stand either side of it
-$ delvec --prefabs prefabs build campaigns/the-ferry-bell -o .out/fb2/delve-rail
+#   python3 campaigns/the-ferry-bell/design/build_pieces.py --lever-on-rail && delvec detail campaigns/the-ferry-bell node/jetty --prefabs prefabs
+# the lever is the use trigger trigger/draw-the-bolt, its prop minecraft:lever[face=floor,facing=north,powered=false], placed at [8208, 64, 8198] in the rail's line; the rail's posts stand either side of it
+$ delvec build campaigns/the-ferry-bell --prefabs prefabs -o out-rail
 -- 2 advisory(ies) about this campaign
 DW0822 [warning] layout-graph /content/critical_path: the critical path crosses 6 place(s) over 5 step(s), a measured 141 blocks of route, which at 60 blocks of route per minute of play projects to about 3 minute(s) against this world's `target_minutes` of 10. It carries no threshold and refuses nothing — see `DW0822` in `docs/reference/dsl/layout.md` for what the number is worth.
 DW1015 [warning] quests /content/quests/0/objectives/1/hint: the en hint of `interact` objective `obj/read-the-slate` (`On its post at the jetty's head, right of the planks.`) reads as another act: `head` is a `reach-anchor` verb, and the hint carries none of the `interact` verbs (use, press, pull, push, ring, light, open, unlock, turn, read, touch, place, hold, present, show, offer, insert, set, lower, raise, wind, crank, hang, knock). Decide whether the hint tells the party to do something this objective does not complete on: if the word is a noun or reported speech, keep it; if it sends the party to the wrong act, name the act this objective completes on, or write the hint as a place (`Past the bell, left of the arch.`). The lexicon reads words, not meaning, so this is a question for you, never a refusal.
@@ -10,32 +10,32 @@ DW1015 [warning] quests /content/quests/0/objectives/1/hint: the en hint of `int
 DW0813 [warning] site-plan: 2 of the 2 building metric(s) this run read are provisional — the metrics gym has not walked them: opening.door, pacing.route-blocks-per-minute. The checks still ran and still refuse; what is unproven is the number they refused against.
 -- what this run examined (33 line(s))
 equipment binding: 0 body(ies) dressed over 0 entity type(s), 0 piece(s) declared over 0 slot(s) in use, 0 piece(s) with a registry-declared slot, 0 with an allowed-entity list, 0 refused (DW0898).
-purchase binding: 0 charge(s) over 0 datum(s) bind 0 (list, datum) pair(s) of 5 effect list(s) walked, 0 of them behind a numeric gate, 0 refused (DW0901).
-read-after-write binding: 9 effect(s) over 4 bundle(s) walked, 0 gated write(s) recorded, 0 refused (DW0527).
+purchase binding: 0 charge(s) over 0 datum(s) bind 0 (list, datum) pair(s) of 6 effect list(s) walked, 0 of them behind a numeric gate, 0 refused (DW0901).
+read-after-write binding: 10 effect(s) over 5 bundle(s) walked, 0 gated write(s) recorded, 0 refused (DW0527).
 health-bar binding: 0 of 1 fight(s) carry a bar (1 wave(s), 0 actor(s) declared); 0 of 0 boss-billed fight(s) carry one; 0 refused (DW0100/DW0909/DW0910), 0 advised (DW0912).
 on_kill binding: 0 of 1 fight(s) carry a bundle, 0 of them on a fight that comes back, 0 stating `every-kill`; 0 refused (DW0913/DW0914/DW0915).
-inline-style binding: 1 of 32 player-facing line(s) carry 1 span(s); 32 sidecar row(s) held to their English's spans
+inline-style binding: 1 of 31 player-facing line(s) carry 1 span(s); 31 sidecar row(s) held to their English's spans
 textures: 0 row(s) resolved of 0 declared, against a census of 3517 vanilla texture(s)
 sheet binding: 1 of 1 sheet(s) judged against their model's boxes — 1 of 1 mannequin skin(s), 0 of 0 `world.textures[]` row(s) an entity model is drawn with; by model: player_slim 1; 0 refused (DW0978/DW0979)
-journal pages: 16 page(s) measured over the source and every declared language, the fullest 14 of 14 line(s); 0 over
+journal pages: 14 page(s) measured over the source and every declared language, the fullest 14 of 14 line(s); 0 over
 name-tag binding (DW0983): 0 of 1 wave(s) carry a named member, 0 named actor(s); 0 name(s) tag a group; 0 wave(s) and 0 actor(s) refused
 seating binding: horizon base `ocean`; areas[]: 0 of 0 area(s) name a piece set, examined over 0 member(s), 0 opening outward, 0 `.nbt` opened, 0 waterline declaration(s) examined, 0 borne out by the bytes; site plan: 4 of 4 box(es) judged against this base. byte-claim binding: 0 document(s) read, 0 `.nbt` opened; 0 declaration(s) of the class examined, 0 denied by the bytes (DW0888); per key examined/denied: structure.data_version=0/0, walk_y=0/0, anchors.*.pos=0/0, anchors.*.region=0/0, anchors.*.dispenser=0/0, anchors.*.trigger_block=0/0, anchors.*.furniture=0/0, connectors[].opening=0/0, connectors[].socket=0/0, jigsaw-declared=0/0.
-anchor-guarantee binding: 0 of 0 area(s) bind a pool, examined over 0 member(s) declaring 0 anchor name(s), of which 0 are guaranteed; 334 name(s) carried by this campaign's documents, 0 reported outside a guarantee.
-promise: 5 objective(s) examined — 5 announced (DW0862/DW0961), 0 adopted container(s) (DW0861); 0 failure clock(s) (DW0860) over 11 effect root(s)
-DW1015 binding: 10 title(s) and 4 hint(s) over 2 language(s) judged (0 string(s) in languages with no table); 1 warned
-compass binding: 5 tracked objective(s) of 5 — 0 by their own field, 5 by the campaign default; 0 refused
+anchor-guarantee binding: 0 of 0 area(s) bind a pool, examined over 0 member(s) declaring 0 anchor name(s), of which 0 are guaranteed; 338 name(s) carried by this campaign's documents, 0 reported outside a guarantee.
+promise: 4 objective(s) examined — 4 announced (DW0862/DW0961), 0 adopted container(s) (DW0861); 0 failure clock(s) (DW0860) over 11 effect root(s)
+DW1015 binding: 8 title(s) and 4 hint(s) over 2 language(s) judged (0 string(s) in languages with no table); 1 warned
+compass binding: 4 tracked objective(s) of 4 — 0 by their own field, 4 by the campaign default; 0 refused
 highlight binding: 1 highlight(s) over 5 act(s) — 1 on a block, 0 on a body; 0 refused
-detail binding: 4 of 4 place(s) bound over 4 `details[]` row(s), 4 piece(s) measured against their frame, 6 seam(s) required answering over 6 declared face(s) examined, 11 owed anchor name(s) checked.
+detail binding: 4 of 4 place(s) bound over 4 `details[]` row(s), 4 piece(s) measured against their frame, 6 seam(s) required answering over 6 declared face(s) examined, 11 owed anchor name(s) checked, 0 of them a killing volume's seat in out-of-walk floor.
 void binding: 4 bound piece(s) opened, 1140 void cell(s) examined, 0 painted (DW0987); 131 fixed ring ground cell(s) examined, 0 written (DW0990).
 aloft binding: 2 aloft place(s) of 4, 162 terrain column(s) under them examined, 0 reaching into a claim (DW0990).
 contradiction binding: 0 branch(es) read in their exported order over 0 dated line(s); every legal order searched over 0 step(s) (0 quiet), 0 distinct play state(s) walked; 0 refused beyond the exported order (DW0485); 0 branch(es) unproven at the bound of 50000 state(s) per branch (DW0927)
-state path binding: 2 path(s) walked over 10 step(s); 0 numeric gate term(s) read, of which 0 against an undatable datum and 0 withheld (the order is not forced); 0 state write(s) replayed; 0 declared datum(s) of which 0 undatable
-name-told binding (DW0982): 4 declared name(s); 1 walk(s); 10 of 10 dialogue string(s) and 7 of 7 objective string(s) on screen on some walk; 0 use(s) of a name in them, 0 untold
+state path binding: 2 path(s) walked over 8 step(s); 0 numeric gate term(s) read, of which 0 against an undatable datum and 0 withheld (the order is not forced); 0 state write(s) replayed; 0 declared datum(s) of which 0 undatable
+name-told binding (DW0982): 4 declared name(s); 1 walk(s); 10 of 10 dialogue string(s) and 6 of 6 objective string(s) on screen on some walk; 0 use(s) of a name in them, 0 untold
 design record: 0 reference(s) recorded over 0 image file(s) under `design/` (concept/ 0, reference/ 0); skies stated: none; world reaches times {day} weathers {rain} (DW0890); showcase cameras: none (no design/cameras.json); 0 of 0 approved image(s) answered (DW0900)
 clock: world day -> day 0 daytime 1000; sun +27.55° E, moon below the horizon (full-moon); sky light judged 15, game 15; burns: yes
 clocks: 1 world + 0 cut(s); 0 celestial, 1 keyword; phases stated {}; days {0}
 view distance binding: 10 chunk(s) (the engine's floor, undeclared) serve 160 blocks in every direction; 1 sightline(s) and 0 view(s) judged against it, 0 beyond it.
-layout-graph binding: 4 node(s), 4 edge(s) (3 traversal, 0 one-way, 0 shortcut, 1 gated, 0 carry), 5 station(s) of which 0 gate(s), 5 beat(s) of which 5 on the mandatory spine, 5 critical-path step(s); geometry-brief binding: 2 fact(s).
+layout-graph binding: 4 node(s), 4 edge(s) (3 traversal, 0 one-way, 0 shortcut, 1 gated, 0 carry), 5 station(s) of which 0 gate(s), 4 beat(s) of which 4 on the mandatory spine, 5 critical-path step(s); geometry-brief binding: 2 fact(s).
 site-plan binding: 4 box(es) (6 pair(s) compared; 1 pinned, 3 derived, in 1 component(s); 1 roofed; 110 shared claim cell(s) awarded), 3 seam(s) (0 stair, 0 drop), 1 datum(s), 3 whole-owned volume(s), 1 identity(ies), 1 sightline(s), 0 view(s); fill `open`.
 site-plan placing: `node/shore` stands at [8196, 8209] — pinned.
 site-plan placing: `node/jetty` stands at [8209, 8192] — hung off `node/shore` across the north face by the seam for `edge/jetty-foot`.
@@ -65,13 +65,13 @@ sculk: 0 sensor(s) (0 calibrated), 0 reach cell(s) checked, 0 shrieker(s), 0 cat
 sculk: 0 catalyst(s), no body cell to measure against; 0 body cell(s), 0 mob cell(s) examined
 blind-reach binding: 0 blinding grant(s) examined; standing sets of 0 cell(s); reaches of 0 move(s); 0 caught.
 DW0311 binding: 5 leg(s); 5 walked, 0 carried by a crossing, 0 carried by a link, 0 carried by a loop; 0 link(s) declared, 0 live on some leg, 0 taken; 0 gather(s) declared
-DW0921 binding: 2 quest configuration(s), 100 route cell(s), 78409 cell(s) a body can reach by walking, falling, jumping, swimming or climbing (75402 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
+DW0921 binding: 2 quest configuration(s), 117 route cell(s), 78409 cell(s) a body can reach by walking, falling, jumping, swimming or climbing (75402 of them afloat), 0 it cannot leave; 0 link stand cell(s) served as a way out
 DW0924 binding: 1 kill-objective wave(s), 1 stack(s) over 3 seat(s); 286 cell(s) a member can reach within its follow range, 286 of them within a strike of a cell the party can walk to while the fight is next (1525 such cell(s) over the fights); 0 stack(s) can be stranded out of reach
 furniture binding: 0 region(s) over 0 solid cell(s), 0 standable cell(s) withheld from walking; 5 leg(s) proved, 0 standing on furniture.
 reach-footprint binding: 0 reach objective(s) examined over 0 cell(s) their completion volumes cover, against 1525 cell(s) the party can stand on; 0 of those are footing a body could complete from, and 0 of THOSE stand on floor no body can walk to the anchor's own footing from without leaving the completion volume.
 pulse binding: 0 pulse(s), 0 staged; far - block(s) over - standable cell(s), range - (volume -); 0 of 0 live on the forced route in some configuration; 0 of 0 with a listening station
 sculk walk: 0 of 0 sensor(s) predicted on 0 leg(s), 0 of 0 shrieker(s); 0 unpredicted sensor(s), 0 unpredicted shrieker(s), 0 device(s) a runtime write covers
 engagement binding: 1 staged fight(s) examined, 0 of a species whose targeting reads the hour, 0 of those bright while the fight is live, 0 of those with water for the party's feet within reach; 0 refused (DW0920).
-DW0863 binding: 5 act(s) over 1 walk(s) — 2 announced with a hint, 2 in sight (1 kill(s) also in reach), 0 trigger(s) judged by sight alone; 1 refused; 0 kill(s) on no walk judged from the acts that fire their wave
-DW0863 [error] build: on the critical path, the `interact` act `obj/draw-the-bolt` cannot be found by the party: from `obj/read-the-slate`'s cell ([8214, 64, 8209]) its target [8208, 64, 8198] is 12.6 blocks away and hidden: the line is stopped first at [8208, 64, 8199]. An act the party can see from where it stands needs no line; one it cannot see owes one. It is not announced with a hint (it has no `hint`). Give `obj/draw-the-bolt` a `title` and a `hint` that says where it is, or move the act or its target into sight of where the party stands.
+DW0863 binding: 5 act(s) over 1 walk(s) — 2 announced with a hint, 2 in sight (1 kill(s) also in reach), 1 trigger(s) judged by sight alone; 1 refused; 0 kill(s) on no walk judged from the acts that fire their wave
+DW0863 [error] build: on the critical path, the `use` act `trigger/draw-the-bolt` cannot be found by the party: from `obj/hear-nell`'s cell ([8209, 64, 8210]) its target [8208, 64, 8198] is 12.1 blocks away and hidden: the line is stopped first at [8208, 64, 8203]. An act the party can see from where it stands needs no line; one it cannot see owes one. A trigger has no lines to say where it is, so its only remedy is the world: move `trigger/draw-the-bolt` or what it acts on into sight of where the party stands, or make the act an `interact` objective with a `hint`.
 # exit 3

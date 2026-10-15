@@ -9,13 +9,15 @@
   calls forming up in sight across the water; the journal with two manual
   pages in the keeper's voice, `[[key|use]]` on the lever line; built once with
   the lever among its rail's fence posts, refused by `DW0863`, then moved.
-- **Departure from the row**: the row's two objectives are the slate and the
-  bell. On this engine the bell, behind the bolted door, has to follow the
-  lever in the quest's `after` order (`DW0317` otherwise refuses the walk into
-  the house; a `use` trigger in the lever's place is refused by the layout
-  graph, `DW0816`/`DW0817`, which credits no grant to a trigger). The talk
-  opens the slate and the lever; the bell opens once the bolt is drawn.
-- **Invented**: the keeper (Nell Garrow; the row's ferryman) and her bad arm;
+- **The row's shape, kept**: the talk opens the slate and the bell together;
+  the bell stands inside the bolted ferry house; the lever beside the door is
+  a `use` trigger carrying the highlight, and its `set-flag` is what the
+  layout graph's barred edge reads. Gated on `flag/heard-nell`, which the talk
+  sets, so the walk does not pull it before the talk.
+- **The slate's words** are narration printed on the click: the engine has no
+  surface for a placed sign's text, so the sign itself is blank.
+- **Invented**: the keeper (Nell Garrow; the row's ferryman), her bad arm and
+  her place at the jetty foot;
   the dead on the spit and why she will not ring alone; the rain; the slate's
   wording; the manual's two pages; the net-menders' fence round the spit; the
   outro.
@@ -31,8 +33,10 @@
 
 - An unreleased engine revision, built from source (dev mode):
   `delvec 1.13.0, dsl 0.42.0, mc 1.21.11`, from engine branch
-  `feature/guidance-can-be-followed` at
-  `a4e6639c5652174b8ccd17c63de90ee08fbf71e4`. Every document carries
+  `sync/main-into-guidance` at
+  `f6c553a9ee0554f934d2cc398d8e29f9f26da63a` (`main` merged into
+  `feature/guidance-can-be-followed`; binary sha256
+  `f8520f03a0c3040b113e96b15710e77cbb25c3e5d7b502ca982db17f0e08ebad`). Every document carries
   `dsl_version` 0.42.0. The released `delvec--v1.13.0` answers
   `delvec 1.13.0, dsl 0.39.0`: the same engine number with another dsl, so
   this level does not build with the release.
@@ -60,7 +64,9 @@ reference images were drawn, so there is no `design.json` and no
   without it reproduces the committed pieces byte for byte.
 - Decisions the checks forced, each a design change: the bell stands on a
   floor frame (a ceiling-hung bell put the interact shot's camera inside the
-  roof, `DW0724`); the east wall's window is a one-course slit at eye level (a
+  roof, `DW0724`); Nell stands at the jetty foot in line with the deck's
+  west plank, because from one block west and one north the rail's shore-end
+  lantern hid the lever (`DW0863`); the east wall's window is a one-course slit at eye level (a
   pane stops the line of sight, and a taller hole is a way out); the beach
   east of the jetty and the spit are fenced where the dead could otherwise
   reach the open sea from their seat (`DW0924`); the dead declare
