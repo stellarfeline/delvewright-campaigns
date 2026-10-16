@@ -1,7 +1,118 @@
 {
   "campaign_id": "an-item-laid-at-a-place",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "item/the-muster-roll",
+          "text": "The clerk comes into the chapel at dusk to make it ready for the muster.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-roll",
+        "objectives": [
+          {
+            "anchor": "anchor/roll-chest",
+            "container": "anchor/roll-chest",
+            "count": 1,
+            "fill_count": 3,
+            "happening": {
+              "subject": "item/the-muster-roll",
+              "text": "The clerk takes the muster roll out of the vestry chest.",
+              "verb": "gains"
+            },
+            "hint": "It is kept in the vestry chest beside the altar.",
+            "id": "obj/take-the-roll",
+            "item": "minecraft:paper",
+            "item_name": "Muster Roll of Wending Cross",
+            "title": "Take the muster roll",
+            "type": "collect"
+          },
+          {
+            "anchor": "anchor/lantern-barrel",
+            "container": "anchor/lantern-barrel",
+            "count": 1,
+            "fill_count": 2,
+            "happening": {
+              "subject": "item/the-watch-lantern",
+              "text": "The clerk takes the watch lantern out of the barrel under the stair.",
+              "verb": "gains"
+            },
+            "hint": "The barrel at the foot of the loft stair.",
+            "id": "obj/take-the-lantern",
+            "item": "minecraft:lantern",
+            "item_name": "Watch Lantern",
+            "title": "Take the watch lantern",
+            "type": "collect"
+          },
+          {
+            "anchor": "anchor/lectern",
+            "happening": {
+              "subject": "item/the-muster-roll",
+              "text": "The clerk lays the muster roll on the loft lectern and lets go of it.",
+              "verb": "loses"
+            },
+            "hint": "Up the stair by the west wall, at the loft rail.",
+            "id": "obj/lay-the-roll",
+            "missing_item_hint": "The lectern is bare. The roll goes here, in your hand.",
+            "prop": {
+              "block": "minecraft:lectern[facing=south]"
+            },
+            "requires_item": "minecraft:paper",
+            "takes_item": true,
+            "title": "Lay the roll on the lectern",
+            "type": "interact"
+          },
+          {
+            "anchor": "anchor/hook",
+            "happening": {
+              "subject": "item/the-watch-lantern",
+              "text": "The clerk hangs the watch lantern on the chain over the lectern.",
+              "verb": "loses"
+            },
+            "hint": "The chain hanging from the loft beam, beside the lectern.",
+            "id": "obj/hang-the-lantern",
+            "missing_item_hint": "The chain ends in an empty hook. The lantern goes here, in your hand.",
+            "prop": {
+              "block": "minecraft:iron_chain"
+            },
+            "requires_item": "minecraft:lantern",
+            "takes_item": true,
+            "title": "Hang the lantern on the hook",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "item/the-muster-roll",
+              "text": "The roll lies on the lectern under the lantern, ready for the morning.",
+              "verb": "seals"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/hang-the-lantern": [
+            {
+              "anchor": "anchor/hook",
+              "block": "minecraft:lantern[hanging=true]",
+              "type": "set-block"
+            }
+          ],
+          "obj/lay-the-roll": [
+            {
+              "anchor": "anchor/lectern",
+              "block": "minecraft:lectern[facing=south,has_book=true]",
+              "type": "set-block"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
   },
   "dsl_version": "0.51.0",
   "stage": "quests"

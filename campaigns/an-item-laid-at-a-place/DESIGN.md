@@ -14,10 +14,13 @@ east, z south.
 | place | box | floor | what it is |
 |---|---|---|---|
 | `node/nave` (entry) | x 8188–8194, z 8182–8194 | 64 | the nave: the altar at the north end, pews either side of the aisle, the vestry chest beside the altar, a barrel at the foot of the loft stair |
-| `node/loft` (goal) | x 8188–8194, z 8196–8199 | 69 | the loft over the south end: a rail along its front looking down the nave, the reading lectern at the rail, an iron chain hanging from the beam beside it |
+| `node/loft` (goal) | x 8188–8194, z 8196–8199 | 69 | the loft at the south end, five up: a glazed screen in its front looking down the nave, the reading lectern against the screen, an iron chain hanging from the ceiling beside it |
 
 One connection, `edge/loft-stair`: a timber stair up the nave's west wall to
-an opening at the west end of the loft's front.
+a doorway at the west end of the loft's front. The rest of that front is a
+glazed screen: the site plan allocates one opening in the wall, and an open
+rail there would be a second way between the places that the plan never
+agreed to (`DW0836`).
 
 ## The beats, in order
 
@@ -30,10 +33,11 @@ One quest, `quest/the-roll`, from campaign start.
 | 3 | *Lay the roll on the lectern* (`obj/lay-the-roll`) | `interact` at the lectern, `prop` an empty lectern, `requires_item: minecraft:paper`, `takes_item: true` | loft | climbs the stair and uses the lectern with the roll in hand | one roll leaves the hand at the click; the lectern then shows a book (`set-block` of `minecraft:lectern[facing=north,has_book=true]`) |
 | 4 | *Hang the lantern on the hook* (`obj/hang-the-lantern`) | `interact` at the chain's end, `prop` an iron chain, `requires_item: minecraft:lantern`, `takes_item: true` | loft | uses the chain's end with the lantern in hand | one lantern leaves the hand; a lantern hangs from the chain (`set-block` of `minecraft:lantern[hanging=true]`) |
 
-Beat 3 is after beat 1; beat 4 is after beat 2. Arriving in the loft completes
-nothing: both loft beats complete only on the click with the item held. An
-empty-handed click is answered by a `missing_item_hint`. When both loft beats
-are done the delve ends.
+All four beats are open from the start, so the lectern and the chain's hook
+stand in the loft before the party has anything to lay or hang. Arriving in the
+loft completes nothing: both loft beats complete only on the click with the
+item held in the main hand. An empty-handed click is answered by a
+`missing_item_hint`. When all four are done the delve ends.
 
 ## What the lectern can show
 
