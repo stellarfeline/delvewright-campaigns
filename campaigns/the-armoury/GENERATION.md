@@ -42,7 +42,7 @@ design walkthrough. This is a demo level whose gate is the built level itself;
 
 Built with `delvec 1.13.0, dsl 0.49.0, mc 1.21.11` from the engine's
 `feature/holders-hold-items` at
-`823c4a5120c9e37b25bb543e49e8e4bf286ce163` — an unreleased tree, the only one
+`f07a1357b3b91f625c834792c915108db82a1c0e` — an unreleased tree, the only one
 carrying spec-0111. Its version string is the same number as the released
 `delvec--v1.13.0` (which answers `dsl 0.39.0`), so the version alone does not
 say which engine built this level; the revision does. The content
@@ -113,18 +113,16 @@ looking at the rack, the frame and the chest, and taking what the party wants.
 ## Machine ladder
 
 On the build whose manifest sha256 is
-`654c2e8544193c16ee44a1465e6d9cc5f293a90d13ad68909a73cc42496d2e05` (two
-builds byte-identical, and a third on a second machine identical to them):
+`2df2185f6567644bab3f4d2297f2729ddef18298b783befcd849bf7a222abbeb`, built by
+the engine's `feature/holders-hold-items` at
+`f07a1357b3b91f625c834792c915108db82a1c0e` (two builds on one machine
+byte-identical, and a third on a second machine identical to them; against the
+previous build only the PackTest templates and the manifest moved):
 
-- PackTest: **red**, 22 of 23 required tests passed. The one failure is
-  `holder_map_frame`, the emptied-frame freeze: after the test empties the
-  frame it runs one `tick`, and on this engine revision that tick re-runs the
-  world's placement chain the test's `setup` armed (`#placed 3`: ground,
-  templates, then `setup_finish` in the same tick), which fills the frame
-  again before the freeze line reads it, so the frame is never frozen
-  (`Expected #hz_map_frame dw.sys to match 1, but got 0`). This is an engine
-  defect, not the campaign's. `obj_activate_take_the_sword` passed: after
-  activation the sword is in the stand's `weapon.mainhand`.
+- PackTest: **green**, all 24 required tests passed, including
+  `holder_map_frame` (the emptied-frame freeze) and
+  `obj_activate_take_the_sword` (after activation the sword is in the stand's
+  `weapon.mainhand`).
 - Bot: critical path passed, 5 steps, the sword taken from its stand by a
   click in the hand band. The run report records no slot reading of its own.
   All 4 owed objective cues arrived at the bot. Die-retry and the death loop
@@ -133,8 +131,8 @@ builds byte-identical, and a third on a second machine identical to them):
 - Written world (`DW0955`): 455 non-air cells compared, 0 differing in the
   model class; the differences are one named server re-derivation (the lamp
   post's lower wall block drawn `south=tall` where the model writes `low`)
-  and five grass cells turned to dirt (random tick).
-- Staging gate: not run on this build; PackTest is red.
+  and two grass cells turned to dirt (random tick).
+- Staging gate: not run here; it runs at `playtest-server.sh up`.
 
 ## Visual review — deferred
 
