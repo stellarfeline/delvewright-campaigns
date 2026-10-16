@@ -1,0 +1,82 @@
+{
+  "campaign_id": "the-lever-and-the-keeper",
+  "content": {
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/bet-hello",
+            "options": [
+              {
+                "label": "Is there room for us?",
+                "next": "dlg/bet-room"
+              },
+              {
+                "label": "What happens at dusk?",
+                "next": "dlg/bet-dusk"
+              }
+            ],
+            "text": "In you come. You'll be the last up the Gap today, by the look of the sky."
+          },
+          {
+            "id": "dlg/bet-room",
+            "options": [
+              {
+                "label": "What bell?",
+                "next": "dlg/bet-dusk"
+              },
+              {
+                "label": "Then bar it.",
+                "next": "dlg/bet-bar"
+              }
+            ],
+            "text": "There's always room. The house is for whoever gets here by daylight. After that the door is barred and the bell tells the road."
+          },
+          {
+            "id": "dlg/bet-dusk",
+            "options": [
+              {
+                "label": "Then bar the door.",
+                "next": "dlg/bet-bar"
+              }
+            ],
+            "text": "The gap bell, up on the roof. Its lever is on the west wall. I keep the handle in my apron, or every child who stops here rings it for fun."
+          },
+          {
+            "id": "dlg/bet-bar",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/greet-the-keeper",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/bet",
+                  "text": "Bet bars the door and gives the party the ringing of the bell.",
+                  "verb": "learns"
+                },
+                "label": "One pull."
+              }
+            ],
+            "text": "There. Barred. Now the handle goes in the wall, under the sign, and you can ring her. One good pull."
+          },
+          {
+            "id": "dlg/bet-ring",
+            "options": [
+              {
+                "label": "One pull."
+              }
+            ],
+            "text": "The lever's in the wall under the sign. One good pull and she'll ring."
+          }
+        ],
+        "npc": "npc/bet",
+        "root": "dlg/bet-hello"
+      }
+    ]
+  },
+  "dsl_version": "0.41.0",
+  "stage": "dialogue"
+}

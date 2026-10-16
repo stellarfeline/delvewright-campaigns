@@ -1,0 +1,75 @@
+{
+  "campaign_id": "the-lever-and-the-keeper",
+  "content": {
+    "beats": [
+      {
+        "node": "node/porch",
+        "objective": "obj/come-to-the-door",
+        "quest": "quest/the-gap-house"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/greet-the-keeper",
+        "quest": "quest/the-gap-house"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/ring-the-gap-bell",
+        "quest": "quest/the-gap-bell"
+      }
+    ],
+    "critical_path": [
+      "node/porch",
+      "node/hall"
+    ],
+    "edges": [
+      {
+        "a": "node/porch",
+        "b": "node/hall",
+        "class": "barred",
+        "gating": {
+          "flags": [
+            "flag/door-open"
+          ]
+        },
+        "id": "edge/hall-door",
+        "opens_from": "a"
+      }
+    ],
+    "entry": "node/porch",
+    "goal": "node/hall",
+    "nodes": [
+      {
+        "id": "node/porch",
+        "intent": "arrival",
+        "note": "A flagged porch in front of the Gap House door, open to the sky, the pass falling away behind it.",
+        "stations": [
+          {
+            "anchor": "anchor/door-step",
+            "kind": "point",
+            "note": "The flags in front of the Gap House door, where a traveller stands to be let in."
+          }
+        ]
+      },
+      {
+        "id": "node/hall",
+        "intent": "the refuge hall",
+        "note": "One long stone hall with a timber roof and two hanging lanterns. The keeper stands at the far end, facing the door. On the west wall, halfway down, is the bare place where the bell lever is set, with a lettered sign over it.",
+        "stations": [
+          {
+            "anchor": "anchor/keeper-post",
+            "kind": "point",
+            "note": "Where Bet Ashby stands, at the far end of the hall, facing the door."
+          },
+          {
+            "anchor": "anchor/bell-lever",
+            "kind": "point",
+            "note": "The cell in front of the west wall, halfway down the hall, where the bell lever is set into the wall; the sign hangs over it."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.41.0",
+  "stage": "layout-graph"
+}

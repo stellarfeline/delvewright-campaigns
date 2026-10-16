@@ -1,0 +1,189 @@
+{
+  "campaign_id": "the-lever-and-the-keeper",
+  "content": {
+    "quests": [
+      {
+        "cast": {
+          "npc/bet": [
+            {
+              "at": "anchor/keeper-post",
+              "dialogue": "dlg/bet-hello",
+              "doing": "standing at the far end of the hall, facing the door, waiting to see who comes up the Gap before dark"
+            }
+          ]
+        },
+        "happening": {
+          "subject": "npc/bet",
+          "text": "The party comes up Harrow Gap to the Gap House with the last of the light.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-gap-house",
+        "objectives": [
+          {
+            "anchor": "anchor/door-step",
+            "happening": {
+              "subject": "npc/bet",
+              "text": "The party reaches the door of the Gap House before dusk.",
+              "verb": "arrives"
+            },
+            "hint": "The Gap House door, across the porch.",
+            "id": "obj/come-to-the-door",
+            "marker": "hidden",
+            "radius": 2,
+            "title": "Come to the door",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/come-to-the-door"
+            ],
+            "happening": {
+              "subject": "npc/bet",
+              "text": "Bet tells the party she rings the gap bell at dusk, and bars the door behind them.",
+              "verb": "learns"
+            },
+            "hint": "Bet Ashby is at the far end of the hall, facing the door.",
+            "id": "obj/greet-the-keeper",
+            "npc": "npc/bet",
+            "title": "Greet the keeper",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/come-to-the-door": [
+            {
+              "flag": "flag/door-open",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-hall-door",
+              "happening": {
+                "text": "Bet Ashby lifts the bar and lets the party into the Gap House.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "style": "subtitle",
+              "text": "The bar lifts inside.",
+              "type": "narrate"
+            }
+          ],
+          "obj/greet-the-keeper": [
+            {
+              "anchor": "anchor/seam-hall-door",
+              "happening": {
+                "text": "Bet bars the door of the Gap House for the night.",
+                "verb": "seals"
+              },
+              "sealed_hint": "The bar is down across the door. Bet will lift it in the morning.",
+              "type": "close-gate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/bet": [
+            {
+              "at": "anchor/keeper-post",
+              "dialogue": "dlg/bet-ring",
+              "doing": "standing at the far end of the hall with the door barred, waiting for the bell to be rung"
+            }
+          ]
+        },
+        "happening": {
+          "subject": "npc/bet",
+          "text": "Bet sets the bell handle in the wall for the party to ring.",
+          "verb": "opens"
+        },
+        "id": "quest/the-gap-bell",
+        "objectives": [
+          {
+            "anchor": "anchor/bell-lever",
+            "happening": {
+              "subject": "npc/bet",
+              "text": "The party pulls the lever and the gap bell rings over the pass.",
+              "verb": "learns"
+            },
+            "hint": "The lever Bet set in the west wall, halfway down the hall, under the sign.",
+            "id": "obj/ring-the-gap-bell",
+            "prop": {
+              "block": "minecraft:lever[face=wall,facing=east]"
+            },
+            "title": "Ring the gap bell",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The house is shut for the night.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "npc/bet",
+              "text": "The Gap House is barred and the bell has rung; the road below will wait for morning.",
+              "verb": "seals"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/ring-the-gap-bell": [
+            {
+              "time": "dusk",
+              "type": "set-time"
+            },
+            {
+              "shots": [
+                {
+                  "bearing": 0,
+                  "dist": 8,
+                  "seconds": 4,
+                  "shot_style": "push-in",
+                  "subject": {
+                    "npc": "npc/bet"
+                  }
+                },
+                {
+                  "look_at": {
+                    "anchor": "anchor/node-hall",
+                    "offset": [
+                      0,
+                      3,
+                      0
+                    ]
+                  },
+                  "path": [
+                    {
+                      "anchor": "anchor/node-porch",
+                      "offset": [
+                        0,
+                        6,
+                        2
+                      ]
+                    }
+                  ],
+                  "seconds": 4
+                }
+              ],
+              "type": "cutscene"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-gap-house",
+          "type": "quest-complete"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.41.0",
+  "stage": "quests"
+}
