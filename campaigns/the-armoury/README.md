@@ -42,13 +42,6 @@ summons each with the flags it owns. The bot took the sword from its stand.
 What the machine cannot say is how any of it **reads**. Walk it once as the
 New Watch, and take whatever you would naturally take.
 
-**Open in this build, do not judge it yet: the sword is on its stand's
-head.** The quest's sword can only be put in a stand's head slot by this
-engine revision, so the middle stand wears the sword where a helmet goes. The
-level is right in every other respect; the sword moves into the stand's hand
-once the engine lets the quest name the slot. Items 1 and 2 below are about
-that stand, and stay open until then.
-
 1. **The worn sword is yours to take.** Ide tells you the post goes with its
    sword, the sword is on the rack, and to bring it out. She does not say how.
    Walk into the armoury through the door behind her. Do you understand,
