@@ -19,7 +19,7 @@ refuses scenery among containers that matter; those rules are the design.
   pair (two scenery containers each, at the cap); Marra's cottage is the third
   house, holding one chest and nothing else.
 - The smoker's three slots: a raw salmon in the input slot, charcoal in the
-  fuel slot, a smoked cod in the result slot. A smoker does not fire while its
+  fuel slot, two smoked cod in the result slot. A smoker does not fire while its
   result slot holds something its input cannot become, so the world as loaded
   is still; once a player takes the cod, the smoker lights and smokes the
   salmon.
@@ -30,7 +30,7 @@ refuses scenery among containers that matter; those rules are the design.
 
 Built with `delvec 1.13.0, dsl 0.43.0, mc 1.21.11` from the engine's
 `feature/containers-are-declared` at
-`d91c620d93fc8053176f746b4c56e0c2a2dccc32` — an unreleased tree, the only one
+`4d531ea2041c15b3cb8e9f37fd82c240406e4986` — an unreleased tree, the only one
 carrying spec-0105. Its version string is the same number as the released
 `delvec--v1.13.0` (which answers `dsl 0.39.0`), so the version alone does not
 say which engine built this level; the revision does.
@@ -98,18 +98,22 @@ a barrel where Marra's table stands is refused by `delvec detail` and by
 ## Machine ladder
 
 On the build whose manifest sha256 is
-`4be62646b24550fc068ccab6dbacb1d4ff0778757b2a9448d332ac472d2dfe63` (two
+`03788292c3acb4a86243047817820bfbfb2b65d82b5deda8873bb3a41f19c937` (two
 builds byte-identical):
 
-- PackTest: 21 of 21 required tests passed, `v06_loot_smoker` among them.
+- PackTest: 22 of 22 required tests passed, `v06_loot_smoker` and
+  `watch_npc_ansel` among them.
 - Bot: critical path passed, 5 steps; `container notice: ok — the chat notice
   arrived in the class step's window; its sound minecraft:block.barrel.close
   arrived at [8195.5,64,8202.5], the bot at [8195.5,64,8202.5] after the
-  warp`. Die-retry is unbound (no combat, no death plan), stated by the run.
+  warp`; `cue binding: 4 of 4 owed cue(s) arrived at the bot`; `[watch] 1
+  watcher(s) in the record, 1 within reach on the proven path, 1 asserted`
+  (Ansel watches the party by default, `DW1025`). Die-retry and the death
+  loop are unbound (no combat, no death plan), stated by the run.
 - Written world (`DW0955`): 1447 non-air cells compared, 0 differing in the
   model class; the differences are the named server re-derivations (85 cells:
   leaf distance and wall connections) and grass under blocks turning to dirt
-  (3 cells, random tick).
+  (2 cells, random tick).
 
 ## Visual review
 
