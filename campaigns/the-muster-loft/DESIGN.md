@@ -22,9 +22,9 @@ round them solid.
 | connection | class | shut until | how it reads shut |
 |---|---|---|---|
 | `edge/loft-stair` hall → loft | `stair`, treads in the hall | the muster falls | bars across the passage at the stair's head |
-| `edge/cellar-shaft` hall → cellar | `drop`, 4 down | the muster falls | a hatch of bars over the shaft in the hall floor |
-| `edge/cellar-stair` stores → cellar | `stair`, treads in the cellar | the muster falls | a hatch of bars over the stairwell in the stores floor |
-| `edge/cellar-ladder` cellar → hall | `climb`, up through the hall floor | the grating is drawn, from the hall only (`opens_from` the hall) | a grating standing on the hall floor over the ladder's hole; the hole keeps the top rung |
+| `edge/cellar-shaft` hall → cellar | `drop`, 4 down | the muster falls | a shut iron-trapdoor hatch over the shaft in the hall floor |
+| `edge/cellar-stair` stores → cellar | `stair`, treads in the cellar | the muster falls | a shut iron-trapdoor hatch over the stairwell in the stores floor |
+| `edge/cellar-ladder` cellar → hall | `climb`, up through the hall floor | the grating is drawn, from the hall only (`opens_from` the hall) | a grating, one shut iron trapdoor lying on the hall floor over the ladder's hole; the hole keeps the top rung |
 | `edge/stores-door` hall ↔ stores | `walk` | never shut | an open doorway |
 
 The ladder is the shortcut (`shortcut: true`): it closes the loop hall → shaft →
@@ -56,8 +56,8 @@ the story needs; what it does is make the ladder one-sided until it is drawn.
    take the muster roll from the chest on its shelf (`anchor/roll-shelf`). Try the
    ladder (`anchor/ladder-foot`): it climbs to its top rung and stops under the
    grating. The way out is the long way round: up the stores stair, through the
-   stores door, into the hall. Draw the grating from the hall
-   (`anchor/unlock-cellar-ladder`, an `interact`): it comes up, `flag/grating-drawn`
+   stores door, into the hall. Pull the lever on the hall floor behind the
+   grating (`anchor/grating-lever`, an `interact` with a lever `prop`): it comes up, `flag/grating-drawn`
    is set, and the ladder is the short way into the cellar from then on.
 4. **The loft** (still `quest/the-roll`). Climb the loft stair and lay the roll in
    the loft (`anchor/node-loft`). The levy is stood down; the delve ends.

@@ -28,8 +28,22 @@ minimum cast.
 - The ladder is the declared shortcut (`shortcut: true`). Once the muster
   falls the cellar is open by two other ways, so the grating separates nothing
   the story keeps shut; `DW1011` counts it and does not judge it. Its one-sided
-  opening is a beat: the party draws it at the winch beside it in the hall (an
-  `interact`), and `opens_from: b` names the hall as the side it opens from.
+  opening is a beat: the party pulls a floor lever in the hall, three blocks
+  behind the grating by the south wall (an `interact` at the station
+  `anchor/grating-lever`, the lever its `prop`), and `opens_from: b` names the
+  hall as the side it opens from. The prop is set when the objective
+  activates, once the ladder has been tried from below; vanilla reports the
+  lever's use, so no hitbox stands over it.
+- The floor gates are shut iron trapdoors: the shaft's and the stores stair's
+  hatches top-half trapdoors in the floor course (palette role `hatch`), the
+  ladder's grating one bottom-half trapdoor on the hall floor over the hole
+  (role `cover`). The loft stair's head stays a wall of iron bars.
+- The lever's signal reaches no trapdoor. A lever powers the blocks beside it
+  and the block it stands on; at world 18 64 27, on the planks at 18 63 27,
+  its nearest trapdoor is the grating at 18 64 24, three blocks from the lever
+  and four from its block. The shaft's hatch is eight blocks from the lever,
+  the stores stair's hatch thirteen, and both are open before the lever is set.
+  No engine check guards this yet; the distance is this record's.
 - No speaking cast. Narration carries the premise once, on arrival, and the
   objective titles carry the rest.
 - The roll's chest is the cellar's own, standing in its corner, and the
@@ -44,8 +58,8 @@ minimum cast.
 
 Built with `delvec 1.13.0, dsl 0.45.0, mc 1.21.11` from the engine's
 `feature/a-gated-edge-is-built` at
-`717109f9a8f7d3668718bf53681e76e4b20631b6` — an unreleased tree, the only one
-carrying spec-0107. Its version string is the same number as the released
+`80641083ccf206b4e4078526e6fc7d813ff63821` — an unreleased tree, the only one
+carrying spec-0107 and a body held on a shut hatch. Its version string is the same number as the released
 `delvec--v1.13.0` (which answers `dsl 0.39.0`), so the version alone does not
 say which engine built this level; the revision does.
 
@@ -94,8 +108,9 @@ only when run with `HOME` pointed at a directory holding this run's own
 ## Binding lines, as built
 
 On the build whose manifest sha256 is
-`8441353e29bae7e62327f9af4f2218616e9a2733ba4cf0c4a11a26be63f4ebd1` (two
-builds byte-identical):
+`f2da51ab256ab486648ff76ccb4ad2d3988e14edd58be5b74d1e1de504eac277` (two
+builds byte-identical over 157 files on macOS, and the same manifest built
+on Linux):
 
 - `DW1027 binding: 4 gated connection(s), 0 of them fronts.`
 - `DW1028 binding: 4 gated connection(s), 4 opened by an `open-gate`, 0 by a
@@ -110,9 +125,10 @@ builds byte-identical):
   cell(s) cut over through-floor runs, …`
 - The world-load seal (`validation/gate-seal.json`): 4 gates examined, 4
   sealed at world load — the loft stair's head (9 cells), the shaft's hatch (4),
-  the stores stair's hatch (12) and the grating (1, the course above the
-  ladder's hole, whose own cell holds the top rung).
-- `attached blocks (DW1002): 20 of 48895 non-air cell(s) at load need a
+  the stores stair's hatch (12) and the grating (1, the cell above the
+  ladder's hole, whose own cell holds the top rung). Three of them carry a
+  stand: 45 points a body is put on.
+- `attached blocks (DW1002): 20 of 48894 non-air cell(s) at load need a
   neighbour to stay — 20 held, 0 dropped`.
 
 ## Machine ladder
@@ -120,7 +136,8 @@ builds byte-identical):
 On the build above:
 
 - PackTest: all 30 required tests passed.
-- Bot: critical path passed, 11 steps; die-retry passed, two scripted deaths
+- Bot: critical path passed, 11 steps, the lever right-clicked at
+  [18, 64, 27]; die-retry passed, two scripted deaths
   at the muster, each respawned at the stores checkpoint with the kit kept and
   re-engaged; the muster read 3 of 3 declared bodies matching their
   declaration over 2 checked facts. `cue binding: 10 of 10 owed cue(s)
@@ -128,9 +145,12 @@ On the build above:
   judged farther than 16 blocks from the world spawn; 9 of 9 other cue
   packet(s) at the bot`. Death loop: not run — the campaign declares
   no lethal volume, `on_death` or recovery stake, so there is none to prove.
-- Written world (`DW0955`): 5633 non-air cells compared, 0 differing in the
+- Hatch stand (`harness/src/hatch-stand.ts`, on a fresh world, before any
+  beat): `hatch-stand binding: 3 shut floor gate(s) of 4 gate(s) examined, 45
+  stand point(s), 45 stood, 0 fell or failed`.
+- Written world (`DW0955`): 5632 non-air cells compared, 0 differing in the
   model class; the differences are the named server re-derivation of the iron
-  bars' connections (25 cells: the two hatches and the stair head).
+  bars' connections (9 cells: the loft stair's head).
 - Staging gate (run as a check, its token written outside the build and
   discarded): all 127 findings carry a live, binding check or a justified
   exemption; 67 classes are inapplicable to this campaign.
@@ -139,6 +159,9 @@ On the build above:
 
 Step 12 is not complete: the Chunky renders were stopped before the set was
 drawn, and the rest of the review waits for the Lumenwright review frames.
+
+The renders below predate the trapdoors: they show the hatches as bars,
+which this build no longer has. Nothing has been rendered of this build.
 
 Rendered and checked, all as 64-sample drafts (framing only, not the scenes'
 own budget), from server world saves of this campaign:
@@ -149,8 +172,8 @@ own budget), from server world saves of this campaign:
   spruce ceiling visible through them; it reads as a barred way, not a wall.
 - `gate/site/seam_cellar_shaft/a` and `gate/site/seam_cellar_stair/a`, from
   the world of the build at engine `6645a102` whose manifest sha256 is
-  `2f464603a6fa3618f862b51c7797fba0c4a74feec4ef715e8fdc951ba9d002ad`; this
-  build's gate seal is the same record, cell for cell: each looks down through its hatch — a lattice of bars
+  `2f464603a6fa3618f862b51c7797fba0c4a74feec4ef715e8fdc951ba9d002ad`, when
+  the hatches were still bars: each looks down through its hatch — a lattice of bars
   over the shaft, with the cellar floor below; over the stairwell, with the
   stone treads below. Both read as barred holes in the floor.
 
@@ -185,4 +208,5 @@ iron bars nor the lanterns, so they say nothing about the bars.
   ladder's top rung with the grating shut and asserts that it cannot climb
   out. What holds that claim is the engine's model: the shortcut's gate is
   sealed for the whole completability model, and the proven route from the
-  ladder's foot to the winch goes the long way round, which the bot walked.
+  ladder's foot to the lever goes the long way round, which the bot walked.
+  The hatch stand puts a body on top of the grating, not under it.
