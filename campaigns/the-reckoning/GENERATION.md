@@ -36,7 +36,7 @@ Languages: English, and zh-CN transcreated.
 
 Built with `delvec 1.13.0, dsl 0.46.0, mc 1.21.11` from the engine's
 `feature/endings-read-the-run` at
-`376afe91b3cdb732dc9ef0d8ec21f4c9826bab49` — an unreleased tree, the only one
+`d0e482b80d1c75e86ee2c5607d0fac4554de3713` — an unreleased tree, the only one
 carrying spec-0108. Its version string is the same number as the released
 `delvec--v1.13.0` (which answers `dsl 0.39.0`), so the version alone does not
 say which engine built this level; the revision does. The skill has no way to
@@ -99,7 +99,7 @@ witness world), asserting 1–3 observables each.
 Read from the eight `world-chronicle-<k>.md` of the build at manifest
 `aae55980e460a8188cbd6e32f9377a161162e1cbcd3cc7583b4521da7d35a50b`, each end to
 end, against `DESIGN.md` and the dialogue reachable in that world; the build at
-manifest `7d77347f40cfa8219f358e72af354817d44bd1214db393f672297c7cccc2e0ad`
+manifest `0a6cbe0d8efa9ef7feea82f2656c0beb9ffb08f260bff49bfd3beae6f8f5d9d1`
 writes the same eight chronicles byte for byte. The callbell is an ambient
 trigger whose `set-flag` declares no `happening`, so no chronicle line records
 it; its claims are licensed by the chronicle's own `Flag assignment` header
@@ -127,37 +127,32 @@ it; its claims are licensed by the chronicle's own `Flag assignment` header
 ## Machine ladder
 
 On the build whose manifest sha256 is
-`7d77347f40cfa8219f358e72af354817d44bd1214db393f672297c7cccc2e0ad` (two
+`0a6cbe0d8efa9ef7feea82f2656c0beb9ffb08f260bff49bfd3beae6f8f5d9d1` (two
 builds byte-identical on the remote Linux machine; a third, on macOS, has the
-same manifest), engine `376afe91b3cdb732dc9ef0d8ec21f4c9826bab49`, with no
-campaign change from the previous ladder. The ladder is **not green**: one
-PackTest red and one branch-run red, both in the engine tree or its harness,
-neither worked around in the campaign.
+same manifest), engine `d0e482b80d1c75e86ee2c5607d0fac4554de3713`, with no
+campaign change from the previous ladder. The ladder is **green**.
 
-- **PackTest: 43 of 44 required tests pass**, all eight
+- **PackTest: 44 of 44 required tests pass**, all eight
   `ending_<slug>_<k>` templates among them (burns 0/2/4/6, stands 1/3/7,
-  floods 5), and `v04_move` among them. The one red is
-  `watch_yield_npc_tobin` (*Expected #wyp_1_0 dw.sys to match 1, but got 0*):
-  Tobin now watches by default, and the generated template fast-forwards his
-  walk to its arrival tick and counts his body carrying the watch tag there,
-  but the walk's own `on_arrive` (`despawn-npc`) has removed the body in that
-  same tick. The template reads no `on_arrive`, the shape `v04_move` was fixed
-  for; direction: it can only turn a proof red.
+  floods 5), `v04_move` and `watch_yield_npc_tobin` among them. Tobin's walk
+  takes his body away on arrival (`on_arrive`: `despawn-npc`), so the template
+  reads the walk on the tick before the arrival, with the body present and its
+  watch still yielded.
 - **Critical-path bot: green.** `critical path 'the-reckoning' PASSED (5
   steps)`; the aftermath it asserts is the stands' candles alone. `cue binding:
   4 of 4 owed cue(s) arrived at the bot (3 announced objective(s) in the
   build), 3 of the 4 judged farther than 16 blocks from the world spawn; 3 of 3
   other cue packet(s) at the bot`. `[watch] 2 watcher(s) in the record, 2
   within reach on the proven path, 2 asserted (22 judgement(s))`.
-- **Branch runs: 7 of 8 worlds pass, and every ending is reached.** Worlds 0,
-  2, 4 (the house burns), 1, 3, 7 (the house stands) and 5 (the house floods)
-  pass. World 6 (the house burns) is red at step 4, walking to Ysolde for the
-  reckoning: *the server advanced 1 of 2 game tick(s) in 12000ms* while the
-  bot waited for a watch line's tick. The same build's world 6, run alone,
-  passes; an intermittent red is an under-specified harness wait, not a pass.
+- **Branch runs: 8 of 8 worlds pass, and every ending is reached**, in one run
+  of all eight: worlds 0, 2, 4, 6 (the house burns), 1, 3, 7 (the house
+  stands) and 5 (the house floods), 0 mocked in each.
 - **Written world: green.** `world-save.sh`, `delvec written-world`,
   `check-written-world.py --record`: 1031 non-air cells written, 1031 in the
   server save, 1031 compared, 0 differing in every class, 0 item entities.
+- **Staging gate: admits** the macOS build on these two proofs: all 129
+  findings carry a live, binding check or a justified exemption; 58 of them
+  are inapplicable, this campaign declaring none of their objects.
 
 ## Visual review — deferred
 
@@ -189,6 +184,3 @@ Lumenwright review frames. No storybook image is shipped for the same reason.
 - Localization: `i18n-translate.py` reads its config from the engine tree
   (`--config` used instead); its fact check passed `伊索德` beside `伊索尔德`
   and three renderings of the keeper, fixed by hand through `l10n-apply`.
-- Step 10: the bot's watch check waits for game ticks against a wall-clock budget
-  (`harness/src/game-time.ts`, 2 ticks in 12 s); world 6 ran out of it once and
-  passed alone on the same build.
