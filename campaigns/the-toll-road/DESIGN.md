@@ -16,8 +16,8 @@ The strongrooms, from the foot of the pass to the head:
 | strongroom | side | trap | how it is sprung | what it does | counterplay |
 |---|---|---|---|---|---|
 | the toll booth | east | a `step` trigger on a stone plate in its mouth | stepping on the plate | rings a bell in the wall, and the actionbar says the wardens heard every step | none needed: it is harmless, and it is the lesson |
-| the stair | west | `trap/stair-volley`, a pressure plate on the landing | stepping on the plate at the top of the stair | three salvos of arrows from a slot over the landing, blanketing the landing and the stair | the lever beside the mouth, on the road side; or the shield from the booth |
-| the dart gallery | east | `trap/dart-gallery`, a tripwire across the gallery | walking through the string half-way along | three salvos of arrows down the gallery from a slot in its far wall | the lever beside the mouth; or cutting the string with shears (not in the kit) |
+| the stair | west | `trap/stair-volley`, a pressure plate on the landing | stepping on the plate at the top of the stair | three salvos of arrows from a murder hole over the stair, blanketing the landing and every step | the lever beside the mouth, on the road side; or the shield from the booth |
+| the dart gallery | east | `trap/dart-gallery`, a tripwire across the gallery | walking through the string half-way along | three salvos of arrows down the gallery from above the barrel at its far end; low arrow loops in the road wall show the gallery from the road | the lever beside the mouth |
 | the strongbox | west | `trap/strongbox`, the trapped chest itself | opening the chest | the loose roof in front of the chest comes down as gravel, once | the lever beside the mouth |
 
 Every lever stands on the road wall beside its strongroom's mouth, where a
