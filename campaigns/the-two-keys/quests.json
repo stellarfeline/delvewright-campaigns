@@ -1,7 +1,285 @@
 {
   "campaign_id": "the-two-keys",
   "content": {
-    "quests": []
+    "quests": [
+      {
+        "cast": {
+          "npc/hesketh": [
+            {
+              "at": "anchor/steward-post",
+              "dialogue": "dlg/hesketh-hello",
+              "doing": "standing by his table in front of the strongroom door, waiting for the help the guild promised him",
+              "forbids_flags": [
+                "flag/sent-for-keys"
+              ]
+            },
+            {
+              "at": "anchor/steward-post",
+              "dialogue": "dlg/hesketh-locks",
+              "doing": "keeping the strongroom door with his hands folded, listening for the locks",
+              "forbids_flags": [
+                "flag/strongroom-open"
+              ],
+              "requires_flags": [
+                "flag/sent-for-keys"
+              ]
+            },
+            {
+              "at": "anchor/steward-post",
+              "dialogue": "dlg/hesketh-ready",
+              "doing": "standing with a hand on the first bolt of the strongroom door, both locks turned",
+              "forbids_flags": [
+                "flag/strongroom-open"
+              ],
+              "requires_flags": [
+                "flag/warden-lock-turned",
+                "flag/clerk-lock-turned"
+              ]
+            },
+            {
+              "at": "anchor/steward-post",
+              "dialogue": "dlg/hesketh-open",
+              "doing": "standing aside from the open strongroom door so the party can go in",
+              "forbids_flags": [
+                "flag/charter-taken"
+              ],
+              "requires_flags": [
+                "flag/strongroom-open"
+              ]
+            },
+            {
+              "at": "anchor/steward-post",
+              "dialogue": "dlg/hesketh-return",
+              "doing": "clearing his table for the charter",
+              "requires_flags": [
+                "flag/charter-taken"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "subject": "npc/hesketh",
+          "text": "The party comes up to the Staple Hall to bring the charter out for the new masters.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-charter",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/hesketh",
+              "text": "Hesketh tells the party the strongroom opens only to two keys turned together, and he may hold neither.",
+              "verb": "learns"
+            },
+            "hint": "Hesketh Marr keeps the strongroom door, at the north end of the hall.",
+            "id": "obj/meet-the-steward",
+            "npc": "npc/hesketh",
+            "title": "Meet the steward",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/meet-the-steward"
+            ],
+            "anchor": "anchor/warden-key",
+            "happening": {
+              "subject": "item/the-warden-key",
+              "text": "One of the party takes the Warden's key from its hook.",
+              "verb": "gains"
+            },
+            "hint": "Through the east door, on its hook in the counting room.",
+            "id": "obj/take-the-warden-key",
+            "title": "Take the Warden's key",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/meet-the-steward"
+            ],
+            "anchor": "anchor/clerk-key",
+            "happening": {
+              "subject": "item/the-clerk-key",
+              "text": "One of the party takes the Clerk's key from its box.",
+              "verb": "gains"
+            },
+            "hint": "Through the west door, in its box in the archive.",
+            "id": "obj/take-the-clerk-key",
+            "title": "Take the Clerk's key",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/take-the-warden-key"
+            ],
+            "anchor": "anchor/warden-lock",
+            "happening": {
+              "subject": "anchor/warden-lock",
+              "text": "The Warden's lock is turned.",
+              "verb": "opens"
+            },
+            "hint": "Hold the Warden's key at the lock east of the strongroom door.",
+            "id": "obj/turn-the-warden-lock",
+            "missing_item_hint": "The Warden's lock is cut for one key, and that key is not in your hand.",
+            "requires_item": "minecraft:trial_key",
+            "title": "Turn the Warden's lock",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/take-the-clerk-key"
+            ],
+            "anchor": "anchor/clerk-lock",
+            "happening": {
+              "subject": "anchor/clerk-lock",
+              "text": "The Clerk's lock is turned.",
+              "verb": "opens"
+            },
+            "hint": "Hold the Clerk's key at the lock west of the strongroom door.",
+            "id": "obj/turn-the-clerk-lock",
+            "missing_item_hint": "The Clerk's lock is cut for one key, and that key is not in your hand.",
+            "requires_item": "minecraft:ominous_trial_key",
+            "title": "Turn the Clerk's lock",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/turn-the-warden-lock",
+              "obj/turn-the-clerk-lock"
+            ],
+            "happening": {
+              "subject": "npc/hesketh",
+              "text": "With both locks turned, Hesketh draws the bolts of the strongroom door.",
+              "verb": "opens"
+            },
+            "hint": "Both locks are turned. Hesketh is by the strongroom door.",
+            "id": "obj/open-the-strongroom",
+            "npc": "npc/hesketh",
+            "title": "Tell the steward",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/open-the-strongroom"
+            ],
+            "anchor": "anchor/charter-chest",
+            "container": "anchor/charter-chest",
+            "count": 1,
+            "happening": {
+              "subject": "item/the-staple-charter",
+              "text": "The party takes the charter out of its chest.",
+              "verb": "gains"
+            },
+            "hint": "In the chest at the back of the strongroom.",
+            "id": "obj/take-the-charter",
+            "item": "minecraft:paper",
+            "item_name": "The Staple charter",
+            "title": "Take the charter",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/take-the-charter"
+            ],
+            "happening": {
+              "subject": "npc/hesketh",
+              "text": "The party brings the charter out to Hesketh.",
+              "verb": "gains"
+            },
+            "hint": "Carry it out to Hesketh, by the strongroom door.",
+            "id": "obj/bring-the-charter",
+            "npc": "npc/hesketh",
+            "title": "Bring the charter to the steward",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The charter is out.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "npc/hesketh",
+              "text": "Hesketh lays the charter on his table for the new masters.",
+              "verb": "gains"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/open-the-strongroom": [
+            {
+              "flag": "flag/strongroom-open",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-strongroom-door",
+              "happening": {
+                "subject": "anchor/seam-strongroom-door",
+                "text": "The strongroom door swings open.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            }
+          ],
+          "obj/take-the-charter": [
+            {
+              "flag": "flag/charter-taken",
+              "type": "set-flag"
+            }
+          ],
+          "obj/take-the-clerk-key": [
+            {
+              "carrier": "one",
+              "count": 1,
+              "item": "minecraft:ominous_trial_key",
+              "name": "The Clerk's key",
+              "type": "give-item"
+            },
+            {
+              "text": "The Clerk's key lifts out of its box, dark with age.",
+              "type": "narrate"
+            }
+          ],
+          "obj/take-the-warden-key": [
+            {
+              "carrier": "one",
+              "count": 1,
+              "item": "minecraft:trial_key",
+              "name": "The Warden's key",
+              "type": "give-item"
+            },
+            {
+              "text": "The Warden's key comes off its hook, heavy and cold.",
+              "type": "narrate"
+            }
+          ],
+          "obj/turn-the-clerk-lock": [
+            {
+              "flag": "flag/clerk-lock-turned",
+              "type": "set-flag"
+            },
+            {
+              "text": "The Clerk's lock turns with a heavy click. The strongroom door holds.",
+              "type": "narrate"
+            }
+          ],
+          "obj/turn-the-warden-lock": [
+            {
+              "flag": "flag/warden-lock-turned",
+              "type": "set-flag"
+            },
+            {
+              "text": "The Warden's lock turns with a heavy click. The strongroom door holds.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ]
   },
   "dsl_version": "0.41.0",
   "stage": "quests"

@@ -1,7 +1,158 @@
 {
   "campaign_id": "the-two-keys",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/hesketh-hello",
+            "options": [
+              {
+                "label": "Then let's open it.",
+                "next": "dlg/hesketh-rule"
+              },
+              {
+                "label": "What is the charter?",
+                "next": "dlg/hesketh-charter"
+              }
+            ],
+            "text": "You'll be the help the guild sent up. Good. The charter has to be on this table by dawn, and the charter is in the room behind me."
+          },
+          {
+            "id": "dlg/hesketh-charter",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hesketh-hello"
+              }
+            ],
+            "text": "The Staple's deed, sealed when the guild was young. It says who may trade wool at Marrowby. The new masters swear on it in the morning."
+          },
+          {
+            "id": "dlg/hesketh-rule",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/sent-for-keys",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/meet-the-steward",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/hesketh",
+                  "text": "Hesketh sends the party for the two keys.",
+                  "verb": "learns"
+                },
+                "label": "We'll fetch both."
+              },
+              {
+                "label": "Why two keys?",
+                "next": "dlg/hesketh-why"
+              }
+            ],
+            "text": "Not by me. The room has two locks and two keys. The Warden's key is a heavy iron key on a hook in the counting room, through the east door. The Clerk's key is a dark old key in a box in the archive, through the west door. The one who keeps the door holds no key. That is the rule, and I have kept it twenty-two years."
+          },
+          {
+            "id": "dlg/hesketh-why",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hesketh-rule"
+              }
+            ],
+            "text": "So no one pair of hands can open it alone. A key turns only in its own lock, and each lock wants its key held in the hand that turns it."
+          },
+          {
+            "id": "dlg/hesketh-locks",
+            "options": [
+              {
+                "label": "Which lock is whose?",
+                "next": "dlg/hesketh-which"
+              },
+              {
+                "label": "We're going."
+              }
+            ],
+            "text": "East door for the Warden's key, west door for the Clerk's. Each turns in its own lock, either side of this door. When both are turned, tell me, and I'll draw the bolts."
+          },
+          {
+            "id": "dlg/hesketh-ready",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/open-the-strongroom",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Both are turned.",
+                "next": "dlg/hesketh-bolts"
+              }
+            ],
+            "text": "Two clicks. I heard them both through the door. Say the word and I'll draw the bolts."
+          },
+          {
+            "id": "dlg/hesketh-which",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hesketh-locks"
+              }
+            ],
+            "text": "The Warden's lock is east of the door, on the counting-room side. The Clerk's is west, on the archive side. A lock will not take the other key."
+          },
+          {
+            "id": "dlg/hesketh-bolts",
+            "options": [
+              {
+                "label": "We'll bring it."
+              }
+            ],
+            "text": "Both. I heard them. There. The charter is in the chest at the back of the room. Bring it out to me."
+          },
+          {
+            "id": "dlg/hesketh-open",
+            "options": [
+              {
+                "label": "Going."
+              }
+            ],
+            "text": "The chest at the back of the room. Mind the step."
+          },
+          {
+            "id": "dlg/hesketh-return",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/bring-the-charter",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Here it is.",
+                "next": "dlg/hesketh-farewell"
+              }
+            ],
+            "text": "That's the deed. The seal's whole. Put it here, on the table."
+          },
+          {
+            "id": "dlg/hesketh-farewell",
+            "options": [
+              {
+                "label": "Good night."
+              }
+            ],
+            "text": "Done by the rule. Hang the keys back on your way out, and I'll keep the door till morning."
+          }
+        ],
+        "npc": "npc/hesketh",
+        "root": "dlg/hesketh-hello"
+      }
+    ]
   },
   "dsl_version": "0.41.0",
   "stage": "dialogue"
