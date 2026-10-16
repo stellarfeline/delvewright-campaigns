@@ -67,7 +67,3 @@ it cannot say is how the bars **read**. Walk it once as a Hall Warden.
    short way into the cellar?
 5. **Then the loft.** Climb the loft stair, now open, and step into the loft to
    lay the roll down. That ends the delve.
-
-One known engine issue, not this level's: the sounds that go with a new
-objective, a completed objective and the end of the delve play at the world
-spawn rather than where you stand.
