@@ -2,7 +2,7 @@
 
 > **Requires delve engine 0.49.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
-![The yard at Greyholt, the armoury door ahead](media/the-yard-at-greyholt.jpg)
+![Greyholt from above](media/greyholt-from-above.jpg)
 
 Greyholt is a stone watch-house on the moor road, and Ide Fenwick has kept it
 for thirty winters. She is going down to the valley at last, and the new watch
@@ -26,8 +26,6 @@ A demo level of about ten minutes, for one to four players. No combat.
 Start the server, then in the Minecraft Java client at the version the marker
 above names: Multiplayer → Direct Connect → `localhost:25565`. Accept the
 resource pack when the server offers it.
-
-![Greyholt from above](media/greyholt-from-above.jpg)
 
 ---
 

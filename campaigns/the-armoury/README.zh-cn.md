@@ -2,7 +2,7 @@
 
 > **Requires delve engine 0.49.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
-![格雷霍特的院子，前方是军械库的门](media/the-yard-at-greyholt.jpg)
+![格雷霍特俯瞰](media/greyholt-from-above.jpg)
 
 格雷霍特是荒原路上的一座石砌哨所，艾德·芬威克在这里守了三十个冬天。如今她终于要下山去山谷了，新来的守卫沿着荒原路上山接哨。哨位跟着它的剑走，那把剑就在军械库的架子上。
 
@@ -19,8 +19,6 @@
 ## 开始游玩
 
 启动服务器，然后用上方标记所写版本的 Minecraft Java 客户端：多人游戏 → 直接连接 → `localhost:25565`。服务器提示资源包时，请选择接受。
-
-![格雷霍特俯瞰](media/greyholt-from-above.jpg)
 
 ---
 

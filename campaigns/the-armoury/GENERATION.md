@@ -145,3 +145,26 @@ builds byte-identical):
   and one grass cell under a block turning to dirt (random tick).
 - Staging gate: stageable; 75 of 123 finding classes inapplicable to this
   campaign, none red.
+
+## Visual review — deferred
+
+The render set for this build is 25 Chunky scenes. One was rendered and
+checked: the whole-map panorama (`panorama_se_45`, at its own 300-sample
+budget), which shows the walled yard with its lamp post and bench, the
+armoury's open door in the yard's north wall, and the armoury as a stone
+room under a flat dark-oak lid; no entity is drawn, so neither Ide nor the
+holders appear in it. Five POV frames (`pov/leg0/wp0`, `pov/leg0/wp2`,
+`pov/leg1/wp3`, `pov/leg1/wp5`, `pov/leg2/wp6`) were started at the review
+budget and stopped unfinished, between 22% and 62% of their samples; they are
+not reviewed. The other 19 scenes were not rendered. The rest of the visual
+review waits for the Lumenwright review frames.
+
+The room itself was judged on CPU drafts (`delvec snapshot`) from inside the
+door: the chest stands under the window in the middle of the window wall, the
+plank floor and stone walls are whole, and the two hanging lanterns light the
+room (`light lit` over 46 measured cells at detail). Those drafts draw no
+entity either, so how the rack, the frame and the items on them read is
+the owner's walk-through, items 1–4 of the storybook's list.
+
+`interior/site/0`–`3` stand above the places' lids and frame them from
+outside, not from inside.
