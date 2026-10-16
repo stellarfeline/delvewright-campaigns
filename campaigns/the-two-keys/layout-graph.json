@@ -1,0 +1,145 @@
+{
+  "campaign_id": "the-two-keys",
+  "content": {
+    "beats": [
+      {
+        "node": "node/hall",
+        "objective": "obj/meet-the-steward",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/counting-room",
+        "objective": "obj/take-the-warden-key",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/archive",
+        "objective": "obj/take-the-clerk-key",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/turn-the-warden-lock",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/turn-the-clerk-lock",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/open-the-strongroom",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/strongroom",
+        "objective": "obj/take-the-charter",
+        "quest": "quest/the-charter"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/bring-the-charter",
+        "quest": "quest/the-charter"
+      }
+    ],
+    "critical_path": [
+      "node/hall",
+      "node/counting-room",
+      "node/hall",
+      "node/archive",
+      "node/hall",
+      "node/strongroom",
+      "node/hall"
+    ],
+    "edges": [
+      {
+        "a": "node/hall",
+        "b": "node/counting-room",
+        "class": "walk",
+        "id": "edge/counting-room-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/archive",
+        "class": "walk",
+        "id": "edge/archive-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/strongroom",
+        "class": "barred",
+        "gating": {
+          "flags": [
+            "flag/strongroom-open"
+          ]
+        },
+        "id": "edge/strongroom-door"
+      }
+    ],
+    "entry": "node/hall",
+    "goal": "node/hall",
+    "nodes": [
+      {
+        "id": "node/hall",
+        "intent": "arrival, the two locks and the hand-over",
+        "note": "The Staple Hall's great room, stone with a plank floor. The strongroom door stands in the middle of the north wall with a lock plate either side of it: the Warden's lock to the east, the Clerk's lock to the west. A door in each side wall leads to a wing. The steward keeps his post by his table in front of the strongroom door.",
+        "stations": [
+          {
+            "anchor": "anchor/steward-post",
+            "kind": "point",
+            "note": "Where Hesketh Marr stands, by his table south of the strongroom door, facing the hall."
+          },
+          {
+            "anchor": "anchor/warden-lock",
+            "kind": "point",
+            "note": "The Warden's lock, a plate in the north wall east of the strongroom door."
+          },
+          {
+            "anchor": "anchor/clerk-lock",
+            "kind": "point",
+            "note": "The Clerk's lock, a plate in the north wall west of the strongroom door."
+          }
+        ]
+      },
+      {
+        "id": "node/counting-room",
+        "intent": "the Warden's key",
+        "note": "The Warden's counting room, east of the hall: a counting table, a strongbox, and the Warden's key on its hook on the east wall.",
+        "stations": [
+          {
+            "anchor": "anchor/warden-key",
+            "kind": "point",
+            "note": "The Warden's key on its hook, on the east wall facing the door."
+          }
+        ]
+      },
+      {
+        "id": "node/archive",
+        "intent": "the Clerk's key",
+        "note": "The Clerk's archive, west of the hall: shelves of rolls, a lectern, and the Clerk's key in its box on the west wall.",
+        "stations": [
+          {
+            "anchor": "anchor/clerk-key",
+            "kind": "point",
+            "note": "The Clerk's key box, on the west wall facing the door."
+          }
+        ]
+      },
+      {
+        "id": "node/strongroom",
+        "intent": "the charter",
+        "note": "The strongroom behind the hall's north wall: a low stone room with nothing in it but the charter chest against the north wall.",
+        "stations": [
+          {
+            "anchor": "anchor/charter-chest",
+            "kind": "point",
+            "note": "The charter chest, against the strongroom's north wall facing the door."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.41.0",
+  "stage": "layout-graph"
+}
