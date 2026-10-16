@@ -1,1 +1,151 @@
-{"campaign_id": "the-tide-mill", "content": {"quests": []}, "dsl_version": "0.41.0", "stage": "quests"}
+{
+  "campaign_id": "the-tide-mill",
+  "content": {
+    "quests": [
+      {
+        "happening": {
+          "text": "The party climbs down off the sea wall into the foot of the dry race.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-tide-mill",
+        "objectives": [
+          {
+            "anchor": "anchor/pound-1",
+            "happening": {
+              "text": "The party is through the first paddle.",
+              "verb": "arrives"
+            },
+            "hint": "The first paddle lifts slowly. Watch it rise once before you go under it.",
+            "id": "obj/first-paddle",
+            "radius": 2,
+            "title": "Pass the first paddle",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/first-paddle"
+            ],
+            "anchor": "anchor/pound-2",
+            "happening": {
+              "text": "The party is through the second paddle.",
+              "verb": "arrives"
+            },
+            "hint": "The second paddle stays up for less time. Wait for it to start rising.",
+            "id": "obj/second-paddle",
+            "radius": 2,
+            "title": "Pass the second paddle",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/second-paddle"
+            ],
+            "anchor": "anchor/pound-3",
+            "happening": {
+              "text": "The party is through the third paddle.",
+              "verb": "arrives"
+            },
+            "hint": "The third paddle is up only for a moment. Go the instant it clears.",
+            "id": "obj/third-paddle",
+            "radius": 2,
+            "title": "Pass the third paddle",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/third-paddle"
+            ],
+            "anchor": "anchor/node-mill-yard",
+            "happening": {
+              "text": "The party comes up into the mill yard.",
+              "verb": "arrives"
+            },
+            "hint": "The way up to the yard is at the head of the race.",
+            "id": "obj/mill-yard",
+            "radius": 2,
+            "title": "Climb to the mill yard",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The party leaves the race behind.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/first-paddle": [
+            {
+              "anchor": "anchor/pound-1",
+              "on_respawn": [
+                {
+                  "style": "actionbar",
+                  "text": "You come back in the first pound, past the first paddle.",
+                  "type": "narrate"
+                }
+              ],
+              "type": "set-checkpoint"
+            }
+          ],
+          "obj/second-paddle": [
+            {
+              "anchor": "anchor/pound-2",
+              "on_respawn": [
+                {
+                  "style": "actionbar",
+                  "text": "You come back in the second pound, past the second paddle.",
+                  "type": "narrate"
+                }
+              ],
+              "type": "set-checkpoint"
+            }
+          ],
+          "obj/third-paddle": [
+            {
+              "anchor": "anchor/pound-3",
+              "on_respawn": [
+                {
+                  "style": "actionbar",
+                  "text": "You come back in the head pound, past the last paddle.",
+                  "type": "narrate"
+                }
+              ],
+              "type": "set-checkpoint"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "timed_gates": [
+      {
+        "closed_ticks": 40,
+        "crush": true,
+        "gate": "anchor/paddle-1",
+        "id": "timed-gate/first-paddle",
+        "open_ticks": 80
+      },
+      {
+        "closed_ticks": 50,
+        "crush": true,
+        "gate": "anchor/paddle-2",
+        "id": "timed-gate/second-paddle",
+        "open_ticks": 50
+      },
+      {
+        "closed_ticks": 70,
+        "crush": true,
+        "gate": "anchor/paddle-3",
+        "id": "timed-gate/third-paddle",
+        "open_ticks": 30
+      }
+    ]
+  },
+  "dsl_version": "0.41.0",
+  "stage": "quests"
+}
