@@ -1,0 +1,264 @@
+{
+  "campaign_id": "the-toll-road",
+  "content": {
+    "loot": [
+      {
+        "anchor": "anchor/booth-barrel",
+        "id": "loot/booth-barrel",
+        "items": [
+          {
+            "count": 1,
+            "item": "minecraft:shield",
+            "name": "Warden's Shield"
+          },
+          {
+            "count": 1,
+            "item": "minecraft:paper",
+            "name": "Toll Schedule"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/stair-barrel",
+        "id": "loot/stair-barrel",
+        "items": [
+          {
+            "count": 9,
+            "item": "minecraft:gold_nugget"
+          },
+          {
+            "count": 4,
+            "item": "minecraft:cooked_mutton"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/gallery-barrel",
+        "id": "loot/gallery-barrel",
+        "items": [
+          {
+            "count": 9,
+            "item": "minecraft:gold_nugget"
+          },
+          {
+            "count": 16,
+            "item": "minecraft:arrow"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/strongbox",
+        "id": "loot/strongbox",
+        "items": [
+          {
+            "count": 3,
+            "item": "minecraft:gold_ingot"
+          },
+          {
+            "count": 2,
+            "item": "minecraft:emerald"
+          }
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "happening": {
+          "text": "The party comes up the road into Harrow Gap.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-toll-road",
+        "objectives": [
+          {
+            "anchor": "anchor/bar-winch",
+            "happening": {
+              "subject": "anchor/bar-winch",
+              "text": "The winch turns and the toll bar goes up.",
+              "verb": "opens"
+            },
+            "hint": "The winch lever stands beside the toll bar at the head of the pass.",
+            "id": "obj/raise-the-bar",
+            "prop": {
+              "block": "minecraft:lever[face=wall,facing=south,powered=false]"
+            },
+            "title": "Raise the toll bar",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/raise-the-bar"
+            ],
+            "anchor": "anchor/node-far-road",
+            "happening": {
+              "text": "The party passes the toll bar.",
+              "verb": "arrives"
+            },
+            "hint": "The road runs on past the raised bar.",
+            "id": "obj/through-the-gap",
+            "radius": 3,
+            "title": "Go through the gap",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "text": "The party is through Harrow Gap.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/raise-the-bar": [
+            {
+              "flag": "flag/bar-raised",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-toll-bar",
+              "happening": {
+                "subject": "anchor/seam-toll-bar",
+                "text": "The toll bar stands up out of the road.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "at": {
+                "anchor": "anchor/bar-winch",
+                "at": "anchor"
+              },
+              "sound": "minecraft:block.chain.place",
+              "type": "play-sound"
+            },
+            {
+              "style": "actionbar",
+              "text": "The chain takes the weight, and the bar swings up out of the road.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "traps": [
+      {
+        "at": "anchor/stair-plate",
+        "disarm": {
+          "sets_flag": "flag/stair-safe",
+          "via": "anchor/stair-lever"
+        },
+        "id": "trap/stair-volley",
+        "lethality": "harmful",
+        "payload": [
+          {
+            "from_anchor": "anchor/stair-slot",
+            "interval": 10,
+            "kill_zone": {
+              "anchor": "anchor/stair-plate",
+              "extent": [
+                2,
+                1,
+                1
+              ]
+            },
+            "salvos": 3,
+            "type": "volley"
+          }
+        ],
+        "reset": "rearm",
+        "trigger": "pressure-plate"
+      },
+      {
+        "at": "anchor/gallery-wire",
+        "disarm": {
+          "sets_flag": "flag/gallery-safe",
+          "via": "anchor/gallery-lever"
+        },
+        "id": "trap/dart-gallery",
+        "lethality": "harmful",
+        "payload": [
+          {
+            "from_anchor": "anchor/gallery-slot",
+            "interval": 10,
+            "kill_zone": {
+              "anchor": "anchor/gallery-wire",
+              "extent": [
+                0,
+                0,
+                3
+              ]
+            },
+            "salvos": 3,
+            "type": "volley"
+          }
+        ],
+        "reset": "rearm",
+        "trigger": "tripwire"
+      },
+      {
+        "at": "anchor/strongbox",
+        "disarm": {
+          "sets_flag": "flag/strongbox-safe",
+          "via": "anchor/strongbox-lever"
+        },
+        "id": "trap/strongbox",
+        "lethality": "harmful",
+        "payload": [
+          {
+            "at": {
+              "anchor": "anchor/strongbox-roof",
+              "at": "anchor"
+            },
+            "sound": "minecraft:block.gravel.break",
+            "type": "play-sound"
+          },
+          {
+            "falling_block": "minecraft:gravel",
+            "region_anchor": {
+              "anchor": "anchor/strongbox-roof",
+              "extent": [
+                0,
+                0,
+                1
+              ]
+            },
+            "type": "collapse"
+          }
+        ],
+        "reset": "once",
+        "trigger": "trapped-chest"
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/bell-plate",
+        "effects": [
+          {
+            "at": {
+              "anchor": "anchor/bell-plate",
+              "at": "anchor"
+            },
+            "sound": "minecraft:block.bell.use",
+            "type": "play-sound"
+          },
+          {
+            "style": "actionbar",
+            "text": "The plate sinks, and a bell rings in the wall. The wardens heard every step on this road.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/toll-bell",
+        "on": {
+          "on": "step"
+        },
+        "once": false
+      }
+    ]
+  },
+  "dsl_version": "0.41.0",
+  "stage": "quests"
+}
