@@ -85,3 +85,53 @@ person only in its hints and its one empty-handed line, never in narration;
 the stakes are never stated (nobody says why the names must be read, or what
 the muster is for); and it ends on a plain fact, the roll under the lantern,
 with no feeling reached.
+
+## Machine ladder
+
+Engine `342b8a64dcb1b3b0989570b2d782c6c5f6d27029`, `delvec 1.13.0, dsl 0.51.0`.
+Build manifest sha256
+`26fe9a4da6a0b23835cfe07f5603d28d47d637e6125688d23a7ea1af73e856ba`: two
+local builds byte-identical (115 files), and the same manifest from a build on
+a second machine.
+
+- `validate`, `analyze`, `build`: exit 0. `act binding (DW1045): 4 of 4
+  English title(s) read against 4 objective(s); 0 head(s) the lexicon does not
+  know; 0 untitled; 0 refused`.
+- PackTest: 21 of 21 required tests passed. `verb_interact` is the take's
+  proof here: it holds two rolls, clicks the lectern, and asserts the
+  objective complete and the count 2, then 1. `verb_interact_takes` is not
+  emitted on this level: it exists only when a campaign's first `interact`
+  does not take and a later one does, and both of these take.
+- Critical-path bot: passed in 6 steps; the lectern clicked holding paper,
+  the hook holding the lantern.
+- Written world (`DW0955`): pass over 1153 compared cells; 2 grass cells the
+  server turned to dirt (random tick).
+- Perturbation: `takes_item` dropped from `obj/lay-the-roll` on a scratch copy;
+  `validate` and `build` both exit 1 with `DW1045` (`lay` → give against
+  `interact + requires_item` → use, present), naming `takes_item: true` as the
+  first repair.
+- Staging gate: refused with 2 of 135 findings unbound (`drill3-01`,
+  `drill3-03`, the design record a demo level does not carry).
+
+## Visual review (round 1)
+
+Nine frames at the scenes' own budget (500 spp): the POV frames leg 0
+waypoints 0 and 3, leg 1 waypoint 6, leg 2 waypoints 3 and 7, leg 3 waypoint
+1, the lectern's interact shot, one interior shot and the panorama. The world
+save is the world at load, so no frame shows the lectern or the hook's link:
+both are placed when their objective opens.
+
+- The nave from the spawn reads as a small chapel: stone walls, pews either
+  side of a flagged aisle, the altar with its candles under a lancet, two
+  hanging lanterns. Lit, under the dusk.
+- Arriving at the chest: the chest is ahead against the east wall, a window
+  onto the dusk beside it.
+- The loft: a timber floor, stone walls, a standing lantern, the back window;
+  from above, the glazed screen looks down into the nave, the chain hangs by
+  the doorway.
+- The barrel's and the hook's arrival frames face a wall at arm's length: the
+  objective is in the cell the camera stands in, and the frame looks back the
+  way the walk came in, which there is the wall. Not a defect of the level.
+- The interior shot and the panorama show the outside: a flat-roofed stone
+  box. One dark-oak plank, the end of the loft's floor beam, shows in the east
+  and west façades at the seam. Nobody sees the outside: the chapel is sealed.

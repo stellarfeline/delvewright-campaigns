@@ -2,6 +2,8 @@
 
 > **Requires delve engine 0.51.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
+![The nave from where the party arrives, looking up the aisle to the altar](media/nave.jpg)
+
 Tomorrow at first light the men of Wending Cross answer to their names in the
 chapel, and the names are read from the loft. The roll has spent the year in
 the vestry chest. Tonight it goes up the loft stair and onto the lectern, and
