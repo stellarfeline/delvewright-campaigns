@@ -128,3 +128,87 @@ plan's `entry_deeds`, and that gap is recorded as toolchain friction.
 | Epilogue: "Ysolde pulled Tobin's pin herself on her way out. She would not burn a man with her house." | 4, 6 | 10 `departs` (`then/11`) | cleared |
 | Epilogue: "The callbell brought the valley down onto the mud…" / "Nobody heard a bell…" | 0, 3, 4, 7 / 1, 2, 5, 6 | header `flag/bell-rung` | cleared |
 | Tobin's barks in the finale ("Is it over?…", "You could still pull the pin…") | 4, 5, 6, 7 | 5 `survives`; the cast places him only on `flag/tobin-left` | cleared |
+
+## Machine ladder
+
+On the build whose manifest sha256 is
+`b936c7fc1c8827a0b3b30afc23b9ab7e7c364bad2d53d993843f64371dc8a64e` (two
+builds byte-identical), engine `d500e8761f1c03507166c2ddcde61b5c9bf75af8`.
+The ladder is **not green**; every red below is a toolchain defect of the
+engine tree or its harness, reproduced on two builds (the first round ran on
+manifest `cdf4fbdb…`, differing only in the zh-CN sidecar and the porch front),
+and none was worked around in the campaign.
+
+- **PackTest: 39 of 40 required tests pass**, all eight
+  `ending_<slug>_<k>` templates among them (burns 0/2/4/6, stands 1/3/7,
+  floods 5). The one red is `v04_move`: the generated template fast-forwards
+  Tobin's walk to its last tick and asserts his body at the destination, but
+  the walk's own `on_arrive` (`despawn-npc`) runs in that same tick, so the
+  body it looks for is gone by construction (`mv_tick_…` line 85 calls
+  `mv_arrive_…`, whose one line is `despawn_npc_tobin`). The template reads no
+  `on_arrive`; direction: it can only turn a proof red.
+- **Critical-path bot: red at `assert-complete`.** The run completes the
+  campaign; the aftermath check then fails because the exported
+  `critical-path.json` lists both the stands aftermath (candles) and the floods
+  aftermath (water) — their gates read `state/tally`, undatable under the
+  mainline's rule, so the exporter keeps both, and no world can show both.
+- **Branch runs: 3 of 8 worlds pass, and every ending is reached.** Passing:
+  world/2 and world/6 (the house burns — the bot carried from the sanctum to
+  the mud, fire at both corners of the floor), world/5 (the house floods —
+  water at both corners). Red, each for one of two harness defects:
+  - worlds 1, 3, 7 (the house stands): the campaign completes, and the candle
+    observable can never pass — the harness reads a block's bare name
+    (`minecraft:white_candle`) and compares it with the exported full state
+    (`…[candles=3,lit=true,waterlogged=false]`).
+  - worlds 0, 4 (the bell rung): the bot arrives standing directly under the
+    callbell, and its press picks "the horizontal face turned toward the bot"
+    from a zero offset, so `activateBlock` is handed a direction of (0, 0, 0).
+    In worlds 3 and 7 it arrived from the side and pressed the bell.
+- **Written world: green.** `world-save.sh` (run from the engine's
+  `validation/`), `delvec written-world`, `check-written-world.py --record`:
+  1031 non-air cells written, 1031 in the server save, 1031 compared, 0
+  differing in every class.
+
+## Visual review — deferred
+
+One frame was rendered and checked: `pov/leg0/wp0` (arriving on the mud,
+facing the shrine door), on the build at manifest `aae55980…`. It read as a
+flat brick face with a hole in it and a mud floor tiled by clay patches; the
+porch front was rebuilt (door frame, lintel, windows, band, corners) and the
+clay taken out, checked only on a CPU draft (`delvec snapshot`). Not rendered:
+the other 36 scenes of the set, among them every interior, both NPC shots, the
+ledger's interact shot, the panorama and the arrival frames at Ysolde and at
+Tobin (two of those were in progress and were stopped). The rest waits for the
+Lumenwright review frames. No storybook image is shipped for the same reason.
+
+## Toolchain friction, by where it bit
+
+- Init I1b: no way to name an unreleased engine revision; the pin check refuses
+  (exit 3) a run on this tree. The content repository's pin is one release for
+  every campaign, so the campaign carries no pin.
+- Step 5, `compiler::ending`: an ending's final scene is the list its
+  `campaign-complete` stands in. A campaign-complete nested in a cutscene's
+  `then` inside a `sequence` step was counted (`DW1029` fired on the lines
+  above it) and got **zero** `ending_<slug>_<k>` templates with no diagnostic
+  (`packtests: []`; the template driver handles root lists only) — an unemitted
+  proof that lets an ending ship unproven. The consequence for authoring: every
+  counted epilogue line fires at or after the ending's banner, so a verdict
+  spoken before the banner cannot be one of the ending's inputs.
+- Step 5, `DW0204`: a dialogue option gated on `requires_state` over a datum the
+  mainline cannot date is "not reachable", so the keeper's verdict moved out of
+  dialogue into the scene's narrations.
+- Step 5, `DW0542`: a teleport gated on `flag/ledger-burned` was refused for
+  covering the brazier's interact hitbox, which that flag implies is already
+  gone; the sanctum was re-lined so no one stands outside the volume.
+- Step 5, `DW0862`: the remedy assumes a beat must be announced; an elective the
+  keeper offers in dialogue is deliberately unannounced, so its hint was removed.
+- Step 9: the palette allowlist admits `minecraft:white_candle` (the `_candle`
+  suffix) but not `minecraft:candle`.
+- Step 11: an ambient trigger's deed has no chronicle line (no field of a
+  trigger's effects takes a `happening`), so the bell's claims are licensed by
+  the chronicle's header only.
+- Localization: `i18n-translate.py` reads its config from the engine tree
+  (`--config` used instead); its fact check passed `伊索德` beside `伊索尔德`
+  and three renderings of the keeper, fixed by hand through `l10n-apply`.
+- Step 10: `branch-runs.sh --out` files the merged report where asked, but each
+  world's bot report is still written under the engine's `validation/run-out/`.
