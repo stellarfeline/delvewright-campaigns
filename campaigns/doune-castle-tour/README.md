@@ -1,10 +1,12 @@
 # Doune Castle: A Guided Tour
 
-> **Requires delve engine 1.5.0 or newer** — last verified with delvec 1.5.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.25.0 or newer** — last verified with delvec 1.5.0 on Minecraft Java 1.21.11.
 
 > *"Mind the stair — the left side is worn through, and has been since before either of us."*
 
 A walk through a real castle with somebody who knows it. Nine stops, one guide, no combat, no grind: about thirty-five minutes if you follow her, longer if you wander, and wandering is allowed from the first minute.
+
+![Doune Castle in its valley, the whole of it](media/doune-castle-panorama.jpg)
 
 | | |
 |---|---|
@@ -20,9 +22,9 @@ A walk through a real castle with somebody who knows it. Nine stops, one guide, 
 
 The party arrives on the north approach with the whole exterior in front of them. Elspeth Moncrieff has guided at Doune for twenty years; she takes you through the gate passage, the courtyard, the lord's hall and the duchess's, the great hall, the kitchen, the royal apartments, and out onto the wall-walk. Talk to her at a stop and you get that room and a piece of the castle's six centuries — dates as plain numbers, opinions owned out loud. When the conversation closes she walks on and waits.
 
-Every door is open. You can run ahead of her, go down to the cellars alone, find the pit prison under the guardroom, or stand in the oratory she has not mentioned yet.
+![The north approach: the bridge over the ditch to the gate](media/doune-castle-approach.jpg)
 
-It ends on the garrison mustering in the courtyard below you.
+Every door is open. You can run ahead of her, go down to the cellars alone, find the pit prison under the guardroom, or stand in the oratory she has not mentioned yet.
 
 ## The castle is a real one
 
@@ -30,18 +32,24 @@ Doune, in Stirling, late fourteenth century — built for Robert Stewart, Duke o
 
 The layout follows the household's own circulation: the lord over his own gate, so nobody enters unseen by him; the great hall over its cellars with the dais against the lord's door; the kitchen at the hall's far end, feeding it through two hatches; guests over the kitchen, which is the warmest wall in any castle; the garrison on the gate and the wall. Sources are in `design/research.md`.
 
-Scale is 1.5 blocks to the metre. The fourth range was planned and never built, and the tour ends there rather than on a summing-up.
+Scale is 1.5 blocks to the metre. The fourth range was planned and never built.
 
-## Known limits
+## Play it
 
-- From the last stop on the wall-walk, the rail at your feet hides the near half of the courtyard. The muster is staged where you can see it; anything south of the well would be invisible from up there.
-- The guard forms up as seven separate arrivals that end in a line. Nobody marches in step.
-- The mounted display this ending was first imagined as is not built.
+```sh
+docker run -it -p 25565:25565 -e EULA=TRUE ghcr.io/stellarfeline/delve-doune-castle-tour:latest
+```
+
+That is the current delve. To hold one exact version, take its `:vX.Y.Z` tag from the release page instead; every release names its own.
+
+Start the server, then in the Minecraft Java client at the version the marker above names: Multiplayer → Direct Connect → `localhost:25565`.
+
+Add `-e DELVE_RESET_WHEN_EMPTY=90` and the world is thrown away and built again from the image once nobody has been online for 90 seconds, so the next arrival starts a delve nobody has touched — but then EVERY start resets, and restarting the container under a party ends that party's run. Leave it out and the world is kept. The floor is 60 seconds; below it the server refuses to start.
 
 ## Building it
 
-```
-delvec build campaigns/doune-castle-tour -o out
-```
+From the root of this repository:
 
-The whole map is one grammar-built site (104 × 56 × 120, seed 1) bound as `prefab/doune-castle` under a `valley` horizon. `design/programs/build_castle.py` generates the program from one module per part — grounds, gatehouse, hall, kitchen — each describing what stands at each course of its own columns; re-run the driver to regenerate. 31 anchors.
+```
+delvec build campaigns/doune-castle-tour --prefabs prefabs -o out
+```
