@@ -84,5 +84,5 @@ DW1045 [error] quests /content/quests/0/objectives/2/title: objective `obj/lay-t
   book holds is not written. Open the lectern and the book is empty. In
   adventure mode the book cannot be taken off the lectern, so the roll stays
   shown.
-- **The roll on the lectern is a book; in your hand it is paper.** The lectern
-  only ever shows a book.
+- **The roll is a book in your hand too.** The lectern only ever shows a book,
+  so the roll is an unwritten book, and what you lay is what the lectern shows.

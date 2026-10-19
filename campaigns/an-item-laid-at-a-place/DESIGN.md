@@ -28,9 +28,9 @@ One quest, `quest/the-roll`, from campaign start.
 
 | # | objective | kind | where | what the player does | what the world does |
 |---|---|---|---|---|---|
-| 1 | *Take the muster roll* (`obj/take-the-roll`) | `collect`, adopting the vestry chest | nave | takes the roll (`minecraft:paper`, named *Muster Roll of Wending Cross*) out of the chest | — |
+| 1 | *Take the muster roll* (`obj/take-the-roll`) | `collect`, adopting the vestry chest | nave | takes the roll (`minecraft:writable_book`, named *Muster Roll of Wending Cross*) out of the chest | — |
 | 2 | *Take the watch lantern* (`obj/take-the-lantern`) | `collect`, adopting the barrel | nave | takes the lantern (`minecraft:lantern`, named *Watch Lantern*) out of the barrel | — |
-| 3 | *Lay the roll on the lectern* (`obj/lay-the-roll`) | `interact` at the lectern, `prop` an empty lectern, `requires_item: minecraft:paper`, `takes_item: true` | loft | climbs the stair and uses the lectern with the roll in hand | one roll leaves the hand at the click; the lectern then shows a book (`set-block` of `minecraft:lectern[facing=north,has_book=true]`) |
+| 3 | *Lay the roll on the lectern* (`obj/lay-the-roll`) | `interact` at the lectern, `prop` an empty lectern, `requires_item: minecraft:writable_book`, `takes_item: true` | loft | climbs the stair and uses the lectern with the roll in hand | one roll leaves the hand at the click; the lectern then shows a book (`set-block` of `minecraft:lectern[facing=north,has_book=true]`) |
 | 4 | *Hang the lantern on the hook* (`obj/hang-the-lantern`) | `interact` at the chain's end, `prop` an iron chain, `requires_item: minecraft:lantern`, `takes_item: true` | loft | uses the chain's end with the lantern in hand | one lantern leaves the hand; a lantern hangs from the chain (`set-block` of `minecraft:lantern[hanging=true]`) |
 
 All four beats are open from the start, so the lectern and the chain's hook

@@ -102,7 +102,7 @@ a second machine.
   objective complete and the count 2, then 1. `verb_interact_takes` is not
   emitted on this level: it exists only when a campaign's first `interact`
   does not take and a later one does, and both of these take.
-- Critical-path bot: passed in 6 steps; the lectern clicked holding paper,
+- Critical-path bot: passed in 6 steps; the lectern clicked holding the writable book,
   the hook holding the lantern.
 - Written world (`DW0955`): pass over 1153 compared cells; 2 grass cells the
   server turned to dirt (random tick).
