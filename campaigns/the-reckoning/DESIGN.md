@@ -50,6 +50,11 @@ overrides the tally.
 | `ending/the-house-stands` | no `flag/ledger-burned`, `state/tally` at least 1 | the house did some good this year, so it stands another | the party stands in the sanctum; the altar candles are lit |
 | `ending/the-house-floods` | no `flag/ledger-burned`, `state/tally` at most 0 | the house called no one and freed no one; the mere may have it | the party stands in the sanctum with the mere's water over the floor |
 
+After the verdict, Ysolde does not reckon the house again. The verdict sets
+`flag/house-reckoned`, and from then on her right-click is one closing line,
+gated as the ending is: the house is burning and nobody owes it anything; the
+house stands another year; the mere is coming back in over the roof.
+
 Every ending's final scene reads four inputs, all written outside the finale
 quest: `state/tally` (the bell: did; the cell: said), `flag/ledger-burned`
 (finished), `flag/bell-rung` (did), `flag/tobin-freed` (said). The campaign
