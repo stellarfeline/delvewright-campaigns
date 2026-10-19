@@ -269,11 +269,73 @@
               ]
             }
           ],
-          "npc/ysolde": {
-            "at": "anchor/keeper-stand",
-            "dialogue": "dlg/ysolde-reckoning",
-            "doing": "waiting by the altar to be told the strangers are done, so that she can reckon the house"
-          }
+          "npc/ysolde": [
+            {
+              "at": "anchor/keeper-stand",
+              "dialogue": "dlg/ysolde-reckoning",
+              "doing": "waiting by the altar to be told the strangers are done, so that she can reckon the house",
+              "forbids_flags": [
+                "flag/house-reckoned"
+              ]
+            },
+            {
+              "at": "anchor/keeper-stand",
+              "dialogue": {
+                "barks": [
+                  "The house is reckoned, and it is burning. Nobody owes it anything now. Go home."
+                ]
+              },
+              "doing": "done with the house, which is burning behind her",
+              "requires_flags": [
+                "flag/house-reckoned",
+                "flag/ledger-burned"
+              ]
+            },
+            {
+              "at": "anchor/keeper-stand",
+              "dialogue": {
+                "barks": [
+                  "The house is reckoned. It stands another year. Come back when the mere is let out again, if you want to see it done."
+                ]
+              },
+              "doing": "by the lit altar candles, the house kept for another year",
+              "forbids_flags": [
+                "flag/ledger-burned"
+              ],
+              "requires_flags": [
+                "flag/house-reckoned"
+              ],
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/tally",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "at": "anchor/keeper-stand",
+              "dialogue": {
+                "barks": [
+                  "The house is reckoned. The mere is coming back in, and by morning it will be over the roof. Go while the mud still holds you."
+                ]
+              },
+              "doing": "standing in the mere's water on the sanctum floor, letting it come",
+              "forbids_flags": [
+                "flag/ledger-burned"
+              ],
+              "requires_flags": [
+                "flag/house-reckoned"
+              ],
+              "requires_state": [
+                {
+                  "op": "at-most",
+                  "state": "state/tally",
+                  "value": 0
+                }
+              ]
+            }
+          ]
         },
         "happening": {
           "subject": "npc/ysolde",
