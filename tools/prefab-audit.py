@@ -65,8 +65,8 @@ an unplaced file, and unplaced is an error, never a skip:
 
 A `.json` carrying no `structure_set` is not a unit and is not audited: either
 it is the metadata beside a single-file prefab — whose `.nbt` IS the unit and
-carries the blocks — or it is some other document such as `pools.json`, a zone
-program, or a report.
+carries the blocks — or it is some other document such as a zone program or a
+report.
 
 What this gate does NOT cover, stated so nobody has to infer it: objects that
 are not `.nbt` structures — the campaign zone PROGRAMS (`delvec grammar audit`,
@@ -210,7 +210,7 @@ def enumerate_units(
             tile_set = doc.get("structure_set")
             if not isinstance(tile_set, dict):
                 # A single-template metadata file, or some other document such
-                # as `pools.json`, a zone program or a report. Not a unit; the
+                # as a zone program or a report. Not a unit; the
                 # `.nbt` beside it is.
                 continue
             parts = tile_set.get("parts")
