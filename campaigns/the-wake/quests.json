@@ -1,0 +1,766 @@
+{
+  "campaign_id": "the-wake",
+  "content": {
+    "actors": [
+      {
+        "anchor": "anchor/bier",
+        "entity": "minecraft:armor_stand",
+        "equipment": {
+          "chest": "minecraft:leather_chestplate",
+          "feet": "minecraft:leather_boots",
+          "legs": "minecraft:leather_leggings"
+        },
+        "facing": "north",
+        "id": "actor/bier",
+        "name": "Wren Ashlaw"
+      },
+      {
+        "anchor": "anchor/keep-gate",
+        "entity": "minecraft:villager",
+        "equipment": {
+          "main_hand": "minecraft:lantern"
+        },
+        "facing": "south",
+        "id": "actor/lamp-bearer",
+        "name": "Orrin"
+      },
+      {
+        "anchor": "anchor/widow",
+        "entity": "minecraft:villager",
+        "facing": "north",
+        "id": "actor/widow",
+        "name": "Maud Pell"
+      },
+      {
+        "anchor": "anchor/west-flank",
+        "entity": "minecraft:villager",
+        "facing": "east",
+        "id": "actor/elder",
+        "name": "Old Garrow"
+      },
+      {
+        "anchor": "anchor/east-flank",
+        "entity": "minecraft:villager",
+        "facing": "west",
+        "id": "actor/child",
+        "name": "Tam"
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/hallis": {
+            "at": "anchor/shore-fire",
+            "dialogue": "dlg/hallis-arrival",
+            "doing": "feeding driftwood to the shore fire so he does not have to look up the field"
+          },
+          "npc/sedge": {
+            "at": "anchor/warden-post",
+            "dialogue": "dlg/sedge-arrival",
+            "doing": "leaning on a long spade at the head of the cut she opened this morning"
+          }
+        },
+        "happening": {
+          "subject": "anchor/tide-line",
+          "text": "The party comes ashore at low water into a field of graves, carrying a body that is not theirs.",
+          "verb": "arrives"
+        },
+        "id": "quest/low-water",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/hallis",
+              "text": "Hallis Ashlaw tells the strangers whose body they carried up the road.",
+              "verb": "learns"
+            },
+            "hint": "A few steps up the sand from where you came ashore, at the shore fire.",
+            "id": "obj/greet",
+            "npc": "npc/hallis",
+            "title": "Speak to the brother",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/greet"
+            ],
+            "anchor": "anchor/bier",
+            "happening": {
+              "subject": "anchor/bier",
+              "text": "The party comes up the grave road and stands at the banner with the whole field behind them.",
+              "verb": "arrives"
+            },
+            "hint": "Up the grave road from the fire, to the black banner in the middle of the field.",
+            "id": "obj/come-up",
+            "radius": 3,
+            "title": "Come up the field",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/come-up": [
+            {
+              "anchor": "anchor/bier",
+              "type": "set-checkpoint"
+            },
+            {
+              "shots": [
+                {
+                  "dist": 18,
+                  "seconds": 8,
+                  "shot_style": "establishing-crane",
+                  "subject": {
+                    "anchor": "anchor/bier"
+                  }
+                },
+                {
+                  "bearing": 90,
+                  "dist": 4,
+                  "seconds": 3,
+                  "shot_style": "insert",
+                  "subject": {
+                    "actor": "actor/bier"
+                  }
+                }
+              ],
+              "type": "cutscene"
+            },
+            {
+              "style": "art",
+              "text": "THE WAKE",
+              "type": "narrate"
+            }
+          ],
+          "obj/greet": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "text": "The keep bell strikes once. Once is for one.",
+                      "type": "narrate"
+                    },
+                    {
+                      "at": {
+                        "anchor": "anchor/keep-gate",
+                        "at": "anchor"
+                      },
+                      "sound": "minecraft:block.bell.use",
+                      "type": "play-sound"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 20,
+                  "effects": [
+                    {
+                      "actor": "actor/bier",
+                      "happening": {
+                        "subject": "actor/bier",
+                        "text": "Wren Ashlaw is laid on her plank under the black banner.",
+                        "verb": "arrives"
+                      },
+                      "type": "spawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 40,
+                  "effects": [
+                    {
+                      "actor": "actor/lamp-bearer",
+                      "happening": {
+                        "subject": "actor/lamp-bearer",
+                        "text": "Orrin comes out of the keep gate with the wake-lamp lit.",
+                        "verb": "arrives"
+                      },
+                      "type": "spawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 60,
+                  "effects": [
+                    {
+                      "actor": "actor/widow",
+                      "happening": {
+                        "subject": "actor/widow",
+                        "text": "Maud Pell takes her place at the foot of the bier and does not look away from it.",
+                        "verb": "arrives"
+                      },
+                      "type": "spawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 80,
+                  "effects": [
+                    {
+                      "actor": "actor/elder",
+                      "happening": {
+                        "subject": "actor/elder",
+                        "text": "Old Garrow stands at his own family's barrow among the old graves.",
+                        "verb": "arrives"
+                      },
+                      "type": "spawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 100,
+                  "effects": [
+                    {
+                      "actor": "actor/child",
+                      "happening": {
+                        "subject": "actor/child",
+                        "text": "Tam comes out by the far dyke and stops there, keeping the distance.",
+                        "verb": "arrives"
+                      },
+                      "type": "spawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 140,
+                  "effects": [
+                    {
+                      "text": "They have been standing since noon. They were not waiting for the tide. They were waiting for hands.",
+                      "type": "narrate"
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/hallis": {
+            "at": "anchor/shore-fire",
+            "dialogue": "dlg/hallis-waiting",
+            "doing": "staying at the fire, close enough to hear it and far enough not to"
+          },
+          "npc/sedge": {
+            "at": "anchor/warden-post",
+            "dialogue": "dlg/sedge-rite",
+            "doing": "waiting at the head of the cut for somebody of the body's to stand at the plank, so the rite can be said"
+          }
+        },
+        "happening": {
+          "subject": "npc/sedge",
+          "text": "The field is told who Wren Ashlaw was, in the warden's flat unwritten rite.",
+          "verb": "learns"
+        },
+        "id": "quest/the-eulogy",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/sedge",
+              "text": "The party hears the rite and learns that Wren read the water for thirty years.",
+              "verb": "learns"
+            },
+            "hint": "Along the grave row from the bier, where the warden keeps her post at the head of the open cut.",
+            "id": "obj/hear-the-rite",
+            "npc": "npc/sedge",
+            "title": "Hear the rite",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/hear-the-rite": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "text": "Sedge speaks it off the inside of her own head. Nobody in this field ever wrote it down.",
+                      "type": "narrate"
+                    },
+                    {
+                      "at": {
+                        "anchor": "anchor/keep-gate",
+                        "at": "anchor"
+                      },
+                      "sound": "minecraft:block.bell.use",
+                      "type": "play-sound"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 40,
+                  "effects": [
+                    {
+                      "actor": "actor/lamp-bearer",
+                      "happening": {
+                        "subject": "actor/lamp-bearer",
+                        "text": "Orrin walks the wake-lamp down from the gate and sets it beside the bier.",
+                        "verb": "arrives"
+                      },
+                      "to": {
+                        "anchor": "anchor/bier-side"
+                      },
+                      "type": "move-actor"
+                    },
+                    {
+                      "actor": "actor/child",
+                      "happening": {
+                        "subject": "actor/child",
+                        "text": "Tam comes in off the far dyke as far as the second barrow, and stops.",
+                        "verb": "arrives"
+                      },
+                      "to": {
+                        "anchor": "anchor/second-barrow"
+                      },
+                      "type": "move-actor"
+                    },
+                    {
+                      "happening": {
+                        "subject": "npc/sedge",
+                        "text": "Sedge leaves her post and takes the head of the grave row to say it.",
+                        "verb": "arrives"
+                      },
+                      "npc": "npc/sedge",
+                      "to": {
+                        "anchor": "anchor/row-head"
+                      },
+                      "type": "move-npc"
+                    },
+                    {
+                      "shots": [
+                        {
+                          "dist": 8,
+                          "seconds": 8,
+                          "shot_style": "side-track",
+                          "subject": {
+                            "actor": "actor/lamp-bearer"
+                          }
+                        }
+                      ],
+                      "type": "cutscene"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 200,
+                  "effects": [
+                    {
+                      "text": "She was born on the water. She read it for the keep thirty years, and it read her back.",
+                      "type": "narrate"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 260,
+                  "effects": [
+                    {
+                      "text": "The field takes everyone. It does not take anyone twice.",
+                      "type": "narrate"
+                    },
+                    {
+                      "at": {
+                        "anchor": "anchor/keep-gate",
+                        "at": "anchor"
+                      },
+                      "sound": "minecraft:block.bell.resonate",
+                      "type": "play-sound"
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/low-water",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/hallis": {
+            "at": "anchor/shore-fire",
+            "dialogue": "dlg/hallis-word",
+            "doing": "turning a shroud-pin over and over, unable to say either word himself"
+          },
+          "npc/sedge": {
+            "at": "anchor/row-head",
+            "dialogue": "dlg/sedge-word",
+            "doing": "standing at the head of the row with the spade across her boots, waiting to be told"
+          }
+        },
+        "happening": {
+          "subject": "npc/hallis",
+          "text": "The word is asked of the strangers who carried her, because the field's custom gives it to them.",
+          "verb": "learns"
+        },
+        "id": "quest/the-word",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/hallis",
+              "text": "Hallis hands the choice to the party, and the party says it out loud.",
+              "verb": "learns"
+            },
+            "hint": "Back down the grave road to the shore fire where you landed.",
+            "id": "obj/bring-the-word",
+            "npc": "npc/hallis",
+            "title": "Answer the brother",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {},
+        "trigger": {
+          "quest": "quest/the-eulogy",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/hallis": [
+            {
+              "at": "anchor/shore-fire",
+              "dialogue": "dlg/hallis-ground",
+              "doing": "coming as far as the fire's edge and no further",
+              "requires_flags": [
+                "flag/to-the-ground"
+              ]
+            },
+            {
+              "at": "anchor/shore-fire",
+              "dialogue": "dlg/hallis-tide",
+              "doing": "banking the fire for the walk down to the water",
+              "requires_flags": [
+                "flag/to-the-tide"
+              ]
+            }
+          ],
+          "npc/sedge": [
+            {
+              "at": "anchor/row-head",
+              "dialogue": "dlg/sedge-ground",
+              "doing": "at the head of the row with the spade across her boots, watching the plank go along the row to the cut she opened",
+              "requires_flags": [
+                "flag/to-the-ground"
+              ]
+            },
+            {
+              "at": "anchor/row-head",
+              "dialogue": "dlg/sedge-tide",
+              "doing": "standing where she stood with the spade planted, refusing to walk to the water",
+              "requires_flags": [
+                "flag/to-the-tide"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "subject": "actor/bier",
+          "text": "The field takes Wren Ashlaw into the cut Sedge opened for her at first light.",
+          "verb": "gains"
+        },
+        "id": "quest/the-ground",
+        "objectives": [
+          {
+            "anchor": "anchor/warden-post",
+            "happening": {
+              "subject": "anchor/warden-post",
+              "text": "The party goes ahead of the plank to the open cut and waits at the edge.",
+              "verb": "arrives"
+            },
+            "hint": "Along the grave row from the bier, to the open cut at the row's far end.",
+            "id": "obj/to-the-cut",
+            "radius": 3,
+            "requires_flags": [
+              "flag/to-the-ground"
+            ],
+            "title": "Carry her to the cut",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/to-the-cut": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "actor": "actor/bier",
+                      "happening": {
+                        "subject": "actor/bier",
+                        "text": "Wren Ashlaw comes off the banner and reaches the open cut.",
+                        "verb": "arrives"
+                      },
+                      "to": {
+                        "anchor": "anchor/warden-post"
+                      },
+                      "type": "move-actor"
+                    },
+                    {
+                      "shots": [
+                        {
+                          "dist": 10,
+                          "seconds": 6,
+                          "shot_style": "locked-off",
+                          "subject": {
+                            "actor": "actor/bier"
+                          }
+                        }
+                      ],
+                      "type": "cutscene"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 150,
+                  "effects": [
+                    {
+                      "text": "The plank goes down. From the head of the row Sedge says the last of it, and nobody hurries her.",
+                      "type": "narrate"
+                    },
+                    {
+                      "at": {
+                        "anchor": "anchor/warden-post",
+                        "at": "anchor"
+                      },
+                      "sound": "minecraft:block.gravel.place",
+                      "type": "play-sound"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 190,
+                  "effects": [
+                    {
+                      "actor": "actor/bier",
+                      "happening": {
+                        "subject": "actor/bier",
+                        "text": "The shroud goes under the soil and there is nothing left above the line to see.",
+                        "verb": "departs"
+                      },
+                      "style": "vanish",
+                      "type": "despawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 215,
+                  "effects": [
+                    {
+                      "style": "art",
+                      "text": "THE GROUND",
+                      "type": "narrate"
+                    },
+                    {
+                      "text": "The row is one longer. By morning the field will be level again, and it will keep her.",
+                      "type": "narrate"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 240,
+                  "effects": [
+                    {
+                      "ending": "ending/the-ground",
+                      "happening": {
+                        "subject": "anchor/warden-post",
+                        "text": "The barrow field closes over Wren Ashlaw and keeps her.",
+                        "verb": "seals"
+                      },
+                      "type": "campaign-complete"
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-word",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/hallis": [
+            {
+              "at": "anchor/shore-fire",
+              "dialogue": "dlg/hallis-ground",
+              "doing": "keeping the fire up so there is light on the road down from the graves",
+              "requires_flags": [
+                "flag/to-the-ground"
+              ]
+            },
+            {
+              "at": "anchor/shore-fire",
+              "dialogue": "dlg/hallis-tide",
+              "doing": "turned away from his own fire at last, facing the water, letting the party pass him",
+              "requires_flags": [
+                "flag/to-the-tide"
+              ]
+            }
+          ],
+          "npc/sedge": [
+            {
+              "at": "anchor/row-head",
+              "dialogue": "dlg/sedge-ground",
+              "doing": "at the head of the row, watching the cut, where the ground is closing without her",
+              "requires_flags": [
+                "flag/to-the-ground"
+              ]
+            },
+            {
+              "at": "anchor/row-head",
+              "dialogue": "dlg/sedge-tide",
+              "doing": "watching the plank go down the field with the spade still planted where she left it",
+              "requires_flags": [
+                "flag/to-the-tide"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "subject": "actor/bier",
+          "text": "The wake carries Wren Ashlaw down past the fire to the water she read, and she comes to it.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-tide",
+        "objectives": [
+          {
+            "anchor": "anchor/tide-line",
+            "happening": {
+              "subject": "anchor/tide-line",
+              "text": "The party goes ahead of the plank the whole length of the field and stands in the wet sand.",
+              "verb": "arrives"
+            },
+            "hint": "Down past the shore fire, to the wet sand where the tide stops.",
+            "id": "obj/to-the-water",
+            "radius": 3,
+            "requires_flags": [
+              "flag/to-the-tide"
+            ],
+            "title": "Carry her to the water",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/to-the-water": [
+            {
+              "steps": [
+                {
+                  "at_ticks": 0,
+                  "effects": [
+                    {
+                      "actor": "actor/bier",
+                      "happening": {
+                        "subject": "actor/bier",
+                        "text": "Wren Ashlaw comes off the banner and reaches the water at the foot of the field.",
+                        "verb": "arrives"
+                      },
+                      "to": {
+                        "anchor": "anchor/tide-line"
+                      },
+                      "type": "move-actor"
+                    },
+                    {
+                      "shots": [
+                        {
+                          "dist": 8,
+                          "seconds": 8,
+                          "shot_style": "side-track",
+                          "subject": {
+                            "actor": "actor/bier"
+                          }
+                        }
+                      ],
+                      "type": "cutscene"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 180,
+                  "effects": [
+                    {
+                      "text": "They wade her out to the line and let go. The water takes her weight the way it always did.",
+                      "type": "narrate"
+                    },
+                    {
+                      "at": {
+                        "anchor": "anchor/tide-line",
+                        "at": "anchor"
+                      },
+                      "sound": "minecraft:entity.generic.splash",
+                      "type": "play-sound"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 210,
+                  "effects": [
+                    {
+                      "actor": "actor/bier",
+                      "happening": {
+                        "subject": "actor/bier",
+                        "text": "The shroud goes out on the ebb and the dusk takes it before the water does.",
+                        "verb": "departs"
+                      },
+                      "style": "vanish",
+                      "type": "despawn-actor"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 230,
+                  "effects": [
+                    {
+                      "style": "art",
+                      "text": "THE TIDE",
+                      "type": "narrate"
+                    },
+                    {
+                      "text": "She goes out on the ebb, the way she went out every morning of her life.",
+                      "type": "narrate"
+                    }
+                  ]
+                },
+                {
+                  "at_ticks": 250,
+                  "effects": [
+                    {
+                      "ending": "ending/the-tide",
+                      "happening": {
+                        "text": "The field gives Wren Ashlaw up to the water and keeps nothing of her.",
+                        "verb": "loses"
+                      },
+                      "type": "campaign-complete"
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-word",
+          "type": "quest-complete"
+        }
+      }
+    ]
+  },
+  "dsl_version": "0.55.0",
+  "stage": "quests"
+}

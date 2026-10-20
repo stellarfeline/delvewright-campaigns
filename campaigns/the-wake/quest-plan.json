@@ -1,0 +1,100 @@
+{
+  "campaign_id": "the-wake",
+  "content": {
+    "branch_points": [
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/to-the-ground"
+            ],
+            "id": "branch/ground",
+            "leads_to": "ending/the-ground"
+          },
+          {
+            "flags": [
+              "flag/to-the-tide"
+            ],
+            "id": "branch/tide",
+            "leads_to": "ending/the-tide"
+          }
+        ],
+        "forks_on": [
+          "flag/to-the-ground",
+          "flag/to-the-tide"
+        ],
+        "id": "branch-point/the-word",
+        "opens_at": "quest/the-word"
+      }
+    ],
+    "finale": "quest/the-tide",
+    "quests": [
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [],
+        "goal": "Come ashore at low water, find the brother at the shore fire, and go up the field to the bier.",
+        "id": "quest/low-water",
+        "mandatory": true,
+        "npcs": [
+          "npc/hallis"
+        ]
+      },
+      {
+        "act": 1,
+        "area": "area/site",
+        "depends_on": [
+          "quest/low-water"
+        ],
+        "goal": "Stand for the rite the warden speaks over Wren Ashlaw, and let the field hear who she was.",
+        "id": "quest/the-eulogy",
+        "mandatory": true,
+        "npcs": [
+          "npc/sedge"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-eulogy"
+        ],
+        "goal": "Carry the word back down to the fire: the field wants the ground or the water, and the choice is yours.",
+        "id": "quest/the-word",
+        "mandatory": true,
+        "npcs": [
+          "npc/hallis"
+        ]
+      },
+      {
+        "act": 3,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-word"
+        ],
+        "goal": "Give her to the cut the warden opened at first light, and let the field close over her.",
+        "id": "quest/the-ground",
+        "mandatory": true,
+        "npcs": [
+          "npc/sedge"
+        ]
+      },
+      {
+        "act": 3,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-word",
+          "quest/the-ground"
+        ],
+        "goal": "Carry her past the fire to the line the tide leaves, and give her back to the water she read.",
+        "id": "quest/the-tide",
+        "mandatory": true,
+        "npcs": [
+          "npc/hallis"
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.55.0",
+  "stage": "quest-plan"
+}
