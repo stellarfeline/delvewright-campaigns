@@ -1,6 +1,6 @@
 # 水那边的东西
 
-> **Requires delve engine 0.48.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 黄昏时分，你沿海岸路来到一片灰蒙蒙的海湾：一道石砌栈桥伸进水里，桥脚下是海港馆，宽大的门敞着；湾里立着一根光秃秃的石柱，没人愿意多看它一眼。
 
@@ -8,7 +8,7 @@
 
 - **人数**：1 到 4 人。
 - **时长**：十分钟左右。
-- **职业**：*旅人*——一盏提灯，别无他物。
+- **职业**：*旅人*——一盏提灯，再加上现在每一关都会发的指南针和日志。
 
 ![黄昏时的栈桥与海港馆](media/jetty.jpg)
 

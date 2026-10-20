@@ -1,6 +1,6 @@
 # The Thing Across the Water
 
-> **Requires delve engine 0.48.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 You came down the coast road at dusk to a grey bay: a stone jetty running out
 into the water, a harbour hall at its foot with its wide door standing open,
@@ -11,7 +11,8 @@ jetty for thirty winters. He has never rung it.
 
 - **Players**: 1 to 4.
 - **Playtime**: about ten minutes.
-- **Class**: *Traveller* — a lantern, and nothing else.
+- **Class**: *Traveller* — a lantern, and the compass and journal every delve
+  now hands its players.
 
 ![The jetty and the harbour hall at dusk](media/jetty.jpg)
 
@@ -53,6 +54,10 @@ look at.
 5. **After the cutscene, is it still there?** Walk back up the jetty and look
    north: the thing should still be standing on the stack. Then tell the
    keeper.
+
+On arrival one chat line says the hall's barrels stand empty: the engine owes
+that line wherever a container holds nothing, and it is not what this level is
+for.
 
 Beside the walk, the five shots the engine refuses — each the level as it ships
 plus one edit, printed whole by the same `delvec` in [`refusals/`](refusals/):

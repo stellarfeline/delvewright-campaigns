@@ -60,6 +60,19 @@
   is approved: `design.json` does not exist, and the staging gate counts that as
   a zero. The design of record is the demo-levels row and `DESIGN.md`.
 
+## Rebuilt on the assembled Batch-B engine (`integrate/batch-b`, `delvec 1.13.0, dsl 0.54.0`)
+
+What the engine merge forced: every document carries 0.54.0; the ground states
+its music in the object form, the ocean's own vanilla statement; the hall's
+west wall keeps one barrel and its other two stores are bales of dried kelp
+(two empty containers are the most a place may hold as scenery), and the two
+barrels left are declared scenery with one arrival line. The engine now hands
+every player a compass and a journal. The ladder on that build: `build` exit 0
+twice, byte-identical (419 files), `shot subjects` unchanged from the line
+below; PackTest 31 of 31 required tests passed; the critical-path bot PASSED,
+both `shot_subjects` rows `spawned_before: true`, `spawned_through: true`; the
+written world equals the server's at all 19632 compared cells.
+
 ## Verification (engine `feature/shots-frame-their-subject` at `d4e6cb577df6`, `delvec 1.13.0, dsl 0.48.0`)
 
 The numbers below are from the build the ladder ran; the storybook names what
