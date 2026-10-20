@@ -52,7 +52,7 @@ look at.
    `validation/shot-subjects.json`: `view_range` 3.87, `farthest` 96.376).
 4. **Does any shot frame empty sea, sky or a wall?** Across all three cutscenes.
 5. **After the cutscene, is it still there?** Walk back up the jetty and look
-   north: the thing should still be standing on the stack. Then tell the
+   out across the water at the stack: the thing should still be standing on it. Then tell the
    keeper.
 
 On arrival one chat line says the hall's barrels stand empty: the engine owes
