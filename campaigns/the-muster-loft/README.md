@@ -43,8 +43,9 @@ round found are changed:
 - The grindstone that stood in for a winch is gone. A floor lever by the south
   wall, three blocks behind the grating, raises it.
 
-The fourth is **not** fixed in this round: "Lay the roll in the loft" still
-completes the moment you arrive in the loft. Do not test it.
+The fourth: the last objective completes the moment you arrive in the loft,
+and its title now says so ("Climb to the loft with the roll"); the engine
+refuses a title that names an act its completion does not perform.
 
 The loft stair's head is unchanged: iron bars across the passage at its top.
 Walk it once as a Hall Warden.
