@@ -40,6 +40,11 @@
   `dsl_version` 0.42.0. The released `delvec--v1.13.0` answers
   `delvec 1.13.0, dsl 0.39.0`: the same engine number with another dsl, so
   this level does not build with the release.
+- Rebuilt on the assembled Batch-B engine (`integrate/batch-b`, `delvec
+  1.13.0, dsl 0.54.0`): every document carries 0.54.0; the ferry door is a
+  `walk` with its `gating` (the `barred` class is retired); the ending's id is
+  `ending/the-ferry-is-coming`; the ground states the ocean's own vanilla
+  music; the two empty barrels are declared scenery with one arrival line.
 - The prefab library is this repository's own `prefabs/`; the level's four
   pieces are `prefabs/the-ferry-bell-*`.
 
@@ -78,6 +83,5 @@ reference images were drawn, so there is no `design.json` and no
 ## Posture
 
 Functional text first. Every title opens with its kind's verb; the slate's and
-the bell's hints give the place by what the player can already see; the one
-`DW1015` warning (*head* in the slate's hint) is a noun and is kept. The manual
+the bell's hints give the place by what the player can already see. The manual
 is in Nell's voice and carries the use key as the player's own binding.

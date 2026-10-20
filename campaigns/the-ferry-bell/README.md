@@ -1,6 +1,6 @@
 # The Ferry Bell
 
-> **Requires delve engine 0.42.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 ![The shore, the jetty and the ferry house from the south-east](media/panorama.jpg)
 
@@ -87,34 +87,29 @@ sees it, and the level builds.
 
 ## The machine record
 
-The build that ships (`delvec build`, exit 0, twice, byte-identical: 208 files):
+The build that ships (`delvec build`, exit 0, twice, byte-identical: 221 files):
 
 ```
 DW0863 binding: 5 act(s) over 1 walk(s) — 2 announced with a hint, 3 in sight (1 kill(s) also in reach), 1 trigger(s) judged by sight alone; 0 refused; 0 kill(s) on no walk judged from the acts that fire their wave
-DW1015 binding: 8 title(s) and 4 hint(s) over 2 language(s) judged (0 string(s) in languages with no table); 1 warned
+act binding (DW1045): 4 of 4 English title(s) read against 4 objective(s); 0 head(s) the lexicon does not know; 0 untitled; 0 refused
+hint act binding (DW1045): 0 of 2 English hint(s) name an act, over 4 objective(s); 0 warned
 compass binding: 4 tracked objective(s) of 4 — 0 by their own field, 4 by the campaign default; 0 refused
 highlight binding: 1 highlight(s) over 5 act(s) — 1 on a block, 0 on a body; 0 refused
 journal pages: 14 page(s) measured over the source and every declared language, the fullest 14 of 14 line(s); 0 over
 name-told binding (DW0982): 4 declared name(s); 1 walk(s); 10 of 10 dialogue string(s) and 6 of 6 objective string(s) on screen on some walk; 0 use(s) of a name in them, 0 untold
 ```
 
-- The one `DW1015` warning is the slate's hint, *On its post at the jetty's
-  head, right of the planks.*: the lexicon reads *head* as a going verb. Here it
-  is a noun, the jetty's landward end, and the hint is kept.
 - PackTest: all 42 required tests passed, among them the seven guidance tests —
   the compass (aim, the menu's buttons, a pick, the spin, the re-give), the
   compass on a person, the compass on the fight, the lever's highlight (dark
   while closed, lit in range, dark beyond it), and the journal's pages, a
   dropped journal, and a joining player's journal.
-- Bot critical path: passed in 7 steps — the talk, the bolt lever, the slate,
-  the bell, the fight — with 2 scripted deaths in the fight survived; the
-  wave's three bodies were read against the document (3 facts, 3 matched);
-  Nell's turn to face the player was asserted 15 times.
+- Bot critical path: passed — the talk, the bolt lever, the slate, the bell,
+  the fight — and a scripted death in the fight came back on the jetty and
+  re-engaged; Nell's turn to face the player was asserted 15 times; the
+  arrival line about the barrels arrived with its sound.
 - The world the server wrote equals the engine's model at every compared cell
-  (17895), outside 6 fence-end states the server re-derives.
-- Staging gate: refused with 2 of 127 findings unbound, both for the design
-  record a demo level does not carry (`drill3-01`, `drill3-03`). Serving it
-  takes the gate's own override.
+  (17895), outside the named classes the server re-derives.
 
 ## Review frames
 
@@ -136,6 +131,9 @@ before Nell moved one block east and one south, to the foot of the jetty.
   slate's words arrive in chat when you click it.
 - **Rain.** The renders above are drawn without rain, clouds or rain fog; in the
   game it is raining all through.
+- **The empty barrels.** On arrival one chat line says the barrels on this
+  shore stand empty: the engine owes that line wherever a container holds
+  nothing.
 - **The dead are zombies** — the dead of this shore, kept from burning in the
   daylight by the rain.
 - **The glow, in a picture.** No frame here shows the highlight; whether it
