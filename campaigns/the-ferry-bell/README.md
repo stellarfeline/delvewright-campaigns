@@ -39,7 +39,9 @@ finished ones struck through.
 Play it with two players if you can; a few items need a second body.
 
 1. **The compass menu.** Talk to Nell and say you will ring the bell. Two tasks
-   open at once: *Read the ferry slate* and *Ring the ferry bell*. Hold the
+   open at once: *Read the ferry slate* and *Ring the ferry bell*; chat shows
+   each one's title and hint (the slate: *On its post at the jetty's head, right
+   of the planks*) with a chime. Does the hint alone get you to it? Hold the
    compass and right-click. Does a list of the open tasks appear, with the one
    you follow marked ◆? Pick the other one. Does the needle turn to it, and
    does chat say *Following: …*?
@@ -67,6 +69,9 @@ Play it with two players if you can; a few items need a second body.
    on the spit across the water and come round the shore. When the last task is
    done, does every compass needle spin, and is every journal all struck-through
    pages?
+7. **The arrival line.** As you arrive, chat says something about the barrels,
+   with the sound of a barrel lid closing. The barrels on this shore are empty:
+   after the line, do you go looking in them, or walk on to the jetty?
 
 If you die in the fight you come back on the jetty, with the dead still
 standing where they were.
