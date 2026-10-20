@@ -60,7 +60,8 @@ loop and the toast are yours to hear.
    way the first track did?
 6. **The last look over the yard has its own music.** The level ends with a
    camera looking down over the yard toward the chapel, and the shot is scored
-   with a slow lament of its own. Does the lament come in at once with the
+   with a slow lament of its own. Does the camera frame the chapel, so you can
+   see what the lament is scoring? Does the lament come in at once with the
    shot, rather than after a pause? When the shot ends you are back where you
    stood, inside the chapel: does the lament fade there, as the yard's first
    track did? Step back out into the yard: does the harsh piece take it back at
