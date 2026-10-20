@@ -1,6 +1,6 @@
 # The Bell Changes the Tune
 
-> **Requires delve engine 0.47.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 Hollin Chapel stands in a walled churchyard, and its passing bell has not been
 rung in forty years. The vigil book asks for it once at dusk, for the names on
@@ -8,7 +8,8 @@ the stones. Walk up through the yard, ring the bell at the altar, and listen to
 what the yard does with the sound.
 
 One player, about ten minutes. You arrive as a **Ringer**, with a lantern for
-the path and a heel of bread for the vigil.
+the path and a heel of bread for the vigil — and a compass and a journal,
+which every delve now hands its players; they are not what this level is for.
 
 ## Playing it
 

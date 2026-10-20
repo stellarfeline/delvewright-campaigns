@@ -31,6 +31,11 @@
   Every document carries `dsl_version` 0.47.0. The released `delvec--v1.13.0`
   answers `delvec 1.13.0, dsl 0.39.0` and refuses this level: only the `dsl`
   number and the revision tell the two apart.
+- Rebuilt on the assembled Batch-B engine (`integrate/batch-b`, `delvec
+  1.13.0, dsl 0.54.0`): every document carries 0.54.0; the ending's id is
+  `ending/the-yard-is-still-playing`; the closing shot names its subject, the
+  chapel anchor it already looks at. The engine now hands every player a
+  compass and a journal.
 - The skill page used is the one in that engine tree
   (`.claude/skills/delvewright/skills/new-delve/`), which pins
   `delvec--v1.13.0`.
