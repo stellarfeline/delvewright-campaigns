@@ -42,6 +42,7 @@ DARK_PLANK = "minecraft:dark_oak_planks"
 LANTERN_UP = "minecraft:lantern[hanging=false,waterlogged=false]"
 LANTERN_HUNG = "minecraft:lantern[hanging=true,waterlogged=false]"
 BARREL = "minecraft:barrel[facing=up,open=false]"
+KELP = "minecraft:dried_kelp_block"
 SHELF = "minecraft:bookshelf"
 DESK = "minecraft:spruce_slab[type=top,waterlogged=false]"
 ROCK = ["minecraft:stone", "minecraft:andesite", "minecraft:tuff", "minecraft:cobblestone"]
@@ -372,9 +373,11 @@ def hall():
     # Shelves set into the back wall behind the counter.
     f.box((mx - 2, sy0, wz1), (mx - 1, sy0 + 1, wz1), SHELF)
     f.box((mx + 1, sy0, wz1), (mx + 2, sy0 + 1, wz1), SHELF)
-    # Stores along the west wall: barrels; a coil of rope and nets along the east.
+    # Stores along the west wall: a barrel, then bales of dried kelp; a coil of
+    # rope and nets along the east. Two barrels in the hall and no more: empty
+    # containers stay few (scenery is capped per place).
     for z in range(sz0 + 1, sz1 - 1, 2):
-        f.set(sx0, sy0, z, BARREL)
+        f.set(sx0, sy0, z, BARREL if z == sz0 + 1 else KELP)
     f.set(sx1, sy0, sz0 + 1, BARREL)
     f.set(sx1, sy0, sz0 + 3, "minecraft:cobweb")
     # Lanterns hung from the ceiling.
