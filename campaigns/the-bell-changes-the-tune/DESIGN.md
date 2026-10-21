@@ -37,7 +37,7 @@ changes.
 | 1 | go into the chapel | `reach` | chapel | walking in under the roof: the yard's track fades |
 | 2 | ring the passing bell | `interact`, bell prop | chapel | `set-atmosphere` paints the yard with `atmosphere/dread` |
 | 3 | go back out among the stones | `reach`, the yew | yard | stepping out: the dread replaces whatever was still playing; sets `flag/dread-heard` |
-| 4 | come back inside | `reach`, gated on `flag/back-under-the-roof` | chapel | the approach trigger just inside the door (`anchor/threshold`, range 1), armed by `flag/dread-heard`, carries `stop-sound {category: music}` and sets `flag/back-under-the-roof`: the dread stops at the door instead of fading on inside, and the last beat waits for that crossing |
+| 4 | come back inside | `reach`, open from the moment the party reaches the yew, so its title and hint are on screen for the whole walk back | chapel | the approach trigger just inside the door (`anchor/threshold`, range 1), armed by `flag/dread-heard`, carries `stop-sound {category: music}`: the dread stops at the door instead of fading on inside; the beat's own completion carries the same `stop-sound`, so the music is stopped before the ending whichever fires first |
 | — | ending | `cutscene`, `hears: atmosphere/dread` | camera over the yard | the camera stands in the dread: the disc comes back |
 
 ## Hour and weather

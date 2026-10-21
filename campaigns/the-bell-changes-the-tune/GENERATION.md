@@ -15,9 +15,10 @@
   the tracks (`music.overworld.meadow` for the yard, `music_disc.11` for the
   dread — short, so its loop seam comes round inside two minutes); the beat
   out to the yew, which arms the door trigger only after the dread has been
-  heard, so the yard's first track is left to fade on the way in; the trigger
-  setting `flag/back-under-the-roof`, read by the last objective, so the forced
-  route performs it; no cast.
+  heard, so the yard's first track is left to fade on the way in; the last
+  objective open from the yew on, so the walk back is announced, its own
+  completion stopping the music too, so the stop is forced before the ending;
+  no cast.
 - **Languages**: English and `zh-cn`. The sidecar was transcreated by
   `tools/creator/i18n-translate.py` (DeepSeek; 16 of 16 rows accepted by its
   fact check) and one row, the class blurb, rewritten through
