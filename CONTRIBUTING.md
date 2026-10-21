@@ -9,7 +9,7 @@ rebuilt, byte for byte. This repo is content; the pipeline that compiles it live
 in the main repo (GPL). Licensing is directory-scoped: `campaigns/` and
 `references/` are **CC BY-SA 4.0** (see LICENSE); `prefabs/` items carry per-item licenses
 (original, or an ADR-0013 allowlist licence; see `prefabs/LICENSE-ASSETS.md`)
-recorded in their metadata.
+recorded in their metadata; `prefabs/generators/` is GPL-3.0 code, the engine's.
 
 ## Layout
 
@@ -26,6 +26,7 @@ references/<level-id>/                 # a reference level: how to build one kin
   prefabs/             # its own pieces (.nbt + metadata); it builds with these
   forms/  measure/  review/   # what its pieces are made from, and how they were judged
 prefabs/               # the shared building-block library (.nbt + metadata, git-lfs)
+  generators/          # the programs that wrote its tilesets: provenance records
 demos/<demo>/          # a generation-time surface demonstrated: a grammar
                        #   program, the piece it exports, its reports and its
                        #   refusal transcripts. Never a campaign — a stage
@@ -43,10 +44,10 @@ a campaign here through a pull request, and for no other reason.
 
 Cloned, it is a complete authoring environment: every existing
 prefab is reusable by any campaign, and a **new prefab ships in the same PR as
-the campaign that needs it**. The prefab library lives in `prefabs/`;
-the deterministic generators that produce
-those pieces stay in the main repo (GPL code), and their outputs are committed
-here. `.nbt` files are tracked with git-lfs (see `.gitattributes`) — clone with
+the campaign that needs it**. The prefab library lives in `prefabs/`.
+The programs that wrote its tilesets are kept beside it in
+`prefabs/generators/`, as provenance records (GPL-3.0 code, never built or run
+here); a new piece is a grammar program. `.nbt` files are tracked with git-lfs (see `.gitattributes`) — clone with
 git-lfs installed.
 
 Build any campaign with the main repo's `delvec`. **`--prefabs prefabs` is not
