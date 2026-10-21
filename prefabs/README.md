@@ -1,7 +1,8 @@
 # The prefab library — what a piece says about its own outside
 
 One reader: whoever adds or edits a piece here. `LICENSE-ASSETS.md` holds the
-per-item licence.
+per-item licence. `generators/` holds the programs that wrote the tilesets, as
+their provenance records; nothing builds or runs them.
 
 A piece's `<id>.json` is a metadata file beside its `.nbt`. Three of its fields
 are the piece's claims about its outside, and the engine reads each one against
