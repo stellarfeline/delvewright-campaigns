@@ -52,7 +52,9 @@ def main():
     bottom = wy0 + h["ground"]["bottom_y"]
 
     # The ring's terrain height per row, read at the west ring column (local x 0).
-    ring = {(p[0], p[1]): p[2] for p in h["ground"]["perimeter"]}
+    # A perimeter entry is `[x, top, z]`, all piece-local (the handout's doc
+    # comment says `[x, z, top]`; the bytes say otherwise).
+    ring = {(p[0], p[2]): wy0 + p[1] for p in h["ground"]["perimeter"]}
     surface = {}
     for lz in range(sz0, sz1 + 1):
         s = ring.get((0, lz))
@@ -94,7 +96,7 @@ def main():
     m.space("street", "open", *thlib.subtract(play, [via]))
     m.via("street-landing", via)
     m.entry = "street"
-    cls = seam.get("answers", ["walk"])[0]
+    cls = seam.get("answer_with", ["walk"])[0]
     m.edge(a="street", b="exterior", **{"class": cls, "via": "street-landing"})
 
     # Owed names, each at a cell a body stands in.
