@@ -31,8 +31,14 @@ def main():
         hf.Pad(40, 34, 40, 34, 74, 0.5),           # the mainland's hill
     ]
     fixed = {(x, z): SEA_BED for x in range(NX) for z in range(NZ) if x in (0, NX - 1) or z in (0, NZ - 1)}
+    # The terraces are flat to their rings: a higher pad's cone would otherwise
+    # lift the first column of the next terrace by one.
+    for (z0, z1, top) in ((43, 49, 73), (50, 56, 71), (57, 64, 69)):
+        for x in range(31, 49):
+            for z in range(z0, z1 + 1):
+                fixed[(x, z)] = top
     y = hf.rounded(hf.envelope(NX, NZ, features, SEA_BED, fixed))
-    pad = set(hf.rect(31, 43, 48, 73)) if hasattr(hf, "rect") else {(x, z) for x in range(31, 49) for z in range(43, 74)}
+    pad = {(x, z) for x in range(31, 49) for z in range(43, 74)}
     steep = [s for s in hf.steep_pairs(y, lambda x, z: y[x][z] >= SEA) if s[0] not in pad and s[1] not in pad]
     if steep:
         raise SystemExit(f"{len(steep)} open-ground step(s) over one: {steep[:5]}")
