@@ -68,7 +68,7 @@ S = [
  ("shore-street","harbourmaster","walk","west",2,3,"door","the harbourmaster's east door onto the shore street"),
  ("quay","warehouse","walk","north",26,4,"door","the warehouse's south door onto the quay"),
 ]
-def eid(a,b): return f"edge/{a}--{b}"
+def eid(a,b): return f"edge/{a}-{b}"
 nodes = [{"id":"node/"+p[0],"intent":p[9],"note":p[10]} for p in P]
 edges = [{"a":"node/"+a,"b":"node/"+b,"class":c,"id":eid(a,b)} for a,b,c,*_ in S]
 crit = ["node/"+n for n in ["square","flight-1","upper-street","flight-2","middle-street","flight-3","lower-street","flight-4","shore-street","flight-5","quay"]]
@@ -118,3 +118,7 @@ env("npcs", {"npcs":[]})
 env("classes", {"classes":[{"blurb":"Three loaves for the climb back.","id":"class/visitor",
   "kit":[{"count":3,"item":"minecraft:bread"}],"name":"Visitor"}]})
 env("dialogue", {"dialogues":[]})
+
+env("design", {"references": [{"name": "reference/view1-from-the-sea",
+  "shows": "Saltstair from the sea in late afternoon: the quay wall, the five terraces and their flights, the eight houses stepping up the hill, the green peninsula behind.",
+  "time": "dusk", "weather": "clear"}]})
