@@ -18,9 +18,12 @@ between each two terraces. A piece's space is ONE floor (at most two
 consecutive levels, `contract-well-formed`), so a sloping street cannot be one
 space: each terrace is a space and each step a `stair` edge whose via is its
 tread row — the first shape of this piece, a 0.3 ramp in one space, was
-refused with "7 levels". The seam's opening is left open; the rest of the
-south ring row above its fixed ground is a two-high parapet whose top is
-declared out of walk, so the only way onto the landing is the seam (`DW0838`).
+refused with "7 levels". The seam's opening is left open; every other cell of
+the face the two places share (the overlap of their play spaces, four courses
+over the sill) is parapet, a lintel over the opening included, and its top is
+declared out of walk, so the only way onto the landing is the seam (`DW0836`,
+`DW0838`); the first parapet, two high under a four-course face, was refused
+with 20 open cells.
 Marks: every owed anchor at a cell a body stands in; `spawn` carries
 `role: entry`.
 """
@@ -92,20 +95,25 @@ def main():
             else:
                 m.set(x, s, z, m.pick(x, s, z, PAVING))
 
-    # The seam: its cells stay open; the rest of the south ring row above the
-    # fixed ground is a parapet two high, and its top is declared out of walk.
+    # The seam: its cells stay open; every other cell of the face the two
+    # places share — the overlap of their play spaces, here the four courses
+    # over the sill — is wall (DW0836 counts every open cell of it), so the
+    # parapet is as tall as that band, with a lintel over the opening, and its
+    # top is declared out of walk.
     seam = h["seams"][0]
     (c0, c1) = seam["cells"]
-    open_x = set(range(wx0 + min(c0[0], c1[0]), wx0 + max(c0[0], c1[0]) + 1))
     ring_z = wz0 + c0[2]
     ground_z = wy0 + seam["ground_y"]
-    parapet_top = []
+    opening = {(wx0 + x, wy0 + y) for x in range(min(c0[0], c1[0]), max(c0[0], c1[0]) + 1)
+               for y in range(min(c0[1], c1[1]), max(c0[1], c1[1]) + 1)}
+    band_top = ground_z + 4           # the landing's top course (floor 66 + open 8 = 73), the shared face's top
     for x in range(x0 - 1, x1 + 2):
-        if x in open_x:
-            continue
-        for y in (ground_z + 1, ground_z + 2):
+        for y in range(ground_z + 1, band_top + 1):
+            if (x, y) in opening:
+                continue
             m.set(x, y, ring_z, PARAPET)
-        parapet_top.append((x, ground_z + 3, ring_z, x, ground_z + 3, ring_z))
+    open_x = {x for x, _ in opening}
+    parapet_top = [(x, band_top + 1, ring_z, x, band_top + 1, ring_z) for x in range(x0 - 1, x1 + 2)]
 
     # Contract: three one-floor spaces, two flights between them, the seam as
     # the lower terrace's exterior edge, the parapet's top out of walk.
@@ -122,11 +130,8 @@ def main():
     m.edge(a="lower", b="exterior", **{"class": cls, "via": "street-landing"})
     m.edge(a="lower", b="middle", **{"class": "stair", "rise": 2, "via": "flight-1"})
     m.edge(a="middle", b="upper", **{"class": "stair", "rise": 2, "via": "flight-2"})
-    west = [b for b in parapet_top if b[0] < min(open_x)]
-    east = [b for b in parapet_top if b[0] > max(open_x)]
     m.nobody("parapet-top", "the top of the parapet at the street's foot: nobody climbs up here",
-             (west[0][0], west[0][1], ring_z, west[-1][0], west[-1][1], ring_z),
-             (east[0][0], east[0][1], ring_z, east[-1][0], east[-1][1], ring_z))
+             (parapet_top[0][0], parapet_top[0][1], ring_z, parapet_top[-1][0], parapet_top[-1][1], ring_z))
 
     # Owed names: the spawn at the top of the street (the walk comes down the
     # whole piece), the node anchor on the middle terrace.
