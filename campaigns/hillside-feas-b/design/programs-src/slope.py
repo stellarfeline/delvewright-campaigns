@@ -108,6 +108,7 @@ def main():
 
     prog = m.program(f"{CAMPAIGN}-street")
     path = Path(C) / "programs" / "street.json"
+    path.parent.mkdir(exist_ok=True)
     path.write_text(json.dumps(prog, indent=1) + "\n")
     print(f"street: {len(m.cells)} blocks, {len(prog['rules'])} rules, {len(prog['palette'])} roles, "
           f"faces {prog['shown_faces']}, surface {min(surface.values())}..{max(surface.values())} over floor {floor}, "
