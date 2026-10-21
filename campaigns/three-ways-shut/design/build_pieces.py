@@ -211,6 +211,8 @@ def yard(a):
         if y > 1:
             p.put((x, 1, 12), (x, y - 1, 14), "masonry")
     p.put((1, 1, 12), (5, 5, 14), "masonry")
+    # A rail along the stair's open side, so it is climbed from its foot.
+    p.put((1, 1, 11), (9, 1, 11), "rail")
     for x, y in treads:
         p.claim_box((x, y, 12), (x, 9, 14), "keeper-flight")
     p.claim_box((1, 6, 12), (5, 9, 14), "landing")
@@ -232,6 +234,7 @@ def yard(a):
     palette = dict(BASE, **{
         "barricade": "minecraft:stripped_spruce_log[axis=x]",
         "masonry": "minecraft:stone_bricks",
+        "rail": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
         "tread": "minecraft:stone_brick_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
     })
     contract = {
