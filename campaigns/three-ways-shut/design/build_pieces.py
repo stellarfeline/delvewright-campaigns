@@ -221,6 +221,8 @@ def yard(a):
     p.put((10, 1, 14), (12, 3, 14), "masonry")
     p.put((11, 1, 14), (11, 2, 14), None)
     p.claim_box((11, 1, 14), (11, 2, 14), "mouth")
+    p.put((10, 3, 14), (12, 9, 14), "masonry")
+    p.put((10, 4, 13), (12, 9, 13), "masonry")
     p.put((10, 1, 13), (12, 3, 13), "barricade")
     p.claim_box((10, 1, 13), (12, 3, 13), "barricade")
     # Lanterns hung from the roof beams, clear of the line from the gate side
