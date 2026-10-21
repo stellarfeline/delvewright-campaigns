@@ -9,15 +9,20 @@ coordinates into a voxel model and writes `programs/street.json` through the
 Treehouse Camp's voxel-to-program compiler (`campaigns/hillside/design/thlib.py`,
 copied from `campaigns/the-treehouse-camp/design/programs-src/thlib.py`).
 
-What it draws, per footprint column: dirt from the claim's bottom up to one
-under the ring's own terrain height at that row (the handout's `perimeter`,
-read at the west ring, so the street's surface IS the heightmap's — the
-stitching is by construction and `DW0990`'s crack check measures it), then a
-paved surface at that height. A row where the surface rises by one is a
-one-block step a body walks. The seam's opening is left open; the rest of the
-south ring row above its fixed ground is a two-high parapet, so the only way
-onto the landing is the seam (`DW0838`). Marks: every owed anchor at a cell a
-body stands in; `spawn` carries `role: entry`.
+What it draws: three flat terraces at the heights the ring's own terrain has
+at those rows (the handout's `perimeter`, read at the west ring, so the
+street's surface IS the heightmap's where they meet — the stitching is by
+construction and `DW0990`'s crack check measures it), earth under them from
+the claim's bottom, paving on top, kerbs at the sides, and one tread row
+between each two terraces. A piece's space is ONE floor (at most two
+consecutive levels, `contract-well-formed`), so a sloping street cannot be one
+space: each terrace is a space and each step a `stair` edge whose via is its
+tread row — the first shape of this piece, a 0.3 ramp in one space, was
+refused with "7 levels". The seam's opening is left open; the rest of the
+south ring row above its fixed ground is a two-high parapet whose top is
+declared out of walk, so the only way onto the landing is the seam (`DW0838`).
+Marks: every owed anchor at a cell a body stands in; `spawn` carries
+`role: entry`.
 """
 import json
 import os
@@ -55,15 +60,26 @@ def main():
     # A perimeter entry is `[x, top, z]`, all piece-local (the handout's doc
     # comment says `[x, z, top]`; the bytes say otherwise).
     ring = {(p[0], p[2]): wy0 + p[1] for p in h["ground"]["perimeter"]}
+
+    # The street's three terraces, as the heightmap steps them at the ring
+    # (terrain/site.py), with one tread row between each two: a space is ONE
+    # floor (`contract-well-formed`), so each terrace is a space and each step
+    # is a `stair` edge whose via is its tread row.
+    upper = [z for z in range(z0, z1 + 1) if ring[(0, z - wz0)] == floor + 3]
+    middle = [z for z in range(z0, z1 + 1) if ring[(0, z - wz0)] == floor + 1]
+    lower = [z for z in range(z0, z1 + 1) if ring[(0, z - wz0)] == floor - 1]
+    if not (upper and middle and lower) or len(upper) + len(middle) + len(lower) != z1 - z0 + 1:
+        raise SystemExit(f"the ring does not step in three terraces: {sorted(set(ring[(0, z - wz0)] for z in range(z0, z1 + 1)))}")
+    tread_2, tread_1 = middle[0], lower[0]          # the first row of each lower terrace is its tread
     surface = {}
-    for lz in range(sz0, sz1 + 1):
-        s = ring.get((0, lz))
-        if s is None:
-            raise SystemExit(f"no perimeter height at the west ring, row {lz}")
-        surface[wz0 + lz] = s
-    for z, s in surface.items():
-        if s + 1 < floor:
-            raise SystemExit(f"the ring's ground at z {z} ({s}) stands under the floor course {floor - 1}")
+    for z in upper:
+        surface[z] = floor + 3
+    for z in middle:
+        surface[z] = floor + 1
+    for z in lower:
+        surface[z] = floor - 1
+    surface[tread_2] = floor + 2
+    surface[tread_1] = floor
 
     # The street: earth up to the surface, paving at the surface, kerbs at the sides.
     for z in range(z0, z1 + 1):
@@ -77,34 +93,50 @@ def main():
                 m.set(x, s, z, m.pick(x, s, z, PAVING))
 
     # The seam: its cells stay open; the rest of the south ring row above the
-    # fixed ground is a parapet two high.
+    # fixed ground is a parapet two high, and its top is declared out of walk.
     seam = h["seams"][0]
     (c0, c1) = seam["cells"]
     open_x = set(range(wx0 + min(c0[0], c1[0]), wx0 + max(c0[0], c1[0]) + 1))
     ring_z = wz0 + c0[2]
-    ground_z = surface[z1]  # the row inside; the seam's ring ground is the sill minus one
+    ground_z = wy0 + seam["ground_y"]
+    parapet_top = []
     for x in range(x0 - 1, x1 + 2):
         if x in open_x:
             continue
         for y in (ground_z + 1, ground_z + 2):
             m.set(x, y, ring_z, PARAPET)
+        parapet_top.append((x, ground_z + 3, ring_z, x, ground_z + 3, ring_z))
 
-    # Contract: one open space over the whole play space minus the opening, the
-    # opening as the exterior edge's via.
+    # Contract: three one-floor spaces, two flights between them, the seam as
+    # the lower terrace's exterior edge, the parapet's top out of walk.
     via = (wx0 + c0[0], wy0 + c0[1], wz0 + c0[2], wx0 + c1[0], wy0 + c1[1], wz0 + c1[2])
-    play = (x0, floor, z0, x1, top, z1)
-    m.space("street", "open", *thlib.subtract(play, [via]))
+    lower_box = (x0, floor, lower[1], x1, top, z1)
+    m.space("lower", "open", *thlib.subtract(lower_box, [via]))
+    m.space("middle", "open", (x0, floor + 2, middle[1], x1, top, middle[-1]))
+    m.space("upper", "open", (x0, floor + 4, z0, x1, top, upper[-1]))
+    m.via("flight-1", (x0, floor + 1, tread_1, x1, floor + 3, tread_1))
+    m.via("flight-2", (x0, floor + 3, tread_2, x1, floor + 5, tread_2))
     m.via("street-landing", via)
-    m.entry = "street"
+    m.entry = "lower"
     cls = seam.get("answer_with", ["walk"])[0]
-    m.edge(a="street", b="exterior", **{"class": cls, "via": "street-landing"})
+    m.edge(a="lower", b="exterior", **{"class": cls, "via": "street-landing"})
+    m.edge(a="lower", b="middle", **{"class": "stair", "rise": 2, "via": "flight-1"})
+    m.edge(a="middle", b="upper", **{"class": "stair", "rise": 2, "via": "flight-2"})
+    west = [b for b in parapet_top if b[0] < min(open_x)]
+    east = [b for b in parapet_top if b[0] > max(open_x)]
+    m.nobody("parapet-top", "the top of the parapet at the street's foot: nobody climbs up here",
+             (west[0][0], west[0][1], ring_z, west[-1][0], west[-1][1], ring_z),
+             (east[0][0], east[0][1], ring_z, east[-1][0], east[-1][1], ring_z))
 
-    # Owed names, each at a cell a body stands in.
+    # Owed names: the spawn at the top of the street (the walk comes down the
+    # whole piece), the node anchor on the middle terrace.
     mid_x = (x0 + x1) // 2
-    for i, name in enumerate(h["owed_anchors"]):
+    for name in h["owed_anchors"]:
         stem = name.split("/", 1)[1] if "/" in name else name
-        z = z0 + 3 + 3 * i
-        m.mark(stem, mid_x, surface[z] + 1, z, "south", role="entry" if name == "spawn" else None)
+        if name == "spawn":
+            m.mark(stem, mid_x, floor + 4, upper[len(upper) // 2], "south", role="entry")
+        else:
+            m.mark(stem, mid_x, floor + 2, middle[len(middle) // 2], "south")
 
     prog = m.program(f"{CAMPAIGN}-street")
     path = Path(C) / "programs" / "street.json"

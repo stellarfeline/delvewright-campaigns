@@ -5,10 +5,13 @@ shared heightfield module (../../hillside/terrain/heightfield.py).
 Writes terrain/site.png, 80 x 96, surface `48 + value / 5`. Region min
 [0, 40, 0], extent [80, 48, 96]; the land side is north, the sea south.
 
-Features: the street's ramp (x 31..48, z 43..64: surface 75 at z 43 falling
-0.3 a column to 69 at z 64, the seam row), the landing's pad (x 31..48,
-z 64..73 at 65; the shared row z 64 takes the ramp's 69), one hill on the
-mainland, half a block per column everywhere beyond.
+Features: the street in three terraces (x 31..48: z 43..49 at 73, z 50..56
+at 71, z 57..64 at 69 — the seam row z 64 is the sill minus one), the
+landing's pad (x 31..48, z 64..73 at 65; the shared row z 64 takes 69), one
+hill on the mainland, half a block per column everywhere beyond. A terrace is
+flat because a piece's space is one floor (`contract-well-formed`): the street
+piece draws each terrace as a space and the step between two as a `stair`
+edge, and the ring's ground follows the same terraces.
 """
 import sys
 from pathlib import Path
@@ -21,7 +24,9 @@ NX, NZ, BASE_Y, SEA_BED, SEA = 80, 96, 48, 54, 62
 
 def main():
     features = [
-        hf.Ramp(31, 43, 48, 64, 75.0, 0.3, 0.5),   # the street: ring at z 43 .. seam row z 64
+        hf.Pad(31, 43, 48, 49, 73, 0.5),           # the street's upper terrace, ring row z 43 included
+        hf.Pad(31, 50, 48, 56, 71, 0.5),           # its middle terrace
+        hf.Pad(31, 57, 48, 64, 69, 0.5),           # its lower terrace, the seam row z 64 included
         hf.Pad(31, 64, 48, 73, 65, 0.5),           # the landing, footprint and ring
         hf.Pad(40, 34, 40, 34, 74, 0.5),           # the mainland's hill
     ]
@@ -38,7 +43,7 @@ def main():
     land = [(x, z) for x in range(NX) for z in range(NZ) if y[x][z] >= SEA]
     print(f"wrote {out} ({NX}x{NZ}); surface y {min(min(c) for c in y)}..{max(max(c) for c in y)}; "
           f"land x {min(x for x, _ in land)}..{max(x for x, _ in land)}, z {min(z for _, z in land)}..{max(z for _, z in land)}; "
-          f"street ring z 43: {y[31][43]}, seam row z 64: {y[31][64]}, inside z 44: {y[40][44]}, z 63: {y[40][63]}; "
+          f"street ring z 43: {y[31][43]}, z 50: {y[31][50]}, z 57: {y[31][57]}, seam row z 64: {y[31][64]}; "
           f"landing z 65: {y[40][65]}; 0 open-ground steps over one", file=sys.stderr)
 
 
