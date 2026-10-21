@@ -57,8 +57,20 @@
   (2) nothing explains what the thing is or why the bell calls it; (3) the
   ending is unresolved — the thing is still standing when the delve ends.
 - **The design gate**: not held. No reference art was drawn and no design record
-  is approved: `design.json` does not exist, and the staging gate counts that as
-  a zero. The design of record is the demo-levels row and `DESIGN.md`.
+  is approved: `design.json` does not exist. `world.json` declares
+  `demo_level: true` and the engine's demo queue names
+  `campaigns/the-thing-across-the-water`, so the staging gate's design-record
+  findings measure this level zero. The design of record is the demo-levels row
+  and `DESIGN.md`.
+
+## Rebuilt on the refreshed engine (`feat/batch-b-refresh` at `351e631e54153b6277fbd02de106f66e92a53583`, `delvec 1.13.0, dsl 0.56.0`)
+
+Every document carries 0.56.0 and `world.json` declares `demo_level: true`;
+nothing a player meets changed. `build` exit 0 twice, byte-identical (419
+files); PackTest 31 of 31 required tests passed; the bot's critical path
+passed; the written world equals the server's at all 19632 compared cells; the
+staging gate admits it with no override (147 rows: 45 bound, 75 inapplicable,
+27 declared uncoverable, 0 refused).
 
 ## Rebuilt on the assembled Batch-B engine (`integrate/batch-b`, `delvec 1.13.0, dsl 0.54.0`)
 
