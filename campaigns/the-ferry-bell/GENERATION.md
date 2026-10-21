@@ -45,6 +45,13 @@
   `walk` with its `gating` (the `barred` class is retired); the ending's id is
   `ending/the-ferry-is-coming`; the ground states the ocean's own vanilla
   music; the two empty barrels are declared scenery with one arrival line.
+- Rebuilt on the refreshed engine (`feat/batch-b-refresh` at `351e631e54153b6277fbd02de106f66e92a53583`, `delvec 1.13.0, dsl 0.56.0`):
+  every document carries 0.56.0 and `world.json` declares `demo_level: true`;
+  nothing a player meets changed. `build` exit 0 twice, byte-identical (221
+  files); PackTest 42 of 42 required tests passed; the bot's critical path and
+  die-retry stages passed; the written world equals the server's at all 17895
+  compared cells; the staging gate admits it with no override (147 rows: 57
+  bound, 63 inapplicable, 27 declared uncoverable, 0 refused).
 - The prefab library is this repository's own `prefabs/`; the level's four
   pieces are `prefabs/the-ferry-bell-*`.
 
@@ -52,8 +59,10 @@
 
 Not held. A demo level is confirmed by its owner on the finished thing; no
 reference images were drawn, so there is no `design.json` and no
-`design/cameras.json`. The staging gate's two design-record findings
-(`drill3-01`, `drill3-03`) stay unbound for that reason.
+`design/cameras.json`. `world.json` declares `demo_level: true` and the
+engine's demo queue names `campaigns/the-ferry-bell`, so the staging gate's
+design-record findings (`drill3-01`, `drill3-03`) measure this level zero and
+admit it.
 
 ## How the map is made
 
