@@ -107,12 +107,12 @@ def main():
 
     write("site-plan.json", doc("site-plan", {
         "boxes": [
-            {"ceiling": {"clearance": 7}, "extent": [16, 14], "floor": {"datum": "datum/grade"}, "min": [8, 14], "node": "node/yard"},
+            {"ceiling": {"clearance": 9}, "extent": [16, 14], "floor": {"datum": "datum/grade"}, "min": [8, 14], "node": "node/yard"},
             {"ceiling": {"clearance": 5}, "extent": [10, 8], "floor": {"datum": "datum/grade"}, "node": "node/court"},
             {"ceiling": {"clearance": 4}, "extent": [8, 5], "floor": {"datum": "datum/grade"}, "node": "node/passage"},
             {"ceiling": {"clearance": 5}, "extent": [10, 14], "floor": {"datum": "datum/grade"}, "node": "node/hall"},
             {"ceiling": {"clearance": 3}, "extent": [8, 5], "floor": {"datum": "datum/ledge"}, "node": "node/ledge"},
-            {"ceiling": {"clearance": 3}, "extent": [34, 5], "floor": {"datum": "datum/grade"}, "node": "node/corridor"},
+            {"ceiling": {"clearance": 4}, "extent": [34, 5], "floor": {"datum": "datum/grade"}, "node": "node/corridor"},
         ],
         "datums": [
             {"id": "datum/grade", "note": "The yard's floor, and every floor at the yard's level.", "y": 64},
@@ -134,7 +134,7 @@ def main():
             {"at": 1, "edge": "edge/keeper-stair", "face": "south", "form": "a stone stair up the yard's south wall to the keeper's walk", "meets": 1, "opening": "passage", "stair_in": "node/yard"},
             {"at": [3, 2], "edge": "edge/keeper-hatch", "face": "down", "form": "a hatch in the keeper's walk, over the cart road", "meets": [3, 2], "opening": {"height": 1, "width": 1}},
             {"at": 10, "edge": "edge/cart-road", "face": "south", "form": "the mouth of the old cart road in the yard's south wall, barred, behind stacked barrels", "meets": 10, "opening": "door"},
-            {"at": 28, "edge": "edge/road-end", "face": "north", "form": "the cart road's end, an open doorway into the toll house", "meets": 4, "opening": "door"},
+            {"at": 30, "edge": "edge/road-end", "face": "north", "form": "the cart road's end, an open doorway into the toll house", "meets": 4, "opening": "door"},
         ],
     }))
 
@@ -151,7 +151,7 @@ def quests():
         {"type": "cutscene", "seconds": 4,
          "look_at": {"anchor": "anchor/seam-cart-road"},
          "path": [{"anchor": "anchor/seam-cart-road", "offset": [-2, 2, -5]}, {"anchor": "anchor/seam-cart-road", "offset": [0, 1, -3]}]},
-        {"style": "chat", "text": "The key turns the cart road's lock. Below the ledge, the barrels are gone from the yard's south wall and the old road stands open.", "type": "narrate"},
+        {"style": "chat", "text": "The key turns the cart road's lock. Below the ledge, the barrels are gone from the old road's mouth and the road stands open.", "type": "narrate"},
     ]
     return doc("quests", {
         "quests": [
@@ -162,7 +162,7 @@ def quests():
                 "objectives": [{
                     "anchor": "anchor/key-chest", "count": 1, "holder": "anchor/key-chest",
                     "happening": {"subject": "item/keepers-key", "text": "The runner takes the keeper's key from the chest on the ledge.", "verb": "gains"},
-                    "hint": "Climb the stair up the yard's south wall to the keeper's walk. The chest is beside the hatch.",
+                    "hint": "Climb the stone stair up the wall beside the gate to the keeper's walk. The chest is beside the hatch.",
                     "id": "obj/take-the-key", "item": "minecraft:tripwire_hook", "item_name": "The keeper's key",
                     "title": "Take the keeper's key", "type": "collect",
                 }],
