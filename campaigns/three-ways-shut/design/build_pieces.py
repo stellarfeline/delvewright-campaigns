@@ -350,13 +350,14 @@ def ledge(a):
 def corridor(a):
     p = Piece(a)
     p.shell()
-    # Three wide: the far two rows are wall.
-    p.put((1, 1, 4), (34, 4, 5), "wall")
+    # Five wide under the keeper's walk, where the hatch drops in; three wide
+    # beyond it, the far two rows wall.
+    p.put((10, 1, 4), (34, 4, 5), "wall")
     p.opening("edge/keeper-hatch")
     p.opening("edge/cart-road")
     p.opening("edge/road-end")
     lamps(p, [(x, 4, 2) for x in (7, 14, 20, 26, 32)], 4)
-    p.claim_box((1, 1, 1), (34, 4, 3), "room", air_only=True)
+    p.claim_box((1, 1, 1), (34, 4, 5), "room", air_only=True)
     contract = {
         "edges": [
             {"a": "room", "b": "exterior", "class": "walk", "via": "keeper-hatch"},
