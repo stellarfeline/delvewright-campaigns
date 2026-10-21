@@ -1,6 +1,6 @@
 # The Bell Changes the Tune
 
-> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 Hollin Chapel stands in a walled churchyard, and its passing bell has not been
 rung in forty years. The vigil book asks for it once at dusk, for the names on

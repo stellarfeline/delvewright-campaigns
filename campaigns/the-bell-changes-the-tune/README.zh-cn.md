@@ -1,6 +1,6 @@
 # 钟声改变曲调
 
-> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 霍林小教堂立在一圈石墙围起的墓园里，堂里那口丧钟四十年没人敲过了。守夜簿上写着：黄昏时敲一次，为碑上的名字。穿过墓园，到祭坛前敲响它，然后听听墓园拿这钟声做了什么。
 
