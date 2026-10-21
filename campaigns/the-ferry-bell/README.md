@@ -39,14 +39,14 @@ finished ones struck through.
 Play it with two players if you can; a few items need a second body.
 
 1. **The compass menu.** Talk to Nell and say you will ring the bell. Two tasks
-   open at once: *Read the ferry slate* and *Ring the ferry bell*; chat shows
-   each one's title and hint (the slate: *On its post at the jetty's head, right
+   open at once: *Read the ferry notice* and *Ring the ferry bell*; chat shows
+   each one's title and hint (the notice: *On its post at the jetty's head, right
    of the planks*) with a chime. Does the hint alone get you to it? Hold the
    compass and right-click. Does a list of the open tasks appear, with the one
    you follow marked ◆? Pick the other one. Does the needle turn to it, and
    does chat say *Following: …*?
 2. **Two compasses, two ways.** Standing beside Nell, one player picks the bell
-   from the list and the other follows the slate. The slate is a few steps to
+   from the list and the other follows the notice. The notice is a few steps to
    one side, at the jetty's head; the bell is straight out along the jetty, in
    the ferry house. Do the two needles point different ways?
 3. **The lever glows only up close.** The ferry-house door is bolted. From the
@@ -59,7 +59,7 @@ Play it with two players if you can; a few items need a second body.
    go: the page about the compass, then two pages of *The Ferry-Keeper's Notes*
    (the first names the use key as your own binding), then one page per open
    task with its hint and the ◆ mark on the one you follow, then the finished
-   tasks struck through? Open it again after you read the slate: has the slate
+   tasks struck through? Open it again after you read the notice: has the notice
    moved to the struck-through pages, with the bell still open?
 5. **Reconnect, or join late.** Disconnect on the jetty and come back, or have
    a second player join after the talk. Does the returning player hold the same
@@ -109,7 +109,7 @@ name-told binding (DW0982): 4 declared name(s); 1 walk(s); 10 of 10 dialogue str
   compass on a person, the compass on the fight, the lever's highlight (dark
   while closed, lit in range, dark beyond it), and the journal's pages, a
   dropped journal, and a joining player's journal.
-- Bot critical path: passed — the talk, the bolt lever, the slate, the bell,
+- Bot critical path: passed — the talk, the bolt lever, the notice, the bell,
   the fight — and a scripted death in the fight came back on the jetty and
   re-engaged; Nell's turn to face the player was asserted 15 times; the
   arrival line about the barrels arrived with its sound.
@@ -119,12 +119,12 @@ name-told binding (DW0982): 4 declared name(s); 1 walk(s); 10 of 10 dialogue str
 ## Review frames
 
 Two draft frames (`delvec snapshot --labels`), with the engine's labels burnt
-in. They draw the world as it stands at load, so Nell, the slate's sign, the
+in. They draw the world as it stands at load, so Nell, the notice, the
 lever and the bell are not in them; their labelled boxes are. They were drawn
 before Nell moved one block east and one south, to the foot of the jetty.
 
 - `media/review/at-nell.jpg` — where the talk ends: Nell's box on the left, the
-  slate's post (labelled `NOTICE`) on the right, and straight ahead the jetty
+  notice's post (labelled `NOTICE`) on the right, and straight ahead the jetty
   running out to the ferry house, with the lever's box at its door: the two
   open tasks lie in two directions.
 - `media/review/six-from-lever.jpg` — six blocks short of the lever along the
@@ -132,8 +132,8 @@ before Nell moved one block east and one south, to the foot of the jetty.
 
 ## What this level does not show
 
-- **The slate is blank.** The engine cannot yet write a placed sign's text; the
-  slate's words arrive in chat when you click it.
+- **The notice is blank.** The engine cannot yet write a placed sign's text; the
+  notice's words arrive in chat when you click it.
 - **Rain.** The renders above are drawn without rain, clouds or rain fog; in the
   game it is raining all through.
 - **The empty barrels.** On arrival one chat line says the barrels on this
