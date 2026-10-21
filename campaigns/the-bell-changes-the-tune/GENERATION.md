@@ -36,6 +36,13 @@
   `ending/the-yard-is-still-playing`; the closing shot names its subject, the
   chapel anchor it already looks at. The engine now hands every player a
   compass and a journal.
+- Rebuilt on the refreshed engine (`feat/batch-b-refresh` at `351e631e54153b6277fbd02de106f66e92a53583`, `delvec 1.13.0, dsl 0.56.0`):
+  every document carries 0.56.0 and `world.json` declares `demo_level: true`;
+  nothing a player meets changed. `build` exit 0 twice, byte-identical (194
+  files); PackTest 22 of 22 required tests passed; the bot's critical path
+  passed; the written world equals the server's at all 2150 compared cells;
+  the staging gate admits it with no override (147 rows: 36 bound, 84
+  inapplicable, 27 declared uncoverable, 0 refused).
 - The skill page used is the one in that engine tree
   (`.claude/skills/delvewright/skills/new-delve/`), which pins
   `delvec--v1.13.0`.
@@ -46,7 +53,9 @@
 
 Not held. A demo level is confirmed by its owner on the finished thing; no
 reference images were drawn, so there is no `design.json` and no
-`design/cameras.json`.
+`design/cameras.json`. `world.json` declares `demo_level: true` and the
+engine's demo queue names `campaigns/the-bell-changes-the-tune`, so the staging
+gate's design-record findings measure this level zero.
 
 ## Posture
 
