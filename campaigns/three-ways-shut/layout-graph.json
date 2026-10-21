@@ -1,0 +1,159 @@
+{
+  "campaign_id": "three-ways-shut",
+  "content": {
+    "beats": [
+      {
+        "node": "node/ledge",
+        "objective": "obj/take-the-key",
+        "quest": "quest/the-key"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/pull-the-lever",
+        "quest": "quest/the-way-through"
+      },
+      {
+        "node": "node/court",
+        "objective": "obj/enter-the-court",
+        "quest": "quest/the-way-through"
+      }
+    ],
+    "critical_path": [
+      "node/yard",
+      "node/ledge",
+      "node/yard",
+      "node/corridor",
+      "node/hall",
+      "node/corridor",
+      "node/yard",
+      "node/court"
+    ],
+    "edges": [
+      {
+        "a": "node/yard",
+        "b": "node/court",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/arch-raised"
+          ],
+          "learned": "seen"
+        },
+        "id": "edge/court-arch"
+      },
+      {
+        "a": "node/yard",
+        "b": "node/passage",
+        "class": "walk",
+        "id": "edge/passage-door"
+      },
+      {
+        "a": "node/passage",
+        "b": "node/hall",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/bolt-drawn"
+          ],
+          "learned": "told",
+          "opens_from": "b"
+        },
+        "id": "edge/toll-door",
+        "shortcut": true
+      },
+      {
+        "a": "node/yard",
+        "b": "node/ledge",
+        "class": "stair",
+        "id": "edge/keeper-stair"
+      },
+      {
+        "a": "node/ledge",
+        "b": "node/corridor",
+        "class": "drop",
+        "falls": "a-to-b",
+        "gating": {
+          "flags": [
+            "flag/key-taken"
+          ],
+          "learned": "rewarded"
+        },
+        "id": "edge/keeper-hatch"
+      },
+      {
+        "a": "node/yard",
+        "b": "node/corridor",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/key-taken"
+          ]
+        },
+        "id": "edge/cart-road"
+      },
+      {
+        "a": "node/corridor",
+        "b": "node/hall",
+        "class": "walk",
+        "id": "edge/road-end"
+      }
+    ],
+    "entry": "node/yard",
+    "goal": "node/court",
+    "nodes": [
+      {
+        "id": "node/yard",
+        "intent": "hub",
+        "note": "The toll yard, under a timber roof: the party comes in at its south-west gate. The barred arch to the court stands straight across it; the passage to the toll house opens off its east side; the keeper's stair climbs its south wall; the cart road's mouth is behind the stacked barrels in its south wall.",
+        "stations": [
+          {
+            "anchor": "anchor/barricade",
+            "kind": "gate",
+            "note": "The barrels stacked across the mouth of the cart road, cleared when the road is opened."
+          }
+        ]
+      },
+      {
+        "id": "node/court",
+        "intent": "goal-chamber",
+        "note": "The inner court beyond the barred arch: the way through, once the bars are raised."
+      },
+      {
+        "id": "node/passage",
+        "intent": "side-room",
+        "note": "A short passage off the yard to the toll house door, which is bolted on the toll house's side."
+      },
+      {
+        "id": "node/hall",
+        "intent": "side-room",
+        "note": "The toll house: the lever that raises the arch's bars, and the bolt of the passage door.",
+        "stations": [
+          {
+            "anchor": "anchor/arch-lever",
+            "kind": "point",
+            "note": "The lever on the toll house wall that raises the bars on the yard's arch."
+          }
+        ]
+      },
+      {
+        "id": "node/ledge",
+        "intent": "cache",
+        "note": "The keeper's walk along the top of the yard's south wall, up a side stair: the chest with the key, and a hatch in its floor over the cart road, locked until the key is taken.",
+        "stations": [
+          {
+            "anchor": "anchor/key-chest",
+            "kind": "point",
+            "note": "The keeper's chest on the ledge, beside the hatch."
+          }
+        ]
+      },
+      {
+        "id": "node/corridor",
+        "intent": "connector",
+        "note": "The old cart road: a long covered way south of the yard from the barrels at its mouth to the toll house."
+      }
+    ]
+  },
+  "dsl_version": "0.57.0",
+  "stage": "layout-graph"
+}
