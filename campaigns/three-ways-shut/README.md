@@ -58,10 +58,13 @@ runner; there is no hurry.
    rather than in it?
 
 The machine has already confirmed: every shut way's declared way of being
-learned holds; the cart road's mouth is never reached before it opens; and
-every door, stair and road is as wide along its whole length as it was
-declared, before and after the key, with nothing of the fireplace in the
-stair's three columns. What you judge is whether it looks and reads right.
+learned holds, the chest on the keeper's walk paying for the stair; the cart
+road's mouth is never reached before it opens; and every doorway and the
+stair are as wide as they were declared, on both sides of each doorway and
+at every step of the stair, before and after the key, with nothing of the
+fireplace in the stair's three columns. The cart road declares no width of
+its own, so the machine judges its two mouths and not the road between them.
+What you judge is whether it looks and reads right.
 
 ## 给主人看的：要看什么
 
@@ -73,4 +76,4 @@ stair's three columns. What you judge is whether it looks and reads right.
 4. **壁炉。** 石阶脚下、同一面墙上，是院子里的壁炉：两侧是石砌炉颊，上面是雕花的壁炉台，炉石上烧着发红的余烬，后面是一面黑色的炉背。拿到钥匙之前，它读起来是不是就是一个壁炉，别无其他？拿到钥匙时会有一个短镜头看向它：余烬熄灭，炉背转开。镜头之后，它是否一眼看得出是一条路的入口，而且和旁边的石阶一样宽？
 5. **石阶脚下。** 拿钥匙之前和之后，各站到石阶脚下看一次：石阶读起来是不是完整的三格宽，壁炉在它旁边，而不是挡在它里面？
 
-机器已经确认：每条封路声明的得知方式都成立；车道入口在开之前，玩家根本走不到它面前；每扇门、每段楼梯、每条路在整条路上都和声明的一样宽，拿钥匙前后都是，壁炉的任何部分都没有伸进石阶的三列。你要判断的只是"看起来对不对、读起来对不对"。
+机器已经确认：每条封路声明的得知方式都成立，看守走道上的箱子让那段石阶值得一爬；车道入口在开之前，玩家根本走不到它面前；每个门洞和那段石阶都和声明的一样宽——门洞两侧都是，石阶每一级都是，拿钥匙前后都是，壁炉的任何部分都没有伸进石阶的三列。车道本身没有声明宽度，所以机器查的是它两头的入口，而不是中间那段路。你要判断的只是"看起来对不对、读起来对不对"。
