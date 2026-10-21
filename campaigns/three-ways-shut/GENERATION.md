@@ -20,20 +20,26 @@ opened mouth when the beat fires.
   the arch's bars.
 - The hatch in the keeper's walk drops into the cart road. It opens with the key,
   so once the road is open it is a quick way down into it.
-- The corridor's mouth is a barred doorway in the yard wall set back one cell,
-  with a timber barricade standing across the recess. The barricade is a gate of
-  its own (the station `anchor/barricade`), cleared by the same beat that lifts
-  the bars, so no body reaches the bars' face before the beat and the mouth owes
-  no word. The engine counts it as never met.
+- The corridor's mouth is hidden behind the yard's fireplace, in the yard's
+  south wall east of the keeper's stair, and is three wide, as wide as the
+  stair. The fireback in the wall is the road's own bar; the recess before it
+  is the mouth's approach, two high under the mantel; the embers on the hearth
+  stone before the recess are a gate of their own (the station
+  `anchor/hearth-fire`), cleared by the same beat that swings the fireback
+  away, so no body reaches the fireback's face before the beat and the mouth
+  owes no word. The engine counts it as never met. The cheeks, mantel and
+  chimney breast stand beside and above the mouth's three columns, and no
+  structure of the fireplace stands in the stair's three columns or its foot,
+  in either state. The fire is embers, not logs: no wood stands in the way.
 - The toll house door is two wide, so its bar has one thinnest axis and the
   shortcut's wrong side is decided by the engine, not guessed.
 - No speaking cast, no fight. Narration carries the premise once, on arrival.
 
 ## Engine and language
 
-Built with `delvec 1.13.0, dsl 0.57.0, mc 1.21.11` from the engine's
-`feat/impl-0118` worker branch — an unreleased tree, the only one carrying
-spec-0118. The version string is the released engine's number; the revision,
+Built with `delvec 1.13.0, dsl 0.59.0, mc 1.21.11` from the engine's
+`integrate/batch-c` branch — an unreleased tree, the only one carrying both
+spec-0118 and spec-0120. The version string is the released engine's number; the revision,
 named in the round's report, says which engine built this level.
 
 Every piece is this campaign's own, written as a grammar program under

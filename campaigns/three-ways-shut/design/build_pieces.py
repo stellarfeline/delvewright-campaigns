@@ -217,22 +217,31 @@ def yard(a):
         p.claim_box((x, y, 12), (x, 9, 14), "keeper-flight")
     p.claim_box((1, 6, 12), (5, 9, 14), "landing")
     p.opening("edge/keeper-stair")
-    # The cart road's mouth in the same wall: its bars, a one-cell recess in
-    # front of them, and the timber barricade across the recess.
-    p.bar("edge/cart-road")
-    p.put((10, 1, 14), (12, 3, 14), "masonry")
-    p.put((11, 1, 14), (11, 2, 14), None)
-    p.claim_box((11, 1, 14), (11, 2, 14), "mouth")
-    p.put((10, 3, 14), (12, 9, 14), "masonry")
-    p.put((10, 4, 13), (12, 9, 13), "masonry")
-    p.put((10, 1, 13), (12, 3, 13), "barricade")
-    p.claim_box((10, 1, 13), (12, 3, 13), "barricade")
+    # The yard's fireplace in the same wall, east of the stair's foot: its
+    # mouth is the cart road's, three wide, as wide as the stair beside it.
+    # The fireback in the wall is the road's own bar and hides the road behind
+    # it; the recess before it is the mouth's approach, two high under the
+    # mantel; the embers on the hearth stone before the recess are a gate of
+    # their own the same beat clears, so no body reaches the fireback before
+    # the key is taken. Cheeks, mantel and chimney breast stand beside and
+    # above the mouth's three columns, and nothing of the fireplace reaches
+    # the stair's foot.
+    p.bar("edge/cart-road", "fireback")
+    p.put((11, 1, 13), (11, 2, 14), "masonry")
+    p.put((15, 1, 13), (15, 2, 14), "masonry")
+    p.put((11, 3, 13), (15, 3, 14), "mantel")
+    p.put((11, 4, 13), (15, 9, 14), "masonry")
+    p.claim_box((12, 1, 14), (14, 2, 14), "mouth")
+    p.put((12, 1, 13), (14, 1, 13), "embers")
+    p.claim_box((12, 1, 13), (14, 1, 13), "hearth-fire")
     # Lanterns hung from the roof beams, clear of the line from the gate side
     # to the arch.
     lamps(p, [(3, 6, 3), (8, 6, 3), (14, 6, 3), (3, 6, 8), (9, 6, 8), (14, 6, 8), (12, 6, 11), (6, 6, 11)], 9)
     p.claim_box((1, 1, 1), (16, 9, 14), "room", air_only=True)
     palette = dict(BASE, **{
-        "barricade": "minecraft:stripped_spruce_log[axis=x]",
+        "embers": "minecraft:magma_block",
+        "fireback": "minecraft:polished_blackstone_bricks",
+        "mantel": "minecraft:chiseled_stone_bricks",
         "masonry": "minecraft:stone_bricks",
         "rail": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
         "tread": "minecraft:stone_brick_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
@@ -243,8 +252,8 @@ def yard(a):
             {"a": "room", "b": "exterior", "class": "walk", "via": "passage-door"},
             {"a": "room", "b": "landing", "class": "stair", "rise": 5, "via": "keeper-flight"},
             {"a": "landing", "b": "exterior", "class": "walk", "via": "keeper-stair"},
-            {"a": "room", "b": "mouth", "bar": {"block": "barricade", "region": "barricade"}, "class": "barred"},
-            {"a": "mouth", "b": "exterior", "bar": {"block": "bar", "region": "seam-cart-road"}, "class": "barred"},
+            {"a": "room", "b": "mouth", "bar": {"block": "embers", "region": "hearth-fire"}, "class": "barred"},
+            {"a": "mouth", "b": "exterior", "bar": {"block": "fireback", "region": "seam-cart-road"}, "class": "barred"},
         ],
         "entry": "room",
         "spaces": {"landing": {"envelope": "open"}, "mouth": {"envelope": "enclosed"}, "room": {"envelope": "enclosed"}},
