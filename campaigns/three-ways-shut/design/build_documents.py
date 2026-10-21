@@ -130,7 +130,7 @@ def main():
         "seams": [
             {"at": 6, "edge": "edge/court-arch", "face": "north", "form": "an arch in the yard's far wall into the inner court, barred across", "meets": 3, "opening": "arch"},
             {"at": 6, "edge": "edge/passage-door", "face": "east", "form": "an open doorway in the yard's east wall into the passage", "meets": 1, "opening": "door"},
-            {"at": 1, "edge": "edge/toll-door", "face": "east", "form": "the toll house door at the passage's end, bolted on the toll house side", "meets": 6, "opening": "door"},
+            {"at": 1, "edge": "edge/toll-door", "face": "east", "form": "the toll house door at the passage's end, two wide, bolted on the toll house side", "meets": 6, "opening": {"height": 2, "width": 2}},
             {"at": 1, "edge": "edge/keeper-stair", "face": "south", "form": "a stone stair up the yard's south wall to the keeper's walk", "meets": 1, "opening": "passage", "stair_in": "node/yard"},
             {"at": [3, 2], "edge": "edge/keeper-hatch", "face": "down", "form": "a hatch in the keeper's walk, over the cart road", "meets": [3, 2], "opening": {"height": 1, "width": 1}},
             {"at": 10, "edge": "edge/cart-road", "face": "south", "form": "the mouth of the old cart road in the yard's south wall, barred, behind a timber barricade", "meets": 10, "opening": "door"},
