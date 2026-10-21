@@ -210,10 +210,10 @@ def yard(a):
         p.put((x, y, 12), (x, y, 14), "tread")
         if y > 1:
             p.put((x, 1, 12), (x, y - 1, 14), "masonry")
-    p.put((2, 1, 12), (5, 5, 14), "masonry")
+    p.put((1, 1, 12), (5, 5, 14), "masonry")
     for x, y in treads:
         p.claim_box((x, y, 12), (x, 9, 14), "keeper-flight")
-    p.claim_box((2, 6, 12), (5, 9, 14), "landing")
+    p.claim_box((1, 6, 12), (5, 9, 14), "landing")
     p.opening("edge/keeper-stair")
     # The cart road's mouth in the same wall: its bars, a one-cell recess in
     # front of them, and the timber barricade across the recess.
