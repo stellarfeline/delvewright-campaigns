@@ -1,0 +1,89 @@
+{
+  "campaign_id": "the-hearth-door",
+  "content": {
+    "beats": [
+      {
+        "node": "node/lane",
+        "objective": "obj/turn-the-sluice",
+        "quest": "quest/the-fire"
+      },
+      {
+        "node": "node/passage",
+        "objective": "obj/enter-the-passage",
+        "quest": "quest/the-records"
+      }
+    ],
+    "critical_path": [
+      "node/porch",
+      "node/hall",
+      "node/lane",
+      "node/hall",
+      "node/passage"
+    ],
+    "edges": [
+      {
+        "a": "node/porch",
+        "b": "node/hall",
+        "class": "walk",
+        "id": "edge/porch-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/lane",
+        "class": "stair",
+        "id": "edge/hall-stair"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/passage",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/hearth-out"
+          ]
+        },
+        "id": "edge/hearth-door"
+      }
+    ],
+    "entry": "node/porch",
+    "goal": "node/passage",
+    "nodes": [
+      {
+        "id": "node/porch",
+        "intent": "entrance",
+        "note": "The porch the clerk comes in by, south of the hall: a door into the hall."
+      },
+      {
+        "id": "node/hall",
+        "intent": "hub",
+        "note": "The wardens' hall: a broad stone stair three wide climbs its east wall to the lane, and the great hearth stands in its north wall at the stair's foot, its fire before a grate.",
+        "stations": [
+          {
+            "anchor": "anchor/hearth-fire",
+            "kind": "gate",
+            "note": "The fire on the hearth stone before the mouth, put out and washed away when the flue floods."
+          }
+        ]
+      },
+      {
+        "id": "node/lane",
+        "intent": "connector",
+        "note": "Wardens' Lane, open to the sky at the head of the stair: a street four wide with a lamp post at its edge half-way along, and the flue's sluice at its far end.",
+        "stations": [
+          {
+            "anchor": "anchor/sluice",
+            "kind": "point",
+            "note": "The sluice lever at the lane's south end, which floods the flue."
+          }
+        ]
+      },
+      {
+        "id": "node/passage",
+        "intent": "goal-chamber",
+        "note": "The wardens' passage behind the hearth: as wide as the stair, and the records at its end."
+      }
+    ]
+  },
+  "dsl_version": "0.59.0",
+  "stage": "layout-graph"
+}

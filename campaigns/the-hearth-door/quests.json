@@ -1,0 +1,157 @@
+{
+  "campaign_id": "the-hearth-door",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-porch",
+          "text": "The clerk comes in by the porch and finds the great hearth burning.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-fire",
+        "objectives": [
+          {
+            "anchor": "anchor/sluice",
+            "happening": {
+              "subject": "anchor/seam-hearth-door",
+              "text": "The clerk turns the sluice at the end of Wardens' Lane, and water floods the flue.",
+              "verb": "opens"
+            },
+            "hint": "Climb the broad stair by the hearth to Wardens' Lane. The sluice is at the lane's far end.",
+            "id": "obj/turn-the-sluice",
+            "prop": {
+              "block": "minecraft:lever[face=floor,facing=north,powered=false]"
+            },
+            "title": "Pull the sluice at the lane's end",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/turn-the-sluice": [
+            {
+              "flag": "flag/hearth-out",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/hearth-fire",
+              "happening": {
+                "subject": "anchor/hearth-fire",
+                "text": "The fire on the hearth stone hisses out, and its embers wash down into the flue.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "anchor": "anchor/seam-hearth-door",
+              "happening": {
+                "subject": "anchor/seam-hearth-door",
+                "text": "The grate at the back of the hearth lifts into the chimney, and the passage behind it stands open.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "look_at": {
+                "anchor": "anchor/seam-hearth-door"
+              },
+              "path": [
+                {
+                  "anchor": "anchor/seam-hearth-door",
+                  "offset": [
+                    1,
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "anchor": "anchor/seam-hearth-door",
+                  "offset": [
+                    1,
+                    1,
+                    4
+                  ]
+                }
+              ],
+              "seconds": 4,
+              "type": "cutscene"
+            },
+            {
+              "style": "chat",
+              "text": "Water roars down the flue. The fire on the great hearth hisses out and washes away, and the grate at the hearth's back rises into the chimney. Down at the stair's foot, the wardens' passage is open.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/seam-hearth-door",
+          "text": "The clerk goes back down to the cold hearth.",
+          "verb": "learns"
+        },
+        "id": "quest/the-records",
+        "objectives": [
+          {
+            "anchor": "anchor/node-passage",
+            "happening": {
+              "subject": "anchor/node-passage",
+              "text": "The clerk walks through the cold hearth into the wardens' passage.",
+              "verb": "arrives"
+            },
+            "hint": "Go back down the stair. The hearth is at its foot, and its fire is out.",
+            "id": "obj/enter-the-passage",
+            "radius": 2,
+            "title": "Go through the hearth into the passage",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The wardens' passage is open.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-passage",
+              "text": "The wardens' records are reached.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {},
+        "trigger": {
+          "quest": "quest/the-fire",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-hall",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "The great hearth burns before its grate, as it has for a hundred years. The wardens kept their records behind it. The sluice that floods its flue is up the stair, at the end of Wardens' Lane.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-burning-hearth",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.59.0",
+  "stage": "quests"
+}
