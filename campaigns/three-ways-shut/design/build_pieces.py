@@ -323,6 +323,7 @@ def ledge(a):
     p.opening("edge/keeper-stair")
     p.bar("edge/keeper-hatch", "hatch")
     p.put((5, 1, 2), (5, 1, 2), "chest")
+    p.claim_box((5, 1, 2), (5, 1, 2), "room")
     for x, z in ((1, 4), (8, 4), (8, 0)):
         p.put((x, 1, z), (x, 1, z), "standing")
     p.claim_box((1, 1, 0), (8, 3, 4), "room", air_only=True)
