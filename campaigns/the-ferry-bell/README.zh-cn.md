@@ -1,6 +1,6 @@
 # 渡船之铃
 
-> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 ![从东南方看沙岸、码头和渡船屋](media/panorama.jpg)
 

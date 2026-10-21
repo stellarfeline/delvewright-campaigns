@@ -1,6 +1,6 @@
 # The Ferry Bell
 
-> **Requires delve engine 0.54.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
 ![The shore, the jetty and the ferry house from the south-east](media/panorama.jpg)
 
