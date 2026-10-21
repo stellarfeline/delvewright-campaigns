@@ -31,7 +31,7 @@ def main():
         "languages": ["zh-cn"],
         "min_players": 1,
         "outro": "The arch stands open behind you, and the toll yard is a way through again.",
-        "premise": "The toll yard at Ashford Cut has been shut since the floods. Every way out of it is closed in its own fashion: the arch to the inner court is barred where everyone can see it, the toll house door is bolted from its own side, the keeper's hatch on the ledge is locked, and the old cart road behind the stacked barrels has not been walked in years. The keeper left a key in the chest on the ledge. Somebody has to fetch it, open the cart road, and raise the bars on the arch from the toll house.",
+        "premise": "The toll yard at Ashford Cut has been shut since the floods. Every way out of it is closed in its own fashion: the arch to the inner court is barred where everyone can see it, the toll house door is bolted from its own side, the keeper's hatch on the ledge is locked, and the old cart road behind the timber barricade has not been walked in years. The keeper left a key in the chest on the ledge. Somebody has to fetch it, open the cart road, and raise the bars on the arch from the toll house.",
         "seed": 20261020,
         "target_minutes": 10,
         "theme": "A walled toll yard under a timber roof, every way out of it shut a different way, and the one honest way round.",
@@ -60,7 +60,7 @@ def main():
     write("quest-plan.json", doc("quest-plan", {
         "finale": "quest/the-way-through",
         "quests": [
-            {"act": 1, "area": "area/site", "depends_on": [], "goal": "Arrive in the shut toll yard, find the keeper's key in the chest on the ledge up the side stair, and with it open the old cart road behind the barrels.", "id": "quest/the-key", "mandatory": True, "npcs": []},
+            {"act": 1, "area": "area/site", "depends_on": [], "goal": "Arrive in the shut toll yard, find the keeper's key in the chest on the ledge up the side stair, and with it open the old cart road behind the timber barricade.", "id": "quest/the-key", "mandatory": True, "npcs": []},
             {"act": 1, "area": "area/site", "depends_on": ["quest/the-key"], "goal": "Walk the cart road to the toll house, pull the lever that raises the bars on the yard's arch, draw the bolt of the toll house door, and go through the arch into the inner court.", "id": "quest/the-way-through", "mandatory": True, "npcs": []},
         ],
     }))
@@ -87,9 +87,9 @@ def main():
         "entry": "node/yard",
         "goal": "node/court",
         "nodes": [
-            {"id": "node/yard", "intent": "hub", "note": "The toll yard, under a timber roof: the party comes in at its south-west gate. The barred arch to the court stands straight across it; the passage to the toll house opens off its east side; the keeper's stair climbs its south wall; the cart road's mouth is behind the stacked barrels in its south wall.",
+            {"id": "node/yard", "intent": "hub", "note": "The toll yard, under a timber roof: the party arrives by its south wall. The barred arch to the court stands straight across it; the passage to the toll house opens off its east side; the keeper's stair climbs its south wall; the cart road's mouth is behind the timber barricade in its south wall.",
              "stations": [
-                 {"anchor": "anchor/barricade", "kind": "gate", "note": "The barrels stacked across the mouth of the cart road, cleared when the road is opened."},
+                 {"anchor": "anchor/barricade", "kind": "gate", "note": "The timber barricade across the mouth of the cart road, cleared when the road is opened."},
              ]},
             {"id": "node/court", "intent": "goal-chamber", "note": "The inner court beyond the barred arch: the way through, once the bars are raised."},
             {"id": "node/passage", "intent": "side-room", "note": "A short passage off the yard to the toll house door, which is bolted on the toll house's side."},
@@ -101,7 +101,7 @@ def main():
              "stations": [
                  {"anchor": "anchor/key-chest", "kind": "point", "note": "The keeper's chest on the ledge, beside the hatch."},
              ]},
-            {"id": "node/corridor", "intent": "connector", "note": "The old cart road: a long covered way south of the yard from the barrels at its mouth to the toll house."},
+            {"id": "node/corridor", "intent": "connector", "note": "The old cart road: a long covered way south of the yard from the barricade at its mouth to the toll house."},
         ],
     }))
 
@@ -133,7 +133,7 @@ def main():
             {"at": 1, "edge": "edge/toll-door", "face": "east", "form": "the toll house door at the passage's end, bolted on the toll house side", "meets": 6, "opening": "door"},
             {"at": 1, "edge": "edge/keeper-stair", "face": "south", "form": "a stone stair up the yard's south wall to the keeper's walk", "meets": 1, "opening": "passage", "stair_in": "node/yard"},
             {"at": [3, 2], "edge": "edge/keeper-hatch", "face": "down", "form": "a hatch in the keeper's walk, over the cart road", "meets": [3, 2], "opening": {"height": 1, "width": 1}},
-            {"at": 10, "edge": "edge/cart-road", "face": "south", "form": "the mouth of the old cart road in the yard's south wall, barred, behind stacked barrels", "meets": 10, "opening": "door"},
+            {"at": 10, "edge": "edge/cart-road", "face": "south", "form": "the mouth of the old cart road in the yard's south wall, barred, behind a timber barricade", "meets": 10, "opening": "door"},
             {"at": 30, "edge": "edge/road-end", "face": "north", "form": "the cart road's end, an open doorway into the toll house", "meets": 4, "opening": "door"},
         ],
     }))
@@ -143,7 +143,7 @@ def quests():
     key_taken = [
         {"flag": "flag/key-taken", "type": "set-flag"},
         {"anchor": "anchor/barricade", "type": "open-gate",
-         "happening": {"subject": "anchor/barricade", "text": "The stacked barrels across the cart road's mouth are hauled aside.", "verb": "opens"}},
+         "happening": {"subject": "anchor/barricade", "text": "The timber barricade across the cart road's mouth is hauled aside.", "verb": "opens"}},
         {"anchor": "anchor/seam-cart-road", "type": "open-gate",
          "happening": {"subject": "anchor/seam-cart-road", "text": "The bars in the cart road's mouth lift.", "verb": "opens"}},
         {"anchor": "anchor/seam-keeper-hatch", "type": "open-gate",
@@ -151,7 +151,7 @@ def quests():
         {"type": "cutscene", "seconds": 4,
          "look_at": {"anchor": "anchor/seam-cart-road"},
          "path": [{"anchor": "anchor/seam-cart-road", "offset": [-2, 2, -5]}, {"anchor": "anchor/seam-cart-road", "offset": [0, 1, -3]}]},
-        {"style": "chat", "text": "The key turns the cart road's lock. Below the ledge, the barrels are gone from the old road's mouth and the road stands open.", "type": "narrate"},
+        {"style": "chat", "text": "The key turns the cart road's lock. Below the ledge, the barricade is gone from the old road's mouth and the road stands open.", "type": "narrate"},
     ]
     return doc("quests", {
         "quests": [
@@ -162,7 +162,7 @@ def quests():
                 "objectives": [{
                     "anchor": "anchor/key-chest", "count": 1, "holder": "anchor/key-chest",
                     "happening": {"subject": "item/keepers-key", "text": "The runner takes the keeper's key from the chest on the ledge.", "verb": "gains"},
-                    "hint": "Climb the stone stair up the wall beside the gate to the keeper's walk. The chest is beside the hatch.",
+                    "hint": "Climb the stone stair up the wall beside the timber barricade to the keeper's walk. The chest is beside the hatch.",
                     "id": "obj/take-the-key", "item": "minecraft:tripwire_hook", "item_name": "The keeper's key",
                     "title": "Take the keeper's key", "type": "collect",
                 }],
@@ -178,16 +178,16 @@ def quests():
                     {
                         "anchor": "anchor/arch-lever",
                         "happening": {"subject": "anchor/seam-court-arch", "text": "The runner pulls the lever in the toll house, and the bars on the yard's arch go up.", "verb": "opens"},
-                        "hint": "Walk the cart road to its end. The lever is on the toll house wall.",
+                        "hint": "Walk the cart road to its end. The lever is on the toll house floor, by the wall.",
                         "id": "obj/pull-the-lever",
-                        "prop": {"block": "minecraft:lever[face=wall,facing=west,powered=false]"},
+                        "prop": {"block": "minecraft:lever[face=floor,facing=north,powered=false]"},
                         "title": "Pull the lever in the toll house", "type": "interact",
                     },
                     {
                         "after": ["obj/pull-the-lever"],
                         "anchor": "anchor/node-court", "radius": 2,
                         "happening": {"subject": "anchor/node-court", "text": "The runner walks through the open arch into the inner court.", "verb": "arrives"},
-                        "hint": "The arch stands across the yard from the gate. Draw the bolt of the toll house door to go back by the short way.",
+                        "hint": "The barred arch is across the yard from the stair. Draw the bolt of the toll house door to go back by the short way.",
                         "id": "obj/enter-the-court",
                         "title": "Go through the arch into the court", "type": "reach-anchor",
                     },
@@ -221,6 +221,41 @@ def quests():
     })
 
 
+ZH = {
+    "The toll company sends a runner when a yard is shut too long. This season it is you: find the keeper's key and open the way through.": "关卡一关得太久，收费公司就会派个跑腿的来。今年轮到你：找到看守的钥匙，把路重新打通。",
+    "Runner's sword": "跑腿人的剑",
+    "Runner's boots": "跑腿人的靴子",
+    "Toll Runner": "收费跑腿人",
+    "The bolt slides back. The passage to the yard is one door away now.": "门闩滑开了。回院子的过道，如今只隔一扇门。",
+    "The key turns the cart road's lock. Below the ledge, the barricade is gone from the old road's mouth and the road stands open.": "钥匙拧开了车道的锁。走道下方，旧车道口的木障已经撤走，路敞开了。",
+    "The way through is open.": "路通了。",
+    "The toll yard has been shut since the floods. The arch to the court is barred, the toll house door is bolted from its own side, and the keeper's hatch is locked. The keeper left the key in the chest on the ledge.": "自从那场洪水，收费院就一直关着。通往内院的拱门被铁栏封着，收费房的门从里头闩上了，看守的活板门也锁着。看守把钥匙留在了走道上的箱子里。",
+    "The door is bolted from the toll house side.": "这扇门是从收费房那一侧闩上的。",
+    "Climb the stone stair up the wall beside the timber barricade to the keeper's walk. The chest is beside the hatch.": "沿着木障旁边贴墙的石阶爬上看守走道。箱子就在活板门旁边。",
+    "The keeper's key": "看守的钥匙",
+    "Take the keeper's key": "取看守的钥匙",
+    "The barred arch is across the yard from the stair. Draw the bolt of the toll house door to go back by the short way.": "封着铁栏的拱门在院子另一头，与石阶相对。拉开收费房门的门闩，就能抄近路回去。",
+    "Go through the arch into the court": "穿过拱门进入内院",
+    "Walk the cart road to its end. The lever is on the toll house floor, by the wall.": "沿车道走到尽头。拉杆在收费房的地上，靠着墙。",
+    "Pull the lever in the toll house": "拉动收费房里的拉杆",
+    "Arrive in the shut toll yard, find the keeper's key in the chest on the ledge up the side stair, and with it open the old cart road behind the timber barricade.": "来到关闭的收费院，顺着侧边石阶上到走道，在箱子里找到看守的钥匙，用它打开木障后面的旧车道。",
+    "Walk the cart road to the toll house, pull the lever that raises the bars on the yard's arch, draw the bolt of the toll house door, and go through the arch into the inner court.": "沿车道走到收费房，拉动升起院中拱门铁栏的拉杆，拉开收费房门的门闩，再穿过拱门进入内院。",
+    "The arch stands open behind you, and the toll yard is a way through again.": "拱门在你身后敞开，收费院又成了一条通路。",
+    "Three Ways Shut": "三道封路",
+}
+
+
+def l10n(inventory):
+    content, source = {}, {}
+    for e in inventory["entries"]:
+        content[e["key"]] = ZH[e["en"]]
+        source[e["key"]] = e["en"]
+    return {"campaign_id": CID, "content": content, "dsl_version": V, "kind": "l10n", "lang": "zh-cn", "source": source}
+
+
 if __name__ == "__main__":
     main()
     write("quests.json", quests())
+    import sys
+    if len(sys.argv) > 1:
+        write("l10n/zh-cn.json", l10n(json.loads(pathlib.Path(sys.argv[1]).read_text())))
