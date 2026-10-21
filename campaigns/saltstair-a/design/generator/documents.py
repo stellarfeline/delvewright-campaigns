@@ -1,4 +1,4 @@
-import json, sys
+import json, math, sys
 C = sys.argv[1]
 ID = "saltstair-a"; V = "0.55.0"
 def env(stage, content):
@@ -104,7 +104,7 @@ env("site-plan", {"boxes":boxes,"datums":[{"id":d,"note":n,"y":y} for d,y,n in D
   "fill":{"below":"minecraft:dirt","kind":"open","surface":"minecraft:grass_block",
           "terrain":{"base_y":48,"heightmap":"terrain/peninsula.png","kind":"heightmap","range":51}},
   "identities":idents,"region":{"extent":[144,96,224],"min":[0,40,0]},"seams":seams,
-  "views":[{"eye":e,"id":i,"look_at":l,"note":n} for i,e,l,n in views],"volumes":[]})
+  "views":[{"eye":[math.floor(c) for c in e],"id":i,"look_at":[math.floor(c) for c in l],"note":n+" The site plan states a view in whole cells: each coordinate is the cell holding the camera's point; design/cameras.json carries the exact point."} for i,e,l,n in views],"volumes":[]})
 
 env("quest-plan", {"finale":"quest/down-to-the-quay","quests":[{"act":1,"area":"area/site","depends_on":[],
   "goal":"Walk the main street down from the square to the quay.","id":"quest/down-to-the-quay","mandatory":True,"npcs":[]}]})

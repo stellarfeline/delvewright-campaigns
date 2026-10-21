@@ -8,4 +8,4 @@ The design of record is `campaigns/hillside/DESIGN.md` (§2–§6), shared by bo
 
 **The judging set**: the six cameras of `campaigns/hillside/DESIGN.md` §6, as the site plan's `views[]` and as `design/cameras.json`; the five numbers, measured in `GENERATION.md`.
 
-**The reference image**: `design/reference/view1-from-the-sea.jpg` with its sidecar, a byte copy of the shared one, recorded in `design.json`. The image is the authority on look; §4 of the shared design is the authority on size and position.
+**The reference image**: `design/reference/view1-from-the-sea.jpg` with its sidecar, a copy of the shared one (its sidecar canonically formatted by `delvec fmt`), recorded in `design.json`. The image is the authority on look; §4 of the shared design is the authority on size and position.
