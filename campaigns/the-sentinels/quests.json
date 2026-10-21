@@ -1,0 +1,259 @@
+{
+  "campaign_id": "the-sentinels",
+  "content": {
+    "actors": [
+      {
+        "anchor": "anchor/plinth-w1",
+        "answers": {
+          "struck": "Dust puffs from the joints. Under the iron it is stone.",
+          "touched": "Your hand comes away grey. Nobody has dusted this one in a while."
+        },
+        "entity": "minecraft:zombie",
+        "equipment": {
+          "chest": "minecraft:iron_chestplate",
+          "head": "minecraft:iron_helmet"
+        },
+        "facing": "east",
+        "id": "actor/sentinel-dust"
+      },
+      {
+        "anchor": "anchor/plinth-e1",
+        "answers": {
+          "struck": "The mail rings once and goes still. It does not feel the blow.",
+          "touched": "Cold, as if it had stood in the snow all night. It has not moved in a century."
+        },
+        "entity": "minecraft:husk",
+        "equipment": {
+          "chest": "minecraft:chainmail_chestplate",
+          "head": "minecraft:chainmail_helmet"
+        },
+        "facing": "west",
+        "id": "actor/sentinel-cold"
+      },
+      {
+        "anchor": "anchor/plinth-w2",
+        "answers": {
+          "struck": "A statue of the old watch. Hit it all you like; the captain is the one to leave alone.",
+          "touched": "Carved on the plinth: hold the post. It has."
+        },
+        "entity": "minecraft:zombie",
+        "equipment": {
+          "chest": "minecraft:chainmail_chestplate",
+          "head": "minecraft:iron_helmet"
+        },
+        "facing": "east",
+        "id": "actor/sentinel-warning"
+      },
+      {
+        "anchor": "anchor/plinth-e2",
+        "answers": {
+          "struck": "Stone. It has been hit by better swords than yours.",
+          "touched": "Somebody has tucked a note into its gauntlet: do not feed the sentries."
+        },
+        "entity": "minecraft:husk",
+        "equipment": {
+          "chest": "minecraft:iron_chestplate",
+          "head": "minecraft:leather_helmet"
+        },
+        "facing": "west",
+        "id": "actor/sentinel-joke"
+      },
+      {
+        "anchor": "anchor/plinth-e3",
+        "answers": {
+          "struck": "Iron over stone, and the iron is warm. The captain does not stir yet.",
+          "touched": "The sword hand is closed tight round the hilt. It is not carved that way."
+        },
+        "entity": "minecraft:zombie",
+        "equipment": {
+          "chest": "minecraft:iron_chestplate",
+          "feet": "minecraft:iron_boots",
+          "head": "minecraft:iron_helmet",
+          "legs": "minecraft:iron_leggings",
+          "main_hand": "minecraft:iron_sword"
+        },
+        "facing": "west",
+        "id": "actor/the-captain",
+        "name": "The Captain of the Watch",
+        "tier": "elite"
+      },
+      {
+        "anchor": "anchor/golem-stand",
+        "answers": {
+          "struck": "A hollow clang. The iron golem was the hall's guard once; now it is part of the hall.",
+          "touched": "Moss in the seams of its arms. It has stood here longer than the keeper."
+        },
+        "entity": "minecraft:iron_golem",
+        "facing": "east",
+        "id": "actor/the-old-guard",
+        "name": "The Old Guard"
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/door-ward": {
+            "at": "anchor/door-ward",
+            "dialogue": "dlg/door-ward-root",
+            "doing": "leaning against the wall beside the far door, sand in its sleeves"
+          },
+          "npc/keeper": {
+            "at": "anchor/keeper-post",
+            "dialogue": "dlg/keeper-root",
+            "doing": "standing behind her desk in the lodge, a duster in her belt"
+          }
+        },
+        "happening": {
+          "subject": "anchor/keeper-post",
+          "text": "The party comes into the keeper's lodge at the north end of the Sentinel Hall.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-hall",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "The keeper tells the party they may touch the figures, and to leave the captain till last.",
+              "verb": "learns"
+            },
+            "hint": "Behind the desk in the lodge where you came in.",
+            "id": "obj/hear-the-keeper",
+            "npc": "npc/keeper",
+            "title": "Speak to the keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-the-keeper"
+            ],
+            "anchor": "anchor/far-door",
+            "happening": {
+              "subject": "anchor/far-door",
+              "text": "The party walks the carpet past every figure to the far door.",
+              "verb": "arrives"
+            },
+            "hint": "Down the red carpet, past every figure, to the shut door at the far end. Strike or touch any figure on the way.",
+            "id": "obj/to-the-far-door",
+            "radius": 1,
+            "title": "Walk to the far door",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "anchor/far-door",
+              "text": "The walk through the hall is done.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/hear-the-keeper": [
+            {
+              "actor": "actor/sentinel-dust",
+              "happening": {
+                "subject": "actor/sentinel-dust",
+                "text": "actor/sentinel-dust is uncovered on its post.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "actor": "actor/sentinel-cold",
+              "happening": {
+                "subject": "actor/sentinel-cold",
+                "text": "actor/sentinel-cold is uncovered on its post.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "actor": "actor/sentinel-warning",
+              "happening": {
+                "subject": "actor/sentinel-warning",
+                "text": "actor/sentinel-warning is uncovered on its post.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "actor": "actor/sentinel-joke",
+              "happening": {
+                "subject": "actor/sentinel-joke",
+                "text": "actor/sentinel-joke is uncovered on its post.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "actor": "actor/the-captain",
+              "happening": {
+                "subject": "actor/the-captain",
+                "text": "actor/the-captain is uncovered on its post.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "actor": "actor/the-old-guard",
+              "happening": {
+                "subject": "actor/the-old-guard",
+                "text": "actor/the-old-guard is uncovered on its post.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            }
+          ],
+          "obj/to-the-far-door": [
+            {
+              "style": "subtitle",
+              "text": "Behind you, iron scrapes on stone.",
+              "type": "narrate"
+            },
+            {
+              "actor": "actor/the-captain",
+              "happening": {
+                "subject": "actor/the-captain",
+                "text": "The captain of the watch steps down off his plinth with his sword drawn.",
+                "verb": "arrives"
+              },
+              "type": "unleash-actor"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The dry figure jerks off the wall at the blow, rattles, and settles back.",
+            "type": "narrate"
+          },
+          {
+            "at": {
+              "anchor": "anchor/door-ward",
+              "at": "anchor"
+            },
+            "sound": "minecraft:entity.husk.ambient",
+            "type": "play-sound"
+          }
+        ],
+        "id": "trigger/stir-the-door-ward",
+        "on": {
+          "npc": "npc/door-ward",
+          "on": "strike-npc"
+        },
+        "once": false
+      }
+    ]
+  },
+  "dsl_version": "0.60.0",
+  "stage": "quests"
+}
