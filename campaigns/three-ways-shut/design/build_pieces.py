@@ -227,7 +227,7 @@ def yard(a):
     p.claim_box((10, 1, 13), (12, 3, 13), "barricade")
     # Lanterns hung from the roof beams, clear of the line from the gate side
     # to the arch.
-    lamps(p, [(3, 7, 3), (14, 7, 3), (3, 7, 9), (14, 7, 9), (9, 8, 6)], 9)
+    lamps(p, [(3, 6, 3), (8, 6, 3), (14, 6, 3), (3, 6, 8), (9, 6, 8), (14, 6, 8), (12, 6, 11), (6, 6, 11)], 9)
     p.claim_box((1, 1, 1), (16, 9, 14), "room", air_only=True)
     palette = dict(BASE, **{
         "barricade": "minecraft:stripped_spruce_log[axis=x]",
