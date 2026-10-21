@@ -282,6 +282,9 @@ def passage(a):
     p.opening("edge/passage-door")
     p.bar("edge/toll-door")
     lamps(p, [(4, 4, 1)], 4)
+    # The keeper's chest at the passage's end, beside the bolted door.
+    p.put((7, 1, 1), (7, 1, 1), "chest")
+    p.claim_box((7, 1, 1), (7, 1, 1), "room")
     p.claim_box((0, 1, 1), (7, 4, 3), "room", air_only=True)
     contract = {
         "edges": [
@@ -291,8 +294,9 @@ def passage(a):
         "entry": "room",
         "spaces": {"room": {"envelope": "enclosed"}},
     }
-    marks = [("node-passage", (4, 1, 2), "east")]
-    return program("three-ways-shut-passage", p, dict(BASE), contract, marks)
+    marks = [("node-passage", (4, 1, 2), "east"), ("key-chest", (7, 1, 1), "west")]
+    palette = dict(BASE, chest="minecraft:chest[facing=south,type=single,waterlogged=false]")
+    return program("three-ways-shut-passage", p, palette, contract, marks)
 
 
 def hall(a):
@@ -345,7 +349,7 @@ def ledge(a):
     }
     marks = [
         ("node-ledge", (2, 1, 3), "east"),
-        ("key-chest", (5, 1, 2), "west"),
+        ("purse-chest", (5, 1, 2), "west"),
     ]
     return program("three-ways-shut-ledge", p, palette, contract, marks)
 

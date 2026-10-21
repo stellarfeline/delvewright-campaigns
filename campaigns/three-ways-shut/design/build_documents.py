@@ -31,7 +31,7 @@ def main():
         "languages": ["zh-cn"],
         "min_players": 1,
         "outro": "The arch stands open behind you, and the toll yard is a way through again.",
-        "premise": "The toll yard at Ashford Cut has been shut since the floods. Every way out of it is closed in its own fashion: the arch to the inner court is barred where everyone can see it, the toll house door is bolted from its own side, the keeper's hatch on the ledge is locked, and the old cart road behind the timber barricade has not been walked in years. The keeper left a key in the chest on the ledge. Somebody has to fetch it, open the cart road, and raise the bars on the arch from the toll house.",
+        "premise": "The toll yard at Ashford Cut has been shut since the floods. Every way out of it is closed in its own fashion: the arch to the inner court is barred where everyone can see it, the toll house door is bolted from its own side, the keeper's hatch on the ledge is locked, and the old cart road behind the timber barricade has not been walked in years. The keeper left a key in the chest at the end of the passage. Somebody has to fetch it, open the cart road, and raise the bars on the arch from the toll house.",
         "seed": 20261020,
         "target_minutes": 10,
         "theme": "A walled toll yard under a timber roof, every way out of it shut a different way, and the one honest way round.",
@@ -60,17 +60,17 @@ def main():
     write("quest-plan.json", doc("quest-plan", {
         "finale": "quest/the-way-through",
         "quests": [
-            {"act": 1, "area": "area/site", "depends_on": [], "goal": "Arrive in the shut toll yard, find the keeper's key in the chest on the ledge up the side stair, and with it open the old cart road behind the timber barricade.", "id": "quest/the-key", "mandatory": True, "npcs": []},
+            {"act": 1, "area": "area/site", "depends_on": [], "goal": "Arrive in the shut toll yard, find the keeper's key in the chest at the end of the passage, beside the bolted toll house door, and with it open the old cart road behind the timber barricade.", "id": "quest/the-key", "mandatory": True, "npcs": []},
             {"act": 1, "area": "area/site", "depends_on": ["quest/the-key"], "goal": "Walk the cart road to the toll house, pull the lever that raises the bars on the yard's arch, draw the bolt of the toll house door, and go through the arch into the inner court.", "id": "quest/the-way-through", "mandatory": True, "npcs": []},
         ],
     }))
     write("layout-graph.json", doc("layout-graph", {
         "beats": [
-            {"node": "node/ledge", "objective": "obj/take-the-key", "quest": "quest/the-key"},
+            {"node": "node/passage", "objective": "obj/take-the-key", "quest": "quest/the-key"},
             {"node": "node/hall", "objective": "obj/pull-the-lever", "quest": "quest/the-way-through"},
             {"node": "node/court", "objective": "obj/enter-the-court", "quest": "quest/the-way-through"},
         ],
-        "critical_path": ["node/yard", "node/ledge", "node/yard", "node/corridor", "node/hall", "node/corridor", "node/yard", "node/court"],
+        "critical_path": ["node/yard", "node/passage", "node/yard", "node/corridor", "node/hall", "node/corridor", "node/yard", "node/court"],
         "edges": [
             {"a": "node/yard", "b": "node/court", "class": "walk", "id": "edge/court-arch",
              "gating": {"flags": ["flag/arch-raised"], "learned": "seen"}},
@@ -92,14 +92,17 @@ def main():
                  {"anchor": "anchor/barricade", "kind": "gate", "note": "The timber barricade across the mouth of the cart road, cleared when the road is opened."},
              ]},
             {"id": "node/court", "intent": "goal-chamber", "note": "The inner court beyond the barred arch: the way through, once the bars are raised."},
-            {"id": "node/passage", "intent": "side-room", "note": "A short passage off the yard to the toll house door, which is bolted on the toll house's side."},
+            {"id": "node/passage", "intent": "side-room", "note": "A short passage off the yard to the toll house door, which is bolted on the toll house's side; the keeper's key is in the chest beside it.",
+             "stations": [
+                 {"anchor": "anchor/key-chest", "kind": "point", "note": "The chest at the end of the passage, beside the bolted door."},
+             ]},
             {"id": "node/hall", "intent": "side-room", "note": "The toll house: the lever that raises the arch's bars, and the bolt of the passage door.",
              "stations": [
                  {"anchor": "anchor/arch-lever", "kind": "point", "note": "The lever on the toll house wall that raises the bars on the yard's arch."},
              ]},
-            {"id": "node/ledge", "intent": "cache", "note": "The keeper's walk along the top of the yard's south wall, up a side stair: the chest with the key, and a hatch in its floor over the cart road, locked until the key is taken.",
+            {"id": "node/ledge", "intent": "cache", "note": "The keeper's walk along the top of the yard's south wall, up a side stair: the keeper's purse in a chest, and a hatch in its floor over the cart road, locked until the key is taken.",
              "stations": [
-                 {"anchor": "anchor/key-chest", "kind": "point", "note": "The keeper's chest on the ledge, beside the hatch."},
+                 {"anchor": "anchor/purse-chest", "kind": "point", "note": "The keeper's chest on the ledge, beside the hatch, with the purse in it."},
              ]},
             {"id": "node/corridor", "intent": "connector", "note": "The old cart road: a long covered way south of the yard from the barricade at its mouth to the toll house."},
         ],
@@ -151,7 +154,7 @@ def quests():
         {"type": "cutscene", "seconds": 4,
          "look_at": {"anchor": "anchor/seam-cart-road"},
          "path": [{"anchor": "anchor/seam-cart-road", "offset": [-2, 2, -5]}, {"anchor": "anchor/seam-cart-road", "offset": [0, 1, -3]}]},
-        {"style": "chat", "text": "The key turns the cart road's lock. Below the ledge, the barricade is gone from the old road's mouth and the road stands open.", "type": "narrate"},
+        {"style": "chat", "text": "The key turns the cart road's lock. The barricade is gone from the old road's mouth beside the stair, and the road stands open. Up on the keeper's walk, the hatch has fallen open too.", "type": "narrate"},
     ]
     return doc("quests", {
         "quests": [
@@ -161,8 +164,8 @@ def quests():
                 "id": "quest/the-key",
                 "objectives": [{
                     "anchor": "anchor/key-chest", "count": 1, "holder": "anchor/key-chest",
-                    "happening": {"subject": "item/keepers-key", "text": "The runner takes the keeper's key from the chest on the ledge.", "verb": "gains"},
-                    "hint": "Climb the stone stair up the wall beside the timber barricade to the keeper's walk. The chest is beside the hatch.",
+                    "happening": {"subject": "item/keepers-key", "text": "The runner takes the keeper's key from the chest at the end of the passage.", "verb": "gains"},
+                    "hint": "Go through the doorway in the yard's side wall. The chest is at the end of the passage, beside the bolted door.",
                     "id": "obj/take-the-key", "item": "minecraft:tripwire_hook", "item_name": "The keeper's key",
                     "title": "Take the keeper's key", "type": "collect",
                 }],
@@ -205,6 +208,8 @@ def quests():
                 "trigger": {"quest": "quest/the-key", "type": "quest-complete"},
             },
         ],
+        "loot": [{"anchor": "anchor/purse-chest", "id": "loot/keepers-purse",
+                  "items": [{"count": 5, "item": "minecraft:emerald"}, {"count": 3, "item": "minecraft:cooked_beef"}]}],
         "shortcuts": [{
             "gate": "anchor/seam-toll-door", "id": "shortcut/toll-door", "unlock": "anchor/unlock-toll-door",
             "on_unlock": [
@@ -214,7 +219,7 @@ def quests():
         }],
         "triggers": [
             {"at": "anchor/node-yard", "id": "trigger/the-shut-yard", "on": {"on": "approach", "range": 6}, "once": True,
-             "effects": [{"style": "chat", "text": "The toll yard has been shut since the floods. The arch to the court is barred, the toll house door is bolted from its own side, and the keeper's hatch is locked. The keeper left the key in the chest on the ledge.", "type": "narrate"}]},
+             "effects": [{"style": "chat", "text": "The toll yard has been shut since the floods. The arch to the court is barred, the toll house door is bolted from its own side, and the keeper's hatch is locked. The keeper left the key in the chest at the end of the passage.", "type": "narrate"}]},
             {"at": "anchor/seam-toll-door", "audience": "presser", "id": "trigger/toll-door-wrong-side", "on": {"on": "use"}, "once": False,
              "effects": [{"style": "actionbar", "text": "The door is bolted from the toll house side.", "type": "narrate"}]},
         ],
@@ -227,18 +232,18 @@ ZH = {
     "Runner's boots": "跑腿人的靴子",
     "Toll Runner": "收费跑腿人",
     "The bolt slides back. The passage to the yard is one door away now.": "门闩滑开了。回院子的过道，如今只隔一扇门。",
-    "The key turns the cart road's lock. Below the ledge, the barricade is gone from the old road's mouth and the road stands open.": "钥匙拧开了车道的锁。走道下方，旧车道口的木障已经撤走，路敞开了。",
+    "The key turns the cart road's lock. The barricade is gone from the old road's mouth beside the stair, and the road stands open. Up on the keeper's walk, the hatch has fallen open too.": "钥匙拧开了车道的锁。石阶旁旧车道口的木障已经撤走，路敞开了。上面看守走道里的活板门也落开了。",
     "The way through is open.": "路通了。",
-    "The toll yard has been shut since the floods. The arch to the court is barred, the toll house door is bolted from its own side, and the keeper's hatch is locked. The keeper left the key in the chest on the ledge.": "自从那场洪水，收费院就一直关着。通往内院的拱门被铁栏封着，收费房的门从里头闩上了，看守的活板门也锁着。看守把钥匙留在了走道上的箱子里。",
+    "The toll yard has been shut since the floods. The arch to the court is barred, the toll house door is bolted from its own side, and the keeper's hatch is locked. The keeper left the key in the chest at the end of the passage.": "自从那场洪水，收费院就一直关着。通往内院的拱门被铁栏封着，收费房的门从里头闩上了，看守的活板门也锁着。看守把钥匙留在了过道尽头的箱子里。",
     "The door is bolted from the toll house side.": "这扇门是从收费房那一侧闩上的。",
-    "Climb the stone stair up the wall beside the timber barricade to the keeper's walk. The chest is beside the hatch.": "沿着木障旁边贴墙的石阶爬上看守走道。箱子就在活板门旁边。",
+    "Go through the doorway in the yard's side wall. The chest is at the end of the passage, beside the bolted door.": "穿过院子侧墙上的门洞。箱子在过道尽头，就在那扇闩上的门旁边。",
     "The keeper's key": "看守的钥匙",
     "Take the keeper's key": "取看守的钥匙",
     "The barred arch is across the yard from the stair. Draw the bolt of the toll house door to go back by the short way.": "封着铁栏的拱门在院子另一头，与石阶相对。拉开收费房门的门闩，就能抄近路回去。",
     "Go through the arch into the court": "穿过拱门进入内院",
     "Walk the cart road to its end. The lever is on the toll house floor, by the wall.": "沿车道走到尽头。拉杆在收费房的地上，靠着墙。",
     "Pull the lever in the toll house": "拉动收费房里的拉杆",
-    "Arrive in the shut toll yard, find the keeper's key in the chest on the ledge up the side stair, and with it open the old cart road behind the timber barricade.": "来到关闭的收费院，顺着侧边石阶上到走道，在箱子里找到看守的钥匙，用它打开木障后面的旧车道。",
+    "Arrive in the shut toll yard, find the keeper's key in the chest at the end of the passage, beside the bolted toll house door, and with it open the old cart road behind the timber barricade.": "来到关闭的收费院，在过道尽头、那扇闩上的收费房门旁的箱子里找到看守的钥匙，用它打开木障后面的旧车道。",
     "Walk the cart road to the toll house, pull the lever that raises the bars on the yard's arch, draw the bolt of the toll house door, and go through the arch into the inner court.": "沿车道走到收费房，拉动升起院中拱门铁栏的拉杆，拉开收费房门的门闩，再穿过拱门进入内院。",
     "The arch stands open behind you, and the toll yard is a way through again.": "拱门在你身后敞开，收费院又成了一条通路。",
     "Three Ways Shut": "三道封路",
