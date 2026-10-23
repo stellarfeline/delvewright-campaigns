@@ -110,3 +110,38 @@ On the build that ships (`manifest.json` sha256 `f25e01a7c9f6b9b453fb2b8c9ce35ee
 - Bot (`bot-run.sh --project dw-saltstair-a-r1`): exit 0, the critical path passed — spawn on the square at [74, 84, 97], down the main street, the `reach-anchor` objective on the quay; 3 steps; 2 of 2 owed cues arrived. Stages not run, each with the build's reason: die-retry (no mandatory combat), death-loop (no lethal volume), crush-death (no crush gate) — advisories, not passes.
 - No `validation/branch-plan.json` was emitted, so there are no branch runs; step 11 does not apply (the plan declares no `branch_points`).
 - Written world (`world-save.sh`, `delvec written-world`, `check-written-world.py`): each exit 0 — the server's world is the engine's model.
+
+## Step 12, visual review
+
+`delvec frames` on the build that ships: `renderer: lumenwright 0.3.0, backend cpu (16 threads) (auto: fell back to cpu — no usable GPU (only a software Gpu adapter is available))`; 63 of 63 shots, all at the world's clock (`noon`). The POV sequence, square to quay, read in route order against `campaigns/hillside/design/reference/view1-from-the-sea.jpg` (no concept set exists): the street is the place the image shows — cobbled terraces between stone-brick kerbs, stone-brick flights between stepped kerbs, lanterns on kerb posts at every flight and door, timber-framed calcite houses with deepslate and dark-oak roofs, the stone quay with spruce-log bollards. Findings, document-level, not repaired:
+
+- **A row of turf crosses the paved street at each of the five flight-foot contacts.** The contact's ring row is the whole's fixed ground; under cut A no place owns it, so neither the flight nor the street paves it.
+- **The open fronts** (smithy, rope walk) are windows — the departure under Findings.
+- **No house interior is on a POV frame**: no house is on the critical path; each house's own light probe reads `lit`.
+
+## The six §6 cameras
+
+`judging/cameras.json` holds the six rows at §6's exact eyes; yaw and pitch are derived from §6's `look_at`, fov 70. Drawn three ways, all into `judging/frames/` (local, not committed — renders are regenerable from the build):
+
+- `noon/` — `delvec frames --campaign campaigns/saltstair-a --camera <x,y,z,yaw,pitch,70> --size 1536`, the campaign's own sky.
+- `day/` — the same command on a scratch copy that differs from the campaign only in `world.time: day` (diffed: one line).
+- `cameras-day/` — `delvec cameras` (path traced, 1920 × 1080, 256 samples, sky `day` stated per camera) on a scratch copy that adds a one-row `design.json` naming the reference image, which `delvec cameras` requires; the campaign carries none, by ruling.
+
+Every manifest's camera position equals the row's exactly; the aim is within 0.0005° of §6's `look_at` (the manifests round to three decimals). Read against §6:
+
+- `view/up-the-street`, `view/from-the-south-east`, `view/the-merchants-terrace` show what §6 says they judge.
+- `view/down-the-street` is mostly the square's paving and its south parapet: from 1.6 above the square the flights fall below the parapet line.
+- `view/the-first-flight` stands inside the smithy: §6's eye [68.5, 81.6, 120.5] is within the smithy's footprint (x 62..69, z 119..126, floor 80, §4.2), so the frame is the smithy's inner wall and a window. A property of the design's coordinates; not moved.
+- **Instrument limit**: neither `delvec frames --campaign` nor `delvec cameras` draws the `ocean` horizon beyond the site plan's region. A camera standing past it (`view/from-the-sea`, z 232.5 against the region's last row z 223) or seeing past it (`view/from-the-south-east`) shows the region's cut face — dirt to the sea bed under the water slab — where the game shows open sea.
+
+## The five numbers (DESIGN.md §6)
+
+1. **Distinct floor levels**: 21 — every `y` from 64 to 84 — over 210 of 210 columns on the centre line (x 73 and 74, z 96..200), read from the server-saved world (`world-save.sh`) through `tools/lib/anvil.py`; a cell is standable when it and the cell above are passable and the cell below supports. The 6 datums and the 15 tread levels of the five four-tread flights.
+2. **Ring cells**: the battery examines 700 plot-edge columns (`blockout battery binding: … 700 plot-edge column(s) examined, 0 crack(s)`); read from the same saved world over the same 700 (each footprint-edge column paired with the ring column outside it), 96 stand more than one block from the ring's surface — faced edges, every one held by a solid face (0 cracks) — and 329 offer no standable surface to compare (a house wall on the ring, mostly). Per box: square 8, flights 4/4/4/5/2, upper street 20, middle 13, lower 23, shore 10, quay 3, every house 0.
+3. **Refusals per code**, from the table above (24 in all): `DW0885` 9, `DW0210` 2, `DW0730` 2, `DW0836` 2, `DW0112` 1, `DW0150` 1, `DW0721` 1, `DW0818` 1, `DW0833` 1, `DW0838` 1, `DW0863` 1, `DW0874` 1, `DW0921` 1. Counted by logged row; `DW0210` was also printed by each of the eighteen confirming `detail` runs it was ruled to stand through, and refusals inside an author's iteration count only as reported.
+4. **Author tokens and time**: the 26 detail-author attempts used 3 220 907 tokens and 7 573 s, from the Agent tool's completion records; the orchestrating session's own tokens are not in a record this run can read. Wall clock from the first campaign commit to the green ladder: 2 h 33 min, including the pause at the design gate.
+5. **Build and bot status**: `delvec build` 0; PackTest passed (17 of 17); the bot's critical path passed; the staging gate refused on `DEMO-UNQUEUED` alone, by ruling.
+
+## Step 13, the staging gate
+
+`staging-gate.py` over the build that ships, with the ladder's run report and the written-world record: **REFUSED — 1 of 148 findings**, `DEMO-UNQUEUED` (no row of the pinned engine's demo queue names `campaigns/saltstair-a`), accepted by ruling and not overridden. Every other row judged: `BOUND` 21, `INAPPLICABLE` 99, `DECLARED-UNCOVERABLE` 27, `NO-SOURCE` 0, `NO-GENERAL-FORM` 0, `MISSING-CHECK` 0, `UNBOUND` 0. The full report is `judging/staging-gate.md`. Storybook marker: `check-storybook-version.py` OK on this campaign (the repository-wide run fails on other campaigns' storybooks only).
