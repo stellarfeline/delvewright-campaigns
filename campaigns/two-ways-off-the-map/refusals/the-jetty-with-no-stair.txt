@@ -1,0 +1,16 @@
+# the jetty with its plank and no stair into the water
+#
+# Shape: python3 design/build_pieces.py alloc.json --jetty-as-found
+# then: delvec --prefabs prefabs detail campaigns/two-ways-off-the-map --all
+# Engine: delvec 1.14.0, dsl 0.61.0, mc 1.21.11, built at f26760bdcbf2bb4d3362d27e3f9481b3ffb8612b
+# Exit 3; 1 error diagnostic(s) in the run, this one.
+
+DW0322 [error] build: boundary safety (spec-0017, an `ocean` base): 48 place(s) a body can reach let it into 1497866 water cell(s) with NO way back ashore — nothing in an ocean world falls out of the world, but a swimmer who cannot climb out is stranded there for the rest of the delve:
+  - [8260, 69, 8215] → the open sea at [8260, 62, 8214], by a fall of 7 block(s), drifting 1 into water
+  - [8260, 69, 8219] → the open sea at [8260, 62, 8220], by a fall of 7 block(s), drifting 1 into water
+  - [8261, 69, 8215] → the open sea at [8258, 61, 8208], by a sprint jump north down 8 into water
+  - [8261, 69, 8219] → the open sea at [8258, 61, 8224], by a sprint jump south down 8 into water
+  - [8262, 69, 8215] → the open sea at [8257, 61, 8209], by a sprint jump north down 8 into water
+  - [8262, 69, 8219] → the open sea at [8257, 61, 8224], by a sprint jump south down 8 into water
+  - … and 42 more
+A swimmer climbs out onto a ledge it can press into from the water and be lifted over (land flush with the sea surface, or one block over it). Give the shoreline near [8104, 55, 8038] such a step — a beach, a bank, a stair into the water — or keep bodies out of the water there; do NOT weaken this check

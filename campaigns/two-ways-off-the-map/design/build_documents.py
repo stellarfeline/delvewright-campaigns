@@ -27,7 +27,7 @@ JUMPS = [
     ("jump/three-up-one", "anchor/launch-4", "anchor/land-4"),
     ("jump/under-the-lid", "anchor/launch-5", "anchor/land-5"),
 ]
-LANGUAGES = []
+LANGUAGES = ["zh-cn"]
 SIXTH = ("jump/five-flat", "anchor/launch-6", "anchor/land-6")
 
 
@@ -177,7 +177,20 @@ def quests():
     })
 
 
-ZH = {}
+ZH = {
+    "You came to the rock to see the chapel, and the boat is leaving. Get to the end of the jetty before it goes.": "你上岛来看那座礼拜堂，可船就要开了。赶在它离岸之前，跑到栈桥尽头去。",
+    "Visitor": "访客",
+    "You made the boat.": "你赶上了船。",
+    "Leap down off the high platform, under the lid, and walk out to the far end of the jetty.": "从石盖板下的高台上跳下去，再沿着栈桥一直走到最远的那一头。",
+    "Walk to the end of the jetty": "走到栈桥尽头",
+    "Through the yard gate, run and leap each gap to the high platform.": "出了院门，助跑，一个缺口一个缺口地跳，跳上那座高台。",
+    "Leap to the high platform under the lid": "跳上石盖板下的高台",
+    "Walk out to the end of the jetty, where the boat waits.": "走到栈桥尽头，船在那儿等着。",
+    "Leave the chapel yard by its gate and cross the broken wall-walk, leaping each gap, to the jetty.": "从院门离开礼拜堂的院子，一个缺口一个缺口地跳过断掉的墙头步道，到栈桥去。",
+    "The sea is too cold and too wide out there. You turn back to the rock.": "再往外，海水太冷，海面也太宽了。你掉头游回岛上。",
+    "The boat pushes off from the jetty, and the chapel on the rock falls away behind you.": "船从栈桥边撑开，岛上的礼拜堂在你身后越退越远。",
+    "Two Ways Off the Map": "离开地图的两条路",
+}
 
 
 def l10n(inventory):
