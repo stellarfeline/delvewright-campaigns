@@ -1,0 +1,118 @@
+{
+  "campaign_id": "the-open-yard",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-street",
+          "text": "The runner comes down Ashford's high street the day before market day.",
+          "verb": "arrives"
+        },
+        "id": "quest/market-day",
+        "objectives": [
+          {
+            "anchor": "anchor/node-court",
+            "happening": {
+              "subject": "anchor/node-court",
+              "text": "The runner stands by the fountain in the open court.",
+              "verb": "arrives"
+            },
+            "hint": "The fountain court is the open square off the street, with the fountain in its middle.",
+            "id": "obj/the-fountain",
+            "radius": 2,
+            "title": "Look in at the fountain court",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-fountain"
+            ],
+            "anchor": "anchor/node-smithy",
+            "happening": {
+              "subject": "anchor/node-smithy",
+              "text": "The runner steps in through the smith's door, behind the counter.",
+              "verb": "arrives"
+            },
+            "hint": "The smith's front is open over the counter. The door is beside it.",
+            "id": "obj/the-smithy",
+            "radius": 2,
+            "title": "Step inside the smithy",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-smithy"
+            ],
+            "anchor": "anchor/node-market",
+            "happening": {
+              "subject": "anchor/node-market",
+              "text": "The runner walks in under the market roof.",
+              "verb": "arrives"
+            },
+            "hint": "The covered market stands further along the street, a roof on four posts.",
+            "id": "obj/the-market",
+            "radius": 2,
+            "title": "Walk under the covered market",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-market"
+            ],
+            "anchor": "anchor/node-house",
+            "happening": {
+              "subject": "anchor/node-house",
+              "text": "The runner goes in at the steward's door.",
+              "verb": "arrives"
+            },
+            "hint": "The steward's house is across the street, its oak door on the street.",
+            "id": "obj/the-house",
+            "radius": 2,
+            "title": "Reach the steward's house",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "Ashford is ready for market day.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-house",
+              "text": "The street is ready for market day.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {},
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-street",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "Ashford's high street. The steward wants every place on it looked at before market day: the court, the smith, the market, and his own house last.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-high-street",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.65.0",
+  "stage": "quests"
+}
