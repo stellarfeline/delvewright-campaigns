@@ -23,7 +23,7 @@ The design was approved as written (`campaigns/hillside/DESIGN.md`), on the refe
 - `world.time` is `noon`. The design's "late afternoon" has no DSL spelling: the sky vocabulary has no sun position between `high` and `setting` (the disc on the western horizon). The six §6 frames are drawn at `day`.
 - `demo_level: true` stays; the staging gate's `DEMO-UNQUEUED` refusal (no row of the pinned engine's demo queue names `campaigns/saltstair-a`) is accepted, and the gate's full report is recorded with every other row judged. No `design.json`.
 - English only.
-- `site-plan.json` `views[]` stays empty: it takes whole numbers and §6's cameras stand at half blocks. The exact camera coordinates live in `design/cameras.json`.
+- `site-plan.json` `views[]` stays empty: it takes whole numbers and §6's cameras stand at half blocks. The exact camera coordinates live in `judging/cameras.json` — first written to `design/cameras.json`, moved after refusal 8: every row there must answer a `design.json` row, which the campaign does not carry by ruling, and `detail` refuses the record (`DW0721`) on every run. Moved by the owner's delegation to the run's judgement. The frames are drawn with `delvec frames --campaign --camera` at the rows' exact poses, which draws the world's sky (`noon`); `day` frames are drawn from a scratch copy that differs only in `world.time: day`, and are labelled so.
 - The step-8 build goes on to step 9 with `DW0210` as its only red (the stand-in houses are dark); each house is lit as it is detailed. No `lighting` declaration, temporary or otherwise.
 
 ## Refusals, in order
@@ -43,7 +43,7 @@ Every `DW` refusal `delvec` printed during authoring, with its repair.
 | — | step 7, analyze | none | exit 0 | — |
 | 7 | step 8, build | DW0210 | 144 of 1698 reachable cells dark under the 19 stand-ins, darkest at [54, 84, 98] (the chapel's stand-in) | by ruling, carried into step 9: each house is lit as it is detailed; no `lighting` declaration |
 | — | step 8b, validate | DW0900 (notice, not a refusal) | the six cameras in `design/cameras.json` name rows no `design.json` holds — by ruling there is none; each names the §6 view it answers | none owed; `delvec cameras` refuses to draw without `design.json` (DW0721 on a scratch copy), so the frames are drawn with `delvec frames` |
-| 8 | step 9, `detail node/square` | DW0721 | `design/cameras.json`: camera `view-from-the-sea` answers `view/from-the-sea`, which is not a row of design.json (rows: none) — refused on every `detail` run while the record stands without a `design.json` | open: the rulings to keep `cameras.json` and to add no `design.json` cannot both hold under `detail`; asked of the owner |
+| 8 | step 9, `detail node/square` | DW0721 | `design/cameras.json`: camera `view-from-the-sea` answers `view/from-the-sea`, which is not a row of design.json (rows: none) — refused on every `detail` run while the record stands without a `design.json` | the camera record moved to `judging/cameras.json`, which no engine verb reads; `detail node/square` then exits 2 on `DW0210` alone |
 
 ## Detail
 
