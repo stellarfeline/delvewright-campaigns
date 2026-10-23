@@ -179,6 +179,7 @@ program = {
     "version": "1.9.0",
     "name": "saltstair-a-flight-3",
     "start": "place",
+    "shown_faces": ["east", "west"],
     "params": params,
     "palette": {
         "paving": "minecraft:cobblestone",
