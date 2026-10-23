@@ -16,23 +16,17 @@ the story opens at its beat — every door a body meets built as a door.
   cottage's and the back room's floor is whole; three trapdoors lie over its
   stair, which climbs under them so each rise is jumped with headroom.
 - The latch is a floor lever by the back room's east wall, away from the
-  grille: a lever beside the grille's wall would power it (`DW1047`).
-
-## The one departure from the row
-
-The way out is an iron grille, not an iron door. A gate region is one block
-at the world-load seal — `assembled::shipped_blocks` writes the anchor's one
-block over every cell of the region, and the datapack's seal does the same —
-and a door is two states, so a two-high door as a shut way's bar is refused
-(`DW1002`: the seal stands a lower half in the upper cell). The iron door a
-hand cannot open stands in the garden's far hedge instead, and nothing in the
-story opens it.
+  iron door: a lever beside the door's wall would power it (`DW1047`).
+- The iron door's bar is declared as the door's lower half
+  (`design/build_pieces.py`, role `garden-door`); the program lays the upper
+  half over it, and the engine derives the same two states for the gate
+  region from the one declared block.
 
 ## Engine and language
 
 Built with `delvec 1.14.0, dsl 0.65.0, mc 1.21.11` from the engine's
-`feat/impl-0123a` worker branch, an unreleased tree; the round's report names
-the revision.
+`feat/gate-door` worker branch, an unreleased tree that lays a gate's
+two-high block by course; the round's report names the revision.
 
 Every piece is this campaign's own, written as a grammar program under
 `programs/` by `design/build_pieces.py` from `delvec allocation --all`, and
