@@ -97,3 +97,7 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/flight-3` | 2 | `flight-3/handout-2.md` | 65 058 | 85 s | DW0885 ×2 (refusal 15) | 3 — its own refusals cleared; DW0885 ×1 stands on the shore street |
 | `node/shore-street` | 2 | `shore-street/handout-2.md` | 66 872 | 50 s | DW0885 ×1 (refusal 15) | 3 — its own refusal cleared, all DW0885 gone; the leave-proof then refuses a pocket by flight 5 (DW0921, refusal 16) |
 | `node/flight-5` | 2 | `flight-5/handout-2.md` | 85 652 | 215 s | DW0921 (refusal 16) | 0 — the whole builds with every place detailed; 0 of 32 164 reachable cells a body cannot leave; the author met DW0838 on the way (refusal 17) |
+
+## Step 9 closed, the build that ships
+
+`delvec detail --all` 0 (19 of 19 places detailed; the run moved no byte); `validate` 0; `analyze` 0; `build` 0 into the engine's `validation/delve-output`. Blockout: 19 places massed, 19 detailed, 0 by the derivation — **0 stand-ins**. Battery: 18 seams proven (5 contacts, 13 portals), 19 places reached, 0 cracks. Leave-proof: 0 of 32 164 reachable cells a body cannot leave. Advisories standing: `DW0822` — the critical path measures 115 blocks over 10 legs, about 2 minutes at the metrics table's rate, against `target_minutes` 10 (the design's own walk is the street and back, then the hillside and the beach; the number is reported, not acted on); `DW0813` (provisional metrics); `DW0781` (the piece-mating check examined zero abutting faces: in cut A no two pieces touch — every neighbour is one ring cell away).
