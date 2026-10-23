@@ -35,7 +35,7 @@ The design was approved as written (`campaigns/hillside/DESIGN.md`), on the refe
 
 ## Refusals, in order
 
-Every `DW` refusal `delvec` printed during authoring, with its repair.
+Every `DW` refusal `delvec` printed during authoring, with its repair. Refusals a detail author met inside its own iteration (`grammar expand`, its own `detail` runs) are seen only through its report, and are recorded here as reported.
 
 | # | Run | Code | What it said | Repair |
 |---|---|---|---|---|
@@ -51,6 +51,7 @@ Every `DW` refusal `delvec` printed during authoring, with its repair.
 | 7 | step 8, build | DW0210 | 144 of 1698 reachable cells dark under the 19 stand-ins, darkest at [54, 84, 98] (the chapel's stand-in) | by ruling, carried into step 9: each house is lit as it is detailed; no `lighting` declaration |
 | — | step 8b, validate | DW0900 (notice, not a refusal) | the six cameras in `design/cameras.json` name rows no `design.json` holds — by ruling there is none; each names the §6 view it answers | none owed; `delvec cameras` refuses to draw without `design.json` (DW0721 on a scratch copy), so the frames are drawn with `delvec frames` |
 | 8 | step 9, `detail node/square` | DW0721 | `design/cameras.json`: camera `view-from-the-sea` answers `view/from-the-sea`, which is not a row of design.json (rows: none) — refused on every `detail` run while the record stands without a `design.json` | the camera record moved to `judging/cameras.json`, which no engine verb reads; `detail node/square` then exits 2 on `DW0210` alone |
+| 9 | step 9, the chapel's author, `grammar expand` | DW0730 | `minecraft:candle` is outside the admission allowlist | the altar is bare stone; the nave is lit by four hanging lanterns (a lantern on the altar would be a third standable level) |
 
 ## Detail
 
@@ -69,3 +70,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/shore-street` | 1 | `shore-street/handout-1.md` | 118 046 | 254 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
 | `node/flight-5` | 1 | `flight-5/handout-1.md` | 145 697 | 374 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
 | `node/quay` | 1 | `quay/handout-1.md` | 154 943 | 344 s | none (first authoring) | 2 — DW0210 alone, still 144 dark cells, none in this frame; the author read the engine CLAUDE.md, outside its handout's reading list |
+| `node/chapel` | 1 | `chapel/handout-1.md` | 156 030 | 470 s | none (first authoring) | 2 — DW0210 alone, 124 dark cells (from 144), none in this frame; the author met DW0730 on candles (refusal 9) |
