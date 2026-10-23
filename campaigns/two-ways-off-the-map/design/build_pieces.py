@@ -220,7 +220,7 @@ def masonry(x, y, z):
     return "mossy" if (x * 7 + y * 13 + z * 5) % 9 == 0 else "wall"
 
 
-def yard(a, as_found):
+def yard(a, as_found, stone_at=None):
     """The chapel yard (spec-0113's Bell yard, rebuilt). Its inner yard is
     walled three high; the stone stands one high near the buttress, which
     stands two high against the east wall; past the east wall is the old
@@ -269,6 +269,8 @@ def yard(a, as_found):
     # The buttress, two high, against the east wall; and the stone.
     p.put((12, W, 12), (13, W + 1, 12), "wall")
     stone = (10, W, 10) if as_found else (9, W, 10)
+    if stone_at is not None:
+        stone = (stone_at[0], W, stone_at[1])
     p.put(stone, stone, "stone")
     # The other standing stones, well away from the walls and the buttress.
     for (x, z) in ((4, 6), (6, 11), (7, 4), (3, 9)):
@@ -472,13 +474,16 @@ BASE_JETTY = dict(BASE)
 def main():
     args = sys.argv[1:]
     flags = {a for a in args if a.startswith("--")}
+    # `--stone=X,Z` stands the stone at another cell of the yard (a probe of
+    # where a sprint jump still reaches the buttress from it).
+    stone_at = next((tuple(int(v) for v in a.split("=", 1)[1].split(",")) for a in flags if a.startswith("--stone=")), None)
     files = [a for a in args if not a.startswith("--")]
     alloc = {a["place"]: a for a in json.loads(pathlib.Path(files[0]).read_text())}
     here = pathlib.Path(__file__).resolve().parent.parent
     out = here / "programs"
     out.mkdir(exist_ok=True)
     builds = (
-        ("yard", lambda h: yard(h, "--yard-as-found" in flags)),
+        ("yard", lambda h: yard(h, "--yard-as-found" in flags, stone_at)),
         ("course", lambda h: course(h, "--sixth" in flags)),
         ("jetty", lambda h: jetty(h, "--jetty-as-found" in flags)),
     )
