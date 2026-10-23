@@ -201,6 +201,7 @@ BASE = {
     "deck": "minecraft:spruce_planks",
     "dirt": "minecraft:dirt",
     "grass": "minecraft:grass_block[snowy=false]",
+    "glass": "minecraft:white_stained_glass",
     "gravel": "minecraft:gravel",
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lid": "minecraft:deepslate_tiles",
@@ -243,7 +244,7 @@ def yard(a, as_found):
         for y in range(W, W + 6):
             p.put((x, y, sz - 1), (x, y, sz - 1), masonry(x, y, sz - 1))
     # The chapel's south wall is the yard's north side, roofless and ruined,
-    # its gable stepping up over the middle, two empty lancets high in it.
+    # its gable stepping up over the middle, two glazed lancets high in it.
     for x in range(0, east + 1):
         top = W + 6
         if 2 <= x <= east - 2:
@@ -254,7 +255,7 @@ def yard(a, as_found):
             top = W + 9
         p.put((x, W, 0), (x, top, 0), "wall")
     for x in (4, east - 4):
-        p.put((x, W + 3, 0), (x, W + 5, 0), None)
+        p.put((x, W + 3, 0), (x, W + 5, 0), "glass")
     # The burying ground: the strip past the east wall, walled five high.
     for z in range(0, sz):
         p.put((sx - 1, W, z), (sx - 1, W + 4, z), "wall")
@@ -462,7 +463,7 @@ def jetty(a, as_found):
         ("node-jetty", (3, W, 3), "east"),
         ("jetty-head", (sx - 4, W, 3), "east"),
     ]
-    return program("two-ways-off-the-map-jetty", p, BASE_JETTY, contract, marks, ["east", "north", "south", "up", "west"])
+    return program("two-ways-off-the-map-jetty", p, BASE_JETTY, contract, marks, ["east", "north", "south", "west"])
 
 
 BASE_JETTY = dict(BASE)
