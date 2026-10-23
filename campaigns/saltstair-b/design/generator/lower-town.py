@@ -370,11 +370,13 @@ for x in (x0 + 3, x1 - 3):
 
 # ---------------------------------------------------------------- posts
 POSTS = set()
+POST_H = {}     # (x,z) -> the walk height a post stands on
 def kerb_post(x, z):
     h = H[(x, z)]
     del H[(x, z)], SPACE[(x, z)]
     CAT[(x, z)] = "post"
     POSTS.add((x, z))
+    POST_H[(x, z)] = h
     put(x, int(h), z, wall_state("stone_brick_wall"))
     put(x, int(h) + 1, z, LANTERN)
 
@@ -388,6 +390,7 @@ for i, x in enumerate(range(QX[0] + 2, QX[-1], 5)):
     if x in SX:
         continue
     z = QZ[-1]
+    POST_H[(x, z)] = H[(x, z)]
     del H[(x, z)], SPACE[(x, z)]
     CAT[(x, z)] = "post"
     put(x, L3, z, LOG_Y)
@@ -432,14 +435,17 @@ def surface_top(x, z):
     return y
 
 # Every hill column beside a walked one stands up to the walk and carries a
-# low wall: the hillside is fenced, never walked.
+# low wall: the hillside is fenced, never walked. A kerb post or bollard stands
+# in the walk, so a column beside one is fenced as if beside the street: left
+# open, it is a pit between two walls a body dropping off a roof cannot leave.
 NB = ((1, 0), (-1, 0), (0, 1), (0, -1))
 PARAPET = {}
 for x in range(1, EX - 1):
     for z in range(0, EZ - 1):
         if CAT.get((x, z)) != "hill":
             continue
-        hs = [H[(x + dx, z + dz)] for dx, dz in NB if (x + dx, z + dz) in H]
+        hs = [H.get((x + dx, z + dz), POST_H.get((x + dx, z + dz))) for dx, dz in NB
+              if (x + dx, z + dz) in H or (x + dx, z + dz) in POST_H]
         if not hs:
             continue
         c = max(math.ceil(h) for h in hs)
