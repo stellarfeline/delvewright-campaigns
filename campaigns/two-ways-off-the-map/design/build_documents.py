@@ -158,7 +158,7 @@ def quests():
                 "happening": {"subject": "anchor/high-platform", "text": "The visitor stands on the high platform; the jetty is past the last leap.", "verb": "learns"},
                 "id": "quest/the-boat",
                 "objectives": [{
-                    "anchor": "anchor/jetty-head", "radius": 2,
+                    "anchor": "anchor/jetty-head", "radius": 1,
                     "happening": {"subject": "anchor/jetty-head", "text": "The visitor reaches the boat at the head of the jetty.", "verb": "arrives"},
                     "hint": "Leap down off the high platform, under the lid, and walk out to the far end of the jetty.",
                     "id": "obj/end-of-the-jetty",
