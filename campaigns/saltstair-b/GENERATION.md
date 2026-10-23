@@ -1,0 +1,35 @@
+# Saltstair, cut B — generation record
+
+## What the brief pinned, and what was invented
+
+Pinned: the whole of `campaigns/hillside/DESIGN.md` §2–§6, built as cut B — two large boxes, `node/upper-town` (x 54..94 × z 96..149, floor 76, open 20) and `node/lower-town` (x 54..94 × z 151..200, floor 64, open 14), each drawn whole by one program, buildings not boxes; the junction an open `walk` contact over the whole front, as §5.2 now states it; the campaign id; `demo_level: true`; the walk from the square to the quay; light placed with each place.
+
+Invented: the hour's clock (`dusk`, below), the ground music (silent), the world seed, and the title and premise lines.
+
+## Toolchain
+
+- Plugin `delvewright` 1.14.0; engine release `delvec--v1.14.0` (`e51f8bbef8c3a3b58caea451b5f9898b15b00509`); `delvec 1.14.0, dsl 0.56.0, mc 1.21.11`, the release archive (`delvec-v1.14.0-x86_64-unknown-linux-gnu.tar.gz`, sha256 `8dad85c5fc80f1cc8cc0dba4e2cee6523e73a3aee36eecfcd8bd2af996130db3`).
+- Library: this content clone's `prefabs/`, at the revision this branch stands on; the engine's `[content].sha` names `3d8b343dbcb9f44c267da77fa2a31f1c47e8957e`, a different revision, named and not corrected.
+- Every build writes to `$DELVEWRIGHT_ENGINE/validation/delve-output-saltstair-b` and every ladder run is pointed at it with `--output`: the engine's default tree is shared with another build on the same toolchain, and a ladder that boots another campaign's tree judges the wrong world.
+
+## Decisions
+
+- **The hour.** The design states "late afternoon". The engine's clock is six keywords and six positions of a body's arc, none of them a late afternoon: `noon` (6000) puts the sun overhead and `dusk` (12000) is the sunset's onset, the sun low in the west. `dusk` is the reference image's light and is taken; the sky-light model judges it as night (sky light 4), so every lit cell of the town is lit by its own lanterns and windows.
+- **The heightmap** is a byte copy (`sha256 455d5a93e32cc8c9e009fe2e3a27683edba289d8d71a83463c63078ef66944fb`) of the design's, because a site plan reads its heightmap from inside the campaign.
+
+## Unproven points
+
+- **The drop off the front.** Along the contact at z 150 the two sides meet at walk 76 over x 59..78 only; at x 54..58 and x 79..94 the upper town's edge stands 1 to 7 blocks above the fixed ground (walk 73..75 west, 75 → 69 east). The deepest fall is 7 blocks, `ceil(7 − 3)` = 4 of 20 health, inside the unarmoured survivable 22 of the metrics table. **No check proves it survivable**: `DW0831` judges only `drop` seams, by the floor difference, and nothing measures a fall off a `walk` contact's columns.
+
+## Order change
+
+The junction is proven at the **first build after `node/lower-town`'s program draws its ground up to 76 at z 151**, not before the rest is built: a stand-in build of the two boxes refuses it (below), because the lower town's stand-in is massed at its floor, 64, twelve under the front.
+
+## Refusals, in order
+
+| # | Run | Code | What it said | Repair |
+|---|---|---|---|---|
+| 1 | stand-in `build` of the two-box junction probe | `DW0877` | 0 of the front's 41 columns (x 54..94, y 76..77, z 150) crossable | none in the plan: the junction is proven once the lower town's piece draws its ground to the front (*Order change*) |
+| 2 | same run | `DW0837` | no body reaches `node/lower-town` (2050 standable cells, none reachable) | the same: the lower town is reached over the front its piece draws |
+| 3 | `validate`, placement written, story stubbed | `DW0150` | the planned quest has no stage-5 expansion | none at step 2: the expected state until `quests.json` is written at step 5 |
+| 4 | same run | `DW0818` | the beat names `quest/to-the-quay`, which no quest document declares | the same: cleared by step 5 |
