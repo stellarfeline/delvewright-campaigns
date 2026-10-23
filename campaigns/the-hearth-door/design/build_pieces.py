@@ -171,7 +171,6 @@ def program(name, piece, palette, contract, marks):
         "version": VERSION,
     }
 
-BAR = "minecraft:iron_bars[east=true,north=false,south=false,waterlogged=false,west=true]"
 HANGING = "minecraft:lantern[hanging=true,waterlogged=false]"
 STANDING = "minecraft:lantern[hanging=false,waterlogged=false]"
 CHAIN = "minecraft:iron_chain[axis=y,waterlogged=false]"
@@ -197,8 +196,9 @@ def hall(a):
     p.shell()
     # The stair: five courses three wide up the east wall, rising east to a
     # landing two deep under the opening into the lane. Its open side, the
-    # row south of it, carries a rail; its foot, a newel post in the column
-    # on that open side.
+    # row south of it, carries a rail; the newel post stands on the hall floor
+    # at the rail's end, beside the bottom tread in the column past the
+    # stair's third — outside the stair's declared width, never in it.
     p.opening("edge/hall-stair")
     p.put((13, 1, 1), (14, 5, 3), "masonry")
     p.claim_box((13, 6, 1), (14, 9, 3), "landing")
@@ -209,10 +209,11 @@ def hall(a):
             p.put((x, 1, 1), (x, h - 1, 3), "masonry")
         p.claim_box((x, h, 1), (x, 9, 3), "hall-flight")
     p.put((8, 1, 4), (14, 1, 4), "rail")
-    p.put((7, 1, 3), (7, 1, 3), "newel")
-    # The great hearth in the north wall, at the stair's foot: its mouth is
-    # the way into the passage, three wide, and the grate at its back is the
-    # way's own bar. The recess before the grate is the mouth's approach, two
+    p.put((7, 1, 4), (7, 1, 4), "newel")
+    # The great hearth in the north wall, beside the stair's foot: its mouth
+    # is the way into the passage, three wide, and the brick back of the
+    # firebox is the way's own bar — a block the eye cannot see through, so
+    # the passage behind it is hidden until the beat opens it. The recess before the grate is the mouth's approach, two
     # high under the mantel; the fire burns on the hearth stone before the
     # recess, between the cheeks, and is a gate of its own the same beat
     # clears. Cheeks, mantel and chimney breast stand beside and above the
@@ -230,7 +231,7 @@ def hall(a):
     lamps(p, [(1, 6, 3), (4, 7, 6), (7, 6, 4), (10, 7, 7), (4, 7, 9), (11, 7, 9)], 9)
     p.claim_box((1, 1, 1), (14, 9, 10), "room", air_only=True)
     palette = dict(BASE, **{
-        "bar": BAR,
+        "bar": "minecraft:bricks",
         "fire": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]",
         "mantel": "minecraft:polished_deepslate",
         "masonry": "minecraft:stone_bricks",
@@ -267,10 +268,10 @@ def lane(a):
     (lo, hi) = p.alloc["space"]
     p.put(lo, hi, None)
     p.opening("edge/hall-stair")
-    # The lamp post at the lane's east edge, half-way along: inside the
-    # lane's four clear columns, declared on its box.
-    p.put((4, 1, 9), (4, 3, 9), "post")
-    p.put((4, 4, 9), (4, 4, 9), "standing")
+    # The lamp post on the lane's verge, half-way along: the fifth column,
+    # outside the lane's four clear columns.
+    p.put((5, 1, 9), (5, 3, 9), "post")
+    p.put((5, 4, 9), (5, 4, 9), "standing")
     # Hay bales along the verge, the fifth column, outside the lane's width.
     for z in (3, 4, 12):
         p.put((5, 1, z), (5, 1, z), "hay")

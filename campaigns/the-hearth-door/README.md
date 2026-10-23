@@ -1,19 +1,18 @@
 # The Hearth Door
 
-> **Requires delve engine 0.59.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.62.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
-The wardens of Coldharbour kept their records behind the great hearth of their
-hall, and the fire was never let die. It still burns. The sluice that floods
-its flue is up in Wardens' Lane, at the head of the broad stone stair. Climb to
-the lane, turn the sluice, and go back down: the hearth at the stair's foot is
-a door when its fire is out.
+The wardens of Coldharbour kept their hall's great hearth burning for a
+hundred years. It still burns. The sluice that floods its flue is up in
+Wardens' Lane, at the head of the broad stone stair. Climb to the lane, turn
+the sluice, and see what the hearth does when its fire is out.
 
 A demo level of ten minutes or so, for one to four players. No fight.
 
 ## Classes
 
 - **Warden's Clerk** — a sword, boots and bread. The wardens sent for a clerk
-  to read the old records, and the records are behind the hearth.
+  to read their old records and to put out the great hearth.
 
 ## Playing it
 
@@ -25,40 +24,31 @@ Accept the resource pack when the server offers it.
 
 ## For the owner: what to look for
 
-This demo level shows that a way is whole: a door, a stair or a road is as wide
-along its whole length as it was declared, and a structure that stands in part
-of one is there because somebody said it is meant. Walk it once as the clerk.
+This demo level shows one thing: a stair is as wide along its whole length as
+it was declared, and nothing stands in its width. Walk it once as the clerk.
 
 1. **The stair at its foot.** The broad stone stair climbs the hall's east
-   wall, three wide. Stand at its foot: does it read as a stair three wide,
-   whole, with the great hearth beside it rather than in it?
-2. **The hearth before the beat.** The hearth is in the north wall right at the
-   stair's foot: cheeks either side, a mantel over it, the fire on the hearth
-   stone and an iron grate at its back. Before you turn the sluice, does it read
-   as a fireplace and nothing else?
-3. **The hearth after the shot.** Turning the sluice at the lane's far end
-   plays a short shot of the hearth: the fire goes out and the grate rises.
-   After the shot, does the hearth read as a door into the passage — as wide as
-   the stair beside it?
-4. **The newel and the lamp post.** A dark wooden post stands at the stair's
-   foot on its open side, in the stair's own width; in Wardens' Lane a lamp
-   post stands at the lane's edge half-way along, in the lane's own width. Do
-   both read as things somebody built there on purpose, and not as posts in the
-   way?
+   wall, three wide. Stand at its foot and look up it: does it read as a
+   stair three wide, whole, with nothing standing in any of its three columns?
+2. **The newel beside it.** A dark wooden post stands on the hall floor at the
+   end of the stair's rail, beside the bottom tread on its open side. Does it
+   read as the newel at the rail's end, standing beside the stair rather than
+   in it?
+3. **Walking it.** Walk up and down the stair in each of its three columns.
+   Does any column feel blocked, or narrower than the others?
 
 The machine has already confirmed: every way's declared width is clear along
-its whole length, before and after the fire goes out, except the newel's column
-and the lamp post's, which are declared and confirmed block for block; nothing
-of the hearth enters the stair's three columns. What you judge is whether it
-looks and reads right.
+its whole length, in every state its cells take; the stair's three columns are
+clear at its foot, on every course and at its head, and the newel and the
+lane's lamp post stand outside the widths they are beside. What you judge is
+whether the stair looks and walks whole.
 
 ## 给主人看的：要看什么
 
-这是一个演示关卡，展示"一条路是完整的"：门、楼梯、街道在整条路上都和声明的一样宽；如果有东西立在路的宽度里，那一定是有人明确声明了"这是故意的"。以书记的身份走一遍即可。
+这个演示关卡只展示一件事：楼梯在整段上都和声明的一样宽，宽度里没有任何东西挡着。以书记的身份走一遍即可。
 
-1. **楼梯脚下。** 宽石阶沿大厅东墙往上，三格宽。站到阶脚看：它读起来是不是一段完整的三格宽楼梯，大壁炉在它旁边，而不是挡在它里面？
-2. **剧情前的壁炉。** 壁炉就在阶脚旁的北墙上：两侧有炉颊，上方有壁炉台，炉石上烧着火，后面是一道铁栅。在你拉开闸门之前，它读起来是不是就是一个壁炉，别无其他？
-3. **镜头之后的壁炉。** 在巷子尽头拉开闸门，会有一个短镜头看向壁炉：火灭了，铁栅升起。镜头之后，壁炉读起来是不是一扇通往密道的门——而且和旁边的楼梯一样宽？
-4. **楼梯柱和路灯柱。** 阶脚开放的一侧立着一根深色木柱，在楼梯自己的宽度里；守卫巷半路的路边立着一根路灯柱，在巷子自己的宽度里。两者读起来是不是有人特意立在那里的东西，而不是挡路的柱子？
+1. **楼梯脚下。** 宽石阶沿大厅东墙往上，三格宽。站到阶脚往上看：它读起来是不是一段完整的三格宽楼梯，三列里没有任何东西立着？
+2. **旁边的楼梯柱。** 一根深色木柱立在大厅地面上、楼梯扶手的尽头，在最下一级台阶开放一侧的旁边。它读起来是不是扶手尽头的楼梯柱，立在楼梯旁边，而不是楼梯里面？
+3. **走一走。** 沿楼梯的三列分别上下各走一遍。有没有哪一列让你觉得被挡住，或者比另外两列窄？
 
-机器已经确认：每条路声明的宽度在整条路上都是畅通的，火灭之前和之后都是；只有楼梯柱和路灯柱各占的那一列例外，而它们都已声明，并逐格逐块核对过；壁炉的任何部分都没有伸进楼梯的三列。你要判断的只是"看起来对不对、读起来对不对"。
+机器已经确认：每条路声明的宽度在整条路上、在它的格子可能处于的每一种状态下都是畅通的；楼梯的三列在阶脚、每一级台阶和阶顶都是畅通的，楼梯柱和巷子里的路灯柱都立在各自旁边那条路的宽度之外。你要判断的只是这段楼梯看起来、走起来是不是完整的。
