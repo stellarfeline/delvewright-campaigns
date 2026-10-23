@@ -1,0 +1,216 @@
+{
+  "campaign_id": "the-ferry-bell",
+  "content": {
+    "containers": {
+      "decoration_notice": {
+        "sound": "minecraft:block.barrel.close",
+        "style": "chat",
+        "text": "The barrels on this shore stand empty, and have for years."
+      }
+    },
+    "guidance": {
+      "manual": {
+        "pages": [
+          "The ferry-house door is bolted from the jetty side. The lever is on the deck beside the door: stand close and [[key|use]] on it, and the bolt slides back.",
+          "Ring the bell once, then wait on the jetty. If the dead come up on the spit across the water, they come for whoever rang it. Keep your blade out."
+        ],
+        "title": "The Ferry-Keeper's Notes"
+      }
+    },
+    "quests": [
+      {
+        "cast": {
+          "npc/nell": {
+            "at": "anchor/nell",
+            "dialogue": "dlg/nell-root",
+            "doing": "standing in the rain by the jetty mouth with her bad arm tucked into her coat"
+          }
+        },
+        "happening": {
+          "subject": "npc/nell",
+          "text": "The party comes down to the jetty in the rain, and the ferry-keeper is waiting for someone to ring the bell for her.",
+          "verb": "arrives"
+        },
+        "id": "quest/ring-for-the-ferry",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/nell",
+              "text": "Nell tells them the ferry only comes for the bell, and what came the last three times it rang.",
+              "verb": "learns"
+            },
+            "id": "obj/hear-nell",
+            "npc": "npc/nell",
+            "title": "Talk to the ferry-keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-nell"
+            ],
+            "anchor": "anchor/notice",
+            "happening": {
+              "subject": "anchor/notice",
+              "text": "The ferry notice says how the ferry-house door is bolted and when the bell may be rung.",
+              "verb": "learns"
+            },
+            "hint": "On its post at the jetty's head, right of the planks.",
+            "id": "obj/read-the-slate",
+            "prop": {
+              "block": "minecraft:dark_oak_sign[rotation=0]"
+            },
+            "title": "Read the ferry notice",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/hear-nell"
+            ],
+            "anchor": "anchor/bell",
+            "happening": {
+              "subject": "anchor/bell",
+              "text": "The ferry bell rings out over the cove.",
+              "verb": "learns"
+            },
+            "hint": "Inside the ferry house at the end of the jetty, on its stand in the middle of the floor.",
+            "id": "obj/ring-the-bell",
+            "prop": {
+              "block": "minecraft:bell[attachment=floor,facing=south,powered=false]"
+            },
+            "title": "Ring the ferry bell",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/ring-the-bell"
+            ],
+            "happening": {
+              "subject": "anchor/muster",
+              "text": "The dead that answered the bell are put back in the water.",
+              "verb": "dies"
+            },
+            "id": "obj/fight-off-the-dead",
+            "title": "Fight off the dead",
+            "type": "kill",
+            "wave": "wave/the-dead"
+          }
+        ],
+        "on_complete": [
+          {
+            "ending": "ending/the-ferry-is-coming",
+            "happening": {
+              "subject": "npc/nell",
+              "text": "The shore is quiet again and the ferry is on its way across the sound.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/hear-nell": [
+            {
+              "flag": "flag/heard-nell",
+              "type": "set-flag"
+            }
+          ],
+          "obj/read-the-slate": [
+            {
+              "style": "chat",
+              "text": "FERRY, painted in white. Ring the bell once and wait on the jetty. The ferry-house door is bolted from outside: the lever is on the deck beside the door. Never ring after dark.",
+              "type": "narrate"
+            }
+          ],
+          "obj/ring-the-bell": [
+            {
+              "happening": {
+                "subject": "anchor/muster",
+                "text": "Across the water the dead come up out of the cove onto the spit and form up, facing the bell.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/the-dead"
+            },
+            {
+              "style": "chat",
+              "text": "Across the water, on the spit, something comes up out of the cove. Then another.",
+              "type": "narrate"
+            },
+            {
+              "anchor": "anchor/node-jetty",
+              "type": "set-checkpoint"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/bolt-lever",
+        "effects": [
+          {
+            "flag": "flag/bolt-drawn",
+            "type": "set-flag"
+          },
+          {
+            "anchor": "anchor/seam-ferry-door",
+            "happening": {
+              "subject": "anchor/seam-ferry-door",
+              "text": "The ferry-house door stands unbolted.",
+              "verb": "opens"
+            },
+            "type": "open-gate"
+          },
+          {
+            "at": {
+              "anchor": "anchor/bolt-lever",
+              "at": "anchor"
+            },
+            "sound": "minecraft:block.iron_door.open",
+            "type": "play-sound"
+          },
+          {
+            "style": "actionbar",
+            "text": "The bolt slides back. The ferry-house door is open.",
+            "type": "narrate"
+          }
+        ],
+        "highlight": {
+          "within": 6
+        },
+        "id": "trigger/draw-the-bolt",
+        "on": {
+          "on": "use"
+        },
+        "once": true,
+        "prop": {
+          "block": "minecraft:lever[face=floor,facing=north,powered=false]"
+        },
+        "requires_flags": [
+          "flag/heard-nell"
+        ]
+      }
+    ],
+    "waves": [
+      {
+        "anchor": "anchor/muster",
+        "id": "wave/the-dead",
+        "mobs": [
+          {
+            "attributes": {
+              "follow_range": 24,
+              "max_health": 20
+            },
+            "count": 3,
+            "entity": "minecraft:zombie"
+          }
+        ],
+        "summon": "anchor"
+      }
+    ]
+  },
+  "dsl_version": "0.56.0",
+  "stage": "quests"
+}
