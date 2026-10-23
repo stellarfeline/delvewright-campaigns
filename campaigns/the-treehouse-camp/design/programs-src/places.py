@@ -336,11 +336,16 @@ def cabin(m, x0, z0, x1, z1, y, wall_h, ridge_axis, doors=(), windows=()):
             lo, hi, k = lo + 1, hi - 1, k + 1
 
 
-def platform_contract(m, x0, z0, x1, z1, floor, vias, space="room", reason=None, extra_space=(), holes=()):
+def platform_contract(m, x0, z0, x1, z1, floor, vias, space="room", reason=None, extra_space=(), holes=(),
+                      walled=()):
     """The floor of a platform with its rail: one space two cells tall over
     the footprint and the ring rows (the rail's lower course, and the top
     course a lantern line replaces), minus every via; everything above it to
-    the frame's top is out of walk (rail tops, posts, roofs)."""
+    the frame's top is out of walk (rail tops, posts, roofs).
+
+    `walled` names the strips of the footprint the platform's own furniture
+    shuts off: (box, reason) pairs, each taken out of the space and declared
+    out of walk, because no body reaches them and the space would owe them."""
     lo = (x0, floor, z0, x1, floor + 1, z1)
     # Each via is three tall; its top row meets the space through a collar,
     # the row of air just inside the ring beside it.
@@ -351,7 +356,10 @@ def platform_contract(m, x0, z0, x1, z1, floor, vias, space="room", reason=None,
         dx = -1 if v[0] == v[3] == x1 else (1 if v[0] == v[3] == x0 else 0)
         dz = -1 if v[2] == v[5] == z1 else (1 if v[2] == v[5] == z0 else 0)
         collars.append((v[0] + dx, floor + 2, v[2] + dz, v[3] + dx, floor + 2, v[5] + dz))
-    m.space(space, "open", *(thlib.subtract(lo, vias) + collars + list(extra_space)))
+    shut = [box for box, _ in walled]
+    m.space(space, "open", *(thlib.subtract(lo, list(vias) + shut) + collars + list(extra_space)))
+    for i, (box, why) in enumerate(walled):
+        m.nobody("walled" if i == 0 else f"walled-{i + 1}", why, box)
     top = m.wmax()[1]
     if top >= floor + 2:
         mn, mx = m.min, m.wmax()
@@ -868,7 +876,12 @@ def seed_house():
         leaf_mass(m, *b)
     v = (34, floor, 69, 36, floor + 2, 69)
     m.via("seed-low", v)
-    platform_contract(m, 27, 69, 44, 86, floor, [v])
+    # Behind the storehouse hut: the row between its south wall (z 84) and the
+    # rail (z 86), from the lamp post at x 28 to the one at x 34. The hut, the
+    # rail and the two posts close it on every side, so no body stands there.
+    behind_hut = (29, floor, 85, 33, floor + 1, 85)
+    platform_contract(m, 27, 69, 44, 86, floor, [v], walled=[
+        (behind_hut, "the row behind the storehouse hut, shut in by its wall, the rail and two lamp posts")])
     rest_region(m, "under-the-deck", "the mound under the deck, the roots and the beams: nobody goes down there")
     m.ack = "a house in a tree: its frame is mostly the mound under the deck and the crown over it"
     m.entry = "room"
@@ -936,7 +949,12 @@ def watch_house():
     shaft = (74, floor + 2, 77, 74, y1 - 1, 78)
     top = (74, y1, 77, 74, y1, 78)
     m.via("watch-ladder", top)
-    platform_contract(m, x0, z0, x1, z1, floor, [v], extra_space=[shaft], holes=[top])
+    # Behind the sentry hut: the row between its south wall (z 86) and the
+    # rail (z 88), from the lamp post at x 82 to the one at x 89. The hut, the
+    # rail and the two posts close it on every side, so no body stands there.
+    behind_hut = (83, floor, 87, 88, floor + 1, 87)
+    platform_contract(m, x0, z0, x1, z1, floor, [v], extra_space=[shaft], holes=[top], walled=[
+        (behind_hut, "the row behind the sentry hut, shut in by its wall, the rail and two lamp posts")])
     m.entry = "room"
     m.edge(a="room", b="exterior", **{"class": "walk", "via": "watch-high"})
     m.edge(a="room", b="exterior", **{"class": "walk", "via": "watch-ladder"})
