@@ -1,0 +1,105 @@
+{
+  "campaign_id": "the-thing-across-the-water",
+  "content": {
+    "beats": [
+      {
+        "node": "node/jetty",
+        "objective": "obj/at-the-door",
+        "quest": "quest/the-bay"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/hear-the-keeper",
+        "quest": "quest/the-bay"
+      },
+      {
+        "node": "node/jetty",
+        "objective": "obj/jetty-end",
+        "quest": "quest/the-bay"
+      },
+      {
+        "node": "node/jetty",
+        "objective": "obj/ring-the-bell",
+        "quest": "quest/the-bay"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/tell-the-keeper",
+        "quest": "quest/what-stood-up"
+      }
+    ],
+    "critical_path": [
+      "node/jetty",
+      "node/hall",
+      "node/jetty",
+      "node/hall"
+    ],
+    "edges": [
+      {
+        "a": "node/jetty",
+        "b": "node/hall",
+        "class": "walk",
+        "id": "edge/hall-door"
+      },
+      {
+        "a": "node/jetty",
+        "b": "node/stack",
+        "class": "vision",
+        "id": "edge/across-the-water"
+      }
+    ],
+    "entry": "node/jetty",
+    "goal": "node/hall",
+    "nodes": [
+      {
+        "id": "node/jetty",
+        "intent": "jetty",
+        "note": "A stone jetty running north from the harbour hall's door out into the bay, railed along both sides, with a bell on a post at its far end.",
+        "stations": [
+          {
+            "anchor": "anchor/door-step",
+            "kind": "point",
+            "note": "On the jetty, three steps out from the hall's open door."
+          },
+          {
+            "anchor": "anchor/jetty-end",
+            "kind": "point",
+            "note": "The end of the jetty, under the bell post, looking north over the bay."
+          },
+          {
+            "anchor": "anchor/bell",
+            "kind": "point",
+            "note": "The bell, hung on its post at the jetty's north end."
+          }
+        ]
+      },
+      {
+        "id": "node/hall",
+        "intent": "harbour hall",
+        "note": "The harbour hall at the jetty's foot: one long room under a pitched roof, its wide door open onto the jetty, the keeper's desk at the back wall facing the door.",
+        "stations": [
+          {
+            "anchor": "anchor/keeper",
+            "kind": "point",
+            "note": "Behind the keeper's desk at the back of the hall, facing the open door."
+          }
+        ]
+      },
+      {
+        "id": "node/stack",
+        "intent": "sea-stack",
+        "note": "A rock pillar standing out of the bay ninety blocks north of the bell, too far to swim, its flat top bare. What rises on it is the thing across the water.",
+        "reached": false,
+        "stations": [
+          {
+            "anchor": "anchor/stack-top",
+            "kind": "point",
+            "note": "The middle of the stack's flat top, where the thing rises."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.56.0",
+  "stage": "layout-graph"
+}
