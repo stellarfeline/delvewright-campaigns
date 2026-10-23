@@ -77,3 +77,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/inn` | 1 | `inn/handout-1.md` | 165 943 | 544 s | none (first authoring) | 2 — DW0210 alone, 83 dark cells (from 124), none in this frame |
 | `node/smithy` | 1 | `smithy/handout-1.md` | 167 467 | 539 s | none (first authoring) | 2 — DW0210 alone, 79 dark cells (from 83), none in this frame; the open front is a recorded departure (Findings); the author met DW0730 (refusal 10) |
 | `node/weaver` | 1 | `weaver/handout-1.md` | 155 095 | 436 s | none (first authoring) | 2 — DW0210 alone, 73 dark cells (from 79), none in this frame; the author ran a read-only git status |
+| `node/merchant` | 1 | `merchant/handout-1.md` | 150 386 | 367 s | none (first authoring) | 2 — DW0210 alone, 48 dark cells (from 73), none in this frame |
