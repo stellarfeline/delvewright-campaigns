@@ -8,6 +8,10 @@ Ruled at the design gate, the same for both cuts: `time: noon`; `demo_level: tru
 
 Invented: the ground music (silent), the world seed, and the title and premise lines.
 
+## Posture note
+
+Three axes off the default, for the few lines this walk has: **thematic explicitness** — no line states what the town means, the street and the sea say it; **resolution** — the delve ends on arrival at the quay, with no epilogue and no understanding reached; **address** — the journal line speaks to the player as the one walking, in the imperative, not about a protagonist.
+
 ## Toolchain
 
 - Plugin `delvewright` 1.14.0; engine release `delvec--v1.14.0` (`e51f8bbef8c3a3b58caea451b5f9898b15b00509`); `delvec 1.14.0, dsl 0.56.0, mc 1.21.11`, the release archive (`delvec-v1.14.0-x86_64-unknown-linux-gnu.tar.gz`, sha256 `8dad85c5fc80f1cc8cc0dba4e2cee6523e73a3aee36eecfcd8bd2af996130db3`).
