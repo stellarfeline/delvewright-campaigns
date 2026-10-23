@@ -1,0 +1,157 @@
+{
+  "campaign_id": "a-hidden-way",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-porch",
+          "text": "The hand comes in by the porch and finds the great hearth burning.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-fire",
+        "objectives": [
+          {
+            "anchor": "anchor/valve",
+            "happening": {
+              "subject": "anchor/seam-hearth-door",
+              "text": "The hand turns the valve, and water floods the flue.",
+              "verb": "opens"
+            },
+            "hint": "The valve is on the wall to the right of the great hearth, as you face its fire.",
+            "id": "obj/turn-the-valve",
+            "prop": {
+              "block": "minecraft:lever[face=wall,facing=west,powered=false]"
+            },
+            "title": "Pull the valve beside the hearth",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/turn-the-valve": [
+            {
+              "flag": "flag/hearth-out",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/hearth-fire",
+              "happening": {
+                "subject": "anchor/hearth-fire",
+                "text": "The fire on the hearth stone hisses out, and its embers wash down into the flue.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "anchor": "anchor/seam-hearth-door",
+              "happening": {
+                "subject": "anchor/seam-hearth-door",
+                "text": "The brick back of the firebox swings away into the dark, and the passage behind it stands open.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "look_at": {
+                "anchor": "anchor/seam-hearth-door"
+              },
+              "path": [
+                {
+                  "anchor": "anchor/seam-hearth-door",
+                  "offset": [
+                    1,
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "anchor": "anchor/seam-hearth-door",
+                  "offset": [
+                    1,
+                    1,
+                    4
+                  ]
+                }
+              ],
+              "seconds": 4,
+              "type": "cutscene"
+            },
+            {
+              "style": "chat",
+              "text": "Water roars down the flue. The fire hisses out, and the back of the firebox swings into the dark: behind the hearth, a passage runs on into the rock.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/seam-hearth-door",
+          "text": "The hand goes to the cold hearth.",
+          "verb": "learns"
+        },
+        "id": "quest/the-way",
+        "objectives": [
+          {
+            "anchor": "anchor/node-passage",
+            "happening": {
+              "subject": "anchor/node-passage",
+              "text": "The hand walks through the cold hearth into the passage.",
+              "verb": "arrives"
+            },
+            "hint": "The hearth's fire is out. Go through it into the passage behind it.",
+            "id": "obj/enter-the-passage",
+            "radius": 2,
+            "title": "Go through the hearth into the passage",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The keeper's passage is found.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-passage",
+              "text": "The keeper's passage is reached.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {},
+        "trigger": {
+          "quest": "quest/the-fire",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-hall",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "The great hearth burns, as it has since the keeper's grandfather lit it. The valve that floods its flue is on the wall to its right.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-burning-hearth",
+        "on": {
+          "on": "approach",
+          "range": 6
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.62.0",
+  "stage": "quests"
+}

@@ -1,0 +1,80 @@
+{
+  "campaign_id": "a-hidden-way",
+  "content": {
+    "beats": [
+      {
+        "node": "node/hall",
+        "objective": "obj/turn-the-valve",
+        "quest": "quest/the-fire"
+      },
+      {
+        "node": "node/passage",
+        "objective": "obj/enter-the-passage",
+        "quest": "quest/the-way"
+      }
+    ],
+    "critical_path": [
+      "node/porch",
+      "node/hall",
+      "node/passage"
+    ],
+    "edges": [
+      {
+        "a": "node/porch",
+        "b": "node/hall",
+        "class": "walk",
+        "id": "edge/porch-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/passage",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/hearth-out"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "passage",
+            "behind the hearth",
+            "密道"
+          ]
+        },
+        "id": "edge/hearth-door"
+      }
+    ],
+    "entry": "node/porch",
+    "goal": "node/passage",
+    "nodes": [
+      {
+        "id": "node/porch",
+        "intent": "entrance",
+        "note": "The porch the hand comes in by, south of the hall: a door into the hall."
+      },
+      {
+        "id": "node/hall",
+        "intent": "hub",
+        "note": "The keeper's hall: the great hearth in its north wall, its fire burning before the brick back of the firebox, and the flue's valve on the wall to its right.",
+        "stations": [
+          {
+            "anchor": "anchor/hearth-fire",
+            "kind": "gate",
+            "note": "The fire on the hearth stone before the mouth, put out and washed away when the flue floods."
+          },
+          {
+            "anchor": "anchor/valve",
+            "kind": "point",
+            "note": "The valve on the hall's wall to the right of the hearth, which floods the flue."
+          }
+        ]
+      },
+      {
+        "id": "node/passage",
+        "intent": "goal-chamber",
+        "note": "The passage behind the hearth, three wide, the keeper's shelves at its end."
+      }
+    ]
+  },
+  "dsl_version": "0.62.0",
+  "stage": "layout-graph"
+}
