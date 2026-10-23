@@ -17,12 +17,13 @@ who steps off it can step back; the walk between them keeps its outermost
 tread columns as whole stone-brick kerbs, and the top and bottom tread rows
 carry a chiseled post with a lantern on each kerb.
 """
+import os
 import json
 import subprocess
 import sys
 from pathlib import Path
 
-DELVEC = "/home/stella/.delvewright/bin/delvec"
+DELVEC = os.path.expanduser("~/.delvewright/bin/delvec")
 CAMPAIGN = Path(__file__).resolve().parents[2]
 PLACE = "node/flight-5"
 NORTH = "shore-street-flight-5"

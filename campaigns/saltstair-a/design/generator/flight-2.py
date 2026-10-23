@@ -11,12 +11,13 @@ volume, peeled one per course by recursion), the foot landing, and the south
 plane cut open as the street running on at grade. Kerb walls stand in the ring
 columns either side; lanterns stand on kerb posts at the head and the foot.
 """
+import os
 import json
 import pathlib
 import subprocess
 import sys
 
-DELVEC = "/home/stella/.delvewright/bin/delvec"
+DELVEC = os.path.expanduser("~/.delvewright/bin/delvec")
 CAMPAIGN = pathlib.Path(__file__).resolve().parents[2]
 PLACE = "node/flight-2"
 NORTH = "upper-street-flight-2"

@@ -5,12 +5,13 @@ Provenance only: the emitted JSON is the artifact of record. Every handed
 number is read through a `handed/...` parameter whose default is the value
 `delvec allocation` hands; this script computes structure, never a judgement.
 """
+import os
 import json
 import pathlib
 import subprocess
 import sys
 
-DELVEC = "/home/stella/.delvewright/bin/delvec"
+DELVEC = os.path.expanduser("~/.delvewright/bin/delvec")
 CAMPAIGN = pathlib.Path(__file__).resolve().parents[2]
 OUT = CAMPAIGN / "programs" / "upper-street.json"
 

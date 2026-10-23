@@ -2,7 +2,7 @@
 # Staging gate — `saltstair-a`
 
 - Campaign source: `campaigns/saltstair-a`
-- Build tree: `/home/stella/.delvewright/engine/validation/delve-output`
+- Build tree: `~/.delvewright/engine/validation/delve-output`
 - Ledger: 148 finding(s), 2026-08-11
 - Declared dsl_version: classes.json 0.56.0, detail-plan.json 0.56.0, dialogue.json 0.56.0, geometry-brief.json 0.56.0, layout-graph.json 0.56.0, npcs.json 0.56.0, quest-plan.json 0.56.0, quests.json 0.56.0, site-plan.json 0.56.0, world.json 0.56.0
 - Subject stage: assembled (this build claims its content is complete)
