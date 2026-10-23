@@ -12,9 +12,19 @@ Pinned, verbatim from `campaigns/hillside/DESIGN.md` §2–§6: the region, the 
 
 Invented: the seed (`20261022`), the title line, the horizon's music (silence — the design states none), the quest's wording.
 
-## Open items
+## Posture note
 
-- `world.time`: the design states "late afternoon"; the DSL's sky vocabulary has no position between the sun `high` and the sun `setting` (its disc on the western horizon). The documents carry `day` as a marked placeholder until the owner rules.
+Three axes off the default, for a ten-minute walk with one objective: the text addresses the player directly ("You stand on the square…"); it states no point about the town — the street is the whole of what is said; and it ends on the fact of arrival, with no reflection after it.
+
+## Rulings at the design gate
+
+The design was approved as written (`campaigns/hillside/DESIGN.md`), on the reference image `view1-from-the-sea` and the design's tables; no concept set was drawn. Rulings, the same for both variants:
+
+- `world.time` is `noon`. The design's "late afternoon" has no DSL spelling: the sky vocabulary has no sun position between `high` and `setting` (the disc on the western horizon). The six §6 frames are drawn at `day`.
+- `demo_level: true` stays; the staging gate's `DEMO-UNQUEUED` refusal (no row of the pinned engine's demo queue names `campaigns/saltstair-a`) is accepted, and the gate's full report is recorded with every other row judged. No `design.json`.
+- English only.
+- `site-plan.json` `views[]` stays empty: it takes whole numbers and §6's cameras stand at half blocks. The exact camera coordinates live in `design/cameras.json`.
+- The step-8 build goes on to step 9 with `DW0210` as its only red (the stand-in houses are dark); each house is lit as it is detailed. No `lighting` declaration, temporary or otherwise.
 
 ## Refusals, in order
 
@@ -29,3 +39,7 @@ Every `DW` refusal `delvec` printed during authoring, with its repair.
 | — | step 3, validate | DW0150, DW0818 | still standing, the step-3 state | step 5 |
 | 5 | step 3, scratch probe build (a copy outside the campaign with a throwaway quest; not the campaign) | DW0210 | the 19 stand-ins measure 144 of 1698 reachable cells dark, the stand-in houses' interiors | not repaired in the campaign; the probe alone took a site-plan `lighting` to see past it — see the open items |
 | 6 | step 3, scratch probe build | DW0863 | the throwaway quest's objective is 97 blocks from spawn with no `hint` | owed by step 5's quest |
+| — | step 5, validate | none | `quests.json` written; DW0150 and DW0818 cleared; exit 0 | — |
+| — | step 7, analyze | none | exit 0 | — |
+| 7 | step 8, build | DW0210 | 144 of 1698 reachable cells dark under the 19 stand-ins, darkest at [54, 84, 98] (the chapel's stand-in) | by ruling, carried into step 9: each house is lit as it is detailed; no `lighting` declaration |
+| — | step 8b, validate | DW0900 (notice, not a refusal) | the six cameras in `design/cameras.json` name rows no `design.json` holds — by ruling there is none; each names the §6 view it answers | none owed; `delvec cameras` refuses to draw without `design.json` (DW0721 on a scratch copy), so the frames are drawn with `delvec frames` |
