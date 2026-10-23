@@ -33,11 +33,11 @@ def main():
         "horizon": {"attributes": {"audio/background_music": {}}, "base": "void"},
         "languages": ["zh-cn"],
         "min_players": 1,
-        "outro": "The grille stands open, and the old garden is yours to walk.",
-        "premise": "Old Wenna's cottage stands at the end of the lane with its garden locked behind it. She has left the latch for whoever comes: through her yard gate, through the kitchen and the door to the back room, and the iron grille to the garden opens when the latch is lifted.",
+        "outro": "The iron door stands open, and the old garden is yours to walk.",
+        "premise": "Old Wenna's cottage stands at the end of the lane with its garden locked behind it. She has left the latch for whoever comes: through her yard gate, through the kitchen and the door to the back room, and the iron door to the garden opens when the latch is lifted.",
         "seed": 20261023,
         "target_minutes": 8,
-        "theme": "A hedged yard with a wooden gate, a cottage of two rooms joined by an oak door, oak trapdoors over the stair to its cellar, an iron grille at the back that opens only when the latch is lifted, and an iron door in the garden's far hedge that nobody opens.",
+        "theme": "A hedged yard with a wooden gate, a cottage of two rooms joined by an oak door, oak trapdoors over the stair to its cellar, and an iron door at the back that opens only when the latch is lifted.",
         "time": "day",
         "title": "The Latch",
         "weather": "clear",
@@ -61,8 +61,8 @@ def main():
     write("quest-plan.json", doc("quest-plan", {
         "finale": "quest/the-garden",
         "quests": [
-            {"act": 1, "area": "area/site", "depends_on": [], "goal": "Go through the yard gate and into the cottage, through the oak door to the back room, and lift the latch that opens the iron grille to the garden.", "id": "quest/the-latch", "mandatory": True, "npcs": []},
-            {"act": 1, "area": "area/site", "depends_on": ["quest/the-latch"], "goal": "Go out through the grille into the garden.", "id": "quest/the-garden", "mandatory": True, "npcs": []},
+            {"act": 1, "area": "area/site", "depends_on": [], "goal": "Go through the yard gate and into the cottage, through the oak door to the back room, and lift the latch that opens the iron door to the garden.", "id": "quest/the-latch", "mandatory": True, "npcs": []},
+            {"act": 1, "area": "area/site", "depends_on": ["quest/the-latch"], "goal": "Go out through the iron door into the garden.", "id": "quest/the-garden", "mandatory": True, "npcs": []},
         ],
     }))
     write("layout-graph.json", doc("layout-graph", {
@@ -81,12 +81,12 @@ def main():
         "goal": "node/garden",
         "nodes": [
             {"id": "node/yard", "intent": "entrance", "note": "Wenna's yard, hedged all round, open to the sky: a wooden gate in a hedge across it on the path to the cottage door."},
-            {"id": "node/cottage", "intent": "hub", "note": "The cottage: two rooms, the kitchen the front door opens into and the back room behind an oak door; oak trapdoors in the back room's floor over the cellar stair; the iron grille to the garden in the back room's north wall, and the latch lever by the east wall.",
+            {"id": "node/cottage", "intent": "hub", "note": "The cottage: two rooms, the kitchen the front door opens into and the back room behind an oak door; oak trapdoors in the back room's floor over the cellar stair; the iron door to the garden in the back room's north wall, and the latch lever by the east wall.",
              "stations": [
-                 {"anchor": "anchor/latch", "kind": "point", "note": "The latch lever on the back room's floor, by its east wall, its rod run under the floor to the grille."},
+                 {"anchor": "anchor/latch", "kind": "point", "note": "The latch lever on the back room's floor, by its east wall, its rod run under the floor to the iron door."},
              ]},
             {"id": "node/cellar", "intent": "cache", "note": "The cellar under the cottage, down a short stair under the trapdoors in the back room's floor: barrels and a shelf.", "reached": True},
-            {"id": "node/garden", "intent": "goal-chamber", "note": "The old garden behind the cottage, hedged and open to the sky, with an iron door in its far hedge to the lane that stays shut."},
+            {"id": "node/garden", "intent": "goal-chamber", "note": "The old garden behind the cottage, hedged all round and open to the sky."},
         ],
     }))
     write("site-plan.json", doc("site-plan", {
@@ -112,7 +112,7 @@ def main():
         "seams": [
             {"at": 2, "edge": "edge/front-door", "face": "north", "form": "the cottage's front door, oak, from the yard into the kitchen", "meets": 2, "opening": "door"},
             {"at": [8, 0], "edge": "edge/cellar-stair", "face": "down", "form": "oak trapdoors in the back room's floor over a short stone stair down to the cellar", "meets": [8, 0], "opening": {"height": 3, "width": 1}, "stair_in": "node/cellar"},
-            {"at": 7, "edge": "edge/garden-door", "face": "north", "form": "an iron grille from the back room into the garden, opened when the latch is lifted", "meets": 5, "opening": "door"},
+            {"at": 7, "edge": "edge/garden-door", "face": "north", "form": "an iron door from the back room into the garden, opened when the latch is lifted", "meets": 5, "opening": "door"},
         ],
     }))
 
@@ -120,9 +120,9 @@ def main():
 def quests():
     lifted = [
         {"anchor": "anchor/seam-garden-door", "type": "open-gate",
-         "happening": {"subject": "anchor/seam-garden-door", "text": "The iron grille to the garden swings open.", "verb": "opens"}},
+         "happening": {"subject": "anchor/seam-garden-door", "text": "The iron door to the garden swings open.", "verb": "opens"}},
         {"at": {"anchor": "anchor/latch", "at": "anchor"}, "sound": "minecraft:block.iron_door.open", "type": "play-sound"},
-        {"style": "chat", "text": "The latch lifts with a clank, and the iron grille to the garden swings open.", "type": "narrate"},
+        {"style": "chat", "text": "The latch lifts with a clank, and the iron door to the garden swings open.", "type": "narrate"},
     ]
     return doc("quests", {
         "quests": [
@@ -132,7 +132,7 @@ def quests():
                 "id": "quest/the-latch",
                 "objectives": [{
                     "anchor": "anchor/latch",
-                    "happening": {"subject": "anchor/seam-garden-door", "text": "The neighbour pulls the latch lever, and the bolt of the grille draws back.", "verb": "opens"},
+                    "happening": {"subject": "anchor/seam-garden-door", "text": "The neighbour pulls the latch lever, and the bolt of the iron door draws back.", "verb": "opens"},
                     "hint": "Through the yard gate, the kitchen and the oak door. The latch lever is on the back room's floor, by the hay.",
                     "id": "obj/lift-the-latch",
                     "prop": {"block": "minecraft:lever[face=floor,facing=north,powered=false]"},
@@ -144,12 +144,12 @@ def quests():
             },
             {
                 "cast": {},
-                "happening": {"subject": "anchor/seam-garden-door", "text": "The grille stands open.", "verb": "learns"},
+                "happening": {"subject": "anchor/seam-garden-door", "text": "The iron door stands open.", "verb": "learns"},
                 "id": "quest/the-garden",
                 "objectives": [{
                     "anchor": "anchor/node-garden", "radius": 2,
                     "happening": {"subject": "anchor/node-garden", "text": "The neighbour walks out into the old garden.", "verb": "arrives"},
-                    "hint": "Go out through the grille.",
+                    "hint": "Go out through the iron door.",
                     "id": "obj/step-out",
                     "title": "Walk out into the garden", "type": "reach-anchor",
                 }],
@@ -174,15 +174,15 @@ ZH = {
     "Walking stick": "手杖",
     "Neighbour": "邻居",
     "The garden is open.": "花园开了。",
-    "The latch lifts with a clank, and the iron grille to the garden swings open.": "门闩咔哒一声抬起，通往花园的铁栅门转开了。",
+    "The latch lifts with a clank, and the iron door to the garden swings open.": "门闩咔哒一声抬起，通往花园的铁门转开了。",
     "Wenna's yard. Her note said the latch for the garden is in the back room, past the kitchen.": "这是温娜的院子。她的字条上说，开花园的门闩在里屋，穿过厨房就到。",
-    "Go out through the grille.": "从铁栅门走出去。",
+    "Go out through the iron door.": "从铁门走出去。",
     "Walk out into the garden": "走进花园",
     "Through the yard gate, the kitchen and the oak door. The latch lever is on the back room's floor, by the hay.": "穿过院门、厨房和那扇橡木门。门闩的拉杆在里屋地上，干草捆旁边。",
     "Lift the latch in the back room": "抬起里屋的门闩",
-    "Go out through the grille into the garden.": "穿过铁栅门，走进花园。",
-    "Go through the yard gate and into the cottage, through the oak door to the back room, and lift the latch that opens the iron grille to the garden.": "穿过院门进屋，推开橡木门到里屋，抬起门闩，打开通往花园的铁栅门。",
-    "The grille stands open, and the old garden is yours to walk.": "铁栅门敞开着，老花园随你走走。",
+    "Go out through the iron door into the garden.": "穿过铁门，走进花园。",
+    "Go through the yard gate and into the cottage, through the oak door to the back room, and lift the latch that opens the iron door to the garden.": "穿过院门进屋，推开橡木门到里屋，抬起门闩，打开通往花园的铁门。",
+    "The iron door stands open, and the old garden is yours to walk.": "铁门敞开着，老花园随你走走。",
     "The Latch": "门闩",
 }
 

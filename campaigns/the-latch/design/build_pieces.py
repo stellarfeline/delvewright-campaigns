@@ -194,7 +194,7 @@ def claim_tops(p, region="tops"):
     out-of-walk region: the top of a hedge or a lantern is not floor anyone
     walks."""
     for (x, y, z), role in list(p.block.items()):
-        if role in ("hedge", "lantern", "lane-door-top") and p.block.get((x, y + 1, z)) is None:
+        if role in ("hedge", "lantern") and p.block.get((x, y + 1, z)) is None:
             p.claim_box((x, y + 1, z), (x, y + 1, z), region)
 
 
@@ -270,12 +270,14 @@ def cottage(a):
     p.put(f0, f0, "front-door")
     p.put(f1, f1, "front-door-top")
     p.claim_box(f0, f1, "front-door")
-    # The iron grille to the garden: the way's own bar, shipped shut. A gate
-    # region is one block at the world-load seal, so the bar is one block
-    # through both cells of the doorway.
+    # The iron door to the garden: the way's own bar, shipped shut. The bar
+    # is declared as the door's lower half; its upper half stands over it, and
+    # the engine derives the same two states for the gate region.
     gd = p.seam("edge/garden-door")
-    (g0, g1) = gd["bar"]
-    p.put(g0, g1, "grille")
+    (g0, g1) = sorted(gd["bar"], key=lambda c: c[1])
+    assert g0[1] + 1 == g1[1] and (g0[0], g0[2]) == (g1[0], g1[2]), gd["bar"]
+    p.put(g0, g0, "garden-door")
+    p.put(g1, g1, "garden-door-top")
     p.claim_box(g0, g1, "seam-garden-door")
     # The oak trapdoors over the cellar stair, flush with the floor.
     cs = p.seam("edge/cellar-stair")
@@ -299,7 +301,8 @@ def cottage(a):
         "hanging": HANGING,
         "inner-door": door("east", "lower"),
         "inner-door-top": door("east", "upper"),
-        "grille": "minecraft:iron_bars[east=false,north=false,south=false,waterlogged=false,west=false]",
+        "garden-door": door("north", "lower", kind="iron"),
+        "garden-door-top": door("north", "upper", kind="iron"),
         "lid": "minecraft:dark_oak_planks",
         "smoker": "minecraft:cauldron",
         "table": "minecraft:crafting_table",
@@ -311,7 +314,7 @@ def cottage(a):
             {"a": "kitchen", "b": "exterior", "class": "walk", "via": "front-door"},
             {"a": "kitchen", "b": "back", "class": "walk", "via": "inner-door"},
             {"a": "back", "b": "exterior", "class": "walk", "via": "cellar-stair"},
-            {"a": "back", "b": "exterior", "bar": {"block": "grille", "region": "seam-garden-door"}, "class": "barred"},
+            {"a": "back", "b": "exterior", "bar": {"block": "garden-door", "region": "seam-garden-door"}, "class": "barred"},
         ],
         "entry": "kitchen",
         "spaces": {"back": {"envelope": "enclosed"}, "kitchen": {"envelope": "enclosed"}},
@@ -372,10 +375,6 @@ def garden(a):
     sx, sy, sz = p.sx, p.sy, p.sz
     p.put((0, 0, 0), (sx - 1, 0, sz - 1), "grass")
     hedge_ring(p, ("west", "east", "north"))
-    # The lane door in the far hedge: an iron door, shut for good. A hand does
-    # not open it, and nothing in the story does.
-    p.put((5, 1, 0), (5, 1, 0), "lane-door")
-    p.put((5, 2, 0), (5, 2, 0), "lane-door-top")
     p.opening("edge/garden-door")
     for (x, z) in ((2, 2), (8, 2), (2, 5), (8, 5)):
         lamp_post(p, x, z)
@@ -392,8 +391,6 @@ def garden(a):
         "dandelion": "minecraft:dandelion",
         "grass": "minecraft:grass_block[snowy=false]",
         "hedge": HEDGE,
-        "lane-door": door("south", "lower", kind="iron"),
-        "lane-door-top": door("south", "upper", kind="iron"),
         "lantern": LANTERN,
         "oxeye_daisy": "minecraft:oxeye_daisy",
         "poppy": "minecraft:poppy",

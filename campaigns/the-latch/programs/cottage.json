@@ -23,7 +23,7 @@
         "a": "back",
         "b": "exterior",
         "bar": {
-          "block": "grille",
+          "block": "garden-door",
           "region": "seam-garden-door"
         },
         "class": "barred"
@@ -44,7 +44,8 @@
     "floor": "minecraft:spruce_planks",
     "front-door": "minecraft:oak_door[facing=north,half=lower,hinge=left,open=false,powered=false]",
     "front-door-top": "minecraft:oak_door[facing=north,half=upper,hinge=left,open=false,powered=false]",
-    "grille": "minecraft:iron_bars[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "garden-door": "minecraft:iron_door[facing=north,half=lower,hinge=left,open=false,powered=false]",
+    "garden-door-top": "minecraft:iron_door[facing=north,half=upper,hinge=left,open=false,powered=false]",
     "hanging": "minecraft:lantern[hanging=true,waterlogged=false]",
     "inner-door": "minecraft:oak_door[facing=east,half=lower,hinge=left,open=false,powered=false]",
     "inner-door-top": "minecraft:oak_door[facing=east,half=upper,hinge=left,open=false,powered=false]",
@@ -1544,7 +1545,17 @@
                         {
                           "body": {
                             "material": {
-                              "role": "grille"
+                              "role": "garden-door"
+                            },
+                            "op": "fill"
+                          },
+                          "op": "claim",
+                          "region": "seam-garden-door"
+                        },
+                        {
+                          "body": {
+                            "material": {
+                              "role": "garden-door-top"
                             },
                             "op": "fill"
                           },
@@ -1576,7 +1587,14 @@
                         {
                           "blocks": {
                             "expr": "int",
-                            "value": 2
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
                           },
                           "size": "absolute"
                         },
