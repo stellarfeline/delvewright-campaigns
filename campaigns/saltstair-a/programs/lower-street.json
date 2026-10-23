@@ -1,0 +1,880 @@
+{
+  "contract": {
+    "edges": [
+      {
+        "a": "exterior",
+        "b": "street",
+        "class": "walk",
+        "via": "flight-3-lower-street"
+      },
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "lower-street-flight-4"
+      },
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "lower-street-ropewalk"
+      }
+    ],
+    "entry": "street",
+    "no_body": {
+      "lamp-head": {
+        "reason": "the air over a kerb-post lantern, which nobody is meant to stand on"
+      }
+    },
+    "spaces": {
+      "street": {
+        "envelope": "open"
+      }
+    }
+  },
+  "name": "saltstair-a-lower-street",
+  "palette": {
+    "coping": "minecraft:stone_brick_wall[east=none,north=low,south=low,up=false,waterlogged=false,west=none]",
+    "foot": "minecraft:mossy_stone_bricks",
+    "kerb": "minecraft:stone_bricks",
+    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "paving": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 7
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 1
+      }
+    ]
+  },
+  "params": {
+    "handed/datum-y": 1,
+    "handed/ground/bottom-y": 0,
+    "handed/seam/flight-3-lower-street/rise": 0,
+    "handed/seam/flight-3-lower-street/x0": 1,
+    "handed/seam/flight-3-lower-street/x1": 6,
+    "handed/seam/flight-3-lower-street/y0": 1,
+    "handed/seam/flight-3-lower-street/y1": 6,
+    "handed/seam/flight-3-lower-street/z0": 0,
+    "handed/seam/flight-3-lower-street/z1": 0,
+    "handed/seam/lower-street-flight-4/rise": -4,
+    "handed/seam/lower-street-flight-4/x0": 1,
+    "handed/seam/lower-street-flight-4/x1": 6,
+    "handed/seam/lower-street-flight-4/y0": 1,
+    "handed/seam/lower-street-flight-4/y1": 4,
+    "handed/seam/lower-street-flight-4/z0": 12,
+    "handed/seam/lower-street-flight-4/z1": 12,
+    "handed/seam/lower-street-ropewalk/rise": 0,
+    "handed/seam/lower-street-ropewalk/x0": 6,
+    "handed/seam/lower-street-ropewalk/x1": 6,
+    "handed/seam/lower-street-ropewalk/y0": 1,
+    "handed/seam/lower-street-ropewalk/y1": 2,
+    "handed/seam/lower-street-ropewalk/z0": 5,
+    "handed/seam/lower-street-ropewalk/z1": 5
+  },
+  "rules": {
+    "above": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "west-parapet"
+            },
+            {
+              "op": "call",
+              "symbol": "street"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-3-lower-street/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "door-column": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "lower-street-ropewalk"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/y1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/y0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "east-lane": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            },
+            {
+              "op": "call",
+              "symbol": "door-column"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lower-street-ropewalk/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ground": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "ground-street"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-3-lower-street/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ground-street": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "paving"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "parapet": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "foot"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "coping"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "paving": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "paving"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "place": [
+      {
+        "body": {
+          "body": {
+            "axis": "y",
+            "children": [
+              {
+                "op": "call",
+                "symbol": "ground"
+              },
+              {
+                "op": "call",
+                "symbol": "above"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/ground/bottom-y"
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "mark": {
+            "anchor": "node-lower-street",
+            "at": "offset",
+            "facing": "south",
+            "x": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-3-lower-street/x0"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-3-lower-street/x1"
+                }
+              },
+              "op": "div",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            "y": {
+              "expr": "param",
+              "name": "handed/datum-y"
+            },
+            "z": {
+              "expr": "arith",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/lower-street-flight-4/z0"
+              },
+              "op": "div",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "foot"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "lamp-head"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "south-face": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "lower-street-flight-4"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-flight-4/y1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-flight-4/y0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "street": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-3-lower-street"
+            },
+            {
+              "op": "call",
+              "symbol": "street-run"
+            },
+            {
+              "op": "call",
+              "symbol": "south-face"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-flight-4/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-flight-4/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "street-run": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            },
+            {
+              "op": "call",
+              "symbol": "east-lane"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "west-parapet": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "op": "call",
+              "symbol": "parapet"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "op": "call",
+              "symbol": "parapet"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lower-street-ropewalk/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-ropewalk/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "shown_faces": [
+    "west"
+  ],
+  "start": "place",
+  "version": "1.12.0"
+}

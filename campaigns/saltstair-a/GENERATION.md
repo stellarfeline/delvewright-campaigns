@@ -30,7 +30,7 @@ The design was approved as written (`campaigns/hillside/DESIGN.md`), on the refe
 
 - **The retaining walls between terraces stand only where a flight's frame reaches.** Under cut A a street's frame begins at its paving course, so the four-course drop at a terrace's downhill end is below it; the flight's frame (floor the lower terrace) is the one place that can face it, six wide, and the drop beside the street, outside every box, is the commons hillside at the heightmap's half-block grade. §3's "every terrace stands above the next behind a retaining wall the place draws" is therefore met six wide at each flight and not across the town — a property of the cut, reported by the upper street's author.
 - **A `stair` contract edge to `exterior` cannot carry a rise** ("no resolved box on the far side"), reported by flight 3's author: a flight whose whole climb is its seam's rise is two spaces joined by an interior `stair` edge, with a rise-0 edge at the seam. Authorable; recorded as the engine's shape, not a gap that blocked anything.
-- **Detail authors stepped outside their handout**: the square's and flight 3's authors each ran a read-only `git status`; the upper street's author read the start of `programs/flight-1.json` before writing, stopped, and reports building nothing from it. Both attempts were kept; their pieces pass their own gates.
+- **Detail authors stepped outside their handout**: the square's, flight 3's and the lower street's authors each ran a read-only `git status`; the upper street's author read the start of `programs/flight-1.json` before writing, stopped, and reports building nothing from it. Both attempts were kept; their pieces pass their own gates.
 
 ## Refusals, in order
 
@@ -63,3 +63,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/flight-2` | 1 | `flight-2/handout-1.md` | 129 827 | 355 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
 | `node/middle-street` | 1 | `middle-street/handout-1.md` | 126 964 | 259 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
 | `node/flight-3` | 1 | `flight-3/handout-1.md` | 123 724 | 325 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame; the author ran a read-only git status (see Findings) |
+| `node/lower-street` | 1 | `lower-street/handout-1.md` | 106 939 | 208 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame; the author ran a read-only git status (see Findings) |
