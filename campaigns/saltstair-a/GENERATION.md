@@ -43,3 +43,10 @@ Every `DW` refusal `delvec` printed during authoring, with its repair.
 | — | step 7, analyze | none | exit 0 | — |
 | 7 | step 8, build | DW0210 | 144 of 1698 reachable cells dark under the 19 stand-ins, darkest at [54, 84, 98] (the chapel's stand-in) | by ruling, carried into step 9: each house is lit as it is detailed; no `lighting` declaration |
 | — | step 8b, validate | DW0900 (notice, not a refusal) | the six cameras in `design/cameras.json` name rows no `design.json` holds — by ruling there is none; each names the §6 view it answers | none owed; `delvec cameras` refuses to draw without `design.json` (DW0721 on a scratch copy), so the frames are drawn with `delvec frames` |
+
+## Detail
+
+One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a/.out/handouts/<place>/` (gitignored). Before the first handout every node's `note` in `layout-graph.json` was given its rows of `campaigns/hillside/DESIGN.md` §3 and §5.1 — what the place is, what its program draws, its materials and its light — because the handout quotes the note and nothing of the hillside record.
+
+| Place | Attempt | Handout | Agent tokens | Duration | Codes repaired | `delvec detail` exit |
+|---|---|---|---|---|---|---|
