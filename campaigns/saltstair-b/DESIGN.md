@@ -8,7 +8,10 @@
 |---|---|
 | Campaign | `saltstair-b`, a demo level (`world.json` `demo_level: true`) |
 | Heightmap | `terrain/peninsula.png`, a byte copy of `campaigns/hillside/terrain/peninsula.png` (written by `campaigns/hillside/terrain/peninsula.py`) |
-| The hour | `time: dusk`, `weather: clear` — the design's "late afternoon" has no clock of its own; `dusk` (12000, the sun low in the west) is the nearest the engine states |
+| The hour | `time: noon`, `weather: clear` — the design's "late afternoon" has no DSL spelling; `noon` is the ruling, the same for both cuts |
+| Languages | English only |
+| Judging frames | the six §6 cameras at their exact coordinates in `design/cameras.json`, drawn at `day`; the site plan's `views[]` is empty |
+| Design record | none: a demo level carries no `design.json`; the staging gate's `DEMO-UNQUEUED` refusal is accepted and its whole report recorded |
 | Horizon | `ocean`, ground music silent (`audio/background_music: {}`), `boundary` margin 8 |
 | Cast | none — the design makes a cast optional, and this cut has none |
 

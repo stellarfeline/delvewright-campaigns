@@ -4,7 +4,9 @@
 
 Pinned: the whole of `campaigns/hillside/DESIGN.md` §2–§6, built as cut B — two large boxes, `node/upper-town` (x 54..94 × z 96..149, floor 76, open 20) and `node/lower-town` (x 54..94 × z 151..200, floor 64, open 14), each drawn whole by one program, buildings not boxes; the junction an open `walk` contact over the whole front, as §5.2 now states it; the campaign id; `demo_level: true`; the walk from the square to the quay; light placed with each place.
 
-Invented: the hour's clock (`dusk`, below), the ground music (silent), the world seed, and the title and premise lines.
+Ruled at the design gate, the same for both cuts: `time: noon`; `demo_level: true` kept, with no `design.json`, and the staging gate's `DEMO-UNQUEUED` refusal accepted; English only; `views[]` empty, the six §6 cameras at their exact float coordinates in `design/cameras.json`, drawn at `day`; step 9 entered with `DW0210` as the only red, each house lit while it is detailed and no temporary lighting declaration.
+
+Invented: the ground music (silent), the world seed, and the title and premise lines.
 
 ## Toolchain
 
@@ -14,7 +16,7 @@ Invented: the hour's clock (`dusk`, below), the ground music (silent), the world
 
 ## Decisions
 
-- **The hour.** The design states "late afternoon". The engine's clock is six keywords and six positions of a body's arc, none of them a late afternoon: `noon` (6000) puts the sun overhead and `dusk` (12000) is the sunset's onset, the sun low in the west. `dusk` is the reference image's light and is taken; the sky-light model judges it as night (sky light 4), so every lit cell of the town is lit by its own lanterns and windows.
+- **The hour.** The design states "late afternoon", which has **no DSL spelling**: the engine's clock is six keywords (`day`, `noon`, `dusk`, `night`, `midnight`, `dawn`) and six positions of a body's arc, none of them a late afternoon. `noon` is the ruling, the same in both cuts so the comparison stays fair.
 - **The heightmap** is a byte copy (`sha256 455d5a93e32cc8c9e009fe2e3a27683edba289d8d71a83463c63078ef66944fb`) of the design's, because a site plan reads its heightmap from inside the campaign.
 
 ## Unproven points
