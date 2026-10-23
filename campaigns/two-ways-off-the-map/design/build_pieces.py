@@ -268,7 +268,7 @@ def yard(a, as_found, stone_at=None):
     p.claim_box(g0, g1, "yard-gate")
     # The buttress, two high, against the east wall; and the stone.
     p.put((12, W, 12), (13, W + 1, 12), "wall")
-    stone = (10, W, 10) if as_found else (9, W, 10)
+    stone = (12, W, 8) if as_found else (12, W, 7)
     if stone_at is not None:
         stone = (stone_at[0], W, stone_at[1])
     p.put(stone, stone, "stone")
