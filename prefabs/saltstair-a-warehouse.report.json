@@ -1,0 +1,195 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 20,
+      "undecided": 0,
+      "detail": "20 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 20,
+      "undecided": 0,
+      "detail": "20 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 20,
+      "undecided": 0,
+      "detail": "20 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 100,
+      "undecided": 0,
+      "detail": "100 fill(s) examined, 47 carrying block-state properties, 11 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "stair-shape",
+      "state": "pass",
+      "bound": 178,
+      "undecided": 0,
+      "detail": "178 stair(s), every written `shape` the one vanilla derives from that stair's own neighbours"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 2520,
+      "undecided": 0,
+      "detail": "1157 filled cell(s) of 2520 in the region"
+    },
+    {
+      "id": "contract-well-formed",
+      "state": "pass",
+      "bound": 3,
+      "undecided": 0,
+      "detail": "1 space(s), 1 out-of-walk region(s) and 1 edge(s) hold together: no overlap, one floor each, every opening on the boundary it claims"
+    },
+    {
+      "id": "contract-coverage",
+      "state": "pass",
+      "bound": 316,
+      "undecided": 0,
+      "detail": "every one of 316 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
+    },
+    {
+      "id": "contract-closure",
+      "state": "pass",
+      "bound": 430,
+      "undecided": 0,
+      "detail": "430 boundary cell(s) examined; every one is accounted for"
+    },
+    {
+      "id": "contract-no-body",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 118 cell(s) facade, 88 cell(s) sealed"
+    },
+    {
+      "id": "contract-reachability",
+      "state": "pass",
+      "bound": 110,
+      "undecided": 0,
+      "detail": "every one of 110 standable cell(s) in declared space is reached from \"hall\" through declared edges only"
+    },
+    {
+      "id": "contract-anchors",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 anchor(s), every one landing in a contract element: 1 in a space"
+    },
+    {
+      "id": "contract-exterior-faces",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 exterior edge(s) export 1 face(s): south walk"
+    },
+    {
+      "id": "contract-no-body-majority",
+      "state": "pass",
+      "bound": 316,
+      "undecided": 0,
+      "detail": "206 of 316 standable cell(s) are out of walk, acknowledged: \"a house that draws its own roof carries more standable roof and loft than store floor; nobody walks them\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 1157,
+    "region_cells": 2520,
+    "distinct_states": 20,
+    "standable_cells": 316,
+    "footprint_area": 210,
+    "footprint_perimeter": 58,
+    "silhouette_complexity": 1.0005950610464136,
+    "top_blocks": [
+      [
+        "minecraft:structure_void",
+        0.38547968885047534
+      ],
+      [
+        "minecraft:spruce_planks",
+        0.09507346585998272
+      ],
+      [
+        "minecraft:stone_bricks",
+        0.07865168539325842
+      ],
+      [
+        "minecraft:deepslate_tile_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+        0.07778738115816768
+      ],
+      [
+        "minecraft:deepslate_tile_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+        0.07605877268798616
+      ]
+    ],
+    "stairs": 178,
+    "fluid_cells": 0,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 0,
+    "local_frame_fills": 11,
+    "reachability": {
+      "standable": 316,
+      "sheltered": 198,
+      "entry_cells": 32,
+      "reachable": 118,
+      "reachable_share": 0.37341772151898733,
+      "unreachable_sheltered": 198,
+      "unreachable_open": 0,
+      "pockets": 2,
+      "largest_pockets": [
+        {
+          "cells": 110,
+          "sheltered": 110,
+          "min": [
+            2,
+            1,
+            2
+          ],
+          "max": [
+            11,
+            2,
+            12
+          ]
+        },
+        {
+          "cells": 88,
+          "sheltered": 88,
+          "min": [
+            3,
+            7,
+            2
+          ],
+          "max": [
+            10,
+            7,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  "anchors": {
+    "anchor/node-warehouse": [
+      6,
+      1,
+      7
+    ]
+  },
+  "findings": [
+    "198 standable cell(s) UNDER A ROOF have no walking route from the entrance — floor in a space a body cannot get to. 2 pocket(s) of unreachable floor in all; the largest: 110 cell(s), 110 sheltered — x 2..11 y 1..2 z 2..12 · 88 cell(s), 88 sheltered — x 3..10 y 7..7 z 2..12"
+  ],
+  "enumeration": [
+    "closure: 57 boundary cell(s) are `structure_void` — cells the piece does not own, judged by the whole's proofs over the assembled world",
+    "no_body \"roof\": mixed — 88 standable cell(s) sealed, 118 standable cell(s) facade, the kind computed per cell",
+    "exterior face: walk on the south side, via space \"hall\", 2 cell(s)",
+    "gate `contract-edge-proof` is not emitted over this piece: the contract declares one space, so there is no interior edge that could have been proved: a room with a door makes no claim about moving BETWEEN spaces"
+  ]
+}
