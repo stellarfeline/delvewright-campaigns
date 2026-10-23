@@ -66,3 +66,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/flight-3` | 1 | `flight-3/handout-1.md` | 123 724 | 325 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame; the author ran a read-only git status (see Findings) |
 | `node/lower-street` | 1 | `lower-street/handout-1.md` | 106 939 | 208 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame; the author ran a read-only git status (see Findings) |
 | `node/flight-4` | 1 | `flight-4/handout-1.md` | 152 522 | 352 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame; the author ran a read-only git status |
+| `node/shore-street` | 1 | `shore-street/handout-1.md` | 118 046 | 254 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
