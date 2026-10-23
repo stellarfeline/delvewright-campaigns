@@ -1,0 +1,1513 @@
+{
+  "contract": {
+    "edges": [
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "lower-street-way"
+      },
+      {
+        "a": "street",
+        "b": "head",
+        "class": "stair",
+        "rise": 4,
+        "via": "flight"
+      },
+      {
+        "a": "head",
+        "b": "exterior",
+        "class": "stair",
+        "rise": 0,
+        "via": "middle-street-way"
+      }
+    ],
+    "entry": "street",
+    "no_body": {
+      "kerb-east": {
+        "reason": "the top of the east kerb wall and its lantern posts, beside the flight"
+      },
+      "kerb-west": {
+        "reason": "the top of the west kerb wall and its lantern posts, beside the flight"
+      }
+    },
+    "spaces": {
+      "head": {
+        "envelope": "open"
+      },
+      "street": {
+        "envelope": "open"
+      }
+    }
+  },
+  "name": "saltstair-a-flight-3",
+  "palette": {
+    "fill": "minecraft:stone_bricks",
+    "kerb": [
+      {
+        "block": "minecraft:stone_bricks",
+        "weight": 5
+      },
+      {
+        "block": "minecraft:mossy_stone_bricks",
+        "weight": 1
+      }
+    ],
+    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "paving": "minecraft:cobblestone",
+    "post": "minecraft:chiseled_stone_bricks",
+    "tread": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]"
+  },
+  "params": {
+    "handed/datum-y": 1,
+    "handed/seam/flight-3-lower-street/rise": 0,
+    "handed/seam/flight-3-lower-street/x0": 1,
+    "handed/seam/flight-3-lower-street/x1": 6,
+    "handed/seam/flight-3-lower-street/y0": 1,
+    "handed/seam/flight-3-lower-street/y1": 6,
+    "handed/seam/flight-3-lower-street/z0": 6,
+    "handed/seam/flight-3-lower-street/z1": 6,
+    "handed/seam/middle-street-flight-3/rise": 4,
+    "handed/seam/middle-street-flight-3/x0": 1,
+    "handed/seam/middle-street-flight-3/x1": 6,
+    "handed/seam/middle-street-flight-3/y0": 5,
+    "handed/seam/middle-street-flight-3/y1": 8,
+    "handed/seam/middle-street-flight-3/z0": 0,
+    "handed/seam/middle-street-flight-3/z1": 0,
+    "lift": 0
+  },
+  "rules": {
+    "flight": [
+      {
+        "body": {
+          "body": {
+            "axis": "z",
+            "children": [
+              {
+                "op": "call",
+                "symbol": "tread-row"
+              },
+              {
+                "op": "call",
+                "symbol": "flight"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "op": "bind",
+          "params": {
+            "lift": {
+              "dim": "z",
+              "expr": "dim"
+            }
+          }
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 2
+          }
+        }
+      },
+      {
+        "body": {
+          "body": {
+            "op": "call",
+            "symbol": "tread-row"
+          },
+          "op": "bind",
+          "params": {
+            "lift": {
+              "dim": "z",
+              "expr": "dim"
+            }
+          }
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "foot-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "axis": "y",
+                    "children": [
+                      {
+                        "material": {
+                          "role": "post"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "material": {
+                          "role": "lamp"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "op": "void"
+                      }
+                    ],
+                    "op": "split",
+                    "sizes": [
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "size": "relative",
+                        "weight": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  },
+                  "op": "claim",
+                  "region": "kerb-west"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "paving"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "body": {
+                      "op": "void"
+                    },
+                    "op": "claim",
+                    "region": "street"
+                  },
+                  "mark": {
+                    "anchor": "node-flight-3",
+                    "at": "floor_center",
+                    "facing": "north"
+                  },
+                  "op": "mark"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "axis": "y",
+                    "children": [
+                      {
+                        "material": {
+                          "role": "post"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "material": {
+                          "role": "lamp"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "op": "void"
+                      }
+                    ],
+                    "op": "split",
+                    "sizes": [
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "size": "relative",
+                        "weight": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  },
+                  "op": "claim",
+                  "region": "kerb-east"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-3-lower-street/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "head-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "axis": "y",
+                    "children": [
+                      {
+                        "material": {
+                          "role": "post"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "material": {
+                          "role": "lamp"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "op": "void"
+                      }
+                    ],
+                    "op": "split",
+                    "sizes": [
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "size": "relative",
+                        "weight": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  },
+                  "op": "claim",
+                  "region": "kerb-west"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/middle-street-flight-3/y0"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "fill"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "material": {
+                    "role": "paving"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "middle-street-way"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/middle-street-flight-3/y0"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/seam/middle-street-flight-3/y1"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/middle-street-flight-3/y0"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "axis": "y",
+                    "children": [
+                      {
+                        "material": {
+                          "role": "post"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "material": {
+                          "role": "lamp"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "op": "void"
+                      }
+                    ],
+                    "op": "split",
+                    "sizes": [
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "size": "relative",
+                        "weight": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  },
+                  "op": "claim",
+                  "region": "kerb-east"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/middle-street-flight-3/y0"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/middle-street-flight-3/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/middle-street-flight-3/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/middle-street-flight-3/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "place": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "head-row"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "top-tread-row"
+              },
+              "op": "bind",
+              "params": {
+                "lift": {
+                  "expr": "param",
+                  "name": "handed/seam/middle-street-flight-3/rise"
+                }
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "flight"
+            },
+            {
+              "op": "call",
+              "symbol": "foot-row"
+            },
+            {
+              "op": "call",
+              "symbol": "south-row"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/middle-street-flight-3/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/middle-street-flight-3/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/middle-street-flight-3/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/middle-street-flight-3/rise"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/flight-3-lower-street/z0"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "handed/seam/middle-street-flight-3/z1"
+                    }
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/middle-street-flight-3/rise"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "south-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "kerb-west"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "paving"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "lower-street-way"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/y0"
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/seam/flight-3-lower-street/y1"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/flight-3-lower-street/y0"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "kerb-east"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-3-lower-street/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "top-tread-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "kerb-west"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/datum-y"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "lift"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "fill"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "material": {
+                    "role": "tread"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "head"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/datum-y"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "lift"
+                      }
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "kerb-east"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/datum-y"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "lift"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-3-lower-street/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "tread-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "kerb-west"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/datum-y"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "lift"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "fill"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "material": {
+                      "role": "tread"
+                    },
+                    "op": "fill"
+                  },
+                  "op": "claim",
+                  "region": "flight"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "flight"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/datum-y"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "lift"
+                      }
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "kerb-east"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/datum-y"
+                      },
+                      "op": "add",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "lift"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-3-lower-street/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-3-lower-street/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "start": "place",
+  "version": "1.9.0"
+}
