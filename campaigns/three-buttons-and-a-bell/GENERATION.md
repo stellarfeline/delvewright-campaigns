@@ -49,16 +49,15 @@ that side.
   The critical path walks to each objective's anchor cell, so every press on
   it stands on the floor course; the bell on a post and the buttons at
   shoulder height were not walkable targets.
-- **The boarded door is two wide, so only one of its four boards answers.**
-  A one-wide door gives the gate no single thinnest axis and the engine cannot
-  tell its sides apart (`DW0425`); a second answer on another board of the
-  same door is refused as a click-box tie with the shortcut's own box
-  (`DW0422`). The board that answers is the upper left one, at eye height.
+- **The barred door onto the jetty is boarded, two wide and two high, not a
+  door leaf.** A one-wide door gives the gate no single thinnest axis and the
+  engine cannot tell its sides apart (`DW0425`). Each of its four boards
+  carries its own answer trigger, so the whole door answers.
 
 ## Engine and language
 
 Built with `delvec 1.14.0, dsl 0.64.0, mc 1.21.11` from the engine's
-`feat/impl-0117` branch at revision `931b8c7d783733a7a0b3cf4cb11d233c2ff76a42`,
+`feat/impl-0117` branch at revision `9addaa67235188e002bbcad598abf757abb49169`,
 an unreleased tree carrying spec-0117. The version string is the released
 engine's number; the revision says which engine built this level.
 

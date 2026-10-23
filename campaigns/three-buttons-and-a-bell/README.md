@@ -47,10 +47,9 @@ keeper's hall; the boarded door ahead and to the right is the store's door
 onto the jetty.
 
 1. **The boarded door, from the jetty.** Before anything else, right-click
-   its upper left board, at eye height. It should say it does not open from
-   this side. Does that read as barred, and as a door that opens from
-   somewhere else? Only that board answers in this build; the other three
-   are not what this round judges.
+   it, on any of its four boards. It should say it does not open from this
+   side. Does that read as barred, and as a door that opens from somewhere
+   else?
 2. **Before you speak to the keeper, press everything in the hall.** Inside
    the doorway: the bell on the floor to your left, the boulder in the corner
    behind it, the three buttons low on the left wall, the bolt beside the
@@ -88,8 +87,8 @@ onto the jetty.
 10. **The store, and the glow.** Go through the store door. On the store side
     of the boarded door there is a stone button beside it, and it is outlined
     in light while you stand in the store within six blocks of it. Press the
-    door's upper left board from this side first: it should say the bar is on
-    this side. Then press the button: the boards fall away. Before you open
+    door from this side first, on any board: it should say the bar is on this
+    side. Then press the button: the boards fall away. Before you open
     it, go back round to the jetty and look at the boarded door from there:
     **you should see no glow through or around the door.**
 11. **With a second player:** stand beside a friend while they press any of
@@ -104,7 +103,7 @@ Walk into the boat shed to finish.
 
 你出生在码头上。左前方开着的门洞通往看守的大厅；右前方那扇钉着木板的门，是库房朝码头的门。
 
-1. **从码头这边按那扇木板门。** 先别做别的，右键它左上方那块木板（和眼睛一样高）。它应该告诉你这一侧打不开。读起来是不是“被闩住了”，而且是一扇“从别处能打开”的门？这一版里只有那一块木板会回应，其余三块不在这一轮要看的范围内。
+1. **从码头这边按那扇木板门。** 先别做别的，右键它，四块木板按哪一块都行。它应该告诉你这一侧打不开。读起来是不是“被闩住了”，而且是一扇“从别处能打开”的门？
 2. **和看守说话之前，把大厅里的东西都按一遍。** 进门以后：左手边地上的钟，钟后面角落里的大石头，左墙下方的三个按钮，正对面墙上封着铁栏的船棚门旁边的门闩，看守身后那面墙上的拉杆，右墙上的库房门和箱子，还有右手边炉子旁看守的四支蜡烛。每一样都应该给出一行字和那声拒绝音（像锁着的箱子那样咔哒一声），而且**什么都不应该动**：门关着，拉杆不扳，箱子不弹界面。每一行字在消失之前，能不能在准星附近读完？那个声音听起来像“被拒绝了”，还是像“按成功了”的咔哒？
 3. **按钮和钟自己会动。** 被拒绝时，按钮照样会按下去再弹回来，钟照样会响。配上那行字，这是让人困惑（看起来好像成功了），还是让人确认（按到了，只是这就是没反应的原因）？
 4. **用手打大石头。** 空手左键它。第一下它沉进凹槽，并告诉你；之后每一下都说它不会再动了。方块本身不会移动。
@@ -113,7 +112,7 @@ Walk into the boat shed to finish.
 7. **箱子。** 轮到它时（库房门之后）打开一次；之后再按，它说里面是空的，也不再弹出界面。
 8. **三个按钮和门闩。** 先按门闩：它说被销子卡着。按下三个按钮（每个顶掉一根销子），再拉开门闩，船棚的门就开了。这时再按一次按钮：它应该说门闩早就拉开了，并且不再计数。
 9. **蜡烛。** 看守说过话以后，按蜡烛就能歇息。在那之前，它们说这是她的蜡烛。
-10. **库房，以及发光。** 穿过库房门。在那扇木板门的库房一侧，旁边有一个石头按钮；你站在库房里、离它六格以内时，它会被一圈光勾出来。先从这一侧按门左上方那块木板：它应该说门杠在这一侧。再按那个按钮：木板掉下来。在打开它之前，绕回码头，从那边看这扇木板门：**你应该看不到任何光透过门或从门边透出来。**
+10. **库房，以及发光。** 穿过库房门。在那扇木板门的库房一侧，旁边有一个石头按钮；你站在库房里、离它六格以内时，它会被一圈光勾出来。先从这一侧按这扇门，哪块木板都行：它应该说门杠在这一侧。再按那个按钮：木板掉下来。在打开它之前，绕回码头，从那边看这扇木板门：**你应该看不到任何光透过门或从门边透出来。**
 11. **有第二个玩家时：** 站在朋友旁边，让他去按其中任何一样。你应该什么都看不到、什么都听不到；只有按的那个人会收到那行字。
 
 走进船棚即结束。

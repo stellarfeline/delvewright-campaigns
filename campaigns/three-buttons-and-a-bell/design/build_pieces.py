@@ -231,7 +231,10 @@ def jetty(a):
     marks = [
         ("spawn", (8, 1, 5), "north", "entry"),
         ("node-jetty", (8, 1, 4), "north"),
-        ("jetty-door-leaf", (15, 2, 0), "south"),
+        ("jetty-door-low-left", (15, 1, 0), "south"),
+        ("jetty-door-low-right", (16, 1, 0), "south"),
+        ("jetty-door-high-left", (15, 2, 0), "south"),
+        ("jetty-door-high-right", (16, 2, 0), "south"),
     ]
     return program("three-buttons-and-a-bell-jetty", p, palette, contract, marks)
 

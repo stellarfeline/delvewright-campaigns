@@ -137,7 +137,7 @@ def main():
         "nodes": [
             {"id": "node/jetty", "intent": "hub", "note": "The covered end of the jetty, where the party arrives: the open doorway into the keeper's hall, and the barred door into her store, which opens from the store's side.",
              "stations": [
-                 {"anchor": f"anchor/jetty-door-{c}", "kind": "point", "note": "The board of the barred store door at eye height, pressed from the jetty or from the store."}
+                 {"anchor": f"anchor/jetty-door-{c}", "kind": "point", "note": f"The {w} board of the barred store door, pressed from the jetty or from the store."}
                  for c, w in CELLS
              ]},
             {"id": "node/hall", "intent": "hub", "note": "The keeper's hall: the keeper at her counter, the bell on its post, the chained lever behind her, her chest, the candles, a loose boulder, the three buttons and the bolt on the shed gate, and the latched store door.",
@@ -187,8 +187,8 @@ def main():
 
 
 # The barred door onto the jetty is two wide and two high, so the engine can
-# tell its sides apart; its own answer stands at one board, at eye height.
-CELLS = (("leaf", "upper left"),)
+# tell its sides apart; every one of its four boards answers for it.
+CELLS = (("low-left", "lower left"), ("low-right", "lower right"), ("high-left", "upper left"), ("high-right", "upper right"))
 
 
 # Every line the player reads, in the landing's own voice.
