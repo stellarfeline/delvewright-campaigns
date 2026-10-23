@@ -25,3 +25,7 @@ Every `DW` refusal `delvec` printed during authoring, with its repair.
 | 1 | step 1, validate | DW0874 | classes.json, quest-plan.json, quests.json absent | stubbed the three |
 | 2 | step 1, validate | DW0112 | `quest-plan` names `area/site` and the campaign has no placement authority yet | step 2 writes the site-plan pipeline, whose one area is `area/site` |
 | 3 | step 1, validate | DW0150 | the planned quest has no stage-5 expansion | the ordinary state until step 5; `quests.json` expands it |
+| 4 | step 2, validate | DW0818 | the layout graph's beat names `quest/down-to-the-quay`, which stage 5 does not declare yet | clears with step 5's `quests.json` (DW0150 still standing, same cause) |
+| — | step 3, validate | DW0150, DW0818 | still standing, the step-3 state | step 5 |
+| 5 | step 3, scratch probe build (a copy outside the campaign with a throwaway quest; not the campaign) | DW0210 | the 19 stand-ins measure 144 of 1698 reachable cells dark, the stand-in houses' interiors | not repaired in the campaign; the probe alone took a site-plan `lighting` to see past it — see the open items |
+| 6 | step 3, scratch probe build | DW0863 | the throwaway quest's objective is 97 blocks from spawn with no `hint` | owed by step 5's quest |
