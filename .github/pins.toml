@@ -138,7 +138,7 @@ and this paragraph is what says so.
 
 [[pin]]
 id = "engine-release"
-value = "delvec--v1.13.0"
+value = "delvec--v1.14.0"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "release"
@@ -162,6 +162,19 @@ carries whose commit's tree states that same version; and `check-engine-pin.py`
 additionally holds it to the `delvec` line, the only line whose release carries
 the binary. A commit somebody merely
 stopped looking at cannot supply that, and neither can a hand-written tag.
+
+WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.14.0` (engine commit
+`e51f8bbe`, `delvec 1.14.0, dsl 0.56.0, mc 1.21.11`). Three demo levels on this
+tree — The Ferry Bell, The Bell Changes the Tune and The Thing Across the Water
+— are written in dsl 0.56.0, which the 1.13.0 release (dsl 0.39.0) refuses, so a
+release of any of them needs this engine. Each builds with the release's
+`aarch64-apple-darwin` archive (its `SHA256SUMS` row OK): `delvec --prefabs
+prefabs build campaigns/<id>`, exit 0, twice, the two output trees identical;
+the datapack, resource pack, server, creator and PackTest datapacks and SKINS.md
+are byte-identical to the playtested build, and `manifest.json` differs
+only in what the engine stamps (its version, its code list, and the review
+outputs it writes). The campaigns on this tree in older dsl versions are
+released versions built by their own pinned engines, and stay as they are.
 
 WHY IT NAMES A TAG AND NOT A COMMIT. The value used to be `70eea629`, the commit
 `v1.5.0` points at. That is no longer a value this policy accepts, and it is not
