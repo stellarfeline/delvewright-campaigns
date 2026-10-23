@@ -24,7 +24,7 @@
     "entry": "head",
     "no_body": {
       "kerb": {
-        "reason": "the tops of the kerb walls and their lantern posts beside the flight, which no one is meant to walk"
+        "reason": "the air over the lantern posts on the flight's kerbs, which no one is meant to stand in"
       }
     },
     "spaces": {
@@ -38,10 +38,7 @@
   },
   "name": "saltstair-a-flight-5",
   "palette": {
-    "coping": "minecraft:stone_brick_slab[type=bottom,waterlogged=false]",
-    "fill": "minecraft:stone_bricks",
-    "kerb": "minecraft:stone_bricks",
-    "kerb-foot": [
+    "fill": [
       {
         "block": "minecraft:mossy_stone_bricks",
         "weight": 5
@@ -97,7 +94,7 @@
             },
             "post": {
               "expr": "int",
-              "value": 1
+              "value": 0
             }
           }
         },
@@ -119,132 +116,40 @@
     "kerb": [
       {
         "body": {
-          "op": "call",
-          "symbol": "kerb-at-north"
+          "op": "void"
         },
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "lvl"
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": -1
-          }
-        }
-      },
-      {
-        "body": {
-          "op": "call",
-          "symbol": "kerb-body"
-        },
-        "weight": 1,
-        "when": {
-          "cond": "otherwise"
-        }
+        "weight": 1
       }
     ],
-    "kerb-at-north": [
+    "north-layer": [
       {
         "body": {
           "body": {
             "op": "call",
-            "symbol": "kerb-body"
+            "symbol": "row"
           },
           "op": "bind",
           "params": {
             "lvl": {
-              "expr": "arith",
-              "lhs": {
-                "expr": "param",
-                "name": "handed/seam/shore-street-flight-5/y0"
-              },
-              "op": "sub",
-              "rhs": {
-                "expr": "int",
-                "value": 1
-              }
+              "expr": "int",
+              "value": -1
             }
           }
         },
         "weight": 1
       }
     ],
-    "kerb-body": [
+    "pier": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "material": {
-                "role": "kerb-foot"
+                "role": "fill"
               },
               "op": "fill"
             },
-            {
-              "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "op": "call",
-              "symbol": "kerb-top"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "lvl"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "kerb-end": [
-      {
-        "body": {
-          "op": "call",
-          "symbol": "kerb-body"
-        },
-        "weight": 1
-      }
-    ],
-    "kerb-top": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
             {
               "material": {
                 "role": "post"
@@ -269,6 +174,21 @@
           "sizes": [
             {
               "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "int",
                 "value": 1
               },
@@ -289,77 +209,6 @@
               }
             }
           ]
-        },
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "post"
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 1
-          }
-        }
-      },
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "material": {
-                "role": "coping"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "kerb"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1,
-        "when": {
-          "cond": "otherwise"
-        }
-      }
-    ],
-    "north-layer": [
-      {
-        "body": {
-          "body": {
-            "op": "call",
-            "symbol": "row"
-          },
-          "op": "bind",
-          "params": {
-            "lvl": {
-              "expr": "int",
-              "value": -1
-            }
-          }
         },
         "weight": 1
       }
@@ -383,6 +232,10 @@
                 "lvl": {
                   "expr": "param",
                   "name": "handed/datum-y"
+                },
+                "post": {
+                  "expr": "int",
+                  "value": 1
                 }
               }
             },
@@ -462,6 +315,59 @@
         "weight": 1
       }
     ],
+    "post-col": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "kerb"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "row": [
       {
         "body": {
@@ -530,34 +436,16 @@
           "axis": "x",
           "children": [
             {
-              "body": {
-                "op": "call",
-                "symbol": "kerb-end"
-              },
-              "op": "bind",
-              "params": {
-                "lvl": {
-                  "expr": "int",
-                  "value": 0
-                }
-              }
+              "op": "call",
+              "symbol": "pier"
             },
             {
               "op": "call",
               "symbol": "south-walk"
             },
             {
-              "body": {
-                "op": "call",
-                "symbol": "kerb-end"
-              },
-              "op": "bind",
-              "params": {
-                "lvl": {
-                  "expr": "int",
-                  "value": 0
-                }
-              }
+              "op": "call",
+              "symbol": "pier"
             }
           ],
           "op": "split",
@@ -678,6 +566,85 @@
             {
               "body": {
                 "op": "call",
+                "symbol": "row"
+              },
+              "op": "bind",
+              "params": {
+                "head": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "lvl": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "lvl"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "post": {
+                  "expr": "int",
+                  "value": 0
+                }
+              }
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "row"
+              },
+              "op": "bind",
+              "params": {
+                "post": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "z",
+            "expr": "dim"
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 2
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "call",
                 "symbol": "steps"
               },
               "op": "bind",
@@ -693,6 +660,10 @@
                     "expr": "int",
                     "value": 1
                   }
+                },
+                "post": {
+                  "expr": "int",
+                  "value": 0
                 }
               }
             },
@@ -729,7 +700,7 @@
           "op": "ge",
           "rhs": {
             "expr": "int",
-            "value": 2
+            "value": 3
           }
         }
       },
@@ -747,7 +718,7 @@
             },
             "post": {
               "expr": "int",
-              "value": 1
+              "value": 0
             }
           }
         },
@@ -760,26 +731,52 @@
     "tread-air": [
       {
         "body": {
-          "body": {
-            "body": {
-              "op": "void"
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "post-col"
             },
-            "op": "claim",
-            "region": "head"
-          },
-          "mark": {
-            "anchor": "node-flight-5",
-            "at": "floor_center",
-            "facing": "south"
-          },
-          "op": "mark"
+            {
+              "op": "call",
+              "symbol": "tread-open"
+            },
+            {
+              "op": "call",
+              "symbol": "post-col"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
         },
         "weight": 1,
         "when": {
           "cond": "cmp",
           "lhs": {
             "expr": "param",
-            "name": "head"
+            "name": "post"
           },
           "op": "eq",
           "rhs": {
@@ -790,11 +787,8 @@
       },
       {
         "body": {
-          "body": {
-            "op": "void"
-          },
-          "op": "claim",
-          "region": "flight"
+          "op": "call",
+          "symbol": "tread-open"
         },
         "weight": 1,
         "when": {
@@ -852,6 +846,51 @@
           ]
         },
         "weight": 1
+      }
+    ],
+    "tread-open": [
+      {
+        "body": {
+          "body": {
+            "body": {
+              "op": "void"
+            },
+            "op": "claim",
+            "region": "head"
+          },
+          "mark": {
+            "anchor": "node-flight-5",
+            "at": "floor_center",
+            "facing": "south"
+          },
+          "op": "mark"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "head"
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        }
+      },
+      {
+        "body": {
+          "body": {
+            "op": "void"
+          },
+          "op": "claim",
+          "region": "flight"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
       }
     ],
     "walk": [

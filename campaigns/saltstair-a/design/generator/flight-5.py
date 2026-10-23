@@ -11,8 +11,11 @@ Layout, north (z min) to south (z max):
                 (northmost) row is the head landing
   foot          the landing at the quay's grade
   south layer   this place's own plane, cut by the quay opening
-Across x: a kerb column on the ring each side, the walk between them, whose
-tread course keeps its outermost columns as whole stone-brick kerbs.
+Across x: the ring column each side is left open over the whole's own
+ground, so the hillside's turf is walkable to the flight's edge and anyone
+who steps off it can step back; the walk between them keeps its outermost
+tread columns as whole stone-brick kerbs, and the top and bottom tread rows
+carry a chiseled post with a lantern on each kerb.
 """
 import json
 import subprocess
@@ -116,7 +119,7 @@ def main():
         "place": [rule(split("z", [
             (ab(span(NORTH, "z")), call("north-layer")),
             (ab(seam(NORTH, "rise")),
-             bind({"lvl": p("handed/datum-y")}, call("steps"))),
+             bind({"lvl": p("handed/datum-y"), "post": i(1)}, call("steps"))),
             (REL, call("foot")),
             (ab(span(SOUTH, "z")), call("south-layer")),
         ]))],
@@ -132,12 +135,21 @@ def main():
         # ---- the steps: one row per course of rise, peeled off the south
         # end; the last row left is the head landing ----
         "steps": [
+            # two rows left: the one under the head landing carries the top
+            # posts (the head row stays clear across the whole opening)
             rule(split("z", [
-                (REL, bind({"lvl": add(p("lvl"), i(1))}, call("steps"))),
+                (ab(i(1)), bind({"lvl": add(p("lvl"), i(1)), "post": i(0),
+                                 "head": i(1)}, call("row"))),
+                (ab(i(1)), bind({"post": i(1)}, call("row"))),
+            ]), when={"cond": "cmp", "lhs": {"expr": "dim", "dim": "z"},
+                      "op": "eq", "rhs": i(2)}),
+            rule(split("z", [
+                (REL, bind({"lvl": add(p("lvl"), i(1)), "post": i(0)},
+                           call("steps"))),
                 (ab(i(1)), call("row")),
             ]), when={"cond": "cmp", "lhs": {"expr": "dim", "dim": "z"},
-                      "op": "ge", "rhs": i(2)}),
-            rule(bind({"head": i(1), "post": i(1)}, call("row")),
+                      "op": "ge", "rhs": i(3)}),
+            rule(bind({"head": i(1), "post": i(0)}, call("row")),
                  when={"cond": "otherwise"}),
         ],
 
@@ -163,6 +175,19 @@ def main():
             (ab(i(1)), fill("kerb-tread")),
         ]))],
         "tread-air": [
+            rule(split("x", [
+                (ab(i(1)), call("post-col")),
+                (REL, call("tread-open")),
+                (ab(i(1)), call("post-col")),
+            ]), when={"cond": "cmp", "lhs": p("post"), "op": "eq", "rhs": i(1)}),
+            rule(call("tread-open"), when={"cond": "otherwise"}),
+        ],
+        "post-col": [rule(split("y", [
+            (ab(i(1)), fill("post")),
+            (ab(i(1)), fill("lamp")),
+            (REL, claim("kerb")),
+        ]))],
+        "tread-open": [
             rule({"op": "mark",
                   "mark": {"anchor": "node-flight-5", "at": "floor_center",
                            "facing": "south"},
@@ -172,7 +197,7 @@ def main():
         ],
 
         # ---- the foot landing, at the quay's grade ----
-        "foot": [rule(bind({"lvl": i(0), "post": i(1)}, call("row")))],
+        "foot": [rule(bind({"lvl": i(0), "post": i(0)}, call("row")))],
         "walk-flat": [rule(split("y", [
             (ab(p("handed/datum-y")), fill("paving")),
             (REL, call("foot-air")),
@@ -192,9 +217,9 @@ def main():
         # ---- the south layer: this place's own plane, cut by the quay
         # opening; nothing stands over the opening ----
         "south-layer": [rule(split("x", [
-            (ab(seam(SOUTH, "x0")), bind({"lvl": i(0)}, call("kerb-end"))),
+            (ab(seam(SOUTH, "x0")), call("pier")),
             (ab(span(SOUTH, "x")), call("south-walk")),
-            (REL, bind({"lvl": i(0)}, call("kerb-end"))),
+            (REL, call("pier")),
         ]))],
         "south-walk": [rule(split("y", [
             (ab(seam(SOUTH, "y0")), fill("paving")),
@@ -202,33 +227,19 @@ def main():
             (REL, {"op": "void"}),
         ]))],
 
-        # ---- kerb columns on the ring: mossy foot courses up to the tread,
-        # a plain course at knee height, then a coping slab — or, where the
-        # row carries a post, a chiseled post with a lantern on it ----
-        "kerb": [
-            rule(call("kerb-at-north"),
-                 when={"cond": "cmp", "lhs": p("lvl"), "op": "eq",
-                       "rhs": {"expr": "int", "value": -1}}),
-            rule(call("kerb-body"), when={"cond": "otherwise"}),
-        ],
-        "kerb-at-north": [rule(bind({"lvl": north_floor}, call("kerb-body")))],
-        "kerb-end": [rule(call("kerb-body"))],
-        "kerb-body": [rule(split("y", [
-            (ab(add(p("lvl"), i(1))), fill("kerb-foot")),
-            (ab(i(1)), fill("kerb")),
-            (REL, call("kerb-top")),
+        # ---- the ring columns: open over the whole's ground (the cells
+        # under the turf are the whole's voids), so nothing here stands
+        # proud of the hillside to be climbed onto and fallen from ----
+        "kerb": [rule({"op": "void"})],
+        # ...except in this place's own south plane, which is closed beside
+        # the quay opening: a pier two courses proud of the turf, too tall
+        # to step onto, with a post and lantern on it at the flight's foot
+        "pier": [rule(split("y", [
+            (ab(add(p("handed/datum-y"), i(2))), fill("fill")),
+            (ab(i(1)), fill("post")),
+            (ab(i(1)), fill("lamp")),
+            (REL, claim("kerb")),
         ]))],
-        "kerb-top": [
-            rule(split("y", [
-                (ab(i(1)), fill("post")),
-                (ab(i(1)), fill("lamp")),
-                (REL, claim("kerb")),
-            ]), when={"cond": "cmp", "lhs": p("post"), "op": "eq", "rhs": i(1)}),
-            rule(split("y", [
-                (ab(i(1)), fill("coping")),
-                (REL, claim("kerb")),
-            ]), when={"cond": "otherwise"}),
-        ],
     }
 
     rise = a["seams"][[s["edge"] for s in a["seams"]].index(f"edge/{NORTH}")]["rise"]
@@ -239,16 +250,13 @@ def main():
         "params": params,
         "palette": {
             "paving": "minecraft:cobblestone",
-            "fill": "minecraft:stone_bricks",
-            "tread": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
-            "kerb-tread": "minecraft:stone_bricks",
-            "kerb-foot": [
+            "fill": [
                 {"weight": 5, "block": "minecraft:mossy_stone_bricks"},
                 {"weight": 3, "block": "minecraft:stone_bricks"},
                 {"weight": 1, "block": "minecraft:cracked_stone_bricks"},
             ],
-            "kerb": "minecraft:stone_bricks",
-            "coping": "minecraft:stone_brick_slab[type=bottom,waterlogged=false]",
+            "tread": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+            "kerb-tread": "minecraft:stone_bricks",
             "post": "minecraft:chiseled_stone_bricks",
             "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
         },
@@ -257,7 +265,7 @@ def main():
             "entry": "head",
             "spaces": {"head": {"envelope": "open"},
                        "foot": {"envelope": "open"}},
-            "no_body": {"kerb": {"reason": "the tops of the kerb walls and their lantern posts beside the flight, which no one is meant to walk"}},
+            "no_body": {"kerb": {"reason": "the air over the lantern posts on the flight's kerbs, which no one is meant to stand in"}},
             "edges": [
                 {"a": "head", "b": "exterior", "class": "walk",
                  "via": f"seam-{NORTH}"},

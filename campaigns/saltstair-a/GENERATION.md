@@ -63,6 +63,7 @@ Every `DW` refusal `delvec` printed during authoring, with its repair. Refusals 
 | 14 | step 9, flight 4's repair author, `detail node/flight-4` | DW0885 | once the battery passed, flight 4's east and west kerb sides stand in open air the party can be in, and the piece declares no `shown_faces` | the author declared `shown_faces: ["east", "west"]` — finished stone kerb faces meant to be seen |
 | 15 | step 9, `detail node/flight-4` (attempt 2) | DW0885 ×8 | the same for flight 1 (east, west), the upper street (west), flight 2 (east, west), flight 3 (east, west), the shore street (east): kerb sides in the open hillside air, no `shown_faces`; the `ocean` horizon offers no ground above y 62 to bury them | each place re-authored by a fresh agent with the refusal in its handout |
 | 16 | step 9, `detail node/shore-street` (attempt 2) | DW0921 | a soft-lock: 6 cells around [78, 65, 191] — a body gets in from [77, 67, 191] (flight 5's east kerb, in its ring) by a fall of 2 into the one-cell commons gap between that kerb and the warehouse's west wall, and nothing leads back to the route | flight 5 re-authored by a fresh agent (attempt 2), the refusal in its handout |
+| 17 | step 9, flight 5's repair author, its own `detail` | DW0838 | its first fix opened both ring columns, and a body could walk through the south ring cells into `node/quay` — a crossing the plan did not allocate | piers two courses above the turf close the flight's south plane beside the quay opening; the ring columns stay open over the turf, so a body that steps off the flight can step back |
 
 ## Detail
 
@@ -95,3 +96,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/flight-2` | 2 | `flight-2/handout-2.md` | 69 700 | 68 s | DW0885 ×2 (refusal 15) | 3 — its own refusals cleared; DW0885 ×3 stands on two other places |
 | `node/flight-3` | 2 | `flight-3/handout-2.md` | 65 058 | 85 s | DW0885 ×2 (refusal 15) | 3 — its own refusals cleared; DW0885 ×1 stands on the shore street |
 | `node/shore-street` | 2 | `shore-street/handout-2.md` | 66 872 | 50 s | DW0885 ×1 (refusal 15) | 3 — its own refusal cleared, all DW0885 gone; the leave-proof then refuses a pocket by flight 5 (DW0921, refusal 16) |
+| `node/flight-5` | 2 | `flight-5/handout-2.md` | 85 652 | 215 s | DW0921 (refusal 16) | 0 — the whole builds with every place detailed; 0 of 32 164 reachable cells a body cannot leave; the author met DW0838 on the way (refusal 17) |
