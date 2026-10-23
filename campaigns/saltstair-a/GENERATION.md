@@ -101,3 +101,12 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 ## Step 9 closed, the build that ships
 
 `delvec detail --all` 0 (19 of 19 places detailed; the run moved no byte); `validate` 0; `analyze` 0; `build` 0 into the engine's `validation/delve-output`. Blockout: 19 places massed, 19 detailed, 0 by the derivation — **0 stand-ins**. Battery: 18 seams proven (5 contacts, 13 portals), 19 places reached, 0 cracks. Leave-proof: 0 of 32 164 reachable cells a body cannot leave. Advisories standing: `DW0822` — the critical path measures 115 blocks over 10 legs, about 2 minutes at the metrics table's rate, against `target_minutes` 10 (the design's own walk is the street and back, then the hillside and the beach; the number is reported, not acted on); `DW0813` (provisional metrics); `DW0781` (the piece-mating check examined zero abutting faces: in cut A no two pieces touch — every neighbour is one ring cell away).
+
+## Step 10, the machine ladder
+
+On the build that ships (`manifest.json` sha256 `f25e01a7c9f6b9b453fb2b8c9ce35ee04263e0e6c5b8f575a769eeff11ce673b`):
+
+- PackTest (`packtest-run.sh --project dw-saltstair-a-r1`): exit 0, all 17 required tests passed.
+- Bot (`bot-run.sh --project dw-saltstair-a-r1`): exit 0, the critical path passed — spawn on the square at [74, 84, 97], down the main street, the `reach-anchor` objective on the quay; 3 steps; 2 of 2 owed cues arrived. Stages not run, each with the build's reason: die-retry (no mandatory combat), death-loop (no lethal volume), crush-death (no crush gate) — advisories, not passes.
+- No `validation/branch-plan.json` was emitted, so there are no branch runs; step 11 does not apply (the plan declares no `branch_points`).
+- Written world (`world-save.sh`, `delvec written-world`, `check-written-world.py`): each exit 0 — the server's world is the engine's model.
