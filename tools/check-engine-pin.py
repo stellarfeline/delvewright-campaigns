@@ -2,9 +2,12 @@
 """The engine a release is built with is newer than every claim a storybook makes.
 
 `versions.toml` `[engine] ref` names the engine release `.github/workflows/
-release.yml` checks out to build and validate a delve image. It is a RELEASE TAG
-in the engine's own grammar (`<name>--v<major>.<minor>.<patch>`), registered as
-`engine-release` in `.github/pins.toml`.
+release.yml` builds and validates a delve image with: the workflow downloads that
+release's `delvec` archive, verified against its `SHA256SUMS` by the engine
+release's own `fetch-delvec.py`. It is a RELEASE TAG of the `delvec` line in the
+engine's own grammar (`delvec--v<major>.<minor>.<patch>`), registered as `engine-release`
+in `.github/pins.toml`; a tag of another line is refused here, because it carries
+no `delvec` binary.
 
 ## Why this script exists at all
 
@@ -22,8 +25,9 @@ Re-reading `engine.ref` and comparing it to the registry would be circular: the
 pin gate already verifies the value stands in every declared site. So the binding
 is the obligation a reader of that key actually has.
 
-A campaign's storybook marker states the compiler the campaign was last verified
-with:
+A level's storybook marker — a campaign's under `campaigns/`, a reference
+level's under `references/`, both released with the pinned engine — states the
+compiler the level was last verified with:
 
     > **Requires delve engine 1.5.0 or newer** — last verified with delvec 1.5.0 …
 
@@ -112,11 +116,22 @@ def main() -> int:
             file=sys.stderr,
         )
         return 1
+    if name != "delvec":
+        print(
+            f"check-engine-pin: FINDING — versions.toml `{BOUND_KEY}` = {ref} is a "
+            f"release of `{name}`, not of `delvec`: `release.yml` downloads the "
+            f"`delvec` binary from the pinned release, and "
+            f"only a `delvec--v<version>` release carries it.",
+            file=sys.stderr,
+        )
+        return 1
     pinned_key = release_tags.version_key(pinned)
 
     files = tracked(root)
     storybooks = [
-        f for f in files if f.startswith("campaigns/") and pathlib.PurePath(f).name.startswith("README")
+        f
+        for f in files
+        if f.startswith(("campaigns/", "references/")) and pathlib.PurePath(f).name.startswith("README")
     ]
 
     print(
@@ -149,7 +164,7 @@ def main() -> int:
 
     print(
         f"-- binding: {examined} storybook claim(s) judged over {len(storybooks)} "
-        f"storybook(s) in campaigns/, against one pinned engine release"
+        f"storybook(s) in campaigns/ and references/, against one pinned engine release"
     )
 
     if not examined and not errors:

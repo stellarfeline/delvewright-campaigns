@@ -1,0 +1,203 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 11,
+      "undecided": 0,
+      "detail": "11 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 11,
+      "undecided": 0,
+      "detail": "11 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 11,
+      "undecided": 0,
+      "detail": "11 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 3108,
+      "undecided": 0,
+      "detail": "3108 fill(s) examined, 3108 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 17340,
+      "undecided": 0,
+      "detail": "4979 filled cell(s) of 17340 in the region"
+    },
+    {
+      "id": "contract-well-formed",
+      "state": "pass",
+      "bound": 2,
+      "undecided": 0,
+      "detail": "1 space(s), 1 out-of-walk region(s) and 0 edge(s) hold together: no overlap, one floor each, every opening on the boundary it claims"
+    },
+    {
+      "id": "contract-coverage",
+      "state": "pass",
+      "bound": 631,
+      "undecided": 0,
+      "detail": "every one of 631 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume",
+      "empty_ok": "the place is scenery (`reached: false`), built to be seen and never entered, and none of the piece's 631 standable cell(s) is stood in: there is no floor for this gate to judge, and none is owed"
+    },
+    {
+      "id": "contract-no-body",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 out-of-walk region(s), every standable cell of every one earning a computed kind: 631 cell(s) facade"
+    },
+    {
+      "id": "contract-no-body-majority",
+      "state": "pass",
+      "bound": 631,
+      "undecided": 0,
+      "detail": "631 of 631 standable cell(s) are out of walk, acknowledged: \"scenery: built to be seen from the camp and never entered\". 0 of them are `posted`, which is not the majority of the out-of-walk floor",
+      "empty_ok": "the place is scenery (`reached: false`), built to be seen and never entered, and none of the piece's 631 standable cell(s) is stood in: there is no floor for this gate to judge, and none is owed"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 4979,
+    "region_cells": 17340,
+    "distinct_states": 11,
+    "standable_cells": 631,
+    "footprint_area": 774,
+    "footprint_perimeter": 162,
+    "silhouette_complexity": 1.4557424382464186,
+    "top_blocks": [
+      [
+        "minecraft:oak_leaves[distance=7,persistent=true,waterlogged=false]",
+        0.46595701948182366
+      ],
+      [
+        "minecraft:dark_oak_leaves[distance=7,persistent=true,waterlogged=false]",
+        0.2669210684876481
+      ],
+      [
+        "minecraft:azalea_leaves[distance=7,persistent=true,waterlogged=false]",
+        0.09158465555332396
+      ],
+      [
+        "minecraft:mangrove_wood[axis=y]",
+        0.0777264510945973
+      ],
+      [
+        "minecraft:spruce_wood[axis=y]",
+        0.03715605543281784
+      ]
+    ],
+    "stairs": 0,
+    "fluid_cells": 0,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 0,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 631,
+      "sheltered": 51,
+      "entry_cells": 0,
+      "reachable": 0,
+      "reachable_share": 0.0,
+      "unreachable_sheltered": 51,
+      "unreachable_open": 580,
+      "pockets": 47,
+      "largest_pockets": [
+        {
+          "cells": 10,
+          "sheltered": 10,
+          "min": [
+            15,
+            4,
+            21
+          ],
+          "max": [
+            18,
+            5,
+            24
+          ]
+        },
+        {
+          "cells": 10,
+          "sheltered": 10,
+          "min": [
+            21,
+            4,
+            15
+          ],
+          "max": [
+            24,
+            4,
+            18
+          ]
+        },
+        {
+          "cells": 10,
+          "sheltered": 8,
+          "min": [
+            9,
+            4,
+            15
+          ],
+          "max": [
+            12,
+            4,
+            18
+          ]
+        },
+        {
+          "cells": 10,
+          "sheltered": 8,
+          "min": [
+            15,
+            4,
+            9
+          ],
+          "max": [
+            18,
+            5,
+            12
+          ]
+        },
+        {
+          "cells": 3,
+          "sheltered": 3,
+          "min": [
+            13,
+            4,
+            13
+          ],
+          "max": [
+            14,
+            4,
+            14
+          ]
+        }
+      ]
+    }
+  },
+  "anchors": {},
+  "findings": [
+    "the contract declares one space and no edges: nothing about how a body moves through this piece is being claimed, so the edge and reachability obligations have almost nothing to prove",
+    "the reachability measurement found ZERO entry cells — no standable cell touches a side face of the region at grade, so there is nowhere for a body to walk in from and the measurement binds to nothing. The piece's 631 standable cell(s) form 47 component(s)",
+    "the program declared no anchors: nothing in a campaign can name a place inside this piece"
+  ],
+  "enumeration": [
+    "envelope: space \"sky\" is declared `open` — no boundary claim, 2 cell(s)",
+    "no_body \"seen-from-outside\": facade — 631 standable cell(s), every one reached by the air outside the piece",
+    "gate `contract-closure` is not emitted over this piece: 0 of 1 space(s) declare an envelope closure examines; every space is open",
+    "gate `contract-edge-proof` is not emitted over this piece: the contract declares one space, so there is no interior edge that could have been proved: a room with a door makes no claim about moving BETWEEN spaces",
+    "gate `contract-reachability` is not emitted over this piece: the place is scenery (`reached: false`), built to be seen and never entered, and none of the piece's 631 standable cell(s) is stood in: there is no floor for this gate to judge, and none is owed",
+    "gate `contract-anchors` is not emitted over this piece: the piece declares no anchor, so no anchor can sit outside a declared element. Nothing in a campaign can name a place inside this piece either, which is a fact about the piece rather than a gate's verdict",
+    "gate `contract-exterior-faces` is not emitted over this piece: 0 exterior edge(s): the place is scenery, built to be seen and never entered, so the piece claims no way in"
+  ]
+}

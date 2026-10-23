@@ -1,0 +1,87 @@
+{
+  "campaign_id": "the-thing-beyond-the-fog",
+  "content": {
+    "beats": [
+      {
+        "node": "node/slip",
+        "objective": "obj/board",
+        "quest": "quest/the-crossing"
+      },
+      {
+        "node": "node/far",
+        "objective": "obj/far-shore",
+        "quest": "quest/the-crossing"
+      }
+    ],
+    "critical_path": [
+      "node/near",
+      "node/slip",
+      "node/far"
+    ],
+    "edges": [
+      {
+        "a": "node/near",
+        "b": "node/slip",
+        "class": "walk",
+        "id": "edge/gangway"
+      },
+      {
+        "a": "node/slip",
+        "b": "node/far",
+        "class": "carry",
+        "gating": {
+          "flags": [
+            "flag/boarded"
+          ]
+        },
+        "id": "edge/crossing",
+        "one_way": "a-to-b"
+      }
+    ],
+    "entry": "node/near",
+    "goal": "node/far",
+    "nodes": [
+      {
+        "id": "node/near",
+        "intent": "jetty",
+        "note": "The near jetty: a stone quay with a timber deck, railings round it, and a gap in its east rail onto the pier where the ferry lies."
+      },
+      {
+        "id": "node/slip",
+        "intent": "slip",
+        "note": "The ferry's slip on the strait east of the near jetty: the ferry moored bow to the open sea, reached by a pier from a gap in the jetty's east rail.",
+        "stations": [
+          {
+            "anchor": "anchor/bell",
+            "kind": "point",
+            "note": "the ship's bell hung at the ferry's bow"
+          },
+          {
+            "anchor": "anchor/hull",
+            "kind": "point",
+            "note": "the forward end of the ferry's well, where boarding completes"
+          },
+          {
+            "anchor": "anchor/well",
+            "kind": "point",
+            "note": "the middle of the ferry's well: the carry is the whole well around it"
+          }
+        ]
+      },
+      {
+        "id": "node/far",
+        "intent": "jetty",
+        "note": "The far jetty across the strait, where the ferry puts the party down.",
+        "stations": [
+          {
+            "anchor": "anchor/far-landing",
+            "kind": "point",
+            "note": "where the crossing puts the party down"
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.39.0",
+  "stage": "layout-graph"
+}

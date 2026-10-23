@@ -216,6 +216,11 @@ appears in `builds`, so narrowing the watch to dodge a red is a red. `held` does
 not derive a watch set at all, so it carries no `builds` and is not subject to
 that check.
 
+A second rule rides on the same sweep of every tracked file: no `tools/spike-*`
+path exists. Research spikes do not live on main; their rigs were the places a
+pin escaped the registry, and a conclusion lives in specs, `docs/reference/` and
+code comments with the rig cited by revision.
+
 Exit 0 = pass, 1 = a finding, 2 = the registry or a checkout is unusable.
 """
 
@@ -1143,9 +1148,34 @@ def check_bound_by(
     return errors
 
 
+SPIKE_PREFIX = "tools/spike-"
+
+
+def spike_paths(files: list[str]) -> list[str]:
+    """Every tracked path under a `tools/spike-*` directory."""
+    return [f for f in files if f.startswith(SPIKE_PREFIX)]
+
+
 def check_offline(root: pathlib.Path, registry: list[dict]) -> tuple[int, list[str]]:
     errors: list[str] = []
     files = tracked_files(root)
+
+    # Research spikes do not live on main. A spike rig is where a pin (an image
+    # digest, a client jar, a fetched mesh) escapes the registry's reach and the
+    # tree keeps a script nothing runs; its conclusion belongs in a spec,
+    # `docs/reference/` or a code comment, and the rig stays in git history,
+    # cited by revision. The population is every tracked file, so the rule has
+    # no directory list to forget.
+    spikes = spike_paths(files)
+    print(f"-- no research spike on main: {len(spikes)} tracked path(s) under "
+          f"`{SPIKE_PREFIX}*` of {len(files)} tracked file(s)")
+    for s in spikes:
+        errors.append(
+            f"{s}: research spikes do not live on main. Move its conclusion into "
+            f"a spec, `docs/reference/` or a code comment, cite the rig by "
+            f"`<path> at <commit sha>`, and delete the directory; the experiment "
+            f"stays in git history."
+        )
     sites = fetch_sites(root, files)
 
     if not sites:
@@ -1431,9 +1461,10 @@ def package_dirs(repo: pathlib.Path, packages: list[str]) -> list[str]:
 # that does not exist yet can be held to the tree that will create it (ADR-0029
 # §3). Each entry is read where that line's own release workflow reads it:
 # `engine-release.yml` and `dsl-crate-publish.yml` both take a key of the root
-# `versions.toml`. `delvewright` is deliberately absent — `plugin-release.yml`
-# takes its version as a dispatch INPUT and writes the bump itself, so no tree
-# states it in advance and there is no unborn tag to accept.
+# `versions.toml`. `delvewright` is deliberately absent — its version is the
+# version of the `delvec` release it ships at (`check-skill-page.py` rule 11),
+# and `plugin-release.yml` only ever tags a commit that engine release already
+# tagged, so a `delvewright` tag is never unborn in a tree that pins it.
 OWN_VERSION_KEY = {
     "delvec": ("engine", "version"),
     "delvewright-dsl": ("engine", "dsl_crate_version"),

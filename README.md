@@ -17,6 +17,13 @@ Want to write one instead of play one? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **[Vesperhold](campaigns/vesperhold/README.md)** is the flagship: a souls-like castle for one to four hired blades, about an hour long, from a fire at the foot of the causeway to the throne. **[Every campaign, with pictures](https://github.com/stellarfeline/delvewright/blob/main/docs/media/README.md)** — Vesperhold, The Treehouse Camp and Doune Castle, a picture and a few lines each.
 
+## Reference levels
+
+Beside the campaigns sit a few reference levels: short levels, ten minutes or so, each showing how to build one kind of map. They are hosted and played like any delve.
+
+- **[The Beached Thing](references/the-beached-thing/README.md)** — an organic structure the party enters.
+- **[The Thing Beyond the Fog](references/the-thing-beyond-the-fog/README.md)** — a giant statue.
+
 ---
 
 ## Play
@@ -64,6 +71,8 @@ docker run -d --name delve -p 25565:25565 -v delve-data:/data \
   ghcr.io/stellarfeline/delve-<campaign>:v<version>
 ```
 
+- A reference level's image is `ghcr.io/stellarfeline/delve-reference-<level>`,
+  and its release is titled *Reference level: …*; everything else is the same.
 - `-e EULA=TRUE` is you accepting [Mojang's EULA](https://aka.ms/MinecraftEULA).
   The delve ships no Minecraft server software; the container downloads the
   official server on first start, which is why the acceptance has to be yours.
@@ -93,7 +102,7 @@ next person.**
 
 | What | Licence |
 | --- | --- |
-| The campaigns in this repository, and the delves released from them | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) — see [`LICENSE`](LICENSE) |
+| The campaigns and reference levels in this repository, and the delves released from them | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) — see [`LICENSE`](LICENSE) |
 | The building-block pieces in `prefabs/` | Mostly original to this project (GPL-3.0-or-later); a few by other creators under Apache-2.0, MIT or LGPL-3.0-only. Every piece names its source and licence in [`prefabs/LICENSE-ASSETS.md`](prefabs/LICENSE-ASSETS.md) |
 | The software that builds delves | [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html), in a separate repository |
 

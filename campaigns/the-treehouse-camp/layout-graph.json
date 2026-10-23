@@ -1,0 +1,339 @@
+{
+  "campaign_id": "the-treehouse-camp",
+  "content": {
+    "beats": [
+      {
+        "node": "node/root-glade",
+        "objective": "obj/meet-tobi",
+        "quest": "quest/the-ask"
+      },
+      {
+        "node": "node/hearth-house",
+        "objective": "obj/hear-oru",
+        "quest": "quest/the-ask"
+      },
+      {
+        "node": "node/loom-house",
+        "objective": "obj/fetch-the-lantern",
+        "quest": "quest/lantern-and-oil"
+      },
+      {
+        "node": "node/seed-house",
+        "objective": "obj/fetch-the-oil",
+        "quest": "quest/lantern-and-oil"
+      },
+      {
+        "node": "node/hearth-house",
+        "objective": "obj/light-the-lantern",
+        "quest": "quest/the-flame"
+      },
+      {
+        "node": "node/loom-house",
+        "objective": "obj/show-neve",
+        "quest": "quest/the-gate"
+      },
+      {
+        "node": "node/watch-crown",
+        "objective": "obj/climb-to-the-lookout",
+        "quest": "quest/lantern-night"
+      },
+      {
+        "node": "node/watch-crown",
+        "objective": "obj/hang-the-lantern",
+        "quest": "quest/lantern-night"
+      }
+    ],
+    "critical_path": [
+      "node/root-glade",
+      "node/hearth-house",
+      "node/long-bridge",
+      "node/loom-house",
+      "node/long-bridge",
+      "node/hearth-house",
+      "node/low-bridge",
+      "node/seed-house",
+      "node/low-bridge",
+      "node/hearth-house",
+      "node/long-bridge",
+      "node/loom-house",
+      "node/high-bridge",
+      "node/watch-house",
+      "node/watch-crown"
+    ],
+    "edges": [
+      {
+        "a": "node/root-glade",
+        "b": "node/hearth-house",
+        "class": "climb",
+        "id": "edge/glade-ladder"
+      },
+      {
+        "a": "node/hearth-house",
+        "b": "node/long-bridge",
+        "class": "stair",
+        "id": "edge/hearth-long"
+      },
+      {
+        "a": "node/loom-house",
+        "b": "node/long-bridge",
+        "class": "walk",
+        "id": "edge/loom-long"
+      },
+      {
+        "a": "node/hearth-house",
+        "b": "node/low-bridge",
+        "class": "stair",
+        "id": "edge/hearth-low"
+      },
+      {
+        "a": "node/seed-house",
+        "b": "node/low-bridge",
+        "class": "walk",
+        "id": "edge/seed-low"
+      },
+      {
+        "a": "node/loom-house",
+        "b": "node/high-bridge",
+        "class": "barred",
+        "gating": {
+          "flags": [
+            "flag/gate-untied"
+          ]
+        },
+        "id": "edge/loom-high",
+        "opens_from": "a"
+      },
+      {
+        "a": "node/watch-house",
+        "b": "node/high-bridge",
+        "class": "stair",
+        "id": "edge/watch-high"
+      },
+      {
+        "a": "node/watch-house",
+        "b": "node/watch-crown",
+        "class": "climb",
+        "id": "edge/watch-ladder"
+      },
+      {
+        "a": "node/watch-crown",
+        "b": "node/hearth-house",
+        "class": "vision",
+        "id": "edge/lookout-hearth"
+      },
+      {
+        "a": "node/watch-crown",
+        "b": "node/loom-house",
+        "class": "vision",
+        "id": "edge/lookout-loom"
+      },
+      {
+        "a": "node/watch-crown",
+        "b": "node/seed-house",
+        "class": "vision",
+        "id": "edge/lookout-seed"
+      }
+    ],
+    "entry": "node/root-glade",
+    "goal": "node/watch-crown",
+    "nodes": [
+      {
+        "id": "node/root-glade",
+        "intent": "arrival",
+        "note": "The ground among the Hearth Tree's buttress roots on its high shelf: fern floor, a lit fire ring, the foot of the first rope ladder. Covered by the Hearth House platform overhead.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-glade",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/hearth-house",
+        "intent": "hall",
+        "note": "The highest house and the widest platform, built round the Hearth Tree's trunk: a stone hearth with a fire, benches, two thatched cabins against the trunk.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-hearth-n",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-hearth-w",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-hearth-e",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-hearth-s",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/hearth-crown",
+        "intent": "scenery",
+        "note": "The Hearth Tree's crown: thick square branches and chunky leaf masses, 32 across, over the Hearth House and past it. Seen, never entered.",
+        "reached": false
+      },
+      {
+        "id": "node/loom-house",
+        "intent": "workshop",
+        "note": "The lowest house, on the flat top of the topped Loom Tree, open to the sky: two looms under a lean-to, cloth on lines, rope coils, the rope gate across the High Bridge's mouth.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-loom-n",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-loom-e",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-loom-w",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-loom-s",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/seed-house",
+        "intent": "store",
+        "note": "Baskets of nuts, drying racks, a log press and a storehouse hut round the Seed Tree's trunk, under its own crown.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-seed-n",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-seed-w",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-seed-e",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-seed-s",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/watch-roots",
+        "intent": "scenery",
+        "note": "The Watch Tree's trunk base and buttress roots on the ground. Seen, never entered.",
+        "reached": false
+      },
+      {
+        "id": "node/watch-house",
+        "intent": "lookout",
+        "note": "A sentry hut and its platform round the Watch Tree's trunk; the foot of the rope ladder up into the crown.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-watch-n",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-watch-w",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-watch-e",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-watch-s",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/watch-crown",
+        "intent": "summit",
+        "note": "The Watch Tree's crown. The ladder from the Watch House arrives on a plank landing at the first fork and goes on up the bark inside the leaves to the Crown Lookout, a ring of planks just under the last branches, over every other crown in the camp, with the lantern hook.",
+        "stations": [
+          {
+            "anchor": "anchor/lantern-hook",
+            "kind": "point",
+            "note": "The iron hook over the Crown Lookout ring, where the Night Lantern is hung."
+          }
+        ]
+      },
+      {
+        "id": "node/long-bridge",
+        "intent": "bridge",
+        "note": "A rope bridge from the Loom House up to the Hearth House: plank deck, post-and-rope rails, plank steps at its Hearth end.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-long-n",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-long-s",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/low-bridge",
+        "intent": "bridge",
+        "note": "The oldest rope bridge, from the Hearth House down to the Seed House: worn planks, the subject of the quarrel.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-low-w",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-low-e",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      },
+      {
+        "id": "node/high-bridge",
+        "intent": "bridge",
+        "note": "A rope bridge from the Loom House up to the Watch House, its Loom end shut by a rope gate until Neve unties it.",
+        "stations": [
+          {
+            "anchor": "anchor/lights-high-w",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          },
+          {
+            "anchor": "anchor/lights-high-e",
+            "kind": "point",
+            "note": "Where a line of lanterns appears along a rail on Lantern Night."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.38.0",
+  "stage": "layout-graph"
+}

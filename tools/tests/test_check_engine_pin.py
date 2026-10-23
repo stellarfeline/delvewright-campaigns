@@ -46,7 +46,11 @@ def git(repo: Path, *args: str) -> str:
 
 
 def build(root: Path, ref: str, claims: dict[str, str]) -> None:
-    """A repository pinning `ref`, with one storybook per entry of `claims`."""
+    """A repository pinning `ref`, with one storybook per entry of `claims`.
+
+    A key `references/<id>` puts that storybook under `references/`; any other
+    key is a campaign under `campaigns/`.
+    """
     root.mkdir(parents=True, exist_ok=True)
     git(root, "init", "-q")
     git(root, "config", "user.email", "t@example.invalid")
@@ -56,7 +60,8 @@ def build(root: Path, ref: str, claims: dict[str, str]) -> None:
         encoding="utf-8",
     )
     for campaign, version in claims.items():
-        book = root / "campaigns" / campaign / "README.md"
+        rel = campaign if campaign.startswith("references/") else f"campaigns/{campaign}"
+        book = root / rel / "README.md"
         book.parent.mkdir(parents=True, exist_ok=True)
         book.write_text(f"# {campaign}\n\n" + MARKER.format(version=version), encoding="utf-8")
     (root / "campaigns").mkdir(exist_ok=True)
@@ -93,6 +98,16 @@ class EnginePinBinder(unittest.TestCase):
             # The older claim is not swept up with it.
             self.assertNotIn("campaigns/alpha/README.md says", r.stderr)
 
+    def test_a_reference_level_newer_than_the_pin_is_refused(self) -> None:
+        """A reference level is released with the same pinned engine as a campaign."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repo"
+            build(root, "delvec--v1.6.0", {"alpha": "1.5.0", "references/gamma": "1.7.0"})
+            r = run(root)
+            self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+            self.assertIn("references/gamma/README.md says", r.stderr)
+            self.assertIn("2 storybook claim(s) judged over 2 storybook(s)", r.stdout)
+
     def test_an_equal_claim_is_not_a_finding(self) -> None:
         """One-directional, like the engine-side check it mirrors."""
         with tempfile.TemporaryDirectory() as tmp:
@@ -117,6 +132,15 @@ class EnginePinBinder(unittest.TestCase):
             r = run(root)
             self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
             self.assertIn("is not a release tag", r.stderr)
+
+    def test_a_release_of_another_line_is_refused(self) -> None:
+        """Only a `delvec` release carries the binary `release.yml` downloads."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repo"
+            build(root, "delvewright--v1.4.3", {"alpha": "1.0.0"})
+            r = run(root)
+            self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+            self.assertIn("not of `delvec`", r.stderr)
 
     def test_a_binding_of_zero_is_a_finding(self) -> None:
         """The vacuous shape: nothing states a claim, so nothing was compared."""

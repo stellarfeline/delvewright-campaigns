@@ -1,0 +1,1295 @@
+{
+  "campaign_id": "the-treehouse-camp",
+  "content": {
+    "guidance": {
+      "announcements": "shown",
+      "markers": "hidden"
+    },
+    "quests": [
+      {
+        "cast": {
+          "npc/hessel": {
+            "at": "anchor/node-seed-house",
+            "dialogue": {
+              "barks": [
+                "In my grandfather's day, guests brought gifts. You brought good boots. That will do.",
+                "The press is slow, and so am I. We get there."
+              ]
+            },
+            "doing": "at the nut press, filling flasks with this year's oil"
+          },
+          "npc/neve": {
+            "at": "anchor/node-loom-house",
+            "dialogue": {
+              "barks": [
+                "The shade is nearly dry. Oru will send someone for it.",
+                "Mind the cloth lines. That red is three days of dyeing."
+              ]
+            },
+            "doing": "at her looms, finishing the new lantern's shade"
+          },
+          "npc/oru": {
+            "at": "anchor/node-hearth-house",
+            "dialogue": "dlg/oru-ask",
+            "doing": "by the hearth in the Hearth House, waiting for the guests Tobi was sent to fetch"
+          },
+          "npc/tobi": {
+            "at": "anchor/node-root-glade",
+            "dialogue": "dlg/tobi-root",
+            "doing": "waiting at the foot of the rope ladder for the guests, and not climbing it"
+          }
+        },
+        "happening": {
+          "subject": "npc/tobi",
+          "text": "The guests arrive among the Hearth Tree's roots on Lantern Night.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-ask",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/tobi",
+              "text": "Tobi tells the guests Oru is waiting in the Hearth House, and that the ladder frightens him.",
+              "verb": "learns"
+            },
+            "hint": "He waits at the foot of the rope ladder on the great trunk.",
+            "id": "obj/meet-tobi",
+            "npc": "npc/tobi",
+            "title": "Speak to Tobi",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/meet-tobi"
+            ],
+            "happening": {
+              "subject": "npc/oru",
+              "text": "Oru explains Lantern Night and asks the guests to carry the lantern up for her.",
+              "verb": "learns"
+            },
+            "hint": "Climb the rope ladder on the Hearth Tree's trunk to the platform above.",
+            "id": "obj/hear-oru",
+            "npc": "npc/oru",
+            "title": "Climb up to Oru",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/hessel": {
+            "at": "anchor/node-seed-house",
+            "dialogue": "dlg/hessel-oil",
+            "doing": "at the nut press, a flask of oil set aside"
+          },
+          "npc/neve": {
+            "at": "anchor/node-loom-house",
+            "dialogue": "dlg/neve-lantern",
+            "doing": "at her looms, with the new lantern ready on the bench"
+          },
+          "npc/oru": {
+            "at": "anchor/node-hearth-house",
+            "dialogue": "dlg/oru-waiting",
+            "doing": "by the hearth, keeping the fire up for the lighting"
+          },
+          "npc/tobi": {
+            "at": "anchor/node-root-glade",
+            "dialogue": {
+              "barks": [
+                "Did you look down? I always look down. I shouldn't.",
+                "Oru says the ladder gets easier. It hasn't yet."
+              ]
+            },
+            "doing": "still at the foot of the ladder, looking up"
+          }
+        },
+        "happening": {
+          "subject": "npc/oru",
+          "text": "The guests go for the lantern and the oil, one across each bridge.",
+          "verb": "learns"
+        },
+        "id": "quest/lantern-and-oil",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "item/night-lantern",
+              "text": "Neve hands over the Night Lantern in this year's shade.",
+              "verb": "gains"
+            },
+            "hint": "Cross the Long Bridge from the Hearth House to the Loom House.",
+            "id": "obj/fetch-the-lantern",
+            "npc": "npc/neve",
+            "title": "Fetch the lantern from Neve",
+            "type": "talk-to"
+          },
+          {
+            "happening": {
+              "subject": "item/lamp-oil",
+              "text": "Hessel hands over a flask of this year's lamp oil.",
+              "verb": "gains"
+            },
+            "hint": "Cross the Low Bridge from the Hearth House to the Seed House.",
+            "id": "obj/fetch-the-oil",
+            "npc": "npc/hessel",
+            "title": "Fetch lamp oil from Hessel",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/fetch-the-lantern": [
+            {
+              "count": 1,
+              "item": "minecraft:lantern",
+              "name": "Night Lantern",
+              "type": "give-item"
+            }
+          ],
+          "obj/fetch-the-oil": [
+            {
+              "count": 1,
+              "item": "minecraft:honey_bottle",
+              "name": "Flask of Lamp Oil",
+              "type": "give-item"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-ask",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/hessel": {
+            "at": "anchor/node-seed-house",
+            "dialogue": {
+              "barks": [
+                "That flask is full to the top. I checked twice.",
+                "Mind the third plank from the Hearth end. It is soft. Neve says it is the rope."
+              ]
+            },
+            "doing": "wiping down the press for the night"
+          },
+          "npc/neve": {
+            "at": "anchor/node-loom-house",
+            "dialogue": {
+              "barks": [
+                "Go on. Oru lights it, not me.",
+                "Carry it upright. The shade scorches if it tips."
+              ]
+            },
+            "doing": "at her looms, with one eye on the Hearth House"
+          },
+          "npc/oru": {
+            "at": "anchor/node-hearth-house",
+            "dialogue": "dlg/oru-light",
+            "doing": "at the hearth with a taper ready"
+          },
+          "npc/tobi": {
+            "at": "anchor/node-root-glade",
+            "dialogue": {
+              "barks": [
+                "Is it lit yet? I can't see from down here.",
+                "When it's lit, Oru lets me hang the first lantern on our house."
+              ]
+            },
+            "doing": "at the foot of the ladder, watching the platform for the light"
+          }
+        },
+        "happening": {
+          "subject": "item/night-lantern",
+          "text": "Oru fills the Night Lantern and lights it at the hearth.",
+          "verb": "gains"
+        },
+        "id": "quest/the-flame",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "item/night-lantern",
+              "text": "The Night Lantern is lit from the Hearth House fire.",
+              "verb": "gains"
+            },
+            "hint": "Oru waits by the hearth in the Hearth House.",
+            "id": "obj/light-the-lantern",
+            "npc": "npc/oru",
+            "title": "Bring both to Oru",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "actionbar",
+            "text": "The Night Lantern is lit.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/lantern-and-oil",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/hessel": {
+            "at": "anchor/node-seed-house",
+            "dialogue": {
+              "barks": [
+                "Lit? Good. My oil, her shade, Oru's fire.",
+                "Up the Watch Tree, is it? My knees remember it. Mind the top."
+              ]
+            },
+            "doing": "on a stool by the press, watching the Hearth House"
+          },
+          "npc/neve": {
+            "at": "anchor/node-loom-house",
+            "dialogue": "dlg/neve-gate",
+            "doing": "at the rope gate, waiting for the lantern"
+          },
+          "npc/oru": {
+            "at": "anchor/node-hearth-house",
+            "dialogue": {
+              "barks": [
+                "Neve will untie the gate when she sees it lit. Go on.",
+                "I will watch from here. That is my place tonight."
+              ]
+            },
+            "doing": "at the hearth, looking toward the Watch Tree"
+          },
+          "npc/tobi": {
+            "at": "anchor/node-root-glade",
+            "dialogue": {
+              "barks": [
+                "It's lit! I saw it from here.",
+                "You're going all the way up the Watch Tree? All of it?"
+              ]
+            },
+            "doing": "at the foot of the ladder, too pleased to stand still"
+          }
+        },
+        "happening": {
+          "subject": "anchor/seam-loom-high",
+          "text": "Neve sees the lit lantern and unties the rope gate to the High Bridge.",
+          "verb": "opens"
+        },
+        "id": "quest/the-gate",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "anchor/seam-loom-high",
+              "text": "Neve unties the rope gate across the High Bridge.",
+              "verb": "opens"
+            },
+            "hint": "Cross the Long Bridge back to the Loom House.",
+            "id": "obj/show-neve",
+            "npc": "npc/neve",
+            "title": "Show Neve the lit lantern",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/show-neve": [
+            {
+              "anchor": "anchor/seam-loom-high",
+              "happening": {
+                "subject": "anchor/seam-loom-high",
+                "text": "The rope gate across the High Bridge falls open.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "flag": "flag/gate-untied",
+              "type": "set-flag"
+            },
+            {
+              "at": {
+                "anchor": "anchor/seam-loom-high",
+                "at": "anchor"
+              },
+              "sound": "minecraft:block.wool.break",
+              "type": "play-sound"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-flame",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/hessel": {
+            "at": "anchor/node-seed-house",
+            "dialogue": {
+              "barks": [
+                "The planks held tonight. I counted them.",
+                "When the top is lit, we answer. Every house, every year."
+              ]
+            },
+            "doing": "at the rail with his own lantern, waiting for the light"
+          },
+          "npc/neve": {
+            "at": "anchor/node-loom-house",
+            "dialogue": {
+              "barks": [
+                "Go on up. The High Bridge is open.",
+                "Tell Hessel the rope held tonight. It proves nothing, but tell him."
+              ]
+            },
+            "doing": "by the untied gate, a lantern of her own ready"
+          },
+          "npc/oru": {
+            "at": "anchor/node-hearth-house",
+            "dialogue": {
+              "barks": [
+                "Thirty years I climbed it. Tonight I watch. That is all right.",
+                "Hang it on the iron hook at the very top. You will see the hook."
+              ]
+            },
+            "doing": "at the rail of the Hearth House, watching the top of the Watch Tree"
+          },
+          "npc/tobi": {
+            "at": "anchor/node-root-glade",
+            "dialogue": {
+              "barks": [
+                "I can see the ladder from here. I'm not going up it. Tell me what it's like.",
+                "When the big lantern's lit, I get to light ours."
+              ]
+            },
+            "doing": "at the foot of the ladder, staring up at the Watch Tree"
+          }
+        },
+        "happening": {
+          "subject": "anchor/lantern-hook",
+          "text": "The guests climb the Watch Tree and hang the lit lantern at its top, and the camp answers.",
+          "verb": "opens"
+        },
+        "id": "quest/lantern-night",
+        "objectives": [
+          {
+            "anchor": "anchor/lantern-hook",
+            "happening": {
+              "text": "The guests reach the Crown Lookout at the top of the Watch Tree.",
+              "verb": "arrives"
+            },
+            "hint": "Cross the High Bridge from the Loom House, then climb the ladders up the Watch Tree.",
+            "id": "obj/climb-to-the-lookout",
+            "radius": 3,
+            "title": "Climb to the top of the Watch Tree",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/climb-to-the-lookout"
+            ],
+            "anchor": "anchor/lantern-hook",
+            "happening": {
+              "subject": "anchor/lantern-hook",
+              "text": "The Night Lantern hangs lit at the top of the Watch Tree.",
+              "verb": "opens"
+            },
+            "hint": "The iron hook hangs over the ring at the top of the tree.",
+            "id": "obj/hang-the-lantern",
+            "missing_item_hint": "Hold the Night Lantern in your hand to hang it on the hook.",
+            "requires_item": "minecraft:lantern",
+            "title": "Hang the lantern on the hook",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "anchor": "anchor/lantern-hook",
+                    "block": "minecraft:lantern[hanging=true,waterlogged=false]",
+                    "type": "set-block"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound"
+                  },
+                  {
+                    "style": "title",
+                    "text": "Lantern Night",
+                    "type": "narrate"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 40,
+                "effects": [
+                  {
+                    "shots": [
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            28,
+                            14,
+                            18
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              88,
+                              54,
+                              -36
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              78,
+                              48,
+                              -28
+                            ]
+                          }
+                        ],
+                        "seconds": 7
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            30,
+                            18,
+                            14
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              24,
+                              26,
+                              88
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              38,
+                              26,
+                              84
+                            ]
+                          }
+                        ],
+                        "seconds": 6
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            12,
+                            18,
+                            -6
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              36,
+                              20,
+                              6
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              28,
+                              20,
+                              6
+                            ]
+                          }
+                        ],
+                        "seconds": 6
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            8,
+                            12,
+                            40
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              20,
+                              18,
+                              22
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              20,
+                              18,
+                              30
+                            ]
+                          }
+                        ],
+                        "seconds": 6
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            52,
+                            41,
+                            40
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              70,
+                              46,
+                              28
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              70,
+                              46,
+                              50
+                            ]
+                          }
+                        ],
+                        "seconds": 6
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            22,
+                            12,
+                            12
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              56,
+                              54,
+                              48
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              54,
+                              56,
+                              46
+                            ]
+                          }
+                        ],
+                        "seconds": 8
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            51,
+                            13,
+                            39
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              34,
+                              22,
+                              22
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              36,
+                              22,
+                              24
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            51,
+                            9,
+                            15
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              64,
+                              18,
+                              10
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              64,
+                              18,
+                              20
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            52,
+                            9,
+                            -2
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              68,
+                              20,
+                              -18
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              70,
+                              20,
+                              -10
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            33,
+                            9,
+                            -3
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              30,
+                              18,
+                              -14
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              38,
+                              18,
+                              -14
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            7,
+                            15,
+                            -3
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              24,
+                              26,
+                              -18
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              26,
+                              26,
+                              -10
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            7,
+                            11,
+                            22
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              -4,
+                              18,
+                              16
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              -4,
+                              18,
+                              26
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            7,
+                            11,
+                            39
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              -12,
+                              20,
+                              32
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              -12,
+                              20,
+                              42
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            7,
+                            0,
+                            -12
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              -10,
+                              5,
+                              -22
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              -4,
+                              5,
+                              -22
+                            ]
+                          }
+                        ],
+                        "seconds": 5
+                      },
+                      {
+                        "look_at": {
+                          "anchor": "anchor/node-root-glade",
+                          "offset": [
+                            22,
+                            12,
+                            12
+                          ]
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              52,
+                              56,
+                              46
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-root-glade",
+                            "offset": [
+                              58,
+                              60,
+                              52
+                            ]
+                          }
+                        ],
+                        "seconds": 7
+                      }
+                    ],
+                    "type": "cutscene"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 705,
+                "effects": [
+                  {
+                    "time": {
+                      "moon": "high"
+                    },
+                    "type": "set-time"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 846,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-watch-n",
+                      "extent": [
+                        4,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-watch-w",
+                      "extent": [
+                        0,
+                        0,
+                        9
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-watch-e",
+                      "extent": [
+                        0,
+                        0,
+                        9
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-watch-s",
+                      "extent": [
+                        9,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 947,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-high-w",
+                      "extent": [
+                        0,
+                        0,
+                        8
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-high-e",
+                      "extent": [
+                        0,
+                        0,
+                        8
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1048,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-loom-n",
+                      "extent": [
+                        7,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-loom-e",
+                      "extent": [
+                        0,
+                        0,
+                        7
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-loom-w",
+                      "extent": [
+                        0,
+                        0,
+                        3
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-loom-s",
+                      "extent": [
+                        3,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1149,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-long-n",
+                      "extent": [
+                        5,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-long-s",
+                      "extent": [
+                        5,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1250,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-hearth-n",
+                      "extent": [
+                        11,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-hearth-w",
+                      "extent": [
+                        0,
+                        0,
+                        11
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-hearth-e",
+                      "extent": [
+                        0,
+                        0,
+                        4
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-hearth-s",
+                      "extent": [
+                        4,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1351,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-low-w",
+                      "extent": [
+                        0,
+                        0,
+                        6
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-low-e",
+                      "extent": [
+                        0,
+                        0,
+                        6
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1452,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-seed-n",
+                      "extent": [
+                        3,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-seed-w",
+                      "extent": [
+                        0,
+                        0,
+                        7
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-seed-e",
+                      "extent": [
+                        0,
+                        0,
+                        7
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-seed-s",
+                      "extent": [
+                        7,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1553,
+                "effects": [
+                  {
+                    "block": "minecraft:lantern[hanging=false,waterlogged=false]",
+                    "region": {
+                      "anchor": "anchor/lights-glade",
+                      "extent": [
+                        8,
+                        0,
+                        0
+                      ]
+                    },
+                    "type": "fill-region"
+                  },
+                  {
+                    "sound": "minecraft:block.lantern.place",
+                    "type": "play-sound",
+                    "volume": 2.0
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1795,
+                "effects": [
+                  {
+                    "style": "chat",
+                    "text": "Down in the camp, every house has answered the lantern.",
+                    "type": "narrate"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 1875,
+                "effects": [
+                  {
+                    "happening": {
+                      "text": "Lantern Night is lit, and the guests watch the camp answer from the top of the Watch Tree.",
+                      "verb": "arrives"
+                    },
+                    "type": "campaign-complete"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/the-gate",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/seam-loom-high",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The rope gate is knotted shut. The weaver unties it when the lantern is lit.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/gate-untied"
+        ],
+        "id": "trigger/gate-tied",
+        "on": {
+          "on": "use"
+        },
+        "once": false
+      }
+    ]
+  },
+  "dsl_version": "0.38.0",
+  "stage": "quests"
+}
