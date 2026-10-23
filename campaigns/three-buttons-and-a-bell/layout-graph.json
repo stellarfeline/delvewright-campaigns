@@ -1,0 +1,170 @@
+{
+  "campaign_id": "three-buttons-and-a-bell",
+  "content": {
+    "beats": [
+      {
+        "node": "node/hall",
+        "objective": "obj/hear-the-keeper",
+        "quest": "quest/the-house"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/ring-the-bell",
+        "quest": "quest/the-house"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/unbar-the-store",
+        "quest": "quest/the-house"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/lift-the-lid",
+        "quest": "quest/the-house"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/draw-the-bolt",
+        "quest": "quest/the-boat"
+      },
+      {
+        "node": "node/shed",
+        "objective": "obj/enter-the-shed",
+        "quest": "quest/the-boat"
+      }
+    ],
+    "critical_path": [
+      "node/jetty",
+      "node/hall",
+      "node/shed"
+    ],
+    "edges": [
+      {
+        "a": "node/jetty",
+        "b": "node/hall",
+        "class": "walk",
+        "id": "edge/hall-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/store",
+        "class": "walk",
+        "id": "edge/store-door"
+      },
+      {
+        "a": "node/jetty",
+        "b": "node/store",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/jetty-door-open"
+          ],
+          "opens_from": "b"
+        },
+        "id": "edge/jetty-door",
+        "shortcut": true
+      },
+      {
+        "a": "node/hall",
+        "b": "node/shed",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/bolt-drawn"
+          ]
+        },
+        "id": "edge/shed-gate"
+      }
+    ],
+    "entry": "node/jetty",
+    "goal": "node/shed",
+    "nodes": [
+      {
+        "id": "node/jetty",
+        "intent": "hub",
+        "note": "The covered end of the jetty, where the party arrives: the open doorway into the keeper's hall, and the barred door into her store, which opens from the store's side.",
+        "stations": [
+          {
+            "anchor": "anchor/jetty-door-leaf",
+            "kind": "point",
+            "note": "The board of the barred store door at eye height, pressed from the jetty or from the store."
+          }
+        ]
+      },
+      {
+        "id": "node/hall",
+        "intent": "hub",
+        "note": "The keeper's hall: the keeper at her counter, the bell on its post, the chained lever behind her, her chest, the candles, a loose boulder, the three buttons and the bolt on the shed gate, and the latched store door.",
+        "stations": [
+          {
+            "anchor": "anchor/keeper",
+            "kind": "point",
+            "note": "Where the keeper stands, at her counter."
+          },
+          {
+            "anchor": "anchor/lever",
+            "kind": "point",
+            "note": "The chained lever on the wall behind the keeper."
+          },
+          {
+            "anchor": "anchor/candles",
+            "kind": "point",
+            "note": "The keeper's candles by the hearth: the rest point."
+          },
+          {
+            "anchor": "anchor/boulder",
+            "kind": "point",
+            "note": "A loose boulder in the corner, struck by hand."
+          },
+          {
+            "anchor": "anchor/button-one",
+            "kind": "point",
+            "note": "The first of the three buttons on the wall."
+          },
+          {
+            "anchor": "anchor/button-two",
+            "kind": "point",
+            "note": "The second of the three buttons."
+          },
+          {
+            "anchor": "anchor/button-three",
+            "kind": "point",
+            "note": "The third of the three buttons."
+          },
+          {
+            "anchor": "anchor/bell",
+            "kind": "point",
+            "note": "The bell on its post."
+          },
+          {
+            "anchor": "anchor/store-door",
+            "kind": "point",
+            "note": "The latched store door, in the hall's wall."
+          },
+          {
+            "anchor": "anchor/chest",
+            "kind": "point",
+            "note": "The keeper's chest against the wall."
+          },
+          {
+            "anchor": "anchor/bolt",
+            "kind": "point",
+            "note": "The bolt beside the shed gate."
+          }
+        ]
+      },
+      {
+        "id": "node/store",
+        "intent": "side-room",
+        "note": "The keeper's store behind the latched door: the barred door back to the jetty and the button that throws its bar."
+      },
+      {
+        "id": "node/shed",
+        "intent": "goal-chamber",
+        "note": "The boat shed behind the barred gate: where the boat is kept."
+      }
+    ]
+  },
+  "dsl_version": "0.64.0",
+  "stage": "layout-graph"
+}
