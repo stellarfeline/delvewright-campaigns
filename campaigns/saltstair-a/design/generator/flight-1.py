@@ -178,6 +178,9 @@ program = {
         "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
     },
     "rules": rules,
+    # The kerb walls and posts are dressed stone brick standing proud of the
+    # stepped turf on both long sides: finished exterior surface, meant to be seen.
+    "shown_faces": ["east", "west"],
     "contract": {
         "entry": "foot",
         "spaces": {"foot": {"envelope": "open"}, "head": {"envelope": "open"}},
