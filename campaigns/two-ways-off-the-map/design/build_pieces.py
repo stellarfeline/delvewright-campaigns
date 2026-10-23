@@ -79,10 +79,13 @@ class Piece:
     def cell(self, x, y, z):
         return (self.block.get((x, y, z)), self.claim.get((x, y, z)))
 
-    def connect(self, palette, kind="fence"):
+    def connect(self, palette, kind="fence", beyond=()):
         """Give every fence the connections its neighbours give it: another
-        fence, or a full block."""
+        fence, or a full block — `beyond` names the cells outside the frame
+        that a neighbouring place holds as wall."""
         def joins(c):
+            if c in beyond:
+                return True
             r = self.block.get(c)
             if r in (None, SKIP):
                 return False
@@ -280,6 +283,10 @@ def yard(a, as_found, stone_at=None):
         for x in (3, 4, 5):
             if p.get((x, W, z)) is None:
                 p.put((x, W - 1, z), (x, W - 1, z), "gravel")
+    # Grass only where it sees the sky; under a wall or a stone it is earth.
+    for (x, y, z), r in list(p.block.items()):
+        if r == "grass" and p.get((x, y + 1, z)) not in (None,):
+            p.block[(x, y, z)] = "dirt"
     # Contract regions: the yard, the buttress's top, the burying ground, and
     # the tops of the walls.
     p.claim_box((12, W + 2, 12), (13, p.sy - 1, 12), "buttress-top", air_only=True)
@@ -437,7 +444,8 @@ def jetty(a, as_found):
                 p.put((x, y, sz - 1), (x, y, sz - 1), "water" if y <= sea else None)
             (landing if t == sea else stair_cells).append((x, t + 1, sz - 1))
         stair_cells.append((16, W, sz - 2))
-    p.connect(BASE_JETTY)
+    # The course's east wall stands one cell west of the frame, beside both rails.
+    p.connect(BASE_JETTY, beyond={(-1, W, 1), (-1, W, sz - 2)})
     # The seam: the wall-walk's last platform, onto the deck.
     (c0, c1) = p.seam("edge/jetty-foot")["cells"]
     p.put(c0, c1, None)
