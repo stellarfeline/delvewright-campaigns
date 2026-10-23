@@ -41,3 +41,15 @@ The junction is proven at the **first build after `node/lower-town`'s program dr
 | 4 | same run | `DW0818` | the beat names `quest/to-the-quay`, which no quest document declares | the same: cleared by step 5 |
 | 5 | `build` at step 8, stand-ins | `DW0837` | no body reaches `node/lower-town` | none at step 8: the junction's order change — cleared by the lower town's piece |
 | 6 | same run | `DW0877` | 0 of the front's 41 columns crossable | the same; the battery stops here, so `DW0210` is not yet measured, and step 8b's cameras wait for the first build that exits 0 |
+| 7 | `detail node/upper-town`, attempt 1 (the whole's battery) | `DW0837` | no body reaches `node/lower-town` | none in the upper town: its piece is written and every gate of its own green; the junction's order change, cleared by the lower town's piece |
+| 8 | same run | `DW0877` | 0 of the front's 41 columns crossable | the same |
+
+## Detail
+
+Handouts are regenerable files under `campaigns/saltstair-b/.out/handouts/` (gitignored). Refusals an attempt repaired are the codes it was handed; the codes the author met and repaired inside its own attempt are listed beside them.
+
+| Place | Attempt | Handout | Agent tokens | Duration | Refusal repaired | Repaired inside the attempt | `delvec detail` exit confirmed |
+|---|---|---|---|---|---|---|---|
+| `node/upper-town` | 1 | `upper-town/handout-1.md` | 266 554 | 20 min 23 s | none (first authoring) | `DW0990` (an eave over the plot edge), `DW0730` (a lava cauldron off the allowlist, now a magma-block forge), an empty `no_body` region over the ring | 3 — the piece written, the whole refused only at the junction (`DW0837`, `DW0877`, rows 7–8) |
+
+Departures the upper town's author recorded: doors are open 1 x 2 doorways under a timber lintel (the engine's walk treats a door block as solid, so no passable door exists); the weaver's cloth is on the ground floor (clearance 4 holds one floor); the chapel's and inn's outer walls stand on the frame's first layer and eaves are omitted where the frame or plot edge forbids them; the smithy's and merchant's roofs end in a flat top four wide at the stated course counts.
