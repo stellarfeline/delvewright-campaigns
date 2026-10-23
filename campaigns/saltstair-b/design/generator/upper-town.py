@@ -732,7 +732,11 @@ program = {
     "palette": PALETTE,
     "rules": rules,
     "contract": contract,
-    "shown_faces": ["up"],
+    # An open hillside town is looked at from every side but its front (the
+    # front's plane stands against the lower town's box). Its north, east and
+    # west sides are the hill's own turf edge at the plot's ring, stepping down
+    # past the commons ground outside: finished ground surface, not a buried cut.
+    "shown_faces": ["east", "north", "up", "west"],
 }
 with open(OUT, "w") as fh:
     json.dump(program, fh, indent=1, sort_keys=True)
