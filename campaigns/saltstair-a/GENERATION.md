@@ -52,3 +52,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | Place | Attempt | Handout | Agent tokens | Duration | Codes repaired | `delvec detail` exit |
 |---|---|---|---|---|---|---|
 | `node/square` | 1 | `square/handout-1.md` | 141 282 | 260 s | none (first authoring) | 3 — the place passes (3 faces for 3 seams, 2 of 2 owed names, light `lit` over 316 cells); the run refuses `DW0721` on `design/cameras.json` (six cameras answer rows of a `design.json` the campaign does not have). On a scratch copy without `cameras.json` the same run exits 2 on `DW0210` alone (the 144 dark stand-in cells) |
+| `node/flight-1` | 1 | `flight-1/handout-1.md` | 141 614 | 299 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
