@@ -39,3 +39,5 @@ The junction is proven at the **first build after `node/lower-town`'s program dr
 | 2 | same run | `DW0837` | no body reaches `node/lower-town` (2050 standable cells, none reachable) | the same: the lower town is reached over the front its piece draws |
 | 3 | `validate`, placement written, story stubbed | `DW0150` | the planned quest has no stage-5 expansion | none at step 2: the expected state until `quests.json` is written at step 5 |
 | 4 | same run | `DW0818` | the beat names `quest/to-the-quay`, which no quest document declares | the same: cleared by step 5 |
+| 5 | `build` at step 8, stand-ins | `DW0837` | no body reaches `node/lower-town` | none at step 8: the junction's order change — cleared by the lower town's piece |
+| 6 | same run | `DW0877` | 0 of the front's 41 columns crossable | the same; the battery stops here, so `DW0210` is not yet measured, and step 8b's cameras wait for the first build that exits 0 |
