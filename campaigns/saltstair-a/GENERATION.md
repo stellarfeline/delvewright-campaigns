@@ -26,6 +26,11 @@ The design was approved as written (`campaigns/hillside/DESIGN.md`), on the refe
 - `site-plan.json` `views[]` stays empty: it takes whole numbers and §6's cameras stand at half blocks. The exact camera coordinates live in `judging/cameras.json` — first written to `design/cameras.json`, moved after refusal 8: every row there must answer a `design.json` row, which the campaign does not carry by ruling, and `detail` refuses the record (`DW0721`) on every run. Moved by the owner's delegation to the run's judgement. The frames are drawn with `delvec frames --campaign --camera` at the rows' exact poses, which draws the world's sky (`noon`); `day` frames are drawn from a scratch copy that differs only in `world.time: day`, and are labelled so.
 - The step-8 build goes on to step 9 with `DW0210` as its only red (the stand-in houses are dark); each house is lit as it is detailed. No `lighting` declaration, temporary or otherwise.
 
+## Findings
+
+- **The retaining walls between terraces stand only where a flight's frame reaches.** Under cut A a street's frame begins at its paving course, so the four-course drop at a terrace's downhill end is below it; the flight's frame (floor the lower terrace) is the one place that can face it, six wide, and the drop beside the street, outside every box, is the commons hillside at the heightmap's half-block grade. §3's "every terrace stands above the next behind a retaining wall the place draws" is therefore met six wide at each flight and not across the town — a property of the cut, reported by the upper street's author.
+- **Detail authors read beyond their handout twice**: the square's author ran a read-only `git status`; the upper street's author read the start of `programs/flight-1.json` before writing, stopped, and reports building nothing from it. Both attempts were kept; their pieces pass their own gates.
+
 ## Refusals, in order
 
 Every `DW` refusal `delvec` printed during authoring, with its repair.
@@ -53,3 +58,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 |---|---|---|---|---|---|---|
 | `node/square` | 1 | `square/handout-1.md` | 141 282 | 260 s | none (first authoring) | 3 — the place passes (3 faces for 3 seams, 2 of 2 owed names, light `lit` over 316 cells); the run refuses `DW0721` on `design/cameras.json` (six cameras answer rows of a `design.json` the campaign does not have). On a scratch copy without `cameras.json` the same run exits 2 on `DW0210` alone (the 144 dark stand-in cells) |
 | `node/flight-1` | 1 | `flight-1/handout-1.md` | 141 614 | 299 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
+| `node/upper-street` | 1 | `upper-street/handout-1.md` | 123 057 | 277 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame; the author read the start of another place's program (see Findings) |

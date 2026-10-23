@@ -1,0 +1,1017 @@
+{
+  "contract": {
+    "edges": [
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "north-mouth"
+      },
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "south-mouth"
+      },
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "smithy-door"
+      },
+      {
+        "a": "street",
+        "b": "exterior",
+        "class": "walk",
+        "via": "weaver-door"
+      }
+    ],
+    "entry": "street",
+    "no_body": {
+      "lamp-posts": {
+        "reason": "the lantern on top of each door post, which nobody is meant to stand on"
+      },
+      "parapet": {
+        "reason": "the tops of the parapet and the lamp posts at the terrace edge, which nobody is meant to walk"
+      }
+    },
+    "spaces": {
+      "street": {
+        "envelope": "open"
+      }
+    }
+  },
+  "name": "saltstair-a-upper-street",
+  "palette": {
+    "door-post": "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
+    "kerb": "minecraft:stone_bricks",
+    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "parapet-cap": "minecraft:stone_bricks",
+    "parapet-foot": "minecraft:mossy_stone_bricks",
+    "paving": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 9
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 1
+      }
+    ],
+    "post": "minecraft:stone_bricks"
+  },
+  "params": {
+    "handed/datum-y": 1,
+    "handed/ground/bottom-y": 0,
+    "handed/seam/flight-1-upper-street/rise": 0,
+    "handed/seam/flight-1-upper-street/x0": 1,
+    "handed/seam/flight-1-upper-street/x1": 6,
+    "handed/seam/flight-1-upper-street/y0": 1,
+    "handed/seam/flight-1-upper-street/y1": 6,
+    "handed/seam/flight-1-upper-street/z0": 0,
+    "handed/seam/flight-1-upper-street/z1": 0,
+    "handed/seam/upper-street-flight-2/rise": -4,
+    "handed/seam/upper-street-flight-2/x0": 1,
+    "handed/seam/upper-street-flight-2/x1": 6,
+    "handed/seam/upper-street-flight-2/y0": 1,
+    "handed/seam/upper-street-flight-2/y1": 4,
+    "handed/seam/upper-street-flight-2/z0": 12,
+    "handed/seam/upper-street-flight-2/z1": 12,
+    "handed/seam/upper-street-smithy/rise": 0,
+    "handed/seam/upper-street-smithy/x0": 1,
+    "handed/seam/upper-street-smithy/x1": 1,
+    "handed/seam/upper-street-smithy/y0": 1,
+    "handed/seam/upper-street-smithy/y1": 2,
+    "handed/seam/upper-street-smithy/z0": 4,
+    "handed/seam/upper-street-smithy/z1": 4,
+    "handed/seam/upper-street-weaver/rise": 0,
+    "handed/seam/upper-street-weaver/x0": 6,
+    "handed/seam/upper-street-weaver/x1": 6,
+    "handed/seam/upper-street-weaver/y0": 1,
+    "handed/seam/upper-street-weaver/y1": 2,
+    "handed/seam/upper-street-weaver/z0": 5,
+    "handed/seam/upper-street-weaver/z1": 5
+  },
+  "rules": {
+    "door-post": [
+      {
+        "body": {
+          "body": {
+            "axis": "y",
+            "children": [
+              {
+                "material": {
+                  "role": "door-post"
+                },
+                "op": "fill"
+              },
+              {
+                "material": {
+                  "role": "lamp"
+                },
+                "op": "fill"
+              },
+              {
+                "op": "void"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "op": "claim",
+          "region": "lamp-posts"
+        },
+        "weight": 1
+      }
+    ],
+    "east-lane": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "weaver-door"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "street"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/seam/upper-street-weaver/y1"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/upper-street-weaver/y0"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            },
+            {
+              "op": "call",
+              "symbol": "door-post"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/upper-street-weaver/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-1-upper-street/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-weaver/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-weaver/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "paving": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "paving"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "place": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "side"
+            },
+            {
+              "op": "call",
+              "symbol": "street-band"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "side"
+              },
+              "op": "reorient",
+              "orient": {
+                "mirror": {
+                  "x": true
+                }
+              }
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/upper-street-flight-2/x0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-flight-2/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-flight-2/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "side": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "skip"
+                },
+                {
+                  "body": {
+                    "axis": "y",
+                    "children": [
+                      {
+                        "material": {
+                          "role": "parapet-foot"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "material": {
+                          "role": "parapet-cap"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "op": "void"
+                      }
+                    ],
+                    "op": "split",
+                    "sizes": [
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "size": "relative",
+                        "weight": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  },
+                  "op": "claim",
+                  "region": "parapet"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "handed/ground/bottom-y"
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "skip"
+                },
+                {
+                  "body": {
+                    "axis": "y",
+                    "children": [
+                      {
+                        "material": {
+                          "role": "post"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "material": {
+                          "role": "lamp"
+                        },
+                        "op": "fill"
+                      },
+                      {
+                        "op": "void"
+                      }
+                    ],
+                    "op": "split",
+                    "sizes": [
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 2
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "blocks": {
+                          "expr": "int",
+                          "value": 1
+                        },
+                        "size": "absolute"
+                      },
+                      {
+                        "size": "relative",
+                        "weight": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  },
+                  "op": "claim",
+                  "region": "parapet"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "handed/ground/bottom-y"
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/upper-street-flight-2/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "street-air": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "north-mouth"
+            },
+            {
+              "axis": "x",
+              "children": [
+                {
+                  "op": "call",
+                  "symbol": "west-lane"
+                },
+                {
+                  "body": {
+                    "body": {
+                      "op": "void"
+                    },
+                    "op": "claim",
+                    "region": "street"
+                  },
+                  "mark": {
+                    "anchor": "node-upper-street",
+                    "at": "floor_center"
+                  },
+                  "op": "mark"
+                },
+                {
+                  "op": "call",
+                  "symbol": "east-lane"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-1-upper-street/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-1-upper-street/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "street-band": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "call",
+                  "symbol": "paving"
+                },
+                {
+                  "op": "call",
+                  "symbol": "street-air"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "handed/ground/bottom-y"
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "op": "skip"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "south-mouth"
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/datum-y"
+                    },
+                    "op": "sub",
+                    "rhs": {
+                      "expr": "param",
+                      "name": "handed/ground/bottom-y"
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/seam/upper-street-flight-2/y1"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/upper-street-flight-2/y0"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/upper-street-flight-2/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "west-lane": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            },
+            {
+              "op": "call",
+              "symbol": "door-post"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            },
+            {
+              "axis": "y",
+              "children": [
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "smithy-door"
+                },
+                {
+                  "body": {
+                    "op": "void"
+                  },
+                  "op": "claim",
+                  "region": "street"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/seam/upper-street-smithy/y1"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/upper-street-smithy/y0"
+                      }
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-smithy/z0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-1-upper-street/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-smithy/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/upper-street-smithy/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "start": "place",
+  "version": "1.9.0"
+}
