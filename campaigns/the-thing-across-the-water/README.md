@@ -2,17 +2,19 @@
 
 > **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
 
-You came down the coast road at dusk to a grey bay: a stone jetty running out
-into the water, a harbour hall at its foot with its wide door standing open,
-and, out in the bay, a sea-stack of bare rock that nobody looks at for long.
+You came down the coast road at dusk to a grey bay: a stone jetty running out into the water, a harbour hall at its foot with its wide door standing open, and, out in the bay, a sea-stack of bare rock that nobody looks at for long.
 
 The keeper of the hall, Oswin Marrable, has kept the bell at the end of the
 jetty for thirty winters. He has never rung it.
 
-- **Players**: 1 to 4.
-- **Playtime**: about ten minutes.
-- **Class**: *Traveller* — a lantern, and the compass and journal every delve
-  now hands its players.
+| | |
+|---|---|
+| **Players** | 1–4 |
+| **Playtime** | ~10 minutes |
+| **Mode** | adventure, no combat |
+| **Languages** | English, 简体中文 (`zh-cn`) |
+| **Class** | one — Traveller, with a lantern |
+| **Licence** | CC BY-SA 4.0 |
 
 ![The jetty and the harbour hall at dusk](media/jetty.jpg)
 

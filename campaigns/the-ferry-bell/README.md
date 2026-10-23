@@ -4,11 +4,16 @@
 
 ![The shore, the jetty and the ferry house from the south-east](media/panorama.jpg)
 
-A wet afternoon on a sandy shore. The ferry lies over on the far side of the
-sound, and it only crosses when its bell is rung. The bell is in the ferry house
-at the end of the jetty, bolted in. Nell Garrow has kept it for thirty years,
-and she will not ring it alone: the last three times it rang, the dead came up
-out of the cove onto the spit across the water.
+A wet afternoon on a sandy shore. The ferry lies over on the far side of the sound, and it only crosses when its bell is rung. The bell is in the ferry house at the end of the jetty, bolted in. Nell Garrow has kept it for thirty years, and she will not ring it alone: the last three times it rang, the dead came up out of the cove onto the spit across the water.
+
+| | |
+|---|---|
+| **Players** | 1–4 |
+| **Playtime** | ~10 minutes |
+| **Mode** | adventure, one fight |
+| **Languages** | English, 简体中文 (`zh-cn`) |
+| **Class** | one — Traveller |
+| **Licence** | CC BY-SA 4.0 |
 
 One to four players, about ten minutes. You arrive as a **Traveller** with a
 boathook, an oilskin and a heel of bread — and, like everyone, a compass and a
