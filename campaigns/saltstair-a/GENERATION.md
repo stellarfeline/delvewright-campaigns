@@ -59,6 +59,8 @@ Every `DW` refusal `delvec` printed during authoring, with its repair. Refusals 
 | 11 | step 9, `detail node/warehouse` (the whole's battery) | DW0836 | `edge/flight-4-shore-street`: built climb −1 where the plan says 0 — feet at y 69 in `node/flight-4`, 68 in `node/shore-street` | flight 4 re-authored by a fresh agent (attempt 2), the refusal in its handout |
 | 12 | same run | DW0833 | `fact/shore-walk-plane` measures 69 in the built world; the brief asks 68 (flight 4 stands on `datum/shore`) | same repair |
 | 13 | same run | DW0836 | `edge/lower-street-flight-4`: built climb −3 where the plan says −4 — feet at y 72 and y 69 | same repair |
+| 14 | step 9, flight 4's repair author, `detail node/flight-4` | DW0885 | once the battery passed, flight 4's east and west kerb sides stand in open air the party can be in, and the piece declares no `shown_faces` | the author declared `shown_faces: ["east", "west"]` — finished stone kerb faces meant to be seen |
+| 15 | step 9, `detail node/flight-4` (attempt 2) | DW0885 ×8 | the same for flight 1 (east, west), the upper street (west), flight 2 (east, west), flight 3 (east, west), the shore street (east): kerb sides in the open hillside air, no `shown_faces`; the `ocean` horizon offers no ground above y 62 to bury them | each place re-authored by a fresh agent with the refusal in its handout |
 
 ## Detail
 
@@ -85,3 +87,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/ropewalk` | 1 | `ropewalk/handout-1.md` | 145 751 | 361 s | none (first authoring) | 2 — DW0210 alone, 39 dark cells (from 48), none in this frame; the open street side is a recorded departure (Findings) |
 | `node/harbourmaster` | 1 | `harbourmaster/handout-1.md` | 146 606 | 390 s | none (first authoring) | 2 — DW0210 alone, 35 dark cells (from 39), all in the warehouse's stand-in |
 | `node/warehouse` | 1 | `warehouse/handout-1.md` | 154 414 | 423 s | none (first authoring) | 3 — the place passes (light lit over 113 cells); DW0210 cleared for the whole; the battery then refuses flight 4 (refusals 11–13) |
+| `node/flight-4` | 2 | `flight-4/handout-2.md` | 87 876 | 204 s | DW0836 ×2, DW0833 (refusals 11–13) | 3 — the place's refusals cleared (foot at 68, four risers, rise from the handed value); DW0885 ×8 stands on five other places (refusal 15) |

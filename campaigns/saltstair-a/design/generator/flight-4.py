@@ -88,31 +88,31 @@ def build(alloc):
         for k, v in dict(x0=x0, y0=y0, z0=z0, x1=x1, y1=y1, z1=z1, rise=s["rise"]).items():
             params[f"handed/seam/{stem}/{k}"] = v
     # local controls, rebound per slice by `bind`
-    params.update({"top": 0, "ring": 0, "zone": 0, "post": 0, "post_w": 0, "post_e": 0})
+    params.update({"top": 0, "ring": 0, "kh": 1, "zone": 0, "post": 0, "post_w": 0, "post_e": 0})
 
     datum = P("handed/datum-y")
     head_feet = seam(NORTH, "y0")          # walk plane at the head (lower street)
-    # Tread block course per slice, north (z0) to south. The head pair is
-    # pinned to the lower street's walk plane, the foot pair to the datum.
-    top_head = sub(head_feet, I(1))          # top step, in the lower street's opening layer
-    top_upper = sub(head_feet, I(2))         # upper landing and its riser
-    top_lower = add(datum, I(1))             # lower landing and its riser
-    top_foot = datum                         # first step off the shore street
-    #            top        ring       zone tread     post_w post_e
+    # Four treads climb from the shore street's walk plane (the datum) to the
+    # lower street's (the north seam's sill): the foot slice is paved at grade,
+    # one stair per slice above it, and the head slice is a landing level with
+    # the top stair. `top` is the tread's course, `ring` the course of the
+    # terrain the kerb stands on, `kh` the kerb's courses.
+    top_head = sub(head_feet, I(1))        # top stair and the landing beside the lower street
+    #  top                     ring                  kh zone tread     post_w post_e
     slices = [
-        (top_head,  top_head,  0, "step",    1, 1),
-        (top_upper, top_upper, 1, "landing", 0, 0),
-        (top_upper, top_upper, 2, "step",    0, 0),
-        (top_lower, top_lower, 3, "landing", 0, 0),
-        (top_lower, top_lower, 4, "step",    1, 0),
-        (top_foot,  top_foot,  5, "step",    0, 0),
-        (top_foot,  datum,     6, "landing", 0, 1),
+        (top_head,             top_head,             1, 0, "landing", 1, 1),
+        (top_head,             sub(head_feet, I(2)), 2, 1, "step",    0, 0),
+        (sub(head_feet, I(2)), sub(head_feet, I(2)), 1, 2, "step",    0, 0),
+        (add(datum, I(1)),     add(datum, I(1)),     1, 2, "step",    0, 0),
+        (datum,                add(datum, I(1)),     1, 2, "step",    1, 0),
+        (sub(datum, I(1)),     datum,                1, 3, "landing", 0, 0),
+        (sub(datum, I(1)),     datum,                1, 6, "landing", 0, 1),
     ]
     children = []
-    for top, ring, zone, tread, pw, pe in slices:
+    for top, ring, kh, zone, tread, pw, pe in slices:
         children.append({
             "op": "bind",
-            "params": {"top": top, "ring": ring, "zone": I(zone), "post_w": I(pw), "post_e": I(pe)},
+            "params": {"top": top, "ring": ring, "kh": I(kh), "zone": I(zone), "post_w": I(pw), "post_e": I(pe)},
             "palette": {"tread": {"role": tread}},
             "body": call("slice"),
         })
@@ -132,10 +132,10 @@ def build(alloc):
         # courses and a lantern on top
         "kerb": [
             {"weight": 1, "when": eq("post", 1), "body": split("y", [
-                ab(add(P("ring"), I(1))), ab(I(1)), ab(I(1)), ab(I(1)), REL], [
+                ab(add(P("ring"), I(1))), ab(P("kh")), ab(I(1)), ab(I(1)), REL], [
                 {"op": "skip"}, fill("kerb"), fill("post"), fill("lamp"), claim("coping")])},
             {"weight": 1, "when": {"cond": "otherwise"}, "body": split("y", [
-                ab(add(P("ring"), I(1))), ab(I(1)), REL], [
+                ab(add(P("ring"), I(1))), ab(P("kh")), REL], [
                 {"op": "skip"}, fill("kerb"), claim("coping")])},
         ],
         "lane": [
@@ -143,11 +143,6 @@ def build(alloc):
             {"weight": 1, "when": eq("zone", 6), "body": split("y", [
                 ab(seam(SOUTH, "y0")), ab(span(SOUTH, "y")), REL], [
                 {"op": "skip"}, claim("shore-street-way"), {"op": "void"}])},
-            # the first step off the shore street: its tread is foot space too,
-            # since the opening's lowest course meets the step, not the air over it
-            {"weight": 1, "when": eq("zone", 5), "body": split("y", [
-                ab(P("top")), REL], [
-                fill("ground"), claim("foot", split("y", [ab(I(1)), REL], [fill("tread"), {"op": "void"}]))])},
             # every other slice: ground down to the terrain, one tread, air
             {"weight": 1, "when": {"cond": "otherwise"}, "body": split("y", [
                 ab(P("top")), ab(I(1)), REL], [
@@ -185,7 +180,7 @@ def build(alloc):
         "no_body": {"coping": {"reason": "the top of the kerb walls and their lantern posts, beside the treads; nobody walks the kerb"}},
         "edges": [
             {"a": "foot", "b": "exterior", "class": "walk", "via": "shore-street-way"},
-            {"a": "foot", "b": "head", "class": "stair", "rise": 3, "via": "flight"},
+            {"a": "foot", "b": "head", "class": "stair", "rise": seams[NORTH]["rise"], "via": "flight"},
             {"a": "head", "b": "exterior", "class": "walk", "via": "lower-street-way"},
         ],
     }
@@ -193,6 +188,9 @@ def build(alloc):
         "version": "1.9.0",
         "name": "saltstair-a-flight-4",
         "start": "place",
+        # the kerb walls and their lantern posts are the flight's finished sides,
+        # stood up beside the stepped turf (grammar.md §2f)
+        "shown_faces": ["east", "west"],
         "params": params,
         "palette": palette,
         "rules": rules,

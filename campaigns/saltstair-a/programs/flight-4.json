@@ -11,7 +11,7 @@
         "a": "foot",
         "b": "head",
         "class": "stair",
-        "rise": 3,
+        "rise": 4,
         "via": "flight"
       },
       {
@@ -77,6 +77,7 @@
     "handed/seam/lower-street-flight-4/y1": 8,
     "handed/seam/lower-street-flight-4/z0": 0,
     "handed/seam/lower-street-flight-4/z1": 0,
+    "kh": 1,
     "post": 0,
     "post_e": 0,
     "post_w": 0,
@@ -138,8 +139,8 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "param",
+                "name": "kh"
               },
               "size": "absolute"
             },
@@ -220,8 +221,8 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "param",
+                "name": "kh"
               },
               "size": "absolute"
             },
@@ -311,84 +312,6 @@
           "rhs": {
             "expr": "int",
             "value": 6
-          }
-        }
-      },
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "material": {
-                "role": "ground"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "axis": "y",
-                "children": [
-                  {
-                    "material": {
-                      "role": "tread"
-                    },
-                    "op": "fill"
-                  },
-                  {
-                    "op": "void"
-                  }
-                ],
-                "op": "split",
-                "sizes": [
-                  {
-                    "blocks": {
-                      "expr": "int",
-                      "value": 1
-                    },
-                    "size": "absolute"
-                  },
-                  {
-                    "size": "relative",
-                    "weight": {
-                      "expr": "int",
-                      "value": 1
-                    }
-                  }
-                ]
-              },
-              "op": "claim",
-              "region": "foot"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "top"
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1,
-        "when": {
-          "cond": "cmp",
-          "lhs": {
-            "expr": "param",
-            "name": "zone"
-          },
-          "op": "eq",
-          "rhs": {
-            "expr": "int",
-            "value": 5
           }
         }
       },
@@ -618,60 +541,68 @@
               "op": "bind",
               "palette": {
                 "tread": {
-                  "role": "step"
-                }
-              },
-              "params": {
-                "post_e": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "post_w": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "ring": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/lower-street-flight-4/y0"
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "top": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/lower-street-flight-4/y0"
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "zone": {
-                  "expr": "int",
-                  "value": 0
-                }
-              }
-            },
-            {
-              "body": {
-                "op": "call",
-                "symbol": "slice"
-              },
-              "op": "bind",
-              "palette": {
-                "tread": {
                   "role": "landing"
                 }
               },
               "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "post_e": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "post_w": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "ring": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-flight-4/y0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "top": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lower-street-flight-4/y0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "zone": {
+                  "expr": "int",
+                  "value": 0
+                }
+              }
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "slice"
+              },
+              "op": "bind",
+              "palette": {
+                "tread": {
+                  "role": "step"
+                }
+              },
+              "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 2
+                },
                 "post_e": {
                   "expr": "int",
                   "value": 0
@@ -701,7 +632,7 @@
                   "op": "sub",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 },
                 "zone": {
@@ -722,6 +653,10 @@
                 }
               },
               "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 1
+                },
                 "post_e": {
                   "expr": "int",
                   "value": 0
@@ -768,10 +703,14 @@
               "op": "bind",
               "palette": {
                 "tread": {
-                  "role": "landing"
+                  "role": "step"
                 }
               },
               "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 1
+                },
                 "post_e": {
                   "expr": "int",
                   "value": 0
@@ -799,6 +738,98 @@
                     "name": "handed/datum-y"
                   },
                   "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "zone": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "slice"
+              },
+              "op": "bind",
+              "palette": {
+                "tread": {
+                  "role": "step"
+                }
+              },
+              "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "post_e": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "post_w": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "ring": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "top": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "zone": {
+                  "expr": "int",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "slice"
+              },
+              "op": "bind",
+              "palette": {
+                "tread": {
+                  "role": "landing"
+                }
+              },
+              "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "post_e": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "post_w": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "ring": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "top": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "sub",
                   "rhs": {
                     "expr": "int",
                     "value": 1
@@ -818,94 +849,14 @@
               "op": "bind",
               "palette": {
                 "tread": {
-                  "role": "step"
-                }
-              },
-              "params": {
-                "post_e": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "post_w": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "ring": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "top": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "zone": {
-                  "expr": "int",
-                  "value": 4
-                }
-              }
-            },
-            {
-              "body": {
-                "op": "call",
-                "symbol": "slice"
-              },
-              "op": "bind",
-              "palette": {
-                "tread": {
-                  "role": "step"
-                }
-              },
-              "params": {
-                "post_e": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "post_w": {
-                  "expr": "int",
-                  "value": 0
-                },
-                "ring": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
-                },
-                "top": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
-                },
-                "zone": {
-                  "expr": "int",
-                  "value": 5
-                }
-              }
-            },
-            {
-              "body": {
-                "op": "call",
-                "symbol": "slice"
-              },
-              "op": "bind",
-              "palette": {
-                "tread": {
                   "role": "landing"
                 }
               },
               "params": {
+                "kh": {
+                  "expr": "int",
+                  "value": 1
+                },
                 "post_e": {
                   "expr": "int",
                   "value": 1
@@ -919,8 +870,16 @@
                   "name": "handed/datum-y"
                 },
                 "top": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "zone": {
                   "expr": "int",
@@ -1066,6 +1025,10 @@
       }
     ]
   },
+  "shown_faces": [
+    "east",
+    "west"
+  ],
   "start": "place",
   "version": "1.9.0"
 }
