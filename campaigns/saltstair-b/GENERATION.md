@@ -43,6 +43,9 @@ The junction is proven at the **first build after `node/lower-town`'s program dr
 | 6 | same run | `DW0877` | 0 of the front's 41 columns crossable | the same; the battery stops here, so `DW0210` is not yet measured, and step 8b's cameras wait for the first build that exits 0 |
 | 7 | `detail node/upper-town`, attempt 1 (the whole's battery) | `DW0837` | no body reaches `node/lower-town` | none in the upper town: its piece is written and every gate of its own green; the junction's order change, cleared by the lower town's piece |
 | 8 | same run | `DW0877` | 0 of the front's 41 columns crossable | the same |
+| 9 | `detail node/lower-town`, attempt 2 (the whole's battery) | `DW0885` | the upper town's piece: its north side (13 cells, first [63, 83, 95]) stands in open air, `shown_faces: ["up"]` | a fresh author for the upper town, handed the refusal |
+| 10 | same run | `DW0885` | its east side (20 cells, first [95, 69, 147]) | the same |
+| 11 | same run | `DW0885` | its west side (16 cells, first [53, 72, 150]) | the same |
 
 ## Detail
 
@@ -51,5 +54,9 @@ Handouts are regenerable files under `campaigns/saltstair-b/.out/handouts/` (git
 | Place | Attempt | Handout | Agent tokens | Duration | Refusal repaired | Repaired inside the attempt | `delvec detail` exit confirmed |
 |---|---|---|---|---|---|---|---|
 | `node/upper-town` | 1 | `upper-town/handout-1.md` | 266 554 | 20 min 23 s | none (first authoring) | `DW0990` (an eave over the plot edge), `DW0730` (a lava cauldron off the allowlist, now a magma-block forge), an empty `no_body` region over the ring | 3 — the piece written, the whole refused only at the junction (`DW0837`, `DW0877`, rows 7–8) |
+| `node/lower-town` | 1 | `lower-town/handout-1.md` | 58 439 | 30 s | none (first authoring) | — | not run: the author stopped before writing, reading this repository's `CLAUDE.md` ("without the constitution … ask before improvising") as binding on authoring, since `CLAUDE.local.md` is absent on this machine; no program written |
+| `node/lower-town` | 2 | `lower-town/handout-1.md` (relaunched; the prompt carried one added line naming the engine `CLAUDE.md` and stating `CLAUDE.local.md` absent and not binding on a place program) | 278 751 | 23 min 30 s | none (first authoring) | `DW0838` (lower ground in front of the contact, outside its y 76..77 span), `DW0344` (the stand-in's sea level, then the quay's water row) | 3 — the piece written; the whole's junction now holds (12 crossable columns, no `DW0877`/`DW0837`), and refuses `DW0885` ×3 on the upper town's piece (rows 9–11) |
 
 Departures the upper town's author recorded: doors are open 1 x 2 doorways under a timber lintel (the engine's walk treats a door block as solid, so no passable door exists); the weaver's cloth is on the ground floor (clearance 4 holds one floor); the chapel's and inn's outer walls stand on the frame's first layer and eaves are omitted where the frame or plot edge forbids them; the smithy's and merchant's roofs end in a flat top four wide at the stated course counts.
+
+Departures the lower town's author recorded: **the front lane is level at walk 76 across the whole width** (x 54..94 at z 151), not only over x 59..78 — lower ground in front of the contact was refused as an unallocated crossing (`DW0838`), because the contact's span is y 76..77; so where the fixed ground on the plane z 150 is under 76 (x 54..58, x 79..94) the front is a one-cell gap between two walk-76 edges rather than the drop onto lower ground that §5.2 describes. Roofs follow ceil((W - 1) / 2) under the frame's top course, which brings the rope walk's walls down to 2 courses (clearance 4 stated); the quay's ring row at the water is filled to walk 63 (`DW0344`) and no water is painted in the piece; doors are open 1 x 2 doorways in spruce frames.
