@@ -204,6 +204,7 @@ def build(alloc):
         "version": "1.9.0",
         "name": "saltstair-a-shore-street",
         "start": "place",
+        "shown_faces": ["east"],
         "params": params,
         "palette": palette,
         "rules": rules,
