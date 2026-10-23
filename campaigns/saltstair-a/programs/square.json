@@ -1,0 +1,1126 @@
+{
+  "contract": {
+    "edges": [
+      {
+        "a": "square",
+        "b": "exterior",
+        "class": "walk",
+        "via": "seam-square-flight-1"
+      },
+      {
+        "a": "square",
+        "b": "exterior",
+        "class": "walk",
+        "via": "seam-square-chapel"
+      },
+      {
+        "a": "square",
+        "b": "exterior",
+        "class": "walk",
+        "via": "seam-square-inn"
+      }
+    ],
+    "entry": "square",
+    "no_body": {
+      "parapet-top": {
+        "reason": "the coping of the parapet round the square's edge, over the drop and the hillside"
+      },
+      "post-top": {
+        "reason": "the top of a lantern on its kerb post"
+      }
+    },
+    "spaces": {
+      "square": {
+        "envelope": "open"
+      }
+    }
+  },
+  "name": "saltstair-square",
+  "palette": {
+    "kerb": "minecraft:stone_bricks",
+    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "post": "minecraft:chiseled_stone_bricks",
+    "setts": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 8
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 1
+      },
+      {
+        "block": "minecraft:andesite",
+        "weight": 1
+      }
+    ],
+    "wall": [
+      {
+        "block": "minecraft:stone_bricks",
+        "weight": 6
+      },
+      {
+        "block": "minecraft:mossy_stone_bricks",
+        "weight": 2
+      },
+      {
+        "block": "minecraft:cracked_stone_bricks",
+        "weight": 1
+      }
+    ]
+  },
+  "params": {
+    "door-side": 0,
+    "door-y0": 0,
+    "door-y1": 0,
+    "door-z0": 0,
+    "door-z1": 0,
+    "handed/datum-y": 1,
+    "handed/ground/bottom-y": 0,
+    "handed/seam/square-chapel/x0": 1,
+    "handed/seam/square-chapel/x1": 1,
+    "handed/seam/square-chapel/y0": 1,
+    "handed/seam/square-chapel/y1": 2,
+    "handed/seam/square-chapel/z0": 7,
+    "handed/seam/square-chapel/z1": 7,
+    "handed/seam/square-flight-1/x0": 7,
+    "handed/seam/square-flight-1/x1": 12,
+    "handed/seam/square-flight-1/y0": 1,
+    "handed/seam/square-flight-1/y1": 4,
+    "handed/seam/square-flight-1/z0": 15,
+    "handed/seam/square-flight-1/z1": 15,
+    "handed/seam/square-inn/x0": 18,
+    "handed/seam/square-inn/x1": 18,
+    "handed/seam/square-inn/y0": 1,
+    "handed/seam/square-inn/y1": 2,
+    "handed/seam/square-inn/z0": 7,
+    "handed/seam/square-inn/z1": 7
+  },
+  "rules": {
+    "core": [
+      {
+        "body": {
+          "body": {
+            "body": {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            },
+            "mark": {
+              "anchor": "spawn",
+              "at": "offset",
+              "facing": "south",
+              "x": {
+                "expr": "arith",
+                "lhs": {
+                  "dim": "x",
+                  "expr": "dim"
+                },
+                "op": "div",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "y": {
+                "expr": "int",
+                "value": 0
+              },
+              "z": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            "op": "mark"
+          },
+          "mark": {
+            "anchor": "node-square",
+            "at": "floor_center",
+            "facing": "south"
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "door-cells": [
+      {
+        "body": {
+          "body": {
+            "op": "void"
+          },
+          "op": "claim",
+          "region": "seam-square-chapel"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "door-side"
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 0
+          }
+        }
+      },
+      {
+        "body": {
+          "body": {
+            "op": "void"
+          },
+          "op": "claim",
+          "region": "seam-square-inn"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "door-side"
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "int",
+            "value": 1
+          }
+        }
+      }
+    ],
+    "door-layer": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            },
+            {
+              "op": "call",
+              "symbol": "doorway"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "door-z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "door-z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "door-z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "doorway": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            },
+            {
+              "op": "call",
+              "symbol": "door-cells"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "door-y0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "door-y1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "door-y0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "flight-mouth": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "seam-square-flight-1"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/square-flight-1/y0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-flight-1/y1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-flight-1/y0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "kerbed": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "material": {
+                    "role": "setts"
+                  },
+                  "op": "fill"
+                },
+                {
+                  "material": {
+                    "role": "kerb"
+                  },
+                  "op": "fill"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "material": {
+                "role": "kerb"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "middle": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "parapet"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "door-layer"
+              },
+              "op": "bind",
+              "params": {
+                "door-side": {
+                  "expr": "int",
+                  "value": 0
+                },
+                "door-y0": {
+                  "expr": "param",
+                  "name": "handed/seam/square-chapel/y0"
+                },
+                "door-y1": {
+                  "expr": "param",
+                  "name": "handed/seam/square-chapel/y1"
+                },
+                "door-z0": {
+                  "expr": "param",
+                  "name": "handed/seam/square-chapel/z0"
+                },
+                "door-z1": {
+                  "expr": "param",
+                  "name": "handed/seam/square-chapel/z1"
+                }
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "core"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "door-layer"
+              },
+              "op": "bind",
+              "params": {
+                "door-side": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "door-y0": {
+                  "expr": "param",
+                  "name": "handed/seam/square-inn/y0"
+                },
+                "door-y1": {
+                  "expr": "param",
+                  "name": "handed/seam/square-inn/y1"
+                },
+                "door-z0": {
+                  "expr": "param",
+                  "name": "handed/seam/square-inn/z0"
+                },
+                "door-z1": {
+                  "expr": "param",
+                  "name": "handed/seam/square-inn/z1"
+                }
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "parapet"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "north-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "parapet"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "op": "call",
+              "symbol": "parapet"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "op": "call",
+              "symbol": "parapet"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "parapet": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "wall"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "parapet-top"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "paving": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "axis": "z",
+              "children": [
+                {
+                  "op": "skip"
+                },
+                {
+                  "op": "call",
+                  "symbol": "kerbed"
+                },
+                {
+                  "op": "skip"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                }
+              ]
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "post": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "lamp"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "post-top"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "south-row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "parapet"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "op": "call",
+              "symbol": "flight-mouth"
+            },
+            {
+              "op": "call",
+              "symbol": "post"
+            },
+            {
+              "op": "call",
+              "symbol": "parapet"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/square-flight-1/x0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-flight-1/x1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-flight-1/x0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "square": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "paving"
+            },
+            {
+              "op": "call",
+              "symbol": "storey"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/ground/bottom-y"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/ground/bottom-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "storey": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "north-row"
+            },
+            {
+              "op": "call",
+              "symbol": "middle"
+            },
+            {
+              "op": "call",
+              "symbol": "south-row"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "shown_faces": [
+    "north",
+    "south",
+    "east",
+    "west"
+  ],
+  "start": "square",
+  "version": "1.9.0"
+}

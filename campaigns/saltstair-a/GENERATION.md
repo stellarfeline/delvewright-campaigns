@@ -43,6 +43,7 @@ Every `DW` refusal `delvec` printed during authoring, with its repair.
 | — | step 7, analyze | none | exit 0 | — |
 | 7 | step 8, build | DW0210 | 144 of 1698 reachable cells dark under the 19 stand-ins, darkest at [54, 84, 98] (the chapel's stand-in) | by ruling, carried into step 9: each house is lit as it is detailed; no `lighting` declaration |
 | — | step 8b, validate | DW0900 (notice, not a refusal) | the six cameras in `design/cameras.json` name rows no `design.json` holds — by ruling there is none; each names the §6 view it answers | none owed; `delvec cameras` refuses to draw without `design.json` (DW0721 on a scratch copy), so the frames are drawn with `delvec frames` |
+| 8 | step 9, `detail node/square` | DW0721 | `design/cameras.json`: camera `view-from-the-sea` answers `view/from-the-sea`, which is not a row of design.json (rows: none) — refused on every `detail` run while the record stands without a `design.json` | open: the rulings to keep `cameras.json` and to add no `design.json` cannot both hold under `detail`; asked of the owner |
 
 ## Detail
 
@@ -50,3 +51,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 
 | Place | Attempt | Handout | Agent tokens | Duration | Codes repaired | `delvec detail` exit |
 |---|---|---|---|---|---|---|
+| `node/square` | 1 | `square/handout-1.md` | 141 282 | 260 s | none (first authoring) | 3 — the place passes (3 faces for 3 seams, 2 of 2 owed names, light `lit` over 316 cells); the run refuses `DW0721` on `design/cameras.json` (six cameras answer rows of a `design.json` the campaign does not have). On a scratch copy without `cameras.json` the same run exits 2 on `DW0210` alone (the 144 dark stand-in cells) |
