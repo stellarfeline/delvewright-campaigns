@@ -90,3 +90,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/flight-4` | 2 | `flight-4/handout-2.md` | 87 876 | 204 s | DW0836 ×2, DW0833 (refusals 11–13) | 3 — the place's refusals cleared (foot at 68, four risers, rise from the handed value); DW0885 ×8 stands on five other places (refusal 15) |
 | `node/flight-1` | 2 | `flight-1/handout-2.md` | 70 712 | 58 s | DW0885 ×2 (refusal 15) | 3 — its own refusals cleared; DW0885 ×6 stands on four other places |
 | `node/upper-street` | 2 | `upper-street/handout-2.md` | 68 730 | 56 s | DW0885 ×1 (refusal 15) | 3 — its own refusal cleared; DW0885 ×5 stands on three other places. The author edited the JSON and not its generator script, which no longer emits it exactly |
+| `node/flight-2` | 2 | `flight-2/handout-2.md` | 69 700 | 68 s | DW0885 ×2 (refusal 15) | 3 — its own refusals cleared; DW0885 ×3 stands on two other places |

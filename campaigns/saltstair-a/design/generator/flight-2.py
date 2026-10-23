@@ -227,6 +227,11 @@ program = {
             {"a": "head", "b": "exterior", "class": "walk", "via": "seam-north"},
         ],
     },
+    # The kerb walls and their lantern posts stand in the ring columns on the
+    # east and west, a stone-brick parapet above the stepped turf on either
+    # side of the flight: finished exterior masonry, meant to be seen from the
+    # hillside beside the street (grammar.md section 2f; DW0885).
+    "shown_faces": ["east", "west"],
     "rules": rules,
 }
 
