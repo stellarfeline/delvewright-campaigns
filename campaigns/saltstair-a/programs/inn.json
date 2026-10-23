@@ -1,0 +1,3678 @@
+{
+  "contract": {
+    "edges": [
+      {
+        "a": "exterior",
+        "b": "hall",
+        "class": "walk",
+        "via": "west-door"
+      }
+    ],
+    "entry": "hall",
+    "no_body": {
+      "roof": {
+        "reason": "the roof and the loft under it, which nobody walks"
+      }
+    },
+    "no_body_majority_ack": "a house that draws its own outside owns its roof, and a pitched roof is more standable surface than the taproom under it; nobody walks it",
+    "spaces": {
+      "hall": {
+        "envelope": "enclosed"
+      }
+    }
+  },
+  "name": "saltstair-a-inn",
+  "palette": {
+    "beam": {
+      "local": "minecraft:stripped_spruce_log[axis=x]"
+    },
+    "beam_ew": "minecraft:stripped_spruce_log[axis=x]",
+    "beam_ns": "minecraft:stripped_spruce_log[axis=z]",
+    "ceiling": "minecraft:spruce_planks",
+    "chair_e": "minecraft:spruce_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "chair_w": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+    "cobble": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 8
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 1
+      }
+    ],
+    "counter": "minecraft:stripped_spruce_wood[axis=y]",
+    "earth": "minecraft:dirt",
+    "floor": "minecraft:spruce_planks",
+    "infill": "minecraft:calcite",
+    "lantern_hung": "minecraft:lantern[hanging=true,waterlogged=false]",
+    "pane": {
+      "local": "minecraft:glass_pane[east=true,north=false,south=false,waterlogged=false,west=true]"
+    },
+    "post": "minecraft:spruce_log[axis=y]",
+    "quoin": "minecraft:stone_bricks",
+    "ridge": "minecraft:deepslate_tiles",
+    "roof_n": "minecraft:deepslate_tile_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
+    "roof_s": "minecraft:deepslate_tile_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "rug": "minecraft:red_carpet",
+    "table": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "table_top": "minecraft:spruce_pressure_plate[powered=false]"
+  },
+  "params": {
+    "handed/datum-y": 1,
+    "handed/roof/eaves": 1,
+    "handed/roof/lid-y": 5,
+    "handed/seam/square-inn/y0": 1,
+    "handed/seam/square-inn/y1": 2,
+    "handed/seam/square-inn/z0": 7,
+    "handed/seam/square-inn/z1": 7
+  },
+  "rules": {
+    "band": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "run"
+            },
+            {
+              "op": "call",
+              "symbol": "room"
+            },
+            {
+              "op": "call",
+              "symbol": "run"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "corner": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "quoin"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "course": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "roof_n"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "gable_row"
+            },
+            {
+              "material": {
+                "role": "roof_s"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "door": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "west-door"
+            },
+            {
+              "material": {
+                "role": "lantern_hung"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam_ns"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/y1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/y0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "expr": "param",
+            "name": "handed/seam/square-inn/y0"
+          },
+          "op": "eq",
+          "rhs": {
+            "expr": "param",
+            "name": "handed/datum-y"
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "west-door"
+            },
+            {
+              "material": {
+                "role": "lantern_hung"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam_ns"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/square-inn/y0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/y1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/y0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "east_wall": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "corner"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "run"
+              },
+              "op": "reorient",
+              "orient": {
+                "x": "local_z",
+                "z": "local_x"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "corner"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "gable": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "infill"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "infill"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "gable_row": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "gable"
+            },
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "gable"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "gable_stack": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "slope"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ground": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "ground_row"
+            },
+            {
+              "op": "skip"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ground_col": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "earth"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "ground_row": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "ground_col"
+            },
+            {
+              "op": "skip"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "inn": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "ground"
+            },
+            {
+              "op": "call",
+              "symbol": "storey"
+            },
+            {
+              "op": "call",
+              "symbol": "roof"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/datum-y"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/roof/lid-y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "lid": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "roof_n"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "lid_mid"
+            },
+            {
+              "material": {
+                "role": "roof_s"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "lid_mid": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "beam_ns"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "call",
+              "symbol": "lid_row"
+            },
+            {
+              "material": {
+                "role": "beam_ns"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "lid_row": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "beam_ew"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ceiling"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam_ew"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "light": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "pane"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "mullion": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "roof": [
+      {
+        "body": {
+          "body": {
+            "axis": "y",
+            "children": [
+              {
+                "op": "call",
+                "symbol": "lid"
+              },
+              {
+                "op": "call",
+                "symbol": "gable_stack"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "op": "claim",
+          "region": "roof"
+        },
+        "weight": 1
+      }
+    ],
+    "room": [
+      {
+        "body": {
+          "body": {
+            "body": {
+              "axis": "x",
+              "children": [
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 5
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_w"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_w"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "table"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "material": {
+                            "role": "table_top"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 3
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "table"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "material": {
+                            "role": "table_top"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_e"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_e"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 3
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_w"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_w"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "table"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "material": {
+                            "role": "table_top"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 3
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "table"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "material": {
+                            "role": "table_top"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 3
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_e"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "chair_e"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 3
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "rug"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 5
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "axis": "z",
+                  "children": [
+                    {
+                      "op": "void"
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 2
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        },
+                        {
+                          "material": {
+                            "role": "lantern_hung"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 2
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "axis": "y",
+                      "children": [
+                        {
+                          "material": {
+                            "role": "counter"
+                          },
+                          "op": "fill"
+                        },
+                        {
+                          "op": "void"
+                        }
+                      ],
+                      "op": "split",
+                      "sizes": [
+                        {
+                          "blocks": {
+                            "expr": "int",
+                            "value": 1
+                          },
+                          "size": "absolute"
+                        },
+                        {
+                          "size": "relative",
+                          "weight": {
+                            "expr": "int",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "op": "void"
+                    }
+                  ],
+                  "op": "split",
+                  "sizes": [
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "blocks": {
+                        "expr": "int",
+                        "value": 1
+                      },
+                      "size": "absolute"
+                    },
+                    {
+                      "size": "relative",
+                      "weight": {
+                        "expr": "int",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                {
+                  "op": "void"
+                }
+              ],
+              "op": "split",
+              "sizes": [
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "blocks": {
+                    "expr": "int",
+                    "value": 1
+                  },
+                  "size": "absolute"
+                },
+                {
+                  "size": "relative",
+                  "weight": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              ]
+            },
+            "mark": {
+              "anchor": "node-inn",
+              "at": "offset",
+              "facing": "west",
+              "x": {
+                "expr": "int",
+                "value": 9
+              },
+              "y": {
+                "expr": "int",
+                "value": 0
+              },
+              "z": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            "op": "mark"
+          },
+          "op": "claim",
+          "region": "hall"
+        },
+        "weight": 1
+      }
+    ],
+    "run": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "solid"
+            },
+            {
+              "op": "call",
+              "symbol": "window"
+            },
+            {
+              "op": "call",
+              "symbol": "solid"
+            },
+            {
+              "op": "call",
+              "symbol": "window"
+            },
+            {
+              "op": "call",
+              "symbol": "solid"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 2
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "cmp",
+          "lhs": {
+            "dim": "x",
+            "expr": "dim"
+          },
+          "op": "ge",
+          "rhs": {
+            "expr": "int",
+            "value": 9
+          }
+        }
+      },
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "solid"
+            },
+            {
+              "op": "call",
+              "symbol": "window"
+            },
+            {
+              "op": "call",
+              "symbol": "solid"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "lt",
+              "rhs": {
+                "expr": "int",
+                "value": 9
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "call",
+          "symbol": "solid"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "slope": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "course"
+            },
+            {
+              "op": "call",
+              "symbol": "slope_in"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "roof_n"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ridge"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "roof_s"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "ge",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            }
+          ]
+        }
+      },
+      {
+        "body": {
+          "op": "void"
+        },
+        "weight": 1,
+        "when": {
+          "cond": "otherwise"
+        }
+      }
+    ],
+    "slope_in": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "op": "call",
+              "symbol": "slope"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "solid": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "infill"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "storey": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "west_wall"
+            },
+            {
+              "op": "call",
+              "symbol": "band"
+            },
+            {
+              "op": "call",
+              "symbol": "east_wall"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "west_wall": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "skip"
+            },
+            {
+              "op": "call",
+              "symbol": "corner"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "run"
+              },
+              "op": "reorient",
+              "orient": {
+                "x": "local_z",
+                "z": "local_x"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "door"
+            },
+            {
+              "body": {
+                "op": "call",
+                "symbol": "run"
+              },
+              "op": "reorient",
+              "orient": {
+                "x": "local_z",
+                "z": "local_x"
+              }
+            },
+            {
+              "op": "call",
+              "symbol": "corner"
+            },
+            {
+              "op": "skip"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/z0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/roof/eaves"
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/z1"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-inn/z0"
+                  }
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/roof/eaves"
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "window": [
+      {
+        "body": {
+          "axis": "x",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "light"
+            },
+            {
+              "op": "call",
+              "symbol": "mullion"
+            },
+            {
+              "op": "call",
+              "symbol": "light"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "shown_faces": [
+    "north",
+    "south",
+    "east",
+    "west",
+    "up"
+  ],
+  "start": "inn",
+  "version": "1.9.0"
+}

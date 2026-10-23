@@ -71,3 +71,4 @@ One row per attempt. Handouts are regenerable files under `campaigns/saltstair-a
 | `node/flight-5` | 1 | `flight-5/handout-1.md` | 145 697 | 374 s | none (first authoring) | 2 — DW0210 alone, 144 dark cells, none in this frame |
 | `node/quay` | 1 | `quay/handout-1.md` | 154 943 | 344 s | none (first authoring) | 2 — DW0210 alone, still 144 dark cells, none in this frame; the author read the engine CLAUDE.md, outside its handout's reading list |
 | `node/chapel` | 1 | `chapel/handout-1.md` | 156 030 | 470 s | none (first authoring) | 2 — DW0210 alone, 124 dark cells (from 144), none in this frame; the author met DW0730 on candles (refusal 9) |
+| `node/inn` | 1 | `inn/handout-1.md` | 165 943 | 544 s | none (first authoring) | 2 — DW0210 alone, 83 dark cells (from 124), none in this frame |
