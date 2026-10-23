@@ -297,7 +297,7 @@ def yard(a, as_found):
         ("spawn", (4, W, 3), "south", "entry"),
         ("node-yard", (6, W, 8), "south"),
     ]
-    return program("two-ways-off-the-map-yard", p, dict(BASE), contract, marks, ["east", "north", "west"])
+    return program("two-ways-off-the-map-yard", p, dict(BASE), contract, marks, ["east", "north", "south", "up", "west"])
 
 
 # The wall-walk's platforms, west to east: (x0, x1, walk rise over the grade).
@@ -390,7 +390,7 @@ def course(a, sixth):
         marks.append((f"land-{k}", (dx, W + dr, 4), "east"))
     hx0, hx1, hr = plats[4]
     marks.append(("high-platform", ((hx0 + hx1) // 2, W + hr, 4), "east"))
-    return program("two-ways-off-the-map-course", p, dict(BASE), contract, marks, ["east", "north", "south", "west"])
+    return program("two-ways-off-the-map-course", p, dict(BASE), contract, marks, ["east", "north", "south", "up", "west"])
 
 
 def jetty(a, as_found):
@@ -448,7 +448,7 @@ def jetty(a, as_found):
     p.claim_box((0, W, 0), (sx - 1, p.sy - 1, sz - 1), "rail-top", air_only=True)
     edges = [{"a": "deck", "b": "exterior", "class": "walk", "via": "jetty-foot"}]
     if not as_found:
-        edges.append({"a": "deck", "b": "landing", "class": "stair", "rise": -5, "via": "water-stair"})
+        edges.append({"a": "landing", "b": "deck", "class": "stair", "rise": 5, "via": "water-stair"})
     contract = {
         "edges": edges,
         "entry": "deck",
@@ -462,7 +462,7 @@ def jetty(a, as_found):
         ("node-jetty", (3, W, 3), "east"),
         ("jetty-head", (sx - 4, W, 3), "east"),
     ]
-    return program("two-ways-off-the-map-jetty", p, BASE_JETTY, contract, marks, ["east", "north", "south", "west"])
+    return program("two-ways-off-the-map-jetty", p, BASE_JETTY, contract, marks, ["east", "north", "south", "up", "west"])
 
 
 BASE_JETTY = dict(BASE)
