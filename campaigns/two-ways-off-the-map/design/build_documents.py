@@ -145,7 +145,7 @@ def quests():
                 "objectives": [{
                     "anchor": "anchor/high-platform", "radius": 1,
                     "happening": {"subject": "anchor/high-platform", "text": "The visitor lands on the high platform under the lid.", "verb": "arrives"},
-                    "hint": "Go out through the yard's gate onto the wall-walk. Run and leap each gap to the high platform under the stone lid.",
+                    "hint": "Through the yard gate, run and leap each gap to the high platform.",
                     "id": "obj/cross-the-wall-walk",
                     "title": "Leap to the high platform under the lid", "type": "reach-anchor",
                 }],

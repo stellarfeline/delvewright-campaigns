@@ -1,0 +1,202 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 15,
+      "undecided": 0,
+      "detail": "15 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 15,
+      "undecided": 0,
+      "detail": "15 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 15,
+      "undecided": 0,
+      "detail": "15 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 234,
+      "undecided": 0,
+      "detail": "234 fill(s) examined, 117 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "fluid-contained",
+      "state": "pass",
+      "bound": 1160,
+      "undecided": 0,
+      "detail": "1160 fluid cell(s), every one a source with nothing open beside or below it; 477 run direction(s) leave the piece (from 0,1,0, 0,1,0, 0,1,0 and others) — what is beyond a face is not in these bytes, so this is counted and not judged. The placement decides it: `DW0318` refuses this water if the piece is placed against nothing under a void horizon"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 2898,
+      "undecided": 0,
+      "detail": "1658 filled cell(s) of 2898 in the region"
+    },
+    {
+      "id": "contract-well-formed",
+      "state": "pass",
+      "bound": 6,
+      "undecided": 0,
+      "detail": "2 space(s), 2 out-of-walk region(s) and 2 edge(s) hold together: no overlap, one floor each, every opening on the boundary it claims"
+    },
+    {
+      "id": "contract-coverage",
+      "state": "pass",
+      "bound": 72,
+      "undecided": 0,
+      "detail": "every one of 72 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
+    },
+    {
+      "id": "contract-edge-proof",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 interior edge(s) proved, each against its class and its declared rise"
+    },
+    {
+      "id": "contract-no-body",
+      "state": "pass",
+      "bound": 2,
+      "undecided": 0,
+      "detail": "2 out-of-walk region(s), every standable cell of every one earning a computed kind: 3 cell(s) facade"
+    },
+    {
+      "id": "contract-reachability",
+      "state": "pass",
+      "bound": 69,
+      "undecided": 0,
+      "detail": "every one of 69 standable cell(s) in declared space is reached from \"deck\" through declared edges only"
+    },
+    {
+      "id": "contract-anchors",
+      "state": "pass",
+      "bound": 2,
+      "undecided": 0,
+      "detail": "2 anchor(s), every one landing in a contract element: 2 in a space"
+    },
+    {
+      "id": "contract-exterior-faces",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 exterior edge(s) export 1 face(s): west walk"
+    },
+    {
+      "id": "contract-no-body-majority",
+      "state": "pass",
+      "bound": 72,
+      "undecided": 0,
+      "detail": "3 of 72 standable cell(s) are out of walk — the piece is mostly play space"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 1658,
+    "region_cells": 2898,
+    "distinct_states": 15,
+    "standable_cells": 72,
+    "footprint_area": 161,
+    "footprint_perimeter": 60,
+    "silhouette_complexity": 1.182165609358651,
+    "top_blocks": [
+      [
+        "minecraft:water[level=0]",
+        0.6996381182147166
+      ],
+      [
+        "minecraft:stripped_spruce_log[axis=y]",
+        0.07237635705669482
+      ],
+      [
+        "minecraft:spruce_planks",
+        0.07056694813027745
+      ],
+      [
+        "minecraft:gravel",
+        0.06634499396863691
+      ],
+      [
+        "minecraft:stone",
+        0.031363088057901084
+      ]
+    ],
+    "stairs": 0,
+    "fluid_cells": 1160,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 477,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 72,
+      "sheltered": 0,
+      "entry_cells": 3,
+      "reachable": 70,
+      "reachable_share": 0.9722222222222222,
+      "unreachable_sheltered": 0,
+      "unreachable_open": 2,
+      "pockets": 2,
+      "largest_pockets": [
+        {
+          "cells": 1,
+          "sheltered": 0,
+          "min": [
+            21,
+            16,
+            1
+          ],
+          "max": [
+            21,
+            16,
+            1
+          ]
+        },
+        {
+          "cells": 1,
+          "sheltered": 0,
+          "min": [
+            21,
+            16,
+            5
+          ],
+          "max": [
+            21,
+            16,
+            5
+          ]
+        }
+      ]
+    }
+  },
+  "anchors": {
+    "anchor/jetty-head": [
+      19,
+      14,
+      3
+    ],
+    "anchor/node-jetty": [
+      3,
+      14,
+      3
+    ]
+  },
+  "findings": [
+    "a body of fluid reaches this piece's own outer face in 477 run direction(s) (from 0,1,0, 0,1,0, 0,1,0) — what is beyond a face is not in these bytes, so `fluid-contained` counted them and judged nothing. Whatever this piece is placed against decides where that water goes, and the compiler holds it to that: `DW0318` refuses a build whose fluid ends up outside every placed piece under a void horizon"
+  ],
+  "enumeration": [
+    "envelope: space \"deck\" is declared `open` — no boundary claim, 239 cell(s)",
+    "envelope: space \"landing\" is declared `open` — no boundary claim, 6 cell(s)",
+    "no_body \"plank-top\": facade — 1 standable cell(s), every one reached by the air outside the piece",
+    "no_body \"rail-top\": facade — 2 standable cell(s), every one reached by the air outside the piece",
+    "exterior face: walk on the west side, via space \"deck\", 9 cell(s)",
+    "gate `contract-closure` is not emitted over this piece: 0 of 2 space(s) declare an envelope closure examines; every space is open"
+  ]
+}
