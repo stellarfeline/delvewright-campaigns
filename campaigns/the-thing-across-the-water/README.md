@@ -1,6 +1,6 @@
 # The Thing Across the Water
 
-> **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.13.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.56.0 or newer** — last verified with delvec 1.14.0 on Minecraft Java 1.21.11.
 
 You came down the coast road at dusk to a grey bay: a stone jetty running out into the water, a harbour hall at its foot with its wide door standing open, and, out in the bay, a sea-stack of bare rock that nobody looks at for long.
 
