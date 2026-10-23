@@ -1,0 +1,127 @@
+{
+  "campaign_id": "the-latch",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-yard",
+          "text": "The neighbour comes into Wenna's yard.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-latch",
+        "objectives": [
+          {
+            "anchor": "anchor/latch",
+            "happening": {
+              "subject": "anchor/seam-garden-door",
+              "text": "The neighbour pulls the latch lever, and the bolt of the grille draws back.",
+              "verb": "opens"
+            },
+            "hint": "Through the yard gate, the kitchen and the oak door. The latch lever is on the back room's floor, by the hay.",
+            "id": "obj/lift-the-latch",
+            "prop": {
+              "block": "minecraft:lever[face=floor,facing=north,powered=false]"
+            },
+            "title": "Lift the latch in the back room",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/lift-the-latch": [
+            {
+              "anchor": "anchor/seam-garden-door",
+              "happening": {
+                "subject": "anchor/seam-garden-door",
+                "text": "The iron grille to the garden swings open.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "at": {
+                "anchor": "anchor/latch",
+                "at": "anchor"
+              },
+              "sound": "minecraft:block.iron_door.open",
+              "type": "play-sound"
+            },
+            {
+              "style": "chat",
+              "text": "The latch lifts with a clank, and the iron grille to the garden swings open.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/seam-garden-door",
+          "text": "The grille stands open.",
+          "verb": "learns"
+        },
+        "id": "quest/the-garden",
+        "objectives": [
+          {
+            "anchor": "anchor/node-garden",
+            "happening": {
+              "subject": "anchor/node-garden",
+              "text": "The neighbour walks out into the old garden.",
+              "verb": "arrives"
+            },
+            "hint": "Go out through the grille.",
+            "id": "obj/step-out",
+            "radius": 2,
+            "title": "Walk out into the garden",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The garden is open.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-garden",
+              "text": "The old garden is open.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {},
+        "trigger": {
+          "quest": "quest/the-latch",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-yard",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "Wenna's yard. Her note said the latch for the garden is in the back room, past the kitchen.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-yard",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.65.0",
+  "stage": "quests"
+}

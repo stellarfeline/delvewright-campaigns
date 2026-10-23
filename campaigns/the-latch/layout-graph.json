@@ -1,0 +1,80 @@
+{
+  "campaign_id": "the-latch",
+  "content": {
+    "beats": [
+      {
+        "node": "node/cottage",
+        "objective": "obj/lift-the-latch",
+        "quest": "quest/the-latch"
+      },
+      {
+        "node": "node/garden",
+        "objective": "obj/step-out",
+        "quest": "quest/the-garden"
+      }
+    ],
+    "critical_path": [
+      "node/yard",
+      "node/cottage",
+      "node/garden"
+    ],
+    "edges": [
+      {
+        "a": "node/yard",
+        "b": "node/cottage",
+        "class": "walk",
+        "id": "edge/front-door"
+      },
+      {
+        "a": "node/cottage",
+        "b": "node/cellar",
+        "class": "stair",
+        "id": "edge/cellar-stair"
+      },
+      {
+        "a": "node/cottage",
+        "b": "node/garden",
+        "class": "walk",
+        "gating": {
+          "learned": "seen",
+          "quest": "quest/the-latch"
+        },
+        "id": "edge/garden-door"
+      }
+    ],
+    "entry": "node/yard",
+    "goal": "node/garden",
+    "nodes": [
+      {
+        "id": "node/yard",
+        "intent": "entrance",
+        "note": "Wenna's yard, hedged all round, open to the sky: a wooden gate in a hedge across it on the path to the cottage door."
+      },
+      {
+        "id": "node/cottage",
+        "intent": "hub",
+        "note": "The cottage: two rooms, the kitchen the front door opens into and the back room behind an oak door; oak trapdoors in the back room's floor over the cellar stair; the iron grille to the garden in the back room's north wall, and the latch lever by the east wall.",
+        "stations": [
+          {
+            "anchor": "anchor/latch",
+            "kind": "point",
+            "note": "The latch lever on the back room's floor, by its east wall, its rod run under the floor to the grille."
+          }
+        ]
+      },
+      {
+        "id": "node/cellar",
+        "intent": "cache",
+        "note": "The cellar under the cottage, down a short stair under the trapdoors in the back room's floor: barrels and a shelf.",
+        "reached": true
+      },
+      {
+        "id": "node/garden",
+        "intent": "goal-chamber",
+        "note": "The old garden behind the cottage, hedged and open to the sky, with an iron door in its far hedge to the lane that stays shut."
+      }
+    ]
+  },
+  "dsl_version": "0.65.0",
+  "stage": "layout-graph"
+}
