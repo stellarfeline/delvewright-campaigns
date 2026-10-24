@@ -279,7 +279,11 @@ def cottage(a):
     p.put(g0, g0, "garden-door")
     p.put(g1, g1, "garden-door-top")
     p.claim_box(g0, g1, "seam-garden-door")
-    # The oak trapdoors over the cellar stair, flush with the floor.
+    # The oak trapdoors over the cellar stair, flush with the floor, their
+    # hinges on the hole's west side: open, each panel hangs against the west
+    # face, along the climb, and a body comes up the stair past it and steps
+    # off the top tread east onto the floor (docs/reference/doors-by-hand.md
+    # in the engine, *A trapdoor over a stair*).
     cs = p.seam("edge/cellar-stair")
     (c0, c1) = cs["cells"]
     p.put(c0, c1, "trapdoor")
@@ -306,7 +310,7 @@ def cottage(a):
         "lid": "minecraft:dark_oak_planks",
         "smoker": "minecraft:cauldron",
         "table": "minecraft:crafting_table",
-        "trapdoor": "minecraft:oak_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]",
+        "trapdoor": "minecraft:oak_trapdoor[facing=east,half=top,open=false,powered=false,waterlogged=false]",
         "wall": "minecraft:stripped_spruce_log[axis=y]",
     }
     contract = {

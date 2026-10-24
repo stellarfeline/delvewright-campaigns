@@ -14,7 +14,10 @@ the story opens at its beat — every door a body meets built as a door.
   the gate on the path; the front door is oak too.
 - The cellar is as wide as the cottage, so its walls stand under the
   cottage's and the back room's floor is whole; three trapdoors lie over its
-  stair, which climbs under them so each rise is jumped with headroom.
+  stair, which climbs under them so each rise is jumped with headroom. Their
+  hinges are on the hole's west side (`facing=east`), so each open panel hangs
+  along the climb and a body steps off the top tread east onto the floor; a
+  hatch turned across the climb shuts a body in under it (`DW1066`).
 - The latch is a floor lever by the back room's east wall, away from the
   iron door: a lever beside the door's wall would power it (`DW1047`).
 - The iron door's bar is declared as the door's lower half
@@ -25,8 +28,8 @@ the story opens at its beat — every door a body meets built as a door.
 ## Engine and language
 
 Built with `delvec 1.14.0, dsl 0.65.0, mc 1.21.11` from the engine's
-`feat/gate-door` worker branch, an unreleased tree that lays a gate's
-two-high block by course; the round's report names the revision.
+`feat/trapdoor` worker branch, an unreleased tree that reads a trapdoor's shape
+per state; the round's report names the revision.
 
 Every piece is this campaign's own, written as a grammar program under
 `programs/` by `design/build_pieces.py` from `delvec allocation --all`, and
