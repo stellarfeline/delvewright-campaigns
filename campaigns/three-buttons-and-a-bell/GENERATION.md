@@ -62,7 +62,7 @@ that side.
 ## Engine and language
 
 Built with `delvec 1.14.0, dsl 0.64.0, mc 1.21.11` from the engine at revision
-`2ccc3c98ff73225c2eeb3f940c9ad42b3c8ceca0`, an unreleased tree carrying
+`2c71988e52347a9beee9f80d62b01bc239a60ca2`, an unreleased tree carrying
 spec-0117 merged with spec-0118 and spec-0120. The version string is the released
 engine's number; the revision says which engine built this level.
 
