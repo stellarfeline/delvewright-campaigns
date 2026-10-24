@@ -54,11 +54,16 @@ that side.
   engine cannot tell its sides apart (`DW0425`). Each of its four boards
   carries its own answer trigger, so the whole door answers.
 
+- **Each shut way says how the player learns it is shut** (spec-0118). The
+  barred jetty door is `told`: each of its four boards answers a press.
+  The shed gate is `seen`: its bars are in sight from where
+  the way to it leaves the hall.
+
 ## Engine and language
 
-Built with `delvec 1.14.0, dsl 0.64.0, mc 1.21.11` from the engine's
-`feat/impl-0117` branch at revision `9addaa67235188e002bbcad598abf757abb49169`,
-an unreleased tree carrying spec-0117. The version string is the released
+Built with `delvec 1.14.0, dsl 0.64.0, mc 1.21.11` from the engine at revision
+`2ccc3c98ff73225c2eeb3f940c9ad42b3c8ceca0`, an unreleased tree carrying
+spec-0117 merged with spec-0118 and spec-0120. The version string is the released
 engine's number; the revision says which engine built this level.
 
 Every piece is this campaign's own, written as a grammar program under
