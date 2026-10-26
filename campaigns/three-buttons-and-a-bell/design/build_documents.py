@@ -37,7 +37,7 @@ PREMISE = (
 def main():
     write("world.json", doc("world", {
         "areas": [],
-        "demo_level": True,
+        "test_level": True,
         "horizon": {"attributes": {"audio/background_music": {}}, "base": "void"},
         "languages": ["zh-cn"],
         "min_players": 1,
@@ -140,11 +140,11 @@ def main():
                  {"anchor": f"anchor/jetty-door-{c}", "kind": "point", "note": f"The {w} board of the barred store door, pressed from the jetty or from the store."}
                  for c, w in CELLS
              ]},
-            {"id": "node/hall", "intent": "hub", "note": "The keeper's hall: the keeper at her counter, the bell on its post, the chained lever behind her, her chest, the candles, a loose boulder, the three buttons and the bolt on the shed gate, and the latched store door.",
+            {"id": "node/hall", "intent": "hub", "note": "The keeper's hall: the keeper at her counter, the bell on its post, the chained lever behind her, her chest, the fire in the hearth, a loose boulder, the three buttons and the bolt on the shed gate, and the latched store door.",
              "stations": [
                  {"anchor": "anchor/keeper", "kind": "point", "note": "Where the keeper stands, at her counter."},
                  {"anchor": "anchor/lever", "kind": "point", "note": "The chained lever on the wall behind the keeper."},
-                 {"anchor": "anchor/candles", "kind": "point", "note": "The keeper's candles by the hearth: the rest point."},
+                 {"anchor": "anchor/hearth", "kind": "point", "note": "The keeper's fire in the hearth: the rest point."},
                  {"anchor": "anchor/boulder", "kind": "point", "note": "A loose boulder in the corner, struck by hand."},
                  {"anchor": "anchor/button-one", "kind": "point", "note": "The first of the three buttons on the wall."},
                  {"anchor": "anchor/button-two", "kind": "point", "note": "The second of the three buttons."},
@@ -205,7 +205,7 @@ L = {
     "button.done": "The bolt is already drawn. The pins are all out.",
     "bolt.not_yet": "The bolt is pinned fast. The three buttons on the wall knock its pins out.",
     "bolt.done": "The bolt is drawn. The shed gate stands open.",
-    "candles.not_yet": "These are the keeper's candles. Speak to her before you rest here.",
+    "hearth.not_yet": "This is the keeper's fire. Speak to her before you rest here.",
     "boulder.done": "The boulder has already settled into its socket. It will not move again.",
     "jetty_door.sealed_side": "The door does not open from this side. It is barred from the store.",
     "jetty_door.not_yet": "Barred. The bar is on this side: the button beside the door throws it.",
@@ -217,13 +217,13 @@ def quests():
     heard = [
         {"flag": "flag/keeper-spoke", "type": "set-flag"},
         {"carrier": "all", "count": 1, "item": "minecraft:tripwire_hook", "name": "The keeper's key", "type": "give-item"},
-        {"anchor": "anchor/candles", "answers": {"not_yet": L["candles.not_yet"]},
-         "prompt": "Rest at the candles", "prop": {"block": "minecraft:candle[candles=4,lit=false,waterlogged=false]"},
-         "rest_label": "Rest", "rest_tooltip": "The candles keep you, and the house sets itself back up.",
-         "save_label": "Save and quit", "save_tooltip": "The candles keep you; nothing in the house is reset.",
-         "on_rest": [{"style": "chat", "text": "The keeper's candles take the chill off.", "type": "narrate"}],
+        {"anchor": "anchor/hearth", "answers": {"not_yet": L["hearth.not_yet"]},
+         "prompt": "Rest at the fire", "prop": {"block": "minecraft:campfire[facing=west,lit=true,signal_fire=false,waterlogged=false]"},
+         "rest_label": "Rest", "rest_tooltip": "The fire keeps you, and the house sets itself back up.",
+         "save_label": "Save and quit", "save_tooltip": "The fire keeps you; nothing in the house is reset.",
+         "on_rest": [{"style": "chat", "text": "The keeper's fire takes the chill off.", "type": "narrate"}],
          "type": "bonfire"},
-        {"style": "chat", "text": "The keeper hands you a key on a hook and unties the bell rope. The lever behind her is unchained, and you may rest at her candles by the hearth.", "type": "narrate"},
+        {"style": "chat", "text": "The keeper hands you a key on a hook and unties the bell rope. The lever behind her is unchained, and you may rest at her fire in the hearth.", "type": "narrate"},
     ]
     return doc("quests", {
         "quests": [
@@ -377,14 +377,14 @@ ZH = {
     "The bar falls away. The jetty is one door away now.": "门杠落下了。码头如今只隔一扇门。",
     "The boat is yours to take.": "船可以划走了。",
     "The keeper's key": "看守的钥匙",
-    "These are the keeper's candles. Speak to her before you rest here.": "这是看守的蜡烛。先跟她说过话，再来这里歇脚。",
-    "The keeper's candles take the chill off.": "看守的烛光驱散了寒意。",
+    "This is the keeper's fire. Speak to her before you rest here.": "这是看守的炉火。先跟她说过话，再来这里歇脚。",
+    "The keeper's fire takes the chill off.": "看守的炉火驱散了寒意。",
     "Rest": "歇息",
-    "Rest at the candles": "在烛旁歇息",
-    "The candles keep you, and the house sets itself back up.": "烛光护着你，屋里的一切回到原样。",
+    "Rest at the fire": "在炉火旁歇息",
+    "The fire keeps you, and the house sets itself back up.": "炉火护着你，屋里的一切回到原样。",
     "Save and quit": "保存并退出",
-    "The candles keep you; nothing in the house is reset.": "烛光护着你；屋里什么都不会重置。",
-    "The keeper hands you a key on a hook and unties the bell rope. The lever behind her is unchained, and you may rest at her candles by the hearth.": "看守递给你一把挂在钩子上的钥匙，解开了钟绳。她身后拉杆上的铁链也卸了，炉边她那几支蜡烛旁，你可以歇脚了。",
+    "The fire keeps you; nothing in the house is reset.": "炉火护着你；屋里什么都不会重置。",
+    "The keeper hands you a key on a hook and unties the bell rope. The lever behind her is unchained, and you may rest at her fire in the hearth.": "看守递给你一把挂在钩子上的钥匙，解开了钟绳。她身后拉杆上的铁链也卸了，你可以在她炉膛里的火边歇脚了。",
     "There is a flask of oil in the chest. You work it into the three buttons by the shed gate until they give.": "箱子里有一瓶油。你把油抹进船棚门边那三个按钮里，直到它们按得动了。",
     "A pin knocks out of the bolt.": "一根销子从门闩里掉了出来。",
     "The door does not open from this side. It is barred from the store.": "这扇门从这一侧打不开。门杠在库房那边。",

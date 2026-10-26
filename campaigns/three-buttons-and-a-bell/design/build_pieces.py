@@ -16,8 +16,8 @@ place does not own, written as `structure_void`) and every seam's handed cells
 come from it, so a plan edit is followed by re-running the two commands above.
 
 Nothing a player could press is placed by a piece: every pressable block (the
-bell, the store door, the chest, the lever, the buttons, the bolt, the candles,
-the boulder) is the campaign's `prop`, laid by the engine at its anchor. The
+bell, the store door, the chest, the lever, the buttons, the bolt, the fire in
+the hearth, the boulder) is the campaign's `prop`, laid by the engine at its anchor. The
 pieces hold only what the hand cannot work: walls, floors, the counter, the
 bell's post, the boat on its stocks, the lamps.
 """
@@ -248,8 +248,9 @@ def hall(a):
     # The keeper's counter, one block high, open at both ends so the lever
     # on the wall behind her is reached round it.
     p.put((7, 1, 6), (9, 1, 6), "counter")
-    # A hearth in the corner by the candles: a hood of brick over it.
-    p.put((11, 1, 12), (12, 1, 12), "hearth")
+    # A hearth in the corner: a kerb of stone, the keeper's fire beside it in
+    # the corner (the campaign's `prop` at `hearth`), a hood of brick over both.
+    p.put((11, 1, 12), (11, 1, 12), "hearth")
     p.put((11, 3, 12), (12, 5, 12), "brick")
     lamps(p, [(3, 4, 3), (10, 4, 3), (6, 4, 7), (3, 4, 11), (10, 4, 9)], 5)
     p.claim_box((1, 1, 1), (12, 5, 12), "room", air_only=True)
@@ -279,7 +280,7 @@ def hall(a):
         ("button-one", (1, 1, 3), "east"),
         ("button-two", (1, 1, 5), "east"),
         ("button-three", (1, 1, 7), "east"),
-        ("candles", (10, 1, 11), "north"),
+        ("hearth", (12, 1, 12), "west"),
         ("boulder", (1, 1, 11), "east"),
     ]
     return program("three-buttons-and-a-bell-hall", p, palette, contract, marks)

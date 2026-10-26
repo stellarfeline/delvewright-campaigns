@@ -29,17 +29,13 @@ that side.
   the hall and the latched door, and the short way back is through it.
 - The bolt is a waxed lightning rod lying on its side by the shed gate, so it
   reads as a bolt and does not weather.
+- The rest point is the keeper's fire: a lit campfire in the corner of the
+  hall's hearth, beside a stone kerb under a brick hood. A respawn there is
+  seated on the floor beside the fire.
 - No fight. One class.
 
 ## Departures from the queue row
 
-- **The rest point is four unlit candles, not a campfire.** A campfire at the
-  bonfire's anchor is refused by the engine as a respawn cell the party cannot
-  walk on from: `DW0315` reads "checkpoint anchor/candles (cell [17, 64,
-  27]) strands the party: the next required anchor [10, 64, 25] (critical
-  step 2) is not walkable from it over the assembled geometry". The candles
-  are `minecraft:candle[candles=4,lit=false,waterlogged=false]`, boxed as a
-  block the game reports no press of.
 - **The latched store door stands just inside the hall, in front of its
   doorway, not in the doorway itself.** A `prop` anchored in the doorway's
   transit cell is refused (`DW0845`: the anchor resolves into the piece's
@@ -61,9 +57,9 @@ that side.
 
 ## Engine and language
 
-Built with `delvec 1.14.0, dsl 0.64.0, mc 1.21.11` from the engine at revision
-`2c71988e52347a9beee9f80d62b01bc239a60ca2`, an unreleased tree carrying
-spec-0117 merged with spec-0118 and spec-0120. The version string is the released
+Built with `delvec 1.15.0, dsl 0.64.0, mc 1.21.11` from the engine at revision
+`090c7cdd8c58cafc0a43722f18235df077ede1c3`, an unreleased tree carrying
+spec-0117 merged with spec-0118, spec-0120 and the respawn seat. The version string is the released
 engine's number; the revision says which engine built this level.
 
 Every piece is this campaign's own, written as a grammar program under

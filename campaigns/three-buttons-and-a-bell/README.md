@@ -1,6 +1,6 @@
 # Three Buttons and a Bell
 
-> **Requires delve engine 0.64.0 or newer** — last verified with delvec 1.14.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.64.0 or newer** — last verified with delvec 1.15.0 on Minecraft Java 1.21.11.
 
 Merrow Landing is a keeper's house at the end of a jetty, and the keeper's boat
 is in the shed behind it. Nothing in the house moves for a stranger: the bell
@@ -32,7 +32,7 @@ Accept the resource pack when the server offers it.
 
 This level is where "a click target always answers" (spec-0117) is looked at
 in the game. Every thing in the house you can press is a real block — a bell,
-a door, a chest, a lever, three buttons, a bolt, the keeper's candles, a
+a door, a chest, a lever, three buttons, a bolt, the keeper's fire, a
 boulder, the boards of a barred door — and it answers every press, in every
 state, with one line on your action bar and one refusal sound, to you alone.
 Nothing opens, flips or shows its screen before its turn, and nothing glows
@@ -55,7 +55,7 @@ onto the jetty.
    behind it, the three buttons low on the left wall, the bolt beside the
    barred shed gate on the far wall, the lever on the far wall behind the
    keeper, the store door and the chest on the right wall, and the keeper's
-   four candles by the hearth to your right. Each should give one line and
+   fire in the hearth to your right. Each should give one line and
    the refusal sound (a locked chest's click), and **nothing should move**:
    the door stays shut, the lever stays up, the chest shows no screen. Does
    each line read at the crosshair before it fades? Does the sound read as
@@ -82,8 +82,9 @@ onto the jetty.
    pinned. Press the three buttons (each knocks out a pin), then draw the
    bolt; the shed gate opens. Now press a button a fourth time: it should say
    the bolt is already drawn, and count nothing.
-9. **The candles.** Once the keeper has spoken, pressing them offers a rest.
-   Before that, they say they are hers.
+9. **The fire.** Once the keeper has spoken, pressing it offers a rest.
+   Before that, it says it is hers. Rest, then stand in the fire until it
+   kills you: you come back on the floor beside the fire, not in it.
 10. **The store, and the glow.** Go through the store door. On the store side
     of the boarded door there is a stone button beside it, and it is outlined
     in light while you stand in the store within six blocks of it. Press the
