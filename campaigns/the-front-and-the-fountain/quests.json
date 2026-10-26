@@ -1,0 +1,118 @@
+{
+  "campaign_id": "the-front-and-the-fountain",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-row",
+          "text": "The warden comes down Tanner's Row before the fair.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-row",
+        "objectives": [
+          {
+            "anchor": "anchor/node-smithy",
+            "happening": {
+              "subject": "anchor/node-smithy",
+              "text": "The warden steps in through the smithy's door, behind the counter.",
+              "verb": "arrives"
+            },
+            "hint": "The new smithy is the first front on the row, its door beside the counter.",
+            "id": "obj/the-smithy",
+            "radius": 2,
+            "title": "Step into the new smithy",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-smithy"
+            ],
+            "anchor": "anchor/node-square",
+            "happening": {
+              "subject": "anchor/node-square",
+              "text": "The warden stands in the square, by the fountain.",
+              "verb": "arrives"
+            },
+            "hint": "The fountain square is the next place along the row.",
+            "id": "obj/the-square",
+            "radius": 2,
+            "title": "Stand in the fountain square",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-square"
+            ],
+            "anchor": "anchor/node-stall",
+            "happening": {
+              "subject": "anchor/node-stall",
+              "text": "The warden steps into the old stall.",
+              "verb": "arrives"
+            },
+            "hint": "The old stall is further along the row, its door beside its counter.",
+            "id": "obj/the-stall",
+            "radius": 2,
+            "title": "Step into the old stall",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/the-stall"
+            ],
+            "anchor": "anchor/node-ring",
+            "happening": {
+              "subject": "anchor/node-ring",
+              "text": "The warden stands by the ring of stone in the old yard.",
+              "verb": "arrives"
+            },
+            "hint": "The old well-yard is at the end of the row.",
+            "id": "obj/the-ring",
+            "radius": 2,
+            "title": "Stand in the old well-yard",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "Every front on the row is seen.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-ring",
+              "text": "The row is walked.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {},
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-row",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "Tanner's Row. Look at each place on it before the fair: the new smithy, the fountain square, the old stall, and the old well-yard at the end.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-row",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.66.0",
+  "stage": "quests"
+}
