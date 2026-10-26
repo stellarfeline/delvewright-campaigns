@@ -1,0 +1,208 @@
+{
+  "verdict": "pass",
+  "gates": [
+    {
+      "id": "blocks-exist",
+      "state": "pass",
+      "bound": 24,
+      "undecided": 0,
+      "detail": "24 block state(s), all present in Minecraft 1.21.11"
+    },
+    {
+      "id": "shape-complete",
+      "state": "pass",
+      "bound": 24,
+      "undecided": 0,
+      "detail": "24 placed block state(s), every shape-carrying (multipart) property written"
+    },
+    {
+      "id": "states-complete",
+      "state": "pass",
+      "bound": 24,
+      "undecided": 0,
+      "detail": "24 placed block state(s), every property of every block written"
+    },
+    {
+      "id": "oriented-fills",
+      "state": "pass",
+      "bound": 332,
+      "undecided": 0,
+      "detail": "332 fill(s) examined, 67 carrying block-state properties, 0 of those resolved out of the scope's own axis frame; every remaining orientation-sensitive one was judged against a turned frame, was under an `orientation` guard, or stands in a scope no rule reorients"
+    },
+    {
+      "id": "non-empty",
+      "state": "pass",
+      "bound": 2304,
+      "undecided": 0,
+      "detail": "910 filled cell(s) of 2304 in the region"
+    },
+    {
+      "id": "contract-well-formed",
+      "state": "pass",
+      "bound": 6,
+      "undecided": 0,
+      "detail": "2 space(s), 2 out-of-walk region(s) and 2 edge(s) hold together: no overlap, one floor each, every opening on the boundary it claims"
+    },
+    {
+      "id": "contract-coverage",
+      "state": "pass",
+      "bound": 375,
+      "undecided": 0,
+      "detail": "every one of 375 standable cell(s) lies in a declared space, an out-of-walk region or a traversal edge's transit volume"
+    },
+    {
+      "id": "contract-closure",
+      "state": "pass",
+      "bound": 682,
+      "undecided": 0,
+      "detail": "682 boundary cell(s) examined; every one is accounted for"
+    },
+    {
+      "id": "contract-edge-proof",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 interior edge(s) proved, each against its class and its declared rise"
+    },
+    {
+      "id": "contract-no-body",
+      "state": "pass",
+      "bound": 2,
+      "undecided": 0,
+      "detail": "2 out-of-walk region(s), every standable cell of every one earning a computed kind: 200 cell(s) facade"
+    },
+    {
+      "id": "contract-reachability",
+      "state": "pass",
+      "bound": 175,
+      "undecided": 0,
+      "detail": "every one of 175 standable cell(s) in declared space is reached from \"shop\" through declared edges only"
+    },
+    {
+      "id": "contract-anchors",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 anchor(s), every one landing in a contract element: 1 in a space"
+    },
+    {
+      "id": "contract-exterior-faces",
+      "state": "pass",
+      "bound": 1,
+      "undecided": 0,
+      "detail": "1 exterior edge(s) export 1 face(s): south walk"
+    },
+    {
+      "id": "contract-no-body-majority",
+      "state": "pass",
+      "bound": 375,
+      "undecided": 0,
+      "detail": "200 of 375 standable cell(s) are out of walk, acknowledged: \"a building that owns its outside owns its roof, and its flat roof is more standable surface than the rooms under it; nobody walks it\". 0 of them are `posted`, which is not the majority of the out-of-walk floor"
+    }
+  ],
+  "measurements": {
+    "filled_cells": 910,
+    "region_cells": 2304,
+    "distinct_states": 24,
+    "standable_cells": 375,
+    "footprint_area": 256,
+    "footprint_perimeter": 64,
+    "silhouette_complexity": 1.0,
+    "top_blocks": [
+      [
+        "minecraft:stone_bricks",
+        0.2857142857142857
+      ],
+      [
+        "minecraft:spruce_planks",
+        0.2813186813186813
+      ],
+      [
+        "minecraft:cobblestone",
+        0.23516483516483516
+      ],
+      [
+        "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
+        0.06593406593406594
+      ],
+      [
+        "minecraft:structure_void",
+        0.06593406593406594
+      ]
+    ],
+    "stairs": 0,
+    "fluid_cells": 0,
+    "fluid_held_cells": 0,
+    "fluid_at_edge": 0,
+    "local_frame_fills": 0,
+    "reachability": {
+      "standable": 375,
+      "sheltered": 180,
+      "entry_cells": 0,
+      "reachable": 0,
+      "reachable_share": 0.0,
+      "unreachable_sheltered": 180,
+      "unreachable_open": 195,
+      "pockets": 3,
+      "largest_pockets": [
+        {
+          "cells": 179,
+          "sheltered": 179,
+          "min": [
+            1,
+            1,
+            1
+          ],
+          "max": [
+            14,
+            3,
+            14
+          ]
+        },
+        {
+          "cells": 1,
+          "sheltered": 1,
+          "min": [
+            13,
+            3,
+            5
+          ],
+          "max": [
+            13,
+            3,
+            5
+          ]
+        },
+        {
+          "cells": 195,
+          "sheltered": 0,
+          "min": [
+            1,
+            6,
+            1
+          ],
+          "max": [
+            14,
+            6,
+            14
+          ]
+        }
+      ]
+    }
+  },
+  "anchors": {
+    "anchor/node-smithy": [
+      7,
+      1,
+      13
+    ]
+  },
+  "findings": [
+    "the reachability measurement found ZERO entry cells — no standable cell touches a side face of the region at grade, so there is nowhere for a body to walk in from and the measurement binds to nothing. The piece's 375 standable cell(s) form 3 component(s)"
+  ],
+  "enumeration": [
+    "no_body \"roof\": facade — 195 standable cell(s), every one reached by the air outside the piece",
+    "no_body \"tops\": facade — 5 standable cell(s), every one reached by the air outside the piece",
+    "exterior face: walk on the south side, via space \"shop\", 2 cell(s)"
+  ]
+}
