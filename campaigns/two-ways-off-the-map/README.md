@@ -1,6 +1,6 @@
 # Two Ways Off the Map
 
-> **Requires delve engine 0.61.0 or newer** — last verified with delvec 1.14.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.63.0 or newer** — last verified with delvec 1.15.0 on Minecraft Java 1.21.11.
 
 A chapel stands on a rock in the sea, its yard walled against the wind. The
 boat that takes you off the rock waits at the end of the jetty, and the only
@@ -49,12 +49,17 @@ off the map.
    gaps on the flat, two gaps up onto the high platform, and three gaps down off
    it under a stone lid laid across the cistern's walls. Does every leap feel
    makeable on a sprint, the last one too with the lid over your head? The
-   bot has already made all five. Fall into the cistern on purpose: is there
-   always a stair back up?
+   bot has already made all five. Fall into the cistern on purpose: you land
+   in water, and the one stair, at the near end by the gate, brings you back
+   up onto the first platform, so a fall starts the course again. Is there any
+   way out of the water but that stair, or any way to the jetty but the five
+   leaps?
 
 The machine has already confirmed: from every place a body can reach, by every
 walk, fall, jump, swim and climb out the game's physics allows, a body can get
-back to the way through, and nobody in the sea is stranded; each of the five
+back to the way through, and nobody in the sea or the cistern is stranded;
+a body that falls into the cistern lands in water, unhurt, and the bot has
+waded from under the high platform back up the stair to the first platform; each of the five
 leaps lands from every facing within five degrees of straight and either of the
 last two ticks before the edge, under the game's rules and the bot's; and a
 sixth leap of five columns on the flat was refused because not every one of
@@ -67,6 +72,6 @@ off the map that the machine missed.
 
 1. **那块石头（院子）。** 院子里，东墙扶壁前面立着一块矮石头。从石头上助跑，试着跳上扶壁，再从扶壁跳过墙去。跳得过去吗？引擎拒绝这座院子的时候，石头离扶壁近一格：从那里，两跳就能上到墙头，再落进墙后那片四面高墙围着的旧墓地。其他石头和墙角也都试一试：你能爬上任何一面墙吗？
 2. **那块木板（栈桥）。** 沿栈桥走到一半，栏杆边立着一块木板。从它上面跳过栏杆进海里。你能游回来、爬上岸吗？出路是栈桥靠近尽头那一侧下水的台阶。没有那道台阶的时候，引擎拒绝了这座栈桥：从木板上，一个身体能上到栏杆顶再翻过去，而海的四周没有一处低到能爬上来。
-3. **那块石盖板（墙头步道）。** 墙头步道要跳五次：平地上隔一格、两格、三格各一次，隔两格往上跳到高台，再从高台隔三格往下跳——这一跳头顶上横着一块搭在蓄水池两边墙上的石盖板。助跑的话，每一跳感觉都跳得过去吗，包括头顶压着石盖板的最后一跳？机器人已经把五跳都跳过了。故意掉进蓄水池：是不是总有台阶能上来？
+3. **那块石盖板（墙头步道）。** 墙头步道要跳五次：平地上隔一格、两格、三格各一次，隔两格往上跳到高台，再从高台隔三格往下跳——这一跳头顶上横着一块搭在蓄水池两边墙上的石盖板。助跑的话，每一跳感觉都跳得过去吗，包括头顶压着石盖板的最后一跳？机器人已经把五跳都跳过了。故意掉进蓄水池：你会落进水里，只有靠近大门那一头的一道台阶能把你带回第一个平台——掉下去就从头再来。除了这道台阶，水里还有别的路能上去吗？除了这五跳，还有别的路能到栈桥吗？
 
-机器已经确认：从一个身体能到达的每一个地方，沿着游戏物理允许的每一种走、落、跳、游和爬出水，身体都能回到正路上，海里没有人会被困住；五次跳跃中的每一次，朝向偏离正前方五度以内、在边缘前最后两个刻里任意一刻起跳，按游戏的规则和机器人的物理都能落稳；另有一次平地隔四格（五列）的第六跳被拒绝了，因为不是每一种起跳都能落稳。你要判断的只是：真正玩起来，你能不能找到一条机器漏掉的、离开地图的路。
+机器已经确认：从一个身体能到达的每一个地方，沿着游戏物理允许的每一种走、落、跳、游和爬出水，身体都能回到正路上，海里和蓄水池里都没有人会被困住；掉进蓄水池的身体落在水里，毫发无伤，机器人已经从高台下面蹚水走回台阶、上到第一个平台；五次跳跃中的每一次，朝向偏离正前方五度以内、在边缘前最后两个刻里任意一刻起跳，按游戏的规则和机器人的物理都能落稳；另有一次平地隔四格（五列）的第六跳被拒绝了，因为不是每一种起跳都能落稳。你要判断的只是：真正玩起来，你能不能找到一条机器漏掉的、离开地图的路。

@@ -15,7 +15,7 @@ sixth of five columns flat declared and refused by the jump proof.
 ## What was invented here
 
 - The fiction: a chapel on a rock in the sea, the boat that leaves from the end
-  of the jetty, and the broken wall-walk over a dry cistern between them.
+  of the jetty, and the broken wall-walk over a flooded cistern between them.
 - The yard is the Bell yard of the engine's own reach-graph tests rebuilt at
   full size: the inner yard walled three high, the buttress two high against
   its east wall, the stone one high in front of it. Past the east wall is a
@@ -37,24 +37,29 @@ sixth of five columns flat declared and refused by the jump proof.
   platform (a gap of two); four columns down one off it (a gap of three), under
   a lid of deepslate tiles laid across the cistern's walls three cells over the
   fourth platform's top. Each platform gives a straight run-up of five or six
-  cells. A stair at each end of the cistern comes back up out of it.
+  cells. One course of water lies over the cistern's floor, and one stair, at
+  the near end by the gate, comes back up out of it onto the first platform: a
+  body that falls lands in the water and wades back to that stair, so a fall
+  starts the course again. Nothing else leads up out of the water.
 - The route: the first objective is the raised fourth platform, which only the
   four leaps before it reach and only the fifth leaves; the second is the head
   of the jetty. No speaking cast, no fight.
 
 ## What the engine forced, and what it could not build as first written
 
-- **A place reached only by a declared jump is refused at the blockout
-  battery.** The first course gave the cistern one stair, at the near end, so
-  the jetty was reached only by the five leaps. The stage-5 battery's place
-  reachability (`DW0837`, `compiler::blockout::nodes_reached`) floods a
-  geometry-only world that carries no declared jump — it seeds a declared drop
-  and a declared carry, never a declared jump — and refused the jetty: "no
-  body can reach `node/jetty` in the built world". The far stair gives the
-  battery a walk to the jetty; the route still takes the five leaps, because
-  its first objective stands on the raised platform that only the leaps reach.
-  The engine gap is reported to the planner; the level was not adapted round
-  it in any way the row describes.
+- **Every reach check counts the declared jumps.** The platforms past the
+  first, and the jetty, are reached only by the leaps, and the stage-5
+  battery's place reachability (`DW0837`) admits them with no stair standing in
+  for the leaps: "3 place(s) proven reached".
+- **A lid one course thick joined the places by no seam.** Its top was a
+  standable cell of the course, and from it the cistern walls' tops lead a body
+  down onto the jetty's deck and over the yard's walls into the yard: `DW0838`,
+  course to jetty and course to yard. The lid is two courses thick, its top at
+  the frame's ceiling and out of the place; the leap under it is unchanged.
+- **The jetty's stair is as wide as it is built.** The gap in the south rail
+  was claimed with the steps, so the stair's way measured two columns at the
+  gap and one clear (`DW1057`). The gap is the deck's own claim, and the way is
+  the one column of steps.
 - **The piece contract has no jump edge.** A piece's `contract-reachability`
   walks the piece's own blocks, and the course's platforms are joined only by
   leaps. The gate passed over the shipped course, "every one of 409 standable
@@ -75,10 +80,12 @@ sixth of five columns flat declared and refused by the jump proof.
 
 ## Engine and language
 
-Built with `delvec 1.14.0, dsl 0.61.0, mc 1.21.11`, the release binary built at
-engine revision `f26760bdcbf2bb4d3362d27e3f9481b3ffb8612b` (the reach-graph
-feature with engine 1.14.0 merged) on the remote build machine. That revision
-is unreleased; the version string is the released engine's number.
+Built with `delvec 1.15.0, dsl 0.63.0, mc 1.21.11`, the release binary built at
+engine revision `7f3e86f4edc3e711db611b9ce3d3335f1a5d54f6` (the reach-graph
+feature, `feature/reachable-surfaces`) on the remote build machine. That
+revision is unreleased. The pieces were detailed by the same revision's
+release binary on macOS, and a re-detail on the remote build machine changes
+no byte.
 
 Every piece is this campaign's own, written as a grammar program under
 `programs/` by `design/build_pieces.py` from `delvec allocation --all`, and
@@ -113,31 +120,34 @@ run was `delvec detail --all` exit 3 with that one error and no other.
 
   `jumps binding: 6 declared, 5 proven, 1 refused, 0 not a jump; run-ups measured 5..6`. Removed from the shipped level: the declaration and the gap.
 
-## Verification (engine `f26760bdcbf2bb4d3362d27e3f9481b3ffb8612b`, `delvec 1.14.0, dsl 0.61.0`, the release binary sha256 `e1fc895fa642deebae3ab2b4ea0ba46741f748c5fe38877498ff02f31baec2c4`)
+## Verification (engine `7f3e86f4edc3e711db611b9ce3d3335f1a5d54f6`, `delvec 1.15.0, dsl 0.63.0`, the release binary sha256 `83c59a3eaa103e2ae410ce0b5c91bfa82c737425c48e5dee137b098f74e414bb`)
 
-The ladder ran on the remote build machine over content `5bee487412acdb8d2dad6d34d1407cb72ee1bba6`; this record and nothing a build reads was added after it.
+The ladder ran on the remote build machine over content `f85a2270ef0584376b493f6c84069660843ffef8`; this record and the storybook, which nothing a build reads, were added after it.
 
-- `build`: exit 0 twice, byte-identical (137 files); `manifest.json` sha256
-  `c8e822d245eb7505883ea7b142b0483980712e15166bd3cced9c6acef73485e1`.
+- `build`: exit 0 twice, byte-identical (139 files); `manifest.json` sha256
+  `5325e74e982fc4088214c7a9de11fe6b6f70ead3a6069adce5e5f7bef4aa916c`.
 - `jumps binding: 5 declared, 5 proven, 0 refused, 0 not a jump; run-ups measured 5..6`
-- `reach binding: 1 configuration(s); 1498347 rest state(s) (721 standing, 179282 afloat, 1318344 submerged, 0 holding); 8614389 edge(s) (2923 walk, 1740 fall, 7185 jump, 8590878 dive, 271 climb, 11392 exit); 3141940 launch state(s) simulated, 3132 template arc(s) credited; 3145072 of budget 200000000; survivable fall 22 blocks (unbounded: no)`
-- `DW0921 binding: 1 quest configuration(s), 83 route cell(s), 1498347 cell(s) a body can reach by walking, falling, jumping, swimming or climbing (179282 of them afloat, 44 on a fence or wall top), 0 it cannot leave; 0 link stand cell(s) served as a way out; 0 configuration(s) unjudged, a body in them holding a movement the reach graph does not fly (DW1043)`
-- `movement items: 1 examined, 0 a movement the reach graph does not fly, 0 reducing a fall (every fall survivable: no); 1 quest configuration(s) judged, 0 unbounded`
+- `reach binding: 1 configuration(s); 1498347 rest state(s) (495 standing, 179508 afloat, 1318344 submerged, 0 holding); 8613886 edge(s) (2174 walk, 1678 fall, 6783 jump, 8591570 dive, 289 climb, 11392 exit); 3108097 launch state(s) simulated, 3132 template arc(s) credited; 3111229 of budget 200000000; survivable fall 22 blocks (unbounded: no)`
+- `DW0921 binding: 1 quest configuration(s), 83 route cell(s), 1498347 cell(s) a body can reach by walking, falling, jumping, swimming or climbing (179508 of them afloat, 44 on a fence or wall top), 0 it cannot leave`
+- `clear width (DW1057): 4 way(s) […]; 4 way(s) whole, 0 narrowed`
+- Blockout battery: 3 places proven reached; `0 place pair(s) joined through the commons (DW0838)`.
 - PackTest (`validation/packtest-run.sh`): 17 of 17 required tests passed.
-- Critical-path bot (`validation/bot-run.sh`): PASSED, 4 steps;
+- Critical-path bot (`validation/bot-run.sh`): PASSED;
   `[jump] anchor anchor/high-platform: 4 jump(s) on the proven leg, 4 driven as a parkour hop` and
   `[jump] anchor anchor/jetty-head: 1 jump(s) on the proven leg, 1 driven as a parkour hop`.
+- The fall, driven by a harness bot on the same build: set on the raised
+  platform at [8238.5, 69, 8217.5], it walked off the south edge, landed in
+  the water at [8238.50, 65.00, 8220.60] with health 20, waded west and up the
+  near stair, and stood on the first platform at [8205.40, 68.00, 8217.43]
+  (the server's own position agreeing), no death, health 20.
 - Written world (`validation/world-save.sh`, `delvec written-world`,
-  `tools/ci/check-written-world.py`): 0 differing cells of 23857 in every class.
-- Staging gate (`tools/creator/staging-gate.py`, ledger at the engine revision
-  above): REFUSED on one row alone, `demo-declaration` — the engine's queue row
-  for spec-0113 still reads `pending` and names no campaign directory. Run from
-  a scratch worktree of the same engine revision whose row's Status cell names
-  `campaigns/two-ways-off-the-map`, the gate admits it with no override: all 149
-  findings carry a live, binding check or a justified exemption, 94 of them
-  inapplicable; `validation/staging-admission.sh` admits the tree.
+  `tools/ci/check-written-world.py`): 0 differing cells of 24131 in every class.
+- Staging gate (`tools/creator/staging-gate.py`): stageable with no override,
+  all 155 findings carrying a live, binding check or a justified exemption, 98
+  of them inapplicable; `validation/staging-admission.sh` admits the tree.
 
 ## The design gate
 
-A demo level carries no design record: its approved design is its queue row.
+A test level (`world.test_level`) carries no design record: its approved
+design is the engine's demo-queue row.
 `design/` holds only the scripts; no reference image was drawn.
