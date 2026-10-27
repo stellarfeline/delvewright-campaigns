@@ -14,7 +14,7 @@ import pathlib
 import sys
 
 CID = "two-ways-off-the-map"
-V = "0.61.0"
+V = "0.63.0"
 HERE = pathlib.Path(__file__).resolve().parent.parent
 
 # The course's declared jumps, in route order: (id, from anchor, to anchor).
@@ -45,7 +45,7 @@ def main(sixth):
     jumps = JUMPS + ([SIXTH] if sixth else [])
     write("world.json", doc("world", {
         "areas": [],
-        "demo_level": True,
+        "test_level": True,
         "boundary": {"margin": 8, "message": "The sea is too cold and too wide out there. You turn back to the rock."},
         "horizon": {"attributes": {"audio/background_music": {}}, "base": "ocean"},
         "jumps": [{"from": a, "id": i, "sprint": True, "to": b} for i, a, b in jumps],
@@ -55,7 +55,7 @@ def main(sixth):
         "premise": "A chapel stands on a rock in the sea, its yard walled against the wind. The boat that takes you off the rock waits at the end of the jetty, and the only way to the jetty is the old broken wall-walk, leapt gap by gap.",
         "seed": 20261023,
         "target_minutes": 5,
-        "theme": "A walled chapel yard with standing stones, a broken wall-walk over a dry cistern, and a plank jetty out into the open sea.",
+        "theme": "A walled chapel yard with standing stones, a broken wall-walk over a flooded cistern, and a plank jetty out into the open sea.",
         "time": "day",
         "title": "Two Ways Off the Map",
         "weather": "clear",
@@ -96,7 +96,7 @@ def main(sixth):
         "goal": "node/jetty",
         "nodes": [
             {"id": "node/yard", "intent": "entrance", "note": "The chapel yard: the chapel's front along its north wall, standing stones in the grass, a buttress against its east wall, a gate in its south wall onto the wall-walk. Past its east wall, a strip of old burying ground walled high on every side."},
-            {"id": "node/course", "intent": "trial", "note": "The broken wall-walk over a dry cistern: stone platforms in a row with gaps a body leaps, the fourth platform raised one and the fifth leap down off it under a stone lid laid across the cistern's walls, and a stair at each end back up out of the cistern.",
+            {"id": "node/course", "intent": "trial", "note": "The broken wall-walk over a flooded cistern: stone platforms in a row with gaps a body leaps, the fourth platform raised one and the fifth leap down off it under a stone lid laid across the cistern's walls, and one stair by the gate back up out of the water, so a fall starts the course again.",
              "stations": [
                  {"anchor": "anchor/high-platform", "kind": "point", "note": "The middle of the raised fourth platform, under the stone lid: reached only by the four leaps before it, and left only by the fifth."},
              ] + [st for k, (i, a, b) in enumerate(JUMPS + [SIXTH], start=1) for st in (

@@ -313,18 +313,19 @@ def yard(a, as_found, stone_at=None):
 # The wall-walk's platforms, west to east: (x0, x1, walk rise over the grade).
 def platforms(sixth):
     last = [(45, 51, 0), (56, 58, 0)] if sixth else [(45, 58, 0)]
-    # The last platform widens to the cistern's full width at its far end,
-    # where the far stair comes up out of the cistern onto it.
     return [(1, 9, 0), (11, 16, 0), (19, 24, 0), (28, 33, 0), (36, 41, 1)] + last
 
 
 def course(a, sixth):
-    """The broken wall-walk over a dry cistern: platforms three wide in a row
-    down the cistern's middle, gaps of one, two, three, two (up one) and three
-    (down one, under the lid) columns between them, the cistern's floor three
-    below, and a stair at each end back up out of it. The raised fourth
-    platform is reached only by the four leaps before it, and left only by the
-    fifth, under the lid."""
+    """The broken wall-walk over a flooded cistern: platforms three wide in a
+    row down the cistern's middle, gaps of one, two, three, two (up one) and
+    three (down one, under the lid) columns between them, the cistern's floor
+    three below under one course of water, and one stair at the near end, by
+    the gate, back up out of it. A body that falls lands in the water and
+    wades back to that stair, which comes up on the first platform: a fall
+    starts the course again. Nothing leads up out of the water anywhere else,
+    so the platforms past the first are reached only by the leaps, and the
+    jetty only by all five."""
     p = Piece(a)
     W = p.walk
     sx, sz = p.sx, p.sz
@@ -345,22 +346,27 @@ def course(a, sixth):
     for (x0, x1, rise) in plats[1:]:
         p.put((x0, pit, 3), (x1, W - 1 + rise, 5), "wall")
         p.put((x0, W - 1 + rise, 3), (x1, W - 1 + rise, 5), "cobble")
-    # The last platform's far end, the whole width.
-    fx0 = plats[-1][1] - 2
-    p.put((fx0, pit, 1), (plats[-1][1], W - 1, sz - 2), "wall")
-    # The stairs up out of the cistern: against the south wall at the near
-    # end, rising west onto the first platform; against the north wall at the
-    # far end, rising east onto the last.
+    # The one stair up out of the cistern: against the south wall at the near
+    # end, by the gate, rising west onto the first platform.
     near = [(10, W - 1), (11, W - 2), (12, W - 3)]
-    far = [(fx0 - 1, W - 1), (fx0 - 2, W - 2), (fx0 - 3, W - 3)]
     for (x, t) in near:
         p.put((x, pit, sz - 2), (x, t, sz - 2), "wall")
-    for (x, t) in far:
-        p.put((x, pit, 1), (x, t, 1), "wall")
-    # The lid: a course of stone laid across the cistern's walls over the fifth
-    # leap, three cells over the fourth platform's top.
+    # The water: one course over the cistern's floor, wherever the floor is
+    # open. A body stands in it, so nothing out of it is higher than the
+    # stair's first step.
+    flood = []
+    for x in range(1, sx - 1):
+        for z in range(1, sz - 1):
+            if p.get((x, pit, z)) is None:
+                p.put((x, pit, z), (x, pit, z), "water")
+                flood.append((x, pit, z))
+    # The lid: two courses of stone laid across the cistern's walls over the
+    # fifth leap, three cells over the fourth platform's top. Its top stands
+    # at the frame's ceiling, out of the place: a lid one course thick left a
+    # standable top inside the place, from which the walls' tops lead a body
+    # down onto the jetty and over into the yard by no seam (DW0838).
     lid_y = W + 1 + 3
-    p.put((37, lid_y, 0), (46, lid_y, sz - 1), "lid")
+    p.put((37, lid_y, 0), (46, lid_y + 1, sz - 1), "lid")
     # The seams: the gate from the yard (the first platform's cells, open) and
     # the gap in the east wall onto the jetty.
     for edge, region in (("edge/yard-gate", "yard-gate"), ("edge/jetty-foot", "jetty-foot")):
@@ -368,14 +374,17 @@ def course(a, sixth):
         p.put(c0, c1, None)
         p.claim_box(c0, c1, region)
     # Contract regions.
-    for (x, t) in near:
+    # The stair's first step is the cistern's one standable floor: a body in
+    # the water is afloat, not standing, and wades to it.
+    (fx, ft) = near[-1]
+    p.claim_box((fx, ft + 1, sz - 2), (fx, ft + 3, sz - 2), "cistern")
+    for (x, t) in near[:-1]:
         p.claim_box((x, t + 1, sz - 2), (x, t + 3, sz - 2), "near-stair")
-    for (x, t) in far:
-        p.claim_box((x, t + 1, 1), (x, t + 3, 1), "far-stair")
     for (x0, x1, rise) in plats:
         p.claim_box((x0, W + rise, 3), (x1, p.sy - 1, 5), "wall-walk", air_only=True)
     p.claim_box((1, W, 1), (plats[0][1], p.sy - 1, sz - 2), "wall-walk", air_only=True)
-    p.claim_box((fx0, W, 1), (plats[-1][1], p.sy - 1, sz - 2), "wall-walk", air_only=True)
+    for c in flood:
+        p.claim_box(c, c, "cistern")
     p.claim_box((1, pit, 1), (sx - 2, p.sy - 1, sz - 2), "cistern", air_only=True)
     p.claim_box((0, pit, 0), (sx - 1, p.sy - 1, sz - 1), "wall-top", air_only=True)
     contract = {
@@ -383,7 +392,6 @@ def course(a, sixth):
             {"a": "wall-walk", "b": "exterior", "class": "walk", "via": "yard-gate"},
             {"a": "wall-walk", "b": "exterior", "class": "walk", "via": "jetty-foot"},
             {"a": "cistern", "b": "wall-walk", "class": "stair", "rise": 3, "via": "near-stair"},
-            {"a": "cistern", "b": "wall-walk", "class": "stair", "rise": 3, "via": "far-stair"},
         ],
         "entry": "wall-walk",
         "no_body": {
@@ -443,7 +451,9 @@ def jetty(a, as_found):
             for y in range(t + 1, t + 4):
                 p.put((x, y, sz - 1), (x, y, sz - 1), "water" if y <= sea else None)
             (landing if t == sea else stair_cells).append((x, t + 1, sz - 1))
-        stair_cells.append((16, W, sz - 2))
+        # The gap in the rail is the deck's own: the stair is the one
+        # column of steps beside it, as wide as it is built.
+        p.claim_box((16, W, sz - 2), (16, W + 2, sz - 2), "deck")
     # The course's east wall stands one cell west of the frame, beside both rails.
     p.connect(BASE_JETTY, beyond={(-1, W, 1), (-1, W, sz - 2)})
     # The seam: the wall-walk's last platform, onto the deck.
