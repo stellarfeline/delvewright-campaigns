@@ -206,6 +206,7 @@ BASE = {
     "grass": "minecraft:grass_block[snowy=false]",
     "glass": "minecraft:white_stained_glass",
     "gravel": "minecraft:gravel",
+    "ladder": "minecraft:ladder[facing=east,waterlogged=false]",
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lid": "minecraft:deepslate_tiles",
     "log": "minecraft:stripped_spruce_log[axis=y]",
@@ -223,7 +224,7 @@ def masonry(x, y, z):
     return "mossy" if (x * 7 + y * 13 + z * 5) % 9 == 0 else "wall"
 
 
-def yard(a, as_found, stone_at=None):
+def yard(a, as_found, stone_at=None, way_out=False):
     """The chapel yard (spec-0113's Bell yard, rebuilt). Its inner yard is
     walled three high; the stone stands one high near the buttress, which
     stands two high against the east wall; past the east wall is the old
@@ -275,6 +276,13 @@ def yard(a, as_found, stone_at=None):
     if stone_at is not None:
         stone = (stone_at[0], W, stone_at[1])
     p.put(stone, stone, "stone")
+    if way_out:
+        # The verification build's way out of the burying ground: a ladder
+        # up the inner east wall's far face at its north end, so a body that
+        # gets over the wall can climb back and drop into the yard. It stands
+        # nowhere near the stone, the buttress or the wall top beside it.
+        p.put((east + 1, W, 2), (east + 1, W + 2, 2), "ladder")
+        p.claim_box((east + 1, W, 2), (east + 1, W + 2, 2), "burying-ground")
     # The other standing stones, well away from the walls and the buttress.
     for (x, z) in ((4, 6), (6, 11), (7, 4), (3, 9)):
         p.put((x, W, z), (x, W, z), "stone")
@@ -492,6 +500,9 @@ BASE_JETTY = dict(BASE)
 def main():
     args = sys.argv[1:]
     flags = {a for a in args if a.startswith("--")}
+    # `--way-out` hangs a ladder in the burying ground (the yard verification
+    # build: with the stone where the engine says the wall is reached, a body
+    # that gets over must be able to get back, or the build is refused).
     # `--stone=X,Z` stands the stone at another cell of the yard (a probe of
     # where a sprint jump still reaches the buttress from it).
     stone_at = next((tuple(int(v) for v in a.split("=", 1)[1].split(",")) for a in flags if a.startswith("--stone=")), None)
@@ -501,7 +512,7 @@ def main():
     out = here / "programs"
     out.mkdir(exist_ok=True)
     builds = (
-        ("yard", lambda h: yard(h, "--yard-as-found" in flags, stone_at)),
+        ("yard", lambda h: yard(h, "--yard-as-found" in flags, stone_at, "--way-out" in flags)),
         ("course", lambda h: course(h, "--sixth" in flags)),
         ("jetty", lambda h: jetty(h, "--jetty-as-found" in flags)),
     )
