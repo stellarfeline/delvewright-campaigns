@@ -58,7 +58,7 @@ that side.
 ## Engine and language
 
 Built with `delvec 1.15.0, dsl 0.64.0, mc 1.21.11` from the engine at revision
-`090c7cdd8c58cafc0a43722f18235df077ede1c3`, an unreleased tree carrying
+`c2e0e160335f3b9fc91c70bd37959d34aa9492c9`, an unreleased tree carrying
 spec-0117 merged with spec-0118, spec-0120 and the respawn seat. The version string is the released
 engine's number; the revision says which engine built this level.
 
