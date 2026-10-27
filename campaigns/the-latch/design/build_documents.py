@@ -12,7 +12,7 @@ import pathlib
 import sys
 
 CID = "the-latch"
-V = "0.65.0"
+V = "0.66.0"
 HERE = pathlib.Path(__file__).resolve().parent.parent
 
 
@@ -29,7 +29,7 @@ def write(name, d):
 def main():
     write("world.json", doc("world", {
         "areas": [],
-        "demo_level": True,
+        "test_level": True,
         "horizon": {"attributes": {"audio/background_music": {}}, "base": "void"},
         "languages": ["zh-cn"],
         "min_players": 1,
