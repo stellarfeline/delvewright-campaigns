@@ -23,7 +23,7 @@
               "text": "The keeper tells the traveller what his key opens, and hands it over.",
               "verb": "learns"
             },
-            "hint": "The keeper stands by his table in the hall, through the doorway off the yard. The keeper's key, a key on a hook at his belt, opens his store.",
+            "hint": "The keeper is in the hall. The keeper's key, a key on a hook at his belt, opens his store.",
             "id": "obj/hear-the-keeper",
             "npc": "npc/keeper",
             "title": "Speak to the keeper",
@@ -212,7 +212,46 @@
         }
       }
     ],
-    "triggers": []
+    "triggers": [
+      {
+        "at": "anchor/shed-gate-low",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The shed gate is barred. Its bars are worked from a lever in the keeper's store.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/shed-gate-low",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "serves": {
+          "gate": "anchor/seam-shed-gate"
+        }
+      },
+      {
+        "at": "anchor/shed-gate-high",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The shed gate is barred. Its bars are worked from a lever in the keeper's store.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/shed-gate-high",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "serves": {
+          "gate": "anchor/seam-shed-gate"
+        }
+      }
+    ]
   },
   "dsl_version": "0.68.0",
   "stage": "quests"

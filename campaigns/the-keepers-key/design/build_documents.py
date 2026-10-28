@@ -22,6 +22,7 @@ L = {
     "door.missing_item": "Locked. The keeper's key opens it, held in your hand.",
     "lever.not_yet": "The lever is padlocked to its bracket.",
     "lever.done": "The lever is thrown, and the shed gate across the yard stands open.",
+    "gate.told": "The shed gate is barred. Its bars are worked from a lever in the keeper's store.",
     "hearth.not_yet": "This is the keeper's hearth. Speak to him before you rest here.",
     "lever.missing_item": "The lever is padlocked to its bracket. The keeper's key fits the padlock.",
 }
@@ -42,6 +43,10 @@ PREMISE = (
     "and across the yard the shed where the ford's punt is kept. The store is locked and its key is at the keeper's belt; "
     "the shed gate is worked from a lever in the store."
 )
+
+
+# The shed gate's two bar cells, each answering for the gate when pressed.
+GATE_CELLS = ("low", "high")
 
 
 def main():
@@ -129,7 +134,7 @@ def main():
             {"a": "node/hall", "b": "node/store", "class": "walk", "id": "edge/store-door",
              "gating": {"flags": ["flag/store-unbarred"], "learned": "seen", "opens_from": "a", "shut": "door"}},
             {"a": "node/yard", "b": "node/shed", "class": "walk", "id": "edge/shed-gate",
-             "gating": {"flags": ["flag/shed-open"], "learned": "seen"}},
+             "gating": {"flags": ["flag/shed-open"], "learned": "told"}},
         ],
         "entry": "node/yard",
         "goal": "node/shed",
@@ -144,7 +149,11 @@ def main():
              "stations": [
                  {"anchor": "anchor/lever", "kind": "point", "note": "The lever on the store's back wall, padlocked to its bracket."},
              ]},
-            {"id": "node/shed", "intent": "goal-chamber", "note": "The punt shed behind its barred gate, across the yard from the house."},
+            {"id": "node/shed", "intent": "goal-chamber", "note": "The punt shed behind its barred gate, across the yard from the house.",
+             "stations": [
+                 {"anchor": f"anchor/shed-gate-{c}", "kind": "point", "note": f"The {w} bars of the shed gate, pressed from the yard."}
+                 for c, w in (("low", "lower"), ("high", "upper"))
+             ]},
         ],
     }))
     write("site-plan.json", doc("site-plan", {
@@ -202,7 +211,7 @@ def quests():
                 "objectives": [
                     {
                         "happening": {"subject": "npc/keeper", "text": "The keeper tells the traveller what his key opens, and hands it over.", "verb": "learns"},
-                        "hint": "The keeper stands by his table in the hall, through the doorway off the yard. The keeper's key, a key on a hook at his belt, opens his store.",
+                        "hint": "The keeper is in the hall. The keeper's key, a key on a hook at his belt, opens his store.",
                         "id": "obj/hear-the-keeper", "npc": "npc/keeper",
                         "title": "Speak to the keeper", "type": "talk-to",
                     },
@@ -260,7 +269,12 @@ def quests():
                 "trigger": {"type": "campaign-start"},
             },
         ],
-        "triggers": [],
+        "triggers": [
+            {"at": f"anchor/shed-gate-{c}", "audience": "presser", "id": f"trigger/shed-gate-{c}", "on": {"on": "use"}, "once": False,
+             "serves": {"gate": "anchor/seam-shed-gate"},
+             "effects": [{"style": "actionbar", "text": L["gate.told"], "type": "narrate"}]}
+            for c in GATE_CELLS
+        ],
     })
 
 
