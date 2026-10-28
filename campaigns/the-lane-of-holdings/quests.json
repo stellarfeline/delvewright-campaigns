@@ -1,0 +1,70 @@
+{
+  "campaign_id": "the-lane-of-holdings",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/node-lane",
+          "text": "The traveller comes down Holding Lane.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-lane",
+        "objectives": [
+          {
+            "anchor": "anchor/node-byre",
+            "happening": {
+              "subject": "anchor/node-byre",
+              "text": "The traveller reaches the byre at the lane's end.",
+              "verb": "arrives"
+            },
+            "hint": "The byre stands in its pen at the far end of the lane, past the house, the forge and the chapels.",
+            "id": "obj/the-byre",
+            "radius": 2,
+            "title": "Reach the byre",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The lane is walked to its end.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-byre",
+              "text": "Holding Lane is walked.",
+              "verb": "opens"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {},
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/node-lane",
+        "effects": [
+          {
+            "style": "chat",
+            "text": "Holding Lane. A house, a forge and a chapel keep their ground on it, and the byre waits at the far end. Look in where you like.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/the-lane",
+        "on": {
+          "on": "approach",
+          "range": 4
+        },
+        "once": true
+      }
+    ]
+  },
+  "dsl_version": "0.69.0",
+  "stage": "quests"
+}
