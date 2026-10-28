@@ -1,0 +1,219 @@
+{
+  "campaign_id": "the-keepers-key",
+  "content": {
+    "quests": [
+      {
+        "cast": {
+          "npc/keeper": {
+            "at": "anchor/keeper",
+            "dialogue": "dlg/keeper-root",
+            "doing": "standing by his table in the hall, a key on a hook at his belt"
+          }
+        },
+        "happening": {
+          "subject": "anchor/keeper",
+          "text": "The traveller comes across the yard into the keeper's hall at Varley Ford.",
+          "verb": "arrives"
+        },
+        "id": "quest/the-punt",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/keeper",
+              "text": "The keeper tells the traveller what his key opens, and hands it over.",
+              "verb": "learns"
+            },
+            "hint": "The keeper stands by his table in the hall, through the doorway off the yard. The keeper's key, a key on a hook at his belt, opens his store.",
+            "id": "obj/hear-the-keeper",
+            "npc": "npc/keeper",
+            "title": "Speak to the keeper",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/hear-the-keeper"
+            ],
+            "anchor": "anchor/seam-store-door",
+            "answers": {
+              "missing_item": "Locked. The keeper's key opens it, held in your hand.",
+              "not_yet": "Locked. Its key is at the keeper's belt: speak to him first."
+            },
+            "happening": {
+              "subject": "anchor/seam-store-door",
+              "text": "The traveller unlocks the keeper's store with his key.",
+              "verb": "opens"
+            },
+            "hint": "The store door is the one door in the hall, in its side wall. Hold the keeper's key and use the door.",
+            "id": "obj/unbar-the-store",
+            "requires_item": "minecraft:tripwire_hook",
+            "title": "Unlock the store door",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/unbar-the-store"
+            ],
+            "anchor": "anchor/lever",
+            "answers": {
+              "done": "The lever is thrown, and the shed gate across the yard stands open.",
+              "missing_item": "The lever is padlocked to its bracket. The keeper's key fits the padlock.",
+              "not_yet": "The lever is padlocked to its bracket."
+            },
+            "happening": {
+              "subject": "anchor/seam-shed-gate",
+              "text": "The traveller unlocks the lever in the store and throws it; across the yard the shed gate's bars go up.",
+              "verb": "opens"
+            },
+            "hint": "The lever is on the store's back wall. Hold the keeper's key.",
+            "id": "obj/work-the-lever",
+            "prop": {
+              "block": "minecraft:lever[face=wall,facing=west,powered=false]"
+            },
+            "requires_item": "minecraft:tripwire_hook",
+            "title": "Throw the lever in the store",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/work-the-lever"
+            ],
+            "anchor": "anchor/node-shed",
+            "happening": {
+              "subject": "anchor/node-shed",
+              "text": "The traveller walks into the punt shed.",
+              "verb": "arrives"
+            },
+            "hint": "The shed gate across the yard is open. The punt is inside.",
+            "id": "obj/enter-the-shed",
+            "radius": 2,
+            "title": "Go into the punt shed",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "subtitle",
+            "text": "The punt is yours to take.",
+            "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "anchor/node-shed",
+              "text": "The traveller stands in the punt shed at Varley Ford.",
+              "verb": "arrives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/hear-the-keeper": [
+            {
+              "carrier": "all",
+              "count": 1,
+              "item": "minecraft:tripwire_hook",
+              "name": "The keeper's key",
+              "type": "give-item"
+            },
+            {
+              "anchor": "anchor/hearth",
+              "answers": {
+                "not_yet": "This is the keeper's hearth. Speak to him before you rest here."
+              },
+              "on_rest": [
+                {
+                  "style": "chat",
+                  "text": "The keeper's hearth takes the chill off.",
+                  "type": "narrate"
+                }
+              ],
+              "prompt": "Rest at the hearth",
+              "prop": {
+                "block": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]"
+              },
+              "type": "bonfire"
+            },
+            {
+              "style": "chat",
+              "text": "The keeper hands you a key on a hook. You may rest at his hearth.",
+              "type": "narrate"
+            }
+          ],
+          "obj/unbar-the-store": [
+            {
+              "flag": "flag/store-unbarred",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-store-door",
+              "happening": {
+                "subject": "anchor/seam-store-door",
+                "text": "The store door is unlocked, and opens and shuts by hand from now on.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "style": "actionbar",
+              "text": "The key turns. The store door is yours to open.",
+              "type": "narrate"
+            }
+          ],
+          "obj/work-the-lever": [
+            {
+              "flag": "flag/shed-open",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-shed-gate",
+              "happening": {
+                "subject": "anchor/seam-shed-gate",
+                "text": "The shed gate's bars go up into the stone.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "look_at": {
+                "anchor": "anchor/seam-shed-gate"
+              },
+              "path": [
+                {
+                  "anchor": "anchor/seam-shed-gate",
+                  "offset": [
+                    -3,
+                    3,
+                    -7
+                  ]
+                },
+                {
+                  "anchor": "anchor/seam-shed-gate",
+                  "offset": [
+                    0,
+                    2,
+                    -5
+                  ]
+                }
+              ],
+              "seconds": 4,
+              "subject": {
+                "anchor": "anchor/seam-shed-gate"
+              },
+              "type": "cutscene"
+            },
+            {
+              "style": "chat",
+              "text": "Across the yard, the shed gate's bars go up into the stone.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": []
+  },
+  "dsl_version": "0.68.0",
+  "stage": "quests"
+}

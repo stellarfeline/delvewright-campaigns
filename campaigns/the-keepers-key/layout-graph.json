@@ -1,0 +1,114 @@
+{
+  "campaign_id": "the-keepers-key",
+  "content": {
+    "beats": [
+      {
+        "node": "node/hall",
+        "objective": "obj/hear-the-keeper",
+        "quest": "quest/the-punt"
+      },
+      {
+        "node": "node/hall",
+        "objective": "obj/unbar-the-store",
+        "quest": "quest/the-punt"
+      },
+      {
+        "node": "node/store",
+        "objective": "obj/work-the-lever",
+        "quest": "quest/the-punt"
+      },
+      {
+        "node": "node/shed",
+        "objective": "obj/enter-the-shed",
+        "quest": "quest/the-punt"
+      }
+    ],
+    "critical_path": [
+      "node/yard",
+      "node/hall",
+      "node/store",
+      "node/hall",
+      "node/yard",
+      "node/shed"
+    ],
+    "edges": [
+      {
+        "a": "node/yard",
+        "b": "node/hall",
+        "class": "walk",
+        "id": "edge/hall-door"
+      },
+      {
+        "a": "node/hall",
+        "b": "node/store",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/store-unbarred"
+          ],
+          "learned": "seen",
+          "opens_from": "a",
+          "shut": "door"
+        },
+        "id": "edge/store-door"
+      },
+      {
+        "a": "node/yard",
+        "b": "node/shed",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/shed-open"
+          ],
+          "learned": "seen"
+        },
+        "id": "edge/shed-gate"
+      }
+    ],
+    "entry": "node/yard",
+    "goal": "node/shed",
+    "nodes": [
+      {
+        "id": "node/yard",
+        "intent": "hub",
+        "note": "The toll house's yard, open to the sky: the hall's doorway on its north side, the shed gate on its south side."
+      },
+      {
+        "id": "node/hall",
+        "intent": "hub",
+        "note": "The keeper's hall: the keeper by his table, the hearth in the corner, and the store's door in the east wall.",
+        "stations": [
+          {
+            "anchor": "anchor/keeper",
+            "kind": "point",
+            "note": "Where the keeper stands, by his table."
+          },
+          {
+            "anchor": "anchor/hearth",
+            "kind": "point",
+            "note": "The hearth in the hall's corner: the rest point."
+          }
+        ]
+      },
+      {
+        "id": "node/store",
+        "intent": "side-room",
+        "note": "The keeper's store behind its door: sacks and barrels, and the padlocked lever that works the shed gate.",
+        "stations": [
+          {
+            "anchor": "anchor/lever",
+            "kind": "point",
+            "note": "The lever on the store's back wall, padlocked to its bracket."
+          }
+        ]
+      },
+      {
+        "id": "node/shed",
+        "intent": "goal-chamber",
+        "note": "The punt shed behind its barred gate, across the yard from the house."
+      }
+    ]
+  },
+  "dsl_version": "0.68.0",
+  "stage": "layout-graph"
+}
