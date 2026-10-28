@@ -26,7 +26,7 @@ HERE = pathlib.Path(__file__).resolve().parent.parent
 DWELLING = [
     {"id": "part/house", "kind": "structure", "use": "the family's house: one long room with the hearth, the table and the beds", "cells": 90, "height": 5},
     {"id": "part/garage", "kind": "structure", "use": "the cart shed against the house's east wall, through a door from the house, its own door onto the back yard", "cells": 20, "height": 5},
-    {"id": "part/front", "kind": "ground", "use": "the front strip between the lane's gate and the house door", "cells": 120},
+    {"id": "part/front", "kind": "ground", "use": "the front strip between the lane's gate and the house door", "cells": 100},
     {"id": "part/back", "kind": "ground", "use": "the back yard: the washing line, the vegetable rows and the shed's door", "cells": 95},
     {"id": "part/bed", "kind": "ground", "use": "a bed of flowers under the front windows, behind a low hedge", "cells": 10, "reached": False},
 ]
@@ -39,7 +39,7 @@ CHAPEL = [
     {"id": "part/chapel", "kind": "structure", "use": "the chapel: one hall under its roof, the altar at the north end", "cells": 90, "height": 6},
 ]
 BYRE = [
-    {"id": "part/byre", "kind": "structure", "use": "the byre: stalls and hay for the cattle, its door onto the pen", "cells": 30, "height": 5},
+    {"id": "part/byre", "kind": "structure", "use": "the byre: stalls and hay for the cattle, its door onto the pen", "cells": 30, "height": 6},
     {"id": "part/pen", "kind": "ground", "use": "the pen round the byre where the cattle stand, fenced from the lane", "cells": 112},
 ]
 PLOTS = [
@@ -48,23 +48,24 @@ PLOTS = [
      [20, 20], {"open": 7}, 4, DWELLING),
     ("forge", "forge on its frontage",
      "The smith's holding: the shop and workroom at the lane's edge, the work yard beside it, the iron store in the yard's corner.",
-     [16, 14], {"open": 7}, 27, FORGE),
+     [16, 14], {"open": 7}, 31, FORGE),
     ("chapel", "chapel that is its plot",
      "The chapel standing alone on its ground: one structure that is the whole of the plot, cut as a sky-open plot of one part.",
-     [9, 11], {"open": 8}, 46, CHAPEL),
+     [9, 11], {"open": 8}, 54, CHAPEL),
     ("chapel-lidded", "chapel under a lid",
      "The same chapel cut the other way: a lidded box with no parts, beside the plot of one structure, so the two spellings stand side by side.",
-     [9, 11], {"clearance": 5}, 58, None),
+     [9, 11], {"clearance": 5}, 70, None),
     ("byre", "byre and its pen",
      "The farm's edge at the lane's end: the byre and the pen round it.",
-     [14, 12], {"open": 6}, 70, BYRE),
+     [14, 12], {"open": 6}, 86, BYRE),
 ]
 # Where each plot's way in stands along its own south face, from its west
 # edge: the dwelling's gate, the forge's shop door, the chapels' doors, the
 # pen's gate.
 MEETS = {"dwelling": 8, "forge": 4, "chapel": 4, "chapel-lidded": 4, "byre": 10}
+CONTACTS = {"dwelling"}
 FORMS = {
-    "dwelling": "the dwelling's front gate, a gap in the hedge onto the front strip",
+    "dwelling": "the dwelling's front, open to the lane along its whole width",
     "forge": "the smith's shop door, on the lane's edge",
     "chapel": "the chapel's west door — the plot of one structure",
     "chapel-lidded": "the lidded chapel's door",
@@ -72,7 +73,7 @@ FORMS = {
 }
 
 LANE_MIN = [3, 40]
-LANE_EXTENT = [88, 5]
+LANE_EXTENT = [102, 5]
 
 
 def doc(stage, content):
@@ -112,7 +113,7 @@ def main():
         "name": "Traveller",
     }]}))
     write("geometry-brief.json", doc("geometry-brief", {"facts": [
-        {"id": "fact/site-span", "note": "Ninety-four blocks east to west: the lane and the field walls at either end.", "unit": "blocks", "value": 94},
+        {"id": "fact/site-span", "note": "A hundred and eight blocks east to west: the lane and the field walls at either end.", "unit": "blocks", "value": 108},
         {"id": "fact/site-depth", "note": "Thirty-two blocks north to south: the holdings north of the lane, the lane, and the green south of it.", "unit": "blocks", "value": 32},
         {"id": "fact/site-height", "note": "Twenty-four blocks from under the lane to the sky.", "unit": "blocks", "value": 24},
     ]}))
@@ -146,9 +147,16 @@ def main():
         box = {"ceiling": ceiling, "extent": extent, "floor": {"datum": "datum/grade"}, "node": f"node/{stem}"}
         if "clearance" in ceiling:
             box["roof"] = {"courses": 2, "eaves": 0}
+        if stem in CONTACTS:
+            # The dwelling's front is open to the lane along its whole width:
+            # an open side, crossed through a contact.
+            box["sides"] = {"south": "open"}
+            seams.append({"at": at, "contact": {"extent": [extent[0], 4]}, "edge": f"edge/{stem}-way",
+                          "face": "north", "form": FORMS[stem], "meets": 0})
+        else:
+            seams.append({"at": at + MEETS[stem], "edge": f"edge/{stem}-way", "face": "north", "form": FORMS[stem],
+                          "meets": MEETS[stem], "opening": "door"})
         boxes.append(box)
-        seams.append({"at": at + MEETS[stem], "edge": f"edge/{stem}-way", "face": "north", "form": FORMS[stem],
-                      "meets": MEETS[stem], "opening": "door"})
     identities = [
         {"cmp": "eq", "fact": "fact/site-span", "measure": {"axis": "x", "of": "region-extent"}},
         {"cmp": "eq", "fact": "fact/site-depth", "measure": {"axis": "z", "of": "region-extent"}},
@@ -161,17 +169,17 @@ def main():
                  "terrain": {"datum": "datum/grade", "kind": "flat"}},
         "identities": identities,
         "lighting": {"fixture": "torch", "min_light": 7},
-        "region": {"extent": [94, 24, 32], "min": [0, 52, 15]},
+        "region": {"extent": [108, 24, 32], "min": [0, 52, 15]},
         "seams": seams,
         "volumes": [
             {"block": "minecraft:mossy_cobblestone", "id": "volume/field-wall-west", "note": "The field wall at the lane's west end.",
-             "region": {"extent": [1, 8, 32], "min": [0, 58, 15]}, "role": "massif"},
+             "region": {"extent": [1, 12, 32], "min": [0, 58, 15]}, "role": "massif"},
             {"block": "minecraft:mossy_cobblestone", "id": "volume/field-wall-east", "note": "The field wall at the east end.",
-             "region": {"extent": [1, 8, 32], "min": [93, 58, 15]}, "role": "massif"},
+             "region": {"extent": [1, 12, 32], "min": [107, 58, 15]}, "role": "massif"},
             {"block": "minecraft:mossy_cobblestone", "id": "volume/field-wall-north", "note": "The field wall behind the holdings.",
-             "region": {"extent": [92, 8, 1], "min": [1, 58, 15]}, "role": "massif"},
+             "region": {"extent": [106, 12, 1], "min": [1, 58, 15]}, "role": "massif"},
             {"block": "minecraft:mossy_cobblestone", "id": "volume/field-wall-south", "note": "The field wall along the south edge of the green.",
-             "region": {"extent": [92, 8, 1], "min": [1, 58, 46]}, "role": "massif"},
+             "region": {"extent": [106, 12, 1], "min": [1, 58, 46]}, "role": "massif"},
         ],
     }))
 

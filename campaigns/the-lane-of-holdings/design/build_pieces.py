@@ -220,15 +220,18 @@ def claim_tops_of(p, roles, region="tops"):
 
 def lane(a):
     """Holding Lane: a way place three wide, a verge on its south side with
-    lamps, low walls on its ring where no door or front meets it."""
+    lamps, walls of the lane's full height on its ring, cut only where a
+    holding's way in meets it: the north ring is the wall every holding shares
+    with the lane, and no wall is low enough to climb onto from the verge."""
     p = Piece(a)
     sx, sy, sz = p.sx, p.sy, p.sz
     p.put((1, 0, 1), (sx - 2, 0, sz - 2), "road")
     p.put((1, 0, sz - 3), (sx - 2, 0, sz - 2), "verge")
+    top = p.alloc["space"][1][1]
     for x in range(sx):
         for z in range(sz):
             if x in (0, sx - 1) or z in (0, sz - 1):
-                p.put((x, 1, z), (x, 2, z), "wall")
+                p.put((x, 1, z), (x, top, z), "wall")
     regions = []
     for s in p.alloc["seams"]:
         stem = s["edge"].split("/", 1)[1]
@@ -268,7 +271,7 @@ def lane(a):
         "spaces": {"lane": {"envelope": "open"}},
     }
     marks = [("spawn", (2, 1, 2), "east", "entry"), ("node-lane", (4, 1, 2), "east")]
-    return program("the-lane-of-holdings-lane", p, palette, contract, marks, ("east", "north", "south", "west"))
+    return program("the-lane-of-holdings-lane", p, palette, contract, marks, ("east", "north", "south", "up", "west"))
 
 
 
@@ -314,7 +317,7 @@ class Plot(Piece):
         b = b or (self.w - 1, self.d - 1)
         self.rect(a, b, -1, -1, role)
 
-    def ring(self, role, height=2):
+    def ring(self, role, height=3):
         """`role` on every ring cell this place owns, `height` courses high."""
         for x in range(self.sx):
             for z in range(self.sz):
@@ -334,7 +337,11 @@ class Plot(Piece):
                 self.rect((px, pz), (px, pz), 0, height - 1, wall if edge else None)
                 self.cell_put(px, height, pz, lid)
                 if parapet and edge:
-                    self.cell_put(px, height + 1, pz, parapet)
+                    # Two courses: the roof inside it is closed, and nobody
+                    # leaves it for a neighbour's ground.
+                    for c in (height + 1, height + 2):
+                        if c < self.air:
+                            self.cell_put(px, c, pz, parapet)
         return [(px, pz) for px in range(x0 + 1, x1) for pz in range(z0 + 1, z1)]
 
     def door_in(self, px, pz, facing, kind="oak", hinge="left"):
@@ -342,8 +349,8 @@ class Plot(Piece):
         self.cell_put(px, 1, pz, ("door-top", facing, kind, hinge))
 
     def lamp(self, px, pz):
-        self.cell_put(px, 0, pz, "post")
-        self.cell_put(px, 1, pz, "lantern")
+        """A lamp set flush in the ground: light with nothing to climb."""
+        self.cell_put(px, -1, pz, "glow")
 
     def seam_cols(self, edge):
         (a, b) = self.seam(edge)["cells"]
@@ -441,24 +448,24 @@ def dwelling(a):
     p.cell_put(15, 3, 11, "hanging")
     # The front strip: a path from the gate to the door; the flower bed under
     # the windows behind a low hedge.
+    # The front is open to the lane along its whole width: its last row is
+    # the crossing, and a path runs from it to the door.
     gate_a, gate_b = p.seam_cols("edge/dwelling-way")
-    gx, gz = gate_a[0] - p.lo[0], gate_a[2] - p.lo[2]
-    p.floor("path", (6, 14), (gx, 19))
     p.floor("path", (6, 14), (6, 19))
-    bed = [(px, pz) for px in range(14, 19) for pz in (14, 15)]
+    bed = [(px, pz) for px in range(8, 13) for pz in (14, 15)]
     for i, (px, pz) in enumerate(bed):
         p.cell_put(px, 0, pz, ("poppy", "dandelion", "cornflower")[i % 3])
-    p.rect((14, 16), (18, 16), 0, 0, "low-hedge")
+    p.rect((8, 16), (12, 16), 0, 0, "low-hedge")
     p.lamp(3, 17)
-    p.lamp(12, 18)
+    p.lamp(12, 17)
     # The side paths, west and east of the house and the shed.
     p.floor("gravel", (0, 0), (0, 19))
     p.floor("gravel", (19, 0), (19, 19))
     # The back yard: the washing line's posts, the vegetable rows, a lamp.
     p.rect((3, 1), (3, 1), 0, 1, "fence")
     p.rect((8, 1), (8, 1), 0, 1, "fence")
-    p.rect((14, 4), (17, 4), 0, 0, "pumpkin")
-    p.rect((14, 6), (17, 6), 0, 0, "melon")
+    p.rect((13, 4), (16, 4), 0, 0, "pumpkin")
+    p.rect((13, 6), (16, 6), 0, 0, "melon")
     p.lamp(11, 1)
     p.lamp(18, 1)
     # Regions, the narrow ones first.
@@ -476,8 +483,8 @@ def dwelling(a):
     p.claim_rect((19, 8), (19, 8), 0, 1, "east-gap", air_only=False)
     p.claim_cols(house, 0, 3, "house")
     p.claim_cols(shed, 0, 3, "shed")
-    front = [(x, z) for x in range(1, 19) for z in range(14, 20) if (x, z) not in bed and not (z == 16 and x >= 14)]
-    front += [(0, z) for z in range(4, 20)] + [(19, z) for z in range(9, 20)]
+    front = [(x, z) for x in range(1, 19) for z in range(14, 19) if (x, z) not in bed and not (z == 16 and 8 <= x <= 12)]
+    front += [(0, z) for z in range(4, 19)] + [(19, z) for z in range(9, 19)]
     p.claim_cols(front, 0, p.air - 1, "front")
     back = [(x, z) for x in range(0, 20) for z in range(0, 3)] + [(x, z) for x in range(13, 20) for z in range(3, 8)]
     p.claim_cols(back, 0, p.air - 1, "back")
@@ -488,7 +495,7 @@ def dwelling(a):
         "hedge": HEDGE, "low-hedge": HEDGE,
         "wall": "minecraft:stripped_oak_log[axis=y]",
         "lid": "minecraft:spruce_planks",
-        "parapet": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
+        "parapet": "minecraft:spruce_planks",
         "planks": "minecraft:oak_planks",
         "shed-floor": "minecraft:coarse_dirt",
         "brick": "minecraft:bricks",
@@ -533,7 +540,7 @@ def dwelling(a):
         },
     }
     marks = [("node-dwelling", p.at(4, 0, 18), "north")]
-    return program("the-lane-of-holdings-dwelling", p, palette, contract, marks, ("east", "north", "west"))
+    return program("the-lane-of-holdings-dwelling", p, palette, contract, marks, ("east", "north", "up", "west"))
 
 
 def forge(a):
@@ -572,13 +579,13 @@ def forge(a):
         p.cell_put(x, 3, z, "hanging")
     # The iron store in the yard's north-east corner: walls round four cells,
     # no door; seen, never entered.
-    store = p.building((12, 0), (15, 3), 4, wall="stone", parapet=None)
+    store = p.building((12, 0), (15, 3), 4, wall="stone", parapet="parapet")
     p.floor("stone-floor", (13, 1), (14, 2))
     p.cell_put(13, 0, 1, "iron")
     # The work yard: the grindstone, the quench trough, the wood stack, lamps.
     p.cell_put(10, 0, 7, "grindstone")
     p.cell_put(10, 0, 10, "quench")
-    p.rect((14, 11), (15, 12), 0, 1, "logs")
+    p.rect((11, 11), (12, 12), 0, 0, "logs")
     p.lamp(12, 8)
     p.lamp(4, 1)
     p.lamp(15, 5)
@@ -601,7 +608,7 @@ def forge(a):
         "stone": "minecraft:cobblestone",
         "stone-floor": "minecraft:stone_bricks",
         "lid": "minecraft:spruce_planks",
-        "parapet": "minecraft:cobblestone_slab[type=bottom,waterlogged=false]",
+        "parapet": "minecraft:cobblestone",
         "brick": "minecraft:bricks",
         "fire": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
         "anvil": "minecraft:anvil[facing=east]",
@@ -611,6 +618,7 @@ def forge(a):
         "rack": "minecraft:iron_bars[east=true,north=false,south=false,waterlogged=false,west=true]",
         "hanging": HANGING,
         "iron": "minecraft:iron_block",
+        "glow": "minecraft:sea_lantern",
         "grindstone": "minecraft:grindstone[face=floor,facing=south]",
         "logs": "minecraft:oak_log[axis=x]",
         "post": POST, "lantern": LANTERN,
@@ -636,7 +644,7 @@ def forge(a):
         },
     }
     marks = [("node-forge", p.at(4, 0, 11), "north")]
-    return program("the-lane-of-holdings-forge", p, palette, contract, marks, ("east", "north", "west"))
+    return program("the-lane-of-holdings-forge", p, palette, contract, marks, ("east", "north", "up", "west"))
 
 
 CHAPEL_PALETTE = {
@@ -649,7 +657,7 @@ CHAPEL_PALETTE = {
     "hanging": HANGING,
     "pane-z": PANE_Z,
     "pane-x": PANE_X,
-    "parapet": "minecraft:stone_brick_slab[type=bottom,waterlogged=false]",
+    "parapet-wall": "minecraft:stone_bricks",
 }
 
 
@@ -698,6 +706,14 @@ def chapel(a):
             y = p.lo[1] + h
             if (x, y, z) not in p.fixed and z <= p.lo[2] + p.d - 1:
                 p.block[(x, y, z)] = "lid"
+    # A parapet of two courses round the roof: nobody leaves it.
+    for x in range(p.sx):
+        for z in range(p.lo[2] + p.d):
+            if x in (0, p.sx - 1) or z in (0, p.lo[2] + p.d - 1):
+                for c in (h + 1, h + 2):
+                    y = p.lo[1] + c
+                    if (x, y, z) not in p.fixed:
+                        p.block[(x, y, z)] = "parapet-wall"
     # Tall windows in the side walls (the ring), a window either side of the door.
     for pz in (2, 5, 8):
         p.put((0, p.lo[1] + 1, p.lo[2] + pz), (0, p.lo[1] + 3, p.lo[2] + pz), "pane-z")
@@ -720,7 +736,7 @@ def chapel(a):
         "spaces": {"hall": {"envelope": "enclosed", "part": "part/chapel"}},
     }
     marks = [("node-chapel", p.at(dx, 0, dz - 2), "north")]
-    return program("the-lane-of-holdings-chapel", p, palette, contract, marks, ("east", "north", "west"))
+    return program("the-lane-of-holdings-chapel", p, palette, contract, marks, ("east", "north", "up", "west"))
 
 
 def chapel_lidded(a):
@@ -734,7 +750,7 @@ def chapel_lidded(a):
         for z in range(sz):
             if x in (0, sx - 1) or z in (0, sz - 1):
                 p.put((x, 1, z), (x, lid - 1, z), "wall")
-                p.put((x, lid + 1, z), (x, lid + 1, z), "parapet")
+                p.put((x, lid + 1, z), (x, lid + 2, z), "parapet-wall")
     p.put((0, lid, 0), (sx - 1, lid, sz - 1), "lid")
     door_a, door_b = p.seam_cols("edge/chapel-lidded-way")
     p.put(door_a, door_a, ("door", "south", "dark_oak", "left"))
@@ -762,16 +778,17 @@ def chapel_lidded(a):
     dx = door_a[0] - p.lo[0]
     marks = [("node-chapel-lidded", p.at(dx, 0, p.d - 3), "north")]
     return program("the-lane-of-holdings-chapel-lidded", p, palette, contract, marks,
-                   ("east", "north", "south", "west"))
+                   ("east", "north", "south", "up", "west"))
 
 
 def byre(a):
     p = Plot(a)
     p.floor("pen-floor")
     p.ring("hedge")
-    # The byre in the pen's north-west corner: walls px 0..7, pz 0..6 of four
+    # The byre in the pen's north-west corner: walls px 0..7, pz 0..6 of five
     # courses under a lid, its door in the south wall onto the pen.
-    inside = p.building((0, 0), (7, 6), 4, wall="planks", parapet=None)
+    # Its lid on the frame's top course: no roof inside the box to stand on.
+    inside = p.building((0, 0), (7, 6), p.air - 1, wall="planks", parapet=None)
     p.floor("straw", (1, 1), (6, 5))
     p.door_in(4, 6, "south", kind="spruce")
     p.rect((2, 6), (2, 6), 1, 1, "pane-x")
@@ -780,19 +797,19 @@ def byre(a):
     p.cell_put(6, 0, 1, "trough")
     p.rect((4, 1), (4, 3), 0, 0, "stall")
     for (x, z) in ((3, 3), (6, 4)):
-        p.cell_put(x, 3, z, "hanging")
+        p.cell_put(x, p.air - 2, z, "hanging")
     # The pen: hay scattered, the trough, the lamps.
-    p.rect((11, 1), (12, 1), 0, 1, "hay")
-    p.cell_put(12, 0, 4, "trough")
-    p.lamp(9, 3)
+    p.rect((8, 9), (9, 9), 0, 0, "hay")
+    p.cell_put(10, 0, 4, "trough")
+    p.lamp(9, 1)
     p.lamp(3, 9)
-    p.lamp(12, 8)
+    p.lamp(12, 9)
     gate_a, gate_b = p.seam_cols("edge/byre-way")
     p.claim_box(gate_a, gate_b, "byre-way")
     p.claim_rect((4, 6), (4, 6), 0, 1, "byre-door", air_only=False)
     ring_tops(p)
     roof_and_tops(p, [], ("hay", "lantern", "stall"))
-    p.claim_cols(inside, 0, 3, "byre")
+    p.claim_cols(inside, 0, p.air - 2, "byre")
     foot = {(x, z) for x in range(0, 8) for z in range(0, 7)}
     pen = [(x, z) for x in range(14) for z in range(12) if (x, z) not in foot]
     p.claim_cols(pen, 0, p.air - 1, "pen")
@@ -806,6 +823,7 @@ def byre(a):
         "hay": "minecraft:hay_block[axis=y]",
         "trough": "minecraft:water_cauldron[level=3]",
         "stall": FENCE,
+        "glow": "minecraft:sea_lantern",
         "hanging": HANGING,
         "post": POST, "lantern": LANTERN,
         "pane-x": PANE_X,
@@ -826,7 +844,7 @@ def byre(a):
         },
     }
     marks = [("node-byre", p.at(10, 0, 7), "north")]
-    return program("the-lane-of-holdings-byre", p, palette, contract, marks, ("east", "north", "west"))
+    return program("the-lane-of-holdings-byre", p, palette, contract, marks, ("east", "north", "up", "west"))
 
 
 def main():
