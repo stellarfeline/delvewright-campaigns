@@ -1008,10 +1008,6 @@ class Plot(Place):
 
     def lay_parts(self, parts):
         self.model = type(self).MODEL
-        # a side a seam stands on is answered by the seam's opening; its ring
-        # over the neighbour's void is the lot's own air
-        seam_faces = {s["seam"]["face"] for s in self.seams}
-        self.sides = [s for s in self.sides if s["face"] not in seam_faces]
         by_stem = {p["id"].removeprefix("part/"): p for p in parts}
         self.parts = []
         self.col_part = {}
@@ -1045,7 +1041,8 @@ class Plot(Place):
             # lot's own air, the room's
             lo, hi = self.space
             inner = (min(max(x, lo[0]), hi[0]), y, min(max(z, lo[2]), hi[2]))
-            if not self.walkable(self.cell(*inner)):
+            ik = self.cell(*inner)
+            if not (self.walkable(ik) or (ik[0] == "claim" and ik[1].endswith("-way"))):
                 return ("claim", "room", None)
         if not self.in_space_xz(x, z):
             if kind == ("fill", "floor"):
