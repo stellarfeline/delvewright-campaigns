@@ -24,7 +24,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, run  # noqa: E402
+from starter import Model, run, stairs, trapdoor  # noqa: E402
 
 
 def hsh(*a):
@@ -34,12 +34,8 @@ def hsh(*a):
     return h
 
 
-def st(name, facing, half="bottom"):
-    return f"minecraft:{name}_stairs[facing={facing},half={half},shape=straight,waterlogged=false]"
 
 
-def td(wood, facing, half="bottom", open_=False):
-    return f"minecraft:{wood}_trapdoor[facing={facing},half={half},open={str(open_).lower()},powered=false,waterlogged=false]"
 
 
 def close_edge_gaps(m, X0, X1, Z0, Z1, role):
@@ -68,7 +64,7 @@ PALETTE = {
     "post": "minecraft:spruce_log[axis=y]",
     "beam_x": "minecraft:spruce_log[axis=x]",
     "boards": "minecraft:dark_oak_planks",
-    "roof_n": st("deepslate_tile", "north"), "roof_s": st("deepslate_tile", "south"),
+    "roof_n": stairs("deepslate_tile", "north"), "roof_s": stairs("deepslate_tile", "south"),
     "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
     "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
     # the boat
@@ -76,16 +72,16 @@ PALETTE = {
     "keel": "minecraft:stripped_oak_log[axis=x]",
     "stem": "minecraft:stripped_oak_log[axis=y]",
     "stem_tip": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "bilge_n": st("oak", "south", "top"),
-    "bilge_s": st("oak", "north", "top"),
+    "bilge_n": stairs("oak", "south", "top"),
+    "bilge_s": stairs("oak", "north", "top"),
     "strake": "minecraft:oak_planks",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "bow_n": st("oak", "south", "bottom"),
-    "bow_s": st("oak", "north", "bottom"),
+    "bow_n": stairs("oak", "south", "bottom"),
+    "bow_s": stairs("oak", "north", "bottom"),
     "transom": "minecraft:oak_planks",
-    "transom_rake": st("oak", "east", "top"),
-    "transom_top": st("oak", "west", "bottom"),
+    "transom_rake": stairs("oak", "east", "top"),
+    "transom_top": stairs("oak", "west", "bottom"),
     # the shed's work
     "bench": "minecraft:crafting_table",
     "vice": "minecraft:grindstone[face=floor,facing=south]",
@@ -101,7 +97,7 @@ PALETTE = {
     "timber_z": "minecraft:stripped_spruce_log[axis=z]",
     "timber_x": "minecraft:spruce_log[axis=x]",
     "winch": "minecraft:stripped_oak_log[axis=y]",
-    "winch_bar": td("oak", "north", "top"),
+    "winch_bar": trapdoor("oak", "north", "top"),
     "pot_a": "minecraft:potted_cornflower",
     "tuft": "minecraft:short_grass", "fern": "minecraft:fern",
 }
@@ -138,18 +134,8 @@ def build(place):
         m.box(x, x, 1, PLATE - 1, sz1, sz1, "post")
     m.box(sx0, sx1, PLATE, PLATE, sz1, sz1, "beam_x")
     m.box(sx1, sx1, 2, 3, 3, 3, "pane")
-    # the roof: ridge along x, its north eave clipped at the plot's edge
-    lo_z, hi_z, k = sz0 - 1, sz1 + 1, 0
-    while lo_z <= hi_z:
-        y = PLATE + 1 + k
-        if lo_z == hi_z:
-            m.box(sx0 - 1, sx1 + 1, y, y, lo_z, lo_z, "ridge")
-        else:
-            m.box(sx0 - 1, sx1 + 1, y, y, lo_z, lo_z, "roof_s")
-            m.box(sx0 - 1, sx1 + 1, y, y, hi_z, hi_z, "roof_n")
-            for x in (sx0, sx1):
-                m.box(x, x, y, y, max(lo_z + 1, sz0), min(hi_z - 1, sz1), "boards")
-        lo_z, hi_z, k = lo_z + 1, hi_z - 1, k + 1
+    # the roof: ridge along x, its eave level with the wall heads, the north eave clipped at the plot's edge
+    m.roof(sx0, sx1, sz0, sz1, PLATE, "x", "deepslate_tile", fill="boards", ridge="ridge")
     for c in [c for c in list(m.v) if c[2] < Z0 or (c[0] < X0 and c[1] > 0)]:
         del m.v[c]
     # inside: the bench and vice, the steam box over its fire, tar, oars, plank stock

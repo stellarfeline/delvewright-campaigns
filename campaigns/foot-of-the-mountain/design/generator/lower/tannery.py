@@ -23,7 +23,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, run  # noqa: E402
+from starter import Model, run, stairs, trapdoor  # noqa: E402
 
 
 def hsh(*a):
@@ -33,43 +33,12 @@ def hsh(*a):
     return h
 
 
-def st(name, facing, half="bottom"):
-    return f"minecraft:{name}_stairs[facing={facing},half={half},shape=straight,waterlogged=false]"
 
 
-def door(m, x, y, z, block, facing, hinge="left"):
-    for dy, half in ((0, "lower"), (1, "upper")):
-        m.set(x, y + dy, z, f"{block}[facing={facing},half={half},hinge={hinge},open=false,powered=false]")
 
 
-def gable_x(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
-    lo, hi, k = z0 - ov, z1 + ov, 0
-    while lo <= hi:
-        y = y0 + k
-        if lo == hi:
-            m.box(x0 - ov, x1 + ov, y, y, lo, lo, ridge)
-        else:
-            m.box(x0 - ov, x1 + ov, y, y, lo, lo, stair + "_s")
-            m.box(x0 - ov, x1 + ov, y, y, hi, hi, stair + "_n")
-            if fill and lo + 1 <= hi - 1:
-                for x in (x0, x1):
-                    m.box(x, x, y, y, max(lo + 1, z0), min(hi - 1, z1), fill)
-        lo, hi, k = lo + 1, hi - 1, k + 1
 
 
-def gable_z(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
-    lo, hi, k = x0 - ov, x1 + ov, 0
-    while lo <= hi:
-        y = y0 + k
-        if lo == hi:
-            m.box(lo, lo, y, y, z0 - ov, z1 + ov, ridge)
-        else:
-            m.box(lo, lo, y, y, z0 - ov, z1 + ov, stair + "_e")
-            m.box(hi, hi, y, y, z0 - ov, z1 + ov, stair + "_w")
-            if fill and lo + 1 <= hi - 1:
-                for z in (z0, z1):
-                    m.box(max(lo + 1, x0), min(hi - 1, x1), y, y, z, z, fill)
-        lo, hi, k = lo + 1, hi - 1, k + 1
 
 
 PALETTE = {
@@ -84,7 +53,7 @@ PALETTE = {
     "beam_x": "minecraft:oak_log[axis=x]",
     "beam_z": "minecraft:oak_log[axis=z]",
     "back": "minecraft:dark_oak_planks",
-    "thatch_n": st("dark_oak", "north"), "thatch_s": st("dark_oak", "south"),
+    "thatch_n": stairs("dark_oak", "north"), "thatch_s": stairs("dark_oak", "south"),
     "thatch_ridge": "minecraft:dark_oak_slab[type=bottom,waterlogged=false]",
     "rack": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "rail": "minecraft:spruce_slab[type=top,waterlogged=false]",
@@ -110,7 +79,7 @@ PALETTE = {
     "quoin": "minecraft:tuff_bricks",
     "boards": "minecraft:spruce_planks",
     "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "roof_e": st("deepslate_tile", "east"), "roof_w": st("deepslate_tile", "west"),
+    "roof_e": stairs("deepslate_tile", "east"), "roof_w": stairs("deepslate_tile", "west"),
     "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
     "chimney": "minecraft:bricks",
     "hearth": "minecraft:bricks",
@@ -118,7 +87,7 @@ PALETTE = {
     "bed_foot": "minecraft:brown_bed[facing=north,occupied=false,part=foot]",
     "bed_head": "minecraft:brown_bed[facing=north,occupied=false,part=head]",
     "table": "minecraft:spruce_planks",
-    "chair": st("spruce", "east"),
+    "chair": stairs("spruce", "east"),
     "rug": "minecraft:brown_carpet",
     # life
     "bush": "minecraft:oak_leaves[distance=1,persistent=true,waterlogged=false]",
@@ -158,7 +127,7 @@ def build(place):
     m.box(sx0, sx1, PLATE, PLATE, sz0, sz0, "beam_x")
     m.box(sx0, sx1, PLATE, PLATE, sz1, sz1, "beam_x")
     m.box(sx0 + 1, sx1 - 1, 1, 2, sz0, sz0, "back")
-    gable_x(m, sx0, sx1, sz0, sz1, PLATE, "thatch", "thatch_ridge", fill="back")
+    m.roof(sx0, sx1, sz0, sz1, PLATE, "x", "dark_oak", fill="back", ridge="thatch_ridge")
     m.clear(sx0, sx0, 1, PLATE - 1, sz0 + 1, sz1 - 1)      # the street end open
     # racks of hides down the shed: a rail on posts, hides hung from it
     for x in range(sx0 + 1, sx1, 2):
@@ -196,11 +165,11 @@ def build(place):
                 if x in (cx0, cx1) or z in (cz0, cz1):
                     corner = x in (cx0, cx1) and z in (cz0, cz1)
                     m.set(x, y, z, "quoin" if corner and y % 2 else "rubble")
-    door(m, cx0, 1, 5, "minecraft:spruce_door", "east")
+    m.door(cx0, 1, 5, "spruce", "east")
     m.box(cx0, cx0, 2, 3, 3, 3, "pane")
     m.box(19, 19, 2, 3, cz1, cz1, "pane")
     m.box(cx1, cx1, 2, 3, 4, 5, "pane")
-    gable_z(m, cx0, cx1, cz0, cz1, PLATE + 1, "roof", "ridge", fill="rubble")
+    m.roof(cx0, cx1, cz0, cz1, PLATE, "z", "deepslate_tile", fill="rubble", ridge="ridge")
     m.box(19, 19, 1, 10, cz0, cz0, "chimney")
     m.set(19, 1, cz0 + 1, "hearth")
     m.set(19, 2, cz0 + 1, "fire")

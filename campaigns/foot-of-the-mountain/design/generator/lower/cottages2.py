@@ -24,7 +24,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, run  # noqa: E402
+from starter import Model, run, stairs, trapdoor  # noqa: E402
 
 
 def hsh(*a):
@@ -34,28 +34,10 @@ def hsh(*a):
     return h
 
 
-def st(name, facing, half="bottom"):
-    return f"minecraft:{name}_stairs[facing={facing},half={half},shape=straight,waterlogged=false]"
 
 
-def door(m, x, y, z, block, facing, hinge="left"):
-    for dy, half in ((0, "lower"), (1, "upper")):
-        m.set(x, y + dy, z, f"{block}[facing={facing},half={half},hinge={hinge},open=false,powered=false]")
 
 
-def gable_x(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
-    lo, hi, k = z0 - ov, z1 + ov, 0
-    while lo <= hi:
-        y = y0 + k
-        if lo == hi:
-            m.box(x0 - ov, x1 + ov, y, y, lo, lo, ridge)
-        else:
-            m.box(x0 - ov, x1 + ov, y, y, lo, lo, stair + "_s")
-            m.box(x0 - ov, x1 + ov, y, y, hi, hi, stair + "_n")
-            if fill and lo + 1 <= hi - 1:
-                for x in (x0, x1):
-                    m.box(x, x, y, y, max(lo + 1, z0), min(hi - 1, z1), fill)
-        lo, hi, k = lo + 1, hi - 1, k + 1
 
 
 def close_edge_gaps(m, X0, X1, Z0, Z1, role):
@@ -90,14 +72,14 @@ PALETTE = {
     "quoin": "minecraft:tuff_bricks",
     "plinth": "minecraft:cobblestone",
     "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "roof_n": st("deepslate_tile", "north"), "roof_s": st("deepslate_tile", "south"),
+    "roof_n": stairs("deepslate_tile", "north"), "roof_s": stairs("deepslate_tile", "south"),
     "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
     "chimney": "minecraft:bricks",
     "hearth": "minecraft:bricks",
     "fire": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
     "ladder": "minecraft:ladder[facing=south,waterlogged=false]",
     "table": "minecraft:spruce_planks",
-    "chair_e": st("spruce", "east"), "chair_w": st("spruce", "west"),
+    "chair_e": stairs("spruce", "east"), "chair_w": stairs("spruce", "west"),
     "shelf": "minecraft:bookshelf",
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
@@ -151,12 +133,12 @@ def cottage(m, box, frame, hearth_east, bed, rug, door_block):
     ox = cx + 1                                     # the column beside the door
     gx = x1 if hearth_east else x0                  # the hearth's gable wall
     hz = z0 + 3                                     # the hearth's row
-    door(m, cx, 1, z0, door_block, "south")
+    m.door(cx, 1, z0, door_block, "south")
     m.box(hx, hx, 2, 3, z0, z0, "pane")
     m.box(ox, ox, 2, 3, z0, z0, "pane")
     m.box(cx, ox, 2, 3, z1, z1, "pane")
     m.box(gx, gx, LOFT + 1, LOFT + 2, z1 - 1, z1 - 1, "pane")
-    gable_x(m, x0, x1, z0, z1, TOP + 1, "roof", "ridge", fill=wall)
+    m.roof(x0, x1, z0, z1, TOP, "x", "deepslate_tile", fill=wall, ridge="ridge")
     # the hearth on the gable wall under the loft, the chimney through the roof
     m.box(gx, gx, 1, TOP + 6, hz, hz, "chimney")
     m.set(hx, 1, hz, "hearth")
@@ -193,8 +175,8 @@ def build(place):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
     m.box(X0, X1, 0, 0, Z0, Z0 + 1, "path")
-    cottage(m, A, True, False, "bed_a", "rug_a", "minecraft:spruce_door")
-    cottage(m, B, False, True, "bed_b", "rug_b", "minecraft:oak_door")
+    cottage(m, A, True, False, "bed_a", "rug_a", "spruce")
+    cottage(m, B, False, True, "bed_b", "rug_b", "oak")
     # ---------- the front gardens: a path to each door, flower beds, a low hedge
     for box in (A, B):
         x0, x1, z0, z1 = box
