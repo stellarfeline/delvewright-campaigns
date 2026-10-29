@@ -75,7 +75,6 @@ def build(a):
     top = m.gable_roof(HX0, HX1, HZ0, HZ1, 5, "z", ROOF, fill=PLASTER)
     for y in range(6, top):
         m.set(6, y, HZ0, POST)
-    m.set(6, 7, HZ0, GLASS) if top > 8 else None
     # the shop front to the lane: the door, a window with pots on the sill
     door2(m, 7, HZ0, "minecraft:oak", "south")
     m.set(7, 3, HZ0, PLASTER)
@@ -127,10 +126,10 @@ def build(a):
     for y in range(5, 10):
         m.set(KX0 + 1, y, KZ0 + 1, "kiln")
     # the lean-to over the stoke side, its wood stacked under it
-    for z in range(KZ0 - 1, KZ1 + 2):
+    for z in range(KZ0 - 2, KZ1 + 3):
         m.set(11, 4, z, BEAM_Z)
         m.set(11, 5, z, stairs(ROOF, "east"))
-    for z in (KZ0 - 1, KZ1 + 1):
+    for z in (KZ0 - 2, KZ1 + 2):
         for y in range(1, 4):
             m.set(11, y, z, POST)
         m.set(11, 4, z, POST)
