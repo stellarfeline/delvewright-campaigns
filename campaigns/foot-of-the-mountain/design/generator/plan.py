@@ -597,7 +597,7 @@ STRATA = [
     {"when": {"y_min": 66, "y_max": 104, "patch": P(26, 470, 24)},
      "surface": "minecraft:grass_block", "below": "minecraft:dirt",
      "trees": {"per_mille": 55, "log": "minecraft:oak_log",
-               "leaves": "minecraft:oak_leaves[persistent=true]", "height": [4, 6]}},
+               "leaves": "minecraft:oak_leaves[persistent=true]", "height": [5, 7]}},
     {"when": {"y_min": 66, "patch": P(22, 620, 25)},
      "surface": "minecraft:grass_block", "below": "minecraft:dirt",
      "trees": {"per_mille": 30, "log": "minecraft:birch_log",
