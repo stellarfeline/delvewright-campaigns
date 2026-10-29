@@ -138,7 +138,7 @@ def main():
             "node": "node/castle",
         }, {
             "ceiling": {"open": 6},
-            "extent": [ROAD_W + 4, ROAD_L],
+            "extent": [ROAD_W, ROAD_L],
             "floor": {"datum": "datum/grade"},
             "node": "node/road",
             "way": {"axis": "z", "clear": ROAD_W},
@@ -150,7 +150,7 @@ def main():
                         "measure": {"axis": "x", "node": "node/castle", "of": "box-extent"}}],
         "lighting": {"fixture": "lantern", "min_light": 7},
         "region": {"extent": REGION, "min": REGION_MIN},
-        "seams": [{"at": ROAD_X - 1, "contact": {"extent": [ROAD_W, 3]}, "edge": "edge/road-to-gate", "face": "north",
+        "seams": [{"at": ROAD_X - 1, "contact": {"extent": [ROAD_W, 6]}, "edge": "edge/road-to-gate", "face": "north",
                    "form": "Doune's approach road running on, level, onto the hilltop road: five wide, no wall across it"}],
     }))
     anchors = {a: a for a in used}

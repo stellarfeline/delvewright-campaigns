@@ -21,7 +21,7 @@ CUT = 4          # Doune courses under the frame
 FIXED = 4        # the ring's fixed-ground courses (frame y0..3 = Doune y4..7)
 X, Y, Z = bc.X, bc.Y, bc.Z
 ROAD_X, ROAD_W = 75, 5   # Doune's approach road where it leaves the plot's north edge
-MOUTH_H = 3              # the contact's height over the walk plane
+MOUTH_H = 6              # the contact's height over the walk plane: the road place's open courses
 
 
 # The three places Doune's geometry lets a body into and not out of (DW0921),
@@ -38,6 +38,11 @@ for _z in (30, 31):
     for _y in (45, 46, 47):
         FIXES[(91, _y, _z)] = "wall"
 FIXES[(50, 8, 62)] = "yard/well_shaft"
+# Two posts flank Doune's approach road where it leaves the plot, so the plot's
+# open north edge meets the road place only across the road's own width.
+for _y in range(8, 14):
+    FIXES[(ROAD_X - 1, _y, 0)] = "wall"
+    FIXES[(ROAD_X + ROAD_W, _y, 0)] = "wall"
 # The two names the site plan owes this place, marked beside Doune's own:
 # where the party spawns (a step behind Doune's arrival, facing the castle) and
 # the place's own name (in the courtyard, beside the guide's stop).
