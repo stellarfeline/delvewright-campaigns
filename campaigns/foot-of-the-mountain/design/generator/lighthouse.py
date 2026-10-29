@@ -807,6 +807,12 @@ PALETTE = {
     "mullion": "minecraft:polished_deepslate",
     "lamp_floor": "minecraft:polished_andesite",
     "great_lamp": "minecraft:sea_lantern",
+    "newel_lamp": "minecraft:sea_lantern",
+    "plinth_ring": "minecraft:polished_andesite",
+    "cone_n": "minecraft:deepslate_tile_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "cone_s": "minecraft:deepslate_tile_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
+    "cone_e": "minecraft:deepslate_tile_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "cone_w": "minecraft:deepslate_tile_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
     "rail": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "gallery": "minecraft:polished_andesite_slab[type=top,waterlogged=false]",
     "cap": "minecraft:deepslate_tiles",
@@ -854,16 +860,6 @@ PALETTE = {
     "daisy": "minecraft:oxeye_daisy",
 }
 
-T0, T1 = 9, 18               # the tower's outer square, both axes (x and z)
-CUT = 2                      # the octagon's corner cut, outside
-IN0, IN1 = T0 + 1, T1 - 1    # the interior square
-NEW0, NEW1 = IN0 + 2, IN1 - 2   # the solid newel the stair turns round
-LAMP_FLOOR = 24              # the lantern room's floor course
-LAMP_TOP = 28                # the last glazed course
-COTTAGE = (2, 14, 2, 8)      # walls inclusive (x0, x1, z0, z1)
-C_TOP = 5                    # the cottage's wall head
-
-
 class Model:
     def __init__(self):
         self.v = {}
@@ -882,55 +878,168 @@ class Model:
         return self.v.get((x, y, z))
 
 
-def octagon(x, z, a0, a1, cut):
-    """Inside the octagon on the square [a0..a1] with corners cut `cut` cells deep."""
-    if not (a0 <= x <= a1 and a0 <= z <= a1):
-        return False
-    dx = min(x - a0, a1 - x)
-    dz = min(z - a0, a1 - z)
-    return dx + dz >= cut
+CX = CZ = 13.5               # the tower's axis, between four cells
+R_BASE, R_TOP = 5.25, 4.1    # the shaft's outer radius at its foot and at its head: it tapers
+R_IN = 2.25                  # the shaft's inside: the newel and the stair's lane round it
+R_PART = 4.25                # the tower's claimed columns: its inside and the wall's inner half
+LAMP_FLOOR = 26              # the lantern room's floor course, the gallery's walk
+LAMP_TOP = 30                # the last glazed course
+R_LAMP = 3.4                 # the lantern room's polygon
+R_GALLERY = 5.6              # the gallery's outer edge
+COTTAGE = (2, 14, 2, 8)      # walls inclusive (x0, x1, z0, z1)
+C_TOP = 5                    # the cottage's wall head
+# the stair's lane: the ring of twelve cells round the 2x2 newel, clockwise from the north-west
+RING = [(12, 12), (13, 12), (14, 12), (15, 12), (15, 13), (15, 14), (15, 15), (14, 15), (13, 15),
+        (12, 15), (12, 14), (12, 13)]
+RING0 = 3                    # the ring cell the first step stands on
+NEWEL = [(13, 13), (14, 13), (13, 14), (14, 14)]
+FACING = {(1, 0): "e", (-1, 0): "w", (0, 1): "s", (0, -1): "n"}
 
 
-def tower_wall(x, z):
-    return octagon(x, z, T0, T1, CUT) and not octagon(x, z, IN0, IN1, CUT - 1)
+def dist(x, z):
+    return ((x - CX) ** 2 + (z - CZ) ** 2) ** 0.5
+
+
+def r_at(y):
+    """The shaft's outer radius at course y."""
+    if y <= 3:
+        return R_BASE
+    t = min(1.0, (y - 3) / (LAMP_FLOOR - 4))
+    return R_BASE + (R_TOP - R_BASE) * t
+
+
+def tower_wall(x, z, y=1):
+    return R_IN < dist(x, z) <= r_at(y)
 
 
 def tower_inside(x, z):
-    return octagon(x, z, IN0, IN1, CUT - 1)
+    return dist(x, z) <= R_IN
 
 
 def stair_path():
-    """The stair's cells, bottom to top: (x, z, y, role) for every step and landing.
-
-    Four flights a revolution, each two cells wide and four steps long, up the
-    lane between the wall and the newel; a 2x2 landing at every corner; each
-    flight climbs four courses, so a revolution climbs sixteen and the flight
-    over any other stands sixteen above it."""
-    a, b = IN0, IN1
-    lanes = {"n": (a, a + 1), "e": (b - 1, b), "s": (b - 1, b), "w": (a, a + 1)}
-    corners = [(a, a), (b - 1, a), (b - 1, b - 1), (a, b - 1)]      # NW, NE, SE, SW (top-left cell)
-    flights = [("e", "n"), ("s", "e"), ("w", "s"), ("n", "w")]      # (direction of ascent, side)
+    """The stair's steps, bottom to top: (x, z, y, role). One step a ring cell, a
+    course a step, twelve courses a revolution, up to the lantern room's floor."""
     out = []
-    y = 0
-    side_cells = {
-        "n": lambda k: [(NEW0 + k, z) for z in lanes["n"]],
-        "e": lambda k: [(x, NEW0 + k) for x in lanes["e"]],
-        "s": lambda k: [(NEW1 - k, z) for z in lanes["s"]],
-        "w": lambda k: [(x, NEW1 - k) for x in lanes["w"]],
-    }
-    i = 0
-    while y < LAMP_FLOOR:
-        d, side = flights[i % 4]
-        for k in range(4):
-            y += 1
-            for (x, z) in side_cells[side](k):
-                out.append((x, z, y, "step_" + d))
-        cx, cz = corners[(i + 1) % 4]
-        for (x, z) in ((cx, cz), (cx + 1, cz), (cx, cz + 1), (cx + 1, cz + 1)):
-            if tower_inside(x, z):
-                out.append((x, z, y, "landing"))
-        i += 1
+    for k in range(LAMP_FLOOR):
+        i = (RING0 + k) % 12
+        x, z = RING[i]
+        nx, nz = RING[(i + 1) % 12]
+        d = FACING[(nx - x, nz - z)] if (nx - x, nz - z) in FACING else "e"
+        out.append((x, z, k + 1, "step_" + d))
     return out
+
+
+def polygon_ring(m, y, r, role, fill_role=None):
+    """An octagon of radius r at course y: its rim cells `role`, its inside `fill_role`."""
+    for x in range(int(CX - r) - 1, int(CX + r) + 2):
+        for z in range(int(CZ - r) - 1, int(CZ + r) + 2):
+            dx, dz = abs(x - CX), abs(z - CZ)
+            inside = max(dx, dz) <= r and dx + dz <= r * 1.42
+            if not inside:
+                continue
+            rim = not (max(dx + 1, dz) <= r and dx + 1 + dz <= r * 1.42
+                       and max(dx, dz + 1) <= r and dx + dz + 1 <= r * 1.42)
+            if rim:
+                m.set(x, y, z, role)
+            elif fill_role:
+                m.set(x, y, z, fill_role)
+
+
+def build_tower(m):
+    # ---------- the shaft: round, tapering, a stone foot, white with two red bands
+    for x in range(1, 21):
+        for z in range(1, 21):
+            d = dist(x, z)
+            if d <= R_IN:
+                m.set(x, 0, z, "flags")
+            for y in range(1, LAMP_FLOOR):
+                if R_IN < d <= r_at(y):
+                    role = "base" if y <= 3 else "white"
+                    if y in (11, 12, 19, 20):
+                        role = "band"
+                    m.set(x, y, z, role)
+                    m.set(x, 0, z, "base")
+    # a plinth course round the foot
+    for x in range(1, 21):
+        for z in range(1, 21):
+            if R_BASE < dist(x, z) <= R_BASE + 0.8 and m.get(x, 1, z) is None:
+                m.set(x, 1, z, "plinth_ring")
+    # the newel, solid to the lantern room's floor, a lamp let into it every four courses
+    for (x, z) in NEWEL:
+        m.box(x, x, 1, LAMP_FLOOR - 1, z, z, "newel")
+    for j, y in enumerate(range(3, LAMP_FLOOR, 4)):
+        x, z = NEWEL[j % 4]
+        m.set(x, y, z, "newel_lamp")
+    # the stair
+    path = stair_path()
+    for (x, z, y, role) in path:
+        m.set(x, y, z, role)
+    # slits up the stair: a window in the wall beside every third step
+    for (x, z, y, role) in path[2::3]:
+        ox, oz = x - CX, z - CZ
+        wx = x + (1 if ox > 0 else -1) * (abs(ox) >= abs(oz))
+        wz = z + (1 if oz > 0 else -1) * (abs(oz) > abs(ox))
+        if tower_wall(wx, wz, y + 2) and 4 < y + 2 < LAMP_FLOOR - 1:
+            m.set(wx, y + 2, wz, "slit")
+            m.set(wx, y + 3, wz, "slit")
+    # the door onto the yard (west) and the passage from the cottage (north)
+    for x in range(8, 12):
+        for z in (13, 14):
+            if tower_wall(x, z) or x == 11:
+                m.box(x, x, 1, 3, z, z, AIR)
+                m.set(x, 0, z, "flags")
+    for z in range(9, 12):
+        for x in (13, 14):
+            m.box(x, x, 1, 3, z, z, AIR)
+            m.set(x, 0, z, "flags")
+    # the lantern room's floor, the stairwell left open over the last steps
+    well = {(x, z) for (x, z, y, r) in path if LAMP_FLOOR - 3 <= y < LAMP_FLOOR}
+    for x in range(1, 21):
+        for z in range(1, 21):
+            if dist(x, z) <= R_LAMP + 0.6 and (x, z) not in well and not str(m.get(x, LAMP_FLOOR, z)).startswith("step"):
+                m.set(x, LAMP_FLOOR, z, "lamp_floor")
+    # the gallery: slabs on a corbel course round the lantern room, railed
+    for x in range(1, 21):
+        for z in range(1, 21):
+            d = dist(x, z)
+            if R_LAMP + 0.6 < d <= R_GALLERY:
+                m.set(x, LAMP_FLOOR, z, "gallery")
+                if d > r_at(LAMP_FLOOR - 1):
+                    m.set(x, LAMP_FLOOR - 1, z, "corbel")
+                if d > R_GALLERY - 1:
+                    m.set(x, LAMP_FLOOR + 1, z, "rail")
+    # the lantern room: an octagon of glass between dark mullions
+    for y in range(LAMP_FLOOR + 1, LAMP_TOP + 1):
+        polygon_ring(m, y, R_LAMP, "lamp_glass")
+    for x in range(1, 21):
+        for z in range(1, 21):
+            if m.get(x, LAMP_FLOOR + 1, z) == "lamp_glass":
+                dx, dz = abs(x - CX), abs(z - CZ)
+                if abs(dx - dz) < 1.1 or min(dx, dz) < 0.6:
+                    for y in range(LAMP_FLOOR + 1, LAMP_TOP + 1):
+                        m.set(x, y, z, "mullion")
+    # a door onto the gallery, on the west
+    for z in (13, 14):
+        for x in range(9, 12):
+            if m.get(x, LAMP_FLOOR + 1, z) in ("lamp_glass", "mullion"):
+                m.box(x, x, LAMP_FLOOR + 1, LAMP_FLOOR + 2, z, z, AIR)
+    # the great lamp on the newel's head
+    for (x, z) in NEWEL:
+        m.box(x, x, LAMP_FLOOR + 1, LAMP_FLOOR + 2, z, z, "great_lamp")
+    # the cap: a dark cornice, then a cone of tile stairs stepping in to a finial
+    polygon_ring(m, LAMP_TOP + 1, R_LAMP + 0.7, "dark", "cap")
+    for k, r in enumerate((R_LAMP - 0.4, R_LAMP - 1.4, R_LAMP - 2.4)):
+        y = LAMP_TOP + 2 + k
+        polygon_ring(m, y, r, "cone", "cap")
+    for x in range(1, 21):
+        for z in range(1, 21):
+            for y in range(LAMP_TOP + 2, LAMP_TOP + 5):
+                if m.get(x, y, z) == "cone":
+                    ox, oz = x - CX, z - CZ
+                    d = ("w" if ox > 0 else "e") if abs(ox) >= abs(oz) else ("n" if oz > 0 else "s")
+                    m.set(x, y, z, "cone_" + d)
+    m.set(13, LAMP_TOP + 4, 13, "finial")
+    return path
 
 
 def build_model():
@@ -939,83 +1048,7 @@ def build_model():
         for z in range(1, 21):
             m.set(x, 0, z, "turf")
 
-    # ---------- the tower: a stone base, a white shaft, a red band, a corbel table
-    for x in range(T0, T1 + 1):
-        for z in range(T0, T1 + 1):
-            if tower_wall(x, z):
-                for y in range(1, LAMP_FLOOR):
-                    role = "base" if y <= 3 else "white"
-                    if y in (13, 14):
-                        role = "band"
-                    m.set(x, y, z, role)
-                m.set(x, 0, z, "base")
-            elif tower_inside(x, z):
-                m.set(x, 0, z, "flags")
-    # the newel, solid to the lantern room's floor
-    m.box(NEW0, NEW1, 1, LAMP_FLOOR - 1, NEW0, NEW1, "newel")
-    # the stair
-    path = stair_path()
-    top = max(y for _, _, y, _ in path)
-    for (x, z, y, role) in path:
-        if tower_inside(x, z):
-            m.set(x, y, z, role)
-    # slits along the stair, one a flight on each face
-    for y0 in (6, 10, 14, 18, 22):
-        for (x, z) in ((T0, (T0 + T1) // 2), (T1, (T0 + T1) // 2), ((T0 + T1) // 2, T0), ((T0 + T1) // 2, T1)):
-            m.set(x, y0, z, "slit")
-            m.set(x, y0 + 1, z, "slit")
-    # the door onto the yard, west face, and the passage to the cottage, north face
-    mid = (T0 + T1) // 2
-    m.box(T0, T0, 1, 3, mid + 1, mid + 2, AIR)
-    m.box(IN0, IN0 + 1, 1, 3, T0, T0, AIR)
-    for (x, z) in ((IN0, T0), (IN0 + 1, T0)):
-        m.set(x, 0, z, "flags")
-    # the lantern room's floor, with the stairwell left open over the last flight
-    last = {(x, z) for (x, z, y, r) in path if y > LAMP_FLOOR - 4 and r.startswith("step")}
-    for x in range(IN0, IN1 + 1):
-        for z in range(IN0, IN1 + 1):
-            if tower_inside(x, z) and (x, z) not in last:
-                m.set(x, LAMP_FLOOR, z, "lamp_floor")
-    for x in range(T0, T1 + 1):
-        for z in range(T0, T1 + 1):
-            if tower_wall(x, z):
-                m.set(x, LAMP_FLOOR, z, "corbel")
-    # the gallery: a ring of slabs on a corbel course outside the lantern room, railed
-    for x in range(T0 - 1, T1 + 2):
-        for z in range(T0 - 1, T1 + 2):
-            ring = octagon(x, z, T0 - 1, T1 + 1, CUT + 1) and not octagon(x, z, T0, T1, CUT)
-            if ring:
-                m.set(x, LAMP_FLOOR, z, "gallery")
-                m.set(x, LAMP_FLOOR - 1, z, "corbel")
-                edge = any(not octagon(x + dx, z + dz, T0 - 1, T1 + 1, CUT + 1)
-                           for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
-                if edge:
-                    m.set(x, LAMP_FLOOR + 1, z, "rail")
-    # the lantern room: glass between dark mullions, one bay a door onto the gallery
-    for x in range(T0, T1 + 1):
-        for z in range(T0, T1 + 1):
-            if tower_wall(x, z):
-                corner = min(x - T0, T1 - x) + min(z - T0, T1 - z) == CUT
-                for y in range(LAMP_FLOOR + 1, LAMP_TOP + 1):
-                    m.set(x, y, z, "mullion" if corner else "lamp_glass")
-                m.set(x, LAMP_TOP + 1, z, "dark")
-    m.box(T0, T0, LAMP_FLOOR + 1, LAMP_FLOOR + 2, mid, mid, AIR)        # the gallery door, west
-    # the great lamp, on the newel's head at the room's centre
-    m.box(NEW0 + 1, NEW1 - 1, LAMP_FLOOR + 1, LAMP_FLOOR + 2, NEW0 + 1, NEW1 - 1, "great_lamp")
-    # the cap: a stepped dark roof to a finial
-    for k in range(0, 4):
-        a0, a1 = T0 + k + 1, T1 - k - 1
-        for x in range(a0, a1 + 1):
-            for z in range(a0, a1 + 1):
-                if octagon(x, z, a0, a1, max(0, CUT - 1)):
-                    m.set(x, LAMP_TOP + 1 + k, z, "cap")
-    m.set((T0 + T1) // 2, LAMP_TOP + 5, (T0 + T1) // 2, "finial")
-    # light inside the tower: lanterns on the landings
-    for (x, z, y, r) in path:
-        if r == "landing" and (x + z) % 2 == 0 and y < LAMP_FLOOR and m.get(x, y + 1, z) is None:
-            m.set(x, y + 1, z, "lantern")
-    m.set(IN0, 1, IN1 - 1, "lantern")
-    m.set(IN1, 1, IN0 + 1, "lantern")
+    path = build_tower(m)
 
     # ---------- the keeper's cottage, against the tower's north face
     x0, x1, z0, z1 = COTTAGE
@@ -1046,8 +1079,8 @@ def build_model():
                 m.box(x, x, y, y, lo + 1, hi - 1, "roof")
         lo, hi, k = lo + 1, hi - 1, k + 1
     # the door through to the tower (south wall, into the tower's north-west landing)
-    m.box(IN0, IN0 + 1, 1, 3, z1, z1, AIR)
-    for x in (IN0, IN0 + 1):
+    m.box(13, 14, 1, 3, z1, z1, AIR)
+    for x in (13, 14):
         m.set(x, 0, z1, "floorb")
     # the front door onto the lane's side of the yard (west wall)
     m.box(x0, x0, 1, 3, 5, 6, AIR)
@@ -1077,14 +1110,14 @@ def build_model():
     for z in range(15, 20):
         m.set(2, 1, z, "ywall")
         m.set(2, 2, z, "ycap")
-    for x in range(2, T0 + 1):
+    for x in range(2, 10):
         m.set(x, 1, 19, "ywall")
         m.set(x, 2, 19, "ycap")
     for x in (4, 5):                                    # the gate onto the cliff path
         m.set(x, 1, 19, AIR)
         m.set(x, 2, 19, AIR)
     # the path: the lane to the cottage door and the tower door, and out to the cliff
-    for x in range(1, T0):
+    for x in range(1, 10):
         m.set(x, 0, 13, "path")
         m.set(x, 0, 14, "path")
     for z in range(9, 14):
@@ -1120,11 +1153,11 @@ def build_model():
     # ---------- the parts: which columns are which
     for x in range(1, 21):
         for z in range(1, 21):
-            if tower_inside(x, z):
+            if dist(x, z) <= R_PART:
                 m.region[(x, z)] = "tower"
             elif x0 < x < x1 and z0 < z < z1:
                 m.region[(x, z)] = "cottage"
-            elif (x <= T0 - 1 and z >= T0) or (x == 1 and z >= COTTAGE[3] - 1) or (x >= 15 and z <= 7):
+            elif (x <= 8 and z >= 9) or (x == 1 and z >= COTTAGE[3] - 1) or (x >= 15 and z <= 7):
                 m.region[(x, z)] = "yard"
     return m
 
@@ -1276,9 +1309,12 @@ class Lighthouse(Place):
             x, y, z = todo.pop()
             for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                 nx, nz = x + dx, z + dz
-                h0 = y + (0.5 if kind(x, y, z) == "low" else 0)
+                def floor_h(cx, cy, cz):
+                    # a low block's top is half a course up; a wall or fence's is half a course over its cell
+                    return cy + (0.5 if kind(cx, cy, cz) == "low" or kind(cx, cy - 1, cz) == "tall" else 0)
+                h0 = floor_h(x, y, z)
                 for ny in (y, y + 1):
-                    if ny + (0.5 if kind(nx, ny, nz) == "low" else 0) - h0 > 1:
+                    if floor_h(nx, ny, nz) - h0 > 1:
                         continue
                     if (nx, ny, nz) in walk and (nx, ny, nz) not in seen:
                         seen.add((nx, ny, nz))
@@ -1368,10 +1404,10 @@ def body(p, rules):
 FULL = {"floor", "wall", "lid", "turf", "path", "flags", "base", "white", "band", "corbel", "dark", "newel",
         "landing", "slit", "lamp_glass", "mullion", "lamp_floor", "great_lamp", "cap", "stone", "plaster", "post",
         "beam_x", "beam_z", "boards", "floorb", "glass", "roof", "chimney", "hearth", "shelf", "barrel", "ywall",
-        "trough", "woodpile", "bush", "gallery", "table"}
+        "trough", "woodpile", "bush", "gallery", "table", "newel_lamp", "plinth_ring"}
 TALL = {"rail", "finial", "lamp_post"}
 LOW = {"step_e", "step_s", "step_w", "step_n", "lantern", "roof_n", "roof_s", "ridge", "chair", "candles",
-       "pot_a", "pot_b", "pot_c", "ycap", "bench"}
+       "pot_a", "pot_b", "pot_c", "ycap", "bench", "cone_n", "cone_s", "cone_e", "cone_w"}
 
 _starter_contract = contract
 
