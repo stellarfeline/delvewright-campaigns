@@ -221,12 +221,13 @@ def build(place) -> Model:
         m.set(tx, 1, tz + 1, "bench_n")
     for (x, z) in ((20, 3), (20, 7)):
         m.set(x, 3, z, "lantern_h")
-        m.set(x, 4, z, "pg_beam_x") if m.get(x, 4, z) is None else None
+        m.set(x, 4, z, "pg_beam_x")   # a hanging lantern needs a full face above it
     # flower beds along the garden's north and south edges, a lilac at the gate
     for x in range(16, 24):
         for z in (1, 10):
             m.set(x, 0, z, "bed_soil")
             m.set(x, 1, z, ["f1", "f2", "f3", "f4", "f5", "fern", "tuft"][hsh(x, z, 5) % 7])
+    m.set(16, 0, 3, "turf")
     m.set(16, 1, 3, "lilac")
     m.set(16, 2, 3, "lilac_top")
     m.set(16, 1, 8, "bush")
