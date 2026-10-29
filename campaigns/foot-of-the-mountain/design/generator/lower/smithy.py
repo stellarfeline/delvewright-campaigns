@@ -175,7 +175,8 @@ def build(place) -> Model:
 
     # ---------- the house's rooms
     # kitchen (west): smoker and pot at the hearth wall, a worktop and a table
-    m.set(3, 1, 3, "smoker")
+    m.set(3, 1, 3, "hearth")
+    m.set(3, 2, 3, "fire")
     m.set(3, 1, 4, "pot")
     m.set(3, 1, 6, "worktop")
     m.set(5, 1, 3, "shelf")
