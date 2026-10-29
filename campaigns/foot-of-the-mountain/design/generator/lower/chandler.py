@@ -11,8 +11,9 @@ on the yard side. Stone below, weatherboard above, a deepslate roof.
 
     "$DELVEWRIGHT_PYTHON" chandler.py --allocation <allocation.json> --out <campaign>/programs/chandler.json --delvec <delvec>
 
-Drawn into the skill's starter (`$DELVEWRIGHT_SKILL/scripts/starter.py`),
-which binds the handing and asks the engine where a body goes.
+Drawn into the skill's starter alone (`$DELVEWRIGHT_SKILL/scripts/starter.py`:
+its Model, its block constructors and Model.roof), which binds the handing
+and asks the engine where a body goes.
 
 Piece-local: +x east (the street), +z south; y 0 the ground course, y 1 the walk plane.
 """
@@ -23,63 +24,12 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, run  # noqa: E402
-
-
-def hsh(*a):
-    h = 2166136261
-    for v in a:
-        h = ((h ^ (v & 0xFFFFFFFF)) * 16777619) & 0xFFFFFFFF
-    return h
-
-
-def st(name, facing, half="bottom"):
-    return f"minecraft:{name}_stairs[facing={facing},half={half},shape=straight,waterlogged=false]"
-
-
-def td(wood, facing, half="bottom", open_=False):
-    return f"minecraft:{wood}_trapdoor[facing={facing},half={half},open={str(open_).lower()},powered=false,waterlogged=false]"
-
-
-def door(m, x, y, z, block, facing, hinge="left"):
-    for dy, half in ((0, "lower"), (1, "upper")):
-        m.set(x, y + dy, z, f"{block}[facing={facing},half={half},hinge={hinge},open=false,powered=false]")
-
-
-def gable_x(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
-    """A pitched roof over [x0..x1]x[z0..z1], the ridge along x, overhanging `ov`."""
-    lo, hi, k = z0 - ov, z1 + ov, 0
-    while lo <= hi:
-        y = y0 + k
-        if lo == hi:
-            m.box(x0 - ov, x1 + ov, y, y, lo, lo, ridge)
-        else:
-            m.box(x0 - ov, x1 + ov, y, y, lo, lo, stair + "_s")
-            m.box(x0 - ov, x1 + ov, y, y, hi, hi, stair + "_n")
-            if fill and lo + 1 <= hi - 1:
-                for x in (x0, x1):
-                    m.box(x, x, y, y, max(lo + 1, z0), min(hi - 1, z1), fill)
-        lo, hi, k = lo + 1, hi - 1, k + 1
-
-
-def gable_z(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
-    """A pitched roof over [x0..x1]x[z0..z1], the ridge along z."""
-    lo, hi, k = x0 - ov, x1 + ov, 0
-    while lo <= hi:
-        y = y0 + k
-        if lo == hi:
-            m.box(lo, lo, y, y, z0 - ov, z1 + ov, ridge)
-        else:
-            m.box(lo, lo, y, y, z0 - ov, z1 + ov, stair + "_e")
-            m.box(hi, hi, y, y, z0 - ov, z1 + ov, stair + "_w")
-            if fill and lo + 1 <= hi - 1:
-                for z in (z0, z1):
-                    m.box(max(lo + 1, x0), min(hi - 1, x1), y, y, z, z, fill)
-        lo, hi, k = lo + 1, hi - 1, k + 1
+from starter import (Model, barrel, chain, fence, grass_block, lantern, leaves, pane, pillar, run,  # noqa: E402
+                     slab, trapdoor)
 
 
 PALETTE = {
-    "turf": "minecraft:grass_block[snowy=false]",
+    "turf": grass_block(),
     "pave": [{"weight": 5, "block": "minecraft:cobblestone"}, {"weight": 3, "block": "minecraft:stone_bricks"},
              {"weight": 1, "block": "minecraft:andesite"}],
     "yard": [{"weight": 4, "block": "minecraft:gravel"}, {"weight": 3, "block": "minecraft:packed_mud"},
@@ -88,44 +38,41 @@ PALETTE = {
     "rubble": [{"weight": 6, "block": "minecraft:cobblestone"}, {"weight": 4, "block": "minecraft:stone_bricks"},
                {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
     "quoin": "minecraft:tuff_bricks",
-    "weather": "minecraft:stripped_spruce_wood[axis=x]",
-    "weather_z": "minecraft:stripped_spruce_wood[axis=z]",
-    "post": "minecraft:spruce_log[axis=y]",
-    "beam_x": "minecraft:spruce_log[axis=x]",
-    "beam_z": "minecraft:spruce_log[axis=z]",
+    "weather": pillar("stripped_spruce_wood", "x"),
+    "weather_z": pillar("stripped_spruce_wood", "z"),
+    "post": pillar("spruce_log", "y"),
+    "beam_x": pillar("spruce_log", "x"),
+    "beam_z": pillar("spruce_log", "z"),
     "lintel": "minecraft:polished_tuff",
-    "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "roof_n": st("deepslate_tile", "north"), "roof_s": st("deepslate_tile", "south"),
-    "roof_e": st("deepslate_tile", "east"), "roof_w": st("deepslate_tile", "west"),
-    "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
+    "pane": pane("glass_pane"),
+    "ridge": slab("deepslate_tile"),
     "loft": "minecraft:spruce_planks",
-    "hoist": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "rope": "minecraft:iron_chain[axis=y,waterlogged=false]",
-    "pulley": "minecraft:dark_oak_log[axis=z]",
+    "hoist": fence("dark_oak"),
+    "rope": chain("y"),
     # the shop
-    "counter": "minecraft:stripped_spruce_wood[axis=y]",
-    "counter_top": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
-    "shelf": "minecraft:spruce_trapdoor[facing=east,half=top,open=false,powered=false,waterlogged=false]",
-    "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
-    "barrel": "minecraft:barrel[facing=up,open=false]",
-    "barrel_e": "minecraft:barrel[facing=east,open=false]",
-    "barrel_n": "minecraft:barrel[facing=north,open=false]",
+    "counter": pillar("stripped_spruce_wood", "y"),
+    "counter_top": slab("spruce"),
+    "shelf": trapdoor("spruce", "east", "top"),
+    "lantern": lantern(),
+    "lantern_h": lantern(hanging=True),
+    "barrel": barrel("up"),
+    "barrel_e": barrel("east"),
+    "barrel_n": barrel("north"),
     "coil": "minecraft:brown_wool",
     "coil_flat": "minecraft:brown_carpet",
     "canvas": "minecraft:white_wool",
     "block_pulley": "minecraft:stripped_oak_log[axis=y]",
     "chart": "minecraft:cartography_table",
-    "bell": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "bell": lantern(),
     # the yard: an anchor, rope coils, a handcart
-    "anchor_shank": "minecraft:iron_bars[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "anchor_shank": pane("iron_bars"),
     "anchor_crown": "minecraft:iron_block",
-    "cart_bed": "minecraft:spruce_slab[type=top,waterlogged=false]",
-    "cart_wheel_n": td("dark_oak", "north", "bottom", True),
-    "cart_wheel_s": td("dark_oak", "south", "bottom", True),
-    "cart_handle": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "cart_bed": slab("spruce", "top"),
+    "cart_wheel_n": trapdoor("dark_oak", "north", "bottom", True),
+    "cart_wheel_s": trapdoor("dark_oak", "south", "bottom", True),
+    "cart_handle": fence("spruce"),
     "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_blue_orchid",
-    "bush": "minecraft:azalea_leaves[distance=1,persistent=true,waterlogged=false]",
+    "bush": leaves("azalea"),
     "f1": "minecraft:poppy", "f2": "minecraft:oxeye_daisy", "f3": "minecraft:cornflower", "fern": "minecraft:fern",
     "tuft": "minecraft:short_grass", "bed_soil": "minecraft:rooted_dirt",
 }
@@ -165,9 +112,9 @@ def build(place):
     m.box(hx0 + 1, hx1 - 1, TOP, TOP, hz1, hz1, "beam_x")
     # the cross wall with its door
     m.box(CROSS, CROSS, 1, TOP, hz0 + 1, hz1 - 1, "weather_z")
-    door(m, CROSS, 1, 5, "minecraft:spruce_door", "east")
+    m.door(CROSS, 1, 5, "spruce", "east")
     # the street gable: the door and the display window, one lintel over both
-    door(m, hx1, 1, 6, "minecraft:spruce_door", "west")
+    m.door(hx1, 1, 6, "spruce", "west")
     m.box(hx1, hx1, 2, 3, 4, 4, "pane")
     m.box(hx1, hx1, 1, 1, 4, 4, "barrel_e")
     m.box(hx1, hx1, TOP, TOP, hz0 + 1, hz1 - 1, "lintel")
@@ -176,16 +123,14 @@ def build(place):
         m.box(x, x, 2, 3, hz0, hz0, "pane")
         m.box(x, x, 2, 3, hz1, hz1, "pane")
     m.box(8, 8, 2, 3, hz0, hz0, "pane")
-    door(m, 9, 1, hz1, "minecraft:spruce_door", "north")
-    # the roof: ridge along x; the store's half carries a loft with a hoist door
-    gable_x(m, hx0, hx1, hz0, hz1, TOP + 1, "roof", "ridge", fill="weather_z")
+    m.door(9, 1, hz1, "spruce", "north")
+    # the roof: ridge along x, its eave level with the wall plate so the loft
+    # under it closes; the store's half carries the loft, a hoist beam out of
+    # the west gable over the yard
+    m.roof(hx0, hx1, hz0, hz1, TOP, "x", "deepslate_tile", fill="weather_z", ridge="ridge")
     m.box(hx0 + 1, CROSS - 1, TOP + 1, TOP + 1, hz0 + 1, hz1 - 1, "loft")
-    m.clear(7, 7, TOP + 2, TOP + 3, hz1, hz1)          # the loft door in the south slope's gable
-    m.set(7, TOP + 2, hz1, td("spruce", "north", "bottom", True))
-    m.set(7, TOP + 4, hz1 + 1, "hoist")
-    m.set(7, TOP + 4, hz1, "pulley")
-    m.set(7, TOP + 3, hz1 + 1, "rope")
-    m.set(7, TOP + 2, hz1 + 1, "rope")
+    m.box(hx0 - 2, hx0 - 1, TOP + 2, TOP + 2, 5, 5, "hoist")
+    m.box(hx0 - 2, hx0 - 2, TOP, TOP + 1, 5, 5, "rope")
 
     # ---------- the shop: the counter across it, the goods behind on the cross wall,
     # the chart table in the street window for the masters who come to buy
@@ -239,7 +184,7 @@ def build(place):
     m.set(19, 1, 9, "pot_b")
     for x in range(hx0, hx1):
         m.set(x, 0, Z0, "bed_soil")
-        m.set(x, 1, Z0, ["f1", "f2", "f3", "fern"][hsh(x, 1, 3) % 4])
+        m.set(x, 1, Z0, ["f1", "f2", "f3", "fern"][(x * 7 + 3) % 4])
 
     m.finish()
     m.part(hx0, hx1, hz0, hz1, "shop")
