@@ -14,7 +14,7 @@ pier, broken by steps and side alleys):
 - a stretch or a lane is cobbled across its width, a kennel of dressed stone
   down its middle and a line of setts laid flush either side of the way (the
   kerb is in the paving, never at its edge); its outer column is worn — cobble
-  broken by gravel, earth and turf — so the street runs into the lots and the
+  broken by tuff, earth and turf — so the street runs into the lots and the
   hillside with no line where its box ends;
 - a flight carries the street down two courses in half-steps of stone, a
   landing at its foot;
