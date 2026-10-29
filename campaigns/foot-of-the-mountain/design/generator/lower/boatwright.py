@@ -1,26 +1,37 @@
 #!/usr/bin/env python3
-"""The boatwright's: a tall open boat shed gable-end to the lane, a hull on
-the stocks inside it, and a yard of seasoning timber with a winch.
+"""The boatwright's: a boat on the stocks in the open yard before the lane,
+half planked and half in bare ribs, with the open-fronted shed behind it and
+the timber stacked to season beside.
 
-Form, after boatbuilders' sheds and slips (references in the node's
-`references[]`): a plain rectangular timber shed on posts, its end to the
-water-side lane wide open so a hull goes in and out; the keel lies on
-blocks down the middle, ribs rising from it, half planked; the bench and the
-steaming fire along one wall. Beside the shed, the timber stacks to season
-under the sky, and the winch that hauls a hull up the slip.
+Form, after boatbuilders' yards and community boat-under-construction builds
+(references in the node's `references[]`): small boats are built in the
+open in front of the shed, on blocks along a keel, the stem rising at the
+bow and a raked transom at the stern; the ribs go up first and the strakes
+are fastened to them from the keel up, so a boat in progress shows planking
+on one part and bare frames on the rest. The shed behind is open along its
+front: the bench, the steam box over its fire, tar, timber and oars.
 
-    python3 boatwright.py --allocation <allocation.json> --out <campaign>/programs/boatwright.json
+    "$DELVEWRIGHT_PYTHON" boatwright.py --allocation <allocation.json> --out <campaign>/programs/boatwright.json --delvec <delvec>
+
+Drawn into the skill's starter (`$DELVEWRIGHT_SKILL/scripts/starter.py`).
 
 Piece-local: +x east, +z south, the lane on the south; y 0 the ground course, y 1 the walk plane.
 """
 
 from __future__ import annotations
 
+import os
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, finish, gable, hsh, run  # noqa: E402
+sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
+from starter import Model, run  # noqa: E402
+
+
+def hsh(*a):
+    h = 2166136261
+    for v in a:
+        h = ((h ^ (v & 0xFFFFFFFF)) * 16777619) & 0xFFFFFFFF
+    return h
 
 
 def st(name, facing, half="bottom"):
@@ -32,74 +43,63 @@ def td(wood, facing, half="bottom", open_=False):
 
 
 PALETTE = {
-    "floor": "minecraft:stone_bricks",
-    "wall": "minecraft:stone_bricks",
-    "lid": "minecraft:spruce_planks",
-    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
     "turf": "minecraft:grass_block[snowy=false]",
-    "pot_a": "minecraft:potted_cornflower",
-    "barrel": "minecraft:barrel[facing=up,open=false]",
-    # ground: a timber slip down the middle of the shed to the lane, shingle round it
-    "slip": [{"weight": 3, "block": "minecraft:spruce_planks"}, {"weight": 1, "block": "minecraft:stripped_spruce_wood[axis=z]"}],
     "yard": [{"weight": 4, "block": "minecraft:gravel"}, {"weight": 2, "block": "minecraft:coarse_dirt"},
              {"weight": 2, "block": "minecraft:cobblestone"}],
-    "shed_floor": [{"weight": 3, "block": "minecraft:coarse_dirt"}, {"weight": 2, "block": "minecraft:gravel"},
-                   {"weight": 1, "block": "minecraft:spruce_planks"}],
+    "chips": [{"weight": 3, "block": "minecraft:coarse_dirt"}, {"weight": 2, "block": "minecraft:stripped_oak_wood[axis=y]"},
+              {"weight": 1, "block": "minecraft:gravel"}],
+    "shed_floor": [{"weight": 3, "block": "minecraft:spruce_planks"}, {"weight": 1, "block": "minecraft:coarse_dirt"}],
     "plinth": "minecraft:cobblestone",
-    # the shed: spruce posts, dark boards, a deepslate roof
     "post": "minecraft:spruce_log[axis=y]",
     "beam_x": "minecraft:spruce_log[axis=x]",
-    "beam_z": "minecraft:spruce_log[axis=z]",
     "boards": "minecraft:dark_oak_planks",
-    "board_light": "minecraft:spruce_planks",
-    "brace_e": st("spruce", "east", "top"),
-    "brace_w": st("spruce", "west", "top"),
-    "roof_e": st("deepslate_tile", "east"), "roof_w": st("deepslate_tile", "west"),
+    "roof_n": st("deepslate_tile", "north"), "roof_s": st("deepslate_tile", "south"),
     "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
     "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
-    # the hull on the stocks
+    # the boat
     "stock": "minecraft:stripped_spruce_wood[axis=y]",
-    "keel": "minecraft:stripped_oak_log[axis=z]",
-    "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "plank_w": st("oak", "west", "top"),
-    "plank_e": st("oak", "east", "top"),
-    "plank_low": "minecraft:oak_slab[type=top,waterlogged=false]",
+    "keel": "minecraft:stripped_oak_log[axis=x]",
     "stem": "minecraft:stripped_oak_log[axis=y]",
     "stem_tip": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "bow_w": st("oak", "east", "top"),
-    "bow_e": st("oak", "west", "top"),
-    "bilge_w": st("oak", "east", "top"),
-    "bilge_e": st("oak", "west", "top"),
+    "bilge_n": st("oak", "south", "top"),
+    "bilge_s": st("oak", "north", "top"),
     "strake": "minecraft:oak_planks",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "bow_n": st("oak", "south", "bottom"),
+    "bow_s": st("oak", "north", "bottom"),
     "transom": "minecraft:oak_planks",
-    # the work along the wall
+    "transom_rake": st("oak", "east", "top"),
+    "transom_top": st("oak", "west", "bottom"),
+    # the shed's work
     "bench": "minecraft:crafting_table",
-    "steam": "minecraft:campfire[facing=east,lit=true,signal_fire=false,waterlogged=false]",
-    "steam_box": "minecraft:spruce_trapdoor[facing=east,half=top,open=false,powered=false,waterlogged=false]",
+    "vice": "minecraft:grindstone[face=floor,facing=south]",
+    "steam": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+    "steam_box": "minecraft:spruce_trapdoor[facing=south,half=top,open=false,powered=false,waterlogged=false]",
     "tar": "minecraft:cauldron",
-    "chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
+    "oars": "minecraft:stripped_spruce_log[axis=y]",
+    "planks_stack": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
-    # the yard: timber stacks, a sawhorse, the winch
+    "barrel": "minecraft:barrel[facing=up,open=false]",
+    # the yard
     "timber_z": "minecraft:stripped_spruce_log[axis=z]",
     "timber_x": "minecraft:spruce_log[axis=x]",
-    "plank_stack": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
-    "sawhorse": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "sawtop": "minecraft:spruce_slab[type=top,waterlogged=false]",
     "winch": "minecraft:stripped_oak_log[axis=y]",
-    "winch_bar": td("oak", "north", "top", False),
-    # life
-    "bush": "minecraft:azalea_leaves[distance=1,persistent=true,waterlogged=false]",
+    "winch_bar": td("oak", "north", "top"),
+    "pot_a": "minecraft:potted_cornflower",
     "tuft": "minecraft:short_grass", "fern": "minecraft:fern",
 }
 
-SHED = (2, 8, 2, 8)       # walls included; the open end at z 8 faces the lane
-PLATE = 5
+SHED = (2, 9, 1, 5)     # walls on the north, west and east; open along the south
+PLATE = 4
+HULL_X = (3, 11)        # transom at x 3, stem at x 11
+KZ = 7                  # the keel's line
 
 
-def build(place) -> Model:
-    m = Model(dict(PALETTE))
+def build(place):
+    m = Model(place)
+    m.palette.update(PALETTE)
     lo, hi = place.space
     X0, X1, Z0, Z1 = lo[0], hi[0], lo[2], hi[2]
     for x in range(X0, X1 + 1):
@@ -107,105 +107,103 @@ def build(place) -> Model:
             m.set(x, 0, z, "turf")
     sx0, sx1, sz0, sz1 = SHED
     m.box(X0, X1, 0, 0, sz1 + 1, Z1, "yard")
-    m.box(sx1 + 1, X1 - 1, 0, 0, Z0, Z1, "yard")
+    m.box(sx1 + 1, X1, 0, 0, Z0, sz1, "yard")
+    m.box(HULL_X[0], HULL_X[1], 0, 0, KZ - 1, KZ + 1, "chips")
+
+    # ---------- the shed: a boarded back and ends on posts, open to the boat
     m.box(sx0, sx1, 0, 0, sz0, sz1, "shed_floor")
-    m.box(4, 6, 0, 0, sz0 + 1, Z1, "slip")
-
-    # ---------- the shed: posts every three, boards between, the lane end open
     for x in range(sx0, sx1 + 1):
-        for z in range(sz0, sz1 + 1):
-            if x not in (sx0, sx1) and z != sz0:
-                continue
-            postcol = (x in (sx0, sx1) and (z - sz0) % 3 == 0) or (z == sz0 and x in (sx0, 5, sx1)) or (z == sz1)
+        for y in range(1, PLATE + 1):
+            m.set(x, y, sz0, "plinth" if y == 1 else ("post" if x in (sx0, sx1, 5) else "boards"))
+    for z in range(sz0, sz1 + 1):
+        for x in (sx0, sx1):
             for y in range(1, PLATE + 1):
-                if z == sz1 and x not in (sx0, sx1):
-                    continue                    # the open end
-                if y == 1 and not postcol:
-                    role = "plinth"
-                elif postcol:
-                    role = "post"
-                elif y == PLATE:
-                    role = "beam_z" if x in (sx0, sx1) else "beam_x"
-                else:
-                    role = "boards" if (x + z) % 4 else "board_light"
-                m.set(x, y, z, role)
-    # the beam over the open end, braced from the corner posts
+                m.set(x, y, z, "plinth" if y == 1 and z < sz1 else ("post" if z in (sz0, sz1) else "boards"))
+    for x in (sx0, 5, sx1):
+        m.box(x, x, 1, PLATE - 1, sz1, sz1, "post")
     m.box(sx0, sx1, PLATE, PLATE, sz1, sz1, "beam_x")
-    m.set(sx0 + 1, PLATE - 1, sz1, "brace_w")
-    m.set(sx1 - 1, PLATE - 1, sz1, "brace_e")
-    # windows high in the side walls
-    for z in (4, 6):
-        m.set(sx0, 3, z, "pane")
-        m.set(sx1, 3, z, "pane")
-    # the roof: ridge along z, the gable to the lane boarded over the beam
-    gable(m, sx0, sx1, sz0, sz1 - 1, PLATE + 1, "z", "roof", "ridge", fill="board_light")
-    for x in range(sx0 + 1, sx1):
-        for y in range(PLATE + 1, PLATE + 6):
-            if m.get(x, y, sz1 - 1) == "board_light":
-                m.set(x, y, sz1, "board_light")
-    # tie beams, a lantern hung from each
-    for z in (4, 6):
-        m.box(sx0 + 1, sx1 - 1, PLATE, PLATE, z, z, "beam_x")
-        m.set(3, PLATE - 1, z, "lantern_h")
-    # ---------- the hull on the stocks: a clinker boat bow to the back wall, its
-    # transom to the lane, planked on the west side, its ribs bare on the east
-    for z in (4, 6):
-        m.set(5, 1, z, "stock")
-    m.box(5, 5, 2, 2, 3, 7, "keel")
-    m.box(5, 5, 3, 4, 3, 3, "stem")              # the stem, rising at the bow
-    m.set(5, 5, 3, "stem_tip")
-    m.set(4, 3, 3, "bow_w")                      # the bow's planks closing on the stem
-    m.set(6, 3, 3, "bow_e")
-    for z in (4, 5, 6):
-        m.set(4, 2, z, "bilge_w")                # the turn of the bilge
-        m.set(4, 3, z, "strake")                 # the planking
-        m.set(4, 4, z, "gunwale")
-    for z in (4, 6):
-        m.set(6, 2, z, "bilge_e")                # bare ribs on the open side
-        m.set(6, 3, z, "rib")
-    m.box(6, 6, 4, 4, 4, 6, "rib")               # the inwale the ribs are fastened to
-    m.box(4, 6, 2, 3, 7, 7, "transom")           # the transom, square to the lane
-    m.set(5, 2, 7, "keel")
-    # the bench, the steaming fire under its box, the tar pot, along the east wall
-    m.set(7, 1, 3, "bench")
-    m.set(7, 1, 5, "steam")
-    m.set(7, 2, 5, "~air")
-    m.set(7, 3, 5, "steam_box")
-    m.set(3, 1, 3, "tar")
-    m.set(3, 1, 4, "barrel")
-    m.set(7, 1, 7, "lantern")
+    m.box(sx1, sx1, 2, 3, 3, 3, "pane")
+    # the roof: ridge along x, its north eave clipped at the plot's edge
+    lo_z, hi_z, k = sz0 - 1, sz1 + 1, 0
+    while lo_z <= hi_z:
+        y = PLATE + 1 + k
+        if lo_z == hi_z:
+            m.box(sx0 - 1, sx1 + 1, y, y, lo_z, lo_z, "ridge")
+        else:
+            m.box(sx0 - 1, sx1 + 1, y, y, lo_z, lo_z, "roof_s")
+            m.box(sx0 - 1, sx1 + 1, y, y, hi_z, hi_z, "roof_n")
+            for x in (sx0, sx1):
+                m.box(x, x, y, y, max(lo_z + 1, sz0), min(hi_z - 1, sz1), "boards")
+        lo_z, hi_z, k = lo_z + 1, hi_z - 1, k + 1
+    for c in [c for c in list(m.v) if c[2] < Z0 or (c[0] < X0 and c[1] > 0)]:
+        del m.v[c]
+    # inside: the bench and vice, the steam box over its fire, tar, oars, plank stock
+    m.set(3, 1, 2, "bench")
+    m.set(4, 1, 2, "vice")
+    m.set(7, 1, 2, "steam")
+    m.set(7, 3, 2, "steam_box")
+    m.set(8, 3, 2, "steam_box")
+    m.set(8, 1, 2, "tar")
+    m.box(3, 3, 1, 3, 4, 4, "oars")
+    m.box(6, 8, 1, 1, 4, 4, "planks_stack")
+    m.set(4, 1, 4, "barrel")
+    m.box(sx0 + 1, sx1 - 1, PLATE, PLATE, 3, 3, "beam_x")
+    m.set(5, PLATE - 1, 3, "lantern_h")
 
-    # ---------- the yard: timber stacked to season, a sawhorse, the winch at the slip head
-    m.box(11, 12, 1, 1, 2, 6, "timber_z")
-    m.box(11, 12, 2, 2, 2, 5, "timber_z")
-    m.box(11, 11, 3, 3, 3, 4, "timber_z")
-    m.box(13, 13, 1, 1, 2, 3, "plank_stack")
-    m.set(10, 1, 8, "sawhorse")
-    m.set(12, 1, 8, "sawhorse")
-    m.box(10, 12, 2, 2, 8, 8, "sawtop")
-    m.set(9, 1, 2, "winch")
-    m.set(9, 2, 2, "winch_bar")
-    m.set(13, 1, 6, "barrel")
-    m.set(13, 1, 7, "barrel")
-    m.set(13, 2, 7, "barrel")
-    m.set(9, 1, 7, "pot_a")
-    m.set(10, 1, 5, "bush")
+    # ---------- the boat on its stocks, along the lane: bow (stem) east, raked transom west;
+    # the bow half planked, the stern half in bare ribs
+    hx0, hx1 = HULL_X
+    for x in (4, 7, 10):
+        m.set(x, 1, KZ, "stock")
+    m.box(hx0 + 1, hx1, 2, 2, KZ, KZ, "keel")
+    m.box(hx1, hx1, 3, 4, KZ, KZ, "stem")
+    m.set(hx1, 5, KZ, "stem_tip")
+    m.set(hx1 - 1, 3, KZ - 1, "bow_n")
+    m.set(hx1 - 1, 3, KZ + 1, "bow_s")
+    m.set(hx1 - 1, 4, KZ - 1, "gunwale")
+    m.set(hx1 - 1, 4, KZ + 1, "gunwale")
+    for x in range(7, hx1 - 1):
+        m.set(x, 2, KZ - 1, "bilge_n")
+        m.set(x, 2, KZ + 1, "bilge_s")
+        m.set(x, 3, KZ - 1, "strake")
+        m.set(x, 3, KZ + 1, "strake")
+        m.set(x, 4, KZ - 1, "gunwale")
+        m.set(x, 4, KZ + 1, "gunwale")
+    for x in range(hx0 + 2, 7):
+        if x % 2 == 0:
+            m.set(x, 2, KZ - 1, "bilge_n")
+            m.set(x, 2, KZ + 1, "bilge_s")
+            m.set(x, 3, KZ - 1, "rib")
+            m.set(x, 3, KZ + 1, "rib")
+        m.set(x, 4, KZ - 1, "rib")
+        m.set(x, 4, KZ + 1, "rib")
+    m.set(hx0 + 1, 2, KZ, "transom_rake")
+    m.box(hx0, hx0, 3, 3, KZ - 1, KZ + 1, "transom")
+    m.set(hx0, 4, KZ, "transom_top")
+    m.set(6, 1, KZ + 2, "lantern")
+
+    # ---------- the yard: timber stacked to season, the winch at the slip head
+    m.box(11, 12, 1, 1, 1, 4, "timber_z")
+    m.box(11, 12, 2, 2, 1, 3, "timber_z")
+    m.box(11, 11, 3, 3, 2, 3, "timber_z")
+    m.box(13, 13, 1, 1, 1, 2, "timber_x")
+    m.set(13, 1, 5, "winch")
+    m.set(13, 2, 5, "winch_bar")
+    m.set(13, 1, 4, "barrel")
+    m.set(10, 1, 4, "barrel")
+    m.set(10, 2, 4, "barrel")
+    m.set(1, 1, 9, "pot_a")
     for x in range(X0, X1 + 1):
-        for z in (Z0, Z1 - 1):
-            if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 9) % 3 == 0:
-                m.set(x, 1, z, "tuft")
+        if m.get(x, 1, Z1) is None and hsh(x, Z1, 9) % 3 == 0:
+            m.set(x, 1, Z1, "tuft")
 
-    finish(m)
-    m.regions("shed", sx0, sx1, sz0, sz1)
-    m.regions("yard", 9, 13, 1, 8)
+    m.finish()
+    m.part(sx0, sx1, sz0, sz1, "shed")
+    m.part(10, 13, 1, 5, "yard")
+    m.part(2, 13, 6, 7, "yard")
+    m.mark("node-boatwright", 6, 3, "south")
     return m
 
 
-class Boatwright(Plot):
-    MODEL = staticmethod(build)
-    MARK_AT = {"node-boatwright": (5, 8, "north")}   # at the shed's mouth, facing the hull
-    REASON = "the shed's wall heads, roof and the hull's gunwale: seen, never stood on"
-
-
 if __name__ == "__main__":
-    raise SystemExit(run(Boatwright))
+    raise SystemExit(run(build, reason="the shed's wall heads and roof and the boat's gunwale: seen, never stood on"))

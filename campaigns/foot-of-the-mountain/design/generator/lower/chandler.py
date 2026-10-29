@@ -131,7 +131,7 @@ PALETTE = {
 }
 
 HOUSE = (6, 17, 3, 8)     # walls included; the street gable at x 17, its eave clear of the seam
-CROSS = 12                # shop east of it, store west
+CROSS = 11                # shop east of it, store west
 TOP = 4                   # wall plate
 
 
@@ -187,20 +187,27 @@ def build(place):
     m.set(7, TOP + 3, hz1 + 1, "rope")
     m.set(7, TOP + 2, hz1 + 1, "rope")
 
-    # ---------- the shop: the counter across it, goods behind on the cross wall
-    for z in range(hz0 + 1, hz1):
-        if z != 6:
-            m.set(15, 1, z, "counter")
-    m.set(15, 2, 4, "lantern")
+    # ---------- the shop: the counter across it, the goods behind on the cross wall,
+    # the chart table in the street window for the masters who come to buy
+    for z in (4, 5, 6):
+        m.set(14, 1, z, "counter")
+    m.set(14, 2, 4, "lantern")
+    m.set(14, 2, 6, "coil_flat")
+    m.set(12, 1, 4, "coil")
+    m.set(12, 2, 4, "coil")
     m.set(13, 1, 4, "coil")
-    m.set(13, 2, 4, "coil_flat")
+    m.set(12, 1, 7, "block_pulley")
+    m.set(12, 2, 7, "block_pulley")
     m.set(13, 1, 7, "barrel_n")
-    m.set(14, 1, 7, "chart")
-    m.set(13, 1, 6, "block_pulley")
-    for z in (4, 7):
+    for z in (4, 5, 6, 7):
         m.set(CROSS + 1, 3, z, "shelf")
+    m.set(16, 1, 4, "chart")
+    m.set(16, 1, 7, "barrel")
+    m.set(16, 2, 7, "coil_flat")
     m.box(hx0 + 1, hx1 - 1, TOP, TOP, 6, 6, "beam_x")
-    m.set(16, TOP - 1, 6, "lantern_h")
+    m.set(15, TOP - 1, 6, "lantern_h")
+    m.set(13, TOP - 1, 6, "rope")
+    m.set(13, TOP - 2, 6, "rope")
 
     # ---------- the long store: barrels racked along both walls, coils, canvas
     for x in range(7, CROSS):
@@ -211,9 +218,9 @@ def build(place):
             m.set(x, 2, 4, "barrel")
     m.set(10, 1, 7, "coil")
     m.set(10, 2, 7, "coil")
-    m.set(11, 1, 7, "canvas")
-    m.set(9, TOP - 1, 5, "lantern_h")
+    m.set(8, 2, 7, "canvas")
     m.box(hx0 + 1, CROSS - 1, TOP, TOP, 5, 5, "beam_x")
+    m.set(8, TOP - 1, 5, "lantern_h")
 
     # ---------- the yard: an anchor, coils of rope, a handcart, barrels
     m.set(3, 1, 4, "anchor_crown")
@@ -238,7 +245,7 @@ def build(place):
     m.part(hx0, hx1, hz0, hz1, "shop")
     m.part(X0, hx0 - 1, Z0 + 1, Z1 - 1, "yard")
     m.part(hx0, 15, hz1 + 1, Z1 - 1, "yard")
-    m.mark("node-chandler", 16, 5, "west")   # in the shop before the counter, facing the goods
+    m.mark("node-chandler", 15, 5, "west")   # in the shop before the counter, facing the goods
     return m
 
 

@@ -127,7 +127,7 @@ PALETTE = {
     "tuft": "minecraft:short_grass", "bed_soil": "minecraft:rooted_dirt",
 }
 
-SHED = (4, 14, 2, 5)      # the shed's posts; open to the yard on the south
+SHED = (4, 14, 2, 6)      # the shed's posts; open to the yard on the south, a working aisle inside
 COTTAGE = (17, 21, 2, 7)  # walls included
 PITS = (4, 15, 7, 10)
 PLATE = 4
@@ -167,11 +167,12 @@ def build(place):
     for x in range(sx0 + 2, sx1, 2):
         m.set(x, 3, 3, "rail")
         m.set(x, 2, 3, ["hide_a", "hide_b", "hide_c"][hsh(x, 3, 1) % 3])
-    m.set(sx1 - 1, 1, 4, "bench")
-    m.set(sx1 - 2, 1, 4, "knife_block")
+    m.set(sx1 - 1, 1, 5, "bench")             # the beam and scraping bench at the aisle's end
+    m.set(sx1 - 2, 1, 5, "knife_block")
     m.box(sx1 - 1, sx1 - 1, 1, 2, sz0 + 1, sz0 + 1, "bark")
-    m.set(8, PLATE - 1, 4, "lantern_h")
-    m.box(8, 8, PLATE, PLATE, sz0, sz1, "beam_z")
+    for x in (6, 10):
+        m.box(x, x, PLATE, PLATE, sz0, sz1, "beam_z")
+        m.set(x, PLATE - 1, 5, "lantern_h")
 
     # ---------- the pits: three rows of sunk pits, rimmed, walks between; lime vats and barrels
     for x0 in (5, 9, 13):
@@ -221,7 +222,7 @@ def build(place):
     m.part(sx0, sx1, sz0, sz1, "shed")
     m.part(cx0, cx1, cz0, cz1, "cottage")
     m.part(px0, px1, pz0, pz1, "pits")
-    m.mark("node-tannery", 6, 4, "east")     # in the shed, looking down the racks
+    m.mark("node-tannery", 6, 5, "east")     # in the shed, looking down the racks
     return m
 
 
