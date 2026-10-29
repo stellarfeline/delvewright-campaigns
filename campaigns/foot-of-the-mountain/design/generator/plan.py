@@ -451,7 +451,7 @@ THEMES = {
                  ("ground", "pits", 0.24, None, "the yard of tanning pits")]),
     "potter": ("the potter's", "A potter's workshop: the shop where the ware is sold in front, the throwing room behind it through a door, a brick kiln in the yard under a lean-to and the clay pit's heap.",
                [("structure", "workshop", 0.30, 9, "the shop in front and the throwing room behind it, joined by a door"),
-                ("structure", "kiln", 0.06, 6, "the bottle kiln under its lean-to"),
+                ("structure", "kiln", 0.06, 6, "the bottle kiln under its lean-to", "seen"),
                 ("ground", "yard", 0.24, None, "the yard: clay heaps, ware drying on boards")]),
     "carpenter": ("the carpenter's", "A carpenter's workshop and timber yard with a saw pit.",
                   [("structure", "workshop", 0.26, 9, "the workshop and the house over it"),
@@ -480,11 +480,13 @@ THEMES = {
 def holds_for(theme, dx, dz):
     area = dx * dz
     out = []
-    for kind, pid, share, h, use in THEMES[theme][2]:
+    for kind, pid, share, h, use, *rest in THEMES[theme][2]:
         p = {"id": f"part/{pid}", "kind": kind, "use": use,
              "cells": max(4, int(area * share))}
         if h:
             p["height"] = h
+        if rest and rest[0] == "seen":
+            p["reached"] = False      # a structure seen and never entered
         out.append(p)
     return out
 
