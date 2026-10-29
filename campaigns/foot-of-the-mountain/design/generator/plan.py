@@ -513,6 +513,29 @@ for z in range(RZ):
         if w > 0:
             H[z][x] = H[z][x] * (1 - w) + T[z][x] * w
 
+# No pit a body cannot climb out of: a priority flood from the sea and the
+# region's rim raises every column to at least one under the column it is
+# reached from, so from anywhere a walk of steps no higher than one leads to
+# the shore. Cliffs stay: only hollows are filled.
+import heapq
+Q = [[int(round(H[z][x])) for x in range(RX)] for z in range(RZ)]
+seen = [[False] * RX for _ in range(RZ)]
+heap = []
+for z in range(RZ):
+    for x in range(RX):
+        if Q[z][x] < SEA + 1 or x in (0, RX - 1) or z in (0, RZ - 1):
+            seen[z][x] = True
+            heapq.heappush(heap, (Q[z][x], x, z))
+while heap:
+    h, x, z = heapq.heappop(heap)
+    for nx, nz in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)):
+        if 0 <= nx < RX and 0 <= nz < RZ and not seen[nz][nx]:
+            seen[nz][nx] = True
+            if Q[nz][nx] < h - 1:
+                Q[nz][nx] = h - 1
+            heapq.heappush(heap, (Q[nz][nx], nx, nz))
+H = [[float(Q[z][x]) for x in range(RX)] for z in range(RZ)]
+
 pix = bytearray()
 for z in range(RZ):
     pix.append(0)
