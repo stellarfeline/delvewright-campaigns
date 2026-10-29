@@ -127,6 +127,7 @@ def build(a):
     m.set(8, 1, 3, slab("minecraft:dark_oak", "top"))
     m.set(9, 1, 3, slab("minecraft:dark_oak", "top"))
     m.set(8, 2, 3, candle(3))
+    m.set(9, 2, 3, "minecraft:potted_white_tulip")
     m.set(8, 1, 4, stairs("minecraft:dark_oak", "north"))           # the clerk's chair, clear of the door
     m.set(5, 1, 5, "minecraft:cartography_table")
     m.set(6, 1, 3, "minecraft:bookshelf")
@@ -192,6 +193,7 @@ def build(a):
     for z in (5, 7):
         m.set(20, 1, z, stairs("minecraft:spruce", "east")); m.set(23, 1, z, stairs("minecraft:spruce", "west"))
     m.set(21, 2, 6, candle(3)); m.set(22, 2, 8, candle(2))
+    m.set(22, 2, 5, "minecraft:potted_azure_bluet"); m.set(21, 2, 8, "minecraft:potted_lily_of_the_valley")
     for x in (21, 22):
         for z in (3, 10):
             m.set(x, 1, z, "minecraft:red_carpet")
@@ -237,7 +239,8 @@ def build(a):
         m.set(x, 1, 11, stairs("minecraft:dark_oak", "north"))
     m.set(9, 1, 11, "minecraft:white_wool"); m.set(10, 1, 11, "minecraft:white_wool")
     m.set(9, 2, 11, "minecraft:light_gray_wool")
-    m.set(12, 1, 11, "minecraft:hay_block[axis=x]")
+    m.set(12, 1, 11, "minecraft:barrel[facing=up,open=false]")
+    m.set(13, 1, 11, "minecraft:barrel[facing=up,open=false]")
     m.set(14, 1, 11, slab("minecraft:spruce", "top")); m.set(15, 1, 11, slab("minecraft:spruce", "top"))
     m.set(8, 4, 11, lantern(True)); m.set(14, 4, 11, lantern(True))
 

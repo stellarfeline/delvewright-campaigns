@@ -864,6 +864,8 @@ def kind_of(state: str) -> str:
         if "[" in state and "_fence_gate" in b and "open=true" in state:
             return "pass"
         return "tall"
+    if b.startswith("potted_") or b == "flower_pot":
+        return "low"
     if b.endswith(LOW_SUFFIX) or b in LOW_IDS:
         if b.endswith("_slab") and "type=double" in state:
             return "full"

@@ -149,6 +149,8 @@ def build(a):
     m.set(IX1 + 1, 4, 6, "minecraft:bell[attachment=ceiling,facing=east,powered=false]")
     for z in (3, 4):
         m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
+    m.set(IX1 + 1, 1, 5, "minecraft:potted_red_tulip")
+    m.set(IX1 + 1, 1, 10, "minecraft:potted_cornflower")
     for z in (11, 12):
         m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
     m.box(IX1 + 1, IX1 + 1, 0, 0, IZ0, IZ1, "minecraft:stone_bricks")
@@ -184,11 +186,13 @@ def build(a):
     # the serving counter across the taproom's west end, casks behind it
     for z in range(3, 9):
         m.set(18, 1, z, stairs("minecraft:spruce", "east", "top") if z != 8 else trapdoor("minecraft:spruce", "east"))
-    for z in (3, 5, 7):
-        m.set(16, 1, z, log("minecraft:spruce_log", "x"))     # casks on their sides
+    for z in (3, 7):
+        m.set(16, 1, z, "minecraft:barrel[facing=up,open=false]")                 # the ale casks
+    m.set(16, 1, 5, log("minecraft:spruce_log", "x"))           # a cask on its side
         m.set(16, 2, z, candle(1)) if z == 5 else None
     m.set(16, 1, 4, "minecraft:spruce_planks"); m.set(16, 2, 4, slab("minecraft:spruce"))
     m.set(18, 2, 4, candle(2))
+    m.set(18, 2, 7, "minecraft:potted_oxeye_daisy")
     # tables and stools
     for (tx, tz) in ((21, 5), (23, 8), (21, 8)):
         m.set(tx, 1, tz, fence("minecraft:dark_oak"))
