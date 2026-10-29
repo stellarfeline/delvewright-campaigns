@@ -263,8 +263,11 @@ def drop_unclaimable_sides(place, m):
     keep = []
     for sd in place.sides:
         (sx0, sz0), (sx1, sz1) = sd["lo"], sd["hi"]
-        cells = [(x, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
-                 if 0 <= x < ex and 0 <= z < ez and (x, place.datum.value, z) not in m.no_touch]
+        # a side over a low opening (a stair's, four high) keeps the run above
+        # it: there the ring is the side's air, never a wall hung over the way
+        cells = [(x, y, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
+                 for y in range(place.datum.value, place.wall_top.value)
+                 if 0 <= x < ex and 0 <= z < ez and (x, y, z) not in m.no_touch]
         # the side a raised opening stands on is the neighbour's above the
         # walk plane (its void) and the top step's below it: nothing of it
         # is a way out
