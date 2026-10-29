@@ -1133,6 +1133,15 @@ class Harbour(Place):
         if not self.in_space_xz(x, z) and kind == ("fill", "wall"):
             return ("claim", "room", None)
         if not self.in_space_xz(x, z):
+            # the ring beside the basin carries the sea on, not a stone rim round it
+            lo, hi = self.space
+            inner = (min(max(x, lo[0]), hi[0]), min(max(z, lo[2]), hi[2]))
+            if inner[1] > EDGE and y < self.datum.value and kind == ("fill", "floor"):
+                my = y - self.shift
+                if BED < my <= SEA:
+                    return ("fill", "water")
+                if my > SEA:
+                    return ("claim", "unwalked", None)
             return kind
         if kind[0] == "claim" and kind[1].endswith("-way"):
             return kind          # a seam's opening is the connection's, kept clear

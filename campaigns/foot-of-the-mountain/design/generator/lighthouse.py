@@ -792,7 +792,7 @@ PALETTE = {
     "base": [{"weight": 6, "block": "minecraft:stone_bricks"},
              {"weight": 2, "block": "minecraft:cobblestone"},
              {"weight": 1, "block": "minecraft:mossy_stone_bricks"}],
-    "white": "minecraft:white_terracotta",
+    "white": "minecraft:white_concrete",
     "band": "minecraft:red_terracotta",
     "corbel": "minecraft:polished_andesite",
     "dark": "minecraft:polished_deepslate",
