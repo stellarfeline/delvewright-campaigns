@@ -177,7 +177,6 @@ def build(place) -> Model:
     # kitchen: the hearth under the chimney, the pot, the worktop
     m.set(17, 1, 3, "hearth")
     m.set(17, 2, 3, "fire")
-    m.set(18, 1, 3, "barrel")
     m.set(18, 1, 5, "worktop")
     m.set(18, 1, 6, "barrel")
     m.box(hx0 + 1, hx1 - 1, PLATE, PLATE, 4, 4, "beam_x")

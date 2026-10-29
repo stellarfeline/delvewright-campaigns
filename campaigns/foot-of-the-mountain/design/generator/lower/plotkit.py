@@ -1095,8 +1095,8 @@ class Plot(Place):
         air = lambda c: role(*c) in (None, AIR) and lo[0] <= c[0] <= hi[0] and lo[2] <= c[2] <= hi[2] and 1 <= c[1] <= hi[1]
         done = set()
         for c0 in sorted(self.unwalked):
-            if c0 in done:
-                continue
+            if c0 in done or not air(c0):
+                continue                       # a cavity is searched from its air, never through a block
             comp, todo, open_ = {c0}, [c0], False
             while todo:
                 x, y, z = todo.pop()
