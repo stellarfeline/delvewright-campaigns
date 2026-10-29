@@ -22,7 +22,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, door, door_roles, finish, flower_bed, hip, hsh, run  # noqa: E402
+from plotkit import Model, Plot, door, door_roles, finish, gable, hsh, run  # noqa: E402
 
 
 def st(name, facing, half="bottom"):
@@ -109,10 +109,28 @@ door_roles(PALETTE, "door_inner", "minecraft:spruce_door", "west", hinge="right"
 door_roles(PALETTE, "door_back", "minecraft:spruce_door", "west")
 
 # ---- the plan ----
-HOUSE = (4, 15, 2, 8)      # walls included
-CROSS = 11                 # the cross wall: taproom west, back room east
-GARDEN = (17, 23, 2, 9)    # the pergola's posts
+HOUSE = (4, 12, 2, 11)     # the taproom's range, walls included; the street gable faces west
+WING = (12, 15, 3, 9)      # the back room's cross wing, sharing the range's east wall
+GARDEN = (17, 23, 2, 11)   # the pergola's posts
 TOP = 4                    # wall plate course
+
+
+def rubble_box(m, x0, x1, z0, z1):
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            if x in (x0, x1) or z in (z0, z1):
+                corner = x in (x0, x1) and z in (z0, z1)
+                for y in range(1, TOP + 1):
+                    m.set(x, y, z, "quoin" if corner and (y % 2 == 1) else "rubble")
+
+
+def table(m, x, z, n=4):
+    """A table with a stool on each of its free sides."""
+    m.set(x, 1, z, "table_leg")
+    m.set(x, 2, z, "table_top")
+    for (dx, dz, r) in ((-1, 0, "stool_e"), (1, 0, "stool_w"), (0, -1, "stool_s"), (0, 1, "stool_n"))[:n]:
+        if m.get(x + dx, 1, z + dz) is None:
+            m.set(x + dx, 1, z + dz, r)
 
 
 def build(place) -> Model:
@@ -123,136 +141,136 @@ def build(place) -> Model:
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
     hx0, hx1, hz0, hz1 = HOUSE
+    wx0, wx1, wz0, wz1 = WING
+    gx0, gx1, gz0, gz1 = GARDEN
     # the forecourt: paving from the street to the door, benches under the eave
     m.box(X0, hx0 - 1, 0, 0, Z0 + 1, Z1 - 1, "pave")
-    # ---------- the house: rubble walls, tuff quoins
+
+    # ---------- the range: rubble walls, tuff quoins, the street gable over the door
     m.box(hx0, hx1, 0, 0, hz0, hz1, "boards")
-    for x in range(hx0, hx1 + 1):
-        for z in range(hz0, hz1 + 1):
-            if x in (hx0, hx1) or z in (hz0, hz1):
-                corner = x in (hx0, hx1) and z in (hz0, hz1)
-                for y in range(1, TOP + 1):
-                    m.set(x, y, z, "quoin" if corner and (y % 2 == 1) else "rubble")
+    rubble_box(m, hx0, hx1, hz0, hz1)
     m.box(hx0, hx0, 0, 0, hz0, hz1, "rubble")
-    # the cross wall in timber and plaster-coloured stone, with its door
-    for z in range(hz0 + 1, hz1):
-        for y in range(1, TOP + 1):
-            m.set(CROSS, y, z, "post" if z in (hz0 + 1, hz1 - 1) else "rubble")
-    door(m, CROSS, 1, 5, "door_inner")
+    # the back room's wing on the east, its door through the range's east wall
+    m.box(wx0, wx1, 0, 0, wz0, wz1, "flags")
+    for x in range(wx0 + 1, wx1 + 1):
+        for z in range(wz0, wz1 + 1):
+            if x == wx1 or z in (wz0, wz1):
+                for y in range(1, TOP + 1):
+                    m.set(x, y, z, "quoin" if x == wx1 and z in (wz0, wz1) and y % 2 else "rubble")
+    door(m, hx1, 1, 6, "door_inner")
     # the front: the door between two wide windows, one lintel course over all
-    door(m, hx0, 1, 5, "door_front")
-    for z in (3, 4, 6, 7):
+    door(m, hx0, 1, 6, "door_front")
+    for z in (3, 4, 8, 9):
         m.box(hx0, hx0, 2, 3, z, z, "pane")
     m.box(hx0, hx0, TOP, TOP, hz0 + 1, hz1 - 1, "lintel")
-    # side and back windows onto the open sides and the garden
-    for x in (6, 13):
+    # side windows onto the open north and south, a window from the wing onto the garden
+    for x in (6, 9):
         m.box(x, x, 2, 3, hz0, hz0, "pane")
-    for x in (6, 8, 13):
-        m.box(x, x, 2, 3, hz1, hz1, "pane")
-    m.box(hx1, hx1, 2, 3, 3, 3, "pane")
-    door(m, hx1, 1, 6, "door_back")
-    # the taproom's fireplace in the north wall, its chimney through the roof
-    m.box(8, 8, 1, 11, hz0, hz0, "chimney")
-    m.set(8, 1, hz0 + 1, "hearth")
-    m.set(8, 2, hz0 + 1, "fire")
-    m.set(8, TOP, hz0 + 1, "hearth")
-    # the hipped roof
-    hip(m, hx0, hx1, hz0, hz1, TOP + 1, "roof", "ridge")
-    # tie beams across under the plate
-    for x in (7, 13):
-        m.box(x, x, TOP, TOP, hz0 + 1, hz1 - 1, "beam_z")
-        m.set(x, TOP - 1, 5, "lantern_h")
+    m.box(10, 10, 2, 3, hz1, hz1, "pane")
+    m.box(wx1, wx1, 2, 3, 5, 5, "pane")
+    door(m, wx1, 1, 7, "door_back")
+    # the fireplace in the south wall, its chimney through the roof
+    m.box(7, 7, 1, 12, hz1, hz1, "chimney")
+    m.set(7, 1, hz1 - 1, "hearth")
+    m.set(7, 2, hz1 - 1, "fire")
+    m.set(7, TOP, hz1 - 1, "hearth")
+    # the roofs: the range's ridge along the street, a cross gable over the front door,
+    # the wing's ridge along x into the range's slope
+    gable(m, hx0, hx1, hz0, hz1, TOP + 1, "z", "roof", "ridge", fill="rubble")
+    gable(m, wx0, wx1, wz0, wz1, TOP + 1, "x", "roof", "ridge", fill="rubble")
+    gable(m, hx0, hx0 + 3, 5, 7, TOP + 1, "x", "roof", "ridge", fill="beam_z")
+    # tie beams, lanterns hung from them
+    for z in (5, 8):
+        m.box(hx0 + 1, hx1 - 1, TOP, TOP, z, z, "beam_x")
+        m.set(6, TOP - 1, z, "lantern_h")
+        m.set(10, TOP - 1, z, "lantern_h")
 
-    # ---------- the taproom: bar counter along the cross wall, kegs behind
-    for z in (3, 4, 6):
-        m.set(9, 1, z, "counter")
-    m.set(9, 2, 4, "lantern")
-    for z in (3, 4, 6, 7):
-        m.set(10, 1, z, "barrel_side")
-    m.set(10, 2, 3, "barrel_side")
-    m.set(10, 2, 7, "lantern")
-    # tables and stools
-    for (tx, tz) in ((6, 3), (6, 7)):
-        m.set(tx, 1, tz, "table_leg")
-        m.set(tx, 2, tz, "table_top")
-        m.set(tx - 1, 1, tz, "stool_e")
-        m.set(tx + 1, 1, tz, "stool_w")
-    m.box(6, 7, 1, 1, 5, 5, "rug")
-    # ---------- the back room: the vats, the mash tun, the cellar hatch
-    m.set(14, 1, 3, "vat")
+    # ---------- the taproom: the bar along the north wall, barrels behind, tables round the room
+    for x in range(8, 12):
+        m.set(x, 1, 5, "counter")
+    m.set(8, 2, 5, "lantern")
+    for x in range(8, 12):
+        m.set(x, 1, 3, "barrel_side")
+    m.set(9, 2, 3, "barrel_side")
+    m.set(11, 2, 3, "barrel_side")
+    table(m, 6, 8)
+    table(m, 10, 9)
+    m.box(5, 5, 1, 1, 4, 5, "stool_e")
+    m.set(6, 1, 4, "table_leg")
+    m.set(6, 2, 4, "table_top")
+    m.box(8, 9, 1, 1, 7, 7, "rug")
+
+    # ---------- the back room: the vats, the mash tun, sacks, the cellar hatch
+    m.set(13, 1, 4, "vat")
     m.set(14, 1, 4, "vat")
-    m.set(12, 1, 3, "mash")
-    m.set(14, 1, 7, "sack")
-    m.set(14, 1, 6, "barrel")
-    m.set(14, 2, 6, "barrel")
-    m.set(14, 2, 7, "sack")
-    m.set(13, 1, 7, "worktop")
-    m.set(12, 1, 7, "hatch")
-    m.set(13, 2, 7, "lantern")
+    m.set(14, 1, 8, "mash")
+    m.set(13, 1, 8, "sack")
+    m.set(13, 2, 8, "sack")
+    m.set(14, 1, 6, "hatch")
+    m.set(13, TOP - 1, 6, "lantern_h")
+    m.box(wx0 + 1, wx1 - 1, TOP, TOP, 6, 6, "beam_z")
 
-    # ---------- the front: benches under the eave either side of the door
+    # ---------- the front: benches under the eave either side of the door, potted flowers
     m.set(hx0 - 1, 1, 3, "bench_w")
-    m.set(hx0 - 1, 1, 7, "bench_w")
+    m.set(hx0 - 1, 1, 9, "bench_w")
     m.set(hx0 - 1, 1, 2, "arm_n")
-    m.set(hx0 - 1, 1, 8, "arm_s")
+    m.set(hx0 - 1, 1, 4, "arm_s")
+    m.set(hx0 - 1, 1, 8, "arm_n")
+    m.set(hx0 - 1, 1, 10, "arm_s")
+    m.set(hx0 - 1, 1, 5, "pot_a")
+    m.set(hx0 - 1, 1, 7, "pot_b")
 
     # ---------- the garden: gravel, a pergola of posts and beams roofed in leaves
-    gx0, gx1, gz0, gz1 = GARDEN
-    m.box(hx1 + 1, gx1, 0, 0, gz0, gz1, "gravel")
-    m.box(hx1 + 1, hx1 + 1, 0, 0, 5, 7, "flags")
+    m.box(wx1 + 1, gx1, 0, 0, gz0, gz1, "gravel")
+    m.box(wx1 + 1, wx1 + 1, 0, 0, 6, 8, "flags")
     for x in (gx0, 20, gx1):
-        for z in (gz0, 5, gz1):
-            if (x, z) == (20, 5):
+        for z in (gz0, 6, gz1):
+            if (x, z) == (20, 6):
                 continue
             m.box(x, x, 1, 3, z, z, "pg_post")
-    for z in (gz0, 5, gz1):
+    for z in (gz0, 6, gz1):
         m.box(gx0, gx1, 4, 4, z, z, "pg_beam_x")
     for x in range(gx0, gx1 + 1):
         if (x - gx0) % 2 == 1:
             m.box(x, x, 4, 4, gz0 + 1, gz1 - 1, "pg_slat")
-            for z in (gz0 + 1, gz1 - 1):
-                m.set(x, 4, z, "pg_slat")
     for x in range(gx0, gx1 + 1):
         for z in range(gz0, gz1 + 1):
             if m.get(x, 4, z) and hsh(x, z, 11) % 5 < 3:
                 m.set(x, 5, z, "vine_bloom" if hsh(x, z, 2) % 4 == 0 else "vine_leaf")
-    # tables under the pergola, benches either side
-    for (tx, tz) in ((18, 3), (22, 3), (18, 7), (22, 7)):
+    for (tx, tz) in ((18, 4), (22, 4), (18, 9), (22, 9)):
         m.set(tx, 1, tz, "table_leg")
         m.set(tx, 2, tz, "table_top")
         m.set(tx, 1, tz - 1, "bench_s")
         m.set(tx, 1, tz + 1, "bench_n")
-    for (x, z) in ((20, 3), (20, 7)):
-        m.set(x, 3, z, "lantern_h")
+    for (x, z) in ((20, 4), (20, 9)):
         m.set(x, 4, z, "pg_beam_x")   # a hanging lantern needs a full face above it
-    # flower beds along the garden's north and south edges, a lilac at the gate
-    for x in range(16, 24):
-        for z in (1, 10):
+        m.set(x, 3, z, "lantern_h")
+    m.set(gx1, 1, 7, "barrel")
+    m.set(gx1, 1, 8, "barrel")
+    # flower edges along the garden's open sides, a lilac by the back door
+    for x in range(wx1 + 1, gx1 + 1):
+        for z in (Z0, Z1):
             m.set(x, 0, z, "bed_soil")
             m.set(x, 1, z, ["f1", "f2", "f3", "f4", "f5", "fern", "tuft"][hsh(x, z, 5) % 7])
     m.set(16, 0, 3, "turf")
     m.set(16, 1, 3, "lilac")
     m.set(16, 2, 3, "lilac_top")
-    m.set(16, 1, 8, "bush")
+    m.set(16, 1, 10, "bush")
     for x in range(X0, X1 + 1):
         for z in (Z0, Z1):
             if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 9) % 3 == 0:
                 m.set(x, 1, z, "tuft")
 
-    # potted flowers along the front, either side of the door, and on the garden tables
-    m.set(3, 1, 4, "pot_a")
-    m.set(3, 1, 6, "pot_b")
-    m.set(16, 1, 7, "pot_d")
-    m.set(16, 1, 4, "pot_c")
     finish(m)
     m.regions("tavern", hx0, hx1, hz0, hz1)
-    m.regions("garden", hx1 + 1, gx1, gz0, gz1)
+    m.regions("tavern", wx0 + 1, wx1, wz0, wz1)
+    m.regions("garden", wx1 + 1, gx1, gz0, gz1)
     return m
 
 
 class Tavern(Plot):
     MODEL = staticmethod(build)
-    MARK_AT = {"node-tavern": (8, 5, "east")}    # in the taproom, facing the bar
+    MARK_AT = {"node-tavern": (6, 6, "east")}    # in the taproom, facing the bar
     REASON = "the tavern's wall heads, roof and the pergola's top: seen, never stood on"
 
 

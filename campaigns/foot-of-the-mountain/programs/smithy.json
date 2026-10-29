@@ -20,12 +20,6 @@
         "via": "side-west"
       },
       {
-        "a": "part-work-yard",
-        "b": "exterior",
-        "class": "walk",
-        "via": "side-south-part-work-yard"
-      },
-      {
         "a": "room",
         "b": "exterior",
         "class": "walk",
@@ -173,7 +167,6 @@
     "roof_w~inner_right": "minecraft:deepslate_tile_stairs[facing=west,half=bottom,shape=inner_right,waterlogged=false]",
     "rug": "minecraft:red_carpet",
     "shed_n": "minecraft:spruce_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
-    "shed_ridge": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "shed_s": "minecraft:spruce_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
     "shelf": "minecraft:bookshelf",
     "smithing": "minecraft:smithing_table",
@@ -221,7 +214,7 @@
     "handed/seam/street-5-to-smithy/y0": 1,
     "handed/seam/street-5-to-smithy/y1": 8,
     "handed/seam/street-5-to-smithy/z0": 1,
-    "handed/seam/street-5-to-smithy/z1": 10
+    "handed/seam/street-5-to-smithy/z1": 12
   },
   "rules": {
     "column_10": [
@@ -741,7 +734,7 @@
         "weight": 1
       }
     ],
-    "column_127": [
+    "column_128": [
       {
         "body": {
           "axis": "y",
@@ -785,6 +778,10 @@
             {
               "op": "call",
               "symbol": "row_126"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
             }
           ],
           "op": "split",
@@ -872,8 +869,47 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 3
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 8
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 11
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -896,7 +932,7 @@
         "weight": 1
       }
     ],
-    "column_135": [
+    "column_137": [
       {
         "body": {
           "axis": "y",
@@ -904,10 +940,6 @@
             {
               "op": "call",
               "symbol": "row_117"
-            },
-            {
-              "op": "call",
-              "symbol": "row_128"
             },
             {
               "op": "call",
@@ -935,170 +967,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_125"
-            },
-            {
-              "op": "call",
-              "symbol": "row_126"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_140": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_117"
+              "symbol": "row_135"
             },
             {
               "op": "call",
@@ -1106,35 +975,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_137"
-            },
-            {
-              "op": "call",
-              "symbol": "row_126"
-            },
-            {
-              "op": "call",
-              "symbol": "row_138"
-            },
-            {
-              "op": "call",
-              "symbol": "row_139"
-            },
-            {
-              "op": "call",
-              "symbol": "row_133"
-            },
-            {
-              "op": "call",
-              "symbol": "row_134"
-            },
-            {
-              "op": "call",
-              "symbol": "row_125"
-            },
-            {
-              "op": "call",
-              "symbol": "row_126"
+              "symbol": "row_127"
             }
           ],
           "op": "split",
@@ -1286,7 +1127,7 @@
         "weight": 1
       }
     ],
-    "column_144": [
+    "column_142": [
       {
         "body": {
           "axis": "y",
@@ -1294,6 +1135,22 @@
             {
               "op": "call",
               "symbol": "row_117"
+            },
+            {
+              "op": "call",
+              "symbol": "row_138"
+            },
+            {
+              "op": "call",
+              "symbol": "row_139"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
+            },
+            {
+              "op": "call",
+              "symbol": "row_140"
             },
             {
               "op": "call",
@@ -1301,7 +1158,178 @@
             },
             {
               "op": "call",
-              "symbol": "row_142"
+              "symbol": "row_134"
+            },
+            {
+              "op": "call",
+              "symbol": "row_135"
+            },
+            {
+              "op": "call",
+              "symbol": "row_136"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 8
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_146": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_117"
             },
             {
               "op": "call",
@@ -1309,186 +1337,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_138"
-            },
-            {
-              "op": "call",
-              "symbol": "row_139"
-            },
-            {
-              "op": "call",
-              "symbol": "row_133"
-            },
-            {
-              "op": "call",
-              "symbol": "row_134"
-            },
-            {
-              "op": "call",
-              "symbol": "row_125"
-            },
-            {
-              "op": "call",
-              "symbol": "row_126"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_148": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_117"
+              "symbol": "row_144"
             },
             {
               "op": "call",
@@ -1496,23 +1345,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_137"
+              "symbol": "row_140"
             },
             {
               "op": "call",
-              "symbol": "row_146"
-            },
-            {
-              "op": "call",
-              "symbol": "row_147"
-            },
-            {
-              "op": "call",
-              "symbol": "row_132"
-            },
-            {
-              "op": "call",
-              "symbol": "row_133"
+              "symbol": "row_141"
             },
             {
               "op": "call",
@@ -1520,11 +1357,15 @@
             },
             {
               "op": "call",
-              "symbol": "row_125"
+              "symbol": "row_135"
             },
             {
               "op": "call",
-              "symbol": "row_126"
+              "symbol": "row_136"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
             }
           ],
           "op": "split",
@@ -1676,7 +1517,7 @@
         "weight": 1
       }
     ],
-    "column_151": [
+    "column_150": [
       {
         "body": {
           "axis": "y",
@@ -1687,19 +1528,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_149"
-            },
-            {
-              "op": "call",
-              "symbol": "row_150"
-            },
-            {
-              "op": "call",
-              "symbol": "row_126"
-            },
-            {
-              "op": "call",
-              "symbol": "row_138"
+              "symbol": "row_147"
             },
             {
               "op": "call",
@@ -1707,6 +1536,14 @@
             },
             {
               "op": "call",
+              "symbol": "row_148"
+            },
+            {
+              "op": "call",
+              "symbol": "row_149"
+            },
+            {
+              "op": "call",
               "symbol": "row_133"
             },
             {
@@ -1715,11 +1552,15 @@
             },
             {
               "op": "call",
-              "symbol": "row_125"
+              "symbol": "row_135"
             },
             {
               "op": "call",
-              "symbol": "row_126"
+              "symbol": "row_136"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
             }
           ],
           "op": "split",
@@ -1871,7 +1712,7 @@
         "weight": 1
       }
     ],
-    "column_157": [
+    "column_153": [
       {
         "body": {
           "axis": "y",
@@ -1882,19 +1723,202 @@
             },
             {
               "op": "call",
+              "symbol": "row_151"
+            },
+            {
+              "op": "call",
               "symbol": "row_152"
             },
             {
               "op": "call",
-              "symbol": "row_153"
+              "symbol": "row_127"
+            },
+            {
+              "op": "call",
+              "symbol": "row_140"
+            },
+            {
+              "op": "call",
+              "symbol": "row_141"
+            },
+            {
+              "op": "call",
+              "symbol": "row_134"
+            },
+            {
+              "op": "call",
+              "symbol": "row_135"
+            },
+            {
+              "op": "call",
+              "symbol": "row_136"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 8
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_159": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_117"
             },
             {
               "op": "call",
               "symbol": "row_154"
-            },
-            {
-              "op": "call",
-              "symbol": "row_147"
             },
             {
               "op": "call",
@@ -1906,15 +1930,27 @@
             },
             {
               "op": "call",
-              "symbol": "row_134"
+              "symbol": "row_149"
             },
             {
               "op": "call",
-              "symbol": "row_125"
+              "symbol": "row_157"
             },
             {
               "op": "call",
-              "symbol": "row_126"
+              "symbol": "row_158"
+            },
+            {
+              "op": "call",
+              "symbol": "row_135"
+            },
+            {
+              "op": "call",
+              "symbol": "row_136"
+            },
+            {
+              "op": "call",
+              "symbol": "row_127"
             }
           ],
           "op": "split",
@@ -2066,23 +2102,11 @@
         "weight": 1
       }
     ],
-    "column_165": [
+    "column_167": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_158"
-            },
-            {
-              "op": "call",
-              "symbol": "row_159"
-            },
-            {
-              "op": "call",
-              "symbol": "row_92"
-            },
             {
               "op": "call",
               "symbol": "row_160"
@@ -2105,7 +2129,19 @@
             },
             {
               "op": "call",
-              "symbol": "row_92"
+              "symbol": "row_112"
+            },
+            {
+              "op": "call",
+              "symbol": "row_165"
+            },
+            {
+              "op": "call",
+              "symbol": "row_166"
+            },
+            {
+              "op": "call",
+              "symbol": "row_162"
             }
           ],
           "op": "split",
@@ -2226,26 +2262,26 @@
         "weight": 1
       }
     ],
-    "column_169": [
+    "column_172": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_166"
-            },
-            {
-              "op": "call",
-              "symbol": "row_167"
-            },
-            {
-              "op": "call",
               "symbol": "row_168"
             },
             {
               "op": "call",
-              "symbol": "row_2"
+              "symbol": "row_169"
+            },
+            {
+              "op": "call",
+              "symbol": "row_170"
+            },
+            {
+              "op": "call",
+              "symbol": "row_171"
             }
           ],
           "op": "split",
@@ -2323,14 +2359,14 @@
         "weight": 1
       }
     ],
-    "column_170": [
+    "column_173": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_166"
+              "symbol": "row_168"
             },
             {
               "op": "call",
@@ -2385,22 +2421,22 @@
         "weight": 1
       }
     ],
-    "column_173": [
+    "column_176": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_166"
+              "symbol": "row_168"
             },
             {
               "op": "call",
-              "symbol": "row_171"
+              "symbol": "row_174"
             },
             {
               "op": "call",
-              "symbol": "row_172"
+              "symbol": "row_175"
             },
             {
               "op": "call",
@@ -2482,7 +2518,7 @@
         "weight": 1
       }
     ],
-    "column_175": [
+    "column_178": [
       {
         "body": {
           "axis": "y",
@@ -2493,7 +2529,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_174"
+              "symbol": "row_177"
             }
           ],
           "op": "split",
@@ -4885,43 +4921,39 @@
               },
               {
                 "op": "call",
-                "symbol": "column_127"
+                "symbol": "column_128"
               },
               {
                 "op": "call",
-                "symbol": "column_135"
+                "symbol": "column_137"
               },
               {
                 "op": "call",
-                "symbol": "column_140"
+                "symbol": "column_142"
               },
               {
                 "op": "call",
-                "symbol": "column_144"
+                "symbol": "column_146"
               },
               {
                 "op": "call",
-                "symbol": "column_148"
+                "symbol": "column_150"
               },
               {
                 "op": "call",
-                "symbol": "column_151"
+                "symbol": "column_153"
               },
               {
                 "op": "call",
-                "symbol": "column_157"
+                "symbol": "column_159"
               },
               {
                 "op": "call",
-                "symbol": "column_165"
+                "symbol": "column_167"
               },
               {
                 "op": "call",
-                "symbol": "column_169"
-              },
-              {
-                "op": "call",
-                "symbol": "column_170"
+                "symbol": "column_172"
               },
               {
                 "op": "call",
@@ -4929,7 +4961,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_175"
+                "symbol": "column_176"
+              },
+              {
+                "op": "call",
+                "symbol": "column_178"
               }
             ],
             "op": "split",
@@ -5289,6 +5325,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -5309,7 +5352,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -5360,7 +5410,21 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5389,7 +5453,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -5449,6 +5513,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -5469,7 +5540,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -5520,7 +5598,21 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5549,7 +5641,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -5602,6 +5694,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -5644,24 +5743,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -5720,6 +5810,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -5762,24 +5859,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -5819,6 +5907,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -5847,24 +5942,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -5902,6 +5988,18 @@
                 "role": "turf"
               },
               "op": "fill"
+            },
+            {
+              "material": {
+                "role": "yard"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "turf"
+              },
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -5915,24 +6013,22 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 4
-                }
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -5998,7 +6094,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -6035,7 +6138,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -6064,7 +6174,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -6118,7 +6228,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -6154,6 +6271,13 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 8
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -6170,7 +6294,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 4
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -6239,24 +6363,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 4
-                }
+                "expr": "int",
+                "value": 8
               },
               "size": "absolute"
             },
@@ -6419,7 +6527,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -6432,24 +6540,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -6581,7 +6673,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 3
               },
               "size": "absolute"
             },
@@ -6601,24 +6693,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -6728,7 +6804,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -6748,24 +6824,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -6803,7 +6863,17 @@
             {
               "body": {
                 "material": {
-                  "role": "shed_ridge"
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
                 },
                 "op": "fill"
               },
@@ -6864,24 +6934,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 6
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
               },
               "size": "absolute"
             },
@@ -6943,30 +7004,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
+                "expr": "int",
+                "value": 6
               },
               "size": "absolute"
             },
@@ -7020,24 +7065,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 4
-                }
+                "expr": "int",
+                "value": 8
               },
               "size": "absolute"
             },
@@ -7095,30 +7124,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
+                "value": 6
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -7208,7 +7221,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -7259,7 +7279,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -7274,6 +7294,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -7302,7 +7329,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -7409,7 +7436,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -7422,24 +7449,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -7568,7 +7579,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -7597,7 +7608,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 11
                 }
               },
               "size": "absolute"
@@ -7739,7 +7750,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -7759,24 +7770,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -7919,7 +7914,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -7939,24 +7934,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -8004,6 +7983,12 @@
             {
               "material": {
                 "role": "brick"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "stone"
               },
               "op": "fill"
             },
@@ -8085,24 +8070,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -8152,6 +8128,16 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -8225,24 +8211,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -8259,6 +8236,116 @@
       }
     ],
     "row_124": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "material": {
+                "role": "brick"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_125": [
       {
         "body": {
           "axis": "z",
@@ -8331,30 +8418,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 3
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -8370,7 +8441,7 @@
         "weight": 1
       }
     ],
-    "row_125": [
+    "row_126": [
       {
         "body": {
           "axis": "z",
@@ -8444,30 +8515,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 3
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -8483,7 +8538,7 @@
         "weight": 1
       }
     ],
-    "row_126": [
+    "row_127": [
       {
         "body": {
           "axis": "z",
@@ -8529,30 +8584,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
+                "value": 6
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -8568,7 +8607,7 @@
         "weight": 1
       }
     ],
-    "row_128": [
+    "row_129": [
       {
         "body": {
           "axis": "z",
@@ -8613,6 +8652,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -8633,7 +8679,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -8684,7 +8737,21 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -8713,158 +8780,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_129": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "material": {
-                "role": "bellows"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "fire"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south-part-work-yard"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -9034,7 +8950,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -9063,7 +8979,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 11
                 }
               },
               "size": "absolute"
@@ -9081,6 +8997,171 @@
       }
     ],
     "row_130": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "material": {
+                "role": "bellows"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "fire"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_131": [
       {
         "body": {
           "axis": "z",
@@ -9153,30 +9234,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -9192,7 +9257,7 @@
         "weight": 1
       }
     ],
-    "row_131": [
+    "row_132": [
       {
         "body": {
           "axis": "z",
@@ -9227,6 +9292,13 @@
               "op": "fill"
             },
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
               "material": {
                 "role": "beam_x"
               },
@@ -9311,147 +9383,6 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_132": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_s"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_n"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
                 "expr": "int",
                 "value": 1
               },
@@ -9460,58 +9391,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "value": 3
               },
               "size": "absolute"
             },
@@ -9565,6 +9445,173 @@
             },
             {
               "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_134": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
                 "material": {
                   "role": "shed_n"
                 },
@@ -9621,7 +9668,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -9641,24 +9688,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -9674,7 +9705,7 @@
         "weight": 1
       }
     ],
-    "row_134": [
+    "row_135": [
       {
         "body": {
           "axis": "z",
@@ -9703,7 +9734,17 @@
             {
               "body": {
                 "material": {
-                  "role": "shed_ridge"
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
                 },
                 "op": "fill"
               },
@@ -9785,24 +9826,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -9819,6 +9851,103 @@
       }
     ],
     "row_136": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_138": [
       {
         "body": {
           "axis": "z",
@@ -9862,7 +9991,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -9899,6 +10035,13 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
                 "value": 4
               },
               "size": "absolute"
@@ -9921,7 +10064,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 7
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -9938,7 +10081,7 @@
         "weight": 1
       }
     ],
-    "row_137": [
+    "row_139": [
       {
         "body": {
           "axis": "z",
@@ -9976,7 +10119,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -10006,7 +10156,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -10028,315 +10185,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 7
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_138": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_s"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "material": {
-                "role": "beam_x"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "material": {
-                "role": "beam_x"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_n"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_139": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_s"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_n"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -10472,7 +10321,283 @@
         "weight": 1
       }
     ],
+    "row_140": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "material": {
+                "role": "beam_x"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "material": {
+                "role": "beam_x"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "row_141": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_143": [
       {
         "body": {
           "axis": "z",
@@ -10548,7 +10673,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -10599,7 +10731,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -10614,6 +10746,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -10642,7 +10781,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -10659,7 +10798,7 @@
         "weight": 1
       }
     ],
-    "row_142": [
+    "row_144": [
       {
         "body": {
           "axis": "z",
@@ -10709,7 +10848,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -10746,7 +10892,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -10754,6 +10900,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -10775,7 +10928,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 7
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -10792,7 +10945,7 @@
         "weight": 1
       }
     ],
-    "row_143": [
+    "row_145": [
       {
         "body": {
           "axis": "z",
@@ -10857,7 +11010,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -10870,24 +11023,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -10903,7 +11040,7 @@
         "weight": 1
       }
     ],
-    "row_145": [
+    "row_147": [
       {
         "body": {
           "axis": "z",
@@ -10960,7 +11097,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -10990,7 +11134,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 5
               },
               "size": "absolute"
             },
@@ -11005,6 +11149,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -11033,7 +11184,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -11050,7 +11201,7 @@
         "weight": 1
       }
     ],
-    "row_146": [
+    "row_148": [
       {
         "body": {
           "axis": "z",
@@ -11123,30 +11274,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 3
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -11162,7 +11297,7 @@
         "weight": 1
       }
     ],
-    "row_147": [
+    "row_149": [
       {
         "body": {
           "axis": "z",
@@ -11242,149 +11377,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_149": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "tuft"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "material": {
-                "role": "grindstone"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-forge"
-            },
-            {
-              "material": {
-                "role": "quench"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "material": {
-                "role": "barrel"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south-part-work-yard"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
+                "value": 6
               },
               "size": "absolute"
             },
@@ -11398,58 +11391,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 10
-                }
+                "value": 3
               },
               "size": "absolute"
             },
@@ -11558,7 +11500,198 @@
         "weight": 1
       }
     ],
-    "row_150": [
+    "row_151": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "tuft"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "material": {
+                "role": "grindstone"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-forge"
+            },
+            {
+              "material": {
+                "role": "quench"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "material": {
+                "role": "barrel"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_152": [
       {
         "body": {
           "axis": "z",
@@ -11609,7 +11742,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -11639,7 +11779,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
+                "value": 6
               },
               "size": "absolute"
             },
@@ -11647,6 +11787,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -11675,7 +11822,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -11692,7 +11839,7 @@
         "weight": 1
       }
     ],
-    "row_152": [
+    "row_154": [
       {
         "body": {
           "axis": "z",
@@ -11758,7 +11905,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -11795,7 +11949,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -11810,6 +11964,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -11838,7 +11999,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -11855,7 +12016,7 @@
         "weight": 1
       }
     ],
-    "row_153": [
+    "row_155": [
       {
         "body": {
           "axis": "z",
@@ -11922,7 +12083,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -11959,7 +12127,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -11974,6 +12142,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -12002,7 +12177,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -12019,7 +12194,7 @@
         "weight": 1
       }
     ],
-    "row_154": [
+    "row_156": [
       {
         "body": {
           "axis": "z",
@@ -12084,7 +12259,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -12097,24 +12272,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -12130,7 +12289,7 @@
         "weight": 1
       }
     ],
-    "row_155": [
+    "row_157": [
       {
         "body": {
           "axis": "z",
@@ -12231,44 +12390,28 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
                 "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
               },
               "size": "absolute"
             },
@@ -12284,7 +12427,7 @@
         "weight": 1
       }
     ],
-    "row_156": [
+    "row_158": [
       {
         "body": {
           "axis": "z",
@@ -12377,7 +12520,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -12392,80 +12535,6 @@
               "blocks": {
                 "expr": "int",
                 "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_158": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "turf"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pave"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "yard"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "turf"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
               },
               "size": "absolute"
             },
@@ -12473,122 +12542,6 @@
               "blocks": {
                 "expr": "int",
                 "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_159": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south-part-work-yard"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 7
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
               },
               "size": "absolute"
             },
@@ -12732,75 +12685,36 @@
           "axis": "z",
           "children": [
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "turf"
               },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             },
             {
-              "body": {
-                "material": {
-                  "role": "shed_s"
-                },
-                "op": "fill"
+              "material": {
+                "role": "pave"
               },
-              "op": "claim",
-              "region": "unwalked"
+              "op": "fill"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "yard"
               },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             },
             {
-              "body": {
-                "material": {
-                  "role": "shed_n"
-                },
-                "op": "fill"
+              "material": {
+                "role": "turf"
               },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-work-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             }
           ],
           "op": "split",
           "sizes": [
             {
               "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -12814,30 +12728,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "value": 4
               },
               "size": "absolute"
             },
@@ -12863,24 +12754,7 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_s"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
+              "region": "side-north"
             },
             {
               "body": {
@@ -12888,23 +12762,6 @@
               },
               "op": "claim",
               "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_n"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
             },
             {
               "body": {
@@ -12919,6 +12776,13 @@
               },
               "op": "claim",
               "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -12948,28 +12812,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
+                "value": 10
               },
               "size": "absolute"
             },
@@ -12991,7 +12834,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 8
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -13025,47 +12868,6 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_s"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "shed_n"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -13088,58 +12890,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "value": 10
               },
               "size": "absolute"
             },
@@ -13169,15 +12920,8 @@
             },
             {
               "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
                 "material": {
-                  "role": "shed_ridge"
+                  "role": "shed_s"
                 },
                 "op": "fill"
               },
@@ -13189,14 +12933,17 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "unwalked"
+              "region": "part-work-yard"
             },
             {
               "body": {
-                "op": "void"
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
               },
               "op": "claim",
-              "region": "room"
+              "region": "unwalked"
             },
             {
               "body": {
@@ -13217,36 +12964,8 @@
           "sizes": [
             {
               "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
               },
               "size": "absolute"
             },
@@ -13254,22 +12973,35 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "int",
+                  "value": 2
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 7
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -13306,10 +13038,176 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
               "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_165": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_s"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "shed_n"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
             },
             {
               "body": {
@@ -13331,7 +13229,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 2
               },
               "size": "absolute"
             },
@@ -13345,30 +13243,35 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
               },
               "size": "absolute"
             },
@@ -13385,6 +13288,89 @@
       }
     ],
     "row_166": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_168": [
       {
         "body": {
           "axis": "z",
@@ -13420,7 +13406,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 7
+                "value": 8
               },
               "size": "absolute"
             },
@@ -13436,7 +13422,7 @@
         "weight": 1
       }
     ],
-    "row_167": [
+    "row_169": [
       {
         "body": {
           "axis": "z",
@@ -13466,7 +13452,7 @@
                 "op": "fill"
               },
               "op": "claim",
-              "region": "room"
+              "region": "part-work-yard"
             },
             {
               "body": {
@@ -13476,7 +13462,7 @@
                 "op": "fill"
               },
               "op": "claim",
-              "region": "room"
+              "region": "part-work-yard"
             },
             {
               "body": {
@@ -13486,7 +13472,14 @@
                 "op": "fill"
               },
               "op": "claim",
-              "region": "room"
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
             },
             {
               "body": {
@@ -13564,7 +13557,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
@@ -13593,114 +13593,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_168": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-smithy/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 9
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-smithy/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 10
+                  "value": 11
                 }
               },
               "size": "absolute"
@@ -13867,7 +13760,197 @@
         "weight": 1
       }
     ],
+    "row_170": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-smithy/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 11
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "row_171": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_174": [
       {
         "body": {
           "axis": "z",
@@ -13938,7 +14021,7 @@
         "weight": 1
       }
     ],
-    "row_172": [
+    "row_175": [
       {
         "body": {
           "axis": "z",
@@ -14009,7 +14092,7 @@
         "weight": 1
       }
     ],
-    "row_174": [
+    "row_177": [
       {
         "body": {
           "axis": "z",
@@ -14710,6 +14793,18 @@
                 "role": "turf"
               },
               "op": "fill"
+            },
+            {
+              "material": {
+                "role": "bed_soil"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "turf"
+              },
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -14761,6 +14856,20 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -14864,6 +14973,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "f2"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -14952,6 +15078,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -14968,7 +15108,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -15995,6 +16135,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "f4"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -16069,6 +16226,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -16085,7 +16256,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -16520,6 +16691,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "fern"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -16601,6 +16789,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -16617,7 +16819,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -16969,24 +17171,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -17110,24 +17296,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -17183,6 +17353,18 @@
                 "role": "turf"
               },
               "op": "fill"
+            },
+            {
+              "material": {
+                "role": "bed_soil"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "turf"
+              },
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -17227,6 +17409,20 @@
               "blocks": {
                 "expr": "int",
                 "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -17316,6 +17512,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "f1"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -17390,6 +17603,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -17406,7 +17633,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -18174,24 +18401,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -18307,24 +18518,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -18649,6 +18844,18 @@
                 "role": "turf"
               },
               "op": "fill"
+            },
+            {
+              "material": {
+                "role": "bed_soil"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "turf"
+              },
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -18686,6 +18893,20 @@
               "blocks": {
                 "expr": "int",
                 "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -18791,6 +19012,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "f2"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -18872,6 +19110,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -18888,7 +19140,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -19723,24 +19975,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -19856,24 +20092,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 6
-                }
+                "expr": "int",
+                "value": 5
               },
               "size": "absolute"
             },
@@ -19968,6 +20188,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "f4"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -20049,6 +20286,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -20065,7 +20316,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -20980,24 +21231,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -21093,24 +21328,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -21189,6 +21408,23 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "fern"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -21249,6 +21485,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -21265,7 +21515,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -21385,24 +21635,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -21632,6 +21866,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "side-south"
             }
           ],
@@ -21682,6 +21923,13 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -21698,7 +21946,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 11
                 }
               },
               "size": "absolute"
@@ -22313,24 +22561,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -22445,24 +22677,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -22497,6 +22713,12 @@
             },
             {
               "material": {
+                "role": "turf"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "yard"
               },
               "op": "fill"
@@ -22526,24 +22748,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -22678,6 +22891,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -22698,7 +22918,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -22763,7 +22990,21 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -22792,7 +23033,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -22868,7 +23109,14 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south-part-work-yard"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -22905,7 +23153,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 5
               },
               "size": "absolute"
             },
@@ -22913,6 +23161,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -22941,7 +23196,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 10
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -22990,30 +23245,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 7
+                "value": 8
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -23056,6 +23295,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -23084,24 +23330,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -23174,6 +23411,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -23224,24 +23468,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -23315,6 +23550,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "part-work-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -23365,24 +23607,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -23512,24 +23745,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 8
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -23596,6 +23813,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "part-work-yard"
             },
             {
@@ -23645,24 +23869,15 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
@@ -23738,30 +23953,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-smithy/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },

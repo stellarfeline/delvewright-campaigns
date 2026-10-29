@@ -119,7 +119,7 @@ door_roles(PALETTE, "door_inner", "minecraft:spruce_door", "east", hinge="right"
 HOUSE = (2, 10, 2, 7)        # x0, x1, z0, z1: walls included
 BAY = (6, 10, 8, 9)          # the front bay toward the yard, its south gable at z 9
 PARTITION = 6                # the timber wall between kitchen (west) and front room (east)
-FORGE = (14, 20, 2, 6)       # the shed's posts
+FORGE = (14, 20, 2, 7)       # the shed's posts
 PORCH = (11, 12, 4, 6)
 WALL_TOP = 4                 # the house's wall plate course
 SHED_PLATE = 4
@@ -135,8 +135,8 @@ def build(place) -> Model:
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
     # the way in from the street: paving up to the forge front and into the yard
-    m.box(21, X1, 0, 0, 3, 9, "pave")
-    m.box(11, 21, 0, 0, 7, 10, "yard")
+    m.box(21, X1, 0, 0, 3, 10, "pave")
+    m.box(11, 21, 0, 0, 8, 11, "yard")
     m.box(13, 13, 0, 0, 4, 6, "yard")
     m.box(PORCH[0], PORCH[1], 0, 0, PORCH[2], PORCH[3], "pave")
 
@@ -234,8 +234,8 @@ def build(place) -> Model:
     m.set(17, 1, 4, "anvil")
     m.set(fx0 + 1, 1, 6, "coal")
     m.set(19, 1, 3, "grindstone")
-    m.set(19, 1, 6, "quench")
-    m.set(18, 1, 6, "quench")
+    m.set(19, 1, 7, "quench")
+    m.set(18, 1, 7, "quench")
     # tongs and hammers: chains from the beam, a lantern hung over the anvil
     m.set(17, 3, 2, "chain")
     m.set(18, SHED_PLATE, 4, "beam_z")
@@ -243,26 +243,26 @@ def build(place) -> Model:
     m.set(18, SHED_PLATE - 1, 4, "lantern_h")
     # the shed roof: spruce, ridge along x, deep overhang, boarded gable to the street
     gable(m, fx0, fx1, fz0, fz1, SHED_PLATE, "x", "shed", "shed_ridge", fill=None)
-    for z in range(fz0 + 1, fz1):
-        for y in range(SHED_PLATE + 1, SHED_PLATE + 3):
-            if abs(z - 4) <= (SHED_PLATE + 2 - y):
+    for k, y in enumerate(range(SHED_PLATE + 1, SHED_PLATE + 4)):
+        for z in range(fz0 + 1 + k, fz1 - k):
+            if m.get(fx1, y, z) is None:
                 m.set(fx1, y, z, "gable_boards")
                 m.set(fx0, y, z, "stone")
     m.box(fx0, fx0, 1, 10, 4, 4, "brick")
 
     # ---------- the work yard: stacked iron, coal, the smithing table, a bench
-    m.set(12, 1, 9, "iron")
-    m.set(13, 1, 9, "iron")
-    m.set(12, 2, 9, "bars")
-    m.set(14, 1, 9, "coal")
-    m.set(15, 1, 9, "coal")
-    m.set(14, 2, 9, "coal")
-    m.set(17, 1, 9, "smithing")
-    m.set(20, 1, 9, "hay")
-    m.set(19, 1, 9, "barrel")
-    m.set(18, 1, 9, "barrel")
-    m.set(19, 2, 9, "barrel")
-    m.set(20, 2, 9, "lantern")
+    m.set(12, 1, 10, "iron")
+    m.set(13, 1, 10, "iron")
+    m.set(12, 2, 10, "bars")
+    m.set(14, 1, 10, "coal")
+    m.set(15, 1, 10, "coal")
+    m.set(14, 2, 10, "coal")
+    m.set(17, 1, 10, "smithing")
+    m.set(20, 1, 10, "hay")
+    m.set(19, 1, 10, "barrel")
+    m.set(18, 1, 10, "barrel")
+    m.set(19, 2, 10, "barrel")
+    m.set(20, 2, 10, "lantern")
     # a bench facing the street under the forge eave
     m.set(22, 1, 2, "bench")
     m.set(22, 1, 1, "bench_arm_n")
@@ -270,9 +270,10 @@ def build(place) -> Model:
 
     # ---------- life: flower beds under the house windows, bushes, the woodpile
     flower_bed(m, 3, 5, 8, 9, ["f1", "f2", "f3", "f4", "f5", "fern"])
+    flower_bed(m, 3, 9, 11, 11, ["f2", "f4", "fern", "f1"])
     flower_bed(m, 3, 9, 1, 1, ["f2", "f3", "fern", "tuft", "f5"])
     m.box(13, 13, 1, 2, 2, 3, "log_z")
-    for (x, z, r) in ((2, 9, "bush"), (11, 9, "bush_f"), (11, 2, "bush_f"), (22, 9, "bush")):
+    for (x, z, r) in ((2, 10, "bush"), (11, 10, "bush_f"), (11, 2, "bush_f"), (22, 10, "bush")):
         m.set(x, 1, z, r)
     for x in range(1, 24):
         for z in (1, 10):
@@ -289,8 +290,9 @@ def build(place) -> Model:
     m.regions("house", hx0, hx1, hz0, hz1)
     m.regions("house", bx0, bx1, bz0, bz1)
     m.regions("forge", fx0, fx1, fz0, fz1)
-    m.regions("work-yard", 11, 21, 7, 10)
-    m.regions("work-yard", 13, 13, 4, 6)
+    m.regions("work-yard", 11, 21, 8, 11)
+    m.regions("work-yard", 13, 13, 4, 7)
+    m.regions("work-yard", 21, 22, 2, 7)
     return m
 
 
