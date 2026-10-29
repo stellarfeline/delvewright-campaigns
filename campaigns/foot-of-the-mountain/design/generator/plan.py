@@ -49,6 +49,8 @@ def box(node, extent, floor, ceiling, intent, note, holds=None, way=None,
     n = {"id": node, "intent": intent, "note": note}
     if holds:
         n["holds"] = holds
+    if node in REFS:
+        n["references"] = REFS[node]
     nodes.append(n)
     return b
 
@@ -91,6 +93,41 @@ def seam(a, b, face, at, meets, kind, form):
 
 
 OPEN = lambda n: {"open": n}
+
+# Community and historical reference builds per plot: looked at for form and
+# room layout, never copied (an unlicensed or non-commercial source is ideas only).
+REFS = {
+    "node/inn": [
+        {"url": "https://store.abfielder.com/products/%F0%9F%90%8E-travelers-refuge",
+         "shows": "A Minecraft inn and tavern: a common hall with a serving counter and a fireplace, the kitchen and pantry behind it, chambers over, an attached stable of eight stalls under a lofted hay balcony.",
+         "terms": "the store's EULA and terms of service (a paid build); ideas only"},
+        {"url": "https://en.wikipedia.org/wiki/The_George_Inn,_Southwark",
+         "shows": "The last galleried coaching inn in London: a partly timber-framed range of connected bars on the ground floor, the bedrooms in the galleried storey over, a coach yard behind.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://en.wikipedia.org/wiki/Coaching_inn",
+         "shows": "What a coaching inn holds: attached stables staffed by hostlers who changed a tired team for a fresh one, rooms for travellers over the bars.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    "node/merchant": [
+        {"url": "https://www.shulkr.com/de/schematics/0XY7X8e3YicC",
+         "shows": "A Minecraft U-shaped manor: two symmetrical wings round a central courtyard with covered walkways along both sides, dark timber over stone brick, tall gabled roofs with deep eaves.",
+         "terms": "none stated on the page (site terms of use linked); ideas only"},
+        {"url": "https://en.wikipedia.org/wiki/Medieval_Merchant%27s_House",
+         "shows": "Southampton's merchant's house: a shop front on the street, the hall behind it with a side passage, a private inner room at the rear, a wine undercroft, chambers over; stone walls with a timber frontage.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    "node/carpenter": [
+        {"url": "https://en.wikipedia.org/wiki/Saw_pit",
+         "shows": "The pit saw: a log laid across a pit (or on trestles before pits), a top and a bottom sawyer, often in a covered open-fronted shed with a rubble back wall, rubble corner piers and a slate roof.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://www.mc-mod.net/?p=538588",
+         "shows": "A Minecraft medieval carpenter's house (24 x 22 x 20): stripped spruce framing over stone, spruce slab and trapdoor detailing.",
+         "terms": "none stated on the page; ideas only"},
+        {"url": "https://minecolonies.com/wiki/buildings/sawmill/",
+         "shows": "The carpenter's workplace as a Minecraft colony building: wooden goods made to order from the yard's timber, so the shop takes commissions and the workroom makes them.",
+         "terms": "none stated on the page; ideas only"},
+    ],
+}
 
 # ---------------------------------------------------------------- the square
 SQF = 84                     # the square, at the mountain's foot
@@ -329,8 +366,8 @@ THEMES = {
                    [("structure", "house", 0.30, 11, "the shop with jars and a still room behind it"),
                     ("ground", "garden", 0.30, None, "the physic garden in raised beds")]),
     "merchant": ("the merchant's house", "A rich merchant's U-shaped stone house around a front court, a counting room by the door.",
-                 [("structure", "house", 0.40, 13, "the merchant's house: counting room, hall, stair"),
-                  ("ground", "court", 0.20, None, "the front court with a fountain")]),
+                 [("structure", "house", 0.62, 13, "the merchant's house: the counting room and the cloth store in the north wing, the hall range, the covered walk"),
+                  ("ground", "court", 0.14, None, "the front court with a fountain")]),
     "tavern": ("the tavern", "A low sailors' tavern with a beer garden under a vine pergola.",
                [("structure", "tavern", 0.32, 9, "the taproom and the cellar stair"),
                 ("ground", "garden", 0.28, None, "the beer garden under a pergola")]),
