@@ -1481,19 +1481,390 @@ def build_model() -> Model:
         if m.get(x, 1, 2) is None and m.get(x, 0, 2) == "turf":
             m.set(x, 1, 2, "fern")
 
+    refine(m)
+    stair_shapes(m)
     # ---------- the parts: which columns are which
     for x in range(1, 57):
         for z in range(1, 39):
             if TOWER[0] <= x <= TOWER[1] and TOWER[2] <= z <= TOWER[3]:
                 m.region[(x, z)] = "tower"
             elif church_footprint(x, z) or (x in PIERS + (49,) and z in (2, 3, 25, 26)) or (
-                    FRONT[0] - 1 == x and WALL_N <= z <= WALL_S):
+                    FRONT[0] - 3 <= x <= FRONT[0] - 1 and WALL_N - 1 <= z <= TOWER[2] + 1):
                 m.region[(x, z)] = "church"
             elif CLOSE[0] <= x <= CLOSE[1] and CLOSE[2] <= z <= CLOSE[3]:
                 m.region[(x, z)] = "close"
             elif yx0 <= x <= yx1 and yz0 <= z <= yz1:
                 m.region[(x, z)] = "churchyard"
     return m
+
+
+# ===================================================================== the second pass
+#
+# Depth, after the references: the west front's portal is a stack of pointed
+# archivolts stepping inward between buttresses that project three cells and set
+# off twice as they rise (minecraftonline's Cathedral; minecraft.how's guide);
+# every bay is a buttress pier between paired lancets under an oculus, the walls
+# carry a plinth below and a cornice above (the abfielder gallery's rhythm); the
+# nave, aisles, transept and choir are vaulted in stepped upside-down stairs with
+# a transverse rib at every pier, over clustered piers and pointed arcades.
+
+VAULT0 = 19                  # the vault springs here at the wall line, crown four higher
+SHAFT_N = "shaft_n"          # a wall block joined to the pier on its south side
+SHAFT_S = "shaft_s"          # joined on its north side
+PIER_XS = tuple(PIERS) + (TR_W, TR_E, 49)
+
+
+def nave_d(z):
+    return min(z - NAVE[0], NAVE[1] - z)
+
+
+def tr_d(x):
+    return min(x - TR[0], TR[1] - x)
+
+
+def vault_floor(x, z):
+    """The lowest vault course over a church floor column, or None under no high vault."""
+    if not church_interior(x, z):
+        return None
+    in_nave = NAVE[0] <= z <= NAVE[1] and X0 <= x <= CHOIR[1]
+    in_tr = TR[0] <= x <= TR[1] and TR_N + 1 <= z <= TR_S - 1
+    if x > CHOIR[1]:                              # the apse: a half-dome of the same profile
+        r = ((x - APSE_C) ** 2 + (z - ZC) ** 2) ** 0.5
+        return VAULT0 + max(0, min(4, 4 - int(r)))
+    if in_nave and in_tr:                         # the crossing: a groin, the two barrels' union
+        return VAULT0 + max(nave_d(z), tr_d(x))
+    if in_nave:
+        return VAULT0 + nave_d(z)
+    if in_tr:
+        return VAULT0 + tr_d(x)
+    return None
+
+
+def refine(m):
+    PALETTE.update({
+        "vault": "minecraft:tuff_bricks",
+        "vault_n": "minecraft:tuff_brick_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
+        "vault_s": "minecraft:tuff_brick_stairs[facing=south,half=top,shape=straight,waterlogged=false]",
+        "vault_e": "minecraft:tuff_brick_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
+        "vault_w": "minecraft:tuff_brick_stairs[facing=west,half=top,shape=straight,waterlogged=false]",
+        "rib": "minecraft:polished_deepslate",
+        "rib_n": "minecraft:polished_deepslate_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
+        "rib_s": "minecraft:polished_deepslate_stairs[facing=south,half=top,shape=straight,waterlogged=false]",
+        "rib_e": "minecraft:polished_deepslate_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
+        "rib_w": "minecraft:polished_deepslate_stairs[facing=west,half=top,shape=straight,waterlogged=false]",
+        "arch_e": "minecraft:tuff_brick_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
+        "arch_w": "minecraft:tuff_brick_stairs[facing=west,half=top,shape=straight,waterlogged=false]",
+        SHAFT_N: "minecraft:tuff_brick_wall[east=none,north=none,south=tall,up=true,waterlogged=false,west=none]",
+        SHAFT_S: "minecraft:tuff_brick_wall[east=none,north=tall,south=none,up=true,waterlogged=false,west=none]",
+        "capital": "minecraft:chiseled_tuff",
+        "cornice_n": "minecraft:stone_brick_stairs[facing=south,half=top,shape=straight,waterlogged=false]",
+        "cornice_s": "minecraft:stone_brick_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
+        "set_e": "minecraft:stone_brick_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+        "kneel": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
+        "pot_a": "minecraft:potted_red_tulip",
+        "pot_b": "minecraft:potted_cornflower",
+        "pot_c": "minecraft:potted_azure_bluet",
+    })
+    ceiling_old = (None, AIR, "beam", "stone", "lantern_h", "dress")
+
+    # ---------- the high vaults: nave, crossing, transept, choir, apse
+    for x in range(X0, 57):
+        for z in range(1, 39):
+            v = vault_floor(x, z)
+            if v is None:
+                continue
+            # clear the old flat ceiling's courses below the vault
+            for y in range(NAVE_TOP - 1, v):
+                if m.get(x, y, z) in ("beam", "stone", "lantern_h") and y > NAVE_TOP - 1:
+                    m.set(x, y, z, AIR)
+            # the shell above the vault, up to the roof, is masonry: no cavity
+            for y in range(v, EAVE + 8):
+                if m.get(x, y, z) in ceiling_old:
+                    m.set(x, y, z, "vault")
+            # the vault's face: a step of upside-down stairs, the back to the higher side
+            rib = x in PIER_XS or (TR[0] <= x <= TR[1] and z in (PIER_N + 0, PIER_S)) or z in (
+                TR_N + 1, TR_S - 1) and TR[0] <= x <= TR[1]
+            in_nave = NAVE[0] <= z <= NAVE[1] and x <= CHOIR[1]
+            role = None
+            if v < VAULT0 + 4:
+                if in_nave and (not (TR[0] <= x <= TR[1]) or nave_d(z) >= tr_d(x)):
+                    role = "n" if z < ZC else "s"
+                elif TR[0] <= x <= TR[1]:
+                    role = "w" if x < (TR[0] + TR[1]) // 2 else "e"
+            if x in PIER_XS and in_nave:
+                face = ("rib_" + role) if role else "rib"
+            else:
+                face = ("vault_" + role) if role else "vault"
+            m.set(x, v, z, face)
+            # a transverse rib hangs one course under the vault at every pier
+            if x in PIER_XS and in_nave and v - 1 > VAULT0 - 2:
+                m.set(x, v - 1, z, ("rib_" + role) if role else "rib")
+
+    # ---------- the aisle vaults: corbelled stairs at both walls, a rib at every pier
+    for x in range(X0, CHOIR_E):
+        if TR[0] <= x <= TR[1]:
+            continue
+        for (z0, z1) in (AISLE_N, AISLE_S):
+            for z in range(z0, z1 + 1):
+                if not church_interior(x, z):
+                    continue
+                m.set(x, AISLE_TOP, z, "vault")
+                if z == z0:
+                    m.set(x, AISLE_TOP - 1, z, "rib_n" if x in PIER_XS else "vault_n")
+                elif z == z1:
+                    m.set(x, AISLE_TOP - 1, z, "rib_s" if x in PIER_XS else "vault_s")
+                elif x in PIER_XS:
+                    m.set(x, AISLE_TOP - 1, z, "rib")
+
+    # ---------- the arcades: clustered piers and pointed arches
+    for zl in (PIER_N, PIER_S):
+        nave_side = zl + 1 if zl == PIER_N else zl - 1
+        aisle_side = zl - 1 if zl == PIER_N else zl + 1
+        for x in range(X0, CHOIR[1] + 1):
+            if TR[0] <= x <= TR[1]:
+                continue
+            if zl == PIER_S and TOWER[0] <= x <= TOWER[1]:
+                continue            # the tower's north wall: the arcade begins east of it
+            if x in PIER_XS:
+                m.box(x, x, 1, NAVE_TOP, zl, zl, "pier")
+                m.set(x, 1, zl, "plinth")
+                for zs in (nave_side, aisle_side):
+                    if not church_interior(x, zs):
+                        continue
+                    sh = SHAFT_S if zs > zl else SHAFT_N
+                    m.set(x, 1, zs, "plinth")
+                    m.box(x, x, 2, 7, zs, zs, sh)
+                    m.set(x, 8, zs, "capital")
+                    if zs == nave_side:       # the vaulting shaft runs on up to the springing
+                        m.box(x, x, 9, VAULT0 - 2, zs, zs, sh)
+                        m.set(x, VAULT0 - 1, zs, "capital")
+                continue
+            prev = max(p for p in (X0 - 1,) + PIER_XS if p < x)
+            nxt = min(p for p in PIER_XS + (CHOIR[1] + 1,) if p > x)
+            d = min(x - prev, nxt - x)
+            top = 7 + min(d, 2)
+            m.box(x, x, 1, top, zl, zl, AIR)
+            for y in range(top + 1, NAVE_TOP + 1):
+                if m.get(x, y, zl) in (None, AIR, "dress", "glass", "tracery"):
+                    m.set(x, y, zl, "stone")
+            if nxt - prev - 1 >= 3 and d == 2:
+                m.set(x, top + 1, zl, "dress")             # the keystone
+            elif x - prev < nxt - x or nxt - prev - 1 < 3 and x - prev == 1:
+                m.set(x, top + 1, zl, "arch_w")            # the shoulder springs from the pier west
+            else:
+                m.set(x, top + 1, zl, "arch_e")
+            m.set(x, AISLE_TOP + 1, zl, "dress")           # the string course over the arcade
+
+    # ---------- windows: paired lancets under an oculus, a hood over them
+    def window(zw, xc, y0, h):
+        for xx in range(xc - 1, xc + 2):
+            for y in range(y0 - 1, y0 + h + 2):
+                if m.get(xx, y, zw) in ("glass", "tracery", None, AIR, "dress", "stone"):
+                    m.set(xx, y, zw, "stone")
+        for xx in (xc - 1, xc + 1):
+            m.box(xx, xx, y0, y0 + h - 1, zw, zw, "glass")
+        m.box(xc, xc, y0, y0 + h - 1, zw, zw, "dress")      # the mullion
+        m.set(xc, y0 + h, zw, "glass_gold")                 # the oculus
+        m.set(xc, y0 - 1, zw, "dress")
+        for xx in (xc - 1, xc + 1):
+            m.set(xx, y0 - 1, zw, "dress")                  # the sill
+    for xc in BAYS + (51,):
+        for zw in (WALL_N, WALL_S):
+            if TOWER[0] <= xc <= TOWER[1] and zw == WALL_S:
+                continue
+            if zw == WALL_S and 24 <= xc <= 28:
+                window(zw, xc, 6, 2)                        # over the south porch door
+                continue
+            window(zw, xc, 3, 5)
+        for zl in (PIER_N, PIER_S):
+            if TOWER[0] <= xc <= TOWER[1] and zl == PIER_S:
+                continue
+            window(zl, xc, 14, 4)
+    # the porch door through the south aisle wall stays open under its window
+    m.box(25, 27, 1, 4, WALL_S, WALL_S, AIR)
+
+    # ---------- the walls' second and third depths: a plinth below, a cornice above
+    for x in range(X0, CHOIR_E + 1):
+        if TR_W <= x <= TR_E:
+            continue
+        for (zw, zo, cor) in ((WALL_N, WALL_N - 1, "cornice_n"), (WALL_S, WALL_S + 1, "cornice_s")):
+            if TOWER[0] <= x <= TOWER[1] and zw == WALL_S:
+                continue
+            if m.get(x, AISLE_TOP, zw) is None or m.get(x, 2, zo) not in (None, AIR):
+                continue
+            if zw == WALL_S and 24 <= x <= 28:
+                continue                                    # the porch door's walk
+            m.set(x, 1, zo, "plinth")
+            if m.get(x, AISLE_TOP, zo) in (None, AIR):
+                m.set(x, AISLE_TOP, zo, cor)
+    for x in range(FRONT[0], CHOIR[1] + 1):
+        if TR_W <= x <= TR_E:
+            continue
+        for (zo, cor) in ((PIER_N - 1, "cornice_n"), (PIER_S + 1, "cornice_s")):
+            if TOWER[0] <= x <= TOWER[1] and zo == PIER_S + 1:
+                continue
+            if m.get(x, NAVE_TOP, zo) in (None, AIR):
+                m.set(x, NAVE_TOP, zo, cor)
+
+    # ---------- the west front, rebuilt in depth
+    fx0, fx1 = FRONT
+    for x in range(fx0 - 4, fx0):
+        for z in range(WALL_N - 1, TOWER[2] + 2):
+            for y in range(1, 32):
+                m.v.pop((x, y, z), None)
+            m.set(x, 0, z, "pave")
+    for z in range(WALL_N, TOWER[2]):
+        for x in (fx0, fx1):
+            for y in range(1, NAVE_TOP + 1):
+                m.set(x, y, z, "stone")
+    # buttresses three deep, setting off at courses 9 and 17, a pinnacle on top
+    for (za, zb) in ((WALL_N - 1, WALL_N), (PIER_N - 1, PIER_N), (TOWER[2], TOWER[2] + 1)):
+        for z in (za, zb):
+            m.box(fx0 - 3, fx0 - 1, 1, 8, z, z, "dress")
+            m.set(fx0 - 3, 9, z, "set_e")
+            m.box(fx0 - 2, fx0 - 1, 9, 16, z, z, "dress")
+            m.set(fx0 - 2, 17, z, "set_e")
+            top = NAVE_TOP + 4 if za != WALL_N - 1 else AISLE_TOP + 6
+            m.box(fx0 - 1, fx0 - 1, 17, top, z, z, "dress")
+            m.set(fx0 - 1, top + 1, z, "quoin")
+            m.set(fx0 - 1, 1, z, "plinth")
+        m.set(fx0 - 1, top + 2, za, "finial")
+    # the portal: four orders of pointed arches stepping in from the porch's face
+    porch_z0, porch_z1 = PIER_N + 1, TOWER[2] - 1        # between the buttresses
+    PORCH_TOP = 12
+    for x in range(fx0 - 3, fx0):
+        for z in range(porch_z0, porch_z1 + 1):
+            m.box(x, x, 1, PORCH_TOP, z, z, "dress" if (fx0 - x) % 2 else "stone")
+    orders = {fx1: 1, fx0: 1, fx0 - 1: 2, fx0 - 2: 3, fx0 - 3: 4}   # the half-width each order opens
+    for x, half in orders.items():
+        for dz in range(-half, half + 1):
+            top = 5 + half - abs(dz) + (1 if half > 1 else 0)
+            m.box(x, x, 1, top, ZC + dz, ZC + dz, AIR)
+            m.set(x, 0, ZC + dz, "pave")
+    for x in range(fx0 - 3, fx1 + 1):
+        m.set(x, 0, ZC, "nave_a")
+    m.set(fx0, 8, ZC, "quoin")                           # the tympanum's boss
+    # the porch's gable (a wimperg) over the arches, with a finial
+    for k in range(0, 6):
+        lo, hi = porch_z0 + k, porch_z1 - k
+        if lo > hi:
+            break
+        m.box(fx0 - 3, fx0 - 1, PORCH_TOP + 1 + k, PORCH_TOP + 1 + k, lo, hi, "stone")
+        m.set(fx0 - 3, PORCH_TOP + 1 + k, lo, "set_e" if False else "dress")
+        m.set(fx0 - 3, PORCH_TOP + 1 + k, hi, "dress")
+    m.set(fx0 - 3, PORCH_TOP + 6, ZC, "finial")
+    # the rose: glass in the inner plane, the outer plane cut back round it
+    rose(m, "x", fx1, ZC, 17, 4)
+    for dz in range(-4, 5):
+        for dy in range(-4, 5):
+            d2 = dz * dz + dy * dy
+            if d2 <= 16 + 4:
+                m.set(fx0, 17 + dy, ZC + dz, "dress" if d2 > 9 + 3 else AIR)
+    # the north aisle's bay of the front: a tall lancet, set back one cell
+    for z in (WALL_N + 1, WALL_N + 2):
+        m.box(fx1, fx1, 3, 9, z, z, "glass")
+        m.box(fx0, fx0, 3, 9, z, z, AIR)
+        m.set(fx0, 2, z, "sill")
+    m.set(fx1, 10, WALL_N + 1, "glass_gold")
+    # a blind arcade across the front's gable over the rose
+    for z in range(PIER_N + 1, PIER_S):
+        if z % 2 == 0:
+            m.box(fx0, fx0, 23, 25, z, z, AIR)
+            m.set(fx0, 22, z, "sill")
+    # flower beds before the front's north bay
+    for z in (WALL_N + 1, WALL_N + 2):
+        m.set(fx0 - 4, 0, z, "turf")
+        m.set(fx0 - 4, 1, z, "rose" if z % 2 else "lilac")
+        m.set(fx0 - 4, 2, z, ("rose" if z % 2 else "lilac") + "_top")
+
+    # ---------- pews of stairs and slabs: a seat, and a kneeler before the next
+    for x in range(X0 + 3, PIERS[-1] + 2):
+        for z in list(range(NAVE[0] + 1, ZC - 1)) + list(range(ZC + 2, NAVE[1])):
+            if m.get(x, 1, z) in ("pew", "kneel", None):
+                m.v.pop((x, 1, z), None)
+                if x in PIER_XS or (x + 1) in PIER_XS:
+                    continue
+                m.set(x, 1, z, "pew" if x % 2 == 0 else "kneel")
+
+    # ---------- light: lanterns where people sit and walk, gathered at the altar
+    for x in BAYS + (51,):
+        for z in (AISLE_N[0], AISLE_S[1]):
+            if church_interior(x, z) and m.get(x, 1, z) is None:
+                m.set(x, 1, z, "lantern")
+        if X0 <= x <= CHOIR[1]:
+            v = vault_floor(x, ZC)
+            if v is not None:
+                m.set(x, v - 1, ZC, "lantern_h")
+    for x in range(X0 + 1, PIERS[-1] + 1, 4):
+        for z in (ZC - 1, ZC + 1):
+            if m.get(x, 1, z) is None:
+                m.set(x, 1, z, "lantern")
+    for x in range(TR[0], TR[1] + 1, 4):
+        for z in (TR_N + 2, TR_S - 2, PIER_N + 1, PIER_S - 1):
+            if church_interior(x, z) and m.get(x, 1, z) is None:
+                m.set(x, 1, z, "lantern")
+    for z in (ZC - 3, ZC + 3):
+        if church_interior(53, z) and m.get(53, 1, z) is None:
+            m.set(53, 1, z, "lantern")
+    # the north lawn's tree and the churchyard's yews shade their floor: a lamp beside each
+    m.set(3, 1, 7, "post")
+    m.set(3, 2, 7, "lantern")
+    m.set(52, 1, 33, "post")
+    m.set(52, 2, 33, "lantern")
+
+
+DIRS = {"north": (0, -1), "south": (0, 1), "east": (1, 0), "west": (-1, 0)}
+CCW = {"north": "west", "west": "south", "south": "east", "east": "north"}
+
+
+def stair_shapes(m):
+    """Write every stair's `shape` as the game derives it from its neighbours
+    (StairBlock.getStairsShape), so the written world is the world the server keeps."""
+    def props(role):
+        b = PALETTE.get(role)
+        if not isinstance(b, str) or "_stairs[" not in b:
+            return None
+        kv = dict(p.split("=") for p in b[b.index("[") + 1:-1].split(","))
+        return kv["facing"], kv["half"]
+
+    def at(x, y, z):
+        r = m.v.get((x, y, z))
+        return props(r) if r else None
+
+    new = {}
+    for (x, y, z), r in list(m.v.items()):
+        st = props(r)
+        if st is None:
+            continue
+        f, h = st
+
+        def take(face):
+            dx, dz = DIRS[face]
+            n = at(x + dx, y, z + dz)
+            return n is None or n[0] != f or n[1] != h
+        shape = "straight"
+        dx, dz = DIRS[f]
+        front = at(x + dx, y, z + dz)
+        if front and front[1] == h:
+            d = front[0]
+            if (d in ("north", "south")) != (f in ("north", "south")) and take(OPP[d]):
+                shape = "outer_left" if d == CCW[f] else "outer_right"
+        if shape == "straight":
+            back = at(x - dx, y, z - dz)
+            if back and back[1] == h:
+                d = back[0]
+                if (d in ("north", "south")) != (f in ("north", "south")) and take(d):
+                    shape = "inner_left" if d == CCW[f] else "inner_right"
+        if shape != "straight":
+            name = f"{r}~{shape}"
+            if name not in PALETTE:
+                PALETTE[name] = PALETTE[r].replace("shape=straight", f"shape={shape}")
+                LOW.add(name)
+            new[(x, y, z)] = name
+    m.v.update(new)
+
+
+OPP = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
 
 class Cathedral(Place):
@@ -1673,11 +2044,13 @@ def body(p, rules):
 
 FULL = {"floor", "wall", "lid", "stone", "dress", "quoin", "pier", "plinth", "glass", "glass_blue", "glass_red",
         "glass_gold", "roof", "spire", "nave_a", "nave_b", "aisle_floor", "pave", "path", "turf", "altar", "beam",
-        "cwall", "yew_log", "yew", "bush", "woodpile", "font", "louvre_x", "louvre_z"}
-TALL = {"tracery", "grave", "post", "finial"}
+        "cwall", "yew_log", "yew", "bush", "woodpile", "font", "louvre_x", "louvre_z",
+        "vault", "rib", "capital"}
+TALL = {"tracery", "grave", "post", "finial", "shaft_n", "shaft_s"}
 LOW = {"roof_n", "roof_s", "roof_e", "roof_w", "ridge", "fly_n", "fly_s", "sill", "pew", "stall_n", "stall_s",
        "bench", "bench_s", "cap", "grave_flat", "altar_top", "candles", "lantern",
-       "lectern"}
+       "lectern", "vault_n", "vault_s", "vault_e", "vault_w", "rib_n", "rib_s", "rib_e", "rib_w", "arch_e",
+       "arch_w", "cornice_n", "cornice_s", "set_e", "kneel", "pot_a", "pot_b", "pot_c"}
 
 _starter_contract = contract
 
