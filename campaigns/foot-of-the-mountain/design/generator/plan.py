@@ -418,7 +418,7 @@ for (sg, face), L in SIDE.items():
 
 MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-1", "west", "bakery", 22, 10, 2), ("street-1", "east", "apothecary", 18, 10, 2),
-    ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 10, 2),
+    ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 12, 1),
     ("street-3", "east", "weaver", 22, 10, 2),
     ("street-4", "west", "townhall", 24, 10, 2), ("street-4", "east", "tavern", 24, 10, 2),
     ("street-5", "west", "smithy", 24, 10, 2),
@@ -427,7 +427,7 @@ MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-8", "west", "netloft", 20, 10, 2),
 ]
 LANE = [  # (lane, face, theme, at, dx, dz)
-    ("lane-3", "north", "carpenter", 2, 16, 10), ("lane-3", "south", "apothecary-2", 2, 16, 10),
+    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "apothecary-2", 2, 16, 10),
     ("lane-5", "north", "boatwright", 26, 14, 10), ("lane-5", "south", "cottages-2", 26, 14, 10),
 ]
 for st, face, theme, dx, dz, at in MAIN:
