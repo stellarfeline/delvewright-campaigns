@@ -1734,7 +1734,7 @@ def refine(m):
     PORCH_TOP = 12
     for x in range(fx0 - 3, fx0):
         for z in range(porch_z0, porch_z1 + 1):
-            m.box(x, x, 1, PORCH_TOP, z, z, "dress" if (fx0 - x) % 2 else "stone")
+            m.box(x, x, 1, PORCH_TOP, z, z, "dress" if (fx0 - x) % 2 else "rib")
     orders = {fx1: 1, fx0: 1, fx0 - 1: 2, fx0 - 2: 3, fx0 - 3: 4}   # the half-width each order opens
     for x, half in orders.items():
         for dz in range(-half, half + 1):
@@ -1754,12 +1754,13 @@ def refine(m):
         m.set(fx0 - 3, PORCH_TOP + 1 + k, hi, "dress")
     m.set(fx0 - 3, PORCH_TOP + 6, ZC, "finial")
     # the rose: glass in the inner plane, the outer plane cut back round it
-    rose(m, "x", fx1, ZC, 17, 4)
+    ROSE_Y = 20                                          # clear of the wimperg's apex
+    rose(m, "x", fx1, ZC, ROSE_Y, 4)
     for dz in range(-4, 5):
         for dy in range(-4, 5):
             d2 = dz * dz + dy * dy
             if d2 <= 16 + 4:
-                m.set(fx0, 17 + dy, ZC + dz, "dress" if d2 > 9 + 3 else AIR)
+                m.set(fx0, ROSE_Y + dy, ZC + dz, "dress" if d2 > 9 + 3 else AIR)
     # the north aisle's bay of the front: a tall lancet, set back one cell
     for z in (WALL_N + 1, WALL_N + 2):
         m.box(fx1, fx1, 3, 9, z, z, "glass")
@@ -1767,10 +1768,9 @@ def refine(m):
         m.set(fx0, 2, z, "sill")
     m.set(fx1, 10, WALL_N + 1, "glass_gold")
     # a blind arcade across the front's gable over the rose
-    for z in range(PIER_N + 1, PIER_S):
-        if z % 2 == 0:
-            m.box(fx0, fx0, 23, 25, z, z, AIR)
-            m.set(fx0, 22, z, "sill")
+    for z in (ZC - 1, ZC + 1):                            # two lancet niches in the gable's peak
+        m.box(fx0, fx0, 26, 27, z, z, AIR)
+        m.set(fx0, 25, z, "sill")
     # flower beds before the front's north bay
     for z in (WALL_N + 1, WALL_N + 2):
         m.set(fx0 - 4, 0, z, "turf")
