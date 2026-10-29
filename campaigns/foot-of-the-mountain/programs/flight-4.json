@@ -52,7 +52,7 @@
   "palette": {
     "b0": "minecraft:lantern[hanging=false,waterlogged=false]",
     "b1": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b2": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "b3": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
     "cobble": [
       {
         "block": "minecraft:cobblestone",
@@ -103,6 +103,7 @@
     ],
     "ladder-south": "minecraft:ladder[facing=south,waterlogged=false]",
     "lamp": "minecraft:sea_lantern",
+    "pillar": "minecraft:cobblestone",
     "setts": [
       {
         "block": "minecraft:stone_bricks",
@@ -614,7 +615,7 @@
         "weight": 1
       }
     ],
-    "column_24": [
+    "column_25": [
       {
         "body": {
           "axis": "y",
@@ -625,15 +626,15 @@
             },
             {
               "op": "call",
-              "symbol": "row_14"
-            },
-            {
-              "op": "call",
               "symbol": "row_22"
             },
             {
               "op": "call",
               "symbol": "row_23"
+            },
+            {
+              "op": "call",
+              "symbol": "row_24"
             },
             {
               "op": "call",
@@ -800,7 +801,7 @@
         "weight": 1
       }
     ],
-    "column_30": [
+    "column_31": [
       {
         "body": {
           "axis": "y",
@@ -808,10 +809,6 @@
             {
               "op": "call",
               "symbol": "row_6"
-            },
-            {
-              "op": "call",
-              "symbol": "row_25"
             },
             {
               "op": "call",
@@ -828,6 +825,10 @@
             {
               "op": "call",
               "symbol": "row_29"
+            },
+            {
+              "op": "call",
+              "symbol": "row_30"
             },
             {
               "op": "call",
@@ -1016,7 +1017,7 @@
         "weight": 1
       }
     ],
-    "column_36": [
+    "column_37": [
       {
         "body": {
           "axis": "y",
@@ -1024,10 +1025,6 @@
             {
               "op": "call",
               "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_31"
             },
             {
               "op": "call",
@@ -1044,6 +1041,10 @@
             {
               "op": "call",
               "symbol": "row_35"
+            },
+            {
+              "op": "call",
+              "symbol": "row_36"
             }
           ],
           "op": "split",
@@ -1291,7 +1292,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_24"
+                "symbol": "column_25"
               },
               {
                 "op": "call",
@@ -1303,11 +1304,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_30"
+                "symbol": "column_31"
               },
               {
                 "op": "call",
-                "symbol": "column_36"
+                "symbol": "column_37"
               }
             ],
             "op": "split",
@@ -1644,13 +1645,19 @@
             },
             {
               "material": {
+                "role": "pillar"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "setts"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b3"
               },
               "op": "fill"
             },
@@ -1682,13 +1689,44 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-3-to-flight-4/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
                 }
               },
               "size": "absolute"
@@ -1740,13 +1778,7 @@
             },
             {
               "material": {
-                "role": "setts"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
+                "role": "pillar"
               },
               "op": "fill"
             },
@@ -1781,29 +1813,6 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-3-to-flight-4/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
                     "name": "handed/seam/street-3-to-flight-4/z0"
                   },
                   "op": "add",
@@ -1814,16 +1823,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-flight-4/z0"
                 }
               },
               "size": "absolute"
@@ -2080,12 +2081,6 @@
               },
               "op": "claim",
               "region": "room"
-            },
-            {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
             }
           ],
           "op": "split",
@@ -2094,21 +2089,6 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/street-3-to-flight-4/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-4-to-street-4/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-3-to-flight-4/z0"
-                }
               },
               "size": "absolute"
             },
@@ -2216,13 +2196,7 @@
             },
             {
               "material": {
-                "role": "setts"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
+                "role": "pillar"
               },
               "op": "fill"
             },
@@ -2257,29 +2231,6 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-3-to-flight-4/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
                     "name": "handed/seam/street-3-to-flight-4/z0"
                   },
                   "op": "add",
@@ -2290,16 +2241,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-flight-4/z0"
                 }
               },
               "size": "absolute"
@@ -2352,7 +2295,144 @@
             },
             {
               "material": {
-                "role": "setts"
+                "role": "pillar"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "ladder-south"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "street-3-to-flight-4-ladder"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-4-to-street-4-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-3-to-flight-4/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-flight-4/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-4-to-street-4/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_23": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "wall"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "pillar"
               },
               "op": "fill"
             },
@@ -2463,7 +2543,7 @@
         "weight": 1
       }
     ],
-    "row_23": [
+    "row_24": [
       {
         "body": {
           "axis": "z",
@@ -2623,116 +2703,6 @@
         "weight": 1
       }
     ],
-    "row_25": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "setts"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "flight-4-to-street-4-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-3-to-flight-4/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-3-to-flight-4/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-4-to-street-4/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 6
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "row_26": [
       {
         "body": {
@@ -2747,22 +2717,21 @@
             },
             {
               "material": {
+                "role": "pillar"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "setts"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b3"
               },
               "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
             },
             {
               "material": {
@@ -2801,12 +2770,12 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
+                    "name": "handed/seam/street-3-to-flight-4/z0"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 1
+                    "value": 2
                   }
                 },
                 "op": "sub",
@@ -2821,6 +2790,11 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
@@ -2830,19 +2804,6 @@
                   "rhs": {
                     "expr": "int",
                     "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
                   }
                 }
               },
@@ -2850,24 +2811,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -2918,18 +2863,10 @@
               "region": "room"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "pillar"
               },
-              "op": "claim",
-              "region": "street-3-to-flight-4-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "street-3-to-flight-4-landing"
+              "op": "fill"
             },
             {
               "body": {
@@ -2975,29 +2912,6 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-3-to-flight-4/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
                     "name": "handed/seam/street-3-to-flight-4/z0"
                   },
                   "op": "add",
@@ -3008,16 +2922,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-flight-4/z0"
                 }
               },
               "size": "absolute"
@@ -3114,7 +3020,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b1"
               },
               "op": "fill"
             },
@@ -3287,11 +3193,10 @@
               "region": "room"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "b0"
               },
-              "op": "claim",
-              "region": "unwalked"
+              "op": "fill"
             },
             {
               "body": {
@@ -3567,7 +3472,182 @@
         "weight": 1
       }
     ],
-    "row_31": [
+    "row_30": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-3-to-flight-4-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-3-to-flight-4-landing"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-4-to-street-4-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-3-to-flight-4/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-flight-4/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-4-to-street-4/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 6
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_32": [
       {
         "body": {
           "axis": "z",
@@ -3630,7 +3710,7 @@
         "weight": 1
       }
     ],
-    "row_32": [
+    "row_33": [
       {
         "body": {
           "axis": "z",
@@ -3745,7 +3825,7 @@
         "weight": 1
       }
     ],
-    "row_33": [
+    "row_34": [
       {
         "body": {
           "axis": "z",
@@ -3920,7 +4000,7 @@
         "weight": 1
       }
     ],
-    "row_34": [
+    "row_35": [
       {
         "body": {
           "axis": "z",
@@ -4059,7 +4139,7 @@
         "weight": 1
       }
     ],
-    "row_35": [
+    "row_36": [
       {
         "body": {
           "axis": "z",
@@ -4280,13 +4360,19 @@
             },
             {
               "material": {
+                "role": "pillar"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "setts"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b3"
               },
               "op": "fill"
             },
@@ -4318,13 +4404,44 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-3-to-flight-4/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-flight-4/z0"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
                 }
               },
               "size": "absolute"
@@ -4377,13 +4494,7 @@
             },
             {
               "material": {
-                "role": "setts"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
+                "role": "pillar"
               },
               "op": "fill"
             },
@@ -4418,29 +4529,6 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-3-to-flight-4/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
                     "name": "handed/seam/street-3-to-flight-4/z0"
                   },
                   "op": "add",
@@ -4451,16 +4539,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-3-to-flight-4/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-flight-4/z0"
                 }
               },
               "size": "absolute"

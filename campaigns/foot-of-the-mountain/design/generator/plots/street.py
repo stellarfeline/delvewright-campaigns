@@ -137,18 +137,6 @@ def flight(m, place, stem):
             m.set(x, 0, r, "worn" if x in (x0, x1) else "cobble")
         for r in rows[:4]:
             m.set(x, 0, r, "setts")
-    # the starter stands a ladder beside the raised opening (its climb to the
-    # landing over the top step); the step it hangs on is a full block
-    back = {"south": (0, -1), "north": (0, 1), "east": (-1, 0), "west": (1, 0)}
-    for s in place.seams:
-        ap = s.get("approach")
-        if ap is None or ap.get("ladder") is None:
-            continue
-        lad = ap["ladder"]
-        bx, bz = back[lad["facing"]]
-        lx, lz = lad["lo"][0], lad["lo"][2]
-        for y in range(place.datum.value, ap["sill"].value):
-            m.set(lx + bx, y, lz + bz, "setts")
     # a lamp at the foot landing, the side alternating down the street; the
     # stretches' own edges are all doorways and openings, so the street's
     # lamps stand here, one every stretch and flight
@@ -254,32 +242,9 @@ def lane(m, place, stem):
         n += 1
 
 
-def drop_unclaimable_sides(place, m):
-    """A starter gap worked round here: an open side every ring cell of which
-    is a seam's opening (a street's front onto a plot all along), or which
-    lies outside the frame, would be declared with nothing to claim. It is
-    the seams' already; it is not declared again."""
-    ex, _, ez = place.n
-    keep = []
-    for sd in place.sides:
-        (sx0, sz0), (sx1, sz1) = sd["lo"], sd["hi"]
-        cells = [(x, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
-                 if 0 <= x < ex and 0 <= z < ez and (x, place.datum.value, z) not in m.no_touch]
-        # the side a raised opening stands on is the neighbour's above the
-        # walk plane (its void) and the top step's below it: nothing of it
-        # is a way out
-        raised = any(se["seam"]["face"] == sd["face"] and se["lo"][1].value > place.datum.value for se in place.seams)
-        if not raised:
-            keep.append(sd)  # a side every cell of which is a seam's the starter answers itself
-    place.sides = keep
-
-
 def build(place) -> Model:
     m = Model(place)
     palette(m)
-    drop_unclaimable_sides(place, m)
-    for f in ("north", "south", "east", "west"):      # the starter's ladder under a raised opening
-        m.palette[f"ladder-{f}"] = f"minecraft:ladder[facing={f},waterlogged=false]"
     stem = place.a["place"].removeprefix("node/")
     kind = stem.split("-")[0]
     if kind == "square":
@@ -290,6 +255,14 @@ def build(place) -> Model:
         stretch(m, place, stem)
     else:
         lane(m, place, stem)
+    # PLANT: a slab where the starter's ladder hangs (its backing)
+    back = {"south": (0, -1), "north": (0, 1), "east": (-1, 0), "west": (1, 0)}
+    for se in place.seams:
+        ap = se.get("approach")
+        if ap is not None and ap.get("ladder") is not None:
+            bx, bz = back[ap["ladder"]["facing"]]
+            for y in range(place.datum.value, ap["sill"].value):
+                m.set(ap["ladder"]["lo"][0] + bx, y, ap["ladder"]["lo"][2] + bz, slab("minecraft:spruce"))
     m.finish()
     return m
 
