@@ -502,8 +502,8 @@ for n, x0, z0, dx, dz, f in rects:
                 # ground meets the next place level across the seam
                 target = f - 1
                 w = 1.0 if max(ddx, ddz) <= 1 else smooth(1 - (d - 1) / skirt)
-            if n == "node/harbour" and d == 0:
-                continue  # the basin keeps the sea floor
+            if n == "node/harbour" and max(ddx, ddz) <= 1:
+                continue  # the basin and its ring keep the sea floor
             if w > W[z][x] + 1e-9 or (abs(w - W[z][x]) < 1e-9 and target > T[z][x]):
                 W[z][x] = w
                 T[z][x] = target
