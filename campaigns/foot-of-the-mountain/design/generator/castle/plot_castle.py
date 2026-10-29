@@ -18,7 +18,10 @@ sys.path.insert(0, str(HERE / "doune"))
 import build_castle as bc  # noqa: E402
 
 CUT = 4          # Doune courses under the frame
-FIXED = 4        # the ring's fixed-ground courses (frame y0..3 = Doune y4..7)
+FIXED = 3        # the ring's fixed-ground courses (frame y0..2 = Doune y4..6): the ring's
+                 # surface course (Doune y7) is the plot's own on its open sides, so Doune
+                 # paves it and no strip of the hill's turf shows across the seam
+WALK_F = 4       # frame course of Doune's grade walk (Doune y8)
 X, Y, Z = bc.X, bc.Y, bc.Z
 ROAD_X, ROAD_W = 75, 5   # Doune's approach road where it leaves the plot's north edge
 MOUTH_H = 6              # the contact's height over the walk plane: the road place's open courses
@@ -94,7 +97,7 @@ def trim(node, k, ring, mouth=False, here=None):
     for y in UNWALKED.get(here, ()):
         out = claim_band(out, y, y + 1, "unwalked")
     if mouth:
-        out = claim_band(out, FIXED, FIXED + MOUTH_H, "road-mouth")
+        out = claim_band(out, WALK_F, WALK_F + MOUTH_H, "road-mouth")
     if any(c.get("op") == "claim" for _, c in out):
         out = [(n, c if c.get("op") == "claim" else {"op": "claim", "region": "site", "body": c})
                for n, c in out]
@@ -198,7 +201,7 @@ if not UNWALKED:
     del PROGRAM["contract"]["no_body"]["unwalked"]
 
 if __name__ == "__main__":
-    out = HERE.parent.parent / "programs" / "castle.json"
+    out = HERE.parent.parent.parent / "programs" / "castle.json"
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(PROGRAM, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {out} ({out.stat().st_size} bytes), {X}x{Y - CUT}x{Z}")
