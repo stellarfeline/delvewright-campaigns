@@ -94,7 +94,7 @@ OPEN = lambda n: {"open": n}
 
 # ---------------------------------------------------------------- the square
 SQF = 84                     # the square, at the mountain's foot
-SQ = (108, 200)
+SQ = (108, 230)
 box("node/square", (30, 24), SQF, OPEN(8), "the square",
     "The square at the top of the town, at the mountain's foot: the cathedral's "
     "west front on its east side, the inn on its west, the castle road leaving "
@@ -177,7 +177,7 @@ seam("node/square", "node/inn", "west", 0, 0, "contact",
 # and west, each turning north up a ramp at its end, then runs along the
 # castle's north side to Doune's approach (a contact on the north face at 74).
 ROAD_W, RAMP_L = 5, 10
-CASTLE_WALK = 128            # Doune's grade walk, the castle box's floor
+CASTLE_WALK = 116            # Doune's grade walk, the castle box's floor
 OPP = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
 
@@ -219,20 +219,19 @@ def join(a, b, face, kind, form):
     edges.append({"a": a, "b": b, "class": cls, "id": eid})
 
 
+TURN = 16
 ROUTE = [  # (direction of travel, kind, length): kind run (level) or ramp (+4)
     ("north", "run", 6),
-    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
-    ("north", "run", 8),
+    ("west", "run", 12), ("west", "ramp", RAMP_L), ("west", "run", 12),
+    ("north", "ramp", RAMP_L), ("north", "run", TURN),
+    ("east", "run", 12), ("east", "ramp", RAMP_L), ("east", "run", 12),
+    ("north", "ramp", RAMP_L), ("north", "run", TURN),
+    ("west", "run", 12), ("west", "ramp", RAMP_L), ("west", "run", 12),
+    ("north", "ramp", RAMP_L), ("north", "run", TURN),
+    ("east", "run", 12), ("east", "ramp", RAMP_L), ("east", "run", 12),
+    ("north", "ramp", RAMP_L),
+    # the summit road: level along the castle hill's west shoulder
+    ("north", "run", 86),
 ]
 prev, prev_dir, floor, rising = "node/square", "north", SQF, False
 for k, (d, kind, L) in enumerate(ROUTE, 1):
@@ -478,7 +477,7 @@ def rounded_rect(x, z, x0, x1, z0, z1, r):
 # The island: one land mass. The mountain rises behind the town with Doune
 # near its summit; its broad lower slope falls south to an irregular coast of
 # coves, rock and beach, and the town lies on that slope down to the harbour.
-TOWN = (60, 216, 180, 470)     # the town's ground: x0, x1, z0, z1
+TOWN = (60, 216, 210, 500)     # the town's ground: x0, x1, z0, z1
 CX, CZ = pos["node/castle"][0] + 51, pos["node/castle"][1] + 59   # Doune's centre
 
 
@@ -504,7 +503,7 @@ def ridged(x, z, scale, octaves, salt):
 def coast_z(x):
     """The south coast's line: coves and points; the harbour inlet at the
     quay; a deep cove east of the lighthouse so it stands on its point."""
-    z = 462 + (fbm(x, 0, 38, 3, 31) - 0.5) * 70
+    z = 492 + (fbm(x, 0, 38, 3, 31) - 0.5) * 60
     z -= 30 * smooth(1 - abs(x - 122) / 40)          # the harbour inlet
     z -= 66 * smooth(1 - abs(x - 214) / 26)          # the cove under the lighthouse
     z -= 48 * smooth(1 - abs(x - 38) / 30)           # a western cove
@@ -526,8 +525,8 @@ def mountain(x, z):
     broken by noise so no slope is a cone."""
     wx = x + (fbm(x, z, 60, 2, 41) - 0.5) * 50      # domain warp: no circle survives
     wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 50
-    d = math.hypot((wx - CX) / 165, (wz - CZ) / (95 if wz > CZ else 140))
-    dome = 50 + 78 * (1 - smooth((d - 0.32) / 0.68))
+    d = math.hypot((wx - CX) / 165, (wz - CZ) / (125 if wz > CZ else 140))
+    dome = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.3) / 0.7))
     p = math.hypot((wx - 278) / 62, (wz - 72) / 70)
     summit = 112 * (1 - smooth(p)) ** 0.9 * (0.6 + 0.4 * ridged(x, z, 30, 3, 51))
     ridge_line = math.exp(-((wz - 34) / 20) ** 2) * smooth((wx - 120) / 60)
@@ -539,7 +538,8 @@ def mountain(x, z):
 
 def slope(x, z):
     """The mountain's lower slope under the town: the street's own fall."""
-    y = SQF - (SQF - QUAYF) * (max(z, 212) - 212) / (430 - 212) - 10 * smooth((212 - z) / 80)
+    z0, z1 = SQ[1] + 12, pos['node/quay'][1]
+    y = SQF - (SQF - QUAYF) * (max(z, z0) - z0) / (z1 - z0) - 10 * smooth((z0 - z) / 80)
     return y + (fbm(x, z, 33, 2, 7) - 0.5) * 3
 
 
