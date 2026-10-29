@@ -93,8 +93,9 @@ def seam(a, b, face, at, meets, kind, form):
 OPEN = lambda n: {"open": n}
 
 # ---------------------------------------------------------------- the square
-SQ = (108, 270)
-box("node/square", (30, 24), 92, OPEN(8), "the square",
+SQF = 84                     # the square, at the mountain's foot
+SQ = (108, 200)
+box("node/square", (30, 24), SQF, OPEN(8), "the square",
     "The square at the top of the town, at the mountain's foot: the cathedral's "
     "west front on its east side, the inn on its west, the castle road leaving "
     "north up the mountain and the main street leaving south down to the sea. "
@@ -102,56 +103,41 @@ box("node/square", (30, 24), 92, OPEN(8), "the square",
     pin=SQ)
 
 # ------------------------------------------------------- the main street
-STREET_W, SEG_L, FLIGHT_L = 7, 20, 6
+# Ten short flights of two, so the street and the plots beside it follow the
+# slope in small steps: neighbours differ by two at most.
+STREET_W, SEG_L, FLIGHT_L, NFL = 7, 14, 6, 10
 segs = []
-prev, prev_face_at = "node/square", 11
-floor = 92
-for k in range(1, 8):
+prev = "node/square"
+floor = SQF
+for k in range(1, NFL + 1):
     fl = f"node/flight-{k}"
-    floor -= 4
+    floor -= 2
     box(fl, (STREET_W, FLIGHT_L), floor, OPEN(10), "a flight of the main street",
-        f"Flight {k} of the main street: seven wide, four steps down, stone-brick "
-        "stairs between low kerb walls with a lantern post at each top corner.",
-        way={"axis": "z", "clear": 5})
-    seam(prev, fl, "south", prev_face_at if prev == "node/square" else 0, 0,
-         "stair", f"flight {k}: four down, the full width")
-    if k == 7:
+        f"Flight {k} of the main street: seven wide, two shallow steps down, "
+        "between low kerbs.", way={"axis": "z", "clear": 5})
+    seam(prev, fl, "south", 11 if prev == "node/square" else 0, 0,
+         "stair", f"flight {k}: two down, the full width")
+    if k == NFL:
         break
     sg = f"node/street-{k}"
-    box(sg, (STREET_W, SEG_L), floor, OPEN(8), "a terrace of the main street",
-        f"Terrace {k} of the main street, walk plane {floor}: cobbles with a "
-        "kerb of stone bricks, the plots' fronts on both sides.",
-        way={"axis": "z", "clear": 5})
+    box(sg, (STREET_W, SEG_L), floor, OPEN(8), "a stretch of the main street",
+        f"Stretch {k} of the main street, walk plane {floor}: cobbles with a "
+        "kerb, the plots' fronts on both sides.", way={"axis": "z", "clear": 5})
     seam(fl, sg, "south", 0, 0, "contact", "the street runs on at grade")
     segs.append(sg)
     prev = sg
 
-# the quay and the harbour
-box("node/quay", (60, 10), 64, OPEN(8), "the quay",
-    "The quay at the foot of the street: a long stone wharf at walk plane 64, "
-    "bollards, stacked crates and nets, the harbour basin beyond.",
+# the quay at the foot of the street; the basin beyond it is the sea itself
+box("node/quay", (60, 10), floor, OPEN(8), "the quay",
+    f"The quay at the foot of the street: a long stone wharf at walk plane {floor}, "
+    "bollards, stacked crates and nets, the open water of the harbour basin beyond.",
     way={"axis": "x", "clear": 8})
-seam("node/flight-7", "node/quay", "south", 0, 27, "contact",
+seam(f"node/flight-{NFL}", "node/quay", "south", 0, 27, "contact",
      "the last flight lands on the quay")
-box("node/harbour", (60, 28), 64, OPEN(12), "the harbour",
-    "The harbour basin: two stone quays reaching into the water, a timber "
-    "jetty, and three fishing boats moored as fixed builds.",
-    holds=[
-        {"id": "part/east-mole", "kind": "ground", "cells": 160,
-         "use": "a stone mole reaching south into the sea, bollards along it"},
-        {"id": "part/jetty", "kind": "ground", "cells": 90,
-         "use": "a timber jetty on piles between the moles"},
-        {"id": "part/boats", "kind": "structure", "cells": 120, "height": 6,
-         "reached": False,
-         "use": "three fishing boats moored along the jetty, masts and furled sails"},
-        {"id": "part/basin", "kind": "ground", "cells": 900, "reached": False,
-         "use": "the open water of the basin between the moles"},
-    ])
-seam("node/quay", "node/harbour", "south", 0, 0, "contact",
-     "the quay's edge steps onto the moles and the jetty")
+QUAYF = floor
 
 # ------------------------------------------------------------- the cathedral
-box("node/cathedral", (56, 38), 92, OPEN(46), "the cathedral",
+box("node/cathedral", (56, 38), SQF, OPEN(46), "the cathedral",
     "A large cathedral in the manner of Vesperhold's Chapel of Hours: a long "
     "nave running east from a west front on the square, aisles under flying "
     "buttresses, a transept, an apse at the east end and a tall bell tower at "
@@ -171,7 +157,7 @@ seam("node/square", "node/cathedral", "east", 0, 14, "contact",
      "the close before the west front opens onto the square")
 
 # ------------------------------------------------------------------- the inn
-box("node/inn", (28, 24), 92, OPEN(16), "the inn",
+box("node/inn", (28, 24), SQF, OPEN(16), "the inn",
     "The Bell, a large timber-framed coaching inn on the square's west side: "
     "an L of a taproom and a stable range around a cobbled yard.",
     holds=[
@@ -186,49 +172,116 @@ seam("node/square", "node/inn", "west", 0, 0, "contact",
      "the inn's front yard opens onto the square")
 
 # ----------------------------------------------------------- the castle road
-# Doune's gate faces north, so the road climbs north along the castle hill's
-# west flank, turns east along its north side, and comes south onto the
-# castle's own approach road (a contact on the castle's north face at 74).
-ROAD_W, RAMP_L, SEG_LEN = 5, 10, 17
+# Doune's gate faces north. The road leaves the square northward and climbs
+# the mountain's west flank in switchbacks: legs that follow the contour east
+# and west, each turning north up a ramp at its end, then runs along the
+# castle's north side to Doune's approach (a contact on the north face at 74).
+ROAD_W, RAMP_L = 5, 10
 CASTLE_WALK = 128            # Doune's grade walk, the castle box's floor
-prev = "node/square"
-floor = 92
-for k in range(1, 10):
-    ramp = f"node/road-{k}"
-    box(ramp, (ROAD_W, RAMP_L), floor, OPEN(10), "the castle road",
-        f"Ramp {k} of the castle road up the mountain: a cobbled stair-road, one "
-        "step every two cells, between low parapets of mossy stone.",
-        way={"axis": "z", "clear": 4})
-    if prev == "node/square":
-        seam(prev, ramp, "north", 13, 0, "contact",
-             "the castle road leaves the square northward")
-    else:
-        seam(prev, ramp, "north", 0, 0, "contact", "the road runs on")
-    floor += 4
-    if k < 9:
-        top, (dx, dz) = f"node/road-run-{k}", (ROAD_W, SEG_LEN)
-        box(top, (dx, dz), floor, OPEN(8), "a level run of the castle road",
-            "A level run of the castle road along the hillside, a rough stone "
-            "parapet on the downhill side.", way={"axis": "z", "clear": 4})
-    else:
-        top, (dx, dz) = "node/road-top", (90, ROAD_W)
-        box(top, (dx, dz), floor, OPEN(8), "the castle road's last stretch",
-            "The road's last stretch, level along the castle hill's north side "
-            "to the head of Doune's approach.", way={"axis": "x", "clear": 4})
-    rx, rz = pos[ramp][0], pos[ramp][1]
-    pos[top] = (rx, rz - dz - 1, dx, dz, floor)
-    eid = "edge/" + top.split("/")[1] + "-to-" + ramp.split("/")[1]
-    seams.append({"edge": eid, "face": "south", "at": 0, "meets": 0,
-                  "opening": {"width": ROAD_W, "height": 4},
-                  "stair_in": ramp, "form": "the ramp climbs to the level run"})
-    edges.append({"a": top, "b": ramp, "class": "stair", "id": eid})
-    prev = top
-assert floor == CASTLE_WALK, floor
+OPP = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
+
+def place_next(prev, node, face, align):
+    """Put `node` beside `prev` across `face`, one ring cell apart; `align`
+    is 'lo' or 'hi': which end of prev's face the 5-wide road continues at."""
+    ax, az, adx, adz, _ = pos[prev]
+    (bdx, bdz), bf = ext(node)
+    if face in ("north", "south"):
+        x = ax if align == "lo" else ax + adx - bdx
+        z = az - bdz - 1 if face == "north" else az + adz + 1
+    else:
+        z = az if align == "lo" else az + adz - bdz
+        x = ax - bdx - 1 if face == "west" else ax + adx + 1
+    pos[node] = (x, z, bdx, bdz, bf)
+
+
+def join(a, b, face, kind, form):
+    """A seam between two placed boxes, `b` across `a`'s `face`; at/meets read
+    off the placement. kind: 'contact', or 'stair' (a is the upper place)."""
+    ax, az, adx, adz, _ = pos[a]
+    bx, bz, bdx, bdz, _ = pos[b]
+    if face in ("north", "south"):
+        lo = max(ax, bx); at, meets = lo - ax, lo - bx
+        w = min(ax + adx, bx + bdx) - lo
+    else:
+        lo = max(az, bz); at, meets = lo - az, lo - bz
+        w = min(az + adz, bz + bdz) - lo
+    eid = "edge/" + a.split("/")[1] + "-to-" + b.split("/")[1]
+    s = {"edge": eid, "face": face, "at": at, "meets": meets, "form": form}
+    if kind == "contact":
+        s["contact"] = {}
+        cls = "walk"
+    else:
+        s["opening"] = {"width": w, "height": 4}
+        s["stair_in"] = b
+        cls = "stair"
+    seams.append(s)
+    edges.append({"a": a, "b": b, "class": cls, "id": eid})
+
+
+ROUTE = [  # (direction of travel, kind, length): kind run (level) or ramp (+4)
+    ("north", "run", 6),
+    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
+    ("north", "ramp", RAMP_L), ("north", "run", 15),
+    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
+    ("north", "ramp", RAMP_L), ("north", "run", 15),
+    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
+    ("north", "ramp", RAMP_L), ("north", "run", 15),
+    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
+    ("north", "ramp", RAMP_L), ("north", "run", 15),
+    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
+    ("north", "ramp", RAMP_L), ("north", "run", 15),
+    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
+    ("north", "run", 8),
+]
+prev, prev_dir, floor, rising = "node/square", "north", SQF, False
+for k, (d, kind, L) in enumerate(ROUTE, 1):
+    node = f"node/road-{k}"
+    ext_ = (ROAD_W, L) if d in ("north", "south") else (L, ROAD_W)
+    axis = "z" if d in ("north", "south") else "x"
+    if kind == "ramp":
+        box(node, ext_, floor, OPEN(10), "a ramp of the castle road",
+            "A ramp of the castle road: a cobbled stair-road, one step every two "
+            "cells, the hillside meeting it on both sides.", way={"axis": axis, "clear": 4})
+    else:
+        box(node, ext_, floor, OPEN(8), "the castle road",
+            "The castle road along the mountain's flank, cobbled and level, the "
+            "slope above it and below it running up to its edges.", way={"axis": axis, "clear": 4})
+    if prev == "node/square":
+        (sx, sz, sdx, sdz, _) = pos[prev]
+        pos[node] = (sx + 13, sz - L - 1, ROAD_W, L, floor)
+    else:
+        # a turn joins at the end of the previous leg the road came along
+        align = {"west": "lo", "east": "hi"}.get(prev_dir, "lo") if d == "north" else (
+            "lo" if prev_dir == "north" else "lo")
+        if d in ("west", "east") and prev_dir == "north":
+            align = "lo"            # the turn leaves from the north end of a run up the slope
+        place_next(prev, node, d, align)
+    if rising:                      # prev was a ramp: node is the upper place
+        join(node, prev, OPP[d], "stair", "the ramp climbs to the road")
+    else:
+        join(prev, node, d, "contact", "the road runs on")
+    rising = kind == "ramp"
+    if rising:
+        floor += 4
+        # the place after a ramp stands four higher
+    prev, prev_dir = node, d
+assert not rising and floor == CASTLE_WALK, floor
+
+box("node/road-top", (10, ROAD_W), CASTLE_WALK, OPEN(8), "the castle road's last stretch",
+    "The road's last stretch, level along the castle's north side to the head "
+    "of Doune's approach.", way={"axis": "x", "clear": 4})
+CASTLE_X0 = 140
+rx = pos[prev][0]
+L = CASTLE_X0 + 74 + ROAD_W - rx
+boxes[-1]["extent"] = [L, ROAD_W]
+place_next(prev, "node/road-top", "north", "lo")
+join(prev, "node/road-top", "north", "contact", "the road turns east under the castle")
 box("node/gate-road", (5, 8), CASTLE_WALK, OPEN(6), "the road onto Doune's approach",
     "The last stretch of the road from the town, arriving on the hilltop at the "
     "start of Doune's own approach road, five wide.", way={"axis": "z", "clear": 5})
-seam("node/road-top", "node/gate-road", "south", 85, 0, "contact",
+place_next("node/road-top", "node/gate-road", "south", "hi")
+join("node/road-top", "node/gate-road", "south", "contact",
      "the road turns south onto Doune's approach")
 box("node/castle", (102, 118), CASTLE_WALK, OPEN(48), "the castle",
     "Doune Castle, copied whole as one plot: the gatehouse, the hall range, the "
@@ -316,6 +369,7 @@ def holds_for(theme, dx, dz):
 
 
 def plot(name, theme, street, face, at, meets, dx, dz):
+    theme = theme.split("-")[0]
     node = f"node/{name}"
     _, f = ext(street)
     intent, note, _ = THEMES[theme]
@@ -338,38 +392,36 @@ def overlaps(a, b, gap=0):
 
 
 # side streets: from street-2 west, street-4 east, street-6 east to the light
-SIDE = {("node/street-2", "west"): 46, ("node/street-4", "east"): 44,
-        ("node/street-6", "east"): 48}
+SIDE = {("node/street-3", "west"): 40, ("node/street-5", "east"): 40,
+        ("node/street-8", "east"): 46}
 for (sg, face), L in SIDE.items():
     k = sg.split("-")[1]
     sname = f"node/lane-{k}"
     _, f = ext(sg)
     box(sname, (L, 5), f, OPEN(8), "a side street",
-        f"A side street off terrace {k}, cobbled, five wide, plots along it.",
+        f"A side street off stretch {k}, cobbled, five wide, plots along it.",
         way={"axis": "x", "clear": 4})
-    seam(sg, sname, face, 8, 0, "contact", "the side street leaves the terrace")
+    seam(sg, sname, face, 5, 0, "contact", "the side street leaves the main street")
 
-# main-street plots: (street, face, theme, dx, dz, meets)
-MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its terrace
-    ("street-1", "west", "bakery", 22, 16, 2), ("street-1", "east", "apothecary", 16, 14, 4),
-    ("street-2", "east", "merchant", 26, 16, 2),
-    ("street-3", "west", "townhall", 24, 16, 2), ("street-3", "east", "weaver", 20, 15, 3),
-    ("street-4", "west", "smithy", 24, 16, 2),
-    ("street-5", "west", "chandler", 20, 14, 4), ("street-5", "east", "tavern", 24, 16, 2),
-    ("street-6", "west", "fishmonger", 20, 14, 2),
+MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
+    ("street-1", "west", "bakery", 22, 10, 2), ("street-1", "east", "apothecary", 18, 10, 2),
+    ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 10, 2),
+    ("street-3", "east", "weaver", 22, 10, 2),
+    ("street-4", "west", "townhall", 24, 10, 2), ("street-4", "east", "tavern", 24, 10, 2),
+    ("street-5", "west", "smithy", 24, 10, 2),
+    ("street-6", "west", "chandler", 20, 10, 2), ("street-6", "east", "cooper", 22, 10, 2),
+    ("street-7", "west", "fishmonger", 20, 10, 2), ("street-7", "east", "tannery", 22, 10, 2),
+    ("street-8", "west", "netloft", 20, 10, 2),
 ]
-# side-street plots: (lane, face, theme, at, dx, dz)
-LANE = [
-    ("lane-2", "north", "cottages", 22, 16, 12), ("lane-2", "south", "carpenter", 2, 18, 13),
-    ("lane-4", "north", "cooper", 28, 16, 12), ("lane-4", "south", "tannery", 24, 20, 14),
-    ("lane-6", "north", "netloft", 26, 16, 12), ("lane-6", "south", "boatwright", 22, 20, 12),
+LANE = [  # (lane, face, theme, at, dx, dz)
+    ("lane-3", "north", "carpenter", 2, 16, 10), ("lane-3", "south", "apothecary-2", 2, 16, 10),
+    ("lane-5", "north", "boatwright", 26, 14, 10), ("lane-5", "south", "cottages-2", 26, 14, 10),
 ]
 for st, face, theme, dx, dz, at in MAIN:
-    plot(f"{theme}", theme, f"node/{st}", face, at, 0, dx, dz)
+    plot(theme, theme, f"node/{st}", face, at, 0, dx, dz)
 for ln, face, theme, at, dx, dz in LANE:
-    plot(f"{theme}", theme, f"node/{ln}", face, at, 0, dx, dz)
-# the lighthouse at the end of lane-6
-plot("lighthouse", "lighthouse", "node/lane-6", "east", 0, 7, 20, 20)
+    plot(theme, theme.split("-")[0], f"node/{ln}", face, at, 0, dx, dz)
+plot("lighthouse", "lighthouse", "node/lane-8", "east", 0, 7, 20, 20)
 
 # ---------------------------------------------------------- consistency check
 names = list(pos)
@@ -423,52 +475,78 @@ def rounded_rect(x, z, x0, x1, z0, z1, r):
     return 1 + out / r
 
 
-# The island: a broad mainland block (the mountain country, far side
-# hidden behind its ridges) and, running south from it, the town's
-# promontory with the lighthouse headland on its east shoulder.
-TOWN = (60, 216, 248, 500)     # the town's own ground: x0, x1, z0, z1
+# The island: one land mass. The mountain rises behind the town with Doune
+# near its summit; its broad lower slope falls south to an irregular coast of
+# coves, rock and beach, and the town lies on that slope down to the harbour.
+TOWN = (60, 216, 180, 470)     # the town's ground: x0, x1, z0, z1
+CX, CZ = pos["node/castle"][0] + 51, pos["node/castle"][1] + 59   # Doune's centre
+
+
+def fbm(x, z, scale, octaves, salt):
+    v, amp, tot = 0.0, 1.0, 0.0
+    for o in range(octaves):
+        v += amp * vnoise(x, z, scale / (2 ** o), salt + o)
+        tot += amp
+        amp *= 0.5
+    return v / tot
+
+
+def ridged(x, z, scale, octaves, salt):
+    v, amp, tot = 0.0, 1.0, 0.0
+    for o in range(octaves):
+        n = 1 - abs(vnoise(x, z, scale / (2 ** o), salt + o) * 2 - 1)
+        v += amp * n * n
+        tot += amp
+        amp *= 0.5
+    return v / tot
+
+
+def coast_z(x):
+    """The south coast's line: coves and points, the harbour inlet at the quay."""
+    z = 452 + (fbm(x, 0, 46, 3, 31) - 0.5) * 44
+    z -= 16 * smooth(1 - abs(x - 122) / 34)          # the harbour inlet
+    z += 26 * smooth(1 - abs(x - 200) / 26)          # the lighthouse point
+    z -= 22 * smooth(1 - abs(x - 40) / 30)           # a western cove
+    return z
 
 
 def land(x, z):
-    """1 inside the island, 0 in the sea; a narrow edge makes the cliffs."""
-    wob = (vnoise(x, z, 41, 1) - 0.5) * 0.22 + (vnoise(x, z, 13, 5) - 0.5) * 0.06
-    main = (abs((x - 160) / 152) ** 4 + abs((z - 150) / 146) ** 4) ** 0.25
-    taper = 1 + 0.35 * smooth((z - 330) / 150)          # the promontory narrows to its tip
-    prom = rounded_rect(x, z, 136 - 70 / taper, 136 + 70 / taper, 250, 484, 36)
-    head = ellipse(x, z, 194, 462, 24, 26)
-    e = min(main, prom, head)
-    return smooth((1.0 - (e + wob)) / 0.05)
+    """1 on land, 0 at sea; the south coast slopes gently to beaches."""
+    wob = (fbm(x, z, 40, 3, 1) - 0.5) * 30
+    inset = min(x, RX - 1 - x, z) + wob
+    edge = smooth((inset - 10) / 14)                 # cliffs on the far coasts
+    south = smooth((coast_z(x) - z + wob * 0.3) / 18)  # a gentle shore by the town
+    return min(edge, south)
 
 
-def wild_height(x, z):
-    """The mountain country: rolling ground, the castle hill, two peaks."""
-    rolling = 74 + (vnoise(x, z, 53, 2) - 0.5) * 34 + (vnoise(x, z, 19, 3) - 0.5) * 10
-    # the castle hill: a summit just under Doune's grade, falling away
-    cx, cz = 183, 95
-    d = math.hypot((x - cx) / 1.0, (z - cz) / 1.1)
-    hill = 126 - 54 * smooth((d - 60) / 85) + (vnoise(x, z, 15, 8) - 0.5) * 6 * smooth((d - 64) / 20)
-    # the main peak, north-east, and a lesser one north-west, with ridged noise
-    ridge = 1 - abs(vnoise(x, z, 29, 6) - 0.5) * 2
-    peak = 0.0
-    for px, pz, r, hgt in ((270, 70, 85, 172), (48, 62, 70, 146), (300, 170, 60, 118)):
-        dd = math.hypot(x - px, z - pz) / r
-        peak = max(peak, 64 + (hgt - 64) * (1 - smooth(dd)) ** 1.6)
-    peak_h = 64 + (peak - 64) * (0.8 + 0.2 * ridge)
-    return max(rolling, hill, peak_h)
+def mountain(x, z):
+    """One massif: a broad dome round Doune's summit, the summit itself rising
+    behind it to the north-east, a ridge along the north, all ridged and
+    broken by noise so no slope is a cone."""
+    wx = x + (fbm(x, z, 60, 2, 41) - 0.5) * 50      # domain warp: no circle survives
+    wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 50
+    d = math.hypot((wx - CX) / 150, (wz - CZ) / 120)
+    dome = 66 + 62 * (1 - smooth(d)) ** 1.15
+    p = math.hypot((wx - 278) / 62, (wz - 72) / 70)
+    summit = 112 * (1 - smooth(p)) ** 0.9 * (0.6 + 0.4 * ridged(x, z, 30, 3, 51))
+    ridge_line = math.exp(-((wz - 34) / 20) ** 2) * smooth((wx - 120) / 60)
+    ridge = 30 * ridge_line * (0.5 + 0.5 * ridged(x, z, 34, 3, 45))
+    broken = (ridged(x, z, 22, 3, 47) - 0.45) * 16 * (1 - smooth(d))
+    hills = 10 + (fbm(x, z, 44, 3, 53) - 0.35) * 46 * smooth((150 - x) / 60) * smooth((300 - z) / 60)
+    return dome + max(summit, ridge) + broken + hills
 
 
-def town_height(x, z):
-    """The promontory's slope: 92 at the mountain's foot, 63 at the shore."""
-    return 63 + 29 * smooth((482 - z) / 212) + (vnoise(x, z, 19, 7) - 0.5) * 3
+def slope(x, z):
+    """The mountain's lower slope under the town: the street's own fall."""
+    y = SQF - (SQF - QUAYF) * (max(z, 212) - 212) / (430 - 212) - 10 * smooth((212 - z) / 80)
+    return y + (fbm(x, z, 33, 2, 7) - 0.5) * 3
 
 
 def base_height(x, z):
     m = land(x, z)
-    wild = wild_height(x, z)
-    town = town_height(x, z)
-    # the town's ground takes over south of the mountain's foot
-    t = smooth((z - 262) / 40) * smooth((x - 50) / 20) * smooth((226 - x) / 20)
-    h = wild * (1 - t) + town * t
+    h_m, h_s = mountain(x, z), slope(x, z)
+    k = 6.0                                          # a soft maximum: no crease
+    h = k * math.log(math.exp(h_m / k) + math.exp(h_s / k))
     sea_floor = 50 + (vnoise(x, z, 31, 4) - 0.5) * 4
     return sea_floor + (h - sea_floor) * m
 
@@ -579,9 +657,9 @@ STRATA = [
     # Doune's plot and its ring: Doune's own turf, which its plants stand on
     {"when": {"area": CASTLE_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
     # the town: a step of two or more is a retaining wall a builder laid
-    {"when": {"area": TOWN_AREA, "steep": 2, "patch": P(9, 600, 11)},
+    {"when": {"area": TOWN_AREA, "steep": 3, "patch": P(9, 600, 11)},
      "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},
-    {"when": {"area": TOWN_AREA, "steep": 2},
+    {"when": {"area": TOWN_AREA, "steep": 3},
      "surface": "minecraft:stone_bricks", "below": "minecraft:stone_bricks"},
     {"when": {"area": TOWN_AREA, "patch": P(7, 780, 12)},
      "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
@@ -591,6 +669,9 @@ STRATA = [
      "surface": "minecraft:andesite", "below": "minecraft:andesite"},
     {"when": {"steep": 3}, "surface": "minecraft:stone", "below": "minecraft:stone"},
     {"when": {"y_min": 150}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    # rock outcrops breaking the mountain's slopes
+    {"when": {"y_min": 100, "patch": P(13, 700, 28)}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"y_min": 90, "patch": P(9, 760, 29)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
     {"when": {"y_min": 136, "patch": P(8, 500, 22)},
      "surface": "minecraft:gravel", "below": "minecraft:stone"},
     {"when": {"y_min": 136}, "surface": "minecraft:stone", "below": "minecraft:stone"},
@@ -688,5 +769,8 @@ write("quests.json", "quests", {"quests": [{
 }]})
 
 print(f"boxes {len(boxes)}  seams {len(seams)}  plots {sum(1 for n in nodes if 'holds' in n)}")
-for n in ("node/square", "node/castle", "node/quay", "node/harbour", "node/cathedral", "node/lighthouse"):
+for n in ("node/square", "node/castle", "node/quay", "node/cathedral", "node/lighthouse"):
     print(n, pos[n])
+if os.environ.get("POS_OUT"):
+    with open(os.environ["POS_OUT"], "w") as fh:
+        json.dump(pos, fh)
