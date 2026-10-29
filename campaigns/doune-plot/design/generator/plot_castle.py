@@ -7,7 +7,9 @@ Three changes, all at the seat, none to Doune's design:
      ditch), so the four rock courses under it are not carried;
   2. the ring's courses under the plateau's surface are the whole's fixed
      ground, so the program skips them;
-  3. the whole site is claimed as one open space, `site`, the piece's contract.
+  3. the whole site is claimed as one open space, `site`, the piece's contract,
+     entered from the road where Doune's approach road leaves the plot's north
+     edge (`road-mouth`, the seam's contact).
 """
 import json, pathlib, sys
 
@@ -18,13 +20,15 @@ import build_castle as bc  # noqa: E402
 CUT = 4          # Doune courses under the frame
 FIXED = 4        # the ring's fixed-ground courses (frame y0..3 = Doune y4..7)
 X, Y, Z = bc.X, bc.Y, bc.Z
+ROAD_X, ROAD_W = 75, 5   # Doune's approach road where it leaves the plot's north edge
+MOUTH_H = 3              # the contact's height over the walk plane
 
 
 def sz(n):
     return {"size": "absolute", "blocks": {"expr": "int", "value": n}}
 
 
-def trim(node, k, ring):
+def trim(node, k, ring, mouth=False):
     """Drop k bottom courses of a column node; on the ring, skip the next FIXED."""
     assert node.get("op") == "split" and node["axis"] == "y", node.get("op")
     spans = [(s["blocks"]["value"], c) for s, c in zip(node["sizes"], node["children"])]
@@ -52,15 +56,36 @@ def trim(node, k, ring):
             rest.append((n, c))
         out = [(FIXED, {"op": "skip"})] + rest
     assert sum(n for n, _ in out) == Y - k
+    if mouth:
+        out = claim_band(out, FIXED, FIXED + MOUTH_H, "road-mouth")
     return {"op": "split", "axis": "y", "sizes": [sz(n) for n, _ in out],
             "children": [c for _, c in out]}
+
+
+def claim_band(spans, y0, y1, region):
+    """Wrap frame courses y0..y1-1 of a column's spans in a `claim`."""
+    out, y = [], 0
+    for n, c in spans:
+        lo, hi = max(y, y0), min(y + n, y1)
+        if lo >= hi:
+            out.append((n, c))
+        else:
+            assert c.get("op") != "mark", "a mark in the mouth"
+            if lo > y:
+                out.append((lo - y, c))
+            out.append((hi - lo, {"op": "claim", "region": region, "body": c}))
+            if y + n > hi:
+                out.append((y + n - hi, c))
+        y += n
+    return out
 
 
 def build():
     rows = []
     for z in range(Z):
         cols = [bc.column(x, z) for x in range(X)]
-        rows.append([trim(bc.column_node(x, z, cols[x]), CUT, x in (0, X - 1) or z in (0, Z - 1))
+        rows.append([trim(bc.column_node(x, z, cols[x]), CUT, x in (0, X - 1) or z in (0, Z - 1),
+                          z == 0 and ROAD_X <= x < ROAD_X + ROAD_W)
                      for x in range(X)])
 
     def merge(items):
@@ -89,7 +114,8 @@ PROGRAM = {
     "params": {},
     "palette": bc.PALETTE,
     "rules": {"site": [{"weight": 1, "body": {"op": "claim", "region": "site", "body": build()}}]},
-    "contract": {"entry": "site", "spaces": {"site": {"envelope": "open"}}, "edges": []},
+    "contract": {"entry": "site", "spaces": {"site": {"envelope": "open"}},
+                 "edges": [{"a": "site", "b": "exterior", "class": "walk", "via": "road-mouth"}]},
     "shown_faces": ["north", "south", "east", "west"],
 }
 

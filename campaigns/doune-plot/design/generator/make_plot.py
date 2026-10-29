@@ -20,14 +20,16 @@ ID = "doune-plot"
 # ---- geometry ----------------------------------------------------------
 DX, DY, DZ = 104, 56, 120   # Doune's structure set
 CUT = 4                     # Doune courses under its deepest ditch floor, not carried
-WALK = 100                  # world y a body stands at on Doune's ditch floors (local y5)
-GRADE_Y = WALK + 2          # Doune's surface course (local y7), the plateau's surface
+WALK = 103                  # world y a body stands at on Doune's grade (local y8)
+GRADE_Y = WALK - 1          # Doune's surface course (local y7), the plateau's surface
+DITCH_Y = WALK - 4          # Doune's deepest ditch floor course (local y4): the terrain under the plot
 REGION_MIN = [0, 50, 0]
 REGION = [280, 120, 300]
 BOX_MIN = [90, 120]         # play-space corner; the frame is one cell further out
 EXTENT = [DX - 2, DZ - 2]
-OPEN = DY - CUT - 1         # courses of air over the floor course
-FRAME0 = (BOX_MIN[0] - 1, WALK - 1, BOX_MIN[1] - 1)   # world corner of Doune-local (0, CUT, 0)
+OPEN = DY - 8               # courses of air over the walk plane: Doune y8..55
+ROAD_X, ROAD_W, ROAD_L = 75, 5, 8   # Doune-local x of the approach road at its north end; its width; the road place's length
+FRAME0 = (BOX_MIN[0] - 1, DITCH_Y, BOX_MIN[1] - 1)   # world corner of Doune-local (0, CUT, 0)
 
 
 def doc(stage, content):
@@ -66,6 +68,8 @@ def heightmap():
             d = math.hypot(dx, dz)
             fall = 30 * (1 - math.cos(min(d, 70) / 70 * math.pi)) / 2   # 0 → 30 over 70 cells
             y = GRADE_Y - round(fall)
+            if FRAME0[0] < x < FRAME0[0] + DX - 1 and FRAME0[2] < z < FRAME0[2] + DZ - 1:
+                y = DITCH_Y     # inside the ring the plot owns its ground down to the ditch floors
             row.append(y - 40)
         rows.append(bytes(row))
     raw = b"".join(rows)
@@ -105,7 +109,7 @@ def main():
     write("layout-graph.json", doc("layout-graph", {
         "beats": beats,
         "critical_path": ["node/castle"],
-        "edges": [],
+        "edges": [{"a": "node/castle", "b": "node/road", "class": "walk", "id": "edge/road-to-gate"}],
         "entry": "node/castle",
         "goal": "node/castle",
         "nodes": [{
@@ -114,6 +118,10 @@ def main():
             "note": "Doune Castle, copied whole: the gatehouse, the hall range, the kitchen tower, the courtyard, the curtain and the three ditches on the north approach.",
             "stations": [{"anchor": a, "kind": "point", "note": f"Doune's own `{a}`."}
                          for a in used],
+        }, {
+            "id": "node/road",
+            "intent": "the road up to the castle's north approach",
+            "note": "The last stretch of the road from the town, arriving on the hilltop at the start of Doune's own approach road, five wide.",
         }],
     }))
     write("geometry-brief.json", doc("geometry-brief", {"facts": [
@@ -124,18 +132,25 @@ def main():
         "boxes": [{
             "ceiling": {"open": OPEN},
             "extent": EXTENT,
-            "floor": {"datum": "datum/ditch-floor"},
+            "floor": {"datum": "datum/grade"},
             "min": BOX_MIN,
             "node": "node/castle",
+        }, {
+            "ceiling": {"open": 6},
+            "extent": [ROAD_W + 4, ROAD_L],
+            "floor": {"datum": "datum/grade"},
+            "node": "node/road",
+            "way": {"axis": "z", "clear": ROAD_W},
         }],
-        "datums": [{"id": "datum/ditch-floor", "note": "Where a body stands on the floor of Doune's ditches, three courses under its grade; the plateau's surface is two courses over it.", "y": WALK}],
+        "datums": [{"id": "datum/grade", "note": "Where a body stands on Doune's grade and on the hilltop around it; the ditches are cut four courses into the plot's own ground.", "y": WALK}],
         "fill": {"below": "minecraft:dirt", "kind": "open", "surface": "minecraft:grass_block",
                  "terrain": {"kind": "heightmap", "heightmap": "hill.png", "base_y": 40, "range": 255}},
         "identities": [{"cmp": "eq", "fact": "fact/castle-width",
                         "measure": {"axis": "x", "node": "node/castle", "of": "box-extent"}}],
         "lighting": {"fixture": "lantern", "min_light": 7},
         "region": {"extent": REGION, "min": REGION_MIN},
-        "seams": [],
+        "seams": [{"at": ROAD_X - 1, "contact": {"extent": [ROAD_W, 3]}, "edge": "edge/road-to-gate", "face": "north",
+                   "form": "Doune's approach road running on, level, onto the hilltop road: five wide, no wall across it"}],
     }))
     heightmap()
     print("frame corner (Doune-local 0,%d,0) at world %s; open %d" % (CUT, FRAME0, OPEN))
