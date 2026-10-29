@@ -6,11 +6,11 @@
 Form, after the merchant's town house (a counting room by the street, a store
 behind it, the hall at the back, a passage along one side; Southampton's
 Medieval Merchant's House) and the U-shaped courtyard manor (two wings round a
-court, covered walks along it): a U open to the street. The north wing holds
+court): a U open to the street. The north wing holds
 the counting room at the street end and the cloth store behind it, through a
 door; the hall range closes the court's east side, two storeys of the town's
 stone under deepslate tiles, the hall's great door on the court; the south side
-is a covered walk on tuff pillars, goods and a bench under it. The court is
+is a hedge with flower beds and a bench. The court, five wide, is
 paved, a fountain at its middle, and an arch spans its mouth on the street.
 
 Piece-local axes: +x east, +z south; the street's opening is the play space's
@@ -52,10 +52,10 @@ GLASS = pane("minecraft:white_stained_glass_pane")
 BOARDS = "minecraft:dark_oak_planks"
 
 # the north wing: walls x 4..17, z 2..6; the hall range: x 18..25, z 2..11;
-# the covered walk: x 4..17, z 10..12; the court between: x 4..17, z 7..9
+# the court: x 4..17, z 7..11, a hedge on its south edge (z 12)
 NX0, NX1, NZ0, NZ1 = 4, 17, 2, 6
 HX0, HX1, HZ0, HZ1 = 18, 25, 2, 11
-WX0, WX1, WZ0, WZ1 = 4, 17, 10, 12
+WX0, WX1 = 4, 17
 COUNT_WALL = 10            # the wall between the counting room (west) and the store
 
 
@@ -75,8 +75,7 @@ def build(a):
 
     m.part(NX0, NX1, NZ0, NZ1, "house")
     m.part(HX0, HX1, HZ0, HZ1, "house")
-    m.part(WX0, WX1, WZ0, WZ1, "house")
-    m.part(WX0, WX1, 7, 9, "court")
+    m.part(WX0, WX1, 7, 11, "court")
 
     # ---- ground: the court paved, a stone kerb along the verge
     m.box(3, 17, 0, 0, 7, 9, "pave")
@@ -167,7 +166,7 @@ def build(a):
         m.set(HX0, 4, z, stairs("minecraft:tuff_brick", "east", "top"))
     m.set(HX0, 3, 6, QUOIN); m.set(HX0, 3, 9, QUOIN)
     m.set(HX0 - 1, 3, 6, wall_torch("west")); m.set(HX0 - 1, 3, 9, wall_torch("west"))
-    # a door from the store into the hall, and from the covered walk
+    # a door from the store into the hall, and from the court's far end
     m.set(HX0, 1, 4, door("minecraft:dark_oak", "west", "lower"))
     m.set(HX0, 2, 4, door("minecraft:dark_oak", "west", "upper"))
     m.clear(NX1, NX1, 1, 2, 4, 4)                       # through the wing's end wall too
@@ -215,61 +214,49 @@ def build(a):
     m.set(21, 5, 6, lantern(True)); m.set(22, 5, 8, lantern(True))
     m.set(20, 5, 3, lantern(True)); m.set(23, 5, 10, lantern(True))
 
-    # ---- the covered walk: tuff pillars to the court, a stone back wall,
-    # a lean-to roof of tiles falling toward the court
+    # ---- the court: five wide between the wing and a hedge on the south,
+    # paved, the fountain at its middle, flower beds along the wing and the
+    # hedge, a bench, goods waiting by the hall door
+    m.box(WX0, WX1, 0, 0, 7, 11, "pave")
     for x in range(WX0, WX1 + 1):
-        for y in range(1, 6):
-            m.set(x, y, WZ1, "stone" if y > 1 else PLINTH)
-    for x in range(WX0, WX1 + 1, 3):
-        for y in range(1, 4):
-            m.set(x, y, WZ0, PIER)
-        m.set(x, 4, WZ0, QUOIN)
-    for x in range(WX0, WX1 + 1):
-        if m.get(x, 4, WZ0) is None:
-            m.set(x, 4, WZ0, stairs("minecraft:tuff_brick", "north", "top"))
-        m.set(x, 5, WZ0 - 1, stairs(ROOF, "south"))
-        m.set(x, 5, WZ0, slab(ROOF, "top"))
-        m.set(x, 6, WZ0 + 1, stairs(ROOF, "south"))
-        m.set(x, 6, WZ1, slab(ROOF, "bottom"))
-    for y in range(1, 6):
-        m.set(WX0, y, 11, "stone")                      # the walk's street end, walled
-    m.box(WX0 + 1, WX1, 0, 0, 10, 11, "minecraft:stone_bricks")
-    # under the walk: the bench, bales of cloth for the next ship, a handcart
-    for x in (6, 7):
-        m.set(x, 1, 11, stairs("minecraft:dark_oak", "north"))
-    m.set(9, 1, 11, "minecraft:white_wool"); m.set(10, 1, 11, "minecraft:white_wool")
-    m.set(9, 2, 11, "minecraft:light_gray_wool")
-    m.set(12, 1, 11, "minecraft:barrel[facing=up,open=false]")
-    m.set(13, 1, 11, "minecraft:barrel[facing=up,open=false]")
-    m.set(14, 1, 11, slab("minecraft:spruce", "top")); m.set(15, 1, 11, slab("minecraft:spruce", "top"))
-    m.set(8, 3, 11, wall_torch("north")); m.set(14, 3, 11, wall_torch("north"))
-
-    # ---- the court: the fountain, beds of flowers along the wing, the arch
-    m.set(11, 1, 8, "minecraft:water_cauldron[level=3]")
-    for (x, z) in ((10, 8), (12, 8), (11, 7), (11, 9)):
-        m.set(x, 1, z, slab("minecraft:stone_brick"))
-    m.set(10, 1, 7, slab("minecraft:stone_brick")); m.set(12, 1, 7, slab("minecraft:stone_brick"))
-    m.set(10, 1, 9, slab("minecraft:stone_brick")); m.set(12, 1, 9, slab("minecraft:stone_brick"))
-    for x in (13, 14, 15, 16):
+        m.set(x, 0, 12, GRASS)
+        m.set(x, 1, 12, leaves("minecraft:oak") if x % 4 else leaves("minecraft:azalea"))
+    cx, cz = 10, 9
+    m.set(cx, 1, cz, "minecraft:water_cauldron[level=3]")
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            if (dx, dz) != (0, 0):
+                m.set(cx + dx, 1, cz + dz, slab("minecraft:stone_brick"))
+    m.set(cx, 2, cz - 1, "minecraft:potted_white_tulip")
+    for x in range(12, 17):
         m.set(x, 0, 7, GRASS)
-    for x, fl in ((13, "minecraft:white_tulip"), (14, "minecraft:lily_of_the_valley"), (15, "minecraft:azure_bluet"),
-                  (16, "minecraft:white_tulip")):
+    for x, fl in ((12, "minecraft:white_tulip"), (13, "minecraft:lily_of_the_valley"), (14, "minecraft:azure_bluet"),
+                  (15, "minecraft:white_tulip"), (16, "minecraft:allium")):
         m.set(x, 1, 7, fl)
+    for x, fl in ((6, "minecraft:poppy"), (7, "minecraft:cornflower"), (13, "minecraft:oxeye_daisy"), (14, "minecraft:poppy")):
+        m.set(x, 0, 11, GRASS); m.set(x, 1, 11, fl)
     m.set(5, 0, 7, GRASS); m.set(5, 1, 7, leaves("minecraft:azalea"))
-    m.set(5, 0, 9, GRASS); m.set(5, 1, 9, leaves("minecraft:flowering_azalea"))
-    # the arch over the court's mouth: tuff piers at the wing and the walk,
-    # a stone lintel with the merchant's banner under it
+    for x in (8, 9):
+        m.set(x, 1, 11, stairs("minecraft:dark_oak", "north"))           # a bench facing the fountain
+    m.set(15, 1, 10, "minecraft:barrel[facing=up,open=false]")
+    m.set(16, 1, 11, "minecraft:barrel[facing=up,open=false]")
+    m.set(16, 1, 10, "minecraft:white_wool")                              # a bale for the next ship
+    for (x, z) in ((5, 10), (12, 11)):
+        for y in (1, 2):
+            m.set(x, y, z, fence("minecraft:dark_oak"))
+        m.set(x, 3, z, lantern(False))
+    # the arch over the court's mouth: tuff piers at the wing and the hedge,
+    # a stone lintel
     for y in range(1, 6):
         m.set(3, y, 6, PIER if y < 5 else QUOIN)
-        m.set(3, y, 10, PIER if y < 5 else QUOIN)
-    for z in range(6, 11):
-        m.set(3, 5, z, DRESS if z in (6, 10) else "minecraft:tuff_brick_slab[type=top,waterlogged=false]")
+        m.set(3, y, 12, PIER if y < 5 else QUOIN)
+    for z in range(6, 13):
+        m.set(3, 5, z, DRESS if z in (6, 12) else "minecraft:tuff_brick_slab[type=top,waterlogged=false]")
         m.set(3, 6, z, slab(ROOF))
-    m.set(3, 6, 8, "minecraft:chiseled_tuff_bricks")
+    m.set(3, 6, 9, "minecraft:chiseled_tuff_bricks")
     # the house's street face: a bench under the counting room's window
     m.set(3, 1, 4, stairs("minecraft:dark_oak", "east"))
     m.set(3, 1, 3, leaves("minecraft:oak"))
-    m.set(3, 1, 11, leaves("minecraft:oak")); m.set(3, 1, 12, leaves("minecraft:azalea"))
 
     m.marks["node-merchant"] = (8, 8, "east")
     return m
@@ -281,4 +268,4 @@ class Merchant(Plot):
 
 if __name__ == "__main__":
     raise SystemExit(plot_main(build, Merchant, PALETTE,
-                               "the roof slopes, the wall heads, the covered walk's roof and the sealed upper storeys: seen, never stood on"))
+                               "the roof slopes, the wall heads and the sealed upper storeys: seen, never stood on"))
