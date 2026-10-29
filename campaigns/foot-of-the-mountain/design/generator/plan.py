@@ -328,8 +328,15 @@ box("node/square", (30, 24), SQF, OPEN(8), "the square",
 # Ten short flights of two, so the street and the plots beside it follow the
 # slope in small steps: neighbours differ by two at most.
 STREET_W, SEG_L, FLIGHT_L, NFL = 7, 14, 6, 10
+# A stretch is wider than its flights: its clear way stays five, centred, and
+# the verge either side holds the street's own life (lamps, benches, carts,
+# stalls) clear of the lots' fronts. At the guildhall the street widens into
+# a market.
+STRETCH_W = {k: 9 for k in range(1, NFL)}
+STRETCH_W[4] = 11
 segs = []
 prev = "node/square"
+prev_w = None
 floor = SQF
 for k in range(1, NFL + 1):
     fl = f"node/flight-{k}"
@@ -337,17 +344,19 @@ for k in range(1, NFL + 1):
     box(fl, (STREET_W, FLIGHT_L), floor, OPEN(10), "a flight of the main street",
         f"Flight {k} of the main street: seven wide, two shallow steps down, "
         "between low kerbs.", way={"axis": "z", "clear": 5})
-    seam(prev, fl, "south", 11 if prev == "node/square" else 0, 0,
-         "stair", f"flight {k}: two down, the full width")
+    at = 11 if prev == "node/square" else (prev_w - STREET_W) // 2
+    seam(prev, fl, "south", at, 0, "stair", f"flight {k}: two down, the full width")
     if k == NFL:
         break
     sg = f"node/street-{k}"
-    box(sg, (STREET_W, SEG_L), floor, OPEN(8), "a stretch of the main street",
+    w = STRETCH_W[k]
+    box(sg, (w, SEG_L), floor, OPEN(8), "a stretch of the main street",
         f"Stretch {k} of the main street, walk plane {floor}: cobbles with a "
-        "kerb, the plots' fronts on both sides.", way={"axis": "z", "clear": 5})
-    seam(fl, sg, "south", 0, 0, "contact", "the street runs on at grade")
+        "kennel, the plots' fronts on both sides" + (", widening into the market before the guildhall." if k == 4 else "."),
+        way={"axis": "z", "clear": 5})
+    seam(fl, sg, "south", 0, (w - STREET_W) // 2, "contact", "the street runs on at grade")
     segs.append(sg)
-    prev = sg
+    prev, prev_w = sg, w
 
 # the quay at the foot of the street; the basin beyond it is the sea itself
 box("node/quay", (60, 10), floor, OPEN(8), "the quay",
