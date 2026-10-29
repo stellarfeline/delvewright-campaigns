@@ -51,6 +51,8 @@ def box(node, extent, floor, ceiling, intent, note, holds=None, way=None,
         n["holds"] = holds
     if node in REFS:
         n["references"] = REFS[node]
+    elif node.split("/")[1].split("-")[0] in ("street", "flight", "lane", "square"):
+        n["references"] = STREET_REFS
     nodes.append(n)
     return b
 
@@ -96,6 +98,20 @@ OPEN = lambda n: {"open": n}
 
 # Community and historical reference builds per plot: looked at for form and
 # room layout, never copied (an unlicensed or non-commercial source is ideas only).
+# The streets, flights, lanes and the square share one set: the medieval
+# cobbled street with its central kennel, and the stepped street of a harbour town.
+STREET_REFS = [
+    {"url": "https://oxmag.co.uk/articles/brasenose-lane",
+     "shows": "Brasenose Lane, Oxford: a cobbled lane whose kennel runs down the middle of the road, the cobbles falling to it rather than cambered to either side; such gutters once ran down every thoroughfare.",
+     "terms": "none stated for the text (images © Morris Oxford); ideas only"},
+    {"url": "https://en.wikipedia.org/wiki/Cobblestone",
+     "shows": "Medieval cobbles: rounded field and river stones set in sand or mortar, the surface moving with the ground; pitched paving and setts for the dressed parts.",
+     "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    {"url": "https://en.wikipedia.org/wiki/Clovelly",
+     "shows": "Clovelly: a steep, pedestrian, cobbled main street of terraced houses falling to the pier, goods moved by sledge and donkey, broken by side alleys.",
+     "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+]
+
 REFS = {
     # the lower street's rows (content demo/plots-lower @ b505915), carried here
     "node/boatwright": [
