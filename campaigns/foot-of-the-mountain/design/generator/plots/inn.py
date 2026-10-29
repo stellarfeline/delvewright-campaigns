@@ -146,6 +146,7 @@ def build(a):
     m.set(IX1 + 1, 4, 8, stairs("minecraft:dark_oak", "north", "top"))
     m.set(IX1 + 1, 4, 10, stairs("minecraft:dark_oak", "south", "top"))
     m.set(IX1 + 1, 4, 13, stairs("minecraft:dark_oak", "north", "top"))
+    m.set(IX1 + 1, 5, 6, BEAM_Z)                         # the beam the bell hangs from
     m.set(IX1 + 1, 4, 6, "minecraft:bell[attachment=ceiling,facing=east,powered=false]")
     for z in (3, 4):
         m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
@@ -271,7 +272,7 @@ def build(a):
     m.set(5, 1, 21, log("minecraft:spruce_log", "z"))
     m.set(5, 1, 20, log("minecraft:spruce_log", "z"))
     m.set(5, 2, 21, log("minecraft:spruce_log", "z"))
-    m.set(4, 4, 19, lantern(True))
+    m.set(3, 3, 19, wall_torch("east"))
     for y in range(1, 9):
         m.set(BX0, y, 20, "stone")                          # its flue
 
@@ -313,6 +314,7 @@ def build(a):
     for (x, z) in ((9, 22), (10, 22), (14, 22), (2, 12), (2, 14), (17, 22)):
         m.set(x, 0, z, GRASS)
         m.set(x, 1, z, leaves("minecraft:azalea" if (x + z) % 2 else "minecraft:oak"))
+    m.set(15, 0, 22, GRASS); m.set(12, 0, 22, GRASS)
     m.set(15, 1, 22, "minecraft:rose_bush[half=lower]"); m.set(15, 2, 22, "minecraft:rose_bush[half=upper]")
     m.set(12, 1, 22, "minecraft:lilac[half=lower]"); m.set(12, 2, 22, "minecraft:lilac[half=upper]")
     # the north eave strip behind the inn: a woodpile for the hearths

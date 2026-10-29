@@ -242,7 +242,7 @@ def build(a):
     m.set(12, 1, 11, "minecraft:barrel[facing=up,open=false]")
     m.set(13, 1, 11, "minecraft:barrel[facing=up,open=false]")
     m.set(14, 1, 11, slab("minecraft:spruce", "top")); m.set(15, 1, 11, slab("minecraft:spruce", "top"))
-    m.set(8, 4, 11, lantern(True)); m.set(14, 4, 11, lantern(True))
+    m.set(8, 3, 11, wall_torch("north")); m.set(14, 3, 11, wall_torch("north"))
 
     # ---- the court: the fountain, beds of flowers along the wing, the arch
     m.set(11, 1, 8, "minecraft:water_cauldron[level=3]")

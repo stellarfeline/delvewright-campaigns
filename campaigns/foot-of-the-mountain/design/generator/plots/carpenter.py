@@ -227,6 +227,7 @@ def build(a):
     m.set(13, 1, 3, "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]")
     m.set(14, 2, 3, "minecraft:iron_chain[axis=y,waterlogged=false]")
     m.set(14, 3, 3, "minecraft:iron_chain[axis=y,waterlogged=false]")
+    m.set(13, 5, 5, "minecraft:spruce_planks")                    # a board the lantern hangs from
     m.set(13, 4, 5, lantern(True))
     m.set(12, 1, 6, "minecraft:scaffolding[bottom=false,distance=0,waterlogged=false]")   # a half-made frame
 
