@@ -42,6 +42,12 @@
         "b": "exterior",
         "class": "walk",
         "via": "side-south"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "side-north"
       }
     ],
     "entry": "room",
@@ -58,8 +64,12 @@
   },
   "name": "street-8",
   "palette": {
-    "b0": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "b1": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b0": "minecraft:hay_block[axis=z]",
+    "b1": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "b2": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b3": "minecraft:spruce_slab[type=top,waterlogged=false]",
+    "b4": "minecraft:spruce_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "b5": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
     "cobble": [
       {
         "block": "minecraft:cobblestone",
@@ -152,157 +162,33 @@
   },
   "params": {
     "handed/datum-y": 1,
-    "handed/seam/flight-8-to-street-8/x0": 1,
-    "handed/seam/flight-8-to-street-8/x1": 7,
+    "handed/seam/flight-8-to-street-8/x0": 2,
+    "handed/seam/flight-8-to-street-8/x1": 8,
     "handed/seam/flight-8-to-street-8/y0": 1,
     "handed/seam/flight-8-to-street-8/y1": 8,
-    "handed/seam/flight-8-to-street-8/z0": 0,
-    "handed/seam/flight-8-to-street-8/z1": 0,
-    "handed/seam/street-8-to-flight-9/x0": 1,
-    "handed/seam/street-8-to-flight-9/x1": 7,
+    "handed/seam/flight-8-to-street-8/z0": 1,
+    "handed/seam/flight-8-to-street-8/z1": 1,
+    "handed/seam/street-8-to-flight-9/x0": 2,
+    "handed/seam/street-8-to-flight-9/x1": 8,
     "handed/seam/street-8-to-flight-9/y0": 1,
     "handed/seam/street-8-to-flight-9/y1": 4,
-    "handed/seam/street-8-to-flight-9/z0": 14,
-    "handed/seam/street-8-to-flight-9/z1": 14,
-    "handed/seam/street-8-to-lane-8/x0": 8,
-    "handed/seam/street-8-to-lane-8/x1": 8,
+    "handed/seam/street-8-to-flight-9/z0": 15,
+    "handed/seam/street-8-to-flight-9/z1": 15,
+    "handed/seam/street-8-to-lane-8/x0": 10,
+    "handed/seam/street-8-to-lane-8/x1": 10,
     "handed/seam/street-8-to-lane-8/y0": 1,
     "handed/seam/street-8-to-lane-8/y1": 8,
-    "handed/seam/street-8-to-lane-8/z0": 5,
-    "handed/seam/street-8-to-lane-8/z1": 9,
+    "handed/seam/street-8-to-lane-8/z0": 6,
+    "handed/seam/street-8-to-lane-8/z1": 10,
     "handed/seam/street-8-to-netloft/x0": 0,
     "handed/seam/street-8-to-netloft/x1": 0,
     "handed/seam/street-8-to-netloft/y0": 1,
     "handed/seam/street-8-to-netloft/y1": 8,
-    "handed/seam/street-8-to-netloft/z0": 2,
-    "handed/seam/street-8-to-netloft/z1": 11
+    "handed/seam/street-8-to-netloft/z0": 3,
+    "handed/seam/street-8-to-netloft/z1": 12
   },
   "rules": {
-    "column_10": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_9"
-            },
-            {
-              "op": "call",
-              "symbol": "row_4"
-            },
-            {
-              "op": "call",
-              "symbol": "row_5"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/flight-8-to-street-8/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-flight-9/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "column_12": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_11"
-            },
-            {
-              "op": "call",
-              "symbol": "row_4"
-            },
-            {
-              "op": "call",
-              "symbol": "row_5"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/flight-8-to-street-8/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-flight-9/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_16": [
       {
         "body": {
           "axis": "y",
@@ -313,19 +199,27 @@
             },
             {
               "op": "call",
-              "symbol": "row_13"
+              "symbol": "row_6"
             },
             {
               "op": "call",
-              "symbol": "row_14"
+              "symbol": "row_7"
             },
             {
               "op": "call",
-              "symbol": "row_15"
+              "symbol": "row_8"
             },
             {
               "op": "call",
-              "symbol": "row_5"
+              "symbol": "row_9"
+            },
+            {
+              "op": "call",
+              "symbol": "row_10"
+            },
+            {
+              "op": "call",
+              "symbol": "row_11"
             }
           ],
           "op": "split",
@@ -334,6 +228,60 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/flight-8-to-street-8/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -346,8 +294,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/y0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
                 }
               },
               "size": "absolute"
@@ -394,6 +350,130 @@
                     "expr": "int",
                     "value": 1
                   }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_15": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_13"
+            },
+            {
+              "op": "call",
+              "symbol": "row_14"
+            },
+            {
+              "op": "call",
+              "symbol": "row_11"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-flight-9/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_17": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_16"
+            },
+            {
+              "op": "call",
+              "symbol": "row_14"
+            },
+            {
+              "op": "call",
+              "symbol": "row_11"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-flight-9/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/y0"
                 }
               },
               "size": "absolute"
@@ -417,15 +497,15 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_17"
-            },
-            {
-              "op": "call",
               "symbol": "row_18"
+            },
+            {
+              "op": "call",
+              "symbol": "row_14"
+            },
+            {
+              "op": "call",
+              "symbol": "row_11"
             }
           ],
           "op": "split",
@@ -441,8 +521,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 6
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-flight-9/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -499,22 +587,22 @@
         "weight": 1
       }
     ],
-    "column_6": [
+    "column_21": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_3"
+              "symbol": "row_20"
             },
             {
               "op": "call",
-              "symbol": "row_4"
+              "symbol": "row_14"
             },
             {
               "op": "call",
-              "symbol": "row_5"
+              "symbol": "row_11"
             }
           ],
           "op": "split",
@@ -561,22 +649,22 @@
         "weight": 1
       }
     ],
-    "column_8": [
+    "column_23": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_7"
+              "symbol": "row_22"
             },
             {
               "op": "call",
-              "symbol": "row_4"
+              "symbol": "row_14"
             },
             {
               "op": "call",
-              "symbol": "row_5"
+              "symbol": "row_11"
             }
           ],
           "op": "split",
@@ -608,6 +696,254 @@
                   "expr": "param",
                   "name": "handed/seam/flight-8-to-street-8/y0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_29": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_24"
+            },
+            {
+              "op": "call",
+              "symbol": "row_25"
+            },
+            {
+              "op": "call",
+              "symbol": "row_26"
+            },
+            {
+              "op": "call",
+              "symbol": "row_27"
+            },
+            {
+              "op": "call",
+              "symbol": "row_28"
+            },
+            {
+              "op": "call",
+              "symbol": "row_11"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-flight-9/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-flight-9/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_31": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_30"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_5": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/y0"
               },
               "size": "absolute"
             },
@@ -635,15 +971,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_6"
-              },
-              {
-                "op": "call",
-                "symbol": "column_8"
-              },
-              {
-                "op": "call",
-                "symbol": "column_10"
+                "symbol": "column_5"
               },
               {
                 "op": "call",
@@ -651,27 +979,74 @@
               },
               {
                 "op": "call",
-                "symbol": "column_10"
+                "symbol": "column_15"
               },
               {
                 "op": "call",
-                "symbol": "column_8"
-              },
-              {
-                "op": "call",
-                "symbol": "column_16"
+                "symbol": "column_17"
               },
               {
                 "op": "call",
                 "symbol": "column_19"
+              },
+              {
+                "op": "call",
+                "symbol": "column_21"
+              },
+              {
+                "op": "call",
+                "symbol": "column_23"
+              },
+              {
+                "op": "call",
+                "symbol": "column_29"
+              },
+              {
+                "op": "call",
+                "symbol": "column_5"
+              },
+              {
+                "op": "call",
+                "symbol": "column_31"
               }
             ],
             "op": "split",
             "sizes": [
               {
                 "blocks": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/x0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/x1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/x0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/street-8-to-netloft/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
                 },
                 "size": "absolute"
               },
@@ -680,7 +1055,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 3
                   },
                   "op": "sub",
                   "rhs": {
@@ -743,7 +1118,30 @@
                   "op": "sub",
                   "rhs": {
                     "expr": "int",
-                    "value": 7
+                    "value": 8
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/x0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/flight-8-to-street-8/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
                   }
                 },
                 "size": "absolute"
@@ -763,7 +1161,7 @@
             "facing": "south",
             "x": {
               "expr": "int",
-              "value": 4
+              "value": 5
             },
             "y": {
               "expr": "param",
@@ -771,7 +1169,7 @@
             },
             "z": {
               "expr": "int",
-              "value": 6
+              "value": 7
             }
           },
           "op": "mark"
@@ -795,6 +1193,13 @@
         "body": {
           "axis": "z",
           "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
             {
               "body": {
                 "op": "void"
@@ -829,7 +1234,22 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/street-8-to-netloft/z0"
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
               },
               "size": "absolute"
             },
@@ -852,6 +1272,203 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_10": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 8
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -897,16 +1514,32 @@
           "axis": "z",
           "children": [
             {
-              "material": {
-                "role": "kennel"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "side-north"
             },
             {
-              "material": {
-                "role": "floor"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -914,7 +1547,53 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/street-8-to-flight-9/z0"
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -936,11 +1615,1611 @@
           "axis": "z",
           "children": [
             {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "worn"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 9
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_14": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
               "body": {
                 "op": "void"
               },
               "op": "claim",
               "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_16": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kennel"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "worn"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 12
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_18": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "worn"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kennel"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 12
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_20": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kennel"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "worn"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 10
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_22": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "worn"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "cobble"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 8
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_24": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_25": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_26": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_27": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
             },
             {
               "body": {
@@ -974,15 +3253,30 @@
           "sizes": [
             {
               "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/z1"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
-                "op": "add",
+                "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
                 }
               },
               "size": "absolute"
@@ -992,7 +3286,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
+                  "name": "handed/seam/street-8-to-lane-8/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1015,13 +3309,27 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 3
+                  "value": 7
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
+                  "name": "handed/seam/street-8-to-lane-8/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -1035,7 +3343,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 3
+                  "value": 10
                 }
               },
               "size": "absolute"
@@ -1052,11 +3360,18 @@
         "weight": 1
       }
     ],
-    "row_14": [
+    "row_28": [
       {
         "body": {
           "axis": "z",
           "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
             {
               "body": {
                 "op": "void"
@@ -1072,119 +3387,11 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
               "body": {
                 "op": "void"
               },
               "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "street-8-to-flight-9-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/flight-8-to-street-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 3
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-flight-9/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 3
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_15": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "flight-8-to-street-8-way"
+              "region": "unwalked"
             },
             {
               "body": {
@@ -1219,15 +3426,30 @@
           "sizes": [
             {
               "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/z1"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
-                "op": "add",
+                "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
                 }
               },
               "size": "absolute"
@@ -1237,7 +3459,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
+                  "name": "handed/seam/street-8-to-lane-8/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1260,150 +3482,27 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 3
+                  "value": 7
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
+                  "name": "handed/seam/street-8-to-lane-8/z0"
                 }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-flight-9/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 3
-                }
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
             {
-              "size": "relative",
-              "weight": {
+              "blocks": {
                 "expr": "int",
                 "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_17": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "street-8-to-lane-8-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-8-to-netloft/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 3
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-lane-8/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 3
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-lane-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-lane-8/z0"
-                }
               },
               "size": "absolute"
             },
@@ -1416,117 +3515,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-lane-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_18": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "street-8-to-lane-8-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-8-to-lane-8/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-lane-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-lane-8/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-flight-9/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-lane-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "int",
+                  "value": 10
                 }
               },
               "size": "absolute"
@@ -1550,6 +3540,12 @@
           "children": [
             {
               "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "worn"
               },
               "op": "fill"
@@ -1566,7 +3562,145 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/street-8-to-flight-9/z0"
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_30": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-lane-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -1592,86 +3726,7 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "flight-8-to-street-8-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "street-8-to-flight-9-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-flight-9/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/flight-8-to-street-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_5": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "flight-8-to-street-8-way"
+              "region": "side-north"
             },
             {
               "body": {
@@ -1692,15 +3747,296 @@
           "sizes": [
             {
               "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/flight-8-to-street-8/z1"
+                  "name": "handed/seam/street-8-to-flight-9/z0"
                 },
-                "op": "add",
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_6": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b5"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                },
+                "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 1
+                  "value": 4
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 8
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 9
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 12
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
                 }
               },
               "size": "absolute"
@@ -1717,7 +4053,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/flight-8-to-street-8/z1"
+                    "name": "handed/seam/street-8-to-netloft/z1"
                   },
                   "op": "add",
                   "rhs": {
@@ -1746,16 +4082,71 @@
           "axis": "z",
           "children": [
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "setts"
+                "role": "b2"
               },
               "op": "fill"
             },
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "floor"
+                "role": "b0"
               },
               "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
             }
           ],
           "op": "split",
@@ -1763,7 +4154,330 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/street-8-to-flight-9/z0"
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_8": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 8
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -1785,16 +4499,58 @@
           "axis": "z",
           "children": [
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-8-to-street-8-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "cobble"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "floor"
+                "role": "b1"
               },
               "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "street-8-to-flight-9-way"
             }
           ],
           "op": "split",
@@ -1802,7 +4558,121 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/street-8-to-flight-9/z0"
+                "name": "handed/seam/flight-8-to-street-8/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-8-to-street-8/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-8-to-street-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 8
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-flight-9/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
