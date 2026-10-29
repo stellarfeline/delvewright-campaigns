@@ -137,6 +137,18 @@ def flight(m, place, stem):
             m.set(x, 0, r, "worn" if x in (x0, x1) else "cobble")
         for r in rows[:4]:
             m.set(x, 0, r, "setts")
+    # the starter stands a ladder beside the raised opening (its climb to the
+    # landing over the top step); the step it hangs on is a full block
+    back = {"south": (0, -1), "north": (0, 1), "east": (-1, 0), "west": (1, 0)}
+    for s in place.seams:
+        ap = s.get("approach")
+        if ap is None or ap.get("ladder") is None:
+            continue
+        lad = ap["ladder"]
+        bx, bz = back[lad["facing"]]
+        lx, lz = lad["lo"][0], lad["lo"][2]
+        for y in range(place.datum.value, ap["sill"].value):
+            m.set(lx + bx, y, lz + bz, "setts")
     # a lamp at the foot landing, the side alternating down the street; the
     # stretches' own edges are all doorways and openings, so the street's
     # lamps stand here, one every stretch and flight
