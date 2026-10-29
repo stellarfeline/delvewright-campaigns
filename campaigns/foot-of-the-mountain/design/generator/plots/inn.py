@@ -146,9 +146,12 @@ def build(a):
     m.set(IX1 + 1, 4, 8, stairs("minecraft:dark_oak", "north", "top"))
     m.set(IX1 + 1, 4, 10, stairs("minecraft:dark_oak", "south", "top"))
     m.set(IX1 + 1, 4, 13, stairs("minecraft:dark_oak", "north", "top"))
+    m.set(IX1 + 1, 5, 6, BEAM_Z)                         # the beam the bell hangs from
     m.set(IX1 + 1, 4, 6, "minecraft:bell[attachment=ceiling,facing=east,powered=false]")
     for z in (3, 4):
         m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
+    m.set(IX1 + 1, 1, 5, "minecraft:potted_red_tulip")
+    m.set(IX1 + 1, 1, 10, "minecraft:potted_cornflower")
     for z in (11, 12):
         m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
     m.box(IX1 + 1, IX1 + 1, 0, 0, IZ0, IZ1, "minecraft:stone_bricks")
@@ -184,11 +187,13 @@ def build(a):
     # the serving counter across the taproom's west end, casks behind it
     for z in range(3, 9):
         m.set(18, 1, z, stairs("minecraft:spruce", "east", "top") if z != 8 else trapdoor("minecraft:spruce", "east"))
-    for z in (3, 5, 7):
-        m.set(16, 1, z, log("minecraft:spruce_log", "x"))     # casks on their sides
-        m.set(16, 2, z, candle(1)) if z == 5 else None
+    for z in (3, 7):
+        m.set(16, 1, z, "minecraft:barrel[facing=up,open=false]")                 # the ale casks
+    m.set(16, 1, 5, log("minecraft:spruce_log", "x"))           # a cask on its side
+    m.set(16, 2, 5, candle(1))
     m.set(16, 1, 4, "minecraft:spruce_planks"); m.set(16, 2, 4, slab("minecraft:spruce"))
     m.set(18, 2, 4, candle(2))
+    m.set(18, 2, 7, "minecraft:potted_oxeye_daisy")
     # tables and stools
     for (tx, tz) in ((21, 5), (23, 8), (21, 8)):
         m.set(tx, 1, tz, fence("minecraft:dark_oak"))
@@ -267,7 +272,7 @@ def build(a):
     m.set(5, 1, 21, log("minecraft:spruce_log", "z"))
     m.set(5, 1, 20, log("minecraft:spruce_log", "z"))
     m.set(5, 2, 21, log("minecraft:spruce_log", "z"))
-    m.set(4, 4, 19, lantern(True))
+    m.set(3, 3, 19, wall_torch("east"))
     for y in range(1, 9):
         m.set(BX0, y, 20, "stone")                          # its flue
 
@@ -309,6 +314,7 @@ def build(a):
     for (x, z) in ((9, 22), (10, 22), (14, 22), (2, 12), (2, 14), (17, 22)):
         m.set(x, 0, z, GRASS)
         m.set(x, 1, z, leaves("minecraft:azalea" if (x + z) % 2 else "minecraft:oak"))
+    m.set(15, 0, 22, GRASS); m.set(12, 0, 22, GRASS)
     m.set(15, 1, 22, "minecraft:rose_bush[half=lower]"); m.set(15, 2, 22, "minecraft:rose_bush[half=upper]")
     m.set(12, 1, 22, "minecraft:lilac[half=lower]"); m.set(12, 2, 22, "minecraft:lilac[half=upper]")
     # the north eave strip behind the inn: a woodpile for the hearths

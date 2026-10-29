@@ -158,6 +158,7 @@ def build(a):
     for z in (9, 10):
         m.set(7, 1, z, "minecraft:stripped_spruce_wood[axis=y]" if z == 9 else stairs("minecraft:spruce", "west", "top"))
     m.set(7, 2, 9, candle(2))
+    m.set(7, 2, 10, "minecraft:potted_poppy")
     # a finished chair and table by the window, for a customer to see
     m.set(3, 1, 12, stairs("minecraft:oak", "east"))
     m.set(4, 1, 12, "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]")
@@ -226,6 +227,7 @@ def build(a):
     m.set(13, 1, 3, "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]")
     m.set(14, 2, 3, "minecraft:iron_chain[axis=y,waterlogged=false]")
     m.set(14, 3, 3, "minecraft:iron_chain[axis=y,waterlogged=false]")
+    m.set(13, 5, 5, "minecraft:spruce_planks")                    # a board the lantern hangs from
     m.set(13, 4, 5, lantern(True))
     m.set(12, 1, 6, "minecraft:scaffolding[bottom=false,distance=0,waterlogged=false]")   # a half-made frame
 
@@ -241,6 +243,7 @@ def build(a):
     m.set(12, 3, 11, log("minecraft:birch_log", "z"))
     # boards in a stickered stack by the shed
     m.box(14, 15, 1, 1, 8, 8, slab("minecraft:oak", "bottom"))
+    m.set(15, 1, 14, "minecraft:barrel[facing=up,open=false]")      # nails and pegs
     m.box(15, 15, 1, 1, 10, 12, "minecraft:stripped_oak_wood[axis=z]")   # one high: the gap by the rack is never a pit
     # a handcart: a bed of slabs on a wheel (a trapdoor end on), shafts of fence
     m.set(12, 1, 14, slab("minecraft:spruce", "top"))

@@ -117,6 +117,18 @@ REFS = {
          "shows": "A community-built harbour (madexc): take a stone quay edge lined by timber-framed buildings on a stone ground course, and a moored boat with its mast up and sails on the yard.",
          "terms": "CC BY 4.0 (stated on the page): ideas only"},
     ],
+    # the landmarks worker's lighthouse rows (content demo/town-buildings @ f4ae754)
+    "node/lighthouse": [
+        {"url": "https://sketchfab.com/3d-models/big-lighthouse-08bbb2483fe246dca8ff3c458b18047d",
+         "shows": "A community lighthouse (madexc): take the shaft stepping in once below the top, a corbelled gallery ring and a fully glazed lantern room under a dark cap.",
+         "terms": "CC BY 4.0 (stated on the page): ideas only"},
+        {"url": "https://sketchfab.com/3d-models/lighthouse-874941099c94487eadef57c80f628271",
+         "shows": "A community lighthouse (madexc): take an octagonal tower on a dark stone plinth, a projecting gallery with a railing, and the lantern room's roof rising to a finial.",
+         "terms": "CC BY 4.0 (stated on the page): ideas only"},
+        {"url": "https://sketchfab.com/3d-models/quay-and-lighthouse-0460777c48b040b7884c19a709d13287",
+         "shows": "A community harbour lighthouse (l4ziness): take a banded masonry shaft with small windows up the stair, a timber gallery on corbels below a glazed lantern room, and the tower's foot meeting a walled quay.",
+         "terms": "none stated: ideas only"},
+    ],
     "node/inn": [
         {"url": "https://store.abfielder.com/products/%F0%9F%90%8E-travelers-refuge",
          "shows": "A Minecraft inn and tavern: a common hall with a serving counter and a fireplace, the kitchen and pantry behind it, chambers over, an attached stable of eight stalls under a lofted hay balcony.",
@@ -402,6 +414,10 @@ THEMES = {
                 [("structure", "shed", 0.20, 7, "the long open shed with hides on racks"),
                  ("structure", "cottage", 0.14, 8, "the tanner's cottage"),
                  ("ground", "pits", 0.24, None, "the yard of tanning pits")]),
+    "potter": ("the potter's", "A potter's workshop: the shop where the ware is sold in front, the throwing room behind it through a door, a brick kiln in the yard under a lean-to and the clay pit's heap.",
+               [("structure", "workshop", 0.30, 9, "the shop in front and the throwing room behind it, joined by a door"),
+                ("structure", "kiln", 0.06, 6, "the bottle kiln under its lean-to"),
+                ("ground", "yard", 0.24, None, "the yard: clay heaps, ware drying on boards")]),
     "carpenter": ("the carpenter's", "A carpenter's workshop and timber yard with a saw pit.",
                   [("structure", "workshop", 0.26, 9, "the workshop and the house over it"),
                    ("ground", "timber-yard", 0.32, None, "the timber yard and the saw pit")]),
@@ -484,14 +500,26 @@ MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-8", "west", "netloft", 20, 10, 2),
 ]
 LANE = [  # (lane, face, theme, at, dx, dz)
-    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "apothecary-2", 2, 16, 10),
+    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 10),
     ("lane-5", "north", "boatwright", 26, 14, 10), ("lane-5", "south", "cottages-2", 26, 14, 10),
 ]
 for st, face, theme, dx, dz, at in MAIN:
     plot(theme, theme, f"node/{st}", face, at, 0, dx, dz)
 for ln, face, theme, at, dx, dz in LANE:
     plot(theme, theme.split("-")[0], f"node/{ln}", face, at, 0, dx, dz)
-plot("lighthouse", "lighthouse", "node/lane-8", "east", 0, 7, 20, 20)
+# the cliff path: on from lane 8's east end, then south along the headland's
+# spine to the lighthouse on its point, sea west (the harbour basin), east
+# (the cove) and south
+_, _lf = ext("node/lane-8")
+box("node/cliff-path-1", (18, 5), _lf, OPEN(8), "the cliff path",
+    "The cliff path leaving the end of lane 8 east toward the headland: trodden earth and rock, a low rail on its seaward side.",
+    way={"axis": "x", "clear": 4})
+seam("node/lane-8", "node/cliff-path-1", "east", 0, 0, "contact", "the lane runs on as the cliff path")
+box("node/cliff-path-2", (5, 41), _lf, OPEN(8), "the cliff path",
+    "The cliff path running south along the headland's spine to the lighthouse, the harbour basin below it on the west and the cove on the east.",
+    way={"axis": "z", "clear": 4})
+seam("node/cliff-path-1", "node/cliff-path-2", "south", 13, 0, "contact", "the path turns south onto the headland")
+plot("lighthouse", "lighthouse", "node/cliff-path-2", "south", 0, 1, 20, 20)
 # the harbour plot on the quay's east side, at the quay's floor; its south
 # rows stand over the basin's water, so boats moor alongside its quay edge
 plot("harbour", "harbour", "node/quay", "east", 0, 2, 24, 22)   # its last six rows over the basin
@@ -552,6 +580,7 @@ def rounded_rect(x, z, x0, x1, z0, z1, r):
 # near its summit; its broad lower slope falls south to an irregular coast of
 # coves, rock and beach, and the town lies on that slope down to the harbour.
 TOWN = (60, 216, 210, 500)     # the town's ground: x0, x1, z0, z1
+TOWN_EAST = 184                # east of it the headland: wild rock, no brick, no lawn
 CX, CZ = pos["node/castle"][0] + 51, pos["node/castle"][1] + 59   # Doune's centre
 
 
@@ -580,7 +609,7 @@ def coast_z(x):
     z = 492 + (fbm(x, 0, 38, 3, 31) - 0.5) * 60
     z -= 30 * smooth(1 - abs(x - 122) / 40)          # the harbour inlet
     z -= 22 * smooth(1 - abs(x - 166) / 30)          # the basin the harbour plot moors its boats in
-    z -= 66 * smooth(1 - abs(x - 214) / 26)          # the cove under the lighthouse
+    z -= 66 * smooth(1 - abs(x - 222) / 22)          # the cove east of the lighthouse's headland
     z -= 48 * smooth(1 - abs(x - 38) / 30)           # a western cove
     return z
 
@@ -664,7 +693,7 @@ T = [[0.0] * RX for _ in range(RZ)]
 for n, x0, z0, dx, dz, f in rects:
     castle = n == "node/castle"
     road = n.startswith("node/road") or n == "node/gate-road"
-    skirt = 28 if castle else (12 if road else (3 if n == "node/quay" else 12))
+    skirt = 28 if castle else (12 if road else (3 if n in ("node/quay", "node/lighthouse") else 12))
     for z in range(max(0, z0 - 1 - skirt), min(RZ, z0 + dz + 1 + skirt)):
         for x in range(max(0, x0 - 1 - skirt), min(RX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
@@ -775,8 +804,8 @@ png(os.path.join(ROOT, "terrain", "island.png"), RX, RZ, pix)
 # ----------------------------------------------------------------- documents
 
 
-TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN[1], TOWN[3]]}
-BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN[1], TOWN[3]]}   # below the square: the mountain never takes a brick
+TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN_EAST, TOWN[3]]}
+BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN_EAST, TOWN[3]]}   # below the square: the mountain never takes a brick
 _cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
 CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}

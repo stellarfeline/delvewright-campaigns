@@ -864,6 +864,8 @@ def kind_of(state: str) -> str:
         if "[" in state and "_fence_gate" in b and "open=true" in state:
             return "pass"
         return "tall"
+    if b.startswith("potted_") or b == "flower_pot":
+        return "low"
     if b.endswith(LOW_SUFFIX) or b in LOW_IDS:
         if b.endswith("_slab") and "type=double" in state:
             return "full"
@@ -1023,6 +1025,16 @@ class Plot(Place):
             sys.exit(f"plot: the model names parts the node does not hold: {sorted(unknown)}")
         self.reach()
 
+    def beside_void(self, x, z):
+        if not hasattr(self, "_void_cols"):
+            self._void_cols = set()
+            for v in self.a.get("voids", []):
+                (x0, _, z0), (x1, _, z1) = v["cells"]
+                for vx in range(x0, x1 + 1):
+                    for vz in range(z0, z1 + 1):
+                        self._void_cols.add((vx, vz))
+        return any((x + dx, z + dz) in self._void_cols for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+
     def role_kind(self, r):
         if r is None or r == AIR:
             return "pass"
@@ -1035,6 +1047,11 @@ class Plot(Place):
         kind = Place.base_cell(self, x, y, z)
         if not self.in_space_xz(x, z) and kind == ("fill", "wall"):
             return ("claim", "room", None)
+        if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z) \
+                and self.beside_void(x, z) and y < self.datum.value + 2:
+            # where an open side meets a neighbour's cells, a body would walk
+            # into that place round the seam's opening: a hedge two high closes it
+            return ("fill", "hedge")
         if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z):
             # an open side's ring cell is a way out only where the cell inside
             # it is walked air; beside a wall, a hedge or an eave it is the
@@ -1233,6 +1250,7 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
         globals()["leaf"] = orig_leaf
     rules.rules["place"] = [{"body": start, "weight": 1}]
     palette = dict(base_palette)
+    palette.setdefault("hedge", "minecraft:oak_leaves[distance=1,persistent=true,waterlogged=false]")
     palette.update(cls.VARIANTS)
     for s, n in name_of.items():
         palette[n] = s
@@ -1285,6 +1303,44 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
     }
 
 
+def support_faults(m, variants):
+    """Attached blocks with nothing to hold them, as the pinned server judges
+    the commonest cases: a hanging lantern or a ceiling bell under anything
+    but a full cube, a standing one over anything but a full top, a flower
+    off soil, a wall torch with no wall behind it."""
+    def full_cube(s):
+        if s is None or s == AIR:
+            return False
+        if not s.startswith("minecraft:"):
+            return True
+        b = bid(s)
+        return kind_of(s) == "full" and not (b.endswith("_slab") or b.endswith("_stairs") or b.endswith("_trapdoor")
+                                             or b.endswith("_leaves") or "pane" in b or b in ("glass",))
+    soil = ("grass_block", "dirt", "podzol", "coarse_dirt", "rooted_dirt", "moss_block", "mud", "farmland")
+    out = []
+    for (x, y, z), s in sorted(m.v.items()):
+        if not s.startswith("minecraft:"):
+            continue
+        b = bid(s)
+        below, above = m.get(x, y - 1, z), m.get(x, y + 1, z)
+        if b == "lantern" and "hanging=true" in s and not (full_cube(above) or (above or "").startswith("minecraft:iron_chain")):
+            out.append(f"hanging lantern at {(x, y, z)} under {above}")
+        if b == "lantern" and "hanging=false" in s and y > 0 and below is not None and not (full_cube(below) or bid(below).endswith("_fence") or bid(below).endswith("_wall")):
+            out.append(f"standing lantern at {(x, y, z)} over {below}")
+        if (b in FLOWERS or b in ("rose_bush", "lilac", "peony")) and "half=upper" not in s:
+            if below is None or bid(below) not in soil:
+                if y > 1 or (below is not None):
+                    out.append(f"flower at {(x, y, z)} over {below}")
+        if b == "wall_torch":
+            f = s.split("facing=")[1].rstrip("]")
+            dx, dz = DIRS[f]
+            if not full_cube(m.get(x - dx, y, z - dz)):
+                out.append(f"wall torch at {(x, y, z)} with {m.get(x - dx, y, z - dz)} behind")
+        if b == "bell" and "attachment=ceiling" in s and not full_cube(above):
+            out.append(f"bell at {(x, y, z)} under {above}")
+    return out
+
+
 def plot_main(build, cls, base_palette, unwalked_reason, argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--allocation", required=True, help="`delvec allocation <campaign> <place>`, saved")
@@ -1294,6 +1350,9 @@ def plot_main(build, cls, base_palette, unwalked_reason, argv=None):
         allocation = json.load(f)
     cls.MODEL = build(allocation)
     cls.MODEL.connect()
+    bad = support_faults(cls.MODEL, cls.VARIANTS)
+    if bad:
+        sys.exit("plot: blocks the server would drop (no support):\n  " + "\n  ".join(bad))
     text = json.dumps(plot_program(allocation, cls, base_palette, unwalked_reason), indent=2, sort_keys=True,
                       ensure_ascii=False) + "\n"
     with open(args.out, "w", encoding="utf-8") as f:
