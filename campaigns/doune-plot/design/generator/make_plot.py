@@ -89,13 +89,11 @@ def main():
     c = w["content"]
     c["areas"] = []
     c["test_level"] = True
-    c["horizon"] = {"attributes": {"audio/background_music": {}}, "base": "void"}
-    c.pop("boundary", None)
     write("world.json", w)
     for n in ["npcs.json", "classes.json", "quest-plan.json", "quests.json", "dialogue.json"]:
         write(n, retarget(src(n)))
     side = retarget(src("l10n/zh-cn.json"))
-    for k in ["area.castle.name", "world.boundary.message"]:   # no area, no boundary here
+    for k in ["area.castle.name"]:   # a site-plan map has no area
         del side["content"][k]
         del side["source"][k]
     write("l10n/zh-cn.json", side)
