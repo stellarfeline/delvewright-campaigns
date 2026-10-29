@@ -230,6 +230,19 @@ REFS = {
          "shows": "Fired brick built in courses closing to a dome, smoke out at a flue: the kiln's construction in the town's brick.",
          "terms": "CC BY-SA 4.0 (Wikipedia text)"},
     ],
+    "node/cottages": [
+        {"url": "https://en.wikipedia.org/wiki/Cottage",
+         "shows": "The cottage: modest, often semi-detached, low-ceilinged with its timbers showing, a garden enough to feed the family, built of the cheapest local stuff (rubble stone, whitewash, slate); the fisherman's one-roomed penty.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    "node/townhall": [
+        {"url": "https://en.wikipedia.org/wiki/Market_house",
+         "shows": "The market house: an arcade on the ground floor sheltering the traders and their goods, the upper floor for civic use, on the market square (Titchfield Market Hall, 1620s).",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://en.wikipedia.org/wiki/Guildhall",
+         "shows": "The guildhall: market trading on its ground floor, the officers' offices and the board's meetings in it, the guild's arms on the facade; in Britain, the town hall.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
     "node/inn": [
         {"url": "https://store.abfielder.com/products/%F0%9F%90%8E-travelers-refuge",
          "shows": "A Minecraft inn and tavern: a common hall with a serving counter and a fireplace, the kitchen and pantry behind it, chambers over, an attached stable of eight stalls under a lofted hay balcony.",
@@ -594,9 +607,9 @@ for (sg, face), L in SIDE.items():
 
 MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-1", "west", "bakery", 22, 12, 1), ("street-1", "east", "apothecary", 18, 12, 1),
-    ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 12, 1),
+    ("street-2", "west", "cottages", 20, 12, 1), ("street-2", "east", "merchant", 26, 12, 1),
     ("street-3", "east", "weaver", 22, 12, 1),
-    ("street-4", "west", "townhall", 24, 10, 2), ("street-4", "east", "tavern", 24, 12, 1),
+    ("street-4", "west", "townhall", 24, 11, 2), ("street-4", "east", "tavern", 24, 12, 1),
     ("street-5", "west", "smithy", 24, 12, 1),
     ("street-6", "west", "chandler", 20, 10, 2), ("street-6", "east", "cooper", 22, 10, 2),
     ("street-7", "west", "fishmonger", 20, 10, 2), ("street-7", "east", "tannery", 22, 10, 2),
