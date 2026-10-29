@@ -701,9 +701,9 @@ def write(name, stage, content):
 
 
 main_path = ["node/square"]
-for k in range(1, 8):
+for k in range(1, NFL + 1):
     main_path.append(f"node/flight-{k}")
-    if k < 7:
+    if k < NFL:
         main_path.append(f"node/street-{k}")
 main_path.append("node/quay")
 
