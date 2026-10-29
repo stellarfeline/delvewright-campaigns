@@ -1055,13 +1055,6 @@ class Plot(Place):
                 return ("fill", r)
         if not self.in_space_xz(x, z) and kind == ("fill", "wall"):
             return ("claim", "room", None)
-        if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z) \
-                and self.beside_void(x, z):
-            # where an open side meets a neighbour's cells, a body would step
-            # into that place round the seam's opening: a pier of the town's
-            # stone the full height of the frame closes it (any lower and its
-            # top is a step into the neighbour's air)
-            return ("fill", "pier")
         if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z):
             # an open side's ring cell is a way out only where the cell inside
             # it is walked air; beside a wall, a hedge or an eave it is the
@@ -1260,7 +1253,6 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
         globals()["leaf"] = orig_leaf
     rules.rules["place"] = [{"body": start, "weight": 1}]
     palette = dict(base_palette)
-    palette.setdefault("pier", "minecraft:stone_bricks")
     palette.update(cls.VARIANTS)
     for s, n in name_of.items():
         palette[n] = s
