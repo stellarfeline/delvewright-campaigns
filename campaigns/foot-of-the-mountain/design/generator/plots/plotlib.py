@@ -1007,6 +1007,9 @@ class Plot(Place):
 
     MODEL: Model = None          # set by the plot before Place.__init__ runs
     VARIANTS: dict = {}
+    # a lot that meets its neighbours seamlessly stands no pier where its open
+    # side's ring meets a neighbour's cells: the ground runs on across the corner
+    CORNER_PIERS: bool = True
 
     def lay_parts(self, parts):
         self.model = type(self).MODEL
@@ -1055,8 +1058,8 @@ class Plot(Place):
                 return ("fill", r)
         if not self.in_space_xz(x, z) and kind == ("fill", "wall"):
             return ("claim", "room", None)
-        if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z) \
-                and self.beside_void(x, z):
+        if type(self).CORNER_PIERS and kind[0] == "claim" and kind[1].startswith("side-") \
+                and not self.in_space_xz(x, z) and self.beside_void(x, z):
             # where an open side meets a neighbour's cells, a body would step
             # into that place round the seam's opening: a pier of the town's
             # stone the full height of the frame closes it (any lower and its

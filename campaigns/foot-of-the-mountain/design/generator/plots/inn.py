@@ -324,20 +324,13 @@ def build(a):
     # the north eave strip behind the inn: a woodpile for the hearths
     m.box(16, 19, 1, 2, 1, 1, log("minecraft:oak_log", "x"))
 
-    # where the lot's open north and south edges meet the square's corners,
-    # a tall stone pier stands in the ring: the yard's gate pier on the south,
-    # the gable chimney's foot on the north, so the inn and the square meet
-    # only across the front the plan allocates
-    for z in (0, a_ez - 1):
-        for x in (IX1 + 3, IX1 + 4, IX1 + 5):
-            for y in range(1, a_ey):
-                m.set(x, y, z, "stone")
     m.marks["node-inn"] = (PX - 1, 8, "west")
     return m
 
 
 class Inn(Plot):
     VARIANTS = VARIANTS
+    CORNER_PIERS = False
 
 
 if __name__ == "__main__":
