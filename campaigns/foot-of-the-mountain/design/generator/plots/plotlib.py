@@ -1033,6 +1033,8 @@ class Plot(Place):
                 for vx in range(x0, x1 + 1):
                     for vz in range(z0, z1 + 1):
                         self._void_cols.add((vx, vz))
+        if (x, z) in self._void_cols:
+            return False          # the neighbour's own ring line, above its cells
         return any((x + dx, z + dz) in self._void_cols for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
 
     def role_kind(self, r):
