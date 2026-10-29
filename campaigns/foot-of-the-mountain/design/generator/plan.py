@@ -24,7 +24,7 @@ ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 
 RX, RZ = 320, 512          # region footprint (saltstair-a: 144 x 224; 5.08x)
 RY0, RYN = 40, 176         # region y span
-BASE_Y, RANGE = 48, 127    # heightmap: y = 48 + v * 127 // 255
+BASE_Y, RANGE = 48, 160    # heightmap: y = 48 + v * 160 // 255
 SEA = 62
 
 boxes = []                 # site-plan boxes, in order
@@ -94,7 +94,7 @@ OPEN = lambda n: {"open": n}
 
 # ---------------------------------------------------------------- the square
 SQF = 84                     # the square, at the mountain's foot
-SQ = (108, 200)
+SQ = (108, 230)
 box("node/square", (30, 24), SQF, OPEN(8), "the square",
     "The square at the top of the town, at the mountain's foot: the cathedral's "
     "west front on its east side, the inn on its west, the castle road leaving "
@@ -177,7 +177,7 @@ seam("node/square", "node/inn", "west", 0, 0, "contact",
 # and west, each turning north up a ramp at its end, then runs along the
 # castle's north side to Doune's approach (a contact on the north face at 74).
 ROAD_W, RAMP_L = 5, 10
-CASTLE_WALK = 128            # Doune's grade walk, the castle box's floor
+CASTLE_WALK = 164            # Doune's grade walk, the castle box's floor: 80 over the square
 OPP = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
 
@@ -219,20 +219,29 @@ def join(a, b, face, kind, form):
     edges.append({"a": a, "b": b, "class": cls, "id": eid})
 
 
+CLIMB_RUN = 12
+# Four traverses along the contours of the castle hill's west shoulder, each
+# climbing twelve, joined by climbs up the slope between them; each traverse
+# stands some forty-five cells above the last, so the hillside between two
+# legs is a natural slope, never a bank.
 ROUTE = [  # (direction of travel, kind, length): kind run (level) or ramp (+4)
-    ("north", "run", 6),
-    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("west", "run", 6), ("west", "ramp", RAMP_L), ("west", "run", 6),
-    ("north", "ramp", RAMP_L), ("north", "run", 15),
-    ("east", "run", 6), ("east", "ramp", RAMP_L), ("east", "run", 6),
-    ("north", "run", 8),
+    ("north", "run", 4),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("west", "run", 8), ("west", "ramp", RAMP_L), ("west", "run", 8), ("west", "ramp", RAMP_L),
+    ("west", "run", 8), ("west", "ramp", RAMP_L), ("west", "run", 8),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("east", "run", 8), ("east", "ramp", RAMP_L), ("east", "run", 8), ("east", "ramp", RAMP_L),
+    ("east", "run", 8), ("east", "ramp", RAMP_L), ("east", "run", 8),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("west", "run", 8), ("west", "ramp", RAMP_L), ("west", "run", 8), ("west", "ramp", RAMP_L),
+    ("west", "run", 8), ("west", "ramp", RAMP_L), ("west", "run", 8),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
+    ("east", "run", 8), ("east", "ramp", RAMP_L), ("east", "run", 8), ("east", "ramp", RAMP_L),
+    ("east", "run", 8), ("east", "ramp", RAMP_L), ("east", "run", 8),
+    ("north", "ramp", RAMP_L), ("north", "run", CLIMB_RUN),
 ]
 prev, prev_dir, floor, rising = "node/square", "north", SQF, False
 for k, (d, kind, L) in enumerate(ROUTE, 1):
@@ -271,7 +280,7 @@ assert not rising and floor == CASTLE_WALK, floor
 box("node/road-top", (10, ROAD_W), CASTLE_WALK, OPEN(8), "the castle road's last stretch",
     "The road's last stretch, level along the castle's north side to the head "
     "of Doune's approach.", way={"axis": "x", "clear": 4})
-CASTLE_X0 = 140
+CASTLE_X0 = 170
 rx = pos[prev][0]
 L = CASTLE_X0 + 74 + ROAD_W - rx
 boxes[-1]["extent"] = [L, ROAD_W]
@@ -349,6 +358,10 @@ THEMES = {
     "townhall": ("the guildhall", "The guildhall: a hall on an open arcade, a clock over the door.",
                  [("structure", "hall", 0.42, 14, "the guildhall over its open arcade"),
                   ("ground", "forecourt", 0.20, None, "the forecourt")]),
+    "harbour": ("the harbour", "The harbourmaster's house on the quay's east end, and the fishing boats moored along its edge as fixed builds.",
+                [("structure", "harbourmaster", 0.22, 9, "the harbourmaster's house: an office facing the quay, a store behind"),
+                 ("structure", "boats", 0.20, 6, "fishing boats moored along the quay's edge, masts and furled sails"),
+                 ("ground", "quayside", 0.30, None, "the quayside: bollards, nets, crates")]),
     "lighthouse": ("the lighthouse", "A tall white lighthouse on the headland with the keeper's cottage and a walled yard.",
                    [("structure", "tower", 0.14, 30, "the lighthouse tower, a stair to the lantern room"),
                     ("structure", "cottage", 0.16, 8, "the keeper's cottage"),
@@ -422,6 +435,8 @@ for st, face, theme, dx, dz, at in MAIN:
 for ln, face, theme, at, dx, dz in LANE:
     plot(theme, theme.split("-")[0], f"node/{ln}", face, at, 0, dx, dz)
 plot("lighthouse", "lighthouse", "node/lane-8", "east", 0, 7, 20, 20)
+# the harbour plot on the quay's east side, at the quay's floor
+plot("harbour", "harbour", "node/quay", "east", 0, 2, 24, 16)
 
 # ---------------------------------------------------------- consistency check
 names = list(pos)
@@ -478,7 +493,7 @@ def rounded_rect(x, z, x0, x1, z0, z1, r):
 # The island: one land mass. The mountain rises behind the town with Doune
 # near its summit; its broad lower slope falls south to an irregular coast of
 # coves, rock and beach, and the town lies on that slope down to the harbour.
-TOWN = (60, 216, 180, 470)     # the town's ground: x0, x1, z0, z1
+TOWN = (60, 216, 210, 500)     # the town's ground: x0, x1, z0, z1
 CX, CZ = pos["node/castle"][0] + 51, pos["node/castle"][1] + 59   # Doune's centre
 
 
@@ -502,11 +517,12 @@ def ridged(x, z, scale, octaves, salt):
 
 
 def coast_z(x):
-    """The south coast's line: coves and points, the harbour inlet at the quay."""
-    z = 452 + (fbm(x, 0, 46, 3, 31) - 0.5) * 44
-    z -= 16 * smooth(1 - abs(x - 122) / 34)          # the harbour inlet
-    z += 26 * smooth(1 - abs(x - 200) / 26)          # the lighthouse point
-    z -= 22 * smooth(1 - abs(x - 40) / 30)           # a western cove
+    """The south coast's line: coves and points; the harbour inlet at the
+    quay; a deep cove east of the lighthouse so it stands on its point."""
+    z = 492 + (fbm(x, 0, 38, 3, 31) - 0.5) * 60
+    z -= 30 * smooth(1 - abs(x - 122) / 40)          # the harbour inlet
+    z -= 66 * smooth(1 - abs(x - 214) / 26)          # the cove under the lighthouse
+    z -= 48 * smooth(1 - abs(x - 38) / 30)           # a western cove
     return z
 
 
@@ -520,35 +536,61 @@ def land(x, z):
 
 
 def mountain(x, z):
-    """One massif: a broad dome round Doune's summit, the summit itself rising
-    behind it to the north-east, a ridge along the north, all ridged and
-    broken by noise so no slope is a cone."""
-    wx = x + (fbm(x, z, 60, 2, 41) - 0.5) * 50      # domain warp: no circle survives
-    wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 50
-    d = math.hypot((wx - CX) / 150, (wz - CZ) / 120)
-    dome = 66 + 62 * (1 - smooth(d)) ** 1.15
-    p = math.hypot((wx - 278) / 62, (wz - 72) / 70)
-    summit = 112 * (1 - smooth(p)) ** 0.9 * (0.6 + 0.4 * ridged(x, z, 30, 3, 51))
-    ridge_line = math.exp(-((wz - 34) / 20) ** 2) * smooth((wx - 120) / 60)
-    ridge = 30 * ridge_line * (0.5 + 0.5 * ridged(x, z, 34, 3, 45))
-    broken = (ridged(x, z, 22, 3, 47) - 0.45) * 16 * (1 - smooth(d))
-    hills = 10 + (fbm(x, z, 44, 3, 53) - 0.35) * 46 * smooth((150 - x) / 60) * smooth((300 - z) / 60)
-    return dome + max(summit, ridge) + broken + hills
+    """One mountain at the town's foot: its lower slope starts at the town's
+    upper edge and rises along the castle road's shoulder to the summit
+    plateau Doune stands on, the summit itself north-east of Doune; domain
+    warped, ridged and broken into uneven ledges, so nothing is a cone."""
+    wx = x + (fbm(x, z, 60, 2, 41) - 0.5) * 40
+    wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 30
+    top = SQ[1] - 18                                  # the town's upper edge
+    # the shoulder the road climbs: rising north from the town's edge
+    shoulder = 84 + 0.40 * (top - wz)               # falls away south of the town's edge too
+    # the plateau round Doune, falling away on every side
+    # south of Doune the ground falls evenly from its ring to the square's
+    # level (about one in one, so grass and trees hold, not a cliff); north
+    # it rounds off over the summit plateau
+    if wz > CZ:
+        d = math.hypot((wx - CX) / 150, (wz - CZ) / 105)
+        t = max(0.0, min(1.0, (d - 0.56) / 0.67))
+        plateau = 84 + (CASTLE_WALK - 84) * (1 - t) - 34 * max(0.0, d - 1.23)
+    else:
+        d = math.hypot((wx - CX) / 150, (wz - CZ) / 150)
+        plateau = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.60) / 0.95))
+    # the summit, north-east of Doune
+    p = math.hypot((wx - (CX + 40)) / 80, (wz - (CZ - 55)) / 70)
+    summit = CASTLE_WALK - 20 + 56 * (1 - smooth(p)) ** 1.3
+    h = max(min(shoulder, CASTLE_WALK - 2), plateau, summit if p < 1 else 0)
+    # fade the mountain into the island's low country east and west
+    fade = smooth((x - 8) / 40) * smooth((RX - 8 - x) / 40)
+    h = 50 + (h - 50) * fade
+    # uneven ledges and broken rock, strongest where the ground is high
+    up = smooth((h - 90) / 40)
+    h += (ridged(x, z, 18, 3, 47) - 0.45) * 12 * up + (vnoise(x, z, 5, 49) - 0.5) * 3.5 * up
+    hills = (12 + (fbm(x, z, 44, 3, 53) - 0.35) * 30) * smooth((300 - z) / 60) * (1 - up)
+    return h + hills
 
 
 def slope(x, z):
     """The mountain's lower slope under the town: the street's own fall."""
-    y = SQF - (SQF - QUAYF) * (max(z, 212) - 212) / (430 - 212) - 10 * smooth((212 - z) / 80)
+    z0, z1 = SQ[1] + 12, pos['node/quay'][1]
+    y = SQF - (SQF - QUAYF) * (max(z, z0) - z0) / (z1 - z0) - 10 * smooth((z0 - z) / 80)
     return y + (fbm(x, z, 33, 2, 7) - 0.5) * 3
 
 
 def base_height(x, z):
-    m = land(x, z)
-    h_m, h_s = mountain(x, z), slope(x, z)
+    """The land: the soft maximum of the mountain and its lower slope, cut by
+    the shore so the waterline follows the coast's coves and points, falling
+    to the sea floor; cliffs only on the far coasts."""
+    wob = (fbm(x, z, 40, 3, 1) - 0.5) * 30
+    inset = min(x, RX - 1 - x, z) + wob
+    edge = smooth((inset - 10) / 14)
+    h_m, h_s = mountain(x, z), max(slope(x, z), 64.5)
     k = 6.0                                          # a soft maximum: no crease
     h = k * math.log(math.exp(h_m / k) + math.exp(h_s / k))
+    shore = 62.5 + 0.35 * (coast_z(x) + wob * 0.3 - z)   # a beach rising from the waterline
     sea_floor = 50 + (vnoise(x, z, 31, 4) - 0.5) * 4
-    return sea_floor + (h - sea_floor) * m
+    h = max(sea_floor, min(h, shore))
+    return sea_floor + (h - sea_floor) * edge
 
 
 H = [[base_height(x, z) for x in range(RX)] for z in range(RZ)]
@@ -562,7 +604,7 @@ T = [[0.0] * RX for _ in range(RZ)]
 for n, x0, z0, dx, dz, f in rects:
     castle = n == "node/castle"
     road = n.startswith("node/road") or n == "node/gate-road"
-    skirt = 16 if castle else (7 if road else 12)
+    skirt = 28 if castle else (12 if road else (3 if n == "node/quay" else 12))
     for z in range(max(0, z0 - 1 - skirt), min(RZ, z0 + dz + 1 + skirt)):
         for x in range(max(0, x0 - 1 - skirt), min(RX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
@@ -581,7 +623,7 @@ for n, x0, z0, dx, dz, f in rects:
                 target = f - 1
                 w = 1.0 if max(ddx, ddz) <= 1 else smooth(1 - (d - 1) / skirt)
             if n == "node/harbour" and max(ddx, ddz) <= 1:
-                continue  # the basin and its ring keep the sea floor
+                continue  # the harbour keeps the shore and the sea floor under it
             if w > W[z][x] + 1e-9 or (abs(w - W[z][x]) < 1e-9 and target > T[z][x]):
                 W[z][x] = w
                 T[z][x] = target
@@ -647,6 +689,7 @@ png(os.path.join(ROOT, "terrain", "island.png"), RX, RZ, pix)
 
 
 TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN[1], TOWN[3]]}
+BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN[1], TOWN[3]]}   # below the square: the mountain never takes a brick
 _cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
 CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
@@ -657,25 +700,32 @@ STRATA = [
     # Doune's plot and its ring: Doune's own turf, which its plants stand on
     {"when": {"area": CASTLE_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
     # the town: a step of two or more is a retaining wall a builder laid
-    {"when": {"area": TOWN_AREA, "steep": 3, "patch": P(9, 600, 11)},
+    {"when": {"area": BRICK_AREA, "steep": 3, "patch": P(9, 600, 11)},
      "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},
-    {"when": {"area": TOWN_AREA, "steep": 3},
+    {"when": {"area": BRICK_AREA, "steep": 3},
      "surface": "minecraft:stone_bricks", "below": "minecraft:stone_bricks"},
     {"when": {"area": TOWN_AREA, "patch": P(7, 780, 12)},
      "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
     {"when": {"area": TOWN_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
-    # the wild: rock where it is steep or high, scree, forest, heath
-    {"when": {"steep": 3, "patch": P(11, 550, 21)},
-     "surface": "minecraft:andesite", "below": "minecraft:andesite"},
+    # the wild: rock as it weathers, never one smooth face. A real cliff only
+    # where it is very steep; elsewhere stone, andesite, tuff and moss broken
+    # by grass in the cracks, and scree high up.
+    {"when": {"steep": 5, "patch": P(4, 520, 21)}, "surface": "minecraft:andesite", "below": "minecraft:andesite"},
+    {"when": {"steep": 5, "patch": P(5, 560, 30)}, "surface": "minecraft:tuff", "below": "minecraft:stone"},
+    {"when": {"steep": 5}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"steep": 3, "patch": P(3, 620, 31)}, "surface": "minecraft:moss_block", "below": "minecraft:stone"},
+    {"when": {"steep": 3, "patch": P(4, 540, 32)}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
+    {"when": {"steep": 3, "patch": P(3, 500, 33)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
+    {"when": {"steep": 3, "patch": P(4, 520, 34)}, "surface": "minecraft:tuff", "below": "minecraft:stone"},
     {"when": {"steep": 3}, "surface": "minecraft:stone", "below": "minecraft:stone"},
-    {"when": {"y_min": 150}, "surface": "minecraft:stone", "below": "minecraft:stone"},
-    # rock outcrops breaking the mountain's slopes
-    {"when": {"y_min": 100, "patch": P(13, 700, 28)}, "surface": "minecraft:stone", "below": "minecraft:stone"},
-    {"when": {"y_min": 90, "patch": P(9, 760, 29)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
-    {"when": {"y_min": 136, "patch": P(8, 500, 22)},
-     "surface": "minecraft:gravel", "below": "minecraft:stone"},
-    {"when": {"y_min": 136}, "surface": "minecraft:stone", "below": "minecraft:stone"},
-    {"when": {"y_min": 96, "y_max": 135, "patch": P(30, 430, 23)},
+    {"when": {"y_min": 178, "patch": P(5, 520, 35)}, "surface": "minecraft:gravel", "below": "minecraft:stone"},
+    {"when": {"y_min": 178, "patch": P(4, 600, 36)}, "surface": "minecraft:moss_block", "below": "minecraft:stone"},
+    {"when": {"y_min": 178}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    # outcrops breaking the slopes: small patches, mixed
+    {"when": {"y_min": 100, "patch": P(7, 780, 28)}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"y_min": 95, "patch": P(6, 800, 29)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
+    {"when": {"y_min": 110, "patch": P(5, 820, 37)}, "surface": "minecraft:mossy_cobblestone", "below": "minecraft:stone"},
+    {"when": {"y_min": 92, "y_max": 176, "patch": P(30, 400, 23)},
      "surface": "minecraft:podzol", "below": "minecraft:dirt",
      "trees": {"per_mille": 70, "log": "minecraft:spruce_log",
                "leaves": "minecraft:spruce_leaves[persistent=true]", "height": [6, 9]}},
@@ -688,7 +738,6 @@ STRATA = [
      "trees": {"per_mille": 30, "log": "minecraft:birch_log",
                "leaves": "minecraft:birch_leaves[persistent=true]", "height": [5, 7]}},
     {"when": {"patch": P(6, 800, 26)}, "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
-    {"when": {"steep": 2, "patch": P(5, 650, 27)}, "surface": "minecraft:stone", "below": "minecraft:dirt"},
 ]
 
 
