@@ -1250,6 +1250,23 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
     scan(rules.rules)
     palette = {k: v for k, v in palette.items() if k in used}
     out_contract = contract(p)
+    # Two walked spaces are joined by a walk where a body actually steps from
+    # one to the other, read off the reach, not where their columns merely touch.
+    def space_of(c):
+        e = p.col_part.get((c[0], c[2]))
+        return "room" if e is None else e["region"]
+    pairs = set()
+    for c in p.reached:
+        a_ = space_of(c)
+        for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            for dy in (-1, 0, 1):
+                n = (c[0] + dx, c[1] + dy, c[2] + dz)
+                if n in p.reached and space_of(n) != a_:
+                    pairs.add(tuple(sorted((a_, space_of(n)))))
+    walked = {e["region"] for e in p.parts if e["walked"]} | {"room"}
+    out_contract["edges"] = [e for e in out_contract["edges"]
+                             if not (e["class"] == "walk" and e["a"] in walked and e["b"] in walked and "via" not in e)]
+    out_contract["edges"] += [{"a": a_, "b": b_, "class": "walk"} for a_, b_ in sorted(pairs)]
     if p.unwalked:
         out_contract.setdefault("no_body", {})["unwalked"] = {"reason": unwalked_reason}
         if len(p.unwalked) >= len(p.reached):

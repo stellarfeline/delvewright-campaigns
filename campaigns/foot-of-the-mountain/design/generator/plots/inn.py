@@ -208,7 +208,7 @@ def build(a):
     m.set(16, 1, 13, "minecraft:crafting_table")
     for x in (20, 21, 22):
         m.set(x, 1, 12, slab("minecraft:spruce", "top"))
-    m.set(21, 2, 12, "minecraft:cake[bites=0]")
+    m.set(21, 2, 12, candle(3))
     m.set(24, 1, 11, "minecraft:hay_block[axis=y]")             # sacks of meal
     m.set(24, 1, 13, "minecraft:smooth_stone_slab[type=top,waterlogged=false]")
     m.set(23, 1, 13, "minecraft:smooth_stone_slab[type=top,waterlogged=false]")
