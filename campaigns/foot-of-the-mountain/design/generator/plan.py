@@ -97,6 +97,72 @@ OPEN = lambda n: {"open": n}
 # Community and historical reference builds per plot: looked at for form and
 # room layout, never copied (an unlicensed or non-commercial source is ideas only).
 REFS = {
+    # the lower street's rows (content demo/plots-lower @ b505915), carried here
+    "node/boatwright": [
+        {"url": "https://her.cne-siar.gov.uk/Monument/MWE148761",
+         "shows": "A small boatbuilding yard: a single-storey shed with its door to the slipway, the long plank steamer against an inside wall over a fire, clinker boats built inside.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://www.nationalhistoricships.org.uk/ship-shape/company/f-p-crowell-boatbuilder",
+         "shows": "A traditional wooden boatbuilder's boatshed with a slipway and cradle hauled back into the shed, with headroom over the hull, and large timbers machined in the yard.",
+         "terms": "none stated for text; pictures not to be reproduced (ideas only)"},
+    ],
+    "node/cooper": [
+        {"url": "https://www.brothers-brick.com/2021/08/24/roll-out-the-barrel-with-this-medieval-coopers-workshop",
+         "shows": "A community-built medieval cooper's workshop: the work floor at ground open on one side so the scorching of a barrel is seen, the family's rooms beside and above, beams over jagged stonework.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://museum.wales/collections/online/object/6761dd14-e787-3d33-87f2-6b3012da9b86",
+         "shows": "A cooper's shaving horse, the bench he sits astride to hold and shape the staves for barrels: the working object of the cooperage floor.",
+         "terms": "none stated; image by permission of the museum (ideas only)"},
+    ],
+    "node/cottages-2": [
+        {"url": "https://en.wikipedia.org/wiki/True%27s_Yard_Fisherfolk_Museum",
+         "shows": "Fisherfolk cottages of one room down and one up, a whole family in each, in a row off a shared yard.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://charliecustard.com/downloads/waterway-cottage",
+         "shows": "A community-built medieval waterside cottage on a stone foundation, small and tall, with balconies over the water.",
+         "terms": "none stated; site terms of service (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town's fishermen's village: small cottages close together near the water.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
+    "node/fishmonger": [
+        {"url": "https://buildinghistory.org/buildings/shops.shtml",
+         "shows": "How a medieval shop front was built: a wide unglazed opening whose upper shutter hooks up as an awning and whose lower one folds down as the counter, the living or working space behind.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://en.wikipedia.org/wiki/True%27s_Yard_Fisherfolk_Museum",
+         "shows": "A fisher family's fishmonger's in the front room on the street, with the smokehouse at the rear of the house where the herring were hung and smoked.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town whose north side holds an outer market and a fishermen's village beside the wharf.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
+    "node/netloft": [
+        {"url": "https://www.hastingshistory.net/hastings-net-shops",
+         "shows": "The Hastings net shops: tall, narrow, tarred weatherboarded sheds of up to three storeys, a ladder through each floor, nets coiled and hung from the beams for storage and dried on the beach outside, rows of shops with capstans between them.",
+         "terms": "none stated; copyright notice only (ideas only)"},
+        {"url": "https://www.meer.com/en/42331-net-sheds",
+         "shows": "Baltic net sheds set at right angles to the sea, each owner's row of net-drying beams starting at his shed door, the drying ground and the boat landing between the sheds.",
+         "terms": "none stated"},
+        {"url": "https://www.mc-mod.net/?p=538592",
+         "shows": "A community fisherman's waterside house in stripped spruce and stone, 17 by 20 and 22 tall: the tall timber-on-stone massing of a harbour work building.",
+         "terms": "none stated"},
+    ],
+    "node/smithy": [
+        {"url": "https://minecraft.how/blog/post/build-blacksmith-shop-minecraft",
+         "shows": "A blacksmith laid out along the material's path: the fire and smelting on one side, the anvils in the middle with room to work round them, the grindstone beside the anvils, storage opposite; dark masonry, chains and lanterns hung from the beams.",
+         "terms": "none stated; page footer: all rights reserved (ideas only)"},
+        {"url": "https://www.curseforge.com/minecraft/mc-mods/blacksmith-structures",
+         "shows": "A vanilla-block village smithy whose interior and exterior pictures put the forge against a stone wall at one end of a timber building, the anvil before it and the work open to the yard.",
+         "terms": "CC BY-NC 3.0 (ideas only)"},
+    ],
+    "node/tavern": [
+        {"url": "https://www.hukins-hops.co.uk/our-story/news-press/brewery-in-minecraft",
+         "shows": "Minecraft brewery and tavern builds: a rustic taproom with warm lighting, the brewing done apart at a stone counter with cauldrons of water beside it, a cellar below.",
+         "terms": "none stated"},
+        {"url": "https://www.profitableventure.com/beer-garden-design-ideas-layout-floor-plan/",
+         "shows": "Beer-garden layouts: pergolas over the seating zones dressed in climbing greenery and lights, communal tables with benches, the garden edged with hedges and planting.",
+         "terms": "none stated"},
+    ],
     # the landmarks worker's rows (content demo/town-buildings @ a82f763), carried here
     "node/cathedral": [
         {"url": "https://minecraftonline.com/wiki/Cathedral",
