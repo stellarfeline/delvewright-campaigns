@@ -265,7 +265,11 @@ def drop_unclaimable_sides(place, m):
         (sx0, sz0), (sx1, sz1) = sd["lo"], sd["hi"]
         cells = [(x, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
                  if 0 <= x < ex and 0 <= z < ez and (x, place.datum.value, z) not in m.no_touch]
-        if cells:
+        # the side a raised opening stands on is the neighbour's above the
+        # walk plane (its void) and the top step's below it: nothing of it
+        # is a way out
+        raised = any(se["seam"]["face"] == sd["face"] and se["lo"][1].value > place.datum.value for se in place.seams)
+        if cells and not raised:
             keep.append(sd)
     place.sides = keep
 
