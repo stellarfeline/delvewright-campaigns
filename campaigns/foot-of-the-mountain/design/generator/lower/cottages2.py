@@ -40,20 +40,6 @@ def hsh(*a):
 
 
 
-def close_edge_gaps(m, X0, X1, Z0, Z1, role):
-    """On a column at the plot's edge, the ground the whole stitches to is its top:
-    close any air between a wall and the eave above it, so no edge stands over air."""
-    for x in range(X0, X1 + 1):
-        for z in range(Z0, Z1 + 1):
-            if x not in (X0, X1) and z not in (Z0, Z1):
-                continue
-            ys = sorted(y for (cx, y, cz) in m.v if cx == x and cz == z and y > 0 and m.v[(cx, y, cz)] != "~air")
-            if len(ys) < 2:
-                continue
-            for y in range(ys[0], ys[-1]):
-                if (x, y, z) not in m.v or m.v[(x, y, z)] == "~air":
-                    m.set(x, y, z, role(x, z) if callable(role) else role)
-
 
 PALETTE = {
     "turf": "minecraft:grass_block[snowy=false]",
@@ -211,7 +197,15 @@ def build(place):
     # the eaves stop at the plot's edge: nothing is drawn beyond the play space above the ground
     for c in [c for c in list(m.v) if c[1] > 0 and not (X0 <= c[0] <= X1 and Z0 <= c[2] <= Z1)]:
         del m.v[c]
-    close_edge_gaps(m, X0, X1, Z0, Z1, lambda x, z: "white" if x <= A[1] else "rubble")
+    # an eave over a column at the plot's edge with no wall under it would stand over air
+    # beside the neighbour's ground: the eave stops short there
+    for x in range(X0, X1 + 1):
+        for z in range(Z0, Z1 + 1):
+            if x not in (X0, X1) and z not in (Z0, Z1):
+                continue
+            if m.get(x, 1, z) not in ("white", "rubble", "plinth", "quoin", "post"):
+                for c in [c for c in list(m.v) if c[0] == x and c[2] == z and c[1] >= 4]:
+                    del m.v[c]
     m.finish()
     m.part(*A, "cottage-a")
     m.part(*B, "cottage-b")
