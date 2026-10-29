@@ -24,6 +24,41 @@ ROAD_X, ROAD_W = 75, 5   # Doune's approach road where it leaves the plot's nort
 MOUTH_H = 3              # the contact's height over the walk plane
 
 
+# The three places Doune's geometry lets a body into and not out of (DW0921),
+# closed with the fewest cells, Doune-local (x, y, z) -> role:
+#   the kitchen tower's NW corner crenel and the gatehouse's NE corner crenel are
+#   slots walled on three sides, entered by a fall off the merlon tops: the
+#   corner merlon is carried across them (a wider corner merlon);
+#   the well's mouth is a one-course hole under the hanging bucket a body cannot
+#   jump out of: it is stopped with a dark block that reads as the shaft.
+FIXES = {}
+for _z in (30, 31):
+    for _y in (43, 44, 45):
+        FIXES[(13, _y, _z)] = "wall"
+    for _y in (45, 46, 47):
+        FIXES[(91, _y, _z)] = "wall"
+FIXES[(50, 8, 62)] = "yard/well_shaft"
+PALETTE = dict(bc.PALETTE, **{"yard/well_shaft": "minecraft:black_concrete"})
+
+
+def fixed_column(x, z):
+    col = bc.column(x, z)
+    cells = {y: r for (fx, y, fz), r in FIXES.items() if (fx, fz) == (x, z)}
+    if not cells:
+        return col
+    flat = [r for r, n in col.spans for _ in range(n)]
+    for y, r in cells.items():
+        flat[y] = r
+    spans = []
+    for r in flat:
+        if spans and spans[-1][0] == r:
+            spans[-1] = (r, spans[-1][1] + 1)
+        else:
+            spans.append((r, 1))
+    col.spans = spans
+    return col
+
+
 def sz(n):
     return {"size": "absolute", "blocks": {"expr": "int", "value": n}}
 
@@ -56,10 +91,39 @@ def trim(node, k, ring, mouth=False):
             rest.append((n, c))
         out = [(FIXED, {"op": "skip"})] + rest
     assert sum(n for n, _ in out) == Y - k
+    out = crowns(out)
     if mouth:
         out = claim_band(out, FIXED, FIXED + MOUTH_H, "road-mouth")
-    return {"op": "split", "axis": "y", "sizes": [sz(n) for n, _ in out],
-            "children": [c for _, c in out]}
+        out = [(n, c if c.get("op") == "claim" and c["region"] == "road-mouth"
+                else {"op": "claim", "region": "site", "body": c}) for n, c in out]
+        return {"op": "split", "axis": "y", "sizes": [sz(n) for n, _ in out],
+                "children": [c for _, c in out]}
+    return {"op": "claim", "region": "site",
+            "body": {"op": "split", "axis": "y", "sizes": [sz(n) for n, _ in out],
+                     "children": [c for _, c in out]}}
+
+
+LEAVES = {"yard/oak_leaf", "yard/spruce_leaf"}
+
+
+def role_of(c):
+    while c.get("op") == "mark":
+        c = c["body"]
+    return c.get("material", {}).get("role") if c.get("op") == "fill" else None
+
+
+def crowns(spans):
+    """The course over a tree's crown is out of walk: nobody climbs the trees."""
+    out, after_leaf = [], False
+    for n, c in spans:
+        if after_leaf and role_of(c) is None and c.get("op") == "void":
+            out.append((1, {"op": "claim", "region": "crowns", "body": c}))
+            if n > 1:
+                out.append((n - 1, c))
+        else:
+            out.append((n, c))
+        after_leaf = role_of(c) in LEAVES
+    return out
 
 
 def claim_band(spans, y0, y1, region):
@@ -83,7 +147,7 @@ def claim_band(spans, y0, y1, region):
 def build():
     rows = []
     for z in range(Z):
-        cols = [bc.column(x, z) for x in range(X)]
+        cols = [fixed_column(x, z) for x in range(X)]
         rows.append([trim(bc.column_node(x, z, cols[x]), CUT, x in (0, X - 1) or z in (0, Z - 1),
                           z == 0 and ROAD_X <= x < ROAD_X + ROAD_W)
                      for x in range(X)])
@@ -112,9 +176,10 @@ PROGRAM = {
     "name": "doune_castle_plot",
     "start": "site",
     "params": {},
-    "palette": bc.PALETTE,
-    "rules": {"site": [{"weight": 1, "body": {"op": "claim", "region": "site", "body": build()}}]},
+    "palette": PALETTE,
+    "rules": {"site": [{"weight": 1, "body": build()}]},
     "contract": {"entry": "site", "spaces": {"site": {"envelope": "open"}},
+                 "no_body": {"crowns": {"reason": "the tops of the trees on the grounds: nothing anybody climbs"}},
                  "edges": [{"a": "site", "b": "exterior", "class": "walk", "via": "road-mouth"}]},
     "shown_faces": ["north", "south", "east", "west"],
 }
