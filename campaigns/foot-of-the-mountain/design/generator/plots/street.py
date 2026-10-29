@@ -255,14 +255,6 @@ def build(place) -> Model:
         stretch(m, place, stem)
     else:
         lane(m, place, stem)
-    # PLANT: a slab where the starter's ladder hangs (its backing)
-    back = {"south": (0, -1), "north": (0, 1), "east": (-1, 0), "west": (1, 0)}
-    for se in place.seams:
-        ap = se.get("approach")
-        if ap is not None and ap.get("ladder") is not None:
-            bx, bz = back[ap["ladder"]["facing"]]
-            for y in range(place.datum.value, ap["sill"].value):
-                m.set(ap["ladder"]["lo"][0] + bx, y, ap["ladder"]["lo"][2] + bz, slab("minecraft:spruce"))
     m.finish()
     return m
 
