@@ -402,6 +402,10 @@ THEMES = {
                 [("structure", "shed", 0.20, 7, "the long open shed with hides on racks"),
                  ("structure", "cottage", 0.14, 8, "the tanner's cottage"),
                  ("ground", "pits", 0.24, None, "the yard of tanning pits")]),
+    "potter": ("the potter's", "A potter's workshop: the shop where the ware is sold in front, the throwing room behind it through a door, a brick kiln in the yard under a lean-to and the clay pit's heap.",
+               [("structure", "workshop", 0.30, 9, "the shop in front and the throwing room behind it, joined by a door"),
+                ("structure", "kiln", 0.06, 6, "the bottle kiln under its lean-to"),
+                ("ground", "yard", 0.24, None, "the yard: clay heaps, ware drying on boards")]),
     "carpenter": ("the carpenter's", "A carpenter's workshop and timber yard with a saw pit.",
                   [("structure", "workshop", 0.26, 9, "the workshop and the house over it"),
                    ("ground", "timber-yard", 0.32, None, "the timber yard and the saw pit")]),
@@ -484,7 +488,7 @@ MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-8", "west", "netloft", 20, 10, 2),
 ]
 LANE = [  # (lane, face, theme, at, dx, dz)
-    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "apothecary-2", 2, 16, 10),
+    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 10),
     ("lane-5", "north", "boatwright", 26, 14, 10), ("lane-5", "south", "cottages-2", 26, 14, 10),
 ]
 for st, face, theme, dx, dz, at in MAIN:
