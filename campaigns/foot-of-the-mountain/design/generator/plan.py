@@ -358,6 +358,10 @@ THEMES = {
     "townhall": ("the guildhall", "The guildhall: a hall on an open arcade, a clock over the door.",
                  [("structure", "hall", 0.42, 14, "the guildhall over its open arcade"),
                   ("ground", "forecourt", 0.20, None, "the forecourt")]),
+    "harbour": ("the harbour", "The harbourmaster's house on the quay's east end, and the fishing boats moored along its edge as fixed builds.",
+                [("structure", "harbourmaster", 0.22, 9, "the harbourmaster's house: an office facing the quay, a store behind"),
+                 ("structure", "boats", 0.20, 6, "fishing boats moored along the quay's edge, masts and furled sails"),
+                 ("ground", "quayside", 0.30, None, "the quayside: bollards, nets, crates")]),
     "lighthouse": ("the lighthouse", "A tall white lighthouse on the headland with the keeper's cottage and a walled yard.",
                    [("structure", "tower", 0.14, 30, "the lighthouse tower, a stair to the lantern room"),
                     ("structure", "cottage", 0.16, 8, "the keeper's cottage"),
@@ -431,6 +435,8 @@ for st, face, theme, dx, dz, at in MAIN:
 for ln, face, theme, at, dx, dz in LANE:
     plot(theme, theme.split("-")[0], f"node/{ln}", face, at, 0, dx, dz)
 plot("lighthouse", "lighthouse", "node/lane-8", "east", 0, 7, 20, 20)
+# the harbour plot on the quay's east side, at the quay's floor
+plot("harbour", "harbour", "node/quay", "east", 0, 2, 24, 16)
 
 # ---------------------------------------------------------- consistency check
 names = list(pos)
@@ -538,17 +544,17 @@ def mountain(x, z):
     wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 30
     top = SQ[1] - 18                                  # the town's upper edge
     # the shoulder the road climbs: rising north from the town's edge
-    shoulder = 80 + 0.40 * max(0.0, top - wz) - 0.0012 * max(0.0, top - wz) ** 2 * 0
+    shoulder = 84 + 0.40 * (top - wz)               # falls away south of the town's edge too
     # the plateau round Doune, falling away on every side
     d = math.hypot((wx - CX) / 150, (wz - CZ) / (105 if wz > CZ else 150))
-    plateau = 60 + (CASTLE_WALK - 60) * (1 - smooth((d - 0.45) / 0.75))
+    plateau = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.60) / 0.95))
     # the summit, north-east of Doune
     p = math.hypot((wx - (CX + 40)) / 80, (wz - (CZ - 55)) / 70)
     summit = CASTLE_WALK - 20 + 56 * (1 - smooth(p)) ** 1.3
     h = max(min(shoulder, CASTLE_WALK - 2), plateau, summit if p < 1 else 0)
     # fade the mountain into the island's low country east and west
     fade = smooth((x - 8) / 40) * smooth((RX - 8 - x) / 40)
-    h = 66 + (h - 66) * fade
+    h = 50 + (h - 50) * fade
     # uneven ledges and broken rock, strongest where the ground is high
     up = smooth((h - 90) / 40)
     h += (ridged(x, z, 18, 3, 47) - 0.45) * 12 * up + (vnoise(x, z, 5, 49) - 0.5) * 3.5 * up
@@ -609,7 +615,7 @@ for n, x0, z0, dx, dz, f in rects:
                 target = f - 1
                 w = 1.0 if max(ddx, ddz) <= 1 else smooth(1 - (d - 1) / skirt)
             if n == "node/harbour" and max(ddx, ddz) <= 1:
-                continue  # the basin and its ring keep the sea floor
+                continue  # the harbour keeps the shore and the sea floor under it
             if w > W[z][x] + 1e-9 or (abs(w - W[z][x]) < 1e-9 and target > T[z][x]):
                 W[z][x] = w
                 T[z][x] = target
