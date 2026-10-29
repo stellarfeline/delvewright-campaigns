@@ -1731,7 +1731,7 @@ def refine(m):
         m.set(fx0 - 1, top + 2, za, "finial")
     # the portal: four orders of pointed arches stepping in from the porch's face
     porch_z0, porch_z1 = PIER_N + 1, TOWER[2] - 1        # between the buttresses
-    PORCH_TOP = 12
+    PORCH_TOP = 10                                       # low enough that its gable clears the rose
     for x in range(fx0 - 3, fx0):
         for z in range(porch_z0, porch_z1 + 1):
             m.box(x, x, 1, PORCH_TOP, z, z, "dress" if (fx0 - x) % 2 else "rib")
