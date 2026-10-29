@@ -59,7 +59,8 @@ PLINTH = "minecraft:polished_andesite"
 # the inn range: ground-floor walls x 15..25, z 2..14; the upper storey
 # jettied one cell over the porch, x 15..26; ground floor y 1..4, the floor
 # over it y 5, the upper storey y 6..9, the roof from y 9
-IX0, IX1, IZ0, IZ1 = 15, 25, 2, 14
+IX0, IX1, IZ0, IZ1 = 15, 23, 2, 14
+PX = IX1 + 3             # the porch's posts, two cells forward of the jetty's face
 KITCHEN_WALL = 10
 # the stable range: x 2..12, z 2..8, open to the yard on its south side
 SX0, SX1, SZ0, SZ1 = 2, 12, 2, 8
@@ -84,6 +85,7 @@ def door2(m, x, z, facing, hinge="left"):
 
 def build(a):
     m = Model(a["extent"])
+    a_ex, a_ey, a_ez = a["extent"]
     for s in a["seams"]:
         (x0, y0, z0), (x1, y1, z1) = s["cells"]
         for x in range(x0, x1 + 1):
@@ -129,7 +131,7 @@ def build(a):
     # upper lights: casements between the studs
     for z in (3, 5, 7, 9, 11, 13):
         m.set(IX1 + 1, 7, z, GLASS); m.set(IX0, 7, z, GLASS)
-    for x in (17, 20, 24):
+    for x in (17, 20, 22):
         m.set(x, 7, IZ0, GLASS); m.set(x, 7, IZ1, GLASS)
     top = m.gable_roof(IX0, IX1 + 1, IZ0, IZ1, 9, "z", ROOF, fill=PLASTER)
     # a dormer-like gable vent and the gables' king posts
@@ -138,23 +140,26 @@ def build(a):
         m.set(20, y, IZ1, POST if y < top - 1 else PLASTER)
     m.set(20, 11, IZ1, GLASS); m.set(20, 11, IZ0, GLASS)
 
-    # the porch: posts under the jetty, benches, the bell for a sign
-    for z in (IZ0, 9, IZ1):
+    # the porch: two cells deep in front of the jetty, posts standing forward
+    # of it under a lean-to of tiles, benches, the bell hung for a sign
+    for z in (IZ0, 6, 10, IZ1):
         for y in range(1, 5):
-            m.set(IX1 + 1, y, z, POST)
-    m.set(IX1 + 1, 4, 3, stairs("minecraft:dark_oak", "south", "top"))
-    m.set(IX1 + 1, 4, 8, stairs("minecraft:dark_oak", "north", "top"))
-    m.set(IX1 + 1, 4, 10, stairs("minecraft:dark_oak", "south", "top"))
-    m.set(IX1 + 1, 4, 13, stairs("minecraft:dark_oak", "north", "top"))
-    m.set(IX1 + 1, 5, 6, BEAM_Z)                         # the beam the bell hangs from
-    m.set(IX1 + 1, 4, 6, "minecraft:bell[attachment=ceiling,facing=east,powered=false]")
+            m.set(PX, y, z, POST)
+    for z in range(IZ0 - 1, IZ1 + 2):
+        m.set(PX, 5, z, stairs(ROOF, "east"))
+        m.set(PX - 1, 5, z, slab(ROOF, "top"))
+        m.set(PX - 1, 6, z, stairs(ROOF, "east"))
+    for z in range(IZ0, IZ1 + 1):
+        m.set(PX, 4, z, BEAM_Z if m.get(PX, 4, z) is None else POST)
+    m.set(PX - 1, 5, 8, BEAM_Z)                          # the beam the bell hangs from
+    m.set(PX - 1, 4, 8, "minecraft:bell[attachment=ceiling,facing=east,powered=false]")
     for z in (3, 4):
-        m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
-    m.set(IX1 + 1, 1, 5, "minecraft:potted_red_tulip")
-    m.set(IX1 + 1, 1, 10, "minecraft:potted_cornflower")
-    for z in (11, 12):
-        m.set(IX1 + 1, 1, z, stairs("minecraft:spruce", "west"))
-    m.box(IX1 + 1, IX1 + 1, 0, 0, IZ0, IZ1, "minecraft:stone_bricks")
+        m.set(PX, 1, z, stairs("minecraft:spruce", "west"))
+    for z in (12, 13):
+        m.set(PX, 1, z, stairs("minecraft:spruce", "west"))
+    m.set(PX, 1, 5, "minecraft:potted_red_tulip")
+    m.set(PX, 1, 11, "minecraft:potted_cornflower")
+    m.box(IX1 + 1, PX, 0, 0, IZ0, IZ1, "minecraft:stone_bricks")
     # the front door from the porch, windows either side
     door2(m, IX1, 6, "west")
     m.set(IX1, 3, 6, PLASTER)
@@ -195,12 +200,12 @@ def build(a):
     m.set(18, 2, 4, candle(2))
     m.set(18, 2, 7, "minecraft:potted_oxeye_daisy")
     # tables and stools
-    for (tx, tz) in ((21, 5), (23, 8), (21, 8)):
+    for (tx, tz) in ((20, 5), (20, 8)):
         m.set(tx, 1, tz, fence("minecraft:dark_oak"))
         m.set(tx, 2, tz, "minecraft:dark_oak_pressure_plate[powered=false]")
         m.set(tx + 1, 1, tz, stairs("minecraft:spruce", "west"))
         m.set(tx - 1, 1, tz, stairs("minecraft:spruce", "east")) if tx - 1 != 18 else None
-    m.set(23, 1, 3, stairs("minecraft:spruce", "south")); m.set(24, 1, 3, stairs("minecraft:spruce", "south"))
+    m.set(22, 1, 7, stairs("minecraft:spruce", "west")); m.set(22, 1, 4, stairs("minecraft:spruce", "west"))
     for (lx, lz) in ((21, 4), (22, 7), (17, 6)):
         m.set(lx, 4, lz, lantern(True))
     # the kitchen: the cooking hearth on the west wall, the table, the cauldron
@@ -214,15 +219,14 @@ def build(a):
     for x in (20, 21, 22):
         m.set(x, 1, 12, slab("minecraft:spruce", "top"))
     m.set(21, 2, 12, candle(3))
-    m.set(24, 1, 11, "minecraft:hay_block[axis=y]")             # sacks of meal
-    m.set(24, 1, 13, "minecraft:smooth_stone_slab[type=top,waterlogged=false]")
-    m.set(23, 1, 13, "minecraft:smooth_stone_slab[type=top,waterlogged=false]")
+    m.set(22, 1, 11, "minecraft:hay_block[axis=y]")             # sacks of meal
+    m.set(22, 1, 13, "minecraft:smooth_stone_slab[type=top,waterlogged=false]")
+    m.set(21, 1, 13, "minecraft:smooth_stone_slab[type=top,waterlogged=false]")
     m.set(20, 4, 12, lantern(True))
     # the kitchen's back door to the yard, and its window
     door2(m, 20, IZ1, "north")
     m.set(20, 3, IZ1, PLASTER)
     window(m, 17, IZ1); window(m, 23, IZ1)
-    window(m, IX0, 4); window(m, IX0, 7)            # the taproom over the yard
 
     # ---- the stable range: stone back and end walls, open to the yard
     for x in range(SX0, SX1 + 1):
@@ -320,7 +324,15 @@ def build(a):
     # the north eave strip behind the inn: a woodpile for the hearths
     m.box(16, 19, 1, 2, 1, 1, log("minecraft:oak_log", "x"))
 
-    m.marks["node-inn"] = (26, 7, "west")
+    # where the lot's open north and south edges meet the square's corners,
+    # a tall stone pier stands in the ring: the yard's gate pier on the south,
+    # the gable chimney's foot on the north, so the inn and the square meet
+    # only across the front the plan allocates
+    for z in (0, a_ez - 1):
+        for x in (IX1 + 3, IX1 + 4, IX1 + 5):
+            for y in range(1, a_ey):
+                m.set(x, y, z, "stone")
+    m.marks["node-inn"] = (PX - 1, 8, "west")
     return m
 
 

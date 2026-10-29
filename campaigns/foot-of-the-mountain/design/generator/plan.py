@@ -97,6 +97,72 @@ OPEN = lambda n: {"open": n}
 # Community and historical reference builds per plot: looked at for form and
 # room layout, never copied (an unlicensed or non-commercial source is ideas only).
 REFS = {
+    # the lower street's rows (content demo/plots-lower @ b505915), carried here
+    "node/boatwright": [
+        {"url": "https://her.cne-siar.gov.uk/Monument/MWE148761",
+         "shows": "A small boatbuilding yard: a single-storey shed with its door to the slipway, the long plank steamer against an inside wall over a fire, clinker boats built inside.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://www.nationalhistoricships.org.uk/ship-shape/company/f-p-crowell-boatbuilder",
+         "shows": "A traditional wooden boatbuilder's boatshed with a slipway and cradle hauled back into the shed, with headroom over the hull, and large timbers machined in the yard.",
+         "terms": "none stated for text; pictures not to be reproduced (ideas only)"},
+    ],
+    "node/cooper": [
+        {"url": "https://www.brothers-brick.com/2021/08/24/roll-out-the-barrel-with-this-medieval-coopers-workshop",
+         "shows": "A community-built medieval cooper's workshop: the work floor at ground open on one side so the scorching of a barrel is seen, the family's rooms beside and above, beams over jagged stonework.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://museum.wales/collections/online/object/6761dd14-e787-3d33-87f2-6b3012da9b86",
+         "shows": "A cooper's shaving horse, the bench he sits astride to hold and shape the staves for barrels: the working object of the cooperage floor.",
+         "terms": "none stated; image by permission of the museum (ideas only)"},
+    ],
+    "node/cottages-2": [
+        {"url": "https://en.wikipedia.org/wiki/True%27s_Yard_Fisherfolk_Museum",
+         "shows": "Fisherfolk cottages of one room down and one up, a whole family in each, in a row off a shared yard.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://charliecustard.com/downloads/waterway-cottage",
+         "shows": "A community-built medieval waterside cottage on a stone foundation, small and tall, with balconies over the water.",
+         "terms": "none stated; site terms of service (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town's fishermen's village: small cottages close together near the water.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
+    "node/fishmonger": [
+        {"url": "https://buildinghistory.org/buildings/shops.shtml",
+         "shows": "How a medieval shop front was built: a wide unglazed opening whose upper shutter hooks up as an awning and whose lower one folds down as the counter, the living or working space behind.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://en.wikipedia.org/wiki/True%27s_Yard_Fisherfolk_Museum",
+         "shows": "A fisher family's fishmonger's in the front room on the street, with the smokehouse at the rear of the house where the herring were hung and smoked.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town whose north side holds an outer market and a fishermen's village beside the wharf.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
+    "node/netloft": [
+        {"url": "https://www.hastingshistory.net/hastings-net-shops",
+         "shows": "The Hastings net shops: tall, narrow, tarred weatherboarded sheds of up to three storeys, a ladder through each floor, nets coiled and hung from the beams for storage and dried on the beach outside, rows of shops with capstans between them.",
+         "terms": "none stated; copyright notice only (ideas only)"},
+        {"url": "https://www.meer.com/en/42331-net-sheds",
+         "shows": "Baltic net sheds set at right angles to the sea, each owner's row of net-drying beams starting at his shed door, the drying ground and the boat landing between the sheds.",
+         "terms": "none stated"},
+        {"url": "https://www.mc-mod.net/?p=538592",
+         "shows": "A community fisherman's waterside house in stripped spruce and stone, 17 by 20 and 22 tall: the tall timber-on-stone massing of a harbour work building.",
+         "terms": "none stated"},
+    ],
+    "node/smithy": [
+        {"url": "https://minecraft.how/blog/post/build-blacksmith-shop-minecraft",
+         "shows": "A blacksmith laid out along the material's path: the fire and smelting on one side, the anvils in the middle with room to work round them, the grindstone beside the anvils, storage opposite; dark masonry, chains and lanterns hung from the beams.",
+         "terms": "none stated; page footer: all rights reserved (ideas only)"},
+        {"url": "https://www.curseforge.com/minecraft/mc-mods/blacksmith-structures",
+         "shows": "A vanilla-block village smithy whose interior and exterior pictures put the forge against a stone wall at one end of a timber building, the anvil before it and the work open to the yard.",
+         "terms": "CC BY-NC 3.0 (ideas only)"},
+    ],
+    "node/tavern": [
+        {"url": "https://www.hukins-hops.co.uk/our-story/news-press/brewery-in-minecraft",
+         "shows": "Minecraft brewery and tavern builds: a rustic taproom with warm lighting, the brewing done apart at a stone counter with cauldrons of water beside it, a cellar below.",
+         "terms": "none stated"},
+        {"url": "https://www.profitableventure.com/beer-garden-design-ideas-layout-floor-plan/",
+         "shows": "Beer-garden layouts: pergolas over the seating zones dressed in climbing greenery and lights, communal tables with benches, the garden edged with hedges and planting.",
+         "terms": "none stated"},
+    ],
     # the landmarks worker's rows (content demo/town-buildings @ a82f763), carried here
     "node/cathedral": [
         {"url": "https://minecraftonline.com/wiki/Cathedral",
@@ -128,6 +194,41 @@ REFS = {
         {"url": "https://sketchfab.com/3d-models/quay-and-lighthouse-0460777c48b040b7884c19a709d13287",
          "shows": "A community harbour lighthouse (l4ziness): take a banded masonry shaft with small windows up the stair, a timber gallery on corbels below a glazed lantern room, and the tower's foot meeting a walled quay.",
          "terms": "none stated: ideas only"},
+    ],
+    "node/bakery": [
+        {"url": "https://en.wikipedia.org/wiki/Masonry_oven",
+         "shows": "The bread oven: a brick or clay dome on a raised hearth, fired inside (a black oven), smoke out at the door or a flue over it, nearly always under a roof against the weather.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://www.planetminecraft.com/project/medieval-town-bakery/",
+         "shows": "A Minecraft medieval town bakery (TheAvatar): two storeys, the shopfront below and the baker's rooms above, two small ovens out back (read from its listing; the page refuses an automated fetch).",
+         "terms": "not read (the page refuses an automated fetch); ideas only"},
+    ],
+    "node/apothecary": [
+        {"url": "https://en.wikipedia.org/wiki/Apothecary",
+         "shows": "The apothecary's trade: remedies of herbs, minerals and animal matter prepared and dispensed over a counter, weighed small, shaped vessels for what is dangerous.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://en.wikipedia.org/wiki/Physic_garden",
+         "shows": "The physic garden: the medieval garden's own section for medicinal plants, the hortus medicus, beside the house that uses them.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://www.planetminecraft.com/project/medieval-apothecary/",
+         "shows": "A Minecraft medieval apothecary, its potion shop fully furnished with a brewing tower at the back (read from its listing; the page refuses an automated fetch).",
+         "terms": "not read (the page refuses an automated fetch); ideas only"},
+    ],
+    "node/weaver": [
+        {"url": "https://en.wikipedia.org/wiki/Weavers%27_cottage",
+         "shows": "The weavers' cottage: a tall house whose loomshop is lit by a long row of many-light windows along one wall, the family below, storage beside the looms.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://en.wikipedia.org/wiki/Tenter",
+         "shows": "The tenter: a large wooden frame the wet cloth is stretched on to dry without shrinking, its edges on tenterhooks; tentergrounds of them stood in the open wherever cloth was made.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    "node/potter": [
+        {"url": "https://her.northamptonshire.gov.uk/Monument/MNN28914",
+         "shows": "A late medieval pottery kiln and its workshop: a thick-walled kiln with opposed flues and a stoke pit, the workshop beside it, wasters thrown about.",
+         "terms": "Northamptonshire HER terms of use (linked from the page); ideas only"},
+        {"url": "https://en.wikipedia.org/wiki/Masonry_oven",
+         "shows": "Fired brick built in courses closing to a dome, smoke out at a flue: the kiln's construction in the town's brick.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
     ],
     "node/inn": [
         {"url": "https://store.abfielder.com/products/%F0%9F%90%8E-travelers-refuge",
@@ -398,8 +499,8 @@ THEMES = {
                    [("structure", "house", 0.30, 11, "the shop with jars and a still room behind it"),
                     ("ground", "garden", 0.30, None, "the physic garden in raised beds")]),
     "merchant": ("the merchant's house", "A rich merchant's U-shaped stone house around a front court, a counting room by the door.",
-                 [("structure", "house", 0.62, 13, "the merchant's house: the counting room and the cloth store in the north wing, the hall range, the covered walk"),
-                  ("ground", "court", 0.14, None, "the front court with a fountain")]),
+                 [("structure", "house", 0.48, 13, "the merchant's house: the counting room and the cloth store in the north wing, the hall range"),
+                  ("ground", "court", 0.22, None, "the front court with a fountain, walled on the south")]),
     "tavern": ("the tavern", "A low sailors' tavern with a beer garden under a vine pergola.",
                [("structure", "tavern", 0.32, 9, "the taproom and the cellar stair"),
                 ("ground", "garden", 0.28, None, "the beer garden under a pergola")]),
@@ -416,7 +517,7 @@ THEMES = {
                  ("ground", "pits", 0.24, None, "the yard of tanning pits")]),
     "potter": ("the potter's", "A potter's workshop: the shop where the ware is sold in front, the throwing room behind it through a door, a brick kiln in the yard under a lean-to and the clay pit's heap.",
                [("structure", "workshop", 0.30, 9, "the shop in front and the throwing room behind it, joined by a door"),
-                ("structure", "kiln", 0.06, 6, "the bottle kiln under its lean-to"),
+                ("structure", "kiln", 0.06, 6, "the bottle kiln under its lean-to", "seen"),
                 ("ground", "yard", 0.24, None, "the yard: clay heaps, ware drying on boards")]),
     "carpenter": ("the carpenter's", "A carpenter's workshop and timber yard with a saw pit.",
                   [("structure", "workshop", 0.26, 9, "the workshop and the house over it"),
@@ -445,11 +546,13 @@ THEMES = {
 def holds_for(theme, dx, dz):
     area = dx * dz
     out = []
-    for kind, pid, share, h, use in THEMES[theme][2]:
+    for kind, pid, share, h, use, *rest in THEMES[theme][2]:
         p = {"id": f"part/{pid}", "kind": kind, "use": use,
              "cells": max(4, int(area * share))}
         if h:
             p["height"] = h
+        if rest and rest[0] == "seen":
+            p["reached"] = False      # a structure seen and never entered
         out.append(p)
     return out
 
@@ -459,7 +562,7 @@ def plot(name, theme, street, face, at, meets, dx, dz):
     node = f"node/{name}"
     _, f = ext(street)
     intent, note, _ = THEMES[theme]
-    box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 34), intent,
+    box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 44), intent,
         note, holds=holds_for(theme, dx, dz))
     seam(street, node, face, at, meets, "contact",
          f"the plot's front opens onto the street")
@@ -490,9 +593,9 @@ for (sg, face), L in SIDE.items():
     seam(sg, sname, face, 5, 0, "contact", "the side street leaves the main street")
 
 MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
-    ("street-1", "west", "bakery", 22, 10, 2), ("street-1", "east", "apothecary", 18, 10, 2),
+    ("street-1", "west", "bakery", 22, 12, 1), ("street-1", "east", "apothecary", 18, 12, 1),
     ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 12, 1),
-    ("street-3", "east", "weaver", 22, 10, 2),
+    ("street-3", "east", "weaver", 22, 12, 1),
     ("street-4", "west", "townhall", 24, 10, 2), ("street-4", "east", "tavern", 24, 12, 1),
     ("street-5", "west", "smithy", 24, 12, 1),
     ("street-6", "west", "chandler", 20, 10, 2), ("street-6", "east", "cooper", 22, 10, 2),
@@ -500,7 +603,7 @@ MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-8", "west", "netloft", 20, 10, 2),
 ]
 LANE = [  # (lane, face, theme, at, dx, dz)
-    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 10),
+    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 11),
     ("lane-5", "north", "boatwright", 26, 14, 10), ("lane-5", "south", "cottages-2", 26, 14, 10),
 ]
 for st, face, theme, dx, dz, at in MAIN:
@@ -749,6 +852,40 @@ for z in range(max(0, _bz - 1 - BACK_REACH), min(RZ, _bz + _bdz + 1 + BACK_REACH
         if H[z][x] > cap:
             H[z][x] = cap
 
+# The inn backs onto the same slope: north of it (the mountain) and west of it
+# the ground rose over a short skirt to a bank. It eases the same way,
+# one in two at the inn's ring and steepening until it meets the natural ground; the
+# square and the castle road east of it, and the street south, keep theirs.
+_ix, _iz, _idx, _idz, _if = pos["node/inn"]
+INN_RISE, INN_BEND = 0.6, 0.03    # gentler than the cathedral's: a lawn rising behind the yard
+for z in range(max(0, _iz - 1 - BACK_REACH), _iz + _idz + 1):
+    for x in range(max(0, _ix - 1 - BACK_REACH), _ix + _idx + 1):
+        ddw = max(0, (_ix - 1) - x)
+        ddz = max(0, (_iz - 1) - z)
+        if (ddw == 0 and ddz == 0) or W[z][x] >= 1.0:
+            continue
+        d = math.hypot(ddw, ddz)
+        cap = (_if - 1) + INN_RISE * d + INN_BEND * d * d + (vnoise(x, z, 6, 67) - 0.5) * 1.0
+        if H[z][x] > cap:
+            H[z][x] = cap
+
+# The lighthouse's point falls to the sea as rock: west, south and east of its
+# plot the ground drops in ledges, three or four a course, to the sea floor,
+# steep enough that it weathers as the wild's stone, andesite and tuff, with
+# the plot's own turf on top. The cliff path arrives from the north.
+_lx, _lz, _ldx, _ldz, _lf = pos["node/lighthouse"]
+for z in range(_lz - 1, min(RZ, _lz + _ldz + 1 + 14)):
+    for x in range(max(0, _lx - 1 - 14), min(RX, _lx + _ldx + 1 + 14)):
+        ddx = max(0, (_lx - 1) - x, x - (_lx + _ldx))
+        ddz = max(0, z - (_lz + _ldz))
+        if (ddx == 0 and ddz == 0) or W[z][x] >= 1.0:
+            continue
+        d = math.hypot(ddx, ddz)
+        ledge = math.floor(d / 1.6) * 4 + (vnoise(x, z, 4, 71) - 0.5) * 3
+        cap = (_lf - 1) - ledge
+        if H[z][x] > cap:
+            H[z][x] = max(cap, 50.0)
+
 # No pit a body cannot climb out of: a priority flood from the sea and the
 # region's rim raises every column to at least one under the column it is
 # reached from, so from anywhere a walk of steps no higher than one leads to
@@ -809,7 +946,16 @@ BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN_EAST, TOWN[3]]}   # bel
 _cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
 CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
+_hx, _hz, _hdx, _hdz, _ = pos["node/lighthouse"]
+HEADLAND = {"min": [max(_hx - 14, pos["node/harbour"][0] + pos["node/harbour"][2] + 2), _hz - 1],
+            "max": [_hx + _hdx + 14, _hz + _hdz + 14]}
 STRATA = [
+    # the lighthouse's point: rock ledges to the water, never sand or brick
+    {"when": {"area": HEADLAND, "steep": 3, "patch": P(4, 520, 81)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "steep": 3, "patch": P(5, 540, 82)}, "surface": "minecraft:tuff", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "steep": 3}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "y_max": 64, "patch": P(4, 560, 83)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "y_max": 64}, "surface": "minecraft:stone", "below": "minecraft:stone"},
     # the sea floor and the shore
     {"when": {"y_max": 56}, "surface": "minecraft:gravel", "below": "minecraft:stone"},
     {"when": {"y_max": 63}, "surface": "minecraft:sand", "below": "minecraft:sandstone"},

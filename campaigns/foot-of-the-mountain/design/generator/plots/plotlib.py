@@ -1033,6 +1033,8 @@ class Plot(Place):
                 for vx in range(x0, x1 + 1):
                     for vz in range(z0, z1 + 1):
                         self._void_cols.add((vx, vz))
+        if (x, z) in self._void_cols:
+            return False          # the neighbour's own ring line, above its cells
         return any((x + dx, z + dz) in self._void_cols for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
 
     def role_kind(self, r):
@@ -1045,13 +1047,21 @@ class Plot(Place):
 
     def base_cell(self, x, y, z):
         kind = Place.base_cell(self, x, y, z)
+        if not self.in_space_xz(x, z) and y >= self.datum.value:
+            # a solid block the lot stands in its ring (a pier where the lot
+            # meets a neighbour's corner) is built there
+            r = self.model.get(x, y, z)
+            if r is not None and r != AIR and self.role_kind(r) == "full":
+                return ("fill", r)
         if not self.in_space_xz(x, z) and kind == ("fill", "wall"):
             return ("claim", "room", None)
         if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z) \
-                and self.beside_void(x, z) and y < self.datum.value + 2:
-            # where an open side meets a neighbour's cells, a body would walk
-            # into that place round the seam's opening: a hedge two high closes it
-            return ("fill", "hedge")
+                and self.beside_void(x, z):
+            # where an open side meets a neighbour's cells, a body would step
+            # into that place round the seam's opening: a pier of the town's
+            # stone the full height of the frame closes it (any lower and its
+            # top is a step into the neighbour's air)
+            return ("fill", "pier")
         if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z):
             # an open side's ring cell is a way out only where the cell inside
             # it is walked air; beside a wall, a hedge or an eave it is the
@@ -1250,7 +1260,7 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
         globals()["leaf"] = orig_leaf
     rules.rules["place"] = [{"body": start, "weight": 1}]
     palette = dict(base_palette)
-    palette.setdefault("hedge", "minecraft:oak_leaves[distance=1,persistent=true,waterlogged=false]")
+    palette.setdefault("pier", "minecraft:stone_bricks")
     palette.update(cls.VARIANTS)
     for s, n in name_of.items():
         palette[n] = s
@@ -1358,3 +1368,38 @@ def plot_main(build, cls, base_palette, unwalked_reason, argv=None):
     with open(args.out, "w", encoding="utf-8") as f:
         f.write(text)
     return 0
+
+
+# ---- small building helpers the plots share ----
+
+def ring(x0, x1, z0, z1):
+    """The cells of a rectangle's outline, inclusive."""
+    return [(x, z) for x in range(x0, x1 + 1) for z in (z0, z1)] + \
+           [(x, z) for z in range(z0 + 1, z1) for x in (x0, x1)]
+
+
+def guard_seams(m, a):
+    """Every seam's handed cells stay the connection's: the model never paints them."""
+    for s in a["seams"]:
+        (x0, y0, z0), (x1, y1, z1) = s["cells"]
+        for x in range(x0, x1 + 1):
+            for y in range(y0, y1 + 1):
+                for z in range(z0, z1 + 1):
+                    m.no_touch.add((x, y, z))
+
+
+def window(m, x, z, glass, y0=2, h=2):
+    for y in range(y0, y0 + h):
+        m.set(x, y, z, glass)
+
+
+def door2(m, x, z, mat, facing, hinge="left"):
+    m.set(x, 1, z, door(mat, facing, "lower", hinge))
+    m.set(x, 2, z, door(mat, facing, "upper", hinge))
+
+
+def bed_of(m, cells, flowers, soil="minecraft:grass_block[snowy=false]"):
+    """A flower bed: soil at the ground course, a bloom on each cell in turn."""
+    for i, (x, z) in enumerate(cells):
+        m.set(x, 0, z, soil)
+        m.set(x, 1, z, flowers[i % len(flowers)])
