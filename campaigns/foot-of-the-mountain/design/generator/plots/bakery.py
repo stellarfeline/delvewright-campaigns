@@ -53,7 +53,7 @@ def build(a):
     m = Model(a["extent"])
     guard_seams(m, a)
     m.part(HX0, HX1, HZ0, HZ1, "shop")
-    m.part(3, 7, 3, 5, "oven")
+    m.part(3, 7, 4, 6, "oven")             # the oven and the stoking floor before its mouth
     for x in range(2, 9):
         for z in range(7, 13):
             m.region[(x, z)] = "yard"
