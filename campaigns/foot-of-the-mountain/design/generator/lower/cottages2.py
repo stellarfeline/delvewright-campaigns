@@ -1,52 +1,75 @@
 #!/usr/bin/env python3
 """A pair of fishermen's cottages: two small houses side by side, front
-gardens to the lane, a shared yard between and behind them.
+gardens to the lane, a shared yard between them; each one room below and a
+sleeping loft above, up a ladder.
 
 Form, after fisherfolk cottages and community cottage builds (references in
-the node's `references[]`): each cottage one room deep, its door in the
-front between small windows, a hearth on the gable wall, a bed, a table;
-the two told apart by their walls (one whitewashed under a timber frame, one
-of rubble stone), sharing one roof line. The front gardens are flower beds
-either side of a path to each door behind a low hedge; the yard between
-holds the washing, the woodpile and the water butt.
+the node's `references[]`): one room down and one up, the hearth on the
+gable wall, the door in the front between small windows, the bed in the
+loft under the roof; the two told apart by their walls (one whitewashed in
+a timber frame, one of rubble stone) under one roof line. Front gardens of
+flowers behind a low hedge; between the houses, the washing, the woodpile,
+the water butt.
 
-    python3 cottages2.py --allocation <allocation.json> --out <campaign>/programs/cottages-2.json
+    "$DELVEWRIGHT_PYTHON" cottages2.py --allocation <allocation.json> --out <campaign>/programs/cottages-2.json --delvec <delvec>
+
+Drawn into the skill's starter (`$DELVEWRIGHT_SKILL/scripts/starter.py`).
 
 Piece-local: +x east, +z south, the lane on the north; y 0 the ground course, y 1 the walk plane.
 """
 
 from __future__ import annotations
 
+import os
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, door, door_roles, finish, frame_walls, gable, hsh, run  # noqa: E402
+sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
+from starter import Model, run  # noqa: E402
+
+
+def hsh(*a):
+    h = 2166136261
+    for v in a:
+        h = ((h ^ (v & 0xFFFFFFFF)) * 16777619) & 0xFFFFFFFF
+    return h
 
 
 def st(name, facing, half="bottom"):
     return f"minecraft:{name}_stairs[facing={facing},half={half},shape=straight,waterlogged=false]"
 
 
+def door(m, x, y, z, block, facing, hinge="left"):
+    for dy, half in ((0, "lower"), (1, "upper")):
+        m.set(x, y + dy, z, f"{block}[facing={facing},half={half},hinge={hinge},open=false,powered=false]")
+
+
+def gable_x(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
+    lo, hi, k = z0 - ov, z1 + ov, 0
+    while lo <= hi:
+        y = y0 + k
+        if lo == hi:
+            m.box(x0 - ov, x1 + ov, y, y, lo, lo, ridge)
+        else:
+            m.box(x0 - ov, x1 + ov, y, y, lo, lo, stair + "_s")
+            m.box(x0 - ov, x1 + ov, y, y, hi, hi, stair + "_n")
+            if fill and lo + 1 <= hi - 1:
+                for x in (x0, x1):
+                    m.box(x, x, y, y, max(lo + 1, z0), min(hi - 1, z1), fill)
+        lo, hi, k = lo + 1, hi - 1, k + 1
+
+
 PALETTE = {
-    "floor": "minecraft:stone_bricks",
-    "wall": "minecraft:stone_bricks",
-    "lid": "minecraft:spruce_planks",
-    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
     "turf": "minecraft:grass_block[snowy=false]",
-    "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_azure_bluet",
-    "barrel": "minecraft:barrel[facing=up,open=false]",
     "path": [{"weight": 3, "block": "minecraft:cobblestone"}, {"weight": 2, "block": "minecraft:gravel"},
              {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
     "yard": [{"weight": 3, "block": "minecraft:coarse_dirt"}, {"weight": 2, "block": "minecraft:gravel"}],
     "boards": "minecraft:spruce_planks",
+    "loft": "minecraft:spruce_planks",
     "bed_soil": "minecraft:rooted_dirt",
-    # cottage A: whitewash under a spruce frame
     "post": "minecraft:stripped_spruce_log[axis=y]",
     "beam_x": "minecraft:spruce_log[axis=x]",
     "beam_z": "minecraft:spruce_log[axis=z]",
     "white": "minecraft:white_terracotta",
-    # cottage B: rubble stone with tuff corners
     "rubble": [{"weight": 5, "block": "minecraft:cobblestone"}, {"weight": 3, "block": "minecraft:stone_bricks"},
                {"weight": 2, "block": "minecraft:andesite"}, {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
     "quoin": "minecraft:tuff_bricks",
@@ -55,86 +78,102 @@ PALETTE = {
     "roof_n": st("deepslate_tile", "north"), "roof_s": st("deepslate_tile", "south"),
     "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
     "chimney": "minecraft:bricks",
-    # inside
     "hearth": "minecraft:bricks",
-    "fire": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]",
-    "bed_a_foot": "minecraft:blue_bed[facing=south,occupied=false,part=foot]",
-    "bed_a_head": "minecraft:blue_bed[facing=south,occupied=false,part=head]",
-    "bed_b_foot": "minecraft:yellow_bed[facing=south,occupied=false,part=foot]",
-    "bed_b_head": "minecraft:yellow_bed[facing=south,occupied=false,part=head]",
+    "fire": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+    "ladder": "minecraft:ladder[facing=south,waterlogged=false]",
     "table": "minecraft:spruce_planks",
-    "chair": st("spruce", "west"),
+    "chair_e": st("spruce", "east"), "chair_w": st("spruce", "west"),
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
+    "barrel": "minecraft:barrel[facing=up,open=false]",
     "rug_a": "minecraft:light_blue_carpet",
     "rug_b": "minecraft:orange_carpet",
-    "net": "minecraft:cobweb",
-    # the gardens and the yard
+    "nets": "minecraft:cobweb",
     "hedge": "minecraft:oak_leaves[distance=1,persistent=true,waterlogged=false]",
     "line_post": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "sheet_a": "minecraft:white_wool",
     "sheet_b": "minecraft:light_blue_wool",
     "logs": "minecraft:oak_log[axis=z]",
     "butt": "minecraft:water_cauldron[level=3]",
+    "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_azure_bluet",
     "f1": "minecraft:poppy", "f2": "minecraft:oxeye_daisy", "f3": "minecraft:cornflower",
     "f4": "minecraft:allium", "f5": "minecraft:pink_tulip", "fern": "minecraft:fern",
     "tuft": "minecraft:short_grass",
     "rose": "minecraft:rose_bush[half=lower]", "rose_top": "minecraft:rose_bush[half=upper]",
 }
-door_roles(PALETTE, "door_a", "minecraft:spruce_door", "south")
-door_roles(PALETTE, "door_b", "minecraft:oak_door", "south")
 
 A = (2, 6, 5, 9)     # walls included
 B = (9, 13, 5, 9)
-PLATE = 4
+TOP = 6              # wall plate: a loft under the roof
+LOFT = 4             # the loft floor's course
 
 
-def cottage(m, box, wall, door_role, bed, rug, hearth_x, frame):
+def cottage(m, box, frame, hearth_east, bed, rug, door_block):
     x0, x1, z0, z1 = box
+    wall = "white" if frame else "rubble"
     m.box(x0, x1, 0, 0, z0, z1, "boards")
-    if frame:
-        frame_walls(m, x0, x1, z0, z1, 1, PLATE, "post", wall, "beam_x", "beam_z", bay=2, plinth="plinth")
-    else:
+    for y in range(1, TOP + 1):
         for x in range(x0, x1 + 1):
             for z in range(z0, z1 + 1):
-                if x in (x0, x1) or z in (z0, z1):
-                    corner = x in (x0, x1) and z in (z0, z1)
-                    for y in range(1, PLATE + 1):
-                        m.set(x, y, z, "quoin" if corner and y % 2 else wall)
+                if not (x in (x0, x1) or z in (z0, z1)):
+                    continue
+                corner = x in (x0, x1) and z in (z0, z1)
+                if not frame:
+                    role = "quoin" if corner and y % 2 else wall
+                elif y == 1:
+                    role = "plinth"
+                elif corner or (z in (z0, z1) and (x - x0) % 2 == 0):
+                    role = "post"
+                elif y == LOFT:
+                    role = "beam_x" if z in (z0, z1) else "beam_z"
+                else:
+                    role = wall
+                m.set(x, y, z, role)
     cx = (x0 + x1) // 2
-    door(m, cx, 1, z0, door_role)
-    for x in (x0 + 1, x1 - 1):
-        m.box(x, x, 2, 3, z0, z0, "pane")
+    hx = x1 - 1 if hearth_east else x0 + 1          # the hearth's column inside
+    lx = x0 + 1 if hearth_east else x1 - 1          # the ladder's column
+    gx = x1 if hearth_east else x0                  # the hearth's gable wall
+    door(m, cx, 1, z0, door_block, "south")
+    m.box(hx, hx, 2, 3, z0, z0, "pane")
     m.box(cx, cx, 2, 3, z1, z1, "pane")
-    gable(m, x0, x1, z0, z1, PLATE + 1, "x", "roof", "ridge", fill=wall if not frame else "white")
-    # the hearth on the gable wall, its chimney through the roof
-    m.box(hearth_x, hearth_x, 1, 10, 7, 7, "chimney")
-    ix = hearth_x + (1 if hearth_x == x0 else -1)
-    m.set(ix, 1, 7, "hearth")
-    m.set(ix, 2, 7, "fire")
-    # the bed against the back wall, a table, a rug, a lantern
-    other = x1 - 1 if hearth_x == x0 else x0 + 1
-    m.set(other, 1, z1 - 2, bed + "_foot")
-    m.set(other, 1, z1 - 1, bed + "_head")
+    m.box(gx, gx, LOFT + 1, LOFT + 2, z1 - 1, z1 - 1, "pane")
+    gable_x(m, x0, x1, z0, z1, TOP + 1, "roof", "ridge", fill=wall)
+    # the hearth on the gable wall under the loft, the chimney through the roof
+    m.box(gx, gx, 1, TOP + 6, 7, 7, "chimney")
+    m.set(hx, 1, 7, "hearth")
+    m.set(hx, 2, 7, "fire")
+    # the loft over the back of the room, a ladder up to it from the front
+    m.box(x0 + 1, x1 - 1, LOFT, LOFT, z1 - 2, z1 - 1, "loft")
+    m.box(lx, lx, 1, LOFT, z0 + 1, z0 + 1, "ladder")
+    # the room: a table with a chair, a rug, the stores in the corner
     m.set(cx, 1, z1 - 1, "table")
     m.set(cx, 2, z1 - 1, "lantern")
-    m.set(cx, 1, z0 + 2, rug)
-    m.set(cx, PLATE, z0 + 2, "beam_x")
-    m.box(x0 + 1, x1 - 1, PLATE, PLATE, z0 + 2, z0 + 2, "beam_x")
-    m.set(cx, PLATE - 1, z0 + 2, "lantern_h")
-    m.set(ix, 1, z1 - 1, "barrel")          # the corner by the hearth holds the stores
+    m.set(lx, 1, z1 - 1, "chair_e" if hearth_east else "chair_w")
+    m.set(cx, 1, z1 - 2, rug)
+    m.set(hx, 1, z1 - 1, "barrel")
+    # the loft: the bed under the roof, nets stored by the gable
+    colour = "blue" if frame else "yellow"
+    m.palette[bed + "_head"] = f"minecraft:{colour}_bed[facing=south,occupied=false,part=head]"
+    m.palette[bed + "_foot"] = f"minecraft:{colour}_bed[facing=south,occupied=false,part=foot]"
+    m.set(cx, LOFT + 1, z1 - 1, bed + "_head")
+    m.set(cx, LOFT + 1, z1 - 2, bed + "_foot")
+    m.set(hx, LOFT + 1, z1 - 1, "nets")
+    m.set(hx, LOFT + 1, z1 - 2, "lantern")
+    m.set(cx, LOFT - 1, z1 - 2, "lantern_h")   # hung under the loft's edge
 
 
-def build(place) -> Model:
-    m = Model(dict(PALETTE))
+def build(place):
+    m = Model(place)
+    m.palette.update(PALETTE)
     lo, hi = place.space
     X0, X1, Z0, Z1 = lo[0], hi[0], lo[2], hi[2]
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
-    cottage(m, A, "white", "door_a", "bed_a", "rug_a", A[0], True)
-    cottage(m, B, "rubble", "door_b", "bed_b", "rug_b", B[1], False)
-    # ---------- the front gardens: a path to each door, flower beds either side, a low hedge
+    m.box(X0, X1, 0, 0, Z0, Z0 + 1, "path")
+    cottage(m, A, True, False, "bed_a", "rug_a", "minecraft:spruce_door")
+    cottage(m, B, False, True, "bed_b", "rug_b", "minecraft:oak_door")
+    # ---------- the front gardens: a path to each door, flower beds, a low hedge
     for box in (A, B):
         x0, x1, z0, z1 = box
         cx = (x0 + x1) // 2
@@ -142,17 +181,16 @@ def build(place) -> Model:
             for z in (3, 4):
                 if x == cx:
                     m.set(x, 0, z, "path")
-                else:
-                    m.set(x, 0, z, "bed_soil")
-                    m.set(x, 1, z, ["f1", "f2", "f3", "f4", "f5", "fern"][hsh(x, z, 7) % 6])
-        for x in range(x0, x1 + 1):
+                    continue
+                m.set(x, 0, z, "bed_soil")
+                m.set(x, 1, z, ["f1", "f2", "f3", "f4", "f5", "fern"][hsh(x, z, 7) % 6])
             if x != cx:
                 m.set(x, 1, 3, "hedge")
         m.set(x0, 1, 4, "rose")
         m.set(x0, 2, 4, "rose_top")
-    m.box(X0, X1, 0, 0, 2, 2, "path")
-    # ---------- the shared yard between the cottages: washing line, woodpile, water butt
-    m.box(7, 8, 0, 0, 3, 9, "yard")
+        m.set(cx + 1, 1, 4, "pot_a" if x0 == A[0] else "pot_b")
+    # ---------- the shared yard between the cottages
+    m.box(7, 8, 0, 0, 3, 10, "yard")
     m.box(7, 7, 1, 3, 5, 5, "line_post")
     m.box(7, 7, 1, 3, 9, 9, "line_post")
     m.box(7, 7, 3, 3, 6, 8, "line_post")
@@ -163,23 +201,17 @@ def build(place) -> Model:
     m.set(8, 1, 5, "butt")
     m.set(8, 1, 8, "barrel")
     for x in range(X0, X1 + 1):
-        for z in (Z1,):
-            if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 9) % 3 == 0:
-                m.set(x, 1, z, "tuft")
+        if m.get(x, 1, Z1) is None and hsh(x, Z1, 9) % 3 == 0:
+            m.set(x, 1, Z1, "tuft")
 
-    finish(m)
-    m.regions("cottage-a", *A)
-    m.regions("cottage-b", *B)
-    m.regions("gardens", 2, 13, 3, 4)
-    m.regions("gardens", 7, 8, 5, 9)
+    m.finish()
+    m.part(*A, "cottage-a")
+    m.part(*B, "cottage-b")
+    m.part(2, 13, 3, 4, "gardens")
+    m.part(7, 8, 5, 9, "gardens")
+    m.mark("node-cottages-2", 7, 4, "south")
     return m
 
 
-class Cottages(Plot):
-    MODEL = staticmethod(build)
-    MARK_AT = {"node-cottages-2": (7, 4, "south")}   # at the yard's gate between the gardens
-    REASON = "the cottages' wall heads and roofs: seen, never stood on"
-
-
 if __name__ == "__main__":
-    raise SystemExit(run(Cottages))
+    raise SystemExit(run(build, reason="the cottages' wall heads and roofs: seen, never stood on"))

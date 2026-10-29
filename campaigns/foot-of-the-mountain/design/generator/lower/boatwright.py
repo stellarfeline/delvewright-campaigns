@@ -65,6 +65,14 @@ PALETTE = {
     "plank_e": st("oak", "east", "top"),
     "plank_low": "minecraft:oak_slab[type=top,waterlogged=false]",
     "stem": "minecraft:stripped_oak_log[axis=y]",
+    "stem_tip": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "bow_w": st("oak", "east", "top"),
+    "bow_e": st("oak", "west", "top"),
+    "bilge_w": st("oak", "east", "top"),
+    "bilge_e": st("oak", "west", "top"),
+    "strake": "minecraft:oak_planks",
+    "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "transom": "minecraft:oak_planks",
     # the work along the wall
     "bench": "minecraft:crafting_table",
     "steam": "minecraft:campfire[facing=east,lit=true,signal_fire=false,waterlogged=false]",
@@ -139,16 +147,25 @@ def build(place) -> Model:
     for z in (4, 6):
         m.box(sx0 + 1, sx1 - 1, PLATE, PLATE, z, z, "beam_x")
         m.set(3, PLATE - 1, z, "lantern_h")
-    # ---------- the hull on the stocks: keel on blocks, ribs, half planked, a stem post
-    for z in (3, 5, 7):
+    # ---------- the hull on the stocks: a clinker boat bow to the back wall, its
+    # transom to the lane, planked on the west side, its ribs bare on the east
+    for z in (4, 6):
         m.set(5, 1, z, "stock")
     m.box(5, 5, 2, 2, 3, 7, "keel")
-    m.box(5, 5, 2, 4, 7, 7, "stem")
-    for z in (3, 4, 5, 6):
-        m.set(4, 3, z, "plank_w")          # planked on the west side
-        m.set(4, 2, z, "plank_low") if z in (4, 5) else None
-        m.set(6, 3, z, "rib") if z % 2 == 0 else None
-        m.set(6, 4, z, "rib") if z % 2 == 0 else None
+    m.box(5, 5, 3, 4, 3, 3, "stem")              # the stem, rising at the bow
+    m.set(5, 5, 3, "stem_tip")
+    m.set(4, 3, 3, "bow_w")                      # the bow's planks closing on the stem
+    m.set(6, 3, 3, "bow_e")
+    for z in (4, 5, 6):
+        m.set(4, 2, z, "bilge_w")                # the turn of the bilge
+        m.set(4, 3, z, "strake")                 # the planking
+        m.set(4, 4, z, "gunwale")
+    for z in (4, 6):
+        m.set(6, 2, z, "bilge_e")                # bare ribs on the open side
+        m.set(6, 3, z, "rib")
+    m.box(6, 6, 4, 4, 4, 6, "rib")               # the inwale the ribs are fastened to
+    m.box(4, 6, 2, 3, 7, 7, "transom")           # the transom, square to the lane
+    m.set(5, 2, 7, "keel")
     # the bench, the steaming fire under its box, the tar pot, along the east wall
     m.set(7, 1, 3, "bench")
     m.set(7, 1, 5, "steam")
@@ -157,7 +174,6 @@ def build(place) -> Model:
     m.set(3, 1, 3, "tar")
     m.set(3, 1, 4, "barrel")
     m.set(7, 1, 7, "lantern")
-    m.set(6, PLATE - 1, 6, "chain")
 
     # ---------- the yard: timber stacked to season, a sawhorse, the winch at the slip head
     m.box(11, 12, 1, 1, 2, 6, "timber_z")
@@ -187,7 +203,7 @@ def build(place) -> Model:
 
 class Boatwright(Plot):
     MODEL = staticmethod(build)
-    MARK_AT = {"node-boatwright": (3, 7, "east")}   # at the shed's mouth, facing the hull
+    MARK_AT = {"node-boatwright": (5, 8, "north")}   # at the shed's mouth, facing the hull
     REASON = "the shed's wall heads, roof and the hull's gunwale: seen, never stood on"
 
 

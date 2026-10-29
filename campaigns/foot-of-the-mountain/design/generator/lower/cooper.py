@@ -52,6 +52,9 @@ PALETTE = {
     "boards": "minecraft:oak_planks",
     # the workshop: oak posts and beam, a solid back wall of boards
     "post": "minecraft:oak_log[axis=y]",
+    "hpost": "minecraft:dark_oak_log[axis=y]",
+    "hbeam_x": "minecraft:dark_oak_log[axis=x]",
+    "hbeam_z": "minecraft:dark_oak_log[axis=z]",
     "beam_x": "minecraft:oak_log[axis=x]",
     "beam_z": "minecraft:oak_log[axis=z]",
     "back": "minecraft:spruce_planks",
@@ -151,7 +154,13 @@ def build(place) -> Model:
 
     # ---------- the house: stone ground course, oak frame and plaster, deepslate roof
     m.box(hx0, hx1, 0, 0, hz0, hz1, "boards")
-    frame_walls(m, hx0, hx1, hz0, hz1, 1, PLATE, "post", "plaster", "beam_x", "beam_z", bay=3, plinth="stone")
+    # the house: a stone ground storey to the sill, plaster in a dark frame above,
+    # so it reads apart from the oak workshop
+    frame_walls(m, hx0, hx1, hz0, hz1, 1, PLATE, "hpost", "plaster", "hbeam_x", "hbeam_z", bay=3, plinth="stone")
+    for x in range(hx0, hx1 + 1):
+        for z in range(hz0, hz1 + 1):
+            if x in (hx0, hx1) or z in (hz0, hz1):
+                m.set(x, 2, z, "stone")
     for x in (hx0, hx1):
         for z in (hz0, hz1):
             m.box(x, x, 1, 2, z, z, "quoin")
