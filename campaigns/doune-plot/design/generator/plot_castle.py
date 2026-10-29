@@ -189,7 +189,7 @@ PROGRAM = {
     "rules": {"site": [{"weight": 1, "body": build()}]},
     "contract": {"entry": "site", "spaces": {"site": {"envelope": "open"}},
                  "no_body": {"crowns": {"reason": "the tops of the trees on the grounds: nothing anybody climbs"},
-                             "unwalked": {"reason": "the minstrels' gallery over the hall's screens end, window embrasures open only to the outside, and wall heads no stair reaches: Doune as built gives them no way up"}},
+                             "unwalked": {"reason": "window embrasures open only to the outside, wall heads, the cloth of estate and the high table, the well beam and the approach's marker posts: seen, never stood on"}},
                  "edges": [{"a": "site", "b": "exterior", "class": "walk", "via": "road-mouth"}]},
     "shown_faces": ["north", "south", "east", "west"],
 }
