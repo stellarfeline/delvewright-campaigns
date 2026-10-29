@@ -135,12 +135,15 @@ REFS = {
     ],
     # the lower street's rows (content demo/plots-lower @ b505915), carried here
     "node/boatwright": [
+        {"url": "https://www.minecraft-guides.com/mod/alekis-nifty-ships/",
+         "shows": "A Minecraft boat built in stages on land: the hull's frames laid in the hull pattern first and filled with planks frame by frame, and unfinished rowboats and sloops standing half-built on the shore.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://minecraft.how/blog/post/build-pirate-ship-minecraft",
+         "shows": "A community ship-building guide: lay the keel first down the centre line, raise the frame from it angled outward, taper the hull toward bow and stern, and build on land.",
+         "terms": "all rights reserved (ideas only)"},
         {"url": "https://her.cne-siar.gov.uk/Monument/MWE148761",
          "shows": "A small boatbuilding yard: a single-storey shed with its door to the slipway, the long plank steamer against an inside wall over a fire, clinker boats built inside.",
          "terms": "none stated (ideas only)"},
-        {"url": "https://www.nationalhistoricships.org.uk/ship-shape/company/f-p-crowell-boatbuilder",
-         "shows": "A traditional wooden boatbuilder's boatshed with a slipway and cradle hauled back into the shed, with headroom over the hull, and large timbers machined in the yard.",
-         "terms": "none stated for text; pictures not to be reproduced (ideas only)"},
     ],
     "node/cooper": [
         {"url": "https://www.brothers-brick.com/2021/08/24/roll-out-the-barrel-with-this-medieval-coopers-workshop",
