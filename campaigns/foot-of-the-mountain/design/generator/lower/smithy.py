@@ -76,7 +76,6 @@ PALETTE = {
     "anvil": "minecraft:anvil[facing=north]",
     "grindstone": "minecraft:grindstone[face=floor,facing=east]",
     "smithing": "minecraft:smithing_table",
-    "blast": "minecraft:blast_furnace[facing=east,lit=false]",
     "quench": "minecraft:water_cauldron[level=3]",
     "coal": "minecraft:coal_block",
     "iron": "minecraft:iron_block",
@@ -219,7 +218,7 @@ def build(place) -> Model:
     m.box(fx0, fx0, 1, 10, 4, 4, "brick")
     # the working objects: the anvil before the hearth, the tools to hand
     m.set(17, 1, 4, "anvil")
-    m.set(fx0 + 1, 1, 6, "blast")
+    m.set(fx0 + 1, 1, 6, "coal")
     m.set(19, 1, 3, "grindstone")
     m.set(19, 1, 6, "quench")
     m.set(18, 1, 6, "quench")

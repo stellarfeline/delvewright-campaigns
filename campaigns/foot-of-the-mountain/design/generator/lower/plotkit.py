@@ -1195,3 +1195,22 @@ def run(cls, argv=None) -> int:
     with open(args.out, "w", encoding="utf-8") as f:
         f.write(text)
     return 0
+
+
+def hip(m: Model, x0, x1, z0, z1, y0, stair, ridge, ov=1):
+    """A hipped roof over [x0..x1]x[z0..z1] (walls included), first course at
+    `y0`, overhanging `ov`: every course a ring of stairs facing in, the last
+    a ridge of slabs. Returns the ridge's course."""
+    ax0, ax1, az0, az1, y = x0 - ov, x1 + ov, z0 - ov, z1 + ov, y0
+    while ax0 <= ax1 and az0 <= az1:
+        if ax0 == ax1 or az0 == az1:
+            m.box(ax0, ax1, y, y, az0, az1, ridge)
+            return y
+        for x in range(ax0, ax1 + 1):
+            m.set(x, y, az0, stair + "_s")
+            m.set(x, y, az1, stair + "_n")
+        for z in range(az0 + 1, az1):
+            m.set(ax0, y, z, stair + "_e")
+            m.set(ax1, y, z, stair + "_w")
+        ax0, ax1, az0, az1, y = ax0 + 1, ax1 - 1, az0 + 1, az1 - 1, y + 1
+    return y - 1
