@@ -189,7 +189,7 @@ def build(a):
     for z in (3, 7):
         m.set(16, 1, z, "minecraft:barrel[facing=up,open=false]")                 # the ale casks
     m.set(16, 1, 5, log("minecraft:spruce_log", "x"))           # a cask on its side
-        m.set(16, 2, z, candle(1)) if z == 5 else None
+    m.set(16, 2, 5, candle(1))
     m.set(16, 1, 4, "minecraft:spruce_planks"); m.set(16, 2, 4, slab("minecraft:spruce"))
     m.set(18, 2, 4, candle(2))
     m.set(18, 2, 7, "minecraft:potted_oxeye_daisy")
