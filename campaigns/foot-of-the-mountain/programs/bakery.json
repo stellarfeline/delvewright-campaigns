@@ -145,7 +145,7 @@
       }
     ],
     "floor": "minecraft:grass_block[snowy=false]",
-    "hedge": "minecraft:oak_leaves[distance=1,persistent=true,waterlogged=false]",
+    "pier": "minecraft:stone_bricks",
     "stone": [
       {
         "block": "minecraft:stone_bricks",
@@ -712,10 +712,6 @@
             {
               "op": "call",
               "symbol": "row_122"
-            },
-            {
-              "op": "call",
-              "symbol": "row_4"
             }
           ],
           "op": "split",
@@ -724,29 +720,6 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/street-1-to-bakery/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-1-to-bakery/y0"
-                }
               },
               "size": "absolute"
             },
@@ -767,16 +740,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/street-1-to-bakery/y0"
                 }
               },
               "size": "absolute"
@@ -793,7 +758,7 @@
         "weight": 1
       }
     ],
-    "column_126": [
+    "column_125": [
       {
         "body": {
           "axis": "y",
@@ -805,10 +770,6 @@
             {
               "op": "call",
               "symbol": "row_124"
-            },
-            {
-              "op": "call",
-              "symbol": "row_125"
             }
           ],
           "op": "split",
@@ -817,29 +778,6 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/street-1-to-bakery/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-1-to-bakery/y0"
-                }
               },
               "size": "absolute"
             },
@@ -4538,7 +4476,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_126"
+                "symbol": "column_125"
               }
             ],
             "op": "split",
@@ -8262,7 +8200,7 @@
           "children": [
             {
               "material": {
-                "role": "hedge"
+                "role": "pier"
               },
               "op": "fill"
             },
@@ -8275,7 +8213,7 @@
             },
             {
               "material": {
-                "role": "hedge"
+                "role": "pier"
               },
               "op": "fill"
             }
@@ -8330,25 +8268,23 @@
           "axis": "z",
           "children": [
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "pier"
               },
-              "op": "claim",
-              "region": "side-north"
+              "op": "fill"
             },
             {
               "body": {
                 "op": "void"
               },
               "op": "claim",
-              "region": "street-1-to-bakery-way"
+              "region": "room"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "pier"
               },
-              "op": "claim",
-              "region": "side-south"
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -8409,80 +8345,9 @@
             },
             {
               "material": {
-                "role": "hedge"
+                "role": "pier"
               },
               "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-1-to-bakery/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-1-to-bakery/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-1-to-bakery/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_125": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
             },
             {
               "body": {
