@@ -40,10 +40,10 @@ COBBLE = [{"weight": 7, "block": "minecraft:cobblestone"},
           {"weight": 3, "block": "minecraft:stone"},
           {"weight": 2, "block": "minecraft:andesite"},
           {"weight": 1, "block": "minecraft:mossy_cobblestone"},
-          {"weight": 1, "block": "minecraft:gravel"}]
+          {"weight": 1, "block": "minecraft:tuff"}]
 WORN = [{"weight": 4, "block": "minecraft:cobblestone"},
         {"weight": 3, "block": "minecraft:coarse_dirt"},
-        {"weight": 2, "block": "minecraft:gravel"},
+        {"weight": 2, "block": "minecraft:tuff"},
         {"weight": 3, "block": "minecraft:grass_block[snowy=false]"},
         {"weight": 1, "block": "minecraft:mossy_cobblestone"},
         {"weight": 1, "block": "minecraft:packed_mud"}]
