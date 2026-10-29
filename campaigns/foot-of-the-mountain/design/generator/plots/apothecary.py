@@ -106,7 +106,7 @@ def build(a):
         m.set(x, 1, 4, "minecraft:bookshelf")
         m.set(x, 2, 4, slab("minecraft:dark_oak", "top"))
     m.set(5, 3, 4, "minecraft:flower_pot"); m.set(6, 3, 4, "minecraft:potted_fern"); m.set(7, 3, 4, "minecraft:flower_pot")
-    m.set(5, 3, 9, candle(3, "green"))
+    m.set(5, 2, 9, candle(3, "green"))
     for z in (6, 7):
         m.set(6, 1, z, stairs("minecraft:dark_oak", "west", "top"))
     m.set(6, 2, 6, candle(2)); m.set(6, 2, 7, "minecraft:potted_lily_of_the_valley")
