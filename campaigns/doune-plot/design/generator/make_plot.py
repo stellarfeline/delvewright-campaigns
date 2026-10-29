@@ -9,7 +9,7 @@ plateau whose surface is Doune's own grade.
 
     python3 make_plot.py        # from anywhere; writes into the campaign
 """
-import json, pathlib, struct, zlib, math
+import json, pathlib, shutil, struct, zlib, math
 
 HERE = pathlib.Path(__file__).resolve().parent
 CAMP = HERE.parent.parent                       # campaigns/doune-plot
@@ -99,6 +99,7 @@ def main():
         del side["content"][k]
         del side["source"][k]
     write("l10n/zh-cn.json", side)
+    shutil.copytree(SRC / "skins", CAMP / "skins", dirs_exist_ok=True)
 
     quests = src("quests.json")["content"]["quests"]
     used = sorted({a for a in json.dumps([src("quests.json"), src("npcs.json"),
@@ -155,7 +156,8 @@ def main():
     anchors = {a: a for a in used}
     anchors["anchor/node-castle"] = "anchor/node-castle"
     anchors["spawn"] = "anchor/spawn"
-    write("detail-plan.json", doc("detail-plan", {"details": [
+    if not (CAMP / "detail-plan.json").exists():   # `delvec detail` owns the row once it has run
+      write("detail-plan.json", doc("detail-plan", {"details": [
         {"anchors": anchors, "piece": "prefab/doune-plot-castle", "place": "node/castle"}]}))
     heightmap()
     print("frame corner (Doune-local 0,%d,0) at world %s; open %d" % (CUT, FRAME0, OPEN))
