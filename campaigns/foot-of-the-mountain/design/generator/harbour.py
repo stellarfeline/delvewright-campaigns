@@ -838,12 +838,19 @@ PALETTE = {
     "yard": "minecraft:stripped_spruce_log[axis=x]",
     "sail": "minecraft:white_wool",
     "cradle": "minecraft:spruce_log[axis=z]",
+    "barrel": "minecraft:barrel[facing=up,open=false]",
+    "water": "minecraft:water[level=0]",
+    "qstep": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "sand": "minecraft:sand",
 }
 
-HOUSE = (4, 19, 2, 9)        # the harbourmaster's house, walls inclusive (x0, x1, z0, z1)
+HOUSE = (4, 19, 2, 11)       # the harbourmaster's house, walls inclusive (x0, x1, z0, z1)
 PART_WALL = 11               # the office west of it, the store east, a door between
 WALL_TOP = 6                 # the walls' head; a storey of five clear inside
-BOATS = ((3, 11, 11, 14), (13, 23, 11, 14))   # hull boxes (x0, x1, z0, z1), the water beyond
+BOATS = ((2, 12, 17, 21), (13, 23, 17, 21))   # hull boxes (x0, x1, z0, z1), moored in the basin
+EDGE = 16                    # the quay's edge row; the basin is south of it
+SEA = -1                     # the water's surface course, model-relative (world 62 under a walk plane of 64)
+BED = -7                     # the basin's bed course
 
 
 class Model:
@@ -867,11 +874,25 @@ class Model:
 def build_model():
     m = Model()
     for x in range(1, 25):
-        for z in range(1, 17):
+        for z in range(1, EDGE + 1):
             m.set(x, 0, z, "pave")
+        for z in range(EDGE + 1, 23):                # the basin: a bed of sand under the sea
+            m.set(x, BED, z, "sand")
+            m.box(x, x, BED + 1, SEA, z, z, "water")
+            m.set(x, 0, z, AIR)                          # the air over the water, below the quay's walk
+    # water stairs at both ends of the basin, so a swimmer climbs back onto the quay:
+    # a submerged step, a step one over the surface, then the quay's own level
+    for x in (1, 24):
+        m.set(x, SEA - 1, 22, "qstep")
+        m.box(x, x, BED + 1, SEA - 2, 22, 22, "stone")
+        m.set(x, SEA, 21, "qstep")
+        m.box(x, x, BED + 1, SEA - 1, 21, 21, "stone")
+        for z in range(EDGE + 1, 21):
+            m.set(x, 0, z, "qstep" if z == 20 else "kerb")
+            m.box(x, x, BED + 1, SEA, z, z, "stone")
     # a kerb along the water's edge, where the quayside ends and the boats lie
     for x in range(1, 25):
-        m.set(x, 0, 16, "kerb")
+        m.set(x, 0, EDGE, "kerb")
 
     # ---------- the harbourmaster's house
     x0, x1, z0, z1 = HOUSE
@@ -947,13 +968,17 @@ def build_model():
         m.set(x, 1, z, "hay" if (x + z) % 2 else "crate")
     m.set(12, 2, 3, "crate")
     m.set(18, 2, 3, "hay")
-    m.set(18, 1, 8, "rope")
+    m.set(18, 1, 10, "rope")
+    for (x, z) in ((17, 3), (18, 4), (16, 3)):          # barrels of salt and tar in the store
+        m.set(x, 1, z, "barrel")
+    for (x, z) in ((22, 13), (22, 14), (21, 14)):       # and on the quayside by the crates
+        m.set(x, 1, z, "barrel")
     m.set(17, 1, 8, "rope")
     m.set(15, WALL_TOP - 1, 5, "lantern_h")
 
     # ---------- the quayside: bollards on the edge, nets on racks, crates, an anchor
-    for x in (2, 12, 23):
-        m.set(x, 1, 15, "bollard")
+    for x in (2, 12, 13, 23):                        # bollards on the edge, the boats' lines made fast
+        m.set(x, 1, EDGE - 1, "bollard")
     # net racks along the water between the bollards, nets drying over them
     for (r0, r1) in ((4, 9), (15, 20)):
         for x in range(r0, r1 + 1):
@@ -962,7 +987,7 @@ def build_model():
             if (x - r0) % 3 != 2:
                 m.set(x, 3, 15, "net")
     # crates stacked by the store door, and an anchor laid on the stones
-    for (x, z, h) in ((20, 10, 2), (21, 10, 1), (21, 3, 2), (22, 3, 1), (21, 4, 1)):
+    for (x, z, h) in ((20, 12, 2), (21, 12, 1), (21, 3, 2), (22, 3, 1), (21, 4, 1)):
         for y in range(1, h + 1):
             m.set(x, y, z, "crate")
         m.set(x, h + 1, z, "crate_lid")
@@ -972,46 +997,50 @@ def build_model():
     m.set(3, 1, 4, "pot_b")
     m.set(3, 1, 7, "pot_c")
     # lamps on posts
-    for (x, z) in ((1, 10), (12, 12), (23, 10), (21, 8)):
+    for (x, z) in ((2, 13), (12, 13), (23, 13), (21, 8)):
         m.set(x, 1, z, "lamp_post")
         m.set(x, 2, z, "lantern")
 
-    # ---------- the boats, hauled up along the edge on their cradles
+    # ---------- the boats, moored afloat along the quay's edge
     for (bx0, bx1, bz0, bz1) in BOATS:
+        zc = (bz0 + bz1) // 2
         for x in range(bx0, bx1 + 1):
             for z in range(bz0, bz1 + 1):
                 end = x in (bx0, bx1)
                 side = z in (bz0, bz1)
                 if end and side:
-                    continue                                 # the rounded ends
+                    continue                                 # the rounded ends: open water
+                m.set(x, SEA, z, "hull")                     # the hull at the waterline
                 if end:
-                    m.set(x, 1, z, "bow_w" if x == bx0 else "bow_e")
+                    m.set(x, 0, z, "hull")
+                    m.set(x, 1, z, "gunwale")                # the stem and stern close the gunwale
                 elif side:
-                    m.set(x, 1, z, "hull")
-                    m.set(x, 2, z, "gunwale")
+                    m.set(x, 0, z, "hull")
+                    m.set(x, 1, z, "gunwale")
                 else:
-                    m.set(x, 1, z, "deck")
+                    m.set(x, 0, z, "deck")
+                if z == zc and not end:
+                    m.set(x, SEA - 1, z, "keel")
         mx = (bx0 + bx1) // 2
-        mz = (bz0 + bz1) // 2 if bz1 - bz0 >= 2 else bz0
-        if bz1 - bz0 >= 2:
-            m.box(mx, mx, 2, 7, mz, mz, "mast")
-            m.box(mx - 2, mx + 2, 6, 6, mz, mz, "yard")
-            for x in range(mx - 2, mx + 3):
-                if x != mx:
-                    m.set(x, 5, mz, "sail")
-        else:
-            m.box(mx, mx, 2, 6, bz0, bz0, "mast")
-            m.box(mx - 1, mx + 1, 5, 5, bz0, bz0, "yard")
+        m.box(mx, mx, 1, 7, zc, zc, "mast")
+        m.box(mx - 2, mx + 2, 6, 6, zc, zc, "yard")
+        for x in range(mx - 2, mx + 3):
+            if x != mx:
+                m.set(x, 5, zc, "sail")
+        for x in (bx0 + 2, bx1 - 2):                         # a coil of rope and a crate aboard
+            m.set(x, 1, zc, "rope" if x == bx0 + 2 else "crate")
     # ---------- the parts: which columns are which
     for x in range(1, 25):
-        for z in range(1, 17):
+        for z in range(1, 23):
+            if z > EDGE and not any(b[0] <= x <= b[1] and b[2] <= z <= b[3] for b in BOATS):
+                continue                                 # the open water between and beyond the boats
             if HOUSE[0] < x < HOUSE[1] and HOUSE[2] < z < HOUSE[3]:
                 m.region[(x, z)] = "harbourmaster"      # the floor inside the walls
             elif HOUSE[0] <= x <= HOUSE[1] and HOUSE[2] <= z <= HOUSE[3]:
                 continue                                 # the walls and their doorways: the room's
             elif any(b[0] <= x <= b[1] and b[2] <= z <= b[3] for b in BOATS):
                 m.region[(x, z)] = "boats"
-            elif z >= 10 or x <= 3:
+            elif EDGE - 4 <= z <= EDGE or x <= 3:
                 m.region[(x, z)] = "quayside"
     return m
 
@@ -1074,6 +1103,7 @@ class Harbour(Place):
     """The starter's place, with the harbour's model in place of the empty room."""
 
     def lay_parts(self, parts):
+        self.shift = self.datum.value - 1        # the model is drawn with its walk plane at course 1
         self.model = build_model()
         by_stem = {p["id"].removeprefix("part/"): p for p in parts}
         self.parts = []
@@ -1086,6 +1116,10 @@ class Harbour(Place):
                     e["cols"].append(c)
                     self.col_part[c] = e
         self.reach()
+        # the air over the water under the quay's walk plane: nobody stands in it
+        for (x, y, z), r in self.model.v.items():
+            if r == AIR and y + self.shift < self.datum.value:
+                self.unwalked.add((x, y + self.shift, z))
 
     def seam_space(self, s):
         (x0, _, z0), (x1, _, z1) = s["seam"]["cells"]
@@ -1102,12 +1136,12 @@ class Harbour(Place):
             return kind
         if kind[0] == "claim" and kind[1].endswith("-way"):
             return kind          # a seam's opening is the connection's, kept clear
-        r = self.model.get(x, y, z)
+        r = self.model.get(x, y - self.shift, z)
         if r is None or r == AIR:
-            if y < self.datum.value:
-                return ("fill", "turf")
             if (x, y, z) in self.unwalked:
                 return ("claim", "unwalked", None)
+            if y < self.datum.value:
+                return ("fill", "turf")
             return kind if kind[0] == "claim" else ("claim", "room", None)
         if r in FULL:
             return ("fill", r)
@@ -1123,13 +1157,15 @@ class Harbour(Place):
         """Every standable cell a body cannot walk to from the plot's edges: the
         roof spaces, the wall heads, the aisle roofs. Claimed as `unwalked`."""
         self.unwalked = set()
-        role = lambda x, y, z: self.model.get(x, y, z)
+        role = lambda x, y, z: self.model.get(x, y - self.shift, z)
         lo, hi = self.space
 
         def kind(x, y, z):
             if not (lo[0] <= x <= hi[0] and lo[2] <= z <= hi[2]) or y < 0 or y > hi[1] + 1:
                 return "pass"
             r = role(x, y, z)
+            if r == "water":
+                return "water"
             if r is None or r == AIR:
                 return "full" if y < self.datum.value else "pass"
             if r in FULL:
@@ -1247,16 +1283,32 @@ def body(p, rules):
 
 FULL = {"floor", "wall", "lid", "stone", "pave", "kerb", "turf", "post", "beam_x", "beam_z", "infill", "boards",
         "floorb", "glass", "roof", "chimney", "chart", "shelf", "hay", "crate", "rope", "anchor", "hull",
-        "keel", "sail", "yard", "cradle"}
+        "keel", "sail", "yard", "cradle", "sand", "barrel", "deck"}
 TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post"}
 LOW = {"roof_n", "roof_s", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
-       "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "deck", "bow_e", "bow_w", "net"}
+       "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep"}
 
 _starter_contract = contract
 
 
 def contract(p):
     out = _starter_contract(p)
+    # a walk between two spaces states the rise their lowest claimed courses measure:
+    # the water stairs put the room's lowest cell a course under the quay's walk plane
+    low = {}
+    for x in range(p.ex):
+        for y in range(p.ey):
+            for z in range(p.ez):
+                k = p.cell(x, y, z)
+                if k[0] == "claim":
+                    low[k[1]] = min(low.get(k[1], y), y)
+    for e in out["edges"]:
+        if e.get("class") == "walk" and e["b"] != "exterior" and e["a"] in low and e["b"] in low:
+            r = low[e["b"]] - low[e["a"]]
+            if r:
+                e["rise"] = r
+    # the boats touch the open water at their ends, not the ground: they are boarded from the quay
+    out["edges"] = [e for e in out["edges"] if {e["a"], e["b"]} != {"part-boats", "room"}]
     if p.unwalked:
         out.setdefault("no_body", {})["unwalked"] = {
             "reason": "the roof space under the tiles, the crate tops, the boats' gunwales and the drying racks' heads: seen, never stood on"}
