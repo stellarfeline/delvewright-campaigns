@@ -113,7 +113,8 @@ door_roles(PALETTE, "door_front", "minecraft:spruce_door", "west")
 door_roles(PALETTE, "door_inner", "minecraft:spruce_door", "east", hinge="right")
 
 # ---- the plan, piece-local ----
-HOUSE = (2, 10, 2, 8)        # x0, x1, z0, z1: walls included
+HOUSE = (2, 10, 2, 7)        # x0, x1, z0, z1: walls included
+BAY = (6, 10, 8, 9)          # the front bay toward the yard, its south gable at z 9
 PARTITION = 6                # the timber wall between kitchen (west) and front room (east)
 FORGE = (14, 20, 2, 6)       # the shed's posts
 PORCH = (11, 12, 4, 6)
@@ -136,52 +137,61 @@ def build(place) -> Model:
     m.box(13, 13, 0, 0, 4, 6, "yard")
     m.box(PORCH[0], PORCH[1], 0, 0, PORCH[2], PORCH[3], "pave")
 
-    # ---------- the house: plinth, timber frame, plaster
+    # ---------- the house: plinth, timber frame, plaster; an L of the main range
+    # and a gabled front bay toward the yard
     hx0, hx1, hz0, hz1 = HOUSE
+    bx0, bx1, bz0, bz1 = BAY
     m.box(hx0, hx1, 0, 0, hz0, hz1, "stone")
+    m.box(bx0, bx1, 0, 0, bz0, bz1, "stone")
     frame_walls(m, hx0, hx1, hz0, hz1, 1, WALL_TOP, "post", "plaster", "beam_x", "beam_z", bay=4, plinth="plinth")
+    frame_walls(m, bx0, bx1, hz1, bz1, 1, WALL_TOP, "post", "plaster", "beam_x", "beam_z", bay=2, plinth="plinth")
     m.box(hx0 + 1, hx1 - 1, 0, 0, hz0 + 1, hz1 - 1, "boards")
+    m.box(bx0 + 1, bx1 - 1, 0, 0, hz1, bz1 - 1, "boards")
+    # the front room runs on into the bay: the main range's south wall opens there
+    m.box(bx0 + 1, bx1 - 1, 1, WALL_TOP - 1, hz1, hz1, "~air")
     # the partition, with its door
     frame_walls(m, PARTITION, PARTITION, hz0, hz1, 1, WALL_TOP, "post", "plaster", "beam_x", "beam_z", bay=8)
     door(m, PARTITION, 1, 5, "door_inner")
     # the front door in the east wall, onto the porch
     door(m, hx1, 1, 5, "door_front")
-    # windows: two-course glazing with spruce sills, shuttered, on the open sides
+    # windows: two courses of glazing; onto the open sides and the yard
     for x in (4, 8):
-        for z in (hz0, hz1):
-            m.box(x, x, 2, 3, z, z, "pane")
+        m.box(x, x, 2, 3, hz0, hz0, "pane")
+    m.box(4, 4, 2, 3, hz1, hz1, "pane")
+    for x in (bx0 + 1, bx1 - 1):
+        m.box(x, x, 2, 3, bz1, bz1, "pane")
+    m.box(bx1, bx1, 2, 3, bz0, bz0, "pane")
     for z in (4, 6):
         m.box(hx0, hx0, 2, 3, z, z, "pane")
     m.box(hx1, hx1, 2, 3, 3, 3, "pane")
-    m.box(hx1, hx1, 2, 3, 7, 7, "pane")
-    # the roof: deepslate tiles, ridge along x, plaster gables
+    # the roofs: deepslate tiles, the main ridge along x, the bay's along z, plaster gables
     gable(m, hx0, hx1, hz0, hz1, WALL_TOP + 1, "x", "roof", "ridge", fill="plaster")
+    gable(m, bx0, bx1, bz0, bz1, WALL_TOP + 1, "z", "roof", "ridge", fill="plaster")
+    m.box(bx0 + 1, bx1 - 1, WALL_TOP + 1, WALL_TOP + 1, hz1, hz1, "~air")
     # the kitchen chimney on the west gable
     m.box(hx0, hx0, 1, 10, 5, 5, "brick")
 
     # ---------- the house's rooms
-    # kitchen (west): smoker and pot at the hearth wall, a worktop, the woodpile
+    # kitchen (west): smoker and pot at the hearth wall, a worktop and a table
     m.set(3, 1, 3, "smoker")
     m.set(3, 1, 4, "pot")
-    m.set(3, 1, 7, "worktop")
+    m.set(3, 1, 6, "worktop")
     m.set(5, 1, 3, "shelf")
-    m.set(4, 1, 7, "table")
-    m.set(4, 2, 7, "lantern")
-    m.set(5, 1, 7, "chair_w")
-    # front room (east): the table and chairs, the bed in the corner, a rug
-    m.set(8, 1, 4, "table")
-    m.set(8, 2, 4, "lantern")
-    m.set(7, 1, 4, "chair_e")
-    m.set(9, 1, 4, "chair_w")
-    m.set(9, 1, 7, "bed_head")
-    m.set(9, 1, 6, "bed_foot")
-    m.set(7, 1, 7, "shelf")
-    m.set(7, 1, 6, "rug")
-    m.set(8, 1, 6, "rug")
-    # hanging lanterns from the tie beams
-    m.box(hx0 + 1, hx1 - 1, WALL_TOP, WALL_TOP, 5, 5, "beam_x")
-    m.set(4, WALL_TOP - 1, 5, "lantern_h")
-    m.set(8, WALL_TOP - 1, 5, "lantern_h")
+    m.set(4, 1, 6, "table")
+    m.set(4, 2, 6, "lantern")
+    m.set(5, 1, 6, "chair_w")
+    # front room (east), running into the bay: the table by the bay window, a shelf, a rug
+    m.set(8, 1, 8, "table")
+    m.set(8, 2, 8, "lantern")
+    m.set(7, 1, 8, "chair_e")
+    m.set(9, 1, 8, "chair_w")
+    m.set(7, 1, 3, "shelf")
+    m.set(8, 1, 3, "shelf")
+    m.box(7, 8, 1, 1, 5, 6, "rug")
+    # hanging lanterns from a tie beam
+    m.box(hx0 + 1, hx1 - 1, WALL_TOP, WALL_TOP, 4, 4, "beam_x")
+    m.set(4, WALL_TOP - 1, 4, "lantern_h")
+    m.set(8, WALL_TOP - 1, 4, "lantern_h")
 
     # ---------- the porch on the front door: two posts and a slab roof
     px0, px1, pz0, pz1 = PORCH
@@ -252,10 +262,10 @@ def build(place) -> Model:
     m.set(22, 1, 3, "bench_arm_s")
 
     # ---------- life: flower beds under the house windows, bushes, the woodpile
-    flower_bed(m, 3, 9, 9, 9, ["f1", "f2", "f3", "f4", "f5", "fern"])
+    flower_bed(m, 3, 5, 8, 9, ["f1", "f2", "f3", "f4", "f5", "fern"])
     flower_bed(m, 3, 9, 1, 1, ["f2", "f3", "fern", "tuft", "f5"])
     m.box(13, 13, 1, 2, 2, 3, "log_z")
-    for (x, z, r) in ((2, 9, "bush"), (10, 9, "bush_f"), (11, 2, "bush_f"), (22, 9, "bush")):
+    for (x, z, r) in ((2, 9, "bush"), (11, 9, "bush_f"), (11, 2, "bush_f"), (22, 9, "bush")):
         m.set(x, 1, z, r)
     for x in range(1, 24):
         for z in (1, 10):
@@ -266,6 +276,7 @@ def build(place) -> Model:
 
     # ---------- the parts: which columns are which
     m.regions("house", hx0, hx1, hz0, hz1)
+    m.regions("house", bx0, bx1, bz0, bz1)
     m.regions("forge", fx0, fx1, fz0, fz1)
     m.regions("work-yard", 11, 21, 7, 10)
     m.regions("work-yard", 13, 13, 4, 6)
