@@ -113,6 +113,26 @@ STREET_REFS = [
 ]
 
 REFS = {
+    # the lower street's chandler and tannery (content demo/plots-lower @ e236131)
+    "node/chandler": [
+        {"url": "https://en.wikipedia.org/wiki/Sail_Loft_(Tenants_Harbor,_Maine)",
+         "shows": "A harbour chandlery of 1860: the chandler's store on the ground floor with its counters and fixtures, a loft above, gable windows and an upper materials door in one end.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://igg.org.uk/rail/12-linind/dockind.htm",
+         "shows": "A dockside chandlery is warehouse-like, its upper doors served by cat-head hoists, stocking rope, blocks and tackle, sails, paint and stores.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town's wharf with storage warehouses beside the businesses that serve the harbour.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
+    "node/tannery": [
+        {"url": "https://sitelines.newcastle.gov.uk/SMR/2051",
+         "shows": "A tannery's open yard of pits, oblong for soaking and liming, square for tanning, a row of small pits along one side, ringed by long buildings with drying lofts and a bark house.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://coflein.gov.uk/en/site/41220",
+         "shows": "A traditional tannery: hides limed, scraped, then tanned in pits of oak-bark liquor in the yard; drying and currying lofts; a single-storey beam house where hides are defleshed; a bark barn.",
+         "terms": "Non-commercial Government Licence (ideas only)"},
+    ],
     # the lower street's rows (content demo/plots-lower @ b505915), carried here
     "node/boatwright": [
         {"url": "https://her.cne-siar.gov.uk/Monument/MWE148761",
@@ -572,7 +592,12 @@ THEMES = {
 }
 
 
-def holds_for(theme, dx, dz):
+# a holding sized by its place's author where the theme's share would not fit
+# the room it builds: node -> {part stem: cells}
+HOLD_CELLS = {"node/cottages-2": {"cottage-a": 36, "cottage-b": 36}}
+
+
+def holds_for(theme, dx, dz, node=None):
     area = dx * dz
     out = []
     for kind, pid, share, h, use, *rest in THEMES[theme][2]:
@@ -582,6 +607,8 @@ def holds_for(theme, dx, dz):
             p["height"] = h
         if rest and rest[0] == "seen":
             p["reached"] = False      # a structure seen and never entered
+        if node in HOLD_CELLS and pid in HOLD_CELLS[node]:
+            p["cells"] = HOLD_CELLS[node][pid]
         out.append(p)
     return out
 
@@ -592,7 +619,7 @@ def plot(name, theme, street, face, at, meets, dx, dz):
     _, f = ext(street)
     intent, note, _ = THEMES[theme]
     box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 44), intent,
-        note, holds=holds_for(theme, dx, dz))
+        note, holds=holds_for(theme, dx, dz, node))
     seam(street, node, face, at, meets, "contact",
          f"the plot's front opens onto the street")
     return node
