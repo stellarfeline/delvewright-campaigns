@@ -62,7 +62,7 @@ def ext(node):
 
 def seam(a, b, face, at, meets, kind, form):
     """Join a to b on a's `face`; place b by the packing rule."""
-    eid = "edge/" + a.split("/")[1] + "--" + b.split("/")[1]
+    eid = "edge/" + a.split("/")[1] + "-to-" + b.split("/")[1]
     s = {"edge": eid, "face": face, "at": at, "meets": meets, "form": form}
     cls = "walk"
     if kind == "contact":
@@ -210,7 +210,7 @@ for k in range(1, 9):
         (dx, dz), _ = ext(top)
         rx, rz = pos[ramp][0], pos[ramp][1]
         pos[top] = (rx, rz - dz - 1, dx, dz, floor)
-        eid = "edge/" + top.split("/")[1] + "--" + ramp.split("/")[1]
+        eid = "edge/" + top.split("/")[1] + "-to-" + ramp.split("/")[1]
         seams.append({"edge": eid, "face": "south", "at": 0, "meets": 0,
                       "opening": {"width": ROAD_W, "height": 4},
                       "stair_in": ramp, "form": "the ramp climbs to the landing"})
@@ -228,12 +228,12 @@ box("node/castle", (104, 114), 124, OPEN(52), "the castle plot",
 (cdx, cdz), _ = ext("node/castle")
 rx, rz = pos["node/road-8"][0], pos["node/road-8"][1]
 pos["node/castle"] = (rx - 50, rz - cdz - 1, cdx, cdz, 124)
-seams.append({"edge": "edge/castle--road-8", "face": "south", "at": 50,
+seams.append({"edge": "edge/castle-to-road-8", "face": "south", "at": 50,
               "meets": 0, "opening": {"width": ROAD_W, "height": 4},
               "stair_in": "node/road-8",
               "form": "the last ramp climbs to the gate ground"})
 edges.append({"a": "node/castle", "b": "node/road-8", "class": "stair",
-              "id": "edge/castle--road-8"})
+              "id": "edge/castle-to-road-8"})
 
 # --------------------------------------------------------------------- plots
 THEMES = {
