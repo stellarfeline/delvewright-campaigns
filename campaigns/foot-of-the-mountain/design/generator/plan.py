@@ -51,6 +51,8 @@ def box(node, extent, floor, ceiling, intent, note, holds=None, way=None,
         n["holds"] = holds
     if node in REFS:
         n["references"] = REFS[node]
+    elif node.split("/")[1].split("-")[0] in ("street", "flight", "lane", "square"):
+        n["references"] = STREET_REFS
     nodes.append(n)
     return b
 
@@ -96,7 +98,41 @@ OPEN = lambda n: {"open": n}
 
 # Community and historical reference builds per plot: looked at for form and
 # room layout, never copied (an unlicensed or non-commercial source is ideas only).
+# The streets, flights, lanes and the square share one set: the medieval
+# cobbled street with its central kennel, and the stepped street of a harbour town.
+STREET_REFS = [
+    {"url": "https://oxmag.co.uk/articles/brasenose-lane",
+     "shows": "Brasenose Lane, Oxford: a cobbled lane whose kennel runs down the middle of the road, the cobbles falling to it rather than cambered to either side; such gutters once ran down every thoroughfare.",
+     "terms": "none stated for the text (images © Morris Oxford); ideas only"},
+    {"url": "https://en.wikipedia.org/wiki/Cobblestone",
+     "shows": "Medieval cobbles: rounded field and river stones set in sand or mortar, the surface moving with the ground; pitched paving and setts for the dressed parts.",
+     "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    {"url": "https://en.wikipedia.org/wiki/Clovelly",
+     "shows": "Clovelly: a steep, pedestrian, cobbled main street of terraced houses falling to the pier, goods moved by sledge and donkey, broken by side alleys.",
+     "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+]
+
 REFS = {
+    # the lower street's chandler and tannery (content demo/plots-lower @ e236131)
+    "node/chandler": [
+        {"url": "https://en.wikipedia.org/wiki/Sail_Loft_(Tenants_Harbor,_Maine)",
+         "shows": "A harbour chandlery of 1860: the chandler's store on the ground floor with its counters and fixtures, a loft above, gable windows and an upper materials door in one end.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://igg.org.uk/rail/12-linind/dockind.htm",
+         "shows": "A dockside chandlery is warehouse-like, its upper doors served by cat-head hoists, stocking rope, blocks and tackle, sails, paint and stores.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town's wharf with storage warehouses beside the businesses that serve the harbour.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
+    "node/tannery": [
+        {"url": "https://sitelines.newcastle.gov.uk/SMR/2051",
+         "shows": "A tannery's open yard of pits, oblong for soaking and liming, square for tanning, a row of small pits along one side, ringed by long buildings with drying lofts and a bark house.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://coflein.gov.uk/en/site/41220",
+         "shows": "A traditional tannery: hides limed, scraped, then tanned in pits of oak-bark liquor in the yard; drying and currying lofts; a single-storey beam house where hides are defleshed; a bark barn.",
+         "terms": "Non-commercial Government Licence (ideas only)"},
+    ],
     # the lower street's rows (content demo/plots-lower @ b505915), carried here
     "node/boatwright": [
         {"url": "https://her.cne-siar.gov.uk/Monument/MWE148761",
@@ -228,6 +264,19 @@ REFS = {
          "terms": "Northamptonshire HER terms of use (linked from the page); ideas only"},
         {"url": "https://en.wikipedia.org/wiki/Masonry_oven",
          "shows": "Fired brick built in courses closing to a dome, smoke out at a flue: the kiln's construction in the town's brick.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    "node/cottages": [
+        {"url": "https://en.wikipedia.org/wiki/Cottage",
+         "shows": "The cottage: modest, often semi-detached, low-ceilinged with its timbers showing, a garden enough to feed the family, built of the cheapest local stuff (rubble stone, whitewash, slate); the fisherman's one-roomed penty.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    "node/townhall": [
+        {"url": "https://en.wikipedia.org/wiki/Market_house",
+         "shows": "The market house: an arcade on the ground floor sheltering the traders and their goods, the upper floor for civic use, on the market square (Titchfield Market Hall, 1620s).",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+        {"url": "https://en.wikipedia.org/wiki/Guildhall",
+         "shows": "The guildhall: market trading on its ground floor, the officers' offices and the board's meetings in it, the guild's arms on the facade; in Britain, the town hall.",
          "terms": "CC BY-SA 4.0 (Wikipedia text)"},
     ],
     "node/inn": [
@@ -543,7 +592,12 @@ THEMES = {
 }
 
 
-def holds_for(theme, dx, dz):
+# a holding sized by its place's author where the theme's share would not fit
+# the room it builds: node -> {part stem: cells}
+HOLD_CELLS = {"node/cottages-2": {"cottage-a": 36, "cottage-b": 36}}
+
+
+def holds_for(theme, dx, dz, node=None):
     area = dx * dz
     out = []
     for kind, pid, share, h, use, *rest in THEMES[theme][2]:
@@ -553,6 +607,8 @@ def holds_for(theme, dx, dz):
             p["height"] = h
         if rest and rest[0] == "seen":
             p["reached"] = False      # a structure seen and never entered
+        if node in HOLD_CELLS and pid in HOLD_CELLS[node]:
+            p["cells"] = HOLD_CELLS[node][pid]
         out.append(p)
     return out
 
@@ -563,7 +619,7 @@ def plot(name, theme, street, face, at, meets, dx, dz):
     _, f = ext(street)
     intent, note, _ = THEMES[theme]
     box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 44), intent,
-        note, holds=holds_for(theme, dx, dz))
+        note, holds=holds_for(theme, dx, dz, node))
     seam(street, node, face, at, meets, "contact",
          f"the plot's front opens onto the street")
     return node
@@ -594,9 +650,9 @@ for (sg, face), L in SIDE.items():
 
 MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-1", "west", "bakery", 22, 12, 1), ("street-1", "east", "apothecary", 18, 12, 1),
-    ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 12, 1),
+    ("street-2", "west", "cottages", 20, 12, 1), ("street-2", "east", "merchant", 26, 12, 1),
     ("street-3", "east", "weaver", 22, 12, 1),
-    ("street-4", "west", "townhall", 24, 10, 2), ("street-4", "east", "tavern", 24, 12, 1),
+    ("street-4", "west", "townhall", 24, 11, 2), ("street-4", "east", "tavern", 24, 12, 1),
     ("street-5", "west", "smithy", 24, 12, 1),
     ("street-6", "west", "chandler", 20, 10, 2), ("street-6", "east", "cooper", 22, 10, 2),
     ("street-7", "west", "fishmonger", 20, 10, 2), ("street-7", "east", "tannery", 22, 10, 2),
