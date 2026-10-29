@@ -130,7 +130,7 @@ PALETTE = {
     "tuft": "minecraft:short_grass", "bed_soil": "minecraft:rooted_dirt",
 }
 
-HOUSE = (6, 18, 3, 8)     # walls included; the street gable at x 18
+HOUSE = (6, 17, 3, 8)     # walls included; the street gable at x 17, its eave clear of the seam
 CROSS = 12                # shop east of it, store west
 TOP = 4                   # wall plate
 

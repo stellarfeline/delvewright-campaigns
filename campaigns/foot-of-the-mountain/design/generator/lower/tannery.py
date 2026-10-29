@@ -98,7 +98,7 @@ PALETTE = {
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
     # the pits: sunk in mud, rimmed in plank, with walks between; lime vats
     "pit": "minecraft:mud",
-    "pit_dark": "minecraft:muddy_mangrove_roots[axis=y,waterlogged=false]",
+    "pit_dark": "minecraft:muddy_mangrove_roots[axis=y]",
     "rim_n": "minecraft:spruce_trapdoor[facing=south,half=bottom,open=true,powered=false,waterlogged=false]",
     "vat": "minecraft:water_cauldron[level=3]",
     "lime": "minecraft:white_concrete_powder",
