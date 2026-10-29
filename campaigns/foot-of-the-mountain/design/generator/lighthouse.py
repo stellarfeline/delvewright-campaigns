@@ -882,10 +882,10 @@ CX = CZ = 13.5               # the tower's axis, between four cells
 R_BASE, R_TOP = 5.25, 4.1    # the shaft's outer radius at its foot and at its head: it tapers
 R_IN = 2.25                  # the shaft's inside: the newel and the stair's lane round it
 R_PART = 4.25                # the tower's claimed columns: its inside and the wall's inner half
-LAMP_FLOOR = 26              # the lantern room's floor course, the gallery's walk
-LAMP_TOP = 30                # the last glazed course
-R_LAMP = 3.4                 # the lantern room's polygon
-R_GALLERY = 5.6              # the gallery's outer edge
+LAMP_FLOOR = 32              # the lantern room's floor course, the gallery's walk
+LAMP_TOP = 37                # the last glazed course: a room five courses tall
+R_LAMP = 3.9                 # the lantern room's polygon
+R_GALLERY = 6.1              # the gallery's outer edge
 COTTAGE = (8, 19, 2, 8)      # walls inclusive (x0, x1, z0, z1): north-east of the tower
 C_TOP = 5                    # the cottage's wall head
 # the stair's lane: the ring of twelve cells round the 2x2 newel, clockwise from the north-west
@@ -955,7 +955,7 @@ def build_tower(m):
             for y in range(1, LAMP_FLOOR):
                 if R_IN < d <= r_at(y):
                     role = "base" if y <= 3 else "white"
-                    if y in (11, 12, 19, 20):
+                    if y in (11, 12, 19, 20, 26, 27):
                         role = "band"
                     m.set(x, y, z, role)
                     m.set(x, 0, z, "base")
