@@ -57,7 +57,7 @@ PALETTE = {
     "hbeam_z": "minecraft:dark_oak_log[axis=z]",
     "beam_x": "minecraft:oak_log[axis=x]",
     "beam_z": "minecraft:oak_log[axis=z]",
-    "back": "minecraft:spruce_planks",
+    "back": "minecraft:dark_oak_planks",
     "shingle_n": st("spruce", "north"), "shingle_s": st("spruce", "south"),
     "shingle_ridge": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     # the house: stone below, oak frame and plaster above
@@ -132,8 +132,9 @@ def build(place) -> Model:
         m.box(wx0, wx1, PLATE, PLATE, z, z, "beam_x")
     m.box(wx0, wx0, PLATE, PLATE, wz0, wz1, "beam_z")
     m.box(wx1, wx1, 1, PLATE, wz0 + 1, wz1 - 1, "back")
+    m.box(wx1, wx1, 1, 2, wz0 + 1, wz1 - 1, "stone")      # a stone footing under the boards
     # the north side half-boarded, the south side open to the yard
-    m.box(wx0 + 1, wx1 - 1, 1, 2, wz0, wz0, "back")
+    m.box(wx0 + 1, wx1 - 1, 1, 2, wz0, wz0, "stone")
     gable(m, wx0, wx1, wz0, wz1, PLATE + 1, "x", "shingle", "shingle_ridge", fill="back")
     # clear the street gable under the beam: the front stays open
     m.box(wx0, wx0, 1, PLATE - 1, wz0 + 1, wz1 - 1, "~air")
