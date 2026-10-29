@@ -569,11 +569,15 @@ png(os.path.join(ROOT, "terrain", "island.png"), RX, RZ, pix)
 
 
 TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN[1], TOWN[3]]}
+_cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
+CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
 STRATA = [
     # the sea floor and the shore
     {"when": {"y_max": 56}, "surface": "minecraft:gravel", "below": "minecraft:stone"},
     {"when": {"y_max": 63}, "surface": "minecraft:sand", "below": "minecraft:sandstone"},
+    # Doune's plot and its ring: Doune's own turf, which its plants stand on
+    {"when": {"area": CASTLE_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
     # the town: a step of two or more is a retaining wall a builder laid
     {"when": {"area": TOWN_AREA, "steep": 2, "patch": P(9, 600, 11)},
      "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},
