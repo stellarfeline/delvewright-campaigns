@@ -502,11 +502,12 @@ def ridged(x, z, scale, octaves, salt):
 
 
 def coast_z(x):
-    """The south coast's line: coves and points, the harbour inlet at the quay."""
-    z = 452 + (fbm(x, 0, 46, 3, 31) - 0.5) * 44
-    z -= 16 * smooth(1 - abs(x - 122) / 34)          # the harbour inlet
-    z += 26 * smooth(1 - abs(x - 200) / 26)          # the lighthouse point
-    z -= 22 * smooth(1 - abs(x - 40) / 30)           # a western cove
+    """The south coast's line: coves and points; the harbour inlet at the
+    quay; a deep cove east of the lighthouse so it stands on its point."""
+    z = 462 + (fbm(x, 0, 38, 3, 31) - 0.5) * 70
+    z -= 30 * smooth(1 - abs(x - 122) / 40)          # the harbour inlet
+    z -= 66 * smooth(1 - abs(x - 214) / 26)          # the cove under the lighthouse
+    z -= 48 * smooth(1 - abs(x - 38) / 30)           # a western cove
     return z
 
 
@@ -525,14 +526,14 @@ def mountain(x, z):
     broken by noise so no slope is a cone."""
     wx = x + (fbm(x, z, 60, 2, 41) - 0.5) * 50      # domain warp: no circle survives
     wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 50
-    d = math.hypot((wx - CX) / 150, (wz - CZ) / 120)
-    dome = 66 + 62 * (1 - smooth(d)) ** 1.15
+    d = math.hypot((wx - CX) / 165, (wz - CZ) / (95 if wz > CZ else 140))
+    dome = 50 + 78 * (1 - smooth((d - 0.32) / 0.68))
     p = math.hypot((wx - 278) / 62, (wz - 72) / 70)
     summit = 112 * (1 - smooth(p)) ** 0.9 * (0.6 + 0.4 * ridged(x, z, 30, 3, 51))
     ridge_line = math.exp(-((wz - 34) / 20) ** 2) * smooth((wx - 120) / 60)
     ridge = 30 * ridge_line * (0.5 + 0.5 * ridged(x, z, 34, 3, 45))
     broken = (ridged(x, z, 22, 3, 47) - 0.45) * 16 * (1 - smooth(d))
-    hills = 10 + (fbm(x, z, 44, 3, 53) - 0.35) * 46 * smooth((150 - x) / 60) * smooth((300 - z) / 60)
+    hills = (16 + (fbm(x, z, 44, 3, 53) - 0.35) * 46) * smooth((150 - x) / 60) * smooth((300 - z) / 60)
     return dome + max(summit, ridge) + broken + hills
 
 
@@ -543,12 +544,19 @@ def slope(x, z):
 
 
 def base_height(x, z):
-    m = land(x, z)
-    h_m, h_s = mountain(x, z), slope(x, z)
+    """The land: the soft maximum of the mountain and its lower slope, cut by
+    the shore so the waterline follows the coast's coves and points, falling
+    to the sea floor; cliffs only on the far coasts."""
+    wob = (fbm(x, z, 40, 3, 1) - 0.5) * 30
+    inset = min(x, RX - 1 - x, z) + wob
+    edge = smooth((inset - 10) / 14)
+    h_m, h_s = mountain(x, z), max(slope(x, z), 64.5)
     k = 6.0                                          # a soft maximum: no crease
     h = k * math.log(math.exp(h_m / k) + math.exp(h_s / k))
+    shore = 62.5 + 0.35 * (coast_z(x) + wob * 0.3 - z)   # a beach rising from the waterline
     sea_floor = 50 + (vnoise(x, z, 31, 4) - 0.5) * 4
-    return sea_floor + (h - sea_floor) * m
+    h = max(sea_floor, min(h, shore))
+    return sea_floor + (h - sea_floor) * edge
 
 
 H = [[base_height(x, z) for x in range(RX)] for z in range(RZ)]
@@ -562,7 +570,7 @@ T = [[0.0] * RX for _ in range(RZ)]
 for n, x0, z0, dx, dz, f in rects:
     castle = n == "node/castle"
     road = n.startswith("node/road") or n == "node/gate-road"
-    skirt = 16 if castle else (7 if road else 12)
+    skirt = 16 if castle else (7 if road else (3 if n == "node/quay" else 12))
     for z in range(max(0, z0 - 1 - skirt), min(RZ, z0 + dz + 1 + skirt)):
         for x in range(max(0, x0 - 1 - skirt), min(RX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
