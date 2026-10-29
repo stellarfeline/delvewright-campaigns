@@ -75,6 +75,8 @@ PALETTE = {
     "bilge_n": stairs("oak", "south", "top"),
     "bilge_s": stairs("oak", "north", "top"),
     "strake": "minecraft:oak_planks",
+    "lap_n": trapdoor("oak", "south", "bottom", True),
+    "lap_s": trapdoor("oak", "north", "bottom", True),
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
@@ -176,7 +178,7 @@ def build(place):
     for x in (8, 9, 10):
         for z in (n, s):
             m.set(x, 2, z, "bilge_n" if z == n else "bilge_s")
-            m.set(x, 3, z, "strake")
+            m.set(x, 3, z, "lap_n" if z == n else "lap_s")   # lapped planks on the outer face
             m.set(x, 4, z, "gunwale")              # top 4.5
     # the stern half in frames: a frame at every other station, the ribband over them,
     # the garboard plank laid along the keel
