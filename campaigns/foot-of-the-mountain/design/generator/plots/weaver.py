@@ -73,6 +73,9 @@ def build(a):
         m.set(x, 5, uz1, stairs("minecraft:spruce", "south", "top") if HX0 < x < HX1 else BEAM_Z)
     m.box(HX0 + 1, HX1 - 1, 5, 5, HZ0 + 1, uz1 - 1, BOARDS)
     top = m.gable_roof(HX0, HX1, HZ0, uz1, 9, "x", ROOF, fill=PLASTER)
+    # no rake over the street gable: the roof's edge stands back with the
+    # wall, three cells off the street's opening
+    m.clear(HX0 - 1, HX0 - 1, 9, 16, 0, 13)
     for y in range(9, top):
         m.set(HX0, y, 6, POST)
     m.set(HX0, 11, 5, GLASS); m.set(HX0, 11, 7, GLASS)
