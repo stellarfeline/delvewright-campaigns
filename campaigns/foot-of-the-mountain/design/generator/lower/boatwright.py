@@ -76,6 +76,7 @@ PALETTE = {
     "bilge_s": stairs("oak", "north", "top"),
     "strake": "minecraft:oak_planks",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "bow_n": stairs("oak", "south", "bottom"),
     "bow_s": stairs("oak", "north", "bottom"),
@@ -104,7 +105,7 @@ PALETTE = {
 
 SHED = (2, 9, 1, 5)     # walls on the north, west and east; open along the south
 PLATE = 4
-HULL_X = (3, 11)        # transom at x 3, stem at x 11
+HULL_X = (3, 13)        # transom at x 3, stem at x 13
 KZ = 7                  # the keel's line
 
 
@@ -151,37 +152,48 @@ def build(place):
     m.box(sx0 + 1, sx1 - 1, PLATE, PLATE, 3, 3, "beam_x")
     m.set(5, PLATE - 1, 3, "lantern_h")
 
-    # ---------- the boat on its stocks, along the lane: bow (stem) east, raked transom west;
-    # the bow half planked, the stern half in bare ribs
-    hx0, hx1 = HULL_X
-    for x in (4, 7, 10):
+    # ---------- the boat on its stocks, side-on to the lane: a long narrow hull, its stem
+    # rising to a point at the bow (east), a raked transom at the stern (west); the sheer
+    # climbs toward both ends in half steps (slabs on the gunwale), the turn of the bilge is
+    # upturned stairs, and the stern half still stands in bare frames on its ribband
+    s, n = KZ + 1, KZ - 1          # the lane side and the shed side of the keel
+    for x in (5, 8, 11):
         m.set(x, 1, KZ, "stock")
-    m.box(hx0 + 1, hx1, 2, 2, KZ, KZ, "keel")
-    m.box(hx1, hx1, 3, 4, KZ, KZ, "stem")
-    m.set(hx1, 5, KZ, "stem_tip")
-    m.set(hx1 - 1, 3, KZ - 1, "bow_n")
-    m.set(hx1 - 1, 3, KZ + 1, "bow_s")
-    m.set(hx1 - 1, 4, KZ - 1, "gunwale")
-    m.set(hx1 - 1, 4, KZ + 1, "gunwale")
-    for x in range(7, hx1 - 1):
-        m.set(x, 2, KZ - 1, "bilge_n")
-        m.set(x, 2, KZ + 1, "bilge_s")
-        m.set(x, 3, KZ - 1, "strake")
-        m.set(x, 3, KZ + 1, "strake")
-        m.set(x, 4, KZ - 1, "gunwale")
-        m.set(x, 4, KZ + 1, "gunwale")
-    for x in range(hx0 + 2, 7):
-        if x % 2 == 0:
-            m.set(x, 2, KZ - 1, "bilge_n")
-            m.set(x, 2, KZ + 1, "bilge_s")
-            m.set(x, 3, KZ - 1, "rib")
-            m.set(x, 3, KZ + 1, "rib")
-        m.set(x, 4, KZ - 1, "rib")
-        m.set(x, 4, KZ + 1, "rib")
-    m.set(hx0 + 1, 2, KZ, "transom_rake")
-    m.box(hx0, hx0, 3, 3, KZ - 1, KZ + 1, "transom")
-    m.set(hx0, 4, KZ, "transom_top")
-    m.set(12, 1, 6, "lantern")            # a lantern on the yard's timber, by the bow
+    m.box(4, 12, 2, 2, KZ, KZ, "keel")
+    # the stem: a post rising past the gunwale, capped with a fence point
+    m.box(13, 13, 2, 5, KZ, KZ, "stem")
+    m.set(13, 6, KZ, "stem_tip")
+    # the bow: the planking closes on the stem, the sheer at its highest
+    m.box(12, 12, 3, 4, KZ, KZ, "strake")
+    for z in (n, s):
+        m.set(12, 3, z, "bilge_n" if z == n else "bilge_s")
+        m.set(12, 4, z, "strake")
+        m.set(12, 5, z, "gunwale")                 # top 5.5
+        m.set(11, 2, z, "bilge_n" if z == n else "bilge_s")
+        m.set(11, 3, z, "strake")
+        m.set(11, 4, z, "gunwale_hi")              # top 5.0
+    # amidships, planked: bilge, strake, gunwale at its lowest
+    for x in (8, 9, 10):
+        for z in (n, s):
+            m.set(x, 2, z, "bilge_n" if z == n else "bilge_s")
+            m.set(x, 3, z, "strake")
+            m.set(x, 4, z, "gunwale")              # top 4.5
+    # the stern half in frames: a frame at every other station, the ribband over them,
+    # the garboard plank laid along the keel
+    for x in (5, 6, 7):
+        for z in (n, s):
+            m.set(x, 2, z, "bilge_n" if z == n else "bilge_s")
+            if x % 2 == 1:
+                m.set(x, 3, z, "rib")
+            m.set(x, 4, z, "rib")
+    # the raked transom: its foot inboard on the keel, its head out over the stern, the
+    # sheer lifting to it
+    m.set(4, 3, KZ, "transom")
+    m.set(4, 3, n, "bilge_n")
+    m.set(4, 3, s, "bilge_s")
+    m.box(3, 3, 4, 4, n, s, "transom_rake")
+    m.set(3, 5, KZ, "gunwale")
+    m.set(12, 1, 5, "lantern")            # a lantern on the yard's timber, by the bow
 
     # ---------- the yard: timber stacked to season, the winch at the slip head
     m.box(11, 12, 1, 1, 1, 4, "timber_z")
