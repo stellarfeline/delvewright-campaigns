@@ -25,11 +25,11 @@ from plotlib import (AIR, Model, Plot, door, fence, gate, lantern, leaves, log, 
                      stairs, trapdoor, wall, pane, candle, tall)
 
 PALETTE = {
-    "floor": "minecraft:grass_block",
+    "floor": "minecraft:grass_block[snowy=false]",
     "wall": "minecraft:stone_bricks",
     "lid": "minecraft:spruce_planks",
     "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "turf": "minecraft:grass_block",
+    "turf": "minecraft:grass_block[snowy=false]",
 }
 
 VARIANTS = {
@@ -80,7 +80,7 @@ def build(a):
 
     # ---- the parts: the house and the yard with its saw shed
     m.part(HX0, HX1, HZ0, HZ1, "workshop")
-    m.part(10, 15, 2, 15, "timber-yard")
+    m.part(10, 15, 2, 14, "timber-yard")
 
     # ---- ground: the yard trodden, a path from the lane to the shop door
     m.box(10, 15, 0, 0, 2, 15, "yard")
@@ -187,11 +187,11 @@ def build(a):
 
     # ---- the front garden: two flower beds by the path, a bench
     for x in (2, 3, 4, 6, 7, 8):
-        m.set(x, 0, 15, "minecraft:podzol" if x in (2, 8) else "minecraft:grass_block")
+        m.set(x, 0, 14, "minecraft:podzol[snowy=false]" if x in (2, 8) else "minecraft:grass_block[snowy=false]")
     for x, fl in ((3, "minecraft:poppy"), (4, "minecraft:oxeye_daisy"), (6, "minecraft:cornflower"), (7, "minecraft:allium")):
-        m.set(x, 1, 15, fl)
-    m.set(2, 1, 15, leaves("minecraft:oak"))
-    m.set(8, 1, 15, leaves("minecraft:azalea"))
+        m.set(x, 1, 14, fl)
+    m.set(2, 1, 14, leaves("minecraft:oak"))
+    m.set(8, 1, 14, leaves("minecraft:azalea"))
     m.set(1, 1, 12, stairs("minecraft:spruce", "east"))  # a bench against the west wall
     m.set(1, 1, 11, stairs("minecraft:spruce", "east"))
 
@@ -243,16 +243,16 @@ def build(a):
     m.box(14, 15, 1, 1, 8, 8, slab("minecraft:oak", "bottom"))
     m.box(15, 15, 1, 2, 10, 12, "minecraft:stripped_oak_wood[axis=z]")
     # a handcart: a bed of slabs on a wheel (a trapdoor end on), shafts of fence
-    m.set(12, 1, 15, slab("minecraft:spruce", "top"))
-    m.set(13, 1, 15, slab("minecraft:spruce", "top"))
-    m.set(11, 1, 15, fence("minecraft:spruce"))
+    m.set(12, 1, 14, slab("minecraft:spruce", "top"))
+    m.set(13, 1, 14, slab("minecraft:spruce", "top"))
+    m.set(11, 1, 14, fence("minecraft:spruce"))
     # sawdust and chips: a little leaf litter on the yard
     for (x, z) in ((12, 8), (13, 9), (11, 8)):
         m.set(x, 1, z, "minecraft:leaf_litter[facing=north,segment_amount=3]")
     # a lantern post at the yard's mouth, over the lane
     for y in (1, 2, 3):
-        m.set(10, y, 15, fence("minecraft:spruce"))
-    m.set(10, 4, 15, lantern(False))
+        m.set(10, y, 14, fence("minecraft:spruce"))
+    m.set(10, 4, 14, lantern(False))
 
     m.marks["node-carpenter"] = (9, 12, "south")
     return m

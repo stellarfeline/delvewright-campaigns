@@ -1035,6 +1035,14 @@ class Plot(Place):
         kind = Place.base_cell(self, x, y, z)
         if not self.in_space_xz(x, z) and kind == ("fill", "wall"):
             return ("claim", "room", None)
+        if kind[0] == "claim" and kind[1].startswith("side-") and not self.in_space_xz(x, z):
+            # an open side's ring cell is a way out only where the cell inside
+            # it is walked air; beside a wall, a hedge or an eave it is the
+            # lot's own air, the room's
+            lo, hi = self.space
+            inner = (min(max(x, lo[0]), hi[0]), y, min(max(z, lo[2]), hi[2]))
+            if not self.walkable(self.cell(*inner)):
+                return ("claim", "room", None)
         if not self.in_space_xz(x, z):
             if kind == ("fill", "floor"):
                 r = self.model.get(x, y, z)
