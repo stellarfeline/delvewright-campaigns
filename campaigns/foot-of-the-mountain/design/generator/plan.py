@@ -496,7 +496,7 @@ def plot(name, theme, street, face, at, meets, dx, dz):
     node = f"node/{name}"
     _, f = ext(street)
     intent, note, _ = THEMES[theme]
-    box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 34), intent,
+    box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 44), intent,
         note, holds=holds_for(theme, dx, dz))
     seam(street, node, face, at, meets, "contact",
          f"the plot's front opens onto the street")
@@ -803,6 +803,23 @@ for z in range(max(0, _iz - 1 - BACK_REACH), _iz + _idz + 1):
         if H[z][x] > cap:
             H[z][x] = cap
 
+# The lighthouse's point falls to the sea as rock: west, south and east of its
+# plot the ground drops in ledges, three or four a course, to the sea floor,
+# steep enough that it weathers as the wild's stone, andesite and tuff, with
+# the plot's own turf on top. The cliff path arrives from the north.
+_lx, _lz, _ldx, _ldz, _lf = pos["node/lighthouse"]
+for z in range(_lz - 1, min(RZ, _lz + _ldz + 1 + 14)):
+    for x in range(max(0, _lx - 1 - 14), min(RX, _lx + _ldx + 1 + 14)):
+        ddx = max(0, (_lx - 1) - x, x - (_lx + _ldx))
+        ddz = max(0, z - (_lz + _ldz))
+        if (ddx == 0 and ddz == 0) or W[z][x] >= 1.0:
+            continue
+        d = math.hypot(ddx, ddz)
+        ledge = math.floor(d / 1.6) * 4 + (vnoise(x, z, 4, 71) - 0.5) * 3
+        cap = (_lf - 1) - ledge
+        if H[z][x] > cap:
+            H[z][x] = max(cap, 50.0)
+
 # No pit a body cannot climb out of: a priority flood from the sea and the
 # region's rim raises every column to at least one under the column it is
 # reached from, so from anywhere a walk of steps no higher than one leads to
@@ -863,7 +880,16 @@ BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN_EAST, TOWN[3]]}   # bel
 _cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
 CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
+_hx, _hz, _hdx, _hdz, _ = pos["node/lighthouse"]
+HEADLAND = {"min": [max(_hx - 14, pos["node/harbour"][0] + pos["node/harbour"][2] + 2), _hz - 1],
+            "max": [_hx + _hdx + 14, _hz + _hdz + 14]}
 STRATA = [
+    # the lighthouse's point: rock ledges to the water, never sand or brick
+    {"when": {"area": HEADLAND, "steep": 3, "patch": P(4, 520, 81)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "steep": 3, "patch": P(5, 540, 82)}, "surface": "minecraft:tuff", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "steep": 3}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "y_max": 64, "patch": P(4, 560, 83)}, "surface": "minecraft:andesite", "below": "minecraft:stone"},
+    {"when": {"area": HEADLAND, "y_max": 64}, "surface": "minecraft:stone", "below": "minecraft:stone"},
     # the sea floor and the shore
     {"when": {"y_max": 56}, "surface": "minecraft:gravel", "below": "minecraft:stone"},
     {"when": {"y_max": 63}, "surface": "minecraft:sand", "below": "minecraft:sandstone"},
