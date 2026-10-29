@@ -757,7 +757,7 @@ def hsh(*a):
 # ---- what a block does to a body: full, tall (a fence), low (a step), or pass ----
 
 PASS_WORDS = ("_door[", "flower", "tulip", "poppy", "dandelion", "cornflower", "allium", "daisy", "orchid",
-              "bluet", "lily_of_the_valley", "short_grass", "fern", "rose_bush", "lilac", "peony", "sunflower",
+              "bluet", "lily_of_the_valley", "short_grass", "dry_grass", "tall_grass", "fern", "rose_bush", "lilac", "peony", "sunflower",
               "chain[", "_chain[", "ladder", "torch", "vine", "button", "pressure_plate", "carpet", "rail", "sweet_berry",
               "wheat", "carrots", "potatoes", "beetroots", "pink_petals", "leaf_litter", "bush[", "dead_bush",
               "lantern[hanging=true", "cobweb", "tripwire", "lever", "redstone_wire", "hanging_sign", "_sign[")
@@ -773,6 +773,8 @@ def classify(block: str) -> str:
     if ("_slab[" in block and "type=top" in block) or ("_slab[" in block and "type=double" in block):
         return "full"
     if "_stairs[" in block and "half=top" in block:
+        return "full"
+    if "leaves[" in block:
         return "full"
     if "_trapdoor[" in block and ("open=true" in block or "half=top" in block):
         return "pass"
@@ -1005,7 +1007,9 @@ class Plot(Place):
             r = self.model.get(x, y, z)
             return ("fill", r if r and self.kind_of(r) == "full" else "turf")
         if not self.in_space_xz(x, z):
-            if kind[0] == "claim" and kind[1].startswith("side-") and y >= self.datum.value + 2:
+            crossed = {s["face"] for s in self.a.get("sides", []) or [] if s.get("contacts")}
+            if kind[0] == "claim" and kind[1].startswith("side-") and y >= self.datum.value + 2 \
+                    and kind[1].removeprefix("side-").split("-")[0] not in crossed:
                 return ("claim", "room", None)  # the side's opening is the body's height; above it, open air
             return kind
         if kind[0] == "claim" and kind[1].endswith("-way"):

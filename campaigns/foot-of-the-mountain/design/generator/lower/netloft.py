@@ -40,7 +40,7 @@ PALETTE = {
     "turf": "minecraft:grass_block[snowy=false]",
     # ground: shingle and sand toward the harbour
     "shingle": [{"weight": 5, "block": "minecraft:gravel"}, {"weight": 2, "block": "minecraft:coarse_dirt"},
-                {"weight": 2, "block": "minecraft:cobblestone"}, {"weight": 1, "block": "minecraft:suspicious_gravel"}],
+                {"weight": 2, "block": "minecraft:cobblestone"}],
     "slip": [{"weight": 3, "block": "minecraft:spruce_planks"}, {"weight": 1, "block": "minecraft:stripped_spruce_wood[axis=x]"}],
     "store_floor": [{"weight": 4, "block": "minecraft:cobblestone"}, {"weight": 2, "block": "minecraft:gravel"}],
     "plinth": [{"weight": 4, "block": "minecraft:cobblestone"}, {"weight": 2, "block": "minecraft:stone_bricks"},
@@ -93,7 +93,7 @@ SHED = (2, 10, 3, 8)      # x0, x1, z0, z1, walls included: gable-end to the eas
 GROUND_TOP = 4            # the boat store's courses y1..4
 LOFT = 5                  # the loft floor's course
 PLATE = 8                 # the wall plate
-YARD = (12, 19, 2, 9)
+YARD = (12, 18, 2, 9)
 
 
 def build(place) -> Model:
@@ -184,9 +184,9 @@ def build(place) -> Model:
     # a capstan by the slip, crab pots stacked, a bench by the shed
     m.set(12, 1, 4, "capstan")
     m.set(12, 2, 4, "capstan_bar")
-    for (x, z) in ((18, 5), (18, 6), (19, 6)):
+    for (x, z) in ((17, 5), (17, 6), (18, 6)):
         m.set(x, 1, z, "pot_body")
-    m.set(18, 2, 6, "pot_body")
+    m.set(17, 2, 6, "pot_body")
     # life: beach grass, a bush at the shed's corners, a flower bed under the south windows
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
@@ -195,8 +195,8 @@ def build(place) -> Model:
     for x in range(3, 10):
         m.set(x, 0, 9, "turf")
         m.set(x, 1, 9, ["f1", "f2", "f3", "fern"][hsh(x, 9, 4) % 4])
-    m.set(sx0 - 1, 1, sz0, "bush")
-    m.set(sx0 - 1, 1, sz1, "bush")
+    m.set(sx1 + 1, 1, sz0, "bush")
+    m.set(sx1 + 1, 1, sz1, "bush")
 
     finish(m)
     m.regions("loft", sx0, sx1, sz0, sz1)
