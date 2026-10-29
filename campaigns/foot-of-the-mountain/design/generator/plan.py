@@ -503,7 +503,7 @@ main_path.append("node/quay")
 write("world.json", "world", {
     "areas": [],
     "boundary": {"margin": 8},
-    "demo_level": True,
+    "test_level": True,
     "horizon": {"attributes": {"audio/background_music": {}}, "base": "ocean"},
     "premise": "The party arrives on the square at the foot of the mountain and walks the main street down through the town to the harbour.",
     "seed": 20261028,
