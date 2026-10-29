@@ -241,7 +241,7 @@ def build(a):
     m.set(12, 3, 11, log("minecraft:birch_log", "z"))
     # boards in a stickered stack by the shed
     m.box(14, 15, 1, 1, 8, 8, slab("minecraft:oak", "bottom"))
-    m.box(15, 15, 1, 2, 10, 12, "minecraft:stripped_oak_wood[axis=z]")
+    m.box(15, 15, 1, 1, 10, 12, "minecraft:stripped_oak_wood[axis=z]")   # one high: the gap by the rack is never a pit
     # a handcart: a bed of slabs on a wheel (a trapdoor end on), shafts of fence
     m.set(12, 1, 14, slab("minecraft:spruce", "top"))
     m.set(13, 1, 14, slab("minecraft:spruce", "top"))
