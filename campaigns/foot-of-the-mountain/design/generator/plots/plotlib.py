@@ -1008,6 +1008,10 @@ class Plot(Place):
 
     def lay_parts(self, parts):
         self.model = type(self).MODEL
+        # a side a seam stands on is answered by the seam's opening; its ring
+        # over the neighbour's void is the lot's own air
+        seam_faces = {s["seam"]["face"] for s in self.seams}
+        self.sides = [s for s in self.sides if s["face"] not in seam_faces]
         by_stem = {p["id"].removeprefix("part/"): p for p in parts}
         self.parts = []
         self.col_part = {}
