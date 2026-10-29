@@ -83,6 +83,8 @@ PALETTE = {
     "capstan_bar": "minecraft:spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]",
     "pot": "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
     "pot_body": "minecraft:composter[level=0]",
+    "barrel": "minecraft:barrel[facing=up,open=false]",
+    "barrel_side": "minecraft:barrel[facing=east,open=false]",
     "bench": st("spruce", "west"),
     "bush": "minecraft:azalea_leaves[distance=1,persistent=true,waterlogged=false]",
     "tuft": "minecraft:short_grass", "fern": "minecraft:fern",
@@ -189,6 +191,10 @@ def build(place) -> Model:
     for (x, z) in ((17, 5), (17, 6), (18, 6)):
         m.set(x, 1, z, "pot_body")
     m.set(17, 2, 6, "pot_body")
+    m.set(16, 1, 9, "barrel")
+    m.set(15, 1, 9, "barrel")
+    m.set(16, 2, 9, "barrel")
+    m.set(3, 1, 4, "barrel")
     # life: beach grass, a bush at the shed's corners, a flower bed under the south windows
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):

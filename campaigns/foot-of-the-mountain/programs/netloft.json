@@ -64,6 +64,7 @@
   },
   "name": "netloft",
   "palette": {
+    "barrel": "minecraft:barrel[facing=up,open=false]",
     "beach_grass": "minecraft:fern",
     "beam_x": "minecraft:dark_oak_log[axis=x]",
     "beam_z": "minecraft:dark_oak_log[axis=z]",
@@ -108,6 +109,7 @@
     "pole~": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "pole~e": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
     "pole~ew": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
+    "pole~s": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
     "pole~w": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
     "post": "minecraft:dark_oak_log[axis=y]",
     "pot_a": "minecraft:potted_red_tulip",
@@ -181,6 +183,103 @@
             {
               "op": "call",
               "symbol": "row_99"
+            },
+            {
+              "op": "call",
+              "symbol": "row_87"
+            },
+            {
+              "op": "call",
+              "symbol": "row_78"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-8-to-netloft/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_102": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_69"
+            },
+            {
+              "op": "call",
+              "symbol": "row_101"
             },
             {
               "op": "call",
@@ -266,7 +365,7 @@
         "weight": 1
       }
     ],
-    "column_103": [
+    "column_105": [
       {
         "body": {
           "axis": "y",
@@ -277,11 +376,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_101"
+              "symbol": "row_103"
             },
             {
               "op": "call",
-              "symbol": "row_102"
+              "symbol": "row_104"
             },
             {
               "op": "call",
@@ -363,7 +462,7 @@
         "weight": 1
       }
     ],
-    "column_105": [
+    "column_107": [
       {
         "body": {
           "axis": "y",
@@ -374,7 +473,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_104"
+              "symbol": "row_106"
             }
           ],
           "op": "split",
@@ -3580,7 +3679,7 @@
         "weight": 1
       }
     ],
-    "column_91": [
+    "column_92": [
       {
         "body": {
           "axis": "y",
@@ -3588,6 +3687,10 @@
             {
               "op": "call",
               "symbol": "row_69"
+            },
+            {
+              "op": "call",
+              "symbol": "row_91"
             },
             {
               "op": "call",
@@ -3631,13 +3734,44 @@
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-8-to-netloft/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -3691,7 +3825,7 @@
         "weight": 1
       }
     ],
-    "column_92": [
+    "column_94": [
       {
         "body": {
           "axis": "y",
@@ -3702,7 +3836,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_87"
+              "symbol": "row_93"
             },
             {
               "op": "call",
@@ -3802,7 +3936,7 @@
         "weight": 1
       }
     ],
-    "column_96": [
+    "column_98": [
       {
         "body": {
           "axis": "y",
@@ -3813,11 +3947,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_93"
+              "symbol": "row_95"
             },
             {
               "op": "call",
-              "symbol": "row_94"
+              "symbol": "row_96"
             },
             {
               "op": "call",
@@ -3825,7 +3959,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_95"
+              "symbol": "row_97"
             },
             {
               "op": "call",
@@ -3948,103 +4082,6 @@
         "weight": 1
       }
     ],
-    "column_98": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_69"
-            },
-            {
-              "op": "call",
-              "symbol": "row_97"
-            },
-            {
-              "op": "call",
-              "symbol": "row_87"
-            },
-            {
-              "op": "call",
-              "symbol": "row_78"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-8-to-netloft/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "place": [
       {
         "body": {
@@ -4113,15 +4150,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_91"
-              },
-              {
-                "op": "call",
                 "symbol": "column_92"
               },
               {
                 "op": "call",
-                "symbol": "column_96"
+                "symbol": "column_94"
               },
               {
                 "op": "call",
@@ -4133,11 +4166,15 @@
               },
               {
                 "op": "call",
-                "symbol": "column_103"
+                "symbol": "column_102"
               },
               {
                 "op": "call",
                 "symbol": "column_105"
+              },
+              {
+                "op": "call",
+                "symbol": "column_107"
               }
             ],
             "op": "split",
@@ -4495,6 +4532,119 @@
             },
             {
               "body": {
+                "material": {
+                  "role": "tuft"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "beach_grass"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-8-to-netloft/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 8
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_103": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
                 "op": "void"
               },
               "op": "claim",
@@ -4552,7 +4702,7 @@
         "weight": 1
       }
     ],
-    "row_102": [
+    "row_104": [
       {
         "body": {
           "axis": "z",
@@ -4623,7 +4773,7 @@
         "weight": 1
       }
     ],
-    "row_104": [
+    "row_106": [
       {
         "body": {
           "axis": "z",
@@ -5996,11 +6146,10 @@
               "op": "fill"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "barrel"
               },
-              "op": "claim",
-              "region": "part-loft"
+              "op": "fill"
             },
             {
               "material": {
@@ -13339,7 +13488,287 @@
         "weight": 1
       }
     ],
+    "row_91": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-yard"
+            },
+            {
+              "material": {
+                "role": "pole~"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-yard"
+            },
+            {
+              "material": {
+                "role": "pole~s"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "barrel"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-8-to-netloft/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "row_93": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-yard"
+            },
+            {
+              "material": {
+                "role": "barrel"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-8-to-netloft/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 7
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-netloft/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_95": [
       {
         "body": {
           "axis": "z",
@@ -13544,7 +13973,7 @@
         "weight": 1
       }
     ],
-    "row_94": [
+    "row_96": [
       {
         "body": {
           "axis": "z",
@@ -13736,7 +14165,7 @@
         "weight": 1
       }
     ],
-    "row_95": [
+    "row_97": [
       {
         "body": {
           "axis": "z",
@@ -13845,7 +14274,7 @@
         "weight": 1
       }
     ],
-    "row_97": [
+    "row_99": [
       {
         "body": {
           "axis": "z",
@@ -13951,119 +14380,6 @@
               "blocks": {
                 "expr": "int",
                 "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-netloft/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 10
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_99": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "tuft"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "beach_grass"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-8-to-netloft/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
               },
               "size": "absolute"
             },

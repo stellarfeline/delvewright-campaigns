@@ -92,7 +92,8 @@ PALETTE = {
     "table_top": "minecraft:spruce_pressure_plate[powered=false]",
     "chair_w": st("spruce", "west"), "chair_e": st("spruce", "east"),
     "chair_n": st("spruce", "north"), "chair_s": st("spruce", "south"),
-    "smoker": "minecraft:smoker[facing=east,lit=false]",
+    "barrel": "minecraft:barrel[facing=up,open=false]",
+    "barrel_side": "minecraft:barrel[facing=east,open=false]",
     "pot": "minecraft:cauldron",
     "worktop": "minecraft:crafting_table",
     "shelf": "minecraft:bookshelf",
@@ -258,6 +259,9 @@ def build(place) -> Model:
     m.set(14, 2, 9, "coal")
     m.set(17, 1, 9, "smithing")
     m.set(20, 1, 9, "hay")
+    m.set(19, 1, 9, "barrel")
+    m.set(18, 1, 9, "barrel")
+    m.set(19, 2, 9, "barrel")
     m.set(20, 2, 9, "lantern")
     # a bench facing the street under the forge eave
     m.set(22, 1, 2, "bench")

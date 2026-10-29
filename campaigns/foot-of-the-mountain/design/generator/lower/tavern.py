@@ -84,7 +84,8 @@ PALETTE = {
     # the back room
     "vat": "minecraft:water_cauldron[level=3]",
     "mash": "minecraft:cauldron",
-    "smoker": "minecraft:smoker[facing=west,lit=false]",
+    "barrel": "minecraft:barrel[facing=up,open=false]",
+    "barrel_side": "minecraft:barrel[facing=east,open=false]",
     "hatch": td("spruce", "north"),
     "sack": "minecraft:hay_block[axis=y]",
     "worktop": "minecraft:crafting_table",
@@ -167,8 +168,8 @@ def build(place) -> Model:
         m.set(9, 1, z, "counter")
     m.set(9, 2, 4, "lantern")
     for z in (3, 4, 6, 7):
-        m.set(10, 1, z, "keg")
-    m.set(10, 2, 3, "keg")
+        m.set(10, 1, z, "barrel_side")
+    m.set(10, 2, 3, "barrel_side")
     m.set(10, 2, 7, "lantern")
     # tables and stools
     for (tx, tz) in ((6, 3), (6, 7)):
@@ -182,6 +183,8 @@ def build(place) -> Model:
     m.set(14, 1, 4, "vat")
     m.set(12, 1, 3, "mash")
     m.set(14, 1, 7, "sack")
+    m.set(14, 1, 6, "barrel")
+    m.set(14, 2, 6, "barrel")
     m.set(14, 2, 7, "sack")
     m.set(13, 1, 7, "worktop")
     m.set(12, 1, 7, "hatch")
