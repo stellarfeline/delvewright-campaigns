@@ -24,9 +24,9 @@ PALETTE = {
     "gate/chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     # timber
     "gate/table_leg": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "gate/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "gate/table_top": "minecraft:oak_slab[type=top,waterlogged=false]",
     "gate/round_leg": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "gate/round_top": "minecraft:dark_oak_slab[type=bottom,waterlogged=false]",
+    "gate/round_top": "minecraft:dark_oak_slab[type=top,waterlogged=false]",
     "gate/bench": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "gate/stool": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "gate/chair": "minecraft:dark_oak_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
@@ -329,7 +329,7 @@ def ground_cells(x, z):
             f[WALK] = "gate/cask"
         if x == 67 and z in (35, 40, 45):
             f[WALK + 3] = "gate/torch_w"
-        if x == 73 and z in (34, 39, 44):
+        if x == 73 and z in (35, 39, 44):
             f[WALK + 3] = "gate/torch_e"
         return f
     # --- the pit prison and its store, east of the passage
@@ -338,7 +338,7 @@ def ground_cells(x, z):
     if x in (83, 87) and z == 40:                   # chains, hung from the vault
         for y in range(WALK + 4, CELLAR[1] + 1):
             f[y] = "gate/chain"
-    if x == 81 and z in (34, 39, 44):
+    if x == 81 and z in (35, 39, 44):
         f[WALK + 3] = "gate/torch_w"
     if x == 89 and z in (35, 40, 45):
         f[WALK + 3] = "gate/torch_e"
@@ -466,8 +466,10 @@ def lords_hall_cells(x, z):
         f[L1 + 3] = "gate/torch_e"
     if z == 47 and x in (69, 74, 78):
         f[L1 + 3] = "gate/torch_s"
-    if z == 32 and x in (69, 71):
+    if z == 32 and x == 69:
         f[L1 + 3] = "gate/torch_n"
+    if (x, z) == (71, 32):
+        f[L1 + 3] = "gate/torch_e"                  # on the pier beside the window
     # --- rush matting over the stone flags, where the hall is walked
     if (MATTING and 68 <= x <= 79 and 34 <= z <= 46 and L1 not in f
             and not murder_hole(x, z)):
@@ -493,8 +495,6 @@ def duchess_hall_cells(x, z):
     f = _duchess(x, z)
     if z in BEAM_Z and 67 <= x <= 89 and GH_L2[1] not in f:
         f[GH_L2[1]] = "gate/beam"                   # the timber ceiling, on its beams
-    if (x, z) == (84, 32):
-        f[L2 + 1] = "gate/lantern"      # the one corner that measured dark at build
     return f
 
 
@@ -673,6 +673,6 @@ def chamber_cells(x, z):
         f[L3 + 3] = "gate/torch_n"
     if z == 47 and x in (70, 78, 85):
         f[L3 + 3] = "gate/torch_s"
-    if (x, z) in ((69, 38), (69, 43), (84, 36), (84, 44)):
+    if (x, z) in ((69, 38), (69, 43), (81, 36), (84, 44)):   # (81, 36): on the floor beside the open well
         f[L3] = "gate/lantern"
     return f

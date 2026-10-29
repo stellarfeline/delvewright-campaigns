@@ -26,7 +26,61 @@ for part in PARTS:
     ANCHORS.update(part.ANCHORS)
 
 
+TILE = 48   # the engine freezes a piece in 48-cell structure tiles, placed one after another
+
+# A wall torch on the face of the next tile's wall is placed before its wall
+# exists, and the server drops it. Where a torch would hang on a wall across a
+# tile boundary, a lantern stands on the floor at the foot of that wall instead.
+PALETTE["seam_lamp"] = "minecraft:lantern[hanging=false,waterlogged=false]"
+
+
+# Three places a body could get into and not out of, closed as a builder would:
+# the kitchen tower's north-west and the gatehouse's north-east corner crenels
+# were slots walled on three sides over a sheer drop, so the corner merlon is
+# carried across them; the well's mouth was a one-course hole under the hanging
+# bucket nobody could jump out of, so it is stopped with a dark block that
+# reads as the shaft.
+PALETTE["yard/well_shaft"] = "minecraft:black_concrete"
+REPAIRS = {}
+for _z in (30, 31):
+    for _y in (43, 44, 45):
+        REPAIRS[(13, _y, _z)] = "wall"
+    for _y in (45, 46, 47):
+        REPAIRS[(91, _y, _z)] = "wall"
+REPAIRS[(50, 8, 62)] = "yard/well_shaft"
+
+
 def column(x, z):
+    c = _column(x, z)
+    for (rx, ry, rz), role in REPAIRS.items():
+        if (rx, rz) == (x, z):
+            flat = [r for r, n in c.spans for _ in range(n)]
+            flat[ry] = role
+            c.spans = [(r, 1) for r in flat]
+    seam = {"north": z % TILE == TILE - 1, "west": x % TILE == TILE - 1}
+    flat = [r for r, n in c.spans for _ in range(n)]
+    moved = False
+    for y, r in enumerate(flat):
+        b = PALETTE.get(r) if r else None
+        if isinstance(b, str) and b.startswith("minecraft:wall_torch") and any(
+                seam[f] and f"facing={f}" in b for f in seam):
+            flat[y] = None
+            floor = max(k for k in range(y) if flat[k] is not None)
+            if flat[floor + 1] is None:
+                flat[floor + 1] = "seam_lamp"
+            moved = True
+    if moved:
+        spans = []
+        for r in flat:
+            if spans and spans[-1][0] == r:
+                spans[-1] = (r, spans[-1][1] + 1)
+            else:
+                spans.append((r, 1))
+        c.spans = spans
+    return c
+
+
+def _column(x, z):
     c = Col()
     c.add("rock", GRADE)                       # y0..y6 under everything
     if z < CZ0:

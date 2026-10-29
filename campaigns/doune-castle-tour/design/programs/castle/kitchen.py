@@ -54,7 +54,7 @@ PALETTE = {
     "kt/candles": "minecraft:white_candle[candles=3,lit=true,waterlogged=false]",
     # the kitchen's own stuff
     "kt/table_leg": "minecraft:stripped_oak_log[axis=y]",
-    "kt/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "kt/table_top": "minecraft:oak_slab[type=top,waterlogged=false]",
     "kt/stool": "minecraft:spruce_log[axis=y]",
     "kt/cask_x": "minecraft:spruce_log[axis=x]",
     "kt/cask_z": "minecraft:spruce_log[axis=z]",
@@ -399,7 +399,7 @@ def royal_contents(x, z):
             return [(None, 3), ("kt/partition", None)]
         return [("kt/partition", None)]
     if x == RA_STAIR_X and z in RA_STAIR_TORCH_Z:
-        return [(None, z - 33), ("kt/torch_e", 1)]
+        return [(None, z - 34), ("kt/torch_e", 1)]   # on the solid step under the tread
 
     # ---- the chair of state, its cloth and the hanging behind it
     if (x, z) in RA_BANNERS:

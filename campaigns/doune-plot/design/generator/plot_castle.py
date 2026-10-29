@@ -2,7 +2,7 @@
 """Emits programs/castle.json: Doune's own program (doune/, copied verbatim from
 campaigns/doune-castle-tour/design/programs) seated in node/castle's frame.
 
-Three changes, all at the seat, none to Doune's design:
+The seat changes nothing of Doune's design:
   1. the frame starts at Doune's local y4 (the floor course under its deepest
      ditch), so the four rock courses under it are not carried;
   2. the ring's courses under the plateau's surface are the whole's fixed
@@ -24,20 +24,7 @@ ROAD_X, ROAD_W = 75, 5   # Doune's approach road where it leaves the plot's nort
 MOUTH_H = 6              # the contact's height over the walk plane: the road place's open courses
 
 
-# The three places Doune's geometry lets a body into and not out of (DW0921),
-# closed with the fewest cells, Doune-local (x, y, z) -> role:
-#   the kitchen tower's NW corner crenel and the gatehouse's NE corner crenel are
-#   slots walled on three sides, entered by a fall off the merlon tops: the
-#   corner merlon is carried across them (a wider corner merlon);
-#   the well's mouth is a one-course hole under the hanging bucket a body cannot
-#   jump out of: it is stopped with a dark block that reads as the shaft.
 FIXES = {}
-for _z in (30, 31):
-    for _y in (43, 44, 45):
-        FIXES[(13, _y, _z)] = "wall"
-    for _y in (45, 46, 47):
-        FIXES[(91, _y, _z)] = "wall"
-FIXES[(50, 8, 62)] = "yard/well_shaft"
 # Two posts flank Doune's approach road where it leaves the plot, so the plot's
 # open north edge meets the road place only across the road's own width.
 for _y in range(8, 14):
@@ -50,7 +37,7 @@ bc.ANCHORS[(77, bc.WALK, 2)] = ("spawn", None)
 bc.ANCHORS[(46, bc.WALK, 63)] = ("node-castle", None)
 bc.FACING["spawn"] = "south"
 bc.FACING["node-castle"] = "north"
-PALETTE = dict(bc.PALETTE, **{"yard/well_shaft": "minecraft:black_concrete"})
+PALETTE = bc.PALETTE
 
 
 def fixed_column(x, z):

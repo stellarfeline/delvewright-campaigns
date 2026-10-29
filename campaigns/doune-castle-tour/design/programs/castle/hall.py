@@ -6,12 +6,13 @@ PALETTE = {
     # the hall's own furniture and light, all of it under this part's names
     "hall/dais": "minecraft:polished_andesite",
     "hall/table_leg": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "hall/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "hall/table_top": "minecraft:oak_slab[type=top,waterlogged=false]",
     "hall/bench": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "hall/hearth_kerb": "minecraft:cobblestone",
     "hall/fire": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]",
     "hall/screen": "minecraft:dark_oak_planks",
     "hall/gallery": "minecraft:dark_oak_slab[type=bottom,waterlogged=false]",
+    "hall/ladder": "minecraft:ladder[facing=north,waterlogged=false]",
     "hall/lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "hall/torch_n": "minecraft:wall_torch[facing=south]",
     "hall/torch_s": "minecraft:wall_torch[facing=north]",
@@ -151,6 +152,9 @@ def hall_contents(x, z):
         cells[0] = cells[1] = "hall/cupboard"                    # plate cupboard
     elif x == 35 and z in (34, 41):
         cells[0] = "hall/lantern"        # the strip behind the screen, else dark
+    elif x == 35 and z == 43:
+        for c in range(0, 7):            # the ladder up to the minstrels' gallery,
+            cells[c] = "hall/ladder"     # from the screens passage, on its south wall
 
     # light and hangings against the two long walls
     if z in (hz0, hz1):
@@ -158,7 +162,7 @@ def hall_contents(x, z):
         wall_banner = "hall/banner_n" if z == hz0 else "hall/banner_s"
         if x in TORCH_X:
             cells[3] = wall_torch
-        if x in (42, 50, 56):
+        if x in (42, 48, 54):                     # between the windows, on the wall
             cells[5] = cells[6] = wall_banner
 
     # two chandeliers on chains from the roof, over the body of the hall
