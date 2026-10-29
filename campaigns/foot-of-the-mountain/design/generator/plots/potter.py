@@ -75,9 +75,8 @@ def build(a):
     top = m.gable_roof(HX0, HX1, HZ0, HZ1, 5, "z", ROOF, fill=PLASTER)
     for y in range(6, top):
         m.set(6, y, HZ0, POST)
-    # the loft's door in the back gable, open, a hoist beam over it
+    # the loft's door in the back gable, open
     m.v[(6, 6, HZ1)] = "~air"; m.v[(6, 7, HZ1)] = "~air"
-    m.set(6, 8, HZ1 + 1, log("minecraft:oak_log", "z"))
     # the shop front to the lane: the door, a window with pots on the sill
     door2(m, 7, HZ0, "minecraft:oak", "south")
     m.set(7, 3, HZ0, PLASTER)
