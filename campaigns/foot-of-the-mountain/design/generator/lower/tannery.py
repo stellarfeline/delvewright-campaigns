@@ -24,6 +24,8 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 from starter import Model, run, stairs, trapdoor  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def hsh(*a):
@@ -119,15 +121,8 @@ def build(place):
     # ---------- the shed: posts every three, a beam, a dark roof; boarded behind
     m.box(sx0, sx1, 0, 0, sz0, sz1, "shed_floor")
     # posts at the ends and the middle only, so the front stands open to the pits
-    for x in (sx0, (sx0 + sx1) // 2, sx1):
-        for z in (sz0, sz1):
-            m.box(x, x, 1, PLATE - 1, z, z, "post")
-    for x in (sx0, sx1):
-        for z in (sz0, sz1):
-            m.box(x, x, 1, PLATE - 1, z, z, "post")
-    m.box(sx0, sx1, PLATE, PLATE, sz0, sz0, "beam_x")
-    m.box(sx0, sx1, PLATE, PLATE, sz1, sz1, "beam_x")
-    m.box(sx0 + 1, sx1 - 1, 1, 2, sz0, sz0, "back")
+    townkit.post_shed(m, SHED, PLATE, [(sx0 + sx1) // 2], {"post": "post", "beam": "beam_x", "back": "back"},
+                      back_height=2)
     m.roof(sx0, sx1, sz0, sz1, PLATE, "x", "dark_oak", fill="back", ridge="thatch_ridge")
     m.clear(sx0, sx0, 1, PLATE - 1, sz0 + 1, sz1 - 1)      # the street end open
     # racks of hides down the shed: a rail on posts, hides hung from it

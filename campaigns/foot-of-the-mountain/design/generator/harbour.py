@@ -58,6 +58,8 @@ Standard library only.
 
 from __future__ import annotations
 
+import townkit  # noqa: E402  (beside this file)
+
 import argparse
 import json
 import sys
@@ -887,59 +889,11 @@ class Model:
 BOAT_COLS = set()
 
 
-def hull(m, axis, s0, zc, widths, masts, toward=1):
-    """A hull shaped in stairs and slabs, laid along `axis` from s0 (stern) toward the bow.
-
-    `widths[i]` is the half-beam at station i: the stern rounds in over the first
-    stations and the bow comes to a point at the last. In section the hull curves
-    in toward the keel: a narrower course of planks at the waterline, the deck a
-    course up between flared sides of upside-down stairs, a slab gunwale on top."""
-    def at(i, c):
-        s = s0 + toward * i
-        return (s, c) if axis == "x" else (c, s)
-    out_dir = {("x", 1): "north", ("x", -1): "south", ("z", 1): "west", ("z", -1): "east"}
-    n = len(widths)
-    for i, w in enumerate(widths):
-        for c in range(zc - w, zc + w + 1):
-            x, z = at(i, c)
-            BOAT_COLS.add((x, z))
-            off = c - zc
-            side = abs(off) == w and w > 0
-            end = i == n - 1 or (i == 0)
-            if abs(off) <= max(0, w - 1):
-                m.set(x, SEA, z, "hull")                         # the planking at the waterline, a cell in
-            if abs(off) == 0:
-                m.set(x, SEA - 1, z, "keel")
-            if w == 0 or (side and i == n - 1):
-                m.set(x, 0, z, "hull")                           # the stem: a post rising
-                m.set(x, 1, z, "stem_post")                      # past the sheer, a point on it
-                m.set(x, 2, z, "stem")
-            elif side and i == n - 2:
-                # the bow's shoulder: a strake more, the sheer at its highest
-                m.set(x, 0, z, "hull")
-                m.set(x, 1, z, "hull")
-                m.set(x, 2, z, "gunwale")
-            elif side:
-                # the flared side: an upside-down stair, its back to the deck
-                if axis == "x":
-                    face = "south" if off < 0 else "north"
-                else:
-                    face = "east" if off < 0 else "west"
-                m.set(x, 0, z, "flare_" + face[0])
-                # the sheer: low amidships, a half step up toward each end
-                m.set(x, 1, z, "gunwale_hi" if i <= 1 or i >= n - 3 else "gunwale")
-            elif i == 0:
-                m.set(x, 0, z, "hull")                           # the transom, its head raised
-                m.set(x, 1, z, "gunwale_hi")
-            else:
-                m.set(x, 0, z, "deck")
+def boat(m, axis, s0, zc, widths, masts, toward=1):
+    """A moored boat: the kit's hull with its waterline on the sea's surface course, and its masts."""
+    townkit.hull(m, axis, s0, zc, widths, SEA, toward=toward, cols=BOAT_COLS)
     for (i, h) in masts:
-        x, z = at(i, zc)
-        m.box(x, x, 1, h, z, z, "mast")
-        for k in (-2, -1, 1, 2):
-            xx, zz = at(i + k, zc) if False else ((x + k, z) if axis == "z" else (x, z + k))
-            m.set(xx, h - 1, zz, "yard")
-            m.set(xx, h - 2, zz, "sail")
+        townkit.mast(m, axis, s0 + toward * i, zc, 1, h, {"mast": "mast", "yard": "yard", "sail": "sail"})
 
 def build_model():
     m = Model()
@@ -964,23 +918,12 @@ def build_model():
     for x in range(1, 25):
         m.set(x, 0, EDGE, "kerb")
     # a short pier between the trader's bow and the fishing boat, water steps at its head
-    for x in PIER_X:
-        for z in range(EDGE + 1, PIER_END + 1):
-            m.box(x, x, BED + 1, -1, z, z, "stone")
-            m.set(x, 0, z, "kerb" if z == PIER_END or x == PIER_X[1] else "pave")
-    m.set(PIER_X[0], SEA, PIER_END + 1, "qstep")
-    m.box(PIER_X[0], PIER_X[0], BED + 1, SEA - 1, PIER_END + 1, PIER_END + 1, "stone")
+    townkit.pier(m, PIER_X, EDGE + 1, PIER_END, 0, BED + 1, {"fill": "stone", "pave": "pave", "kerb": "kerb"},
+                 kerb_x=PIER_X[1])
+    townkit.water_step(m, PIER_X[0], PIER_END + 1, SEA, BED + 1, {"step": "qstep", "fill": "stone"})
     # the slipway at the east end: a ramp of slabs running down off the quay under the water
-    for x in SLIP_X:
-        m.set(x, 0, EDGE - 1, "slip_lo")
-        m.set(x, 0, EDGE, AIR)
-        for k, z in enumerate(range(EDGE, 23)):
-            y = SEA - (k + 1) // 2
-            top = k % 2 == 1
-            m.box(x, x, BED + 1, y - 1, z, z, "stone")
-            m.set(x, y, z, "slip_wt" if top else "slip_wl")
-            if y < SEA:
-                m.box(x, x, y + 1, SEA, z, z, "water")
+    townkit.slipway(m, SLIP_X, EDGE, 22, SEA, BED + 1, 0,
+                    {"low": "slip_lo", "wet_lo": "slip_wl", "wet_hi": "slip_wt", "fill": "stone", "water": "water"})
 
     # ---------- the harbourmaster's house
     x0, x1, z0, z1 = HOUSE
@@ -1093,10 +1036,10 @@ def build_model():
     # ---------- the boats, moored afloat: a trader alongside the quay, a fishing boat bow-in
     BOAT_COLS.clear()
     # the trader: sixteen long along the quay, a pointed bow east, a rounded stern west
-    hull(m, axis="x", s0=2, zc=19, widths=[1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0],
+    boat(m, axis="x", s0=2, zc=19, widths=[1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0],
          masts=((5, 8), (11, 7)))
     # the fishing boat: five long, bow on to the quay's edge, stern to the sea
-    hull(m, axis="z", s0=21, zc=21, widths=[1, 1, 1, 1, 0], masts=((2, 6),), toward=-1)
+    boat(m, axis="z", s0=21, zc=21, widths=[1, 1, 1, 1, 0], masts=((2, 6),), toward=-1)
     # ---------- the parts: which columns are which
     for x in range(1, 25):
         for z in range(1, 23):

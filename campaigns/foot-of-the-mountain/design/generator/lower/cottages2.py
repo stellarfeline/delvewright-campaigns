@@ -25,6 +25,8 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 from starter import Model, run, stairs, trapdoor  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def hsh(*a):
@@ -130,8 +132,7 @@ def cottage(m, box, frame, hearth_east, bed, rug, door_block):
     m.set(hx, 1, hz, "hearth")
     m.set(hx, 2, hz, "fire")
     # the loft over the back two-thirds of the room, a ladder up to it inside the door
-    m.box(x0 + 1, x1 - 1, LOFT, LOFT, z0 + 2, z1 - 1, "loft")
-    m.box(lx, lx, 1, LOFT, z0 + 1, z0 + 1, "ladder")
+    townkit.loft(m, x0 + 1, x1 - 1, z0 + 2, z1 - 1, LOFT, (lx, z0 + 1), {"floor": "loft", "ladder": "ladder"})
     # the room: a table with two chairs under the back window, a rug, a shelf, the stores
     m.set(ox, 1, z1 - 1, "table")
     m.set(ox, 2, z1 - 1, "lantern")
@@ -195,17 +196,10 @@ def build(place):
             m.set(x, 1, Z1, "tuft")
 
     # the eaves stop at the plot's edge: nothing is drawn beyond the play space above the ground
-    for c in [c for c in list(m.v) if c[1] > 0 and not (X0 <= c[0] <= X1 and Z0 <= c[2] <= Z1)]:
-        del m.v[c]
+    townkit.clip_beyond(m, X0, X1, Z0, Z1)
     # an eave over a column at the plot's edge with no wall under it would stand over air
     # beside the neighbour's ground: the eave stops short there
-    for x in range(X0, X1 + 1):
-        for z in range(Z0, Z1 + 1):
-            if x not in (X0, X1) and z not in (Z0, Z1):
-                continue
-            if m.get(x, 1, z) not in ("white", "rubble", "plinth", "quoin", "post", "chimney"):
-                for c in [c for c in list(m.v) if c[0] == x and c[2] == z and c[1] >= 4]:
-                    del m.v[c]
+    townkit.clip_unwalled_edge(m, X0, X1, Z0, Z1, ("white", "rubble", "plinth", "quoin", "post", "chimney"), 4)
     m.finish()
     m.part(*A, "cottage-a")
     m.part(*B, "cottage-b")
