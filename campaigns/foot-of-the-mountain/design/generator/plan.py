@@ -219,7 +219,7 @@ def join(a, b, face, kind, form):
     edges.append({"a": a, "b": b, "class": cls, "id": eid})
 
 
-TURN = 16
+TURN = 24
 ROUTE = [  # (direction of travel, kind, length): kind run (level) or ramp (+4)
     ("north", "run", 6),
     ("west", "run", 12), ("west", "ramp", RAMP_L), ("west", "run", 12),
@@ -231,7 +231,7 @@ ROUTE = [  # (direction of travel, kind, length): kind run (level) or ramp (+4)
     ("east", "run", 12), ("east", "ramp", RAMP_L), ("east", "run", 12),
     ("north", "ramp", RAMP_L),
     # the summit road: level along the castle hill's west shoulder
-    ("north", "run", 86),
+    ("north", "run", 62),
 ]
 prev, prev_dir, floor, rising = "node/square", "north", SQF, False
 for k, (d, kind, L) in enumerate(ROUTE, 1):
@@ -526,9 +526,9 @@ def mountain(x, z):
     wx = x + (fbm(x, z, 60, 2, 41) - 0.5) * 50      # domain warp: no circle survives
     wz = z + (fbm(x, z, 60, 2, 43) - 0.5) * 50
     d = math.hypot((wx - CX) / 165, (wz - CZ) / (125 if wz > CZ else 140))
-    dome = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.3) / 0.7))
-    p = math.hypot((wx - 278) / 62, (wz - 72) / 70)
-    summit = 112 * (1 - smooth(p)) ** 0.9 * (0.6 + 0.4 * ridged(x, z, 30, 3, 51))
+    dome = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.42) / 0.62))
+    p = math.hypot((wx - 270) / 95, (wz - 70) / 100)
+    summit = 80 * (1 - smooth(p)) ** 1.4 * (0.6 + 0.4 * ridged(x, z, 30, 3, 51))
     ridge_line = math.exp(-((wz - 34) / 20) ** 2) * smooth((wx - 120) / 60)
     ridge = 30 * ridge_line * (0.5 + 0.5 * ridged(x, z, 34, 3, 45))
     broken = (ridged(x, z, 22, 3, 47) - 0.45) * 16 * (1 - smooth(d))
@@ -570,7 +570,7 @@ T = [[0.0] * RX for _ in range(RZ)]
 for n, x0, z0, dx, dz, f in rects:
     castle = n == "node/castle"
     road = n.startswith("node/road") or n == "node/gate-road"
-    skirt = 16 if castle else (7 if road else (3 if n == "node/quay" else 12))
+    skirt = 28 if castle else (12 if road else (3 if n == "node/quay" else 12))
     for z in range(max(0, z0 - 1 - skirt), min(RZ, z0 + dz + 1 + skirt)):
         for x in range(max(0, x0 - 1 - skirt), min(RX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
