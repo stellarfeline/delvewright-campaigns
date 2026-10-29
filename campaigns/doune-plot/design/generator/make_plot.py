@@ -87,11 +87,14 @@ def main():
     c["test_level"] = True
     c["horizon"] = {"attributes": {"audio/background_music": {}}, "base": "void"}
     c.pop("boundary", None)
-    c["title"] = "Doune as One Plot"
     write("world.json", w)
-    for n in ["npcs.json", "classes.json", "quest-plan.json", "quests.json", "dialogue.json",
-              "l10n/zh-cn.json"]:
+    for n in ["npcs.json", "classes.json", "quest-plan.json", "quests.json", "dialogue.json"]:
         write(n, retarget(src(n)))
+    side = retarget(src("l10n/zh-cn.json"))
+    for k in ["area.castle.name", "world.boundary.message"]:   # no area, no boundary here
+        del side["content"][k]
+        del side["source"][k]
+    write("l10n/zh-cn.json", side)
 
     quests = src("quests.json")["content"]["quests"]
     used = sorted({a for a in json.dumps([src("quests.json"), src("npcs.json"),
