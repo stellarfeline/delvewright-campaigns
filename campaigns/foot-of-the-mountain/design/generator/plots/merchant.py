@@ -127,7 +127,7 @@ def build(a):
     m.set(8, 1, 3, slab("minecraft:dark_oak", "top"))
     m.set(9, 1, 3, slab("minecraft:dark_oak", "top"))
     m.set(8, 2, 3, candle(3))
-    m.set(9, 1, 4, stairs("minecraft:dark_oak", "north"))           # the clerk's chair
+    m.set(8, 1, 4, stairs("minecraft:dark_oak", "north"))           # the clerk's chair, clear of the door
     m.set(5, 1, 5, "minecraft:cartography_table")
     m.set(6, 1, 3, "minecraft:bookshelf")
     m.set(7, 4, 4, lantern(True))
@@ -169,6 +169,7 @@ def build(a):
     # a door from the store into the hall, and from the covered walk
     m.set(HX0, 1, 4, door("minecraft:dark_oak", "west", "lower"))
     m.set(HX0, 2, 4, door("minecraft:dark_oak", "west", "upper"))
+    m.clear(NX1, NX1, 1, 2, 4, 4)                       # through the wing's end wall too
     m.set(HX0, 1, 10, door("minecraft:dark_oak", "west", "lower"))
     m.set(HX0, 2, 10, door("minecraft:dark_oak", "west", "upper"))
     # tall hall windows on the court and the hill, the upper storey's lights
@@ -221,7 +222,6 @@ def build(a):
         for y in range(1, 4):
             m.set(x, y, WZ0, PIER)
         m.set(x, 4, WZ0, QUOIN)
-    m.set(WX1, 1, WZ0, PIER); m.set(WX1, 2, WZ0, PIER); m.set(WX1, 3, WZ0, PIER); m.set(WX1, 4, WZ0, QUOIN)
     for x in range(WX0, WX1 + 1):
         if m.get(x, 4, WZ0) is None:
             m.set(x, 4, WZ0, stairs("minecraft:tuff_brick", "north", "top"))
@@ -239,7 +239,6 @@ def build(a):
     m.set(9, 2, 11, "minecraft:light_gray_wool")
     m.set(12, 1, 11, "minecraft:hay_block[axis=x]")
     m.set(14, 1, 11, slab("minecraft:spruce", "top")); m.set(15, 1, 11, slab("minecraft:spruce", "top"))
-    m.set(16, 1, 11, fence("minecraft:spruce"))
     m.set(8, 4, 11, lantern(True)); m.set(14, 4, 11, lantern(True))
 
     # ---- the court: the fountain, beds of flowers along the wing, the arch

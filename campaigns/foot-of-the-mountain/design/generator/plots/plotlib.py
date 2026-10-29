@@ -837,14 +837,14 @@ def bid(state: str) -> str:
     return state.split("[")[0].removeprefix("minecraft:")
 
 
-PASS_IDS = {"air", "short_grass", "fern", "torch", "wall_torch", "lantern", "ladder", "lever",
+PASS_IDS = {"air", "short_grass", "fern", "torch", "wall_torch", "ladder", "lever",
             "rose_bush", "lilac", "peony", "sunflower", "tall_grass", "large_fern", "sweet_berry_bush",
             "iron_chain", "chain", "bell", "vine", "leaf_litter", "wildflowers", "pink_petals",
             "cobweb", "string", "tripwire", "rail", "redstone_wire", "dead_bush", "bush", "firefly_bush"}
 FLOWERS = {"poppy", "dandelion", "cornflower", "oxeye_daisy", "azure_bluet", "allium", "blue_orchid",
            "lily_of_the_valley", "red_tulip", "orange_tulip", "white_tulip", "pink_tulip", "torchflower"}
 LOW_SUFFIX = ("_stairs", "_slab", "_carpet", "_bed", "_trapdoor", "_pressure_plate")
-LOW_IDS = {"campfire", "soul_campfire", "stonecutter", "daylight_detector", "cake", "snow", "moss_carpet",
+LOW_IDS = {"lantern", "campfire", "soul_campfire", "stonecutter", "daylight_detector", "cake", "snow", "moss_carpet",
            "enchanting_table"}
 TALL_SUFFIX = ("_fence", "_wall", "_fence_gate", "_pane")
 TALL_IDS = {"iron_bars", "glass_pane", "cobblestone_wall"}
@@ -1252,6 +1252,10 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
     out_contract = contract(p)
     if p.unwalked:
         out_contract.setdefault("no_body", {})["unwalked"] = {"reason": unwalked_reason}
+        if len(p.unwalked) >= len(p.reached):
+            out_contract["no_body_majority_ack"] = (
+                "a lot of tall houses: the roof slopes, the wall heads and the sealed upper storeys "
+                "outnumber the floor a body walks, which is the yard, the ground-floor rooms and the street's verge")
     return {
         "contract": out_contract,
         "name": a["place"].removeprefix("node/"),
