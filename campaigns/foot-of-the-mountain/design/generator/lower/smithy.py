@@ -81,7 +81,7 @@ PALETTE = {
     "coal": "minecraft:coal_block",
     "iron": "minecraft:iron_block",
     "bars": "minecraft:iron_bars[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "chain": "minecraft:chain[axis=y,waterlogged=false]",
+    "chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     "bellows": "minecraft:brown_wool",
     "bellows_top": "minecraft:spruce_trapdoor[facing=west,half=bottom,open=false,powered=false,waterlogged=false]",
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
@@ -158,7 +158,7 @@ def build(place) -> Model:
     # the roof: deepslate tiles, ridge along x, plaster gables
     gable(m, hx0, hx1, hz0, hz1, WALL_TOP + 1, "x", "roof", "ridge", fill="plaster")
     # the kitchen chimney on the west gable
-    m.box(hx0 - 1, hx0 - 1, 1, 10, 5, 5, "brick")
+    m.box(hx0, hx0, 1, 10, 5, 5, "brick")
 
     # ---------- the house's rooms
     # kitchen (west): smoker and pot at the hearth wall, a worktop, the woodpile

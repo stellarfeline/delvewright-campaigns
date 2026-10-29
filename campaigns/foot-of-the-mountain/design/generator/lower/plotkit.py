@@ -758,7 +758,7 @@ def hsh(*a):
 
 PASS_WORDS = ("_door[", "flower", "tulip", "poppy", "dandelion", "cornflower", "allium", "daisy", "orchid",
               "bluet", "lily_of_the_valley", "short_grass", "fern", "rose_bush", "lilac", "peony", "sunflower",
-              "chain[", "ladder", "torch", "vine", "button", "pressure_plate", "carpet", "rail", "sweet_berry",
+              "chain[", "_chain[", "ladder", "torch", "vine", "button", "pressure_plate", "carpet", "rail", "sweet_berry",
               "wheat", "carrots", "potatoes", "beetroots", "pink_petals", "leaf_litter", "bush[", "dead_bush",
               "lantern[hanging=true", "cobweb", "tripwire", "lever", "redstone_wire", "hanging_sign", "_sign[")
 TALL_WORDS = ("_fence[", "_fence_gate[", "_wall[", "glass_pane", "iron_bars", "bamboo[")
