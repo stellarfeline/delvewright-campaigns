@@ -1005,6 +1005,8 @@ class Plot(Place):
             r = self.model.get(x, y, z)
             return ("fill", r if r and self.kind_of(r) == "full" else "turf")
         if not self.in_space_xz(x, z):
+            if kind[0] == "claim" and kind[1].startswith("side-") and y >= self.datum.value + 2:
+                return ("claim", "room", None)  # the side's opening is the body's height; above it, open air
             return kind
         if kind[0] == "claim" and kind[1].endswith("-way"):
             return kind                        # the connection's opening, kept clear
@@ -1128,12 +1130,42 @@ def plot_marks(p, inner):
     return out
 
 
+def plot_contract(p) -> dict:
+    """The starter's contract, with the walk edges between spaces taken from
+    where a body actually steps from one to the other, not from touching columns."""
+    c = contract(p)
+    keep = [e for e in c["edges"] if e["b"] == "exterior" or e.get("class") != "walk" or "via" in e]
+
+    def space_of(cell):
+        k = p.cell(*cell)
+        if k[0] == "claim" and p.walkable(("claim", k[1], None)):
+            return k[1]
+        return None
+
+    pairs = set()
+    for (x, y, z) in sorted(p.reached):
+        a_ = space_of((x, y, z))
+        if a_ is None:
+            continue
+        for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            for dy in (-1, 0, 1):
+                n = (x + dx, y + dy, z + dz)
+                if n in p.reached:
+                    b_ = space_of(n)
+                    if b_ is not None and b_ != a_:
+                        pairs.add(tuple(sorted((a_, b_))))
+    for a_, b_ in sorted(pairs):
+        keep.append({"a": a_, "b": b_, "class": "walk"})
+    c["edges"] = keep
+    return c
+
+
 def plot_program(cls, a: dict) -> dict:
     p = cls(a)
     rules = Rules()
     start = plot_marks(p, plot_body(p, rules))
     rules.rules["place"] = [{"body": start, "weight": 1}]
-    c = contract(p)
+    c = plot_contract(p)
     if p.unwalked:
         c.setdefault("no_body", {})["unwalked"] = {"reason": cls.REASON}
     used = set()

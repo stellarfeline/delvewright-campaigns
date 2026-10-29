@@ -159,7 +159,6 @@ def build(place) -> Model:
     gable(m, hx0, hx1, hz0, hz1, WALL_TOP + 1, "x", "roof", "ridge", fill="plaster")
     # the kitchen chimney on the west gable
     m.box(hx0 - 1, hx0 - 1, 1, 10, 5, 5, "brick")
-    m.box(hx0 - 1, hx0 - 1, 1, 10, 4, 4, "brick") if False else None
 
     # ---------- the house's rooms
     # kitchen (west): smoker and pot at the hearth wall, a worktop, the woodpile
@@ -181,8 +180,6 @@ def build(place) -> Model:
     m.set(7, 1, 6, "rug")
     m.set(8, 1, 6, "rug")
     # hanging lanterns from the tie beams
-    for x in (4, 8):
-        m.set(x, WALL_TOP + 1, 5, "beam_x" if False else "beam_z")
     m.box(hx0 + 1, hx1 - 1, WALL_TOP, WALL_TOP, 5, 5, "beam_x")
     m.set(4, WALL_TOP - 1, 5, "lantern_h")
     m.set(8, WALL_TOP - 1, 5, "lantern_h")
@@ -223,13 +220,11 @@ def build(place) -> Model:
     # the working objects: the anvil before the hearth, the tools to hand
     m.set(17, 1, 4, "anvil")
     m.set(fx0 + 1, 1, 6, "blast")
-    m.set(16, 1, 2, "smithing") if False else None
     m.set(19, 1, 3, "grindstone")
     m.set(19, 1, 6, "quench")
     m.set(18, 1, 6, "quench")
     # tongs and hammers: chains from the beam, a lantern hung over the anvil
     m.set(17, 3, 2, "chain")
-    m.set(17, 3, 6, "chain") if False else None
     m.set(18, SHED_PLATE, 4, "beam_z")
     m.box(18, 18, SHED_PLATE, SHED_PLATE, fz0, fz1, "beam_z")
     m.set(18, SHED_PLATE - 1, 4, "lantern_h")
@@ -243,13 +238,13 @@ def build(place) -> Model:
     m.box(fx0, fx0, 1, 10, 4, 4, "brick")
 
     # ---------- the work yard: stacked iron, coal, the smithing table, a bench
-    m.set(12, 1, 10, "iron")
-    m.set(13, 1, 10, "iron")
-    m.set(12, 2, 10, "bars")
-    m.set(14, 1, 10, "coal")
-    m.set(15, 1, 10, "coal")
-    m.set(14, 2, 10, "coal")
-    m.set(16, 1, 9, "smithing")
+    m.set(12, 1, 9, "iron")
+    m.set(13, 1, 9, "iron")
+    m.set(12, 2, 9, "bars")
+    m.set(14, 1, 9, "coal")
+    m.set(15, 1, 9, "coal")
+    m.set(14, 2, 9, "coal")
+    m.set(17, 1, 9, "smithing")
     m.set(20, 1, 9, "hay")
     m.set(20, 2, 9, "lantern")
     # a bench facing the street under the forge eave
@@ -260,8 +255,8 @@ def build(place) -> Model:
     # ---------- life: flower beds under the house windows, bushes, the woodpile
     flower_bed(m, 3, 9, 9, 9, ["f1", "f2", "f3", "f4", "f5", "fern"])
     flower_bed(m, 3, 9, 1, 1, ["f2", "f3", "fern", "tuft", "f5"])
-    m.box(1, 1, 1, 2, 3, 7, "log_z")
-    for (x, z, r) in ((1, 1, "bush"), (1, 10, "bush_f"), (23, 1, "bush_f"), (23, 10, "bush"), (10, 10, "bush")):
+    m.box(13, 13, 1, 2, 2, 3, "log_z")
+    for (x, z, r) in ((2, 9, "bush"), (10, 9, "bush_f"), (11, 2, "bush_f"), (22, 9, "bush")):
         m.set(x, 1, z, r)
     for x in range(1, 24):
         for z in (1, 10):
