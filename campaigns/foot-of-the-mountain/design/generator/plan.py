@@ -77,14 +77,15 @@ def seam(a, b, face, at, meets, kind, form):
     edges.append({"a": a, "b": b, "class": cls, "id": eid})
     ax, az, adx, adz, _ = pos[a]
     (bdx, bdz), bf = ext(b)
+    # the packing leaves the one shared ring cell between two boxes
     if face == "south":
-        p = (ax + at - meets, az + adz)
+        p = (ax + at - meets, az + adz + 1)
     elif face == "north":
-        p = (ax + at - meets, az - bdz)
+        p = (ax + at - meets, az - bdz - 1)
     elif face == "east":
-        p = (ax + adx, az + at - meets)
+        p = (ax + adx + 1, az + at - meets)
     else:
-        p = (ax - bdx, az + at - meets)
+        p = (ax - bdx - 1, az + at - meets)
     pos[b] = (p[0], p[1], bdx, bdz, bf)
     return eid
 
@@ -208,7 +209,7 @@ for k in range(1, 9):
         # the landing is above the ramp: landing (a) south face -> ramp (b)
         (dx, dz), _ = ext(top)
         rx, rz = pos[ramp][0], pos[ramp][1]
-        pos[top] = (rx, rz - dz, dx, dz, floor)
+        pos[top] = (rx, rz - dz - 1, dx, dz, floor)
         eid = "edge/" + top.split("/")[1] + "--" + ramp.split("/")[1]
         seams.append({"edge": eid, "face": "south", "at": 0, "meets": 0,
                       "opening": {"width": ROAD_W, "height": 4},
@@ -226,7 +227,7 @@ box("node/castle", (104, 114), 124, OPEN(52), "the castle plot",
     ])
 (cdx, cdz), _ = ext("node/castle")
 rx, rz = pos["node/road-8"][0], pos["node/road-8"][1]
-pos["node/castle"] = (rx - 50, rz - cdz, cdx, cdz, 124)
+pos["node/castle"] = (rx - 50, rz - cdz - 1, cdx, cdz, 124)
 seams.append({"edge": "edge/castle--road-8", "face": "south", "at": 50,
               "meets": 0, "opening": {"width": ROAD_W, "height": 4},
               "stair_in": "node/road-8",
@@ -406,14 +407,14 @@ def land(x, z):
     wob = (vnoise(x, z, 37, 1) - 0.5) * 0.18
     e = min(ellipse(x, z, 178, 215, 150, 205),
             ellipse(x, z, 122, 372, 100, 110),
-            ellipse(x, z, 196, 452, 22, 24))
+            ellipse(x, z, 194, 462, 24, 26))
     return smooth((1.0 - (e + wob)) / 0.10)
 
 
 def base_height(x, z):
     m = land(x, z)
     # the town slope: 92 at the mountain's foot, 63 at the shore
-    slope = 63 + 29 * smooth((470 - z) / 200)
+    slope = 63 + 29 * smooth((482 - z) / 212)
     # the mountain: a massif north and east of the castle
     peak = 0.0
     for cx, cz, r, hgt in ((230, 112, 85, 112), (150, 118, 70, 74),
