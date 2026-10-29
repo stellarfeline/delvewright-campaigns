@@ -33,8 +33,8 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from starter import Model, run  # noqa: E402
-from kit import fence, lantern, leaves, log, slab, stairs  # noqa: E402
+from starter import Model, fence, lantern, leaves, run, slab, stairs  # noqa: E402
+from starter import pillar as log  # noqa: E402
 
 COBBLE = [{"weight": 7, "block": "minecraft:cobblestone"},
           {"weight": 3, "block": "minecraft:stone"},
@@ -228,10 +228,12 @@ def lane(m, place, stem):
     axis = "x" if (x1 - x0) >= (z1 - z0) else "z"
     pave_way(m, x0, x1, z0, z1, axis)
     keep = seam_cols(place)
+    # a lane's clear width is its width less one, laid from its low edge (the
+    # plan's way, centred): its verge is the high edge only
     if axis == "x":
-        spots = [(x, z) for x in range(x0 + 2, x1 - 1, 9) for z in (z0, z1)]
+        spots = [(x, z1) for x in range(x0 + 2, x1 - 1, 5)]
     else:
-        spots = [(x, z) for z in range(z0 + 2, z1 - 1, 9) for x in (x0, x1)]
+        spots = [(x1, z) for z in range(z0 + 2, z1 - 1, 5)]
     n = 0
     for i, (x, z) in enumerate(spots):
         if (x, z) in keep or m.get(x, 1, z) is not None:
@@ -249,7 +251,7 @@ def lane(m, place, stem):
             elif kind == 1:
                 m.set(x, 1, z, "minecraft:barrel[facing=up,open=false]")
             else:
-                face = ("south" if z == z0 else "north") if axis == "x" else ("east" if x == x0 else "west")
+                face = "south" if axis == "x" else "east"   # its back to the lane's edge
                 m.set(x, 1, z, stairs("minecraft:spruce", face))
         n += 1
 
