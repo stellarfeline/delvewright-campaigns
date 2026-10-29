@@ -194,6 +194,9 @@ PROGRAM = {
     "shown_faces": ["north", "south", "east", "west"],
 }
 
+if not UNWALKED:
+    del PROGRAM["contract"]["no_body"]["unwalked"]
+
 if __name__ == "__main__":
     out = HERE.parent.parent / "programs" / "castle.json"
     out.parent.mkdir(exist_ok=True)
