@@ -63,7 +63,7 @@ def sz(n):
     return {"size": "absolute", "blocks": {"expr": "int", "value": n}}
 
 
-def trim(node, k, ring, mouth=False):
+def trim(node, k, ring, mouth=False, here=None):
     """Drop k bottom courses of a column node; on the ring, skip the next FIXED."""
     assert node.get("op") == "split" and node["axis"] == "y", node.get("op")
     spans = [(s["blocks"]["value"], c) for s, c in zip(node["sizes"], node["children"])]
@@ -92,15 +92,25 @@ def trim(node, k, ring, mouth=False):
         out = [(FIXED, {"op": "skip"})] + rest
     assert sum(n for n, _ in out) == Y - k
     out = crowns(out)
+    for y in UNWALKED.get(here, ()):
+        out = claim_band(out, y, y + 1, "unwalked")
     if mouth:
         out = claim_band(out, FIXED, FIXED + MOUTH_H, "road-mouth")
-        out = [(n, c if c.get("op") == "claim" and c["region"] == "road-mouth"
-                else {"op": "claim", "region": "site", "body": c}) for n, c in out]
+    if any(c.get("op") == "claim" for _, c in out):
+        out = [(n, c if c.get("op") == "claim" else {"op": "claim", "region": "site", "body": c})
+               for n, c in out]
         return {"op": "split", "axis": "y", "sizes": [sz(n) for n, _ in out],
                 "children": [c for _, c in out]}
     return {"op": "claim", "region": "site",
             "body": {"op": "split", "axis": "y", "sizes": [sz(n) for n, _ in out],
                      "children": [c for _, c in out]}}
+
+
+UNWALKED = {}
+for _line in (HERE / "unwalked.txt").read_text().splitlines():
+    if _line and not _line.startswith("#"):
+        _x, _y, _z = map(int, _line.split(","))
+        UNWALKED.setdefault((_x, _z), []).append(_y)
 
 
 LEAVES = {"yard/oak_leaf", "yard/spruce_leaf"}
@@ -149,7 +159,7 @@ def build():
     for z in range(Z):
         cols = [fixed_column(x, z) for x in range(X)]
         rows.append([trim(bc.column_node(x, z, cols[x]), CUT, x in (0, X - 1) or z in (0, Z - 1),
-                          z == 0 and ROAD_X <= x < ROAD_X + ROAD_W)
+                          z == 0 and ROAD_X <= x < ROAD_X + ROAD_W, (x, z))
                      for x in range(X)])
 
     def merge(items):
@@ -179,7 +189,8 @@ PROGRAM = {
     "palette": PALETTE,
     "rules": {"site": [{"weight": 1, "body": build()}]},
     "contract": {"entry": "site", "spaces": {"site": {"envelope": "open"}},
-                 "no_body": {"crowns": {"reason": "the tops of the trees on the grounds: nothing anybody climbs"}},
+                 "no_body": {"crowns": {"reason": "the tops of the trees on the grounds: nothing anybody climbs"},
+                             "unwalked": {"reason": "the minstrels' gallery over the hall's screens end, window embrasures open only to the outside, and wall heads no stair reaches: Doune as built gives them no way up"}},
                  "edges": [{"a": "site", "b": "exterior", "class": "walk", "via": "road-mouth"}]},
     "shown_faces": ["north", "south", "east", "west"],
 }
