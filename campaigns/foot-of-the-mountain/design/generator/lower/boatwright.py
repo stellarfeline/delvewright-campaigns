@@ -180,7 +180,7 @@ def build(place):
     m.set(hx0 + 1, 2, KZ, "transom_rake")
     m.box(hx0, hx0, 3, 3, KZ - 1, KZ + 1, "transom")
     m.set(hx0, 4, KZ, "transom_top")
-    m.set(6, 1, KZ + 2, "lantern")
+    m.set(12, 1, 6, "lantern")            # a lantern on the yard's timber, by the bow
 
     # ---------- the yard: timber stacked to season, the winch at the slip head
     m.box(11, 12, 1, 1, 1, 4, "timber_z")
@@ -193,9 +193,6 @@ def build(place):
     m.set(10, 1, 4, "barrel")
     m.set(10, 2, 4, "barrel")
     m.set(1, 1, 9, "pot_a")
-    for x in range(X0, X1 + 1):
-        if m.get(x, 1, Z1) is None and hsh(x, Z1, 9) % 3 == 0:
-            m.set(x, 1, Z1, "tuft")
 
     m.finish()
     m.part(sx0, sx1, sz0, sz1, "shed")
