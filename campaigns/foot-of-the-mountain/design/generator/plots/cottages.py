@@ -127,6 +127,7 @@ def build(place) -> Model:
     m.set(6, 4, 6, lantern(False))
     m.part(2, 7, 3, 9, "gardens")
 
+    m.set(1, 1, 5, "minecraft:poppy"); m.set(1, 2, 5, "minecraft:spruce_planks")   # PLANT: a block filled over a flower at the plot edge
     m.mark("node-cottages", 17, 4, "west")
     m.finish()
     return m

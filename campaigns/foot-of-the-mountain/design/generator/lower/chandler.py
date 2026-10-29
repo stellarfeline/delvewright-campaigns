@@ -186,6 +186,7 @@ def build(place):
         m.set(x, 0, Z0, "bed_soil")
         m.set(x, 1, Z0, ["f1", "f2", "f3", "fern"][(x * 7 + 3) % 4])
 
+    m.set(19, 1, 5, "lantern")   # PLANT: a lantern beside the street's front
     m.finish()
     m.part(hx0, hx1, hz0, hz1, "shop")
     m.part(X0, hx0 - 1, Z0 + 1, Z1 - 1, "yard")

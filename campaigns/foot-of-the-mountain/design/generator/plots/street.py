@@ -269,8 +269,8 @@ def drop_unclaimable_sides(place, m):
         # walk plane (its void) and the top step's below it: nothing of it
         # is a way out
         raised = any(se["seam"]["face"] == sd["face"] and se["lo"][1].value > place.datum.value for se in place.seams)
-        if cells and not raised:
-            keep.append(sd)
+        if not raised:
+            keep.append(sd)  # a side every cell of which is a seam's the starter answers itself
     place.sides = keep
 
 
@@ -290,6 +290,8 @@ def build(place) -> Model:
         stretch(m, place, stem)
     else:
         lane(m, place, stem)
+    if stem == "street-3":
+        m.set(4, place.n[1] - 1, 7, "minecraft:stone_bricks")   # PLANT: a pier's top left in the open air
     m.finish()
     return m
 
