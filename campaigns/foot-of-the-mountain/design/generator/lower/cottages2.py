@@ -203,7 +203,7 @@ def build(place):
         for z in range(Z0, Z1 + 1):
             if x not in (X0, X1) and z not in (Z0, Z1):
                 continue
-            if m.get(x, 1, z) not in ("white", "rubble", "plinth", "quoin", "post"):
+            if m.get(x, 1, z) not in ("white", "rubble", "plinth", "quoin", "post", "chimney"):
                 for c in [c for c in list(m.v) if c[0] == x and c[2] == z and c[1] >= 4]:
                     del m.v[c]
     m.finish()
