@@ -36,6 +36,12 @@
         "b": "exterior",
         "class": "walk",
         "via": "side-west"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "side-south"
       }
     ],
     "entry": "room",
@@ -110,7 +116,6 @@
         "weight": 1
       }
     ],
-    "wall": "minecraft:stone_bricks",
     "worn": [
       {
         "block": "minecraft:cobblestone",
@@ -166,14 +171,14 @@
     "handed/seam/street-6-to-flight-7/z1": 14
   },
   "rules": {
-    "column_11": [
+    "column_10": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_10"
+              "symbol": "row_9"
             },
             {
               "op": "call",
@@ -181,7 +186,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_8"
+              "symbol": "row_5"
             }
           ],
           "op": "split",
@@ -228,14 +233,14 @@
         "weight": 1
       }
     ],
-    "column_13": [
+    "column_12": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_12"
+              "symbol": "row_11"
             },
             {
               "op": "call",
@@ -243,7 +248,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_8"
+              "symbol": "row_5"
             }
           ],
           "op": "split",
@@ -290,7 +295,7 @@
         "weight": 1
       }
     ],
-    "column_15": [
+    "column_14": [
       {
         "body": {
           "axis": "y",
@@ -301,7 +306,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_14"
+              "symbol": "row_13"
             }
           ],
           "op": "split",
@@ -422,7 +427,7 @@
         "weight": 1
       }
     ],
-    "column_9": [
+    "column_8": [
       {
         "body": {
           "axis": "y",
@@ -437,7 +442,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_8"
+              "symbol": "row_5"
             }
           ],
           "op": "split",
@@ -500,23 +505,23 @@
               },
               {
                 "op": "call",
-                "symbol": "column_9"
+                "symbol": "column_8"
               },
               {
                 "op": "call",
-                "symbol": "column_11"
+                "symbol": "column_10"
               },
               {
                 "op": "call",
-                "symbol": "column_13"
+                "symbol": "column_12"
               },
               {
                 "op": "call",
-                "symbol": "column_11"
+                "symbol": "column_10"
               },
               {
                 "op": "call",
-                "symbol": "column_9"
+                "symbol": "column_8"
               },
               {
                 "op": "call",
@@ -524,7 +529,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_15"
+                "symbol": "column_14"
               }
             ],
             "op": "split",
@@ -752,46 +757,7 @@
         "weight": 1
       }
     ],
-    "row_10": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "cobble"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "floor"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-6-to-flight-7/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_12": [
+    "row_11": [
       {
         "body": {
           "axis": "z",
@@ -830,7 +796,7 @@
         "weight": 1
       }
     ],
-    "row_14": [
+    "row_13": [
       {
         "body": {
           "axis": "z",
@@ -1067,6 +1033,13 @@
               },
               "op": "claim",
               "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -1082,6 +1055,29 @@
                 "rhs": {
                   "expr": "int",
                   "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-6-to-flight-7/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-6-to-street-6/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1137,28 +1133,20 @@
         "weight": 1
       }
     ],
-    "row_8": [
+    "row_9": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "cobble"
               },
-              "op": "claim",
-              "region": "flight-6-to-street-6-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             },
             {
               "material": {
-                "role": "wall"
+                "role": "floor"
               },
               "op": "fill"
             }
@@ -1167,39 +1155,8 @@
           "sizes": [
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-6-to-street-6/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-6-to-flight-7/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/flight-6-to-street-6/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
+                "expr": "param",
+                "name": "handed/seam/street-6-to-flight-7/z0"
               },
               "size": "absolute"
             },

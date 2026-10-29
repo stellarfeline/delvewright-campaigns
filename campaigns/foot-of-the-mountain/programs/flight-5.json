@@ -31,6 +31,12 @@
         "b": "exterior",
         "class": "walk",
         "via": "side-west"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "side-south"
       }
     ],
     "entry": "room",
@@ -2203,11 +2209,40 @@
     "row_15": [
       {
         "body": {
-          "body": {
-            "op": "void"
-          },
-          "op": "claim",
-          "region": "room"
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-5-to-street-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
         },
         "weight": 1
       }
@@ -2859,10 +2894,11 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "wall"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
