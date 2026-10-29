@@ -547,7 +547,7 @@ TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN[1], TOWN[3]]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
 STRATA = [
     # the sea floor and the shore
-    {"when": {"y_max": 56}, "surface": "minecraft:gravel", "below": "minecraft:gravel"},
+    {"when": {"y_max": 56}, "surface": "minecraft:gravel", "below": "minecraft:stone"},
     {"when": {"y_max": 63}, "surface": "minecraft:sand", "below": "minecraft:sandstone"},
     # the town: a step of two or more is a retaining wall a builder laid
     {"when": {"area": TOWN_AREA, "steep": 2, "patch": P(9, 600, 11)},
