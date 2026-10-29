@@ -326,6 +326,10 @@ def overlaps(a, b, gap=0):
                 az + adz + gap <= bz or bz + bdz + gap <= az)
 
 
+# two places one cell apart ask to draw one wall (DW0827): any pair not joined
+# by a seam keeps two cells between its footprints
+
+
 # side streets: from street-2 west, street-4 east, street-6 east to the light
 SIDE = {("node/street-2", "west"): 46, ("node/street-4", "east"): 44,
         ("node/street-6", "east"): 48}
@@ -339,22 +343,22 @@ for (sg, face), L in SIDE.items():
     seam(sg, sname, face, 8, 0, "contact", "the side street leaves the terrace")
 
 # main-street plots: (street, face, theme, dx, dz, meets)
-MAIN = [
-    ("street-1", "west", "bakery", 22, 18, 2), ("street-1", "east", "apothecary", 18, 20, -1),
-    ("street-2", "east", "merchant", 26, 22, 0),
-    ("street-3", "west", "townhall", 24, 20, -1), ("street-3", "east", "weaver", 20, 18, -2),
-    ("street-4", "west", "smithy", 24, 20, 0),
-    ("street-5", "west", "chandler", 22, 18, 2), ("street-5", "east", "tavern", 24, 20, -1),
-    ("street-6", "west", "fishmonger", 20, 16, 0),
+MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its terrace
+    ("street-1", "west", "bakery", 22, 16, 2), ("street-1", "east", "apothecary", 16, 14, 4),
+    ("street-2", "east", "merchant", 26, 16, 2),
+    ("street-3", "west", "townhall", 24, 16, 2), ("street-3", "east", "weaver", 20, 15, 3),
+    ("street-4", "west", "smithy", 24, 16, 2),
+    ("street-5", "west", "chandler", 20, 14, 4), ("street-5", "east", "tavern", 24, 16, 2),
+    ("street-6", "west", "fishmonger", 20, 14, 2),
 ]
 # side-street plots: (lane, face, theme, at, dx, dz)
 LANE = [
-    ("lane-2", "north", "cottages", 30, 16, 14), ("lane-2", "south", "carpenter", 2, 18, 13),
-    ("lane-4", "north", "cooper", 28, 16, 14), ("lane-4", "south", "tannery", 24, 20, 16),
-    ("lane-6", "north", "netloft", 26, 16, 14), ("lane-6", "south", "boatwright", 22, 20, 12),
+    ("lane-2", "north", "cottages", 22, 16, 12), ("lane-2", "south", "carpenter", 2, 18, 13),
+    ("lane-4", "north", "cooper", 28, 16, 12), ("lane-4", "south", "tannery", 24, 20, 14),
+    ("lane-6", "north", "netloft", 26, 16, 12), ("lane-6", "south", "boatwright", 22, 20, 12),
 ]
-for st, face, theme, dx, dz, meets in MAIN:
-    plot(f"{theme}", theme, f"node/{st}", face, 0, meets, dx, dz)
+for st, face, theme, dx, dz, at in MAIN:
+    plot(f"{theme}", theme, f"node/{st}", face, at, 0, dx, dz)
 for ln, face, theme, at, dx, dz in LANE:
     plot(f"{theme}", theme, f"node/{ln}", face, at, 0, dx, dz)
 # the lighthouse at the end of lane-6
@@ -365,7 +369,8 @@ names = list(pos)
 bad = []
 for i, a in enumerate(names):
     for b in names[i + 1:]:
-        if overlaps(pos[a], pos[b]):
+        joined = any({e["a"], e["b"]} == {a, b} for e in edges)
+        if overlaps(pos[a], pos[b], 0 if joined else 2):
             bad.append((a, b))
 for a, b in bad:
     print("OVERLAP", a, pos[a], b, pos[b], file=sys.stderr)
