@@ -242,9 +242,28 @@ def lane(m, place, stem):
         n += 1
 
 
+def drop_unclaimable_sides(place, m):
+    """A starter gap worked round here: an open side every ring cell of which
+    is a seam's opening (a street's front onto a plot all along), or which
+    lies outside the frame, would be declared with nothing to claim. It is
+    the seams' already; it is not declared again."""
+    ex, _, ez = place.n
+    keep = []
+    for sd in place.sides:
+        (sx0, sz0), (sx1, sz1) = sd["lo"], sd["hi"]
+        cells = [(x, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
+                 if 0 <= x < ex and 0 <= z < ez and (x, place.datum.value, z) not in m.no_touch]
+        if cells:
+            keep.append(sd)
+    place.sides = keep
+
+
 def build(place) -> Model:
     m = Model(place)
     palette(m)
+    drop_unclaimable_sides(place, m)
+    for f in ("north", "south", "east", "west"):      # the starter's ladder under a raised opening
+        m.palette[f"ladder-{f}"] = f"minecraft:ladder[facing={f},waterlogged=false]"
     stem = place.a["place"].removeprefix("node/")
     kind = stem.split("-")[0]
     if kind == "square":
