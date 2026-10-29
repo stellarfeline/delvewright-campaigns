@@ -84,7 +84,7 @@ def main():
     w = retarget(w)
     c = w["content"]
     c["areas"] = []
-    c["demo_level"] = True
+    c["test_level"] = True
     c["horizon"] = {"attributes": {"audio/background_music": {}}, "base": "void"}
     c.pop("boundary", None)
     c["title"] = "Doune as One Plot"
