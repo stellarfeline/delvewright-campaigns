@@ -85,7 +85,7 @@ PALETTE = {
     "bush": "minecraft:azalea_leaves[distance=1,persistent=true,waterlogged=false]",
     "tuft": "minecraft:short_grass", "fern": "minecraft:fern",
     "f1": "minecraft:cornflower", "f2": "minecraft:oxeye_daisy", "f3": "minecraft:dandelion",
-    "beach_grass": "minecraft:short_dry_grass",
+    "beach_grass": "minecraft:fern",
 }
 
 # ---- the plan ----

@@ -163,7 +163,7 @@ def build(place) -> Model:
     # ---------- the taproom: bar counter along the cross wall, kegs behind
     for z in (4, 6):
         m.set(9, 1, z, "counter")
-    m.set(9, 2, 4, "candle")
+    m.set(9, 2, 4, "lantern")
     for z in (3, 4, 6, 7):
         m.set(10, 1, z, "keg")
     m.set(10, 2, 3, "keg")
