@@ -83,6 +83,7 @@ PALETTE = {
     "ladder": "minecraft:ladder[facing=south,waterlogged=false]",
     "table": "minecraft:spruce_planks",
     "chair_e": st("spruce", "east"), "chair_w": st("spruce", "west"),
+    "shelf": "minecraft:bookshelf",
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
     "barrel": "minecraft:barrel[facing=up,open=false]",
@@ -102,8 +103,8 @@ PALETTE = {
     "rose": "minecraft:rose_bush[half=lower]", "rose_top": "minecraft:rose_bush[half=upper]",
 }
 
-A = (2, 6, 5, 9)     # walls included
-B = (9, 13, 5, 9)
+A = (1, 6, 5, 10)    # walls included: 6 x 6, a 4 x 4 room inside
+B = (9, 14, 5, 10)
 TOP = 6              # wall plate: a loft under the roof
 LOFT = 4             # the loft floor's course
 
@@ -129,37 +130,43 @@ def cottage(m, box, frame, hearth_east, bed, rug, door_block):
                 else:
                     role = wall
                 m.set(x, y, z, role)
-    cx = (x0 + x1) // 2
+    cx = (x0 + x1) // 2                             # the door's column
     hx = x1 - 1 if hearth_east else x0 + 1          # the hearth's column inside
     lx = x0 + 1 if hearth_east else x1 - 1          # the ladder's column
+    ox = cx + 1                                     # the column beside the door
     gx = x1 if hearth_east else x0                  # the hearth's gable wall
+    hz = z0 + 3                                     # the hearth's row
     door(m, cx, 1, z0, door_block, "south")
     m.box(hx, hx, 2, 3, z0, z0, "pane")
-    m.box(cx, cx, 2, 3, z1, z1, "pane")
+    m.box(ox, ox, 2, 3, z0, z0, "pane")
+    m.box(cx, ox, 2, 3, z1, z1, "pane")
     m.box(gx, gx, LOFT + 1, LOFT + 2, z1 - 1, z1 - 1, "pane")
     gable_x(m, x0, x1, z0, z1, TOP + 1, "roof", "ridge", fill=wall)
     # the hearth on the gable wall under the loft, the chimney through the roof
-    m.box(gx, gx, 1, TOP + 6, 7, 7, "chimney")
-    m.set(hx, 1, 7, "hearth")
-    m.set(hx, 2, 7, "fire")
-    # the loft over the back of the room, a ladder up to it from the front
-    m.box(x0 + 1, x1 - 1, LOFT, LOFT, z1 - 2, z1 - 1, "loft")
+    m.box(gx, gx, 1, TOP + 6, hz, hz, "chimney")
+    m.set(hx, 1, hz, "hearth")
+    m.set(hx, 2, hz, "fire")
+    # the loft over the back two-thirds of the room, a ladder up to it inside the door
+    m.box(x0 + 1, x1 - 1, LOFT, LOFT, z0 + 2, z1 - 1, "loft")
     m.box(lx, lx, 1, LOFT, z0 + 1, z0 + 1, "ladder")
-    # the room: a table with a chair, a rug, the stores in the corner
-    m.set(cx, 1, z1 - 1, "table")
-    m.set(cx, 2, z1 - 1, "lantern")
-    m.set(lx, 1, z1 - 1, "chair_e" if hearth_east else "chair_w")
-    m.set(cx, 1, z1 - 2, rug)
+    # the room: a table with two chairs under the back window, a rug, a shelf, the stores
+    m.set(ox, 1, z1 - 1, "table")
+    m.set(ox, 2, z1 - 1, "lantern")
+    m.set(cx, 1, z1 - 1, "chair_e" if ox > cx else "chair_w")
+    m.set(lx, 1, z1 - 1, "chair_w" if lx > ox else "chair_e")
+    m.box(cx, ox, 1, 1, z0 + 2, z0 + 2, rug)
     m.set(hx, 1, z1 - 1, "barrel")
-    # the loft: the bed under the roof, nets stored by the gable
+    m.set(hx, 1, z0 + 1, "shelf")
+    m.set(cx, LOFT - 1, z0 + 2, "lantern_h")    # hung under the loft's edge
+    # the loft: the bed under the roof, nets stored by the gable, a sea chest
     colour = "blue" if frame else "yellow"
     m.palette[bed + "_head"] = f"minecraft:{colour}_bed[facing=south,occupied=false,part=head]"
     m.palette[bed + "_foot"] = f"minecraft:{colour}_bed[facing=south,occupied=false,part=foot]"
-    m.set(cx, LOFT + 1, z1 - 1, bed + "_head")
-    m.set(cx, LOFT + 1, z1 - 2, bed + "_foot")
+    m.set(ox, LOFT + 1, z1 - 1, bed + "_head")
+    m.set(ox, LOFT + 1, z1 - 2, bed + "_foot")
     m.set(hx, LOFT + 1, z1 - 1, "nets")
     m.set(hx, LOFT + 1, z1 - 2, "lantern")
-    m.set(cx, LOFT - 1, z1 - 2, "lantern_h")   # hung under the loft's edge
+    m.set(cx, LOFT + 1, z1 - 1, "barrel")
 
 
 def build(place):
@@ -204,11 +211,14 @@ def build(place):
         if m.get(x, 1, Z1) is None and hsh(x, Z1, 9) % 3 == 0:
             m.set(x, 1, Z1, "tuft")
 
+    # the eaves stop at the plot's edge: nothing is drawn beyond the play space above the ground
+    for c in [c for c in list(m.v) if c[1] > 0 and not (X0 <= c[0] <= X1 and Z0 <= c[2] <= Z1)]:
+        del m.v[c]
     m.finish()
     m.part(*A, "cottage-a")
     m.part(*B, "cottage-b")
-    m.part(2, 13, 3, 4, "gardens")
-    m.part(7, 8, 5, 9, "gardens")
+    m.part(X0, X1, 3, 4, "gardens")
+    m.part(7, 8, 5, Z1, "gardens")
     m.mark("node-cottages-2", 7, 4, "south")
     return m
 
