@@ -546,8 +546,16 @@ def mountain(x, z):
     # the shoulder the road climbs: rising north from the town's edge
     shoulder = 84 + 0.40 * (top - wz)               # falls away south of the town's edge too
     # the plateau round Doune, falling away on every side
-    d = math.hypot((wx - CX) / 150, (wz - CZ) / (105 if wz > CZ else 150))
-    plateau = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.60) / 0.95))
+    # south of Doune the ground falls evenly from its ring to the square's
+    # level (about one in one, so grass and trees hold, not a cliff); north
+    # it rounds off over the summit plateau
+    if wz > CZ:
+        d = math.hypot((wx - CX) / 150, (wz - CZ) / 105)
+        t = max(0.0, min(1.0, (d - 0.56) / 0.67))
+        plateau = 84 + (CASTLE_WALK - 84) * (1 - t) - 34 * max(0.0, d - 1.23)
+    else:
+        d = math.hypot((wx - CX) / 150, (wz - CZ) / 150)
+        plateau = 50 + (CASTLE_WALK - 50) * (1 - smooth((d - 0.60) / 0.95))
     # the summit, north-east of Doune
     p = math.hypot((wx - (CX + 40)) / 80, (wz - (CZ - 55)) / 70)
     summit = CASTLE_WALK - 20 + 56 * (1 - smooth(p)) ** 1.3
@@ -681,6 +689,7 @@ png(os.path.join(ROOT, "terrain", "island.png"), RX, RZ, pix)
 
 
 TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN[1], TOWN[3]]}
+BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN[1], TOWN[3]]}   # below the square: the mountain never takes a brick
 _cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
 CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
@@ -691,9 +700,9 @@ STRATA = [
     # Doune's plot and its ring: Doune's own turf, which its plants stand on
     {"when": {"area": CASTLE_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
     # the town: a step of two or more is a retaining wall a builder laid
-    {"when": {"area": TOWN_AREA, "steep": 3, "patch": P(9, 600, 11)},
+    {"when": {"area": BRICK_AREA, "steep": 3, "patch": P(9, 600, 11)},
      "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},
-    {"when": {"area": TOWN_AREA, "steep": 3},
+    {"when": {"area": BRICK_AREA, "steep": 3},
      "surface": "minecraft:stone_bricks", "below": "minecraft:stone_bricks"},
     {"when": {"area": TOWN_AREA, "patch": P(7, 780, 12)},
      "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
