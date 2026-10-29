@@ -153,8 +153,8 @@ def main():
                    "form": "Doune's approach road running on, level, onto the hilltop road: five wide, no wall across it"}],
     }))
     anchors = {a: a for a in used}
-    anchors["anchor/node-castle"] = "anchor/stop-courtyard"   # the place's name is its courtyard
-    anchors["spawn"] = "anchor/arrival"                        # Doune's own entry on the approach
+    anchors["anchor/node-castle"] = "anchor/node-castle"
+    anchors["spawn"] = "anchor/spawn"
     write("detail-plan.json", doc("detail-plan", {"details": [
         {"anchors": anchors, "piece": "prefab/doune-plot-castle", "place": "node/castle"}]}))
     heightmap()

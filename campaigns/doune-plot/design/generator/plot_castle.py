@@ -38,6 +38,13 @@ for _z in (30, 31):
     for _y in (45, 46, 47):
         FIXES[(91, _y, _z)] = "wall"
 FIXES[(50, 8, 62)] = "yard/well_shaft"
+# The two names the site plan owes this place, marked beside Doune's own:
+# where the party spawns (a step behind Doune's arrival, facing the castle) and
+# the place's own name (in the courtyard, beside the guide's stop).
+bc.ANCHORS[(77, bc.WALK, 2)] = ("spawn", None)
+bc.ANCHORS[(46, bc.WALK, 63)] = ("node-castle", None)
+bc.FACING["spawn"] = "south"
+bc.FACING["node-castle"] = "north"
 PALETTE = dict(bc.PALETTE, **{"yard/well_shaft": "minecraft:black_concrete"})
 
 
