@@ -290,8 +290,6 @@ def build(place) -> Model:
         stretch(m, place, stem)
     else:
         lane(m, place, stem)
-    if stem == "street-3":
-        m.set(4, place.n[1] - 1, 7, "minecraft:stone_bricks")   # PLANT: a pier's top left in the open air
     m.finish()
     return m
 
