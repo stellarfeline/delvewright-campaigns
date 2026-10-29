@@ -10,18 +10,45 @@ inside wall; nets are stored in the loft, never dried there — they dry on
 rows of poles in the open yard beside the shed. The ground floor holds a
 hull on trestles, oars and floats; the loft holds the nets on their racks.
 
-    python3 netloft.py --allocation <allocation.json> --out <campaign>/programs/netloft.json
+    "$DELVEWRIGHT_PYTHON" netloft.py --allocation <allocation.json> --out <campaign>/programs/netloft.json
+
+Drawn into the skill's starter (`$DELVEWRIGHT_SKILL/scripts/starter.py`),
+which binds the handing and asks the engine where a body goes.
 
 Piece-local: +x east (the street), +z south; y 0 the ground course, y 1 the walk plane.
 """
 
 from __future__ import annotations
 
+import os
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, finish, gable, hsh, run  # noqa: E402
+sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
+from starter import Model, run  # noqa: E402
+
+
+def hsh(*a):
+    h = 2166136261
+    for v in a:
+        h = ((h ^ (v & 0xFFFFFFFF)) * 16777619) & 0xFFFFFFFF
+    return h
+
+
+def gable(m, x0, x1, z0, z1, y0, stair, ridge, fill=None, ov=1):
+    """A pitched roof over [x0..x1]x[z0..z1] (walls included), the ridge
+    along x, overhanging `ov` on every side; `fill` closes the gable ends."""
+    lo, hi, k = z0 - ov, z1 + ov, 0
+    while lo <= hi:
+        y = y0 + k
+        if lo == hi:
+            m.box(x0 - ov, x1 + ov, y, y, lo, lo, ridge)
+        else:
+            m.box(x0 - ov, x1 + ov, y, y, lo, lo, stair + "_s")
+            m.box(x0 - ov, x1 + ov, y, y, hi, hi, stair + "_n")
+            if fill and lo + 1 <= hi - 1:
+                for x in (x0, x1):
+                    m.box(x, x, y, y, max(lo + 1, z0), min(hi - 1, z1), fill)
+        lo, hi, k = lo + 1, hi - 1, k + 1
 
 
 def st(name, facing, half="bottom"):
@@ -33,10 +60,7 @@ def td(wood, facing, half="bottom", open_=False):
 
 
 PALETTE = {
-    "floor": "minecraft:stone_bricks",
-    "wall": "minecraft:stone_bricks",
-    "lid": "minecraft:spruce_planks",
-    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "floor": "minecraft:grass_block[snowy=false]",
     "turf": "minecraft:grass_block[snowy=false]",
     "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_cornflower",
     "pot_c": "minecraft:potted_azure_bluet", "pot_d": "minecraft:potted_fern",
@@ -101,7 +125,8 @@ YARD = (12, 18, 2, 9)
 
 
 def build(place) -> Model:
-    m = Model(dict(PALETTE))
+    m = Model(place)
+    m.palette.update(PALETTE)
     lo, hi = place.space
     X0, X1, Z0, Z1 = lo[0], hi[0], lo[2], hi[2]
     for x in range(X0, X1 + 1):
@@ -138,7 +163,7 @@ def build(place) -> Model:
     for x in range(sx0 + 2, sx0 + 7):
         m.set(x, LOFT + 1, sz0 + 2, "rail")
     # the roof: ridge along x, gable to the east and west, boarded
-    gable(m, sx0, sx1, sz0, sz1, PLATE + 1, "x", "roof", "ridge", fill="boards")
+    gable(m, sx0, sx1, sz0, sz1, PLATE + 1, "roof", "ridge", fill="boards")
     # the boat door in the east gable: two wide, three high, under a beam
     m.box(sx1, sx1, 1, 3, 5, 6, "~air")
     m.box(sx1, sx1, 4, 4, 4, 7, "beam_z")
@@ -209,17 +234,12 @@ def build(place) -> Model:
     # potted flowers by the boat door and the bench
     m.set(11, 1, 4, "pot_a")
     m.set(11, 1, 7, "pot_d")
-    finish(m)
-    m.regions("loft", sx0, sx1, sz0, sz1)
-    m.regions("yard", yx0, yx1, yz0, yz1)
+    m.finish()
+    m.part(sx0, sx1, sz0, sz1, "loft")
+    m.part(yx0, yx1, yz0, yz1, "yard")
+    m.mark("node-netloft", 8, 5, "west")   # inside the boat door, facing the hull
     return m
 
 
-class NetLoft(Plot):
-    MODEL = staticmethod(build)
-    MARK_AT = {"node-netloft": (8, 5, "west")}   # inside the boat door, facing the hull
-    REASON = "the loft's wall heads, the roof and the net poles' tops: seen, never stood on"
-
-
 if __name__ == "__main__":
-    raise SystemExit(run(NetLoft))
+    raise SystemExit(run(build, reason="the loft's wall heads, the roof and the net poles' tops: seen, never stood on"))
