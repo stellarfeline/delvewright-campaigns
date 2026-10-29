@@ -79,7 +79,7 @@ def build(place) -> Model:
         for dx, dz, face in ((1, 0, "west"), (-1, 0, "east"), (0, 1, "north"), (0, -1, "south")):
             nx, nz = x + dx, z + dz
             if (nx, nz) in set(ring(HX0, HX1, HZ0, HZ1)) and m.get(nx, 3, nz) is None:
-                m.set(nx, 3, nz, stairs(DRESS, face, "top"))
+                m.set(nx, 3, nz, stairs("minecraft:tuff_brick", face, "top"))
     # the hall's floor over the arcade
     m.box(HX0 + 1, HX1 - 1, 5, 5, HZ0 + 1, HZ1 - 1, "minecraft:dark_oak_planks")
     m.box(HX0, HX1, 5, 5, HZ0, HZ0, BEAM_X); m.box(HX0, HX1, 5, 5, HZ1, HZ1, BEAM_X)
