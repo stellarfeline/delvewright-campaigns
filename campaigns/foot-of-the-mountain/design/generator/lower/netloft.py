@@ -38,6 +38,8 @@ PALETTE = {
     "lid": "minecraft:spruce_planks",
     "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
     "turf": "minecraft:grass_block[snowy=false]",
+    "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_cornflower",
+    "pot_c": "minecraft:potted_azure_bluet", "pot_d": "minecraft:potted_fern",
     # ground: shingle and sand toward the harbour
     "shingle": [{"weight": 5, "block": "minecraft:gravel"}, {"weight": 2, "block": "minecraft:coarse_dirt"},
                 {"weight": 2, "block": "minecraft:cobblestone"}],
@@ -198,6 +200,9 @@ def build(place) -> Model:
     m.set(sx1 + 1, 1, sz0, "bush")
     m.set(sx1 + 1, 1, sz1, "bush")
 
+    # potted flowers by the boat door and the bench
+    m.set(11, 1, 4, "pot_a")
+    m.set(11, 1, 7, "pot_d")
     finish(m)
     m.regions("loft", sx0, sx1, sz0, sz1)
     m.regions("yard", yx0, yx1, yz0, yz1)

@@ -39,6 +39,8 @@ PALETTE = {
     "lid": "minecraft:spruce_planks",
     "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
     "turf": "minecraft:grass_block[snowy=false]",
+    "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_cornflower",
+    "pot_c": "minecraft:potted_azure_bluet", "pot_d": "minecraft:potted_fern",
     # ground
     "pave": [{"weight": 6, "block": "minecraft:cobblestone"}, {"weight": 3, "block": "minecraft:stone_bricks"},
              {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
@@ -233,6 +235,11 @@ def build(place) -> Model:
             if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 9) % 3 == 0:
                 m.set(x, 1, z, "tuft")
 
+    # potted flowers along the front, either side of the door, and on the garden tables
+    m.set(3, 1, 4, "pot_a")
+    m.set(3, 1, 6, "pot_b")
+    m.set(16, 1, 7, "pot_d")
+    m.set(16, 1, 4, "pot_c")
     finish(m)
     m.regions("tavern", hx0, hx1, hz0, hz1)
     m.regions("garden", hx1 + 1, gx1, gz0, gz1)

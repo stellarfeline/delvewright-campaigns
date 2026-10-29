@@ -37,6 +37,8 @@ PALETTE = {
     "lid": "minecraft:spruce_planks",
     "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
     "turf": "minecraft:grass_block[snowy=false]",
+    "pot_a": "minecraft:potted_red_tulip", "pot_b": "minecraft:potted_cornflower",
+    "pot_c": "minecraft:potted_azure_bluet", "pot_d": "minecraft:potted_fern",
     # ground
     "yard": [{"weight": 5, "block": "minecraft:coarse_dirt"}, {"weight": 3, "block": "minecraft:gravel"},
              {"weight": 2, "block": "minecraft:cobblestone"}, {"weight": 1, "block": "minecraft:packed_mud"}],
@@ -272,6 +274,10 @@ def build(place) -> Model:
             if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 3) % 3 == 0:
                 m.set(x, 1, z, "tuft")
 
+    # potted flowers: on the porch either side of the door, on the bay's sill wall, by the bench
+    m.set(11, 1, 6, "pot_a")
+    m.set(8, 2, 3, "pot_b")
+    m.set(22, 1, 4, "pot_c")
     finish(m)
 
     # ---------- the parts: which columns are which

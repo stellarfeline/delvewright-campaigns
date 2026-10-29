@@ -776,6 +776,8 @@ def classify(block: str) -> str:
         return "full"
     if "leaves[" in block:
         return "full"
+    if "potted_" in block or "flower_pot" in block:
+        return "low"
     if "_trapdoor[" in block and ("open=true" in block or "half=top" in block):
         return "pass"
     for w in PASS_WORDS:
