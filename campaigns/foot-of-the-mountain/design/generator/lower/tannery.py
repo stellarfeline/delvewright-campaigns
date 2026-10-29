@@ -118,7 +118,8 @@ def build(place):
 
     # ---------- the shed: posts every three, a beam, a dark roof; boarded behind
     m.box(sx0, sx1, 0, 0, sz0, sz1, "shed_floor")
-    for x in range(sx0, sx1 + 1, 3 if (sx1 - sx0) % 3 == 0 else 2):
+    # posts at the ends and the middle only, so the front stands open to the pits
+    for x in (sx0, (sx0 + sx1) // 2, sx1):
         for z in (sz0, sz1):
             m.box(x, x, 1, PLATE - 1, z, z, "post")
     for x in (sx0, sx1):
