@@ -886,7 +886,7 @@ LAMP_FLOOR = 26              # the lantern room's floor course, the gallery's wa
 LAMP_TOP = 30                # the last glazed course
 R_LAMP = 3.4                 # the lantern room's polygon
 R_GALLERY = 5.6              # the gallery's outer edge
-COTTAGE = (2, 14, 2, 8)      # walls inclusive (x0, x1, z0, z1)
+COTTAGE = (8, 19, 2, 8)      # walls inclusive (x0, x1, z0, z1): north-east of the tower
 C_TOP = 5                    # the cottage's wall head
 # the stair's lane: the ring of twelve cells round the 2x2 newel, clockwise from the north-west
 RING = [(12, 12), (13, 12), (14, 12), (15, 12), (15, 13), (15, 14), (15, 15), (14, 15), (13, 15),
@@ -1087,7 +1087,7 @@ def build_model():
     m.set(x0, 0, 5, "floorb")
     m.set(x0, 0, 6, "floorb")
     # windows
-    for (x, z) in ((5, z0), (8, z0), (11, z0), (5, z1)):
+    for (x, z) in ((x0 + 3, z0), (x0 + 6, z0), (x0 + 9, z0), (x0 + 3, z1)):
         m.set(x, 3, z, "glass")
         m.set(x, 4, z, "glass")
     m.set(x0, 3, 3, "glass")
@@ -1097,14 +1097,14 @@ def build_model():
     m.box(x1 - 1, x1 - 1, 1, C_TOP + 6, z0 + 3, z0 + 3, "chimney")
     m.set(x1 - 2, 1, z0 + 3, "hearth")
     # inside: a table and chairs, shelves, the keeper's log on the table, a lamp
-    m.set(6, 1, 4, "table")
-    m.set(7, 1, 4, "table")
-    m.set(5, 1, 4, "chair")
-    m.set(6, 2, 4, "candles")
-    m.box(3, 3, 1, 2, 7, 7, "shelf")
-    m.set(4, 1, 7, "barrel")
-    m.set(8, C_TOP - 1, 5, "lantern_h")
-    m.set(12, 1, 3, "pot_a")
+    m.set(x0 + 3, 1, 4, "table")
+    m.set(x0 + 4, 1, 4, "table")
+    m.set(x0 + 2, 1, 4, "chair")
+    m.set(x0 + 3, 2, 4, "candles")
+    m.box(x0 + 1, x0 + 1, 1, 2, 7, 7, "shelf")
+    m.set(x0 + 2, 1, 7, "barrel")
+    m.set(x0 + 5, C_TOP - 1, 5, "lantern_h")
+    m.set(x1 - 4, 1, 3, "pot_a")
 
     # ---------- the yard: a low wall west and south, a gate on the cliff path
     for z in range(15, 20):
@@ -1120,10 +1120,9 @@ def build_model():
     for x in range(1, 10):
         m.set(x, 0, 13, "path")
         m.set(x, 0, 14, "path")
-    for z in range(9, 14):
-        m.set(1, 0, z, "path")
-    for z in range(5, 9):
-        m.set(1, 0, z, "path")
+    for z in range(1, 13):                              # the cliff path in from the north
+        m.set(4, 0, z, "path")
+        m.set(5, 0, z, "path")
     for z in range(14, 21):
         m.set(4, 0, z, "path")
         m.set(5, 0, z, "path")
@@ -1139,16 +1138,15 @@ def build_model():
         m.set(x, 1, z, r)
         if r == "rose":
             m.set(x, 2, z, "rose_top")
-    for (x, z) in ((3, 15), (6, 15), (6, 16), (7, 12), (16, 3), (18, 6)):
+    for (x, z) in ((3, 15), (6, 15), (6, 16), (7, 12), (6, 5), (3, 8)):
         if m.get(x, 1, z) is None:
             m.set(x, 1, z, "tuft" if (x + z) % 2 else "daisy")
-    for (x, z) in ((16, 8), (3, 9), (19, 5)):
+    for (x, z) in ((6, 3), (3, 9), (19, 11)):
         m.set(x, 1, z, "lamp_post")
         m.set(x, 2, z, "lantern")
     # the east garden behind the cottage: a hedge of bushes, a bench
-    for x in range(16, 20):
-        m.set(x, 1, 2, "bush")
-    m.set(17, 1, 4, "bench")
+    for z in range(3, 8):                               # a hedge along the yard's west side
+        m.set(2, 1, z, "bush")
 
     # ---------- the parts: which columns are which
     for x in range(1, 21):
@@ -1157,7 +1155,7 @@ def build_model():
                 m.region[(x, z)] = "tower"
             elif x0 < x < x1 and z0 < z < z1:
                 m.region[(x, z)] = "cottage"
-            elif (x <= 8 and z >= 9) or (x == 1 and z >= COTTAGE[3] - 1) or (x >= 15 and z <= 7):
+            elif x <= 7:
                 m.region[(x, z)] = "yard"
     return m
 
@@ -1425,7 +1423,7 @@ def shown_faces(p):
     return ["east", "north", "south", "west"]
 
 
-MARK_AT = {"node-lighthouse": (8, 6, "west")}   # in the keeper's cottage, facing its front door
+MARK_AT = {"node-lighthouse": (14, 6, "west")}   # in the keeper's cottage, facing its front door
 
 
 def marks(p, inner):
