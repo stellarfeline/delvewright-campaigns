@@ -398,8 +398,8 @@ THEMES = {
                    [("structure", "house", 0.30, 11, "the shop with jars and a still room behind it"),
                     ("ground", "garden", 0.30, None, "the physic garden in raised beds")]),
     "merchant": ("the merchant's house", "A rich merchant's U-shaped stone house around a front court, a counting room by the door.",
-                 [("structure", "house", 0.62, 13, "the merchant's house: the counting room and the cloth store in the north wing, the hall range, the covered walk"),
-                  ("ground", "court", 0.14, None, "the front court with a fountain")]),
+                 [("structure", "house", 0.48, 13, "the merchant's house: the counting room and the cloth store in the north wing, the hall range"),
+                  ("ground", "court", 0.22, None, "the front court with a fountain, walled on the south")]),
     "tavern": ("the tavern", "A low sailors' tavern with a beer garden under a vine pergola.",
                [("structure", "tavern", 0.32, 9, "the taproom and the cellar stair"),
                 ("ground", "garden", 0.28, None, "the beer garden under a pergola")]),
@@ -490,9 +490,9 @@ for (sg, face), L in SIDE.items():
     seam(sg, sname, face, 5, 0, "contact", "the side street leaves the main street")
 
 MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
-    ("street-1", "west", "bakery", 22, 10, 2), ("street-1", "east", "apothecary", 18, 10, 2),
+    ("street-1", "west", "bakery", 22, 12, 1), ("street-1", "east", "apothecary", 18, 12, 1),
     ("street-2", "west", "cottages", 20, 10, 2), ("street-2", "east", "merchant", 26, 12, 1),
-    ("street-3", "east", "weaver", 22, 10, 2),
+    ("street-3", "east", "weaver", 22, 12, 1),
     ("street-4", "west", "townhall", 24, 10, 2), ("street-4", "east", "tavern", 24, 12, 1),
     ("street-5", "west", "smithy", 24, 12, 1),
     ("street-6", "west", "chandler", 20, 10, 2), ("street-6", "east", "cooper", 22, 10, 2),
@@ -500,7 +500,7 @@ MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-8", "west", "netloft", 20, 10, 2),
 ]
 LANE = [  # (lane, face, theme, at, dx, dz)
-    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 10),
+    ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 11),
     ("lane-5", "north", "boatwright", 26, 14, 10), ("lane-5", "south", "cottages-2", 26, 14, 10),
 ]
 for st, face, theme, dx, dz, at in MAIN:
@@ -746,6 +746,23 @@ for z in range(max(0, _bz - 1 - BACK_REACH), min(RZ, _bz + _bdz + 1 + BACK_REACH
         d = math.hypot(ddx, ddz)
         cap = (_bf - 1) + BACK_RISE * d + BACK_BEND * d * d \
             + (vnoise(x, z, 6, 61) - 0.5) * 2.0 + 1.5 * ddw
+        if H[z][x] > cap:
+            H[z][x] = cap
+
+# The inn backs onto the same slope: north of it (the mountain) and west of it
+# the ground rose over a short skirt to a bank. It eases the same way,
+# one in two at the inn's ring and steepening until it meets the natural ground; the
+# square and the castle road east of it, and the street south, keep theirs.
+_ix, _iz, _idx, _idz, _if = pos["node/inn"]
+INN_RISE, INN_BEND = 0.6, 0.03    # gentler than the cathedral's: a lawn rising behind the yard
+for z in range(max(0, _iz - 1 - BACK_REACH), _iz + _idz + 1):
+    for x in range(max(0, _ix - 1 - BACK_REACH), _ix + _idx + 1):
+        ddw = max(0, (_ix - 1) - x)
+        ddz = max(0, (_iz - 1) - z)
+        if (ddw == 0 and ddz == 0) or W[z][x] >= 1.0:
+            continue
+        d = math.hypot(ddw, ddz)
+        cap = (_if - 1) + INN_RISE * d + INN_BEND * d * d + (vnoise(x, z, 6, 67) - 0.5) * 1.0
         if H[z][x] > cap:
             H[z][x] = cap
 
