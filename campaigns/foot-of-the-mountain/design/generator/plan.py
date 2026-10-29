@@ -186,7 +186,7 @@ seam("node/square", "node/inn", "west", 0, 0, "contact",
      "the inn's front yard opens onto the square")
 
 # ----------------------------------------------------------- the castle road
-ROAD_W, RAMP_L, LAND_L = 5, 8, 3
+ROAD_W, RAMP_L, LAND_L = 5, 10, 3
 prev = "node/square"
 floor = 92
 for k in range(1, 9):
