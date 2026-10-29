@@ -633,6 +633,31 @@ for z in range(RZ):
         if w > 0:
             H[z][x] = H[z][x] * (1 - w) + T[z][x] * w
 
+# Behind the cathedral (north) and past its apse (east) the mountain's lower
+# terrace stands some thirty above the cathedral's floor. The ground falls from
+# that terrace to the cathedral's ring as a hillside, never a bank: there the
+# ground is capped by a slope rising from the ring course, one in one at its
+# foot and steepening gently (BACK_BEND) until it meets the natural ground,
+# which then runs on up to Doune untouched. The cap only lowers ground, and
+# never inside another box's footprint or ring. West (the square and the
+# castle road) and south (the town) keep their own shaping.
+BACK_RISE, BACK_BEND, BACK_REACH, BACK_WEST = 1.0, 0.02, 44, 12
+_bx, _bz, _bdx, _bdz, _bf = pos["node/cathedral"]
+for z in range(max(0, _bz - 1 - BACK_REACH), min(RZ, _bz + _bdz + 1 + BACK_REACH)):
+    for x in range(_bx - BACK_WEST, min(RX, _bx + _bdx + 1 + BACK_REACH)):
+        ddw = max(0, (_bx - 1) - x)               # past the west ring: eased out
+        ddx = max(0, x - (_bx + _bdx))            # past the east ring
+        ddz = max(0, (_bz - 1) - z, z - (_bz + _bdz))
+        if ddx == 0 and ddz == 0 or W[z][x] >= 1.0:
+            continue
+        if z > _bz + _bdz and ddx == 0:
+            continue                               # south of the cathedral: the town's
+        d = math.hypot(ddx, ddz)
+        cap = (_bf - 1) + BACK_RISE * d + BACK_BEND * d * d \
+            + (vnoise(x, z, 6, 61) - 0.5) * 2.0 + 1.5 * ddw
+        if H[z][x] > cap:
+            H[z][x] = cap
+
 # No pit a body cannot climb out of: a priority flood from the sea and the
 # region's rim raises every column to at least one under the column it is
 # reached from, so from anywhere a walk of steps no higher than one leads to
