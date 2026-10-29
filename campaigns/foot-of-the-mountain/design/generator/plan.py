@@ -186,10 +186,14 @@ seam("node/square", "node/inn", "west", 0, 0, "contact",
      "the inn's front yard opens onto the square")
 
 # ----------------------------------------------------------- the castle road
-ROAD_W, RAMP_L, LAND_L = 5, 10, 3
+# Doune's gate faces north, so the road climbs north along the castle hill's
+# west flank, turns east along its north side, and comes south onto the
+# castle's own approach road (a contact on the castle's north face at 74).
+ROAD_W, RAMP_L, SEG_LEN = 5, 10, 17
+CASTLE_WALK = 128            # Doune's grade walk, the castle box's floor
 prev = "node/square"
 floor = 92
-for k in range(1, 9):
+for k in range(1, 10):
     ramp = f"node/road-{k}"
     box(ramp, (ROAD_W, RAMP_L), floor, OPEN(10), "the castle road",
         f"Ramp {k} of the castle road up the mountain: a cobbled stair-road, one "
@@ -201,39 +205,42 @@ for k in range(1, 9):
     else:
         seam(prev, ramp, "north", 0, 0, "contact", "the road runs on")
     floor += 4
-    top = f"node/castle" if k == 8 else f"node/landing-{k}"
-    if k < 8:
-        box(top, (ROAD_W, LAND_L), floor, OPEN(8), "a landing on the castle road",
-            "A level landing on the castle road.",
-            way={"axis": "z", "clear": 4})
-        # the landing is above the ramp: landing (a) south face -> ramp (b)
-        (dx, dz), _ = ext(top)
-        rx, rz = pos[ramp][0], pos[ramp][1]
-        pos[top] = (rx, rz - dz - 1, dx, dz, floor)
-        eid = "edge/" + top.split("/")[1] + "-to-" + ramp.split("/")[1]
-        seams.append({"edge": eid, "face": "south", "at": 0, "meets": 0,
-                      "opening": {"width": ROAD_W, "height": 4},
-                      "stair_in": ramp, "form": "the ramp climbs to the landing"})
-        edges.append({"a": top, "b": ramp, "class": "stair", "id": eid})
-        prev = top
+    if k < 9:
+        top, (dx, dz) = f"node/road-run-{k}", (ROAD_W, SEG_LEN)
+        box(top, (dx, dz), floor, OPEN(8), "a level run of the castle road",
+            "A level run of the castle road along the hillside, a rough stone "
+            "parapet on the downhill side.", way={"axis": "z", "clear": 4})
+    else:
+        top, (dx, dz) = "node/road-top", (90, ROAD_W)
+        box(top, (dx, dz), floor, OPEN(8), "the castle road's last stretch",
+            "The road's last stretch, level along the castle hill's north side "
+            "to the head of Doune's approach.", way={"axis": "x", "clear": 4})
+    rx, rz = pos[ramp][0], pos[ramp][1]
+    pos[top] = (rx, rz - dz - 1, dx, dz, floor)
+    eid = "edge/" + top.split("/")[1] + "-to-" + ramp.split("/")[1]
+    seams.append({"edge": eid, "face": "south", "at": 0, "meets": 0,
+                  "opening": {"width": ROAD_W, "height": 4},
+                  "stair_in": ramp, "form": "the ramp climbs to the level run"})
+    edges.append({"a": top, "b": ramp, "class": "stair", "id": eid})
+    prev = top
+assert floor == CASTLE_WALK, floor
 
-box("node/castle", (104, 114), 124, OPEN(52), "the castle plot",
-    "PLACEHOLDER for Doune Castle, which another round drops in as one plot: "
-    "the levelled summit ground and the road's arrival at the gate. Marked as a "
-    "placeholder by a ring of white banners on posts; no castle is built here.",
-    holds=[
-        {"id": "part/castle-ground", "kind": "ground", "cells": 9000,
-         "use": "PLACEHOLDER: the levelled summit where Doune stands, enclosure and approach"},
-    ])
-(cdx, cdz), _ = ext("node/castle")
-rx, rz = pos["node/road-8"][0], pos["node/road-8"][1]
-pos["node/castle"] = (rx - 50, rz - cdz - 1, cdx, cdz, 124)
-seams.append({"edge": "edge/castle-to-road-8", "face": "south", "at": 50,
-              "meets": 0, "opening": {"width": ROAD_W, "height": 4},
-              "stair_in": "node/road-8",
-              "form": "the last ramp climbs to the gate ground"})
-edges.append({"a": "node/castle", "b": "node/road-8", "class": "stair",
-              "id": "edge/castle-to-road-8"})
+box("node/gate-road", (5, 8), CASTLE_WALK, OPEN(6), "the road onto Doune's approach",
+    "The last stretch of the road from the town, arriving on the hilltop at the "
+    "start of Doune's own approach road, five wide.", way={"axis": "z", "clear": 5})
+seam("node/road-top", "node/gate-road", "south", 85, 0, "contact",
+     "the road turns south onto Doune's approach")
+box("node/castle", (102, 118), CASTLE_WALK, OPEN(48), "the castle",
+    "Doune Castle, copied whole as one plot: the gatehouse, the hall range, the "
+    "kitchen tower, the courtyard, the curtain and the three ditches on the north "
+    "approach.")
+gx, gz = pos["node/gate-road"][0], pos["node/gate-road"][1]
+pos["node/castle"] = (gx - 74, gz + 8 + 1, 102, 118, CASTLE_WALK)
+seams.append({"edge": "edge/road-to-gate", "face": "north", "at": 74,
+              "contact": {"extent": [5, 6]},
+              "form": "Doune's approach road running on, level, onto the hilltop road: five wide, no wall across it"})
+edges.append({"a": "node/castle", "b": "node/gate-road", "class": "walk",
+              "id": "edge/road-to-gate"})
 
 # --------------------------------------------------------------------- plots
 THEMES = {
@@ -407,27 +414,61 @@ def ellipse(x, z, cx, cz, rx, rz):
     return math.hypot((x - cx) / rx, (z - cz) / rz)
 
 
+def rounded_rect(x, z, x0, x1, z0, z1, r):
+    """A normalised distance: < 1 inside a rectangle with corners rounded by r."""
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    hx, hz = (x1 - x0) / 2, (z1 - z0) / 2
+    qx, qz = abs(x - cx) - (hx - r), abs(z - cz) - (hz - r)
+    out = math.hypot(max(qx, 0), max(qz, 0)) + min(max(qx, qz), 0)
+    return 1 + out / r
+
+
+# The island: a broad mainland block (the mountain country, far side
+# hidden behind its ridges) and, running south from it, the town's
+# promontory with the lighthouse headland on its east shoulder.
+TOWN = (60, 216, 248, 500)     # the town's own ground: x0, x1, z0, z1
+
+
 def land(x, z):
-    """1 inside the island, falling to 0 at the coast (a soft mask)."""
-    wob = (vnoise(x, z, 37, 1) - 0.5) * 0.18
-    e = min(ellipse(x, z, 178, 215, 150, 205),
-            ellipse(x, z, 122, 372, 100, 110),
-            ellipse(x, z, 194, 462, 24, 26))
-    return smooth((1.0 - (e + wob)) / 0.10)
+    """1 inside the island, 0 in the sea; a narrow edge makes the cliffs."""
+    wob = (vnoise(x, z, 41, 1) - 0.5) * 0.22 + (vnoise(x, z, 13, 5) - 0.5) * 0.06
+    main = (abs((x - 160) / 152) ** 4 + abs((z - 150) / 146) ** 4) ** 0.25
+    taper = 1 + 0.35 * smooth((z - 330) / 150)          # the promontory narrows to its tip
+    prom = rounded_rect(x, z, 136 - 70 / taper, 136 + 70 / taper, 250, 484, 36)
+    head = ellipse(x, z, 194, 462, 24, 26)
+    e = min(main, prom, head)
+    return smooth((1.0 - (e + wob)) / 0.05)
+
+
+def wild_height(x, z):
+    """The mountain country: rolling ground, the castle hill, two peaks."""
+    rolling = 74 + (vnoise(x, z, 53, 2) - 0.5) * 34 + (vnoise(x, z, 19, 3) - 0.5) * 10
+    # the castle hill: a summit just under Doune's grade, falling away
+    cx, cz = 183, 95
+    d = math.hypot((x - cx) / 1.0, (z - cz) / 1.1)
+    hill = 126 - 54 * smooth((d - 60) / 85) + (vnoise(x, z, 15, 8) - 0.5) * 6 * smooth((d - 64) / 20)
+    # the main peak, north-east, and a lesser one north-west, with ridged noise
+    ridge = 1 - abs(vnoise(x, z, 29, 6) - 0.5) * 2
+    peak = 0.0
+    for px, pz, r, hgt in ((270, 70, 85, 172), (48, 62, 70, 146), (300, 170, 60, 118)):
+        dd = math.hypot(x - px, z - pz) / r
+        peak = max(peak, 64 + (hgt - 64) * (1 - smooth(dd)) ** 1.6)
+    peak_h = 64 + (peak - 64) * (0.8 + 0.2 * ridge)
+    return max(rolling, hill, peak_h)
+
+
+def town_height(x, z):
+    """The promontory's slope: 92 at the mountain's foot, 63 at the shore."""
+    return 63 + 29 * smooth((482 - z) / 212) + (vnoise(x, z, 19, 7) - 0.5) * 3
 
 
 def base_height(x, z):
     m = land(x, z)
-    # the town slope: 92 at the mountain's foot, 63 at the shore
-    slope = 63 + 29 * smooth((482 - z) / 212)
-    # the mountain: a massif north and east of the castle
-    peak = 0.0
-    for cx, cz, r, hgt in ((230, 112, 85, 112), (150, 118, 70, 74),
-                           (270, 200, 70, 60), (110, 60, 60, 52)):
-        d = math.hypot(x - cx, z - cz) / r
-        peak = max(peak, hgt * smooth(1 - d))
-    rough = (vnoise(x, z, 23, 2) - 0.5) * 6 + (vnoise(x, z, 9, 3) - 0.5) * 2
-    h = max(slope, 63 + peak) + rough * (0.4 + 0.6 * smooth((peak - 4) / 30))
+    wild = wild_height(x, z)
+    town = town_height(x, z)
+    # the town's ground takes over south of the mountain's foot
+    t = smooth((z - 262) / 40) * smooth((x - 50) / 20) * smooth((226 - x) / 20)
+    h = wild * (1 - t) + town * t
     sea_floor = 50 + (vnoise(x, z, 31, 4) - 0.5) * 4
     return sea_floor + (h - sea_floor) * m
 
@@ -435,19 +476,30 @@ def base_height(x, z):
 H = [[base_height(x, z) for x in range(RX)] for z in range(RZ)]
 
 # each box: its columns at floor - 1; the ground eases to the natural ground
-# over a skirt whose width grows with the height to meet
+# over a skirt. Doune's plot: inside the ring its ditch floor (walk - 4), the
+# ring at its surface course (walk - 1), flat, then the summit's own rock.
 rects = [(n, *pos[n]) for n in pos]
 W = [[0.0] * RX for _ in range(RZ)]
 T = [[0.0] * RX for _ in range(RZ)]
 for n, x0, z0, dx, dz, f in rects:
-    target = f - 1
-    skirt = 6 if not n.startswith("node/castle") else 14
-    for z in range(max(0, z0 - skirt), min(RZ, z0 + dz + skirt)):
-        for x in range(max(0, x0 - skirt), min(RX, x0 + dx + skirt)):
+    castle = n == "node/castle"
+    road = n.startswith("node/road") or n == "node/gate-road"
+    skirt = 16 if castle else (7 if road else 12)
+    for z in range(max(0, z0 - 1 - skirt), min(RZ, z0 + dz + 1 + skirt)):
+        for x in range(max(0, x0 - 1 - skirt), min(RX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
             ddz = max(z0 - z, 0, z - (z0 + dz - 1))
             d = math.hypot(ddx, ddz)
-            w = 1.0 if d == 0 else smooth(1 - d / skirt)
+            if castle:
+                if d == 0:
+                    target, w = f - 4, 1.0
+                elif max(ddx, ddz) <= 1:
+                    target, w = f - 1, 1.0
+                else:
+                    target, w = f - 1, smooth(1 - (d - 1) / skirt)
+            else:
+                target = f - 1
+                w = 1.0 if d == 0 else smooth(1 - d / skirt)
             if n == "node/harbour" and d == 0:
                 continue  # the basin keeps the sea floor
             if w > W[z][x] + 1e-9 or (abs(w - W[z][x]) < 1e-9 and target > T[z][x]):
@@ -491,6 +543,45 @@ png(os.path.join(ROOT, "terrain", "island.png"), RX, RZ, pix)
 # ----------------------------------------------------------------- documents
 
 
+TOWN_AREA = {"min": [TOWN[0], TOWN[2]], "max": [TOWN[1], TOWN[3]]}
+P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
+STRATA = [
+    # the sea floor and the shore
+    {"when": {"y_max": 56}, "surface": "minecraft:gravel", "below": "minecraft:gravel"},
+    {"when": {"y_max": 63}, "surface": "minecraft:sand", "below": "minecraft:sandstone"},
+    # the town: a step of two or more is a retaining wall a builder laid
+    {"when": {"area": TOWN_AREA, "steep": 2, "patch": P(9, 600, 11)},
+     "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},
+    {"when": {"area": TOWN_AREA, "steep": 2},
+     "surface": "minecraft:stone_bricks", "below": "minecraft:stone_bricks"},
+    {"when": {"area": TOWN_AREA, "patch": P(7, 780, 12)},
+     "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
+    {"when": {"area": TOWN_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
+    # the wild: rock where it is steep or high, scree, forest, heath
+    {"when": {"steep": 3, "patch": P(11, 550, 21)},
+     "surface": "minecraft:andesite", "below": "minecraft:andesite"},
+    {"when": {"steep": 3}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"y_min": 150}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"y_min": 136, "patch": P(8, 500, 22)},
+     "surface": "minecraft:gravel", "below": "minecraft:stone"},
+    {"when": {"y_min": 136}, "surface": "minecraft:stone", "below": "minecraft:stone"},
+    {"when": {"y_min": 96, "y_max": 135, "patch": P(30, 430, 23)},
+     "surface": "minecraft:podzol", "below": "minecraft:dirt",
+     "trees": {"per_mille": 70, "log": "minecraft:spruce_log",
+               "leaves": "minecraft:spruce_leaves[persistent=true]", "height": [6, 9]}},
+    {"when": {"y_min": 66, "y_max": 104, "patch": P(26, 470, 24)},
+     "surface": "minecraft:grass_block", "below": "minecraft:dirt",
+     "trees": {"per_mille": 55, "log": "minecraft:oak_log",
+               "leaves": "minecraft:oak_leaves[persistent=true]", "height": [4, 6]}},
+    {"when": {"y_min": 66, "patch": P(22, 620, 25)},
+     "surface": "minecraft:grass_block", "below": "minecraft:dirt",
+     "trees": {"per_mille": 30, "log": "minecraft:birch_log",
+               "leaves": "minecraft:birch_leaves[persistent=true]", "height": [5, 7]}},
+    {"when": {"patch": P(6, 800, 26)}, "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
+    {"when": {"steep": 2, "patch": P(5, 650, 27)}, "surface": "minecraft:stone", "below": "minecraft:dirt"},
+]
+
+
 def write(name, stage, content):
     doc = {"campaign_id": CAMPAIGN, "content": content, "dsl_version": DSL,
            "stage": stage}
@@ -532,7 +623,7 @@ write("site-plan.json", "site-plan", {
     "boxes": boxes,
     "datums": [],
     "fill": {"below": "minecraft:dirt", "kind": "open",
-             "surface": "minecraft:grass_block",
+             "surface": "minecraft:grass_block", "strata": STRATA,
              "terrain": {"base_y": BASE_Y, "heightmap": "terrain/island.png",
                          "kind": "heightmap", "range": RANGE}},
     "identities": [
