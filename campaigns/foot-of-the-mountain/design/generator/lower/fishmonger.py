@@ -115,9 +115,8 @@ def build(place) -> Model:
         m.set(sx1, 2, z, "counter_top")
         m.set(sx1 + 1, PLATE, z, "awning")
     # fish on ice inside the counter, tubs, the gutting block
-    m.box(sx1 - 1, sx1 - 1, 1, 1, sz0 + 1, sz0 + 2, "ice")
-    m.set(sx1 - 1, 1, sz1 - 1, "tub")
-    m.set(sx1 - 1, 1, sz1 - 2, "tub")
+    m.box(sx1 - 2, sx1 - 2, 1, 1, sz0 + 1, sz0 + 2, "ice")
+    m.set(sx1 - 2, 1, sz1 - 1, "tub")
     m.set(13, 1, 3, "block_table")
     m.set(12, 1, 3, "barrel")
     m.set(12, 1, 4, "barrel")

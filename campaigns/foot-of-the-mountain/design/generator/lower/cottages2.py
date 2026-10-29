@@ -122,6 +122,7 @@ def cottage(m, box, wall, door_role, bed, rug, hearth_x, frame):
     m.set(cx, PLATE, z0 + 2, "beam_x")
     m.box(x0 + 1, x1 - 1, PLATE, PLATE, z0 + 2, z0 + 2, "beam_x")
     m.set(cx, PLATE - 1, z0 + 2, "lantern_h")
+    m.set(ix, 1, z1 - 1, "barrel")          # the corner by the hearth holds the stores
 
 
 def build(place) -> Model:

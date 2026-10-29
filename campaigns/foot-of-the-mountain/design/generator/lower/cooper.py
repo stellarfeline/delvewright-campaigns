@@ -101,9 +101,9 @@ door_roles(PALETTE, "door_front", "minecraft:oak_door", "east")
 door_roles(PALETTE, "door_inner", "minecraft:oak_door", "west", hinge="right")
 door_roles(PALETTE, "door_yard", "minecraft:oak_door", "north")
 
-SHOP = (3, 8, 2, 7)        # the workshop's posts; open to the street at x 3
-HOUSE = (11, 18, 2, 7)     # walls included
-PARTITION = 15             # hall west, kitchen east
+SHOP = (4, 9, 2, 7)        # the workshop's posts; open to the street at x 4
+HOUSE = (12, 19, 2, 7)     # walls included
+PARTITION = 16             # hall west, kitchen east
 PLATE = 4
 
 
@@ -122,7 +122,7 @@ def build(place) -> Model:
 
     # ---------- the workshop: posts and a beam, open to the street, a boarded back wall
     m.box(wx0, wx1, 0, 0, wz0, wz1, "shavings")
-    for x in (wx0, 6, wx1):
+    for x in (wx0, 7, wx1):
         for z in (wz0, wz1):
             m.box(x, x, 1, PLATE - 1, z, z, "post")
     for z in (wz0, wz1):
@@ -135,19 +135,19 @@ def build(place) -> Model:
     # clear the street gable under the beam: the front stays open
     m.box(wx0, wx0, 1, PLATE - 1, wz0 + 1, wz1 - 1, "~air")
     # the work: shaving horse, stave truss in its hoop over the cresset, the jointer, casks
-    m.set(4, 1, 3, "horse_seat")
-    m.set(5, 1, 3, "horse_clamp")
-    m.set(5, 1, 5, "cresset")
-    m.set(5, 2, 5, "~air")
-    m.set(5, 3, 5, "hoop")
-    m.set(5, PLATE, 5, "beam_z")
-    m.box(5, 5, PLATE, PLATE, wz0, wz1, "beam_z")
-    m.set(7, 1, 3, "jointer")
-    m.set(7, 1, 6, "barrel")
-    m.set(7, 2, 6, "barrel")
-    m.set(6, 1, 6, "barrel_e")
-    m.set(7, 1, 5, "tub")
-    m.box(4, 4, PLATE - 1, PLATE - 1, 5, 5, "lantern_h")
+    m.set(5, 1, 3, "horse_seat")
+    m.set(6, 1, 3, "horse_clamp")
+    m.set(6, 1, 5, "cresset")
+    m.set(6, 2, 5, "~air")
+    m.set(6, 3, 5, "hoop")
+    m.set(6, PLATE, 5, "beam_z")
+    m.box(6, 6, PLATE, PLATE, wz0, wz1, "beam_z")
+    m.set(8, 1, 3, "jointer")
+    m.set(8, 1, 6, "barrel")
+    m.set(8, 2, 6, "barrel")
+    m.set(7, 1, 6, "barrel_e")
+    m.set(8, 1, 5, "tub")
+    m.box(5, 5, PLATE - 1, PLATE - 1, 5, 5, "lantern_h")
 
     # ---------- the house: stone ground course, oak frame and plaster, deepslate roof
     m.box(hx0, hx1, 0, 0, hz0, hz1, "boards")
@@ -159,52 +159,52 @@ def build(place) -> Model:
     door(m, hx0, 1, 5, "door_front")
     door(m, PARTITION, 1, 4, "door_inner")
     door(m, 17, 1, hz1, "door_yard")
-    for x in (13, 17):
+    for x in (14, 18):
         m.box(x, x, 2, 3, hz0, hz0, "pane")
-    m.box(13, 13, 2, 3, hz1, hz1, "pane")
+    m.box(14, 14, 2, 3, hz1, hz1, "pane")
     m.box(hx1, hx1, 2, 3, 4, 5, "pane")
     gable(m, hx0, hx1, hz0, hz1, PLATE + 1, "x", "roof", "ridge", fill="plaster")
-    m.box(16, 16, 1, 10, hz0, hz0, "chimney")
+    m.box(17, 17, 1, 10, hz0, hz0, "chimney")
     # hall: table and chairs by the window, a rug, the bed in the corner
-    m.set(13, 1, 3, "table")
-    m.set(13, 2, 3, "lantern")
-    m.set(12, 1, 3, "chair_e")
-    m.set(14, 1, 3, "chair_w")
-    m.box(12, 13, 1, 1, 5, 5, "rug")
-    m.set(14, 1, 6, "bed_foot")
-    m.set(14, 1, 5, "bed_head")
-    m.set(12, 1, 6, "shelf")
+    m.set(14, 1, 3, "table")
+    m.set(14, 2, 3, "lantern")
+    m.set(13, 1, 3, "chair_e")
+    m.set(15, 1, 3, "chair_w")
+    m.box(13, 14, 1, 1, 5, 5, "rug")
+    m.set(15, 1, 6, "bed_foot")
+    m.set(15, 1, 5, "bed_head")
+    m.set(13, 1, 6, "shelf")
     # kitchen: the hearth under the chimney, the pot, the worktop
-    m.set(16, 1, 3, "hearth")
-    m.set(16, 2, 3, "fire")
-    m.set(17, 1, 3, "pot")
-    m.set(17, 1, 5, "worktop")
-    m.set(16, 1, 6, "barrel")
+    m.set(17, 1, 3, "hearth")
+    m.set(17, 2, 3, "fire")
+    m.set(18, 1, 3, "barrel")
+    m.set(18, 1, 5, "worktop")
+    m.set(18, 1, 6, "barrel")
     m.box(hx0 + 1, hx1 - 1, PLATE, PLATE, 4, 4, "beam_x")
-    m.set(13, PLATE - 1, 4, "lantern_h")
-    m.set(17, PLATE - 1, 4, "lantern_h")
+    m.set(14, PLATE - 1, 4, "lantern_h")
+    m.set(18, PLATE - 1, 4, "lantern_h")
 
     # ---------- the barrel yard: casks stacked two high along the back, a path to the yard door
     for x in range(wx0 + 1, 15):
-        if x in (9, 10):
+        if x in (10, 11):
             continue
         m.set(x, 1, 9, "barrel_n" if x % 3 else "barrel")
         if x % 2 == 0:
             m.set(x, 2, 9, "barrel")
-    for x in (19, 20):
+    for x in (20, 21):
         m.set(x, 1, 8, "barrel")
         m.set(x, 1, 9, "barrel")
-    m.set(19, 2, 9, "barrel")
+    m.set(20, 2, 9, "barrel")
     # staves stacked to season between the workshop and the house
-    m.box(9, 10, 1, 1, 2, 3, "staves")
-    m.box(9, 10, 2, 2, 2, 2, "stave_stack")
+    m.box(10, 11, 1, 1, 2, 3, "staves")
+    m.box(10, 11, 2, 2, 2, 2, "stave_stack")
     # life: flower beds under the house windows, a bench by the front door, potted flowers
     for x in range(hx0, hx1 + 1):
         m.set(x, 0, 1, "bed_soil")
         m.set(x, 1, 1, ["f1", "f2", "f3", "fern"][hsh(x, 1, 5) % 4])
-    m.set(10, 1, 6, "pot_a")
-    m.set(10, 1, 4, "pot_b")
-    m.set(20, 1, 3, "bush")
+    m.set(11, 1, 6, "pot_a")
+    m.set(11, 1, 4, "pot_b")
+    m.set(21, 1, 3, "bush")
     m.set(21, 1, 6, "bush")
     for x in range(X0, X1 + 1):
         for z in (Z0, Z1):
@@ -214,14 +214,14 @@ def build(place) -> Model:
     finish(m)
     m.regions("workshop", wx0, wx1, wz0, wz1)
     m.regions("house", hx0, hx1, hz0, hz1)
-    m.regions("yard", 9, 10, 2, 7)
+    m.regions("yard", 10, 11, 2, 7)
     m.regions("yard", wx0, 21, 8, 9)
     return m
 
 
 class Cooper(Plot):
     MODEL = staticmethod(build)
-    MARK_AT = {"node-cooper": (4, 5, "east")}    # in the open front, facing the cresset
+    MARK_AT = {"node-cooper": (5, 5, "east")}    # in the open front, facing the cresset
     REASON = "the workshop's and the house's wall heads and roofs: seen, never stood on"
 
 

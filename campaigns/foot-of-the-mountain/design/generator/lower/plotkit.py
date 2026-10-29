@@ -1089,6 +1089,39 @@ class Plot(Place):
             if e is None or e["walked"]:
                 self.unwalked.add(c)
         self.reached = seen
+        # A cavity sealed from the sky and the walk (a roof space over a
+        # ceiling): every cell of its air is out of walk, not only its floor.
+        role = self.model.get
+        air = lambda c: role(*c) in (None, AIR) and lo[0] <= c[0] <= hi[0] and lo[2] <= c[2] <= hi[2] and 1 <= c[1] <= hi[1]
+        done = set()
+        for c0 in sorted(self.unwalked):
+            if c0 in done:
+                continue
+            comp, todo, open_ = {c0}, [c0], False
+            while todo:
+                x, y, z = todo.pop()
+                for dd in ((1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)):
+                    n = (x + dd[0], y + dd[1], z + dd[2])
+                    if n in comp:
+                        continue
+                    if not air(n):
+                        if not (lo[0] <= n[0] <= hi[0] and lo[2] <= n[2] <= hi[2] and 1 <= n[1] <= hi[1]):
+                            open_ = True
+                        continue
+                    if n in seen:
+                        open_ = True
+                        continue
+                    comp.add(n)
+                    todo.append(n)
+                if open_ or len(comp) > 20000:
+                    open_ = True
+                    break
+            done |= comp
+            if not open_:
+                for c in comp:
+                    e = self.col_part.get((c[0], c[2]))
+                    if e is None or e["walked"]:
+                        self.unwalked.add(c)
 
     def cuts(self, axis):
         n = self.n[axis]
