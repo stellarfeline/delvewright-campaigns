@@ -97,6 +97,26 @@ OPEN = lambda n: {"open": n}
 # Community and historical reference builds per plot: looked at for form and
 # room layout, never copied (an unlicensed or non-commercial source is ideas only).
 REFS = {
+    # the landmarks worker's rows (content demo/town-buildings @ a82f763), carried here
+    "node/cathedral": [
+        {"url": "https://minecraftonline.com/wiki/Cathedral",
+         "shows": "A community cathedral at nearly this plot's scale (30 x 50 x 30): take the west front's three portals, each a pointed opening under archivolts that step inward in layers, and the nave vault built as stepped courses rising from every pier head to the crown.",
+         "terms": "CC BY-NC-SA 3.0 (the wiki's stated licence): ideas only"},
+        {"url": "https://store.abfielder.com/products/gothic-cathedral-with-interior",
+         "shows": "A vanilla Gothic cathedral in deepslate, tuff and andesite: take the bay rhythm of a buttress pier between every pair of tall paired lancets, wall planes broken into two and three depths, clustered piers on broad bases down a chequered nave.",
+         "terms": "none stated beyond the store's EULA and terms of sale: ideas only"},
+        {"url": "https://minecraft.how/pt/blog/post/build-cathedral-minecraft",
+         "shows": "A cathedral-building guide: take buttresses projecting two to three cells and tapering as they rise, a vault faked with upside-down stairs, pews of stairs, and light gathered at the altar rather than spread evenly.",
+         "terms": "all rights reserved: ideas only"},
+    ],
+    "node/harbour": [
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built harbour town (TheAvatar): take the harbour building standing on the quay with its front to the water, the paved waterfront between the buildings and the edge, and boats lying alongside it.",
+         "terms": "CC BY 4.0 (stated on the page): ideas only"},
+        {"url": "https://sketchfab.com/3d-models/harbor-village-f4b14a5ed28848efb78131a20217fca3",
+         "shows": "A community-built harbour (madexc): take a stone quay edge lined by timber-framed buildings on a stone ground course, and a moored boat with its mast up and sails on the yard.",
+         "terms": "CC BY 4.0 (stated on the page): ideas only"},
+    ],
     "node/inn": [
         {"url": "https://store.abfielder.com/products/%F0%9F%90%8E-travelers-refuge",
          "shows": "A Minecraft inn and tavern: a common hall with a serving counter and a fireplace, the kitchen and pantry behind it, chambers over, an attached stable of eight stalls under a lofted hay balcony.",
@@ -472,8 +492,9 @@ for st, face, theme, dx, dz, at in MAIN:
 for ln, face, theme, at, dx, dz in LANE:
     plot(theme, theme.split("-")[0], f"node/{ln}", face, at, 0, dx, dz)
 plot("lighthouse", "lighthouse", "node/lane-8", "east", 0, 7, 20, 20)
-# the harbour plot on the quay's east side, at the quay's floor
-plot("harbour", "harbour", "node/quay", "east", 0, 2, 24, 16)
+# the harbour plot on the quay's east side, at the quay's floor; its south
+# rows stand over the basin's water, so boats moor alongside its quay edge
+plot("harbour", "harbour", "node/quay", "east", 0, 2, 24, 22)   # its last six rows over the basin
 
 # ---------------------------------------------------------- consistency check
 names = list(pos)
@@ -558,6 +579,7 @@ def coast_z(x):
     quay; a deep cove east of the lighthouse so it stands on its point."""
     z = 492 + (fbm(x, 0, 38, 3, 31) - 0.5) * 60
     z -= 30 * smooth(1 - abs(x - 122) / 40)          # the harbour inlet
+    z -= 22 * smooth(1 - abs(x - 166) / 30)          # the basin the harbour plot moors its boats in
     z -= 66 * smooth(1 - abs(x - 214) / 26)          # the cove under the lighthouse
     z -= 48 * smooth(1 - abs(x - 38) / 30)           # a western cove
     return z
@@ -636,6 +658,7 @@ H = [[base_height(x, z) for x in range(RX)] for z in range(RZ)]
 # over a skirt. Doune's plot: inside the ring its ditch floor (walk - 4), the
 # ring at its surface course (walk - 1), flat, then the summit's own rock.
 rects = [(n, *pos[n]) for n in pos]
+HARBOUR_WATER = 6           # rows of the harbour plot over water, and its depth
 W = [[0.0] * RX for _ in range(RZ)]
 T = [[0.0] * RX for _ in range(RZ)]
 for n, x0, z0, dx, dz, f in rects:
@@ -659,8 +682,10 @@ for n, x0, z0, dx, dz, f in rects:
                 # ground meets the next place level across the seam
                 target = f - 1
                 w = 1.0 if max(ddx, ddz) <= 1 else smooth(1 - (d - 1) / skirt)
-            if n == "node/harbour" and max(ddx, ddz) <= 1:
-                continue  # the harbour keeps the shore and the sea floor under it
+            if n == "node/harbour" and z >= z0 + dz - HARBOUR_WATER:
+                # the harbour's south rows stand over the basin: sea floor,
+                # HARBOUR_WATER deep at sea level, easing into the sea beyond
+                target = SEA - HARBOUR_WATER
             if w > W[z][x] + 1e-9 or (abs(w - W[z][x]) < 1e-9 and target > T[z][x]):
                 W[z][x] = w
                 T[z][x] = target
@@ -866,7 +891,13 @@ write("quest-plan.json", "quest-plan", {
                 "goal": "Walk the town from the square down to the harbour.",
                 "id": "quest/down-to-the-harbour", "mandatory": True, "npcs": []}],
 })
-write("quests.json", "quests", {"quests": [{
+write("quests.json", "quests", {
+    # the town's barrels and cupboards are its people's, scenery the player
+    # looks at: every container no fill and no device claims is decoration
+    "containers": {"decoration_notice": {
+        "style": "chat",
+        "text": "The barrels, crates and cupboards of the town hold their owners' goods: look all you like, but they are not yours to open."}},
+    "quests": [{
     "happening": {"text": "You stand on the square at the foot of the mountain, the cathedral on one side and the inn on the other.", "verb": "arrives"},
     "id": "quest/down-to-the-harbour",
     "objectives": [{
