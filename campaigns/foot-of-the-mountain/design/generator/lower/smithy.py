@@ -304,7 +304,7 @@ def build(place) -> Model:
         clip_to_space(m, place)
         edge, rows, door_h, air = sf
         townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "stone", "lintel": "beam_z", "coping": "coping"},
-                             door_h=door_h)
+                             door_h=door_h, inward=-1)
         finish(m)
     return m
 

@@ -205,7 +205,7 @@ def build(place):
             del m.region[c]
         edge, rows, door_h, air = sf
         townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "weather_z", "lintel": "lintel", "coping": "coping"},
-                             door_h=door_h)
+                             door_h=door_h, inward=-1)
         m.finish()
     return m
 

@@ -278,7 +278,7 @@ def water_step(m, x, z, surface, bed, roles):
 # ---------------------------------------------------------------- street fronts
 
 
-def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None):
+def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None, inward=None):
     """Close a lot's street edge, the column `x` over rows z0..z1, as the street's
     air above it asks: up to course `air` nothing on that column is open but the
     doorway (`door_rows`, `door_h` high), and nothing stands proud of it above.
@@ -290,7 +290,12 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None):
     yard wall goes up: roles["wall"] to course air-1 and roles["coping"] on top,
     every cell above it cleared, so no eave stands over the yard wall at the edge.
     The doorway rows are left open from the walk plane to `door_h`. `solid` tells
-    a filled cell (a role) from an open one; by default anything but air is."""
+    a filled cell (a role) from an open one; by default anything but air is.
+
+    With `inward` (+1 or -1 along x, toward the lot) the edge's part columns are
+    handed back too: no part claims the edge column (it is the front, closed but for
+    the doorway), and the column just inside the doorway is the room the street's
+    way opens into, never a part's."""
     is_solid = solid or (lambda r: r is not None and r != AIR)
     for z in range(z0, z1 + 1):
         if z in door_rows:
@@ -310,6 +315,11 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None):
         m.set(x, air, z, roles["coping"])
         for c in [c for c in m.v if c[0] == x and c[2] == z and c[1] > air]:
             del m.v[c]
+    if inward is not None and hasattr(m, "region"):
+        for z in range(z0, z1 + 1):
+            m.region.pop((x, z), None)
+            if z in door_rows:
+                m.region.pop((x + inward, z), None)
 
 
 def shift(m, dx):
