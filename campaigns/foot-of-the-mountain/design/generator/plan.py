@@ -64,13 +64,14 @@ def ext(node):
     raise KeyError(node)
 
 
-def seam(a, b, face, at, meets, kind, form):
-    """Join a to b on a's `face`; place b by the packing rule."""
+def seam(a, b, face, at, meets, kind, form, span=None):
+    """Join a to b on a's `face`; place b by the packing rule. A contact
+    with a `span` (width, height) meets only over that run, from `at`/`meets`."""
     eid = "edge/" + a.split("/")[1] + "-to-" + b.split("/")[1]
     s = {"edge": eid, "face": face, "at": at, "meets": meets, "form": form}
     cls = "walk"
     if kind == "contact":
-        s["contact"] = {}
+        s["contact"] = {"extent": list(span)} if span else {}
     elif kind == "stair":   # a is the upper place, b the flight below it
         (bdx, bdz), _ = ext(b)
         w = bdx if face in ("north", "south") else bdz
@@ -339,6 +340,10 @@ STREET_W, SEG_L, FLIGHT_L, NFL = 7, 14, 6, 10
 # stalls) clear of the lots' fronts. At the guildhall the street widens into
 # a market.
 STRETCH_W = {k: 9 for k in range(1, NFL)}
+# A stretch's own air is four courses over its walk: a lamp, a stall's
+# awning; above that the air is the open sky, so a lot's upper storey may
+# jetty out over the street's edge.
+STREET_AIR = 4
 STRETCH_W[4] = 11
 segs = []
 prev = "node/square"
@@ -356,7 +361,7 @@ for k in range(1, NFL + 1):
         break
     sg = f"node/street-{k}"
     w = STRETCH_W[k]
-    box(sg, (w, SEG_L), floor, OPEN(8), "a stretch of the main street",
+    box(sg, (w, SEG_L), floor, OPEN(STREET_AIR), "a stretch of the main street",
         f"Stretch {k} of the main street, walk plane {floor}: cobbles with a "
         "kennel, the plots' fronts on both sides" + (", widening into the market before the guildhall." if k == 4 else "."),
         way={"axis": "z", "clear": 5})
@@ -638,9 +643,27 @@ def plot(name, theme, street, face, at, meets, dx, dz):
     intent, note, _ = THEMES[theme]
     box(node, (dx, dz), f, OPEN(16 if theme != "lighthouse" else 44), intent,
         note, holds=holds_for(theme, dx, dz, node))
-    seam(street, node, face, at, meets, "contact",
-         f"the plot's front opens onto the street")
+    if node in FRONTS:
+        # the lot fronts the street: its building's front stands on its box
+        # edge and the lot meets the street only at its doorway
+        zs, w, h, form = FRONTS[node]
+        seam(street, node, face, at + zs - 1, meets + zs - 1, "contact", form, span=(w, h))
+    else:
+        seam(street, node, face, at, meets, "contact",
+             f"the plot's front opens onto the street")
     return node
+
+
+# Lots whose building fronts the street: (first row of the doorway, counted
+# from 1 along the lot's street face; its width; its height; what it is).
+# Every other cell of such a lot's street edge is its building's front wall
+# or its yard wall, four courses high.
+FRONTS = {
+    "node/bakery": (6, 3, 3, "the bakery's open shop front onto the street"),
+    "node/apothecary": (7, 3, 3, "the apothecary's doorway onto the street"),
+    "node/weaver": (5, 3, 3, "the weaver's shop doorway onto the street"),
+    "node/merchant": (7, 5, 3, "the merchant's court mouth under its arch, onto the street"),
+}
 
 
 def overlaps(a, b, gap=0):

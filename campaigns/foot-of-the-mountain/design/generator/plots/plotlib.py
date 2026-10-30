@@ -890,16 +890,21 @@ class Model:
         self.region: dict[tuple[int, int], str] = {}
         self.marks: dict[str, tuple[int, int, str]] = {}
         self.no_touch: set[tuple[int, int, int]] = set()   # a seam's opening
+        # a lot drawn back from its street and then brought forward to it:
+        # every cell a plot draws stands `dx` further east (negative: west);
+        # the seam openings (no_touch) are absolute
+        self.dx = 0
 
     def ok(self, x, y, z):
         return 0 <= x < self.ex and 0 <= y < self.ey and 0 <= z < self.ez and (x, y, z) not in self.no_touch
 
     def set(self, x, y, z, s):
+        x += self.dx
         if self.ok(x, y, z):
             self.v[(x, y, z)] = s
 
     def get(self, x, y, z):
-        return self.v.get((x, y, z))
+        return self.v.get((x + self.dx, y, z))
 
     def box(self, x0, x1, y0, y1, z0, z1, s):
         """Inclusive on every axis."""
@@ -914,7 +919,8 @@ class Model:
     def part(self, x0, x1, z0, z1, stem):
         for x in range(x0, x1 + 1):
             for z in range(z0, z1 + 1):
-                self.region[(x, z)] = stem
+                if 1 <= x + self.dx <= self.ex - 2:
+                    self.region[(x + self.dx, z)] = stem
 
     def hollow(self, x0, x1, y0, y1, z0, z1, s):
         for y in range(y0, y1 + 1):
@@ -1351,6 +1357,7 @@ def plot_main(build, cls, base_palette, unwalked_reason, argv=None):
     with open(args.allocation, encoding="utf-8") as f:
         allocation = json.load(f)
     cls.MODEL = build(allocation)
+    cls.MODEL.dx = 0             # every read from here on is of the cells as they stand
     cls.MODEL.connect()
     bad = support_faults(cls.MODEL, cls.VARIANTS)
     if bad:
@@ -1378,6 +1385,21 @@ def guard_seams(m, a):
             for y in range(y0, y1 + 1):
                 for z in range(z0, z1 + 1):
                     m.no_touch.add((x, y, z))
+
+
+def front(m, x, z0, z1, gap, gate=None, coping="minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]"):
+    """Close a lot's street edge (column `x`, rows z0..z1) where its building
+    does not: a stone yard wall four courses high (its coping the fourth),
+    skipping the rows in `gap` (the doorway the seam's span leaves open, and
+    any row the building's own front already closes). Absolute cells."""
+    dx, m.dx = m.dx, 0
+    for z in range(z0, z1 + 1):
+        if z in gap or m.get(x, 1, z) not in (None, AIR):
+            continue
+        for y in (1, 2, 3):
+            m.set(x, y, z, "stone" if gate is None else gate)
+        m.set(x, 4, z, coping)
+    m.dx = dx
 
 
 def window(m, x, z, glass, y0=2, h=2):

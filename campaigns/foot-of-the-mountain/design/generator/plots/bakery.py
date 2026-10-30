@@ -18,7 +18,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -46,21 +46,23 @@ BOARDS = "minecraft:oak_planks"
 # the house: walls x 9..19, z 3..9; gable to the street (east); ground floor
 # y 1..4, the floor over it y 5, the upper storey y 6..8, roof from y 8
 HX0, HX1, HZ0, HZ1 = 9, 19, 3, 9
+FRONT_DX = 3               # the shop's front wall on the lot's street edge (x 22)
 SHOP_WALL = 14             # the wall between the bake room (west) and the shop
 
 
 def build(a):
     m = Model(a["extent"])
     guard_seams(m, a)
+    # the lot fronts the street: everything below is drawn as it stood three
+    # cells back, and stands three cells east, the shop's front wall on the
+    # lot's edge
+    m.dx = FRONT_DX
     m.part(HX0, HX1, HZ0, HZ1, "shop")
     m.part(3, 7, 4, 6, "oven")             # the oven and the stoking floor before its mouth
-    for x in range(2, 9):
-        for z in range(7, 13):
-            m.region[(x, z)] = "yard"
-    m.part(9, 20, 11, 12, "yard")
+    m.part(2, 8, 7, 12, "yard")
+    m.part(9, 19, 11, 12, "yard")
 
     m.box(2, 20, 0, 0, 1, 12, "yard")
-    m.box(HX1 + 1, 20, 0, 0, HZ0, HZ1, "minecraft:stone_bricks")   # the step before the shop
 
     # ---- the house: stone plinth, timber frame, limewash, the upper storey
     corners = {(HX0, HZ0), (HX1, HZ0), (HX0, HZ1), (HX1, HZ1)}
@@ -88,14 +90,8 @@ def build(a):
     for z in (4, 5):
         for y in (2, 3):
             m.set(HX1, y, z, GLASS)
-    for z in range(HZ0, HZ1 + 1):                     # the awning: slabs carrying red and white
-        m.set(HX1 + 1, 4, z, slab("minecraft:spruce", "top"))
-        m.set(HX1 + 1, 5, z, "minecraft:red_carpet" if z % 2 else "minecraft:white_carpet")
-    m.set(HX1 + 1, 1, 4, "minecraft:hay_block[axis=z]")  # sheaves by the door
-    m.set(HX1 + 1, 1, 5, slab("minecraft:spruce", "top"))
-    m.set(HX1 + 1, 2, 5, "minecraft:potted_dandelion")
-    m.set(HX1 + 1, 1, 8, stairs("minecraft:oak", "west"))  # a bench by the door
-    m.set(HX1 + 1, 1, 9, stairs("minecraft:oak", "west"))
+    # the shop front stands on the street: the door's place (rows 6..8) is
+    # the lot's open doorway onto the street, sheaves and loaves inside it;
     # side and back lights
     for x in (11, 16):
         window(m, x, HZ0, GLASS); window(m, x, HZ1, GLASS)
@@ -158,13 +154,22 @@ def build(a):
     m.set(5, 1, 11, stairs("minecraft:spruce", "north")); m.set(6, 1, 11, stairs("minecraft:spruce", "north"))
     bed_of(m, [(10, 11), (11, 11), (12, 11), (16, 11), (17, 11)],
            ["minecraft:poppy", "minecraft:dandelion", "minecraft:cornflower"])
-    for (x, z) in ((3, 12), (8, 12), (14, 12), (19, 12)):
+    for (x, z) in ((3, 12), (8, 12), (14, 12)):
         m.set(x, 0, z, GRASS); m.set(x, 1, z, leaves("minecraft:azalea" if x % 2 else "minecraft:oak"))
-    for y in (1, 2, 3):
-        m.set(20, y, 11, fence("minecraft:spruce"))
-    m.set(20, 4, 11, lantern(False))
-
-    m.marks["node-bakery"] = (20, 6, "west")
+    m.set(15, 1, 7, "minecraft:hay_block[axis=z]")        # sheaves just inside the open front
+    m.set(16, 1, 7, slab("minecraft:spruce", "top"))
+    m.set(16, 2, 7, "minecraft:potted_dandelion")
+    # the back of the lot, freed by the shop's coming forward: a garden tree
+    for y in range(1, 5):
+        m.set(-1, y, 4, log("minecraft:oak_log", "y"))
+    for x in range(-3, 2):
+        for z in range(2, 7):
+            for y in (4, 5, 6):
+                if abs(x + 1) + abs(z - 4) + (y - 4) <= 3 and (x, z) != (-1, 4) or (y == 6 and (x, z) == (-1, 4)):
+                    m.set(x, y, z, leaves("minecraft:oak"))
+    m.marks["node-bakery"] = (17 + FRONT_DX, 7, "east")
+    # the street edge where the shop does not stand: the yard wall
+    front(m, a["extent"][0] - 2, 1, a["extent"][2] - 2, gap=set(range(6, 9)))
     return m
 
 
