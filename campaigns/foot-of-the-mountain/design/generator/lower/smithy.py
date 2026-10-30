@@ -299,6 +299,11 @@ def build(place) -> Model:
     m.regions("work-yard", 11, 21, 8, 11)
     m.regions("work-yard", 13, 13, 4, 7)
     m.regions("work-yard", 21, 22, 2, 7)
+    if front:
+        # stood on the street edge, the forge gives its front column to the street and the
+        # yard its street end: each takes the ground beside it instead
+        m.regions("forge", fx0, fx1 - 1, 1, 1)
+        m.regions("work-yard", 6, 10, 10, 11)
     m.dx = 0
     if front:
         clip_to_space(m, place)
