@@ -102,7 +102,7 @@ HULL_ROLES = ("hull", "keel", "deck", "gunwale", "gunwale_hi", "stem", "stem_pos
               "flare_n", "flare_s", "flare_e", "flare_w")
 
 
-def hull(m, axis, s0, c0, widths, waterline, roles=None, toward=1, cols=None):
+def hull(m, axis, s0, c0, widths, waterline, roles=None, toward=1, cols=None, shoulder=True):
     """A boat's hull in half steps, laid along `axis` ("x" or "z") from its stern station
     s0 toward its bow (`toward` = +1 or -1), centred on the cross line c0.
 
@@ -110,8 +110,9 @@ def hull(m, axis, s0, c0, widths, waterline, roles=None, toward=1, cols=None):
     last narrow to a point (0 at the stem). In section: planks a cell in at `waterline`,
     the keel under them, upturned stairs flaring out a course above, a slab gunwale on
     top. The sheer rises toward both ends: a top slab on the first two and the last three
-    stations, a strake more at the bow's shoulder, and the stem a post rising past the
-    gunwale to a point. `roles` renames any of HULL_ROLES to the caller's palette;
+    stations, a strake more at the bow's shoulder (left out with `shoulder=False`, for a
+    boat small enough that the strake would close its deck in), and the stem a post
+    rising past the gunwale to a point. `roles` renames any of HULL_ROLES to the caller's palette;
     `cols`, a set, collects every column the hull stands on."""
     r = {k: k for k in HULL_ROLES}
     r.update(roles or {})
@@ -137,7 +138,7 @@ def hull(m, axis, s0, c0, widths, waterline, roles=None, toward=1, cols=None):
                 m.set(x, deck_y, z, r["hull"])
                 m.set(x, deck_y + 1, z, r["stem_post"])
                 m.set(x, deck_y + 2, z, r["stem"])
-            elif side and i == n - 2:
+            elif side and i == n - 2 and shoulder:
                 m.set(x, deck_y, z, r["hull"])
                 m.set(x, deck_y + 1, z, r["hull"])
                 m.set(x, deck_y + 2, z, r["gunwale"])

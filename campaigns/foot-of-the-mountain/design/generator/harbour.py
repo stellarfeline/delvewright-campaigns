@@ -890,9 +890,9 @@ class Model:
 BOAT_COLS = set()
 
 
-def boat(m, axis, s0, zc, widths, masts, toward=1):
+def boat(m, axis, s0, zc, widths, masts, toward=1, shoulder=True):
     """A moored boat: the kit's hull with its waterline on the sea's surface course, and its masts."""
-    townkit.hull(m, axis, s0, zc, widths, SEA, toward=toward, cols=BOAT_COLS)
+    townkit.hull(m, axis, s0, zc, widths, SEA, toward=toward, cols=BOAT_COLS, shoulder=shoulder)
     for (i, h) in masts:
         townkit.mast(m, axis, s0 + toward * i, zc, 1, h, {"mast": "mast", "yard": "yard", "sail": "sail"})
 
@@ -1046,7 +1046,8 @@ def build_model():
     boat(m, axis="x", s0=2, zc=19, widths=[1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0],
          masts=((5, 8), (11, 7)))
     # the fishing boat: five long, bow on to the quay's edge, stern to the sea
-    boat(m, axis="z", s0=21, zc=21, widths=[1, 1, 1, 1, 0], masts=((2, 6),), toward=-1)
+    boat(m, axis="z", s0=21, zc=21, widths=[1, 1, 1, 1, 0], masts=((2, 6),), toward=-1,
+         shoulder=False)   # a step up from the pier onto its gunwale and back
     # ---------- the parts: which columns are which
     for x in range(1, 25):
         for z in range(1, 23):
