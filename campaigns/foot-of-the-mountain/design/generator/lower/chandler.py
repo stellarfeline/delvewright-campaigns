@@ -12,7 +12,8 @@ on the yard side. Stone below, weatherboard above, a deepslate roof.
     "$DELVEWRIGHT_PYTHON" chandler.py --allocation <allocation.json> --out <campaign>/programs/chandler.json --delvec <delvec>
 
 Drawn into the skill's starter alone (`$DELVEWRIGHT_SKILL/scripts/starter.py`:
-its Model, its block constructors and Model.roof), which binds the handing
+its Model, its block constructors, Model.roof and Model.shift, and its town
+helpers street_seam, street_front and clip_beyond), which binds the handing
 and asks the engine where a body goes.
 
 Piece-local: +x east (the street), +z south; y 0 the ground course, y 1 the walk plane.
@@ -24,10 +25,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import (Model, barrel, chain, fence, grass_block, lantern, leaves, pane, pillar, run,  # noqa: E402
-                     slab, trapdoor)
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
-import townkit  # noqa: E402
+from starter import (Model, barrel, chain, clip_beyond, fence, grass_block, lantern, leaves, pane, pillar,  # noqa: E402
+                     run, slab, street_front, street_seam, trapdoor)
 
 
 PALETTE = {
@@ -95,8 +94,8 @@ def build(place):
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
-    front, sf = townkit.street_seam(place, "east")
-    townkit.shift(m, FRONT_DX if front else 0)
+    front, sf = street_seam(place, "east")
+    m.shift(FRONT_DX if front else 0)
     m.box(hx1 + 1, X1, 0, 0, Z0 + 1, Z1 - 1, "pave")
     m.box(X0, hx0 - 1, 0, 0, Z0 + 1, Z1 - 1, "yard")
     m.box(hx0, hx1, 0, 0, hz1 + 1, Z1 - 1, "yard")
@@ -202,13 +201,13 @@ def build(place):
     m.part(X0, hx0 - 1, Z0 + 1, Z1 - 1, "yard")
     m.part(hx0, 15, hz1 + 1, Z1 - 1, "yard")
     m.mark("node-chandler", 15, 5, "west")   # in the shop before the counter, facing the goods
-    townkit.shift(m, 0)
+    m.shift(0)
     if front:
-        townkit.clip_beyond(m, X0, X1, Z0, Z1, above=-1)
+        clip_beyond(m, X0, X1, Z0, Z1, above=-1)
         for c in [c for c in m.region if not (X0 <= c[0] <= X1)]:
             del m.region[c]
         edge, rows, door_h, air = sf
-        townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "weather_z", "lintel": "lintel", "coping": "coping"},
+        street_front(m, edge, Z0, Z1, rows, air, {"wall": "weather_z", "lintel": "lintel", "coping": "coping"},
                              door_h=door_h, inward=-1)
         m.finish()
     return m
