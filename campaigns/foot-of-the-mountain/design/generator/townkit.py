@@ -290,6 +290,7 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None, inwa
     the doorway's head up to `air` with roles["lintel"]. Where nothing stands, a
     yard wall goes up: roles["wall"] to course air-1 and roles["coping"] on top,
     every cell above it cleared, so no eave stands over the yard wall at the edge.
+    Last, no cell of the edge column is left standing over air.
     The doorway rows are left open from the walk plane to `door_h`. `solid` tells
     a filled cell (a role) from an open one; by default anything but air is.
 
@@ -316,6 +317,16 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None, inwa
         m.set(x, air, z, roles["coping"])
         for c in [c for c in m.v if c[0] == x and c[2] == z and c[1] > air]:
             del m.v[c]
+    # and no cell of the edge column stands over air: the gap between a front's wall
+    # head and the roof it carries (or any other) is closed in the wall's role
+    for z in range(z0, z1 + 1):
+        ys = [y for (cx, y, cz) in m.v if cx == x and cz == z and y > 0 and is_solid(m.v[(cx, y, cz)])]
+        if not ys:
+            continue
+        start = door_h + 1 if z in door_rows else 1
+        for y in range(start, max(ys)):
+            if not is_solid(m.get(x, y, z)):
+                m.set(x, y, z, roles["lintel"] if z in door_rows else roles["wall"])
     if inward is not None and hasattr(m, "region"):
         for z in range(z0, z1 + 1):
             m.region.pop((x, z), None)
