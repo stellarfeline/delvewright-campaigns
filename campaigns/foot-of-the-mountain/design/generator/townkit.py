@@ -179,7 +179,7 @@ def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
 
     The stem is a narrow post rising from a solid foot on the keel to a point, and the
     planking is drawn in to it: at the station behind the stem the sides are thin plates on
-    their inner faces, so the hull's outline closes on the post; the sheer is at its
+    their inner faces with nothing between them, so the hull's outline closes on the post; the sheer is at its
     highest there (a top slab at the shoulder, a bottom slab amidships); the turn of the bilge is upturned stairs and the planked
     strake amidships lapped planks on the outer face; the `framed` stations next to the
     transom stand in bare frames (a frame every other station) on their ribband; the
@@ -206,8 +206,6 @@ def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
     for y in range(keel_y + 1, keel_y + 4):
         put(bow, y, c0, "stem_post")
     put(bow, keel_y + 4, c0, "stem_tip")
-    for y in (keel_y + 1, keel_y + 2, keel_y + 3):
-        put(bow - 1, y, c0, "strake")
     for c in (lo, hi):
         for y in (keel_y + 1, keel_y + 2, keel_y + 3):
             put(bow - 1, y, c, "bow_plate_" + side(c))
