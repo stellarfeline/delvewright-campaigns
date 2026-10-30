@@ -61,7 +61,7 @@ def build(place):
     # the west end: crates stacked, nets drying over a rack
     # (everything stands on the two edge rows, the back and the kerb: the quay is a way
     # eight clear across between them, DW1057)
-    for (x, z, h) in ((X0 + 2, Z0, 2), (X0 + 3, Z0, 1), (X0 + 2, Z0 + 1, 1)):
+    for (x, z, h) in ((X0 + 2, Z0, 2), (X0 + 3, Z0, 1), (X0 + 4, Z0, 1)):
         for y in range(1, h + 1):
             m.set(x, y, z, "crate")
         m.set(x, h + 1, z, "crate_lid")
@@ -73,7 +73,7 @@ def build(place):
     m.set(X0 + 42, 1, Z1, "anchor")
     m.set(X0 + 43, 1, Z1, "rope")
     # the east end, by the harbour: barrels of salt fish
-    for (x, z) in ((X1 - 8, Z0), (X1 - 7, Z0), (X1 - 8, Z0 + 1)):
+    for (x, z) in ((X1 - 9, Z0), (X1 - 8, Z0), (X1 - 7, Z0)):
         m.set(x, 1, z, "barrel")
     m.finish()
     m.mark("node-quay", (X0 + X1) // 2, (Z0 + Z1) // 2, "south")
