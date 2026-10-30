@@ -228,6 +228,9 @@ REFS = {
         {"url": "https://sketchfab.com/3d-models/harbor-village-f4b14a5ed28848efb78131a20217fca3",
          "shows": "A community-built harbour (madexc): take a stone quay edge lined by timber-framed buildings on a stone ground course, and a moored boat with its mast up and sails on the yard.",
          "terms": "CC BY 4.0 (stated on the page): ideas only"},
+        {"url": "https://en.wikipedia.org/wiki/Lucarne",
+         "shows": "The lucarne: a housing high on a store's wall, the roof run out past the gable on a strong ridge timber carrying the hoist over the loading doors of every floor beneath it.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
     ],
     # the landmarks worker's lighthouse rows (content demo/town-buildings @ f4ae754)
     "node/lighthouse": [
@@ -287,6 +290,18 @@ REFS = {
          "terms": "CC BY-SA 4.0 (Wikipedia text)"},
         {"url": "https://en.wikipedia.org/wiki/Guildhall",
          "shows": "The guildhall: market trading on its ground floor, the officers' offices and the board's meetings in it, the guild's arms on the facade; in Britain, the town hall.",
+         "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    ],
+    # the quay: the harbour's rows fit it
+    "node/quay": [
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built harbour town (TheAvatar): take the harbour building standing on the quay with its front to the water, the paved waterfront between the buildings and the edge, and boats lying alongside it.",
+         "terms": "CC BY 4.0 (stated on the page): ideas only"},
+        {"url": "https://sketchfab.com/3d-models/harbor-village-f4b14a5ed28848efb78131a20217fca3",
+         "shows": "A community-built harbour (madexc): take a stone quay edge lined by timber-framed buildings on a stone ground course, and a moored boat with its mast up and sails on the yard.",
+         "terms": "CC BY 4.0 (stated on the page): ideas only"},
+        {"url": "https://en.wikipedia.org/wiki/Lucarne",
+         "shows": "The lucarne: a housing high on a store's wall, the roof run out past the gable on a strong ridge timber carrying the hoist over the loading doors of every floor beneath it.",
          "terms": "CC BY-SA 4.0 (Wikipedia text)"},
     ],
     "node/inn": [

@@ -8,7 +8,7 @@ Form, after the fishermen's cottages of a harbour town (low, one storey and a
 loft, whitewashed over a rubble base, the door to a small front garden, the
 work of the sea — nets, pots, a boat's oars — about the yard behind): two
 cottages gable-end to the street, staggered on the slope, each a front room
-with its hearth and a back room with the bed through a door; front gardens
+with its hearth at the street end and the bed at the back; front gardens
 of flowers to the street, a shared back yard with a washing line, lobster
 pots and a bench.
 
@@ -32,8 +32,8 @@ ROOF = "minecraft:deepslate_tile"
 
 def cottage(m, x0, x1, z0, z1, wash, post, door_z, part_wall_x, colour, flip):
     """One cottage: a rubble base course, whitewash or timber walls, a loft
-    under a tiled gable roof to the street; the front room (east) and the back
-    room (west) through a door in the cross wall."""
+    under a tiled gable roof to the street; one room, the hearth at its street
+    end and the bed at its back."""
     corners = {(x0, z0), (x1, z0), (x0, z1), (x1, z1)}
     for (x, z) in ring(x0, x1, z0, z1):
         m.set(x, 1, z, "rubble")
@@ -52,13 +52,8 @@ def cottage(m, x0, x1, z0, z1, wash, post, door_z, part_wall_x, colour, flip):
         if z != door_z:
             m.set(x1, 2, z, GLASS)
     m.set(x1, 3, door_z, wash)
-    # the cross wall and its door
-    for z in range(z0 + 1, z1):
-        for y in (1, 2, 3):
-            m.set(part_wall_x, y, z, wash)
+    # one room under the loft, the hearth at one end and the bed at the other
     dz = (z0 + z1) // 2
-    door2(m, part_wall_x, dz, "minecraft:spruce", "east")
-    m.set(part_wall_x, 3, dz, wash)
     # the back room's window to the yard
     m.set(x0, 2, dz, GLASS)
     # floors
