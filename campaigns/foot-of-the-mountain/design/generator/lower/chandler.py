@@ -26,6 +26,8 @@ import sys
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 from starter import (Model, barrel, chain, fence, grass_block, lantern, leaves, pane, pillar, run,  # noqa: E402
                      slab, trapdoor)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 PALETTE = {
@@ -44,6 +46,7 @@ PALETTE = {
     "beam_x": pillar("spruce_log", "x"),
     "beam_z": pillar("spruce_log", "z"),
     "lintel": "minecraft:polished_tuff",
+    "coping": "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
     "pane": pane("glass_pane"),
     "ridge": slab("deepslate_tile"),
     "loft": "minecraft:spruce_planks",
@@ -80,6 +83,7 @@ PALETTE = {
 HOUSE = (6, 17, 3, 8)     # walls included; the street gable at x 17, its eave clear of the seam
 CROSS = 11                # shop east of it, store west
 TOP = 4                   # wall plate
+FRONT_DX = 3              # fronted, the street gable is the lot's street edge
 
 
 def build(place):
@@ -91,6 +95,8 @@ def build(place):
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
+    front, sf = townkit.street_seam(place, "east")
+    townkit.shift(m, FRONT_DX if front else 0)
     m.box(hx1 + 1, X1, 0, 0, Z0 + 1, Z1 - 1, "pave")
     m.box(X0, hx0 - 1, 0, 0, Z0 + 1, Z1 - 1, "yard")
     m.box(hx0, hx1, 0, 0, hz1 + 1, Z1 - 1, "yard")
@@ -114,9 +120,10 @@ def build(place):
     m.box(CROSS, CROSS, 1, TOP, hz0 + 1, hz1 - 1, "weather_z")
     m.door(CROSS, 1, 5, "spruce", "east")
     # the street gable: the door and the display window, one lintel over both
-    m.door(hx1, 1, 6, "spruce", "west")
-    m.box(hx1, hx1, 2, 3, 4, 4, "pane")
-    m.box(hx1, hx1, 1, 1, 4, 4, "barrel_e")
+    if not front:
+        m.door(hx1, 1, 6, "spruce", "west")
+        m.box(hx1, hx1, 2, 3, 4, 4, "pane")
+        m.box(hx1, hx1, 1, 1, 4, 4, "barrel_e")
     m.box(hx1, hx1, TOP, TOP, hz0 + 1, hz1 - 1, "lintel")
     # windows along the sides; the store's loading door to the yard, the hoist over it
     for x in (14, 16):
@@ -191,6 +198,15 @@ def build(place):
     m.part(X0, hx0 - 1, Z0 + 1, Z1 - 1, "yard")
     m.part(hx0, 15, hz1 + 1, Z1 - 1, "yard")
     m.mark("node-chandler", 15, 5, "west")   # in the shop before the counter, facing the goods
+    townkit.shift(m, 0)
+    if front:
+        townkit.clip_beyond(m, X0, X1, Z0, Z1, above=-1)
+        for c in [c for c in m.region if not (X0 <= c[0] <= X1)]:
+            del m.region[c]
+        edge, rows, door_h, air = sf
+        townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "weather_z", "lintel": "lintel", "coping": "coping"},
+                             door_h=door_h, inward=-1)
+        m.finish()
     return m
 
 

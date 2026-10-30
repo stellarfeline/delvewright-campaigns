@@ -16,8 +16,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
+import townkit  # noqa: E402
 
 LAMP_PERIOD = 4  # one sconce (and one ceiling lamp) in four cells; yours to change
 
@@ -718,22 +722,26 @@ CCW = {"north": "west", "west": "south", "south": "east", "east": "north"}
 
 
 class Model:
+    """Cells a generator draws into. `dx` shifts every write and read along x: a
+    building drawn at its own coordinates is moved, whole, onto the lot's street edge."""
+
     def __init__(self, palette: dict):
         self.v: dict = {}
         self.region: dict = {}
         self.palette = palette
+        self.dx = 0
 
     def set(self, x, y, z, role):
-        self.v[(x, y, z)] = role
+        self.v[(x + self.dx, y, z)] = role
 
     def box(self, x0, x1, y0, y1, z0, z1, role):
         for x in range(min(x0, x1), max(x0, x1) + 1):
             for y in range(min(y0, y1), max(y0, y1) + 1):
                 for z in range(min(z0, z1), max(z0, z1) + 1):
-                    self.v[(x, y, z)] = role
+                    self.v[(x + self.dx, y, z)] = role
 
     def get(self, x, y, z):
-        return self.v.get((x, y, z))
+        return self.v.get((x + self.dx, y, z))
 
     def block(self, role):
         b = self.palette.get(role)
@@ -744,7 +752,7 @@ class Model:
     def regions(self, stem, x0, x1, z0, z1):
         for x in range(x0, x1 + 1):
             for z in range(z0, z1 + 1):
-                self.region[(x, z)] = stem
+                self.region[(x + self.dx, z)] = stem
 
 
 def hsh(*a):
@@ -1253,3 +1261,18 @@ def hip(m: Model, x0, x1, z0, z1, y0, stair, ridge, ov=1):
             m.set(ax1, y, z, stair + "_w")
         ax0, ax1, az0, az1, y = ax0 + 1, ax1 - 1, az0 + 1, az1 - 1, y + 1
     return y - 1
+
+
+def fronted(place, face):
+    """The town kit's `street_seam` (one reading of a lot's street edge)."""
+    return townkit.street_seam(place, face)
+
+
+def clip_to_space(m, place):
+    """Drop every cell and part column outside the lot's columns (what a building
+    moved onto the street edge would throw over it)."""
+    lo, hi = place.space
+    for c in [c for c in m.v if not (lo[0] <= c[0] <= hi[0] and lo[2] <= c[2] <= hi[2])]:
+        del m.v[c]
+    for c in [c for c in m.region if not (lo[0] <= c[0] <= hi[0] and lo[2] <= c[1] <= hi[2])]:
+        del m.region[c]

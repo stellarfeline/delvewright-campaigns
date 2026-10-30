@@ -179,7 +179,7 @@ def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
 
     The stem is a narrow post rising from a solid foot on the keel to a point, and the
     planking is drawn in to it: at the station behind the stem the sides are thin plates on
-    their inner faces, so the hull's outline closes on the post; the sheer is at its
+    their inner faces with nothing between them, so the hull's outline closes on the post; the sheer is at its
     highest there (a top slab at the shoulder, a bottom slab amidships); the turn of the bilge is upturned stairs and the planked
     strake amidships lapped planks on the outer face; the `framed` stations next to the
     transom stand in bare frames (a frame every other station) on their ribband; the
@@ -206,8 +206,6 @@ def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
     for y in range(keel_y + 1, keel_y + 4):
         put(bow, y, c0, "stem_post")
     put(bow, keel_y + 4, c0, "stem_tip")
-    for y in (keel_y + 1, keel_y + 2, keel_y + 3):
-        put(bow - 1, y, c0, "strake")
     for c in (lo, hi):
         for y in (keel_y + 1, keel_y + 2, keel_y + 3):
             put(bow - 1, y, c, "bow_plate_" + side(c))
@@ -275,3 +273,96 @@ def water_step(m, x, z, surface, bed, roles):
     m.set(x, surface, z, roles["step"])
     for y in range(bed, surface):
         m.set(x, y, z, roles["fill"])
+
+
+# ---------------------------------------------------------------- street fronts
+
+
+def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None, inward=None):
+    """Close a lot's street edge, the column `x` over rows z0..z1, as the street's
+    air above it asks: up to course `air` nothing on that column is open but the
+    doorway (`door_rows`, `door_h` high), and nothing stands proud of it above.
+
+    Where the lot's building already stands on the edge (its walk-plane cell is
+    solid) the building's front carries the closure: any open cell of it up to
+    `air` is filled with roles["wall"] (a front's window is a pane: solid), and
+    the doorway's head up to `air` with roles["lintel"]. Where nothing stands, a
+    yard wall goes up: roles["wall"] to course air-1 and roles["coping"] on top,
+    every cell above it cleared, so no eave stands over the yard wall at the edge.
+    The doorway rows are left open from the walk plane to `door_h`. `solid` tells
+    a filled cell (a role) from an open one; by default anything but air is.
+
+    With `inward` (+1 or -1 along x, toward the lot) the edge's part columns are
+    handed back too: no part claims the edge column (it is the front, closed but for
+    the doorway), and the column just inside the doorway is the room the street's
+    way opens into, never a part's."""
+    is_solid = solid or (lambda r: r is not None and r != AIR)
+    for z in range(z0, z1 + 1):
+        if z in door_rows:
+            for y in range(1, door_h + 1):
+                m.set(x, y, z, AIR)
+            for y in range(door_h + 1, air + 1):
+                if not is_solid(m.get(x, y, z)):
+                    m.set(x, y, z, roles["lintel"])
+            continue
+        if is_solid(m.get(x, 1, z)):
+            for y in range(2, air + 1):
+                if not is_solid(m.get(x, y, z)):
+                    m.set(x, y, z, roles["wall"])
+            continue
+        for y in range(1, air):
+            m.set(x, y, z, roles["wall"])
+        m.set(x, air, z, roles["coping"])
+        for c in [c for c in m.v if c[0] == x and c[2] == z and c[1] > air]:
+            del m.v[c]
+    if inward is not None and hasattr(m, "region"):
+        for z in range(z0, z1 + 1):
+            m.region.pop((x, z), None)
+            if z in door_rows:
+                m.region.pop((x + inward, z), None)
+
+
+def shift(m, dx):
+    """Draw into `m` moved `dx` along x from here on: every write and read through
+    set, get, part and mark (and so box, door and roof) lands dx over. shift(m, 0)
+    ends it. A building drawn at its own coordinates is stood, whole, on the edge."""
+    for k in ("set", "get", "part", "mark"):
+        m.__dict__.pop(k, None)
+    if not dx:
+        return
+    cls = type(m)
+    m.set = lambda x, y, z, r: cls.set(m, x + dx, y, z, r)
+    m.get = lambda x, y, z: cls.get(m, x + dx, y, z)
+    m.part = lambda x0, x1, z0, z1, stem: cls.part(m, x0 + dx, x1 + dx, z0, z1, stem)
+    m.mark = lambda stem, x, z, facing="south": cls.mark(m, stem, x + dx, z, facing)
+
+
+def street_seam(place, face):
+    """Read a lot's street edge on `face` off its allocation (`place.a`):
+    (fronted, (edge column or row, the rows the seam leaves open, the doorway's
+    height, the course the street's air rises to)). Fronted means the seam is cut
+    to a doorway narrower than the edge: the lot then stands its building on the
+    edge. While it is uncut the rows are the whole edge. The street's air is the
+    height of the street's void on the ring beside the edge (the seam's own top
+    where no void is handed)."""
+    a = place.a
+    lo, hi = place.space
+    for c in a["seams"]:
+        if c.get("face") != face:
+            continue
+        (x0, y0, z0), (x1, y1, z1) = c["cells"]
+        air = y1
+        for v in a.get("voids", []):
+            (vx0, vy0, vz0), (vx1, vy1, vz1) = v["cells"]
+            if face in ("east", "west"):
+                beside = vx0 == vx1 == x0 + (1 if face == "east" else -1)
+            else:
+                beside = vz0 == vz1 == z0 + (1 if face == "south" else -1)
+            if beside:
+                air = vy1
+        if face in ("east", "west"):
+            rows, span, edge = set(range(z0, z1 + 1)), hi[2] - lo[2] + 1, x0
+        else:
+            rows, span, edge = set(range(x0, x1 + 1)), hi[0] - lo[0] + 1, z0
+        return len(rows) < span, (edge, rows, y1, air)
+    return False, None
