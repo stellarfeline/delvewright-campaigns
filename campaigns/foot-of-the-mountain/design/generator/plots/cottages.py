@@ -7,7 +7,7 @@
 Form, after the fishermen's cottages of a harbour town (low, one storey and a
 loft, whitewashed over a rubble base, the door to a small front garden, the
 work of the sea — nets, pots, a boat's oars — about the yard behind): two
-cottages gable-end to the street, staggered on the slope, each a front room
+cottages gable-end to the street, staggered on the slope, each one room
 with its hearth at the street end and the bed at the back; front gardens
 of flowers to the street, a shared back yard with a washing line, lobster
 pots and a bench.
