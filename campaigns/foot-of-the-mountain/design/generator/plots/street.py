@@ -122,6 +122,9 @@ def bracket(m, place, s, top):
     for x, z in ((px, pz), (sx, sz)):
         m.set(x, top, z, f"minecraft:stripped_spruce_log[axis={axis}]")
     m.set(sx, top - 1, sz, f"minecraft:{wood}_hanging_sign[attached=false,rotation={SIGN_ROT[face]},waterlogged=false]")
+    # the sign's own cell, named for the trade: the campaign's `signs` entry
+    # writes the trade's name on it
+    m.mark(f"sign-{seam['other'].removeprefix('node/')}", sx, sz, y=top - 1)
     return {(px, pz), (sx, sz)}
 
 
