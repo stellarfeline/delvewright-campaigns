@@ -1150,6 +1150,11 @@ BRICK_AREA = {"min": [TOWN[0], SQ[1] + 24], "max": [TOWN_EAST, TOWN[3]]}   # bel
 _cx, _cz, _cdx, _cdz, _ = pos["node/castle"]
 CASTLE_AREA = {"min": [_cx - 1, _cz - 1], "max": [_cx + _cdx, _cz + _cdz]}
 P = lambda scale, mn, salt: {"scale": scale, "min": mn, "salt": salt}
+# the terrace under Doune's north wall, between the castle road's last stretch
+# and the castle's ring: level ground at the walk's grade, turfed, so from the
+# wall it reads as a kept terrace, not a bare strip
+_rx, _rz, _rdx, _rdz, _ = pos["node/road-top"]
+TERRACE = {"min": [min(_rx, _cx) - 2, _rz + _rdz + 1], "max": [_cx + _cdx + 15, _cz - 2]}
 _hx, _hz, _hdx, _hdz, _ = pos["node/lighthouse"]
 HEADLAND = {"min": [max(_hx - 14, pos["node/harbour"][0] + pos["node/harbour"][2] + 2), _hz - 1],
             "max": [_hx + _hdx + 14, _hz + _hdz + 14]}
@@ -1165,6 +1170,7 @@ STRATA = [
     {"when": {"y_max": 63}, "surface": "minecraft:sand", "below": "minecraft:sandstone"},
     # Doune's plot and its ring: Doune's own turf, which its plants stand on
     {"when": {"area": CASTLE_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
+    {"when": {"area": TERRACE}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
     # the town: a step of two or more is a retaining wall a builder laid
     {"when": {"area": BRICK_AREA, "steep": 3, "patch": P(9, 600, 11)},
      "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},

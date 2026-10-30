@@ -481,7 +481,16 @@ def road(m, place, stem):
         x, z = cell(a, verge)
         if (x, z) in keep or i in (0, n - 1):
             continue
-        if n >= 10 and i == n // 2 and k % 2 == 0:
+        if stem == "road-top" and i % 16 in (3, 4, 12):
+            # under Doune's wall the verge is the terrace's edge: beds of
+            # flowers in the turf, a bench facing the way
+            m.set(x, 0, z, "minecraft:grass_block[snowy=false]")
+            m.set(x, 1, z, ("minecraft:cornflower", "minecraft:oxeye_daisy", "minecraft:poppy",
+                            "minecraft:allium")[(i // 16 + i) % 4])
+        elif stem == "road-top" and i % 16 == 13:
+            out = {"x": "south", "z": "east"}["x" if cell(1, 0)[1] == 0 else "z"]
+            m.set(x, 1, z, stairs("minecraft:spruce", out))
+        elif n >= 10 and i == n // 2 and k % 2 == 0:
             m.set(x, 1, z, "minecraft:chiseled_stone_bricks")
             m.set(x, 2, z, lantern(False))
         elif (i in (1, n - 2) and n >= 6) or (n > 20 and i % 16 == 8):
