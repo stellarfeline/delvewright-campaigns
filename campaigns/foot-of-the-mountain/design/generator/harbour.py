@@ -807,8 +807,9 @@ PALETTE = {
     "chimney": "minecraft:bricks",
     "roof_e": "minecraft:deepslate_tile_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
     "roof_w": "minecraft:deepslate_tile_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
-    "load_door_l": "minecraft:spruce_door[facing=south,half=lower,hinge=left,open=false,powered=false]",
-    "load_door_u": "minecraft:spruce_door[facing=south,half=upper,hinge=left,open=false,powered=false]",
+    "roof_e_in": "minecraft:deepslate_tile_stairs[facing=east,half=bottom,shape=inner_left,waterlogged=false]",
+    "roof_w_in": "minecraft:deepslate_tile_stairs[facing=west,half=bottom,shape=inner_right,waterlogged=false]",
+    "load_door": "minecraft:dark_oak_planks",
     "hoist_chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     # inside
     "desk": "minecraft:spruce_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
@@ -1003,15 +1004,15 @@ def build_model():
     for k in range(3):
         y = WALL_TOP + 1 + k
         for z in range(z1 - k, z1 + 2):
-            m.set(gx - 3 + k, y, z, "roof_e")
-            m.set(gx + 3 - k, y, z, "roof_w")
+            # where the cross roof runs into the main roof's slope, its stair turns the valley
+            m.set(gx - 3 + k, y, z, "roof_e_in" if z == z1 - k else "roof_e")
+            m.set(gx + 3 - k, y, z, "roof_w_in" if z == z1 - k else "roof_w")
         for x in range(gx - 2 + k, gx + 3 - k):
             m.set(x, y, z1, "post" if x in (gx - 2 + k, gx + 2 - k) else "infill")
             for z in range(z1 - k + 1, z1):
                 m.set(x, y, z, "roof")            # the cross gable's roof space, closed
     m.box(gx, gx, WALL_TOP + 4, WALL_TOP + 4, z1 - 3, z1 + 1, "ridge")
-    m.set(gx, WALL_TOP + 1, z1, "load_door_l")
-    m.set(gx, WALL_TOP + 2, z1, "load_door_u")
+    m.box(gx, gx, WALL_TOP + 1, WALL_TOP + 2, z1, z1, "load_door")   # boarded shut: the loft door
     m.box(gx, gx, WALL_TOP + 3, WALL_TOP + 3, z1 + 1, z1 + 2, "beam_z")   # the hoist beam
     m.set(gx, WALL_TOP + 2, z1 + 2, "hoist_chain")
 
@@ -1337,9 +1338,9 @@ def body(p, rules):
 FULL = {"floor", "wall", "lid", "stone", "pave", "kerb", "turf", "post", "beam_x", "beam_z", "infill", "boards",
         "floorb", "glass", "roof", "chimney", "chart", "shelf", "hay", "crate", "rope", "anchor", "hull",
         "keel", "cradle", "sand", "barrel", "deck",
-        "gunwale_hi", "stem_post", "slip_wt", "load_door_l", "load_door_u"}
+        "gunwale_hi", "stem_post", "slip_wt", "load_door"}
 TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem", "yard_x", "yard_z", "hoist_chain"}
-LOW = {"roof_n", "roof_s", "roof_e", "roof_w", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
+LOW = {"roof_n", "roof_s", "roof_e", "roof_w", "roof_e_in", "roof_w_in", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
        "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep",
        "flare_n", "flare_s", "flare_e", "flare_w", "slip_lo", "slip_wl", "sail"}
 
