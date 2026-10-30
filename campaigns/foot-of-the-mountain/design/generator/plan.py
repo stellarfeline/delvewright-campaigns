@@ -344,6 +344,9 @@ STRETCH_W = {k: 9 for k in range(1, NFL)}
 # awning; above that the air is the open sky, so a lot's upper storey may
 # jetty out over the street's edge.
 STREET_AIR = 4
+# the stretches whose lots front the street already (the lower stretches'
+# lots read the old eight courses until their authors re-run them)
+AIR_STRETCHES = {1, 2, 3}
 STRETCH_W[4] = 11
 segs = []
 prev = "node/square"
@@ -361,7 +364,7 @@ for k in range(1, NFL + 1):
         break
     sg = f"node/street-{k}"
     w = STRETCH_W[k]
-    box(sg, (w, SEG_L), floor, OPEN(STREET_AIR), "a stretch of the main street",
+    box(sg, (w, SEG_L), floor, OPEN(STREET_AIR if k in AIR_STRETCHES else 8), "a stretch of the main street",
         f"Stretch {k} of the main street, walk plane {floor}: cobbles with a "
         "kennel, the plots' fronts on both sides" + (", widening into the market before the guildhall." if k == 4 else "."),
         way={"axis": "z", "clear": 5})
