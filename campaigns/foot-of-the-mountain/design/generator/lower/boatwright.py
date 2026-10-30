@@ -64,6 +64,9 @@ PALETTE = {
     "strake": "minecraft:oak_planks",
     "lap_n": trapdoor("oak", "south", "bottom", True),
     "lap_s": trapdoor("oak", "north", "bottom", True),
+    "bow_plate_n": trapdoor("oak", "north", "bottom", True),   # on the inner (south) face
+    "bow_plate_s": trapdoor("oak", "south", "bottom", True),   # on the inner (north) face
+    "stem_post": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",

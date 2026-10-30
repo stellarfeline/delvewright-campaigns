@@ -177,15 +177,17 @@ def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
     `stern` (stern < bow along `axis`), centred on the cross line c0, its keel at course
     keel_y on stocks at the stations `stocks`.
 
-    The stem is a post rising four courses from the keel to a point; the planking closes on
-    it with the sheer at its highest (a strake more at the bow, a top slab at the shoulder,
-    a bottom slab amidships); the turn of the bilge is upturned stairs and the planked
+    The stem is a narrow post rising from a solid foot on the keel to a point, and the
+    planking is drawn in to it: at the station behind the stem the sides are thin plates on
+    their inner faces, so the hull's outline closes on the post; the sheer is at its
+    highest there (a top slab at the shoulder, a bottom slab amidships); the turn of the bilge is upturned stairs and the planked
     strake amidships lapped planks on the outer face; the `framed` stations next to the
     transom stand in bare frames (a frame every other station) on their ribband; the
     transom rakes out over the stern. Side roles carry the side's letter ("bilge_n",
     "lap_s"; "_w"/"_e" along z), so the caller's palette gives each its facing.
-    `roles` renames any role: stock, keel, stem, stem_tip, strake, gunwale, gunwale_hi,
-    rib, transom, transom_rake, bilge_<side>, lap_<side>."""
+    `roles` renames any role: stock, keel, stem (the solid foot), stem_post (the narrow
+    post), stem_tip, strake, gunwale, gunwale_hi, rib, transom, transom_rake,
+    bilge_<side>, lap_<side>, bow_plate_<side> (a plate on the side's inner face)."""
     r = dict(roles or {})
     R = lambda k: r.get(k, k)  # noqa: E731
     P = (lambda s, c, y: (s, y, c)) if axis == "x" else (lambda s, c, y: (c, y, s))
@@ -200,15 +202,15 @@ def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
         put(s, keel_y - 1, c0, "stock")
     for s in range(stern, bow):
         put(s, keel_y, c0, "keel")
-    for y in range(keel_y, keel_y + 4):
-        put(bow, y, c0, "stem")
+    put(bow, keel_y, c0, "stem")
+    for y in range(keel_y + 1, keel_y + 4):
+        put(bow, y, c0, "stem_post")
     put(bow, keel_y + 4, c0, "stem_tip")
-    for y in (keel_y + 1, keel_y + 2):
+    for y in (keel_y + 1, keel_y + 2, keel_y + 3):
         put(bow - 1, y, c0, "strake")
     for c in (lo, hi):
-        put(bow - 1, keel_y + 1, c, "bilge_" + side(c))
-        put(bow - 1, keel_y + 2, c, "strake")
-        put(bow - 1, keel_y + 3, c, "gunwale")
+        for y in (keel_y + 1, keel_y + 2, keel_y + 3):
+            put(bow - 1, y, c, "bow_plate_" + side(c))
         put(bow - 2, keel_y, c, "bilge_" + side(c))
         put(bow - 2, keel_y + 1, c, "strake")
         put(bow - 2, keel_y + 2, c, "gunwale_hi")

@@ -805,6 +805,11 @@ PALETTE = {
     "roof_s": "minecraft:deepslate_tile_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
     "ridge": "minecraft:deepslate_tile_slab[type=bottom,waterlogged=false]",
     "chimney": "minecraft:bricks",
+    "roof_e": "minecraft:deepslate_tile_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "roof_w": "minecraft:deepslate_tile_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+    "load_door_l": "minecraft:spruce_door[facing=south,half=lower,hinge=left,open=false,powered=false]",
+    "load_door_u": "minecraft:spruce_door[facing=south,half=upper,hinge=left,open=false,powered=false]",
+    "hoist_chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     # inside
     "desk": "minecraft:spruce_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
     "chair": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
@@ -859,6 +864,7 @@ PALETTE = {
 
 HOUSE = (4, 19, 2, 11)       # the harbourmaster's house, walls inclusive (x0, x1, z0, z1)
 PART_WALL = 11               # the office west of it, the store east, a door between
+CROSS_X = 15                 # the store's cross gable to the water, centred over its cart door
 WALL_TOP = 6                 # the walls' head; a storey of five clear inside
 EDGE = 16                    # the quay's edge row; the basin is south of it
 PIER_X = (18, 19)            # a pier out into the basin between the two boats
@@ -991,6 +997,23 @@ def build_model():
                         m.set(x, y, z, "roof")
     # a brick chimney on the office's ridge
     m.box(6, 6, 1, WALL_TOP + 6, 5, 5, "chimney")
+    # the store's gable to the water: a cross gable over the cart door, its ridge timber run
+    # out past the gable as a hoist beam, a loading door under it over the cart door
+    gx = CROSS_X
+    for k in range(3):
+        y = WALL_TOP + 1 + k
+        for z in range(z1 - k, z1 + 2):
+            m.set(gx - 3 + k, y, z, "roof_e")
+            m.set(gx + 3 - k, y, z, "roof_w")
+        for x in range(gx - 2 + k, gx + 3 - k):
+            m.set(x, y, z1, "post" if x in (gx - 2 + k, gx + 2 - k) else "infill")
+            for z in range(z1 - k + 1, z1):
+                m.set(x, y, z, "roof")            # the cross gable's roof space, closed
+    m.box(gx, gx, WALL_TOP + 4, WALL_TOP + 4, z1 - 3, z1 + 1, "ridge")
+    m.set(gx, WALL_TOP + 1, z1, "load_door_l")
+    m.set(gx, WALL_TOP + 2, z1, "load_door_u")
+    m.box(gx, gx, WALL_TOP + 3, WALL_TOP + 3, z1 + 1, z1 + 2, "beam_z")   # the hoist beam
+    m.set(gx, WALL_TOP + 2, z1 + 2, "hoist_chain")
 
     # ---------- inside: the office
     m.box(6, 7, 1, 1, 3, 3, "desk")
@@ -1314,9 +1337,9 @@ def body(p, rules):
 FULL = {"floor", "wall", "lid", "stone", "pave", "kerb", "turf", "post", "beam_x", "beam_z", "infill", "boards",
         "floorb", "glass", "roof", "chimney", "chart", "shelf", "hay", "crate", "rope", "anchor", "hull",
         "keel", "cradle", "sand", "barrel", "deck",
-        "gunwale_hi", "stem_post", "slip_wt"}
-TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem", "yard_x", "yard_z"}
-LOW = {"roof_n", "roof_s", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
+        "gunwale_hi", "stem_post", "slip_wt", "load_door_l", "load_door_u"}
+TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem", "yard_x", "yard_z", "hoist_chain"}
+LOW = {"roof_n", "roof_s", "roof_e", "roof_w", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
        "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep",
        "flare_n", "flare_s", "flare_e", "flare_w", "slip_lo", "slip_wl", "sail"}
 
