@@ -151,7 +151,7 @@ def build(place) -> Model:
     m.set(8, 2, 6, "barrel")
     m.set(7, 1, 6, "barrel_e")
     m.set(8, 1, 5, "tub")
-    m.box(5, 5, PLATE - 1, PLATE - 1, 5, 5, "lantern_h")
+    m.set(6, PLATE - 1, 4, "lantern_h")      # hung from the tie beam over the work (DW1002: it needs a beam above)
 
     # ---------- the house: stone ground course, oak frame and plaster, deepslate roof
     m.box(hx0, hx1, 0, 0, hz0, hz1, "boards")
