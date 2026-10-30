@@ -22,7 +22,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, door, door_roles, finish, gable, hsh, run  # noqa: E402
+from plotkit import Model, Plot, door, door_roles, finish, gable, hsh, run, street_face  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def st(name, facing, half="bottom"):
@@ -54,6 +56,7 @@ PALETTE = {
                {"weight": 2, "block": "minecraft:andesite"}, {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
     "quoin": "minecraft:tuff_bricks",
     "lintel": "minecraft:polished_tuff",
+    "coping": "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
     "beam_x": "minecraft:dark_oak_log[axis=x]",
     "beam_z": "minecraft:dark_oak_log[axis=z]",
     "post": "minecraft:stripped_spruce_log[axis=y]",
@@ -113,6 +116,7 @@ HOUSE = (4, 12, 2, 11)     # the taproom's range, walls included; the street gab
 WING = (12, 15, 3, 9)      # the back room's cross wing, sharing the range's east wall
 GARDEN = (17, 23, 2, 11)   # the pergola's posts
 TOP = 4                    # wall plate course
+FRONT_DX = -3              # the whole tavern moves onto the street edge: the range's front is the lot's front
 
 
 def rubble_box(m, x0, x1, z0, z1):
@@ -140,6 +144,11 @@ def build(place) -> Model:
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
+    # once the street's seam is cut to the doorway, the tavern stands on the street edge;
+    # while the whole edge is the seam, it keeps its forecourt
+    edge, rows, door_h, air = street_face(place, "west")
+    fronted = len(rows) < Z1 - Z0 + 1
+    m.dx = FRONT_DX if fronted else 0
     hx0, hx1, hz0, hz1 = HOUSE
     wx0, wx1, wz0, wz1 = WING
     gx0, gx1, gz0, gz1 = GARDEN
@@ -158,8 +167,9 @@ def build(place) -> Model:
                 for y in range(1, TOP + 1):
                     m.set(x, y, z, "quoin" if x == wx1 and z in (wz0, wz1) and y % 2 else "rubble")
     door(m, hx1, 1, 6, "door_inner")
-    # the front: the door between two wide windows, one lintel course over all
-    door(m, hx0, 1, 6, "door_front")
+    # the front: the doorway onto the market between two wide windows, one lintel course over all
+    if not fronted:
+        door(m, hx0, 1, 6, "door_front")
     for z in (3, 4, 8, 9):
         m.box(hx0, hx0, 2, 3, z, z, "pane")
     m.box(hx0, hx0, TOP, TOP, hz0 + 1, hz1 - 1, "lintel")
@@ -211,14 +221,16 @@ def build(place) -> Model:
     m.box(wx0 + 1, wx1 - 1, TOP, TOP, 6, 6, "beam_z")
 
     # ---------- the front: benches under the eave either side of the door, potted flowers
-    m.set(hx0 - 1, 1, 3, "bench_w")
-    m.set(hx0 - 1, 1, 9, "bench_w")
-    m.set(hx0 - 1, 1, 2, "arm_n")
-    m.set(hx0 - 1, 1, 4, "arm_s")
-    m.set(hx0 - 1, 1, 8, "arm_n")
-    m.set(hx0 - 1, 1, 10, "arm_s")
-    m.set(hx0 - 1, 1, 5, "pot_a")
-    m.set(hx0 - 1, 1, 7, "pot_b")
+    # (on the forecourt, which the tavern keeps only while it stands back from the street)
+    if not fronted:
+        m.set(hx0 - 1, 1, 3, "bench_w")
+        m.set(hx0 - 1, 1, 9, "bench_w")
+        m.set(hx0 - 1, 1, 2, "arm_n")
+        m.set(hx0 - 1, 1, 4, "arm_s")
+        m.set(hx0 - 1, 1, 8, "arm_n")
+        m.set(hx0 - 1, 1, 10, "arm_s")
+        m.set(hx0 - 1, 1, 5, "pot_a")
+        m.set(hx0 - 1, 1, 7, "pot_b")
 
     # ---------- the garden: gravel, a pergola of posts and beams roofed in leaves
     m.box(wx1 + 1, gx1, 0, 0, gz0, gz1, "gravel")
@@ -261,16 +273,33 @@ def build(place) -> Model:
             if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 9) % 3 == 0:
                 m.set(x, 1, z, "tuft")
 
-    finish(m)
     m.regions("tavern", hx0, hx1, hz0, hz1)
     m.regions("tavern", wx0 + 1, wx1, wz0, wz1)
     m.regions("garden", wx1 + 1, gx1, gz0, gz1)
+    m.dx = 0
+    # nothing of the moved tavern stands beyond the lot's columns (its street eave stops at the edge)
+    for c in [c for c in m.v if not X0 <= c[0] <= X1]:
+        del m.v[c]
+    for c in [c for c in m.region if not X0 <= c[0] <= X1]:
+        del m.region[c]
+    # the street edge: the range's front closes it but for the doorway; a yard wall where it does not
+    if fronted:
+        townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "rubble", "lintel": "lintel", "coping": "coping"},
+                             door_h=door_h)
+    finish(m)
     return m
 
 
 class Tavern(Plot):
     MODEL = staticmethod(build)
-    MARK_AT = {"node-tavern": (6, 6, "east")}    # in the taproom, facing the bar
+    MARK_AT = {"node-tavern": (6, 6, "east")}    # in the taproom, facing the bar (moved with the tavern)
+
+    def lay_parts(self, parts):
+        edge, rows, _, _ = street_face(self, "west")
+        lo, hi = self.space
+        if len(rows) < hi[2] - lo[2] + 1:
+            self.MARK_AT = {k: (x + FRONT_DX, z, f) for k, (x, z, f) in type(self).MARK_AT.items()}
+        super().lay_parts(parts)
     REASON = "the tavern's wall heads, roof and the pergola's top: seen, never stood on"
 
 

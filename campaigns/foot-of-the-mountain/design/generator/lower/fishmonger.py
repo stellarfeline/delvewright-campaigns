@@ -20,7 +20,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, door, door_roles, finish, frame_walls, gable, hsh, run  # noqa: E402
+from plotkit import Model, Plot, clip_to_space, door, door_roles, finish, frame_walls, fronted, gable, hsh, run  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def st(name, facing, half="bottom"):
@@ -53,6 +55,7 @@ PALETTE = {
     "beam_x": "minecraft:spruce_log[axis=x]",
     "beam_z": "minecraft:spruce_log[axis=z]",
     "infill": "minecraft:light_gray_terracotta",
+    "coping": "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
     "gable": "minecraft:spruce_planks",
     "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
     "roof_n": st("deepslate_tile", "north"), "roof_s": st("deepslate_tile", "south"),
@@ -89,6 +92,7 @@ door_roles(PALETTE, "door_smoke", "minecraft:spruce_door", "west")
 SHOP = (11, 17, 2, 8)      # walls included; the street wall at x 17 is the stall-front
 SMOKE = (3, 7, 3, 7)       # the smokehouse, walls included
 PLATE = 4
+FRONT_DX = 3               # fronted, the shop's stall-front wall is the lot's street edge
 
 
 def build(place) -> Model:
@@ -98,6 +102,8 @@ def build(place) -> Model:
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
+    front, sf = fronted(place, "east")
+    m.dx = FRONT_DX if front else 0
     sx0, sx1, sz0, sz1 = SHOP
     kx0, kx1, kz0, kz1 = SMOKE
     # paving before the stall on the street side; the yard behind
@@ -110,10 +116,17 @@ def build(place) -> Model:
     frame_walls(m, sx0, sx1, sz0, sz1, 1, PLATE, "post", "infill", "beam_x", "beam_z", bay=3, plinth="plinth")
     # the stall-front: a five-wide opening, the counter in it, the shutter up as an awning
     m.box(sx1, sx1, 1, PLATE - 1, sz0 + 1, sz1 - 1, "~air")
-    m.box(sx1, sx1, 1, 1, sz0 + 1, sz1 - 1, "counter")
-    for z in range(sz0 + 1, sz1):
-        m.set(sx1, 2, z, "counter_top")
-        m.set(sx1 + 1, PLATE, z, "awning")
+    if not front:
+        m.box(sx1, sx1, 1, 1, sz0 + 1, sz1 - 1, "counter")
+        for z in range(sz0 + 1, sz1):
+            m.set(sx1, 2, z, "counter_top")
+            m.set(sx1 + 1, PLATE, z, "awning")
+    else:
+        # the street walks into the stall: the counter stands a cell in, a flap left in its middle
+        for z in range(sz0 + 1, sz1):
+            if z != (sz0 + sz1) // 2:
+                m.set(sx1 - 1, 1, z, "counter")
+                m.set(sx1 - 1, 2, z, "counter_top")
     # fish on ice inside the counter, tubs, the gutting block
     m.box(sx1 - 2, sx1 - 2, 1, 1, sz0 + 1, sz0 + 2, "ice")
     m.set(sx1 - 2, 1, sz1 - 1, "tub")
@@ -173,18 +186,29 @@ def build(place) -> Model:
             if m.get(x, 1, z) is None and m.get(x, 0, z) == "turf" and hsh(x, z, 9) % 3 == 0:
                 m.set(x, 1, z, "tuft")
 
-    finish(m)
     m.regions("stall", sx0, sx1, sz0, sz1)
     m.regions("smokehouse", kx0, kx1, kz0, kz1)
     m.regions("yard", 8, 10, 2, 8)
     m.regions("yard", 3, 16, 9, 9)
     m.regions("yard", 3, 7, 2, 2)
+    m.dx = 0
+    if front:
+        clip_to_space(m, place)
+        edge, rows, door_h, air = sf
+        townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "infill", "lintel": "beam_z", "coping": "coping"},
+                             door_h=door_h)
+    finish(m)
     return m
 
 
 class Fishmonger(Plot):
     MODEL = staticmethod(build)
     MARK_AT = {"node-fishmonger": (15, 5, "east")}   # behind the counter, facing the street
+
+    def lay_parts(self, parts):
+        if fronted(self, "east")[0]:
+            self.MARK_AT = {k: (x + FRONT_DX, z, f) for k, (x, z, f) in type(self).MARK_AT.items()}
+        super().lay_parts(parts)
     REASON = "the shop's and the smokehouse's wall heads and roofs: seen, never stood on"
 
 

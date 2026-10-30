@@ -718,22 +718,26 @@ CCW = {"north": "west", "west": "south", "south": "east", "east": "north"}
 
 
 class Model:
+    """Cells a generator draws into. `dx` shifts every write and read along x: a
+    building drawn at its own coordinates is moved, whole, onto the lot's street edge."""
+
     def __init__(self, palette: dict):
         self.v: dict = {}
         self.region: dict = {}
         self.palette = palette
+        self.dx = 0
 
     def set(self, x, y, z, role):
-        self.v[(x, y, z)] = role
+        self.v[(x + self.dx, y, z)] = role
 
     def box(self, x0, x1, y0, y1, z0, z1, role):
         for x in range(min(x0, x1), max(x0, x1) + 1):
             for y in range(min(y0, y1), max(y0, y1) + 1):
                 for z in range(min(z0, z1), max(z0, z1) + 1):
-                    self.v[(x, y, z)] = role
+                    self.v[(x + self.dx, y, z)] = role
 
     def get(self, x, y, z):
-        return self.v.get((x, y, z))
+        return self.v.get((x + self.dx, y, z))
 
     def block(self, role):
         b = self.palette.get(role)
@@ -744,7 +748,7 @@ class Model:
     def regions(self, stem, x0, x1, z0, z1):
         for x in range(x0, x1 + 1):
             for z in range(z0, z1 + 1):
-                self.region[(x, z)] = stem
+                self.region[(x + self.dx, z)] = stem
 
 
 def hsh(*a):
@@ -1253,3 +1257,48 @@ def hip(m: Model, x0, x1, z0, z1, y0, stair, ridge, ov=1):
             m.set(ax1, y, z, stair + "_w")
         ax0, ax1, az0, az1, y = ax0 + 1, ax1 - 1, az0 + 1, az1 - 1, y + 1
     return y - 1
+
+
+def street_face(place, face):
+    """The lot's street edge on `face`: (edge column or row, the rows its seam
+    leaves open, the doorway's height, the course the street's air rises to).
+    Where the span is cut to a doorway the rows are the doorway's; while it is
+    uncut they are the whole edge, and the lot's front stays open across it. The
+    street's air is the height of the street's void on the ring beside the edge."""
+    a = place.a
+    for c in a["seams"]:
+        if c.get("face") != face:
+            continue
+        (x0, y0, z0), (x1, y1, z1) = c["cells"]
+        air = y1
+        for v in a.get("voids", []):
+            (vx0, vy0, vz0), (vx1, vy1, vz1) = v["cells"]
+            beside = (vx0 == vx1 == x0 + (1 if face == "east" else -1)) if face in ("east", "west") \
+                else (vz0 == vz1 == z0 + (1 if face == "south" else -1))
+            if beside:
+                air = vy1
+        if face in ("east", "west"):
+            return x0, set(range(z0, z1 + 1)), y1, air
+        return z0, set(range(x0, x1 + 1)), y1, air
+    return None
+
+
+def fronted(place, face):
+    """Whether the lot's street seam on `face` is cut to a doorway (the lot then
+    stands its building on the street edge), and the edge as `street_face` reads it."""
+    sf = street_face(place, face)
+    if sf is None:
+        return False, None
+    lo, hi = place.space
+    span = hi[2] - lo[2] + 1 if face in ("east", "west") else hi[0] - lo[0] + 1
+    return len(sf[1]) < span, sf
+
+
+def clip_to_space(m, place):
+    """Drop every cell and part column outside the lot's columns (what a building
+    moved onto the street edge would throw over it)."""
+    lo, hi = place.space
+    for c in [c for c in m.v if not (lo[0] <= c[0] <= hi[0] and lo[2] <= c[2] <= hi[2])]:
+        del m.v[c]
+    for c in [c for c in m.region if not (lo[0] <= c[0] <= hi[0] and lo[2] <= c[1] <= hi[2])]:
+        del m.region[c]

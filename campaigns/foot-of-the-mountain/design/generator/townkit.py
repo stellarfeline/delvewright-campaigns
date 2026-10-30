@@ -273,3 +273,40 @@ def water_step(m, x, z, surface, bed, roles):
     m.set(x, surface, z, roles["step"])
     for y in range(bed, surface):
         m.set(x, y, z, roles["fill"])
+
+
+# ---------------------------------------------------------------- street fronts
+
+
+def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None):
+    """Close a lot's street edge, the column `x` over rows z0..z1, as the street's
+    air above it asks: up to course `air` nothing on that column is open but the
+    doorway (`door_rows`, `door_h` high), and nothing stands proud of it above.
+
+    Where the lot's building already stands on the edge (its walk-plane cell is
+    solid) the building's front carries the closure: any open cell of it up to
+    `air` is filled with roles["wall"] (a front's window is a pane: solid), and
+    the doorway's head up to `air` with roles["lintel"]. Where nothing stands, a
+    yard wall goes up: roles["wall"] to course air-1 and roles["coping"] on top,
+    every cell above it cleared, so no eave stands over the yard wall at the edge.
+    The doorway rows are left open from the walk plane to `door_h`. `solid` tells
+    a filled cell (a role) from an open one; by default anything but air is."""
+    is_solid = solid or (lambda r: r is not None and r != AIR)
+    for z in range(z0, z1 + 1):
+        if z in door_rows:
+            for y in range(1, door_h + 1):
+                m.set(x, y, z, AIR)
+            for y in range(door_h + 1, air + 1):
+                if not is_solid(m.get(x, y, z)):
+                    m.set(x, y, z, roles["lintel"])
+            continue
+        if is_solid(m.get(x, 1, z)):
+            for y in range(2, air + 1):
+                if not is_solid(m.get(x, y, z)):
+                    m.set(x, y, z, roles["wall"])
+            continue
+        for y in range(1, air):
+            m.set(x, y, z, roles["wall"])
+        m.set(x, air, z, roles["coping"])
+        for c in [c for c in m.v if c[0] == x and c[2] == z and c[1] > air]:
+            del m.v[c]
