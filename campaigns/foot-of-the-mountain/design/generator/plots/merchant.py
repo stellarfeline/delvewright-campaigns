@@ -182,8 +182,10 @@ def build(a):
     for x in (20, 23):
         window(m, x, HZ0, 2, 3); window(m, x, HZ1, 2, 3)
         window(m, x, HZ0, 7, 2); window(m, x, HZ1, 7, 2)
-    for z in (4, 9):
+    for z in (4,):
         window(m, HX1, z, 2, 3)
+    m.set(HX1, 1, 9, door("minecraft:dark_oak", "west", "lower")); m.set(HX1, 2, 9, door("minecraft:dark_oak", "west", "upper"))
+    m.set(HX1, 3, 9, "stone")                          # the hall's back door to the garden behind
     for z in (4, 6, 9):
         window(m, HX0, z, 7, 2)
     for z in (5, 8):

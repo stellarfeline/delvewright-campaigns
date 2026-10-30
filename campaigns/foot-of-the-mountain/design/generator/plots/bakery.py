@@ -97,6 +97,7 @@ def build(a):
         window(m, x, HZ0, GLASS); window(m, x, HZ1, GLASS)
         m.set(x, 6, HZ0, GLASS); m.set(x, 6, HZ1, GLASS)
     window(m, HX0, 7, GLASS)
+    door2(m, HX0, 5, "minecraft:oak", "east")           # the bake room's back door to the yard and the oven
 
     # ---- inside: the shop (east) and the bake room (west), a door between
     m.box(HX0 + 1, HX1 - 1, 0, 0, HZ0 + 1, HZ1 - 1, BOARDS)
