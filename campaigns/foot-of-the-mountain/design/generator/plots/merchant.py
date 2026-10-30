@@ -263,6 +263,19 @@ def build(a):
     # the house's street face: a bench under the counting room's window
 
     m.marks["node-merchant"] = (8 + FRONT_DX, 8, "east")
+    # the hall's garden behind it, in the back of the lot the house's coming
+    # forward freed: a pear tree, a bench under it, beds along the hall wall
+    gx = HX1 + 2                      # one cell clear of the hall's back wall
+    for y in range(1, 5):
+        m.set(gx + 1, y, 6, log("minecraft:oak_log", "y"))
+    for dx_ in (-1, 0, 1, 2):
+        for dz_ in (-2, -1, 0, 1, 2):
+            for y in (4, 5, 6):
+                if abs(dx_ - 1) + abs(dz_) + (y - 4) <= 3 and not (dx_ == 1 and dz_ == 0 and y < 6):
+                    m.set(gx + dx_, y, 6 + dz_, leaves("minecraft:oak"))
+    m.set(gx, 1, 9, stairs("minecraft:dark_oak", "west")); m.set(gx, 1, 10, stairs("minecraft:dark_oak", "west"))
+    for z, fl in ((3, "minecraft:white_tulip"), (4, "minecraft:allium"), (11, "minecraft:lily_of_the_valley")):
+        m.set(gx, 0, z, GRASS); m.set(gx, 1, z, fl)
     # the street edge where the wing and the arch do not stand: the yard wall
     front(m, 1, 1, a["extent"][2] - 2, gap=set(range(7, 12)))
     return m
