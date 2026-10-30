@@ -283,8 +283,9 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None, inwa
     air above it asks: up to course `air` nothing on that column is open but the
     doorway (`door_rows`, `door_h` high), and nothing stands proud of it above.
 
-    Where the lot's building already stands on the edge (its walk-plane cell is
-    solid) the building's front carries the closure: any open cell of it up to
+    Where the lot's building already stands on the edge (its walk-plane cell and
+    the one over it are filled: a flower or a tuft alone is not a building) the
+    building's front carries the closure: any open cell of it up to
     `air` is filled with roles["wall"] (a front's window is a pane: solid), and
     the doorway's head up to `air` with roles["lintel"]. Where nothing stands, a
     yard wall goes up: roles["wall"] to course air-1 and roles["coping"] on top,
@@ -305,7 +306,7 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None, inwa
                 if not is_solid(m.get(x, y, z)):
                     m.set(x, y, z, roles["lintel"])
             continue
-        if is_solid(m.get(x, 1, z)):
+        if is_solid(m.get(x, 1, z)) and is_solid(m.get(x, 2, z)):
             for y in range(2, air + 1):
                 if not is_solid(m.get(x, y, z)):
                     m.set(x, y, z, roles["wall"])
