@@ -1411,6 +1411,12 @@ def front(m, x, z0, z1, gap, gate=None, coping="minecraft:stone_brick_wall[east=
         for y in (1, 2, 3):
             m.set(x, y, z, "stone" if gate is None else gate)
         m.set(x, 4, z, coping)
+        # an eave the building throws over the yard wall's run would stand
+        # over air at the lot's edge (the ground's stitch refuses it): the
+        # roof stops short of the edge there
+        for y in range(5, m.ey):
+            if (x, y, z) in m.v:
+                m.v[(x, y, z)] = AIR
     m.dx = dx
 
 
