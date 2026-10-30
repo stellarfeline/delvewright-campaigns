@@ -23,6 +23,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "side-east"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-west"
       },
       {
@@ -141,7 +147,7 @@
     "handed/seam/street-3-to-lane-3/x0": 40,
     "handed/seam/street-3-to-lane-3/x1": 40,
     "handed/seam/street-3-to-lane-3/y0": 1,
-    "handed/seam/street-3-to-lane-3/y1": 8,
+    "handed/seam/street-3-to-lane-3/y1": 4,
     "handed/seam/street-3-to-lane-3/z0": 1,
     "handed/seam/street-3-to-lane-3/z1": 5
   },
@@ -198,15 +204,47 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-lane-3/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-lane-3/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -358,6 +396,68 @@
             {
               "op": "call",
               "symbol": "row_16"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-3-to-lane-3/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-lane-3/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-lane-3/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_19": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_18"
             }
           ],
           "op": "split",
@@ -543,6 +643,10 @@
               {
                 "op": "call",
                 "symbol": "column_17"
+              },
+              {
+                "op": "call",
+                "symbol": "column_19"
               }
             ],
             "op": "split",
@@ -675,6 +779,29 @@
                   "rhs": {
                     "expr": "int",
                     "value": 39
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/street-3-to-lane-3/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-lane-3/x0"
                   }
                 },
                 "size": "absolute"
@@ -1094,6 +1221,77 @@
               },
               "op": "claim",
               "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-3-to-lane-3/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-3-to-lane-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-3-to-lane-3/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_18": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
             }
           ],
           "op": "split",

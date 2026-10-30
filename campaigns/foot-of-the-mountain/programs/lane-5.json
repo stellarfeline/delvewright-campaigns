@@ -29,6 +29,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "side-west"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-south"
       },
       {
@@ -126,34 +132,38 @@
   },
   "params": {
     "handed/datum-y": 1,
-    "handed/seam/lane-5-to-boatwright/x0": 26,
-    "handed/seam/lane-5-to-boatwright/x1": 39,
+    "handed/seam/lane-5-to-boatwright/x0": 27,
+    "handed/seam/lane-5-to-boatwright/x1": 40,
     "handed/seam/lane-5-to-boatwright/y0": 1,
     "handed/seam/lane-5-to-boatwright/y1": 8,
     "handed/seam/lane-5-to-boatwright/z0": 0,
     "handed/seam/lane-5-to-boatwright/z1": 0,
-    "handed/seam/lane-5-to-cottages-2/x0": 26,
-    "handed/seam/lane-5-to-cottages-2/x1": 39,
+    "handed/seam/lane-5-to-cottages-2/x0": 27,
+    "handed/seam/lane-5-to-cottages-2/x1": 40,
     "handed/seam/lane-5-to-cottages-2/y0": 1,
     "handed/seam/lane-5-to-cottages-2/y1": 8,
     "handed/seam/lane-5-to-cottages-2/z0": 6,
     "handed/seam/lane-5-to-cottages-2/z1": 6,
-    "handed/seam/street-5-to-lane-5/x0": 0,
-    "handed/seam/street-5-to-lane-5/x1": 0,
+    "handed/seam/street-5-to-lane-5/x0": 1,
+    "handed/seam/street-5-to-lane-5/x1": 1,
     "handed/seam/street-5-to-lane-5/y0": 1,
-    "handed/seam/street-5-to-lane-5/y1": 8,
+    "handed/seam/street-5-to-lane-5/y1": 4,
     "handed/seam/street-5-to-lane-5/z0": 1,
     "handed/seam/street-5-to-lane-5/z1": 5
   },
   "rules": {
-    "column_10": [
+    "column_11": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_8"
             },
             {
               "op": "call",
@@ -161,7 +171,111 @@
             },
             {
               "op": "call",
+              "symbol": "row_10"
+            },
+            {
+              "op": "call",
+              "symbol": "row_5"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_13": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
               "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_12"
+            },
+            {
+              "op": "call",
+              "symbol": "row_5"
             }
           ],
           "op": "split",
@@ -208,22 +322,22 @@
         "weight": 1
       }
     ],
-    "column_12": [
+    "column_15": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_11"
-            },
-            {
-              "op": "call",
               "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_14"
+            },
+            {
+              "op": "call",
+              "symbol": "row_5"
             }
           ],
           "op": "split",
@@ -255,41 +369,6 @@
                   "expr": "param",
                   "name": "handed/seam/street-5-to-lane-5/y0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_14": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_13"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/y0"
               },
               "size": "absolute"
             },
@@ -312,11 +391,46 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_15"
+              "symbol": "row_3"
             },
             {
               "op": "call",
               "symbol": "row_16"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_19": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_18"
             }
           ],
           "op": "split",
@@ -375,65 +489,22 @@
         "weight": 1
       }
     ],
-    "column_4": [
+    "column_6": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_0"
-            },
             {
               "op": "call",
               "symbol": "row_3"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/y0"
-              },
-              "size": "absolute"
             },
             {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_8": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_4"
             },
             {
               "op": "call",
               "symbol": "row_5"
-            },
-            {
-              "op": "call",
-              "symbol": "row_6"
-            },
-            {
-              "op": "call",
-              "symbol": "row_7"
-            },
-            {
-              "op": "call",
-              "symbol": "row_3"
             }
           ],
           "op": "split",
@@ -449,8 +520,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -461,16 +540,37 @@
               "size": "absolute"
             },
             {
-              "blocks": {
+              "size": "relative",
+              "weight": {
                 "expr": "int",
                 "value": 1
-              },
-              "size": "absolute"
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_7": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
             },
             {
+              "op": "call",
+              "symbol": "row_5"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
               },
               "size": "absolute"
             },
@@ -498,70 +598,89 @@
               },
               {
                 "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_6"
               },
               {
                 "op": "call",
-                "symbol": "column_8"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_11"
               },
               {
                 "op": "call",
-                "symbol": "column_10"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_13"
               },
               {
                 "op": "call",
-                "symbol": "column_8"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_11"
               },
               {
                 "op": "call",
-                "symbol": "column_12"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_15"
               },
               {
                 "op": "call",
-                "symbol": "column_8"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_11"
               },
               {
                 "op": "call",
-                "symbol": "column_14"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
                 "symbol": "column_17"
+              },
+              {
+                "op": "call",
+                "symbol": "column_19"
               }
             ],
             "op": "split",
             "sizes": [
               {
                 "blocks": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/x0"
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
                   "expr": "arith",
                   "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/x1"
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/street-5-to-lane-5/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
                   },
-                  "op": "add",
+                  "op": "sub",
                   "rhs": {
-                    "expr": "int",
-                    "value": 1
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/x0"
                   }
                 },
                 "size": "absolute"
@@ -571,7 +690,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 3
                   },
                   "op": "sub",
                   "rhs": {
@@ -662,7 +781,7 @@
                   "op": "sub",
                   "rhs": {
                     "expr": "int",
-                    "value": 23
+                    "value": 24
                   }
                 },
                 "size": "absolute"
@@ -705,7 +824,7 @@
             "facing": "south",
             "x": {
               "expr": "int",
-              "value": 19
+              "value": 20
             },
             "y": {
               "expr": "param",
@@ -722,6 +841,507 @@
       }
     ],
     "row_0": [
+      {
+        "body": {
+          "material": {
+            "role": "floor"
+          },
+          "op": "fill"
+        },
+        "weight": 1
+      }
+    ],
+    "row_1": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-west"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_10": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "unwalked"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_12": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_14": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_16": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "lane-5-to-boatwright-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "lane-5-to-cottages-2-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_18": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_3": [
       {
         "body": {
           "axis": "z",
@@ -849,7 +1469,7 @@
         "weight": 1
       }
     ],
-    "row_1": [
+    "row_4": [
       {
         "body": {
           "axis": "z",
@@ -920,252 +1540,7 @@
         "weight": 1
       }
     ],
-    "row_11": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_13": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "lane-5-to-boatwright-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "lane-5-to-cottages-2-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_15": [
-      {
-        "body": {
-          "material": {
-            "role": "floor"
-          },
-          "op": "fill"
-        },
-        "weight": 1
-      }
-    ],
-    "row_16": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_3": [
+    "row_5": [
       {
         "body": {
           "axis": "z",
@@ -1236,7 +1611,7 @@
         "weight": 1
       }
     ],
-    "row_5": [
+    "row_8": [
       {
         "body": {
           "axis": "z",
@@ -1328,191 +1703,6 @@
         "weight": 1
       }
     ],
-    "row_6": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_7": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "row_9": [
       {
         "body": {
@@ -1534,7 +1724,7 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b1"
               },
               "op": "fill"
             },
