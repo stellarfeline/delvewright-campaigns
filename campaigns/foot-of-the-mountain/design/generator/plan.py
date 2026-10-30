@@ -359,9 +359,8 @@ STRETCH_W = {k: 9 for k in range(1, NFL)}
 # awning; above that the air is the open sky, so a lot's upper storey may
 # jetty out over the street's edge.
 STREET_AIR = 4
-# the stretches whose lots front the street already (the lower stretches'
-# lots read the old eight courses until their authors re-run them)
-AIR_STRETCHES = {1, 2, 3}
+# every stretch: a lot may front the street anywhere along it
+AIR_STRETCHES = set(range(1, NFL))
 STRETCH_W[4] = 11
 segs = []
 prev = "node/square"
