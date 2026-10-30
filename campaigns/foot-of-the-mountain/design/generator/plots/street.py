@@ -357,6 +357,10 @@ def build(place) -> Model:
         stretch(m, place, stem)
     else:
         lane(m, place, stem)
+    # where the place's air is low (four courses), a lamp's lantern stands in
+    # its top course under the open sky: that face is meant to be seen
+    if any(y == m.ey - 1 and r != "~air" for (_, y, _), r in m.v.items()):
+        m.show("up")
     m.finish()
     return m
 
