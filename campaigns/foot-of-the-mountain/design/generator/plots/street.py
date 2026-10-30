@@ -11,11 +11,13 @@ patches; Brasenose Lane's kennel, Viljandi's Sepa street) and the stepped
 street of a harbour town (Clovelly's cobbled main street falling to the
 pier, broken by steps and side alleys):
 
-- a stretch or a lane is cobbled across its width, a kennel of dressed stone
-  down its middle and a line of setts laid flush either side of the way (the
-  kerb is in the paving, never at its edge); its outer column is worn — cobble
-  broken by gravel, earth and turf — so the street runs into the lots and the
-  hillside with no line where its box ends;
+- a stretch is cobbled, its kennel of dressed stone wandering a cell either
+  side of the middle and broken where the paving was re-laid, a band of setts
+  where each flight lands, the centre worn in patches; its verge either side,
+  worn into the ground, holds lamps, benches, barrels, a cart and beds of
+  flowers clear of the lots' fronts, and before the guildhall a market of
+  stalls; a lane is cobbled with its kennel and setts laid flush (the kerb is
+  in the paving, never at its edge); no line shows where a box ends;
 - a flight carries the street down two courses in half-steps of stone, a
   landing at its foot;
 - the square is paved in setts round a covered well, two trees with benches
@@ -33,17 +35,17 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from starter import Model, run  # noqa: E402
-from kit import fence, lantern, leaves, log, slab, stairs  # noqa: E402
+from starter import Model, fence, lantern, leaves, run, slab, stairs  # noqa: E402
+from starter import pillar as log  # noqa: E402
 
 COBBLE = [{"weight": 7, "block": "minecraft:cobblestone"},
           {"weight": 3, "block": "minecraft:stone"},
           {"weight": 2, "block": "minecraft:andesite"},
           {"weight": 1, "block": "minecraft:mossy_cobblestone"},
-          {"weight": 1, "block": "minecraft:gravel"}]
+          {"weight": 1, "block": "minecraft:tuff"}]
 WORN = [{"weight": 4, "block": "minecraft:cobblestone"},
         {"weight": 3, "block": "minecraft:coarse_dirt"},
-        {"weight": 2, "block": "minecraft:gravel"},
+        {"weight": 2, "block": "minecraft:tuff"},
         {"weight": 3, "block": "minecraft:grass_block[snowy=false]"},
         {"weight": 1, "block": "minecraft:mossy_cobblestone"},
         {"weight": 1, "block": "minecraft:packed_mud"}]
@@ -106,16 +108,112 @@ def pave_way(m, x0, x1, z0, z1, axis):
                 m.set(a, 0, b, role)
 
 
+def hsh(*v):
+    """A fixed hash of integers into [0, 1): the street's own wear, the same on every run."""
+    h = 2166136261
+    for x in v:
+        h = ((h ^ (x & 0xFFFFFFFF)) * 16777619) & 0xFFFFFFFF
+    return (h >> 8) / float(1 << 24)
+
+
 def stretch(m, place, stem):
+    """A stretch of the main street: the way five wide and centred, cobbled,
+    its kennel wandering a cell either side of the middle and broken where
+    the paving was re-laid, a band of setts at each end where the flights
+    land, the centre worn in patches; the verge either side, clear of the
+    lots' fronts, holds the street's life — lamps, benches, barrels, a cart,
+    beds of flowers in the worn ground — and at the guildhall a market."""
     (x0, _, z0), (x1, _, z1) = place.space
-    pave_way(m, x0, x1, z0, z1, "z")
+    k = int(stem.split("-")[1])
+    w = x1 - x0 + 1
+    c0 = x0 + (w - 5) // 2                   # the clear way: c0 .. c0 + 4
+    c1 = c0 + 4
+    mid = (c0 + c1) // 2
+    for z in range(z0, z1 + 1):
+        band = z in (z0, z0 + 1, z1 - 1, z1)    # where the flights land
+        wander = (-1, 0, 0, 1)[int(hsh(k, z // 3, 7) * 4)] if not band else 0
+        broken = hsh(k, z, 11) < 0.18
+        for x in range(x0, x1 + 1):
+            if x < c0 or x > c1:
+                role = "worn"
+            elif band:
+                role = "setts"
+            elif x == mid + wander and not broken:
+                role = "kennel"
+            elif hsh(k, x, z, 3) < 0.22:
+                role = "worn" if hsh(k, x, z, 5) < 0.4 else "setts"
+            else:
+                role = "cobble"
+            m.set(x, 0, z, role)
     keep = seam_cols(place)
-    # a lamp where the stretch's edge is free of doorways and openings
-    for x in (x0, x1):
-        for z in range(z0, z1 + 1):
-            if (x, z) not in keep:
+    # the verge's own columns, off the lots' fronts and off the way
+    lanes = [x for x in range(x0, x1 + 1) if (x < c0 or x > c1)]
+    free = {(x, z) for x in lanes for z in range(z0 + 2, z1 - 1) if (x, z) not in keep}
+    if k == 4:
+        market(m, free, c0, c1, z0, z1)
+        return
+    things = ("lamp", "bed", "bench", "barrel", "cart", "bed", "lamp", "bench")
+    i = 0
+    for z in range(z0 + 2, z1 - 1, 3):
+        for side, x in enumerate((c0 - 1, c1 + 1)):
+            if (x, z) not in free:
+                continue
+            kind = things[(i + k + side * 3) % len(things)]
+            i += 1
+            if kind == "lamp":
                 lamp(m, x, z)
-                return
+            elif kind == "bed":
+                m.set(x, 0, z, "minecraft:grass_block[snowy=false]")
+                m.set(x, 1, z, ("minecraft:poppy", "minecraft:cornflower", "minecraft:oxeye_daisy",
+                                "minecraft:allium", "minecraft:dandelion")[(k + z) % 5])
+                if (x, z + 1) in free:
+                    m.set(x, 0, z + 1, "minecraft:grass_block[snowy=false]")
+                    m.set(x, 1, z + 1, "minecraft:short_grass")
+            elif kind == "bench":
+                face = "west" if x < c0 else "east"     # its back to the lot, facing the way
+                m.set(x, 1, z, stairs("minecraft:spruce", face))
+                if (x, z + 1) in free:
+                    m.set(x, 1, z + 1, stairs("minecraft:spruce", face))
+            elif kind == "barrel":
+                m.set(x, 1, z, "minecraft:barrel[facing=up,open=false]")
+            elif kind == "cart" and (x, z + 1) in free:
+                m.set(x, 1, z, slab("minecraft:spruce", "top")); m.set(x, 1, z + 1, slab("minecraft:spruce", "top"))
+                m.set(x, 2, z, "minecraft:hay_block[axis=z]")
+
+
+def market(m, free, c0, c1, z0, z1):
+    """The market before the guildhall: stalls under striped awnings along both
+    verges, crates and a barrel between them, lamps at the market's ends."""
+    cols = sorted({x for x, _ in free})
+    left = [x for x in cols if x < c0]
+    right = [x for x in cols if x > c1]
+    colours = ("red", "yellow", "blue", "green")
+    n = 0
+    for side in (left, right):
+        if not side:
+            continue
+        inner = max(side) if side is left else min(side)
+        for z in range(z0 + 2, z1 - 1, 4):
+            span = [zz for zz in range(z, z + 3) if all((x, zz) in free for x in side)]
+            if len(span) < 2:
+                continue
+            col = colours[n % len(colours)]
+            n += 1
+            for zz in span:
+                m.set(inner, 1, zz, slab("minecraft:spruce", "top"))
+                for x in side:
+                    m.set(x, 4, zz, f"minecraft:{col}_wool" if zz % 2 else "minecraft:white_wool")
+            for zz in (span[0], span[-1]):
+                for y in (1, 2, 3):
+                    for x in side:
+                        if x != inner:
+                            m.set(x, y, zz, fence("minecraft:spruce"))
+            m.set(inner, 2, span[0], "minecraft:potted_red_tulip" if n % 2 else "minecraft:potted_dandelion")
+            m.set(inner, 2, span[-1], "minecraft:hay_block[axis=z]" if n % 3 else "minecraft:melon")
+    for x in (left[:1] + right[-1:]):
+        for z in (z0 + 2, z1 - 2):
+            if (x, z) in free and m.get(x, 1, z) is None:
+                lamp(m, x, z)
 
 
 def flight(m, place, stem):
@@ -154,10 +252,12 @@ def flight(m, place, stem):
     # lamps stand here, one every stretch and flight
     k = int(stem.split("-")[1])
     keep = seam_cols(place)
-    for x in ((x0, x1) if k % 2 else (x1, x0)):
-        if (x, rows[4]) not in keep and len(rows) > 4:
-            lamp(m, x, rows[4])
-            break
+    lamp_x, bed_x = (x0, x1) if k % 2 else (x1, x0)
+    if (lamp_x, rows[4]) not in keep:
+        lamp(m, lamp_x, rows[4])
+    if (bed_x, rows[4]) not in keep:
+        m.set(bed_x, 0, rows[4], "minecraft:grass_block[snowy=false]")
+        m.set(bed_x, 1, rows[4], ("minecraft:cornflower", "minecraft:poppy", "minecraft:allium")[k % 3])
 
 
 def square(m, place):
@@ -228,10 +328,12 @@ def lane(m, place, stem):
     axis = "x" if (x1 - x0) >= (z1 - z0) else "z"
     pave_way(m, x0, x1, z0, z1, axis)
     keep = seam_cols(place)
+    # a lane's clear width is its width less one, laid from its low edge (the
+    # plan's way, centred): its verge is the high edge only
     if axis == "x":
-        spots = [(x, z) for x in range(x0 + 2, x1 - 1, 9) for z in (z0, z1)]
+        spots = [(x, z1) for x in range(x0 + 2, x1 - 1, 5)]
     else:
-        spots = [(x, z) for z in range(z0 + 2, z1 - 1, 9) for x in (x0, x1)]
+        spots = [(x1, z) for z in range(z0 + 2, z1 - 1, 5)]
     n = 0
     for i, (x, z) in enumerate(spots):
         if (x, z) in keep or m.get(x, 1, z) is not None:
@@ -249,7 +351,7 @@ def lane(m, place, stem):
             elif kind == 1:
                 m.set(x, 1, z, "minecraft:barrel[facing=up,open=false]")
             else:
-                face = ("south" if z == z0 else "north") if axis == "x" else ("east" if x == x0 else "west")
+                face = "south" if axis == "x" else "east"   # its back to the lane's edge
                 m.set(x, 1, z, stairs("minecraft:spruce", face))
         n += 1
 
@@ -263,8 +365,11 @@ def drop_unclaimable_sides(place, m):
     keep = []
     for sd in place.sides:
         (sx0, sz0), (sx1, sz1) = sd["lo"], sd["hi"]
-        cells = [(x, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
-                 if 0 <= x < ex and 0 <= z < ez and (x, place.datum.value, z) not in m.no_touch]
+        # a side over a low opening (a stair's, four high) keeps the run above
+        # it: there the ring is the side's air, never a wall hung over the way
+        cells = [(x, y, z) for x in range(sx0, sx1 + 1) for z in range(sz0, sz1 + 1)
+                 for y in range(place.datum.value, place.wall_top.value)
+                 if 0 <= x < ex and 0 <= z < ez and (x, y, z) not in m.no_touch]
         # the side a raised opening stands on is the neighbour's above the
         # walk plane (its void) and the top step's below it: nothing of it
         # is a way out

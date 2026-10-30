@@ -31,6 +31,12 @@
         "b": "exterior",
         "class": "walk",
         "via": "side-west"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "side-south"
       }
     ],
     "entry": "room",
@@ -50,9 +56,11 @@
   },
   "name": "flight-1",
   "palette": {
-    "b0": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "b1": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b2": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "b0": "minecraft:grass_block[snowy=false]",
+    "b1": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "b2": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b3": "minecraft:poppy",
+    "b4": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
     "cobble": [
       {
         "block": "minecraft:cobblestone",
@@ -71,7 +79,7 @@
         "weight": 1
       },
       {
-        "block": "minecraft:gravel",
+        "block": "minecraft:tuff",
         "weight": 1
       }
     ],
@@ -85,7 +93,7 @@
         "weight": 3
       },
       {
-        "block": "minecraft:gravel",
+        "block": "minecraft:tuff",
         "weight": 2
       },
       {
@@ -128,7 +136,7 @@
         "weight": 3
       },
       {
-        "block": "minecraft:gravel",
+        "block": "minecraft:tuff",
         "weight": 2
       },
       {
@@ -865,15 +873,11 @@
         "weight": 1
       }
     ],
-    "column_31": [
+    "column_32": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_7"
-            },
             {
               "op": "call",
               "symbol": "row_29"
@@ -881,6 +885,10 @@
             {
               "op": "call",
               "symbol": "row_30"
+            },
+            {
+              "op": "call",
+              "symbol": "row_31"
             },
             {
               "op": "call",
@@ -1016,7 +1024,7 @@
         "weight": 1
       }
     ],
-    "column_36": [
+    "column_37": [
       {
         "body": {
           "axis": "y",
@@ -1024,10 +1032,6 @@
             {
               "op": "call",
               "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_32"
             },
             {
               "op": "call",
@@ -1040,6 +1044,10 @@
             {
               "op": "call",
               "symbol": "row_35"
+            },
+            {
+              "op": "call",
+              "symbol": "row_36"
             }
           ],
           "op": "split",
@@ -1303,11 +1311,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_31"
+                "symbol": "column_32"
               },
               {
                 "op": "call",
-                "symbol": "column_36"
+                "symbol": "column_37"
               }
             ],
             "op": "split",
@@ -1532,7 +1540,7 @@
             },
             {
               "material": {
-                "role": "b1"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -1706,7 +1714,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b1"
               },
               "op": "fill"
             },
@@ -2203,11 +2211,40 @@
     "row_15": [
       {
         "body": {
-          "body": {
-            "op": "void"
-          },
-          "op": "claim",
-          "region": "room"
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-1-to-street-1/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
         },
         "weight": 1
       }
@@ -2312,7 +2349,7 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -2408,7 +2445,7 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -2859,10 +2896,11 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "wall"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -2920,7 +2958,7 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -3327,11 +3365,10 @@
           "axis": "z",
           "children": [
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "floor"
               },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             },
             {
               "material": {
@@ -3341,23 +3378,21 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b0"
               },
               "op": "fill"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "worn"
               },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "floor"
               },
-              "op": "claim",
-              "region": "flight-1-to-street-1-way"
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -3374,7 +3409,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 4
+                  "value": 5
                 },
                 "op": "sub",
                 "rhs": {
@@ -3401,7 +3436,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 6
                 }
               },
               "size": "absolute"
@@ -3613,7 +3648,121 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b3"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-1-to-street-1-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/square-to-flight-1/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/square-to-flight-1/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-1-to-street-1/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 6
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_31": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -3730,7 +3879,7 @@
         "weight": 1
       }
     ],
-    "row_32": [
+    "row_33": [
       {
         "body": {
           "axis": "z",
@@ -3762,7 +3911,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 5
+                "value": 6
               },
               "size": "absolute"
             },
@@ -3776,7 +3925,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 6
                 }
               },
               "size": "absolute"
@@ -3793,7 +3942,7 @@
         "weight": 1
       }
     ],
-    "row_33": [
+    "row_34": [
       {
         "body": {
           "axis": "z",
@@ -3872,7 +4021,7 @@
         "weight": 1
       }
     ],
-    "row_34": [
+    "row_35": [
       {
         "body": {
           "axis": "z",
@@ -4011,7 +4160,7 @@
         "weight": 1
       }
     ],
-    "row_35": [
+    "row_36": [
       {
         "body": {
           "axis": "z",
@@ -4377,13 +4526,13 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b1"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -4487,7 +4636,7 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4500,7 +4649,7 @@
             },
             {
               "material": {
-                "role": "b1"
+                "role": "b2"
               },
               "op": "fill"
             },

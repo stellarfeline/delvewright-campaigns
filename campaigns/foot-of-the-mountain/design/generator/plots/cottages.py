@@ -47,6 +47,7 @@ def cottage(m, x0, x1, z0, z1, wash, post, door_z, part_wall_x, colour, flip):
         m.set(part_wall_x, y, z1 if flip else z0, "rubble")
     # the street door into the front room, a window either side of it
     door2(m, x1, door_z, "minecraft:spruce", "west")
+    m.set(x1, 0, door_z, "minecraft:spruce_planks")              # the threshold
     for z in range(z0 + 1, z1):
         if z != door_z:
             m.set(x1, 2, z, GLASS)

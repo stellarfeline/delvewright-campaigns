@@ -107,6 +107,12 @@ STREET_REFS = [
     {"url": "https://en.wikipedia.org/wiki/Cobblestone",
      "shows": "Medieval cobbles: rounded field and river stones set in sand or mortar, the surface moving with the ground; pitched paving and setts for the dressed parts.",
      "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    {"url": "https://en.wikipedia.org/wiki/The_Shambles",
+     "shows": "York's Shambles at eye level: a narrow street of timber-framed shops whose upper storeys overhang it, shopfronts with their hooks and display shelves to the street, runnels for the rain.",
+     "terms": "CC BY-SA 4.0 (Wikipedia text)"},
+    {"url": "https://en.wikipedia.org/wiki/Market_town",
+     "shows": "The medieval market place: a wide main street or a square where stalls and booths stand on market day, a market cross at its middle, a market hall beside it.",
+     "terms": "CC BY-SA 4.0 (Wikipedia text)"},
     {"url": "https://en.wikipedia.org/wiki/Clovelly",
      "shows": "Clovelly: a steep, pedestrian, cobbled main street of terraced houses falling to the pier, goods moved by sledge and donkey, broken by side alleys.",
      "terms": "CC BY-SA 4.0 (Wikipedia text)"},
@@ -135,12 +141,15 @@ REFS = {
     ],
     # the lower street's rows (content demo/plots-lower @ b505915), carried here
     "node/boatwright": [
+        {"url": "https://www.minecraft-guides.com/mod/alekis-nifty-ships/",
+         "shows": "A Minecraft boat built in stages on land: the hull's frames laid in the hull pattern first and filled with planks frame by frame, and unfinished rowboats and sloops standing half-built on the shore.",
+         "terms": "none stated (ideas only)"},
+        {"url": "https://minecraft.how/blog/post/build-pirate-ship-minecraft",
+         "shows": "A community ship-building guide: lay the keel first down the centre line, raise the frame from it angled outward, taper the hull toward bow and stern, and build on land.",
+         "terms": "all rights reserved (ideas only)"},
         {"url": "https://her.cne-siar.gov.uk/Monument/MWE148761",
          "shows": "A small boatbuilding yard: a single-storey shed with its door to the slipway, the long plank steamer against an inside wall over a fire, clinker boats built inside.",
          "terms": "none stated (ideas only)"},
-        {"url": "https://www.nationalhistoricships.org.uk/ship-shape/company/f-p-crowell-boatbuilder",
-         "shows": "A traditional wooden boatbuilder's boatshed with a slipway and cradle hauled back into the shed, with headroom over the hull, and large timbers machined in the yard.",
-         "terms": "none stated for text; pictures not to be reproduced (ideas only)"},
     ],
     "node/cooper": [
         {"url": "https://www.brothers-brick.com/2021/08/24/roll-out-the-barrel-with-this-medieval-coopers-workshop",
@@ -325,8 +334,15 @@ box("node/square", (30, 24), SQF, OPEN(8), "the square",
 # Ten short flights of two, so the street and the plots beside it follow the
 # slope in small steps: neighbours differ by two at most.
 STREET_W, SEG_L, FLIGHT_L, NFL = 7, 14, 6, 10
+# A stretch is wider than its flights: its clear way stays five, centred, and
+# the verge either side holds the street's own life (lamps, benches, carts,
+# stalls) clear of the lots' fronts. At the guildhall the street widens into
+# a market.
+STRETCH_W = {k: 9 for k in range(1, NFL)}
+STRETCH_W[4] = 11
 segs = []
 prev = "node/square"
+prev_w = None
 floor = SQF
 for k in range(1, NFL + 1):
     fl = f"node/flight-{k}"
@@ -334,17 +350,19 @@ for k in range(1, NFL + 1):
     box(fl, (STREET_W, FLIGHT_L), floor, OPEN(10), "a flight of the main street",
         f"Flight {k} of the main street: seven wide, two shallow steps down, "
         "between low kerbs.", way={"axis": "z", "clear": 5})
-    seam(prev, fl, "south", 11 if prev == "node/square" else 0, 0,
-         "stair", f"flight {k}: two down, the full width")
+    at = 11 if prev == "node/square" else (prev_w - STREET_W) // 2
+    seam(prev, fl, "south", at, 0, "stair", f"flight {k}: two down, the full width")
     if k == NFL:
         break
     sg = f"node/street-{k}"
-    box(sg, (STREET_W, SEG_L), floor, OPEN(8), "a stretch of the main street",
+    w = STRETCH_W[k]
+    box(sg, (w, SEG_L), floor, OPEN(8), "a stretch of the main street",
         f"Stretch {k} of the main street, walk plane {floor}: cobbles with a "
-        "kerb, the plots' fronts on both sides.", way={"axis": "z", "clear": 5})
-    seam(fl, sg, "south", 0, 0, "contact", "the street runs on at grade")
+        "kennel, the plots' fronts on both sides" + (", widening into the market before the guildhall." if k == 4 else "."),
+        way={"axis": "z", "clear": 5})
+    seam(fl, sg, "south", 0, (w - STREET_W) // 2, "contact", "the street runs on at grade")
     segs.append(sg)
-    prev = sg
+    prev, prev_w = sg, w
 
 # the quay at the foot of the street; the basin beyond it is the sea itself
 box("node/quay", (60, 10), floor, OPEN(8), "the quay",
