@@ -838,7 +838,7 @@ PALETTE = {
     "bow_w": "minecraft:oak_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
     "mast": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "yard": "minecraft:stripped_spruce_log[axis=x]",
-    "sail": "minecraft:white_wool",
+    "sail": "minecraft:white_carpet",
     "cradle": "minecraft:spruce_log[axis=z]",
     "stem": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "flare_n": "minecraft:oak_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
@@ -863,6 +863,7 @@ EDGE = 16                    # the quay's edge row; the basin is south of it
 PIER_X = (18, 19)            # a pier out into the basin between the two boats
 PIER_END = 18                # its head; water steps go down off it
 SLIP_X = (23, 24)            # the slipway at the basin's east end
+JOGS = ((2, 3), (14, 16))    # runs of the quay that step a row out into the basin, where the boats leave room
 SEA = -1                     # the water's surface course, model-relative (world 62 under a walk plane of 64)
 BED = -7                     # the basin's bed course
 
@@ -917,6 +918,12 @@ def build_model():
     # a kerb along the water's edge, where the quayside ends and the boats lie
     for x in range(1, 25):
         m.set(x, 0, EDGE, "kerb")
+    # the quay's edge jogs a row out where the boats leave room
+    for (j0, j1) in JOGS:
+        cols = range(j0, j1 + 1)
+        for x in cols:
+            m.set(x, 0, EDGE, "pave")
+        townkit.pier(m, cols, EDGE + 1, EDGE + 1, 0, BED + 1, {"fill": "stone", "pave": "pave", "kerb": "kerb"})
     # a short pier between the trader's bow and the fishing boat, water steps at its head
     townkit.pier(m, PIER_X, EDGE + 1, PIER_END, 0, BED + 1, {"fill": "stone", "pave": "pave", "kerb": "kerb"},
                  kerb_x=PIER_X[1])
@@ -1043,7 +1050,8 @@ def build_model():
     # ---------- the parts: which columns are which
     for x in range(1, 25):
         for z in range(1, 23):
-            if z > EDGE and (x, z) not in BOAT_COLS and not (x in PIER_X and z <= PIER_END):
+            if z > EDGE and (x, z) not in BOAT_COLS and not (x in PIER_X and z <= PIER_END) \
+                    and not (z == EDGE + 1 and any(j0 <= x <= j1 for (j0, j1) in JOGS)):
                 continue                                 # the open water between and beyond the boats
             if HOUSE[0] < x < HOUSE[1] and HOUSE[2] < z < HOUSE[3]:
                 m.region[(x, z)] = "harbourmaster"      # the floor inside the walls
@@ -1303,12 +1311,12 @@ def body(p, rules):
 
 FULL = {"floor", "wall", "lid", "stone", "pave", "kerb", "turf", "post", "beam_x", "beam_z", "infill", "boards",
         "floorb", "glass", "roof", "chimney", "chart", "shelf", "hay", "crate", "rope", "anchor", "hull",
-        "keel", "sail", "yard", "cradle", "sand", "barrel", "deck",
+        "keel", "yard", "cradle", "sand", "barrel", "deck",
         "gunwale_hi", "stem_post", "slip_wt"}
 TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem"}
 LOW = {"roof_n", "roof_s", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
        "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep",
-       "flare_n", "flare_s", "flare_e", "flare_w", "slip_lo", "slip_wl"}
+       "flare_n", "flare_s", "flare_e", "flare_w", "slip_lo", "slip_wl", "sail"}
 
 _starter_contract = contract
 

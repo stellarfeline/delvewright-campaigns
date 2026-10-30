@@ -157,15 +157,76 @@ def hull(m, axis, s0, c0, widths, waterline, roles=None, toward=1, cols=None):
 
 def mast(m, axis, s, c0, foot_y, top_y, roles):
     """A mast at station s on the cross line c0 from course foot_y to top_y, a yard two
-    each side of it a course under the top and a furled sail under the yard. `roles`
-    maps "mast", "yard" and "sail"."""
+    each side of it a course under the top, and the sail furled along the yard: a thin
+    roll lying on the yard's top course beside the mast, never a block hung under it.
+    `roles` maps "mast", "yard" and "sail" (the sail a thin block that stands on the yard:
+    a carpet, or a bottom slab)."""
     x, z = (s, c0) if axis == "x" else (c0, s)
     for y in range(foot_y, top_y + 1):
         m.set(x, y, z, roles["mast"])
     for k in (-2, -1, 1, 2):
         xx, zz = (x + k, z) if axis == "z" else (x, z + k)
         m.set(xx, top_y - 1, zz, roles["yard"])
-        m.set(xx, top_y - 2, zz, roles["sail"])
+        m.set(xx, top_y, zz, roles["sail"])
+
+
+def hull_on_stocks(m, axis, stern, bow, c0, keel_y, framed, stocks, roles=None):
+    """A boat building on its stocks, its bow at station `bow` and its transom's foot at
+    `stern` (stern < bow along `axis`), centred on the cross line c0, its keel at course
+    keel_y on stocks at the stations `stocks`.
+
+    The stem is a post rising four courses from the keel to a point; the planking closes on
+    it with the sheer at its highest (a strake more at the bow, a top slab at the shoulder,
+    a bottom slab amidships); the turn of the bilge is upturned stairs and the planked
+    strake amidships lapped planks on the outer face; the `framed` stations next to the
+    transom stand in bare frames (a frame every other station) on their ribband; the
+    transom rakes out over the stern. Side roles carry the side's letter ("bilge_n",
+    "lap_s"; "_w"/"_e" along z), so the caller's palette gives each its facing.
+    `roles` renames any role: stock, keel, stem, stem_tip, strake, gunwale, gunwale_hi,
+    rib, transom, transom_rake, bilge_<side>, lap_<side>."""
+    r = dict(roles or {})
+    R = lambda k: r.get(k, k)  # noqa: E731
+    P = (lambda s, c, y: (s, y, c)) if axis == "x" else (lambda s, c, y: (c, y, s))
+
+    def put(s, y, c, role):
+        x, yy, z = P(s, c, y)
+        m.set(x, yy, z, R(role))
+
+    lo, hi = c0 - 1, c0 + 1
+    side = (lambda c: "n" if c < c0 else "s") if axis == "x" else (lambda c: "w" if c < c0 else "e")
+    for s in stocks:
+        put(s, keel_y - 1, c0, "stock")
+    for s in range(stern, bow):
+        put(s, keel_y, c0, "keel")
+    for y in range(keel_y, keel_y + 4):
+        put(bow, y, c0, "stem")
+    put(bow, keel_y + 4, c0, "stem_tip")
+    for y in (keel_y + 1, keel_y + 2):
+        put(bow - 1, y, c0, "strake")
+    for c in (lo, hi):
+        put(bow - 1, keel_y + 1, c, "bilge_" + side(c))
+        put(bow - 1, keel_y + 2, c, "strake")
+        put(bow - 1, keel_y + 3, c, "gunwale")
+        put(bow - 2, keel_y, c, "bilge_" + side(c))
+        put(bow - 2, keel_y + 1, c, "strake")
+        put(bow - 2, keel_y + 2, c, "gunwale_hi")
+    for s in range(stern + 1 + framed, bow - 2):
+        for c in (lo, hi):
+            put(s, keel_y, c, "bilge_" + side(c))
+            put(s, keel_y + 1, c, "lap_" + side(c))
+            put(s, keel_y + 2, c, "gunwale")
+    for s in range(stern + 1, stern + 1 + framed):
+        for c in (lo, hi):
+            put(s, keel_y, c, "bilge_" + side(c))
+            if (s - stern) % 2 == 1:
+                put(s, keel_y + 1, c, "rib")
+            put(s, keel_y + 2, c, "rib")
+    put(stern, keel_y + 1, c0, "transom")
+    put(stern, keel_y + 1, lo, "bilge_" + side(lo))
+    put(stern, keel_y + 1, hi, "bilge_" + side(hi))
+    for c in range(lo, hi + 1):
+        put(stern - 1, keel_y + 2, c, "transom_rake")
+    put(stern - 1, keel_y + 3, c0, "gunwale")
 
 
 # ---------------------------------------------------------------- quays and basins
