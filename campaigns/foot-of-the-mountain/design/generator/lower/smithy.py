@@ -23,7 +23,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, door, door_roles, finish, flower_bed, frame_walls, gable, hsh, run  # noqa: E402
+from plotkit import Model, Plot, clip_to_space, door, door_roles, finish, flower_bed, frame_walls, fronted, gable, hsh, run  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def st(name, facing, half="bottom"):
@@ -59,6 +61,7 @@ PALETTE = {
     # timber and plaster
     "post": "minecraft:stripped_dark_oak_log[axis=y]",
     "beam_x": "minecraft:dark_oak_log[axis=x]",
+    "coping": "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
     "beam_z": "minecraft:dark_oak_log[axis=z]",
     "plaster": "minecraft:white_terracotta",
     "gable_boards": "minecraft:spruce_planks",
@@ -123,6 +126,7 @@ FORGE = (14, 20, 2, 7)       # the shed's posts
 PORCH = (11, 12, 4, 6)
 WALL_TOP = 4                 # the house's wall plate course
 SHED_PLATE = 4
+FRONT_DX = 4                 # fronted, the forge's open front is the lot's street edge
 
 
 def build(place) -> Model:
@@ -134,6 +138,8 @@ def build(place) -> Model:
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
+    front, sf = fronted(place, "east")
+    m.dx = FRONT_DX if front else 0
     # the way in from the street: paving up to the forge front and into the yard
     m.box(21, X1, 0, 0, 3, 10, "pave")
     m.box(11, 21, 0, 0, 8, 11, "yard")
@@ -293,12 +299,24 @@ def build(place) -> Model:
     m.regions("work-yard", 11, 21, 8, 11)
     m.regions("work-yard", 13, 13, 4, 7)
     m.regions("work-yard", 21, 22, 2, 7)
+    m.dx = 0
+    if front:
+        clip_to_space(m, place)
+        edge, rows, door_h, air = sf
+        townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "stone", "lintel": "beam_z", "coping": "coping"},
+                             door_h=door_h)
+        finish(m)
     return m
 
 
 class Smithy(Plot):
     MODEL = staticmethod(build)
     MARK_AT = {"node-smithy": (18, 4, "west")}    # at the anvil, facing the hearth
+
+    def lay_parts(self, parts):
+        if fronted(self, "east")[0]:
+            self.MARK_AT = {k: (x + FRONT_DX, z, f) for k, (x, z, f) in type(self).MARK_AT.items()}
+        super().lay_parts(parts)
     REASON = "the house's and the forge's wall heads, roof slopes and sills: seen, never stood on"
 
 

@@ -21,7 +21,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plotkit import Model, Plot, finish, gable, hsh, run  # noqa: E402
+from plotkit import Model, Plot, clip_to_space, finish, fronted, gable, hsh, run  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def st(name, facing, half="bottom"):
@@ -49,6 +51,7 @@ PALETTE = {
                {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
     # the tarred weatherboarding: dark oak boards between black posts
     "boards": "minecraft:dark_oak_planks",
+    "coping": "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
     "post": "minecraft:dark_oak_log[axis=y]",
     "beam_x": "minecraft:dark_oak_log[axis=x]",
     "beam_z": "minecraft:dark_oak_log[axis=z]",
@@ -98,6 +101,7 @@ GROUND_TOP = 4            # the boat store's courses y1..4
 LOFT = 5                  # the loft floor's course
 PLATE = 8                 # the wall plate
 YARD = (12, 18, 2, 9)
+SHED_DX, YARD_DX = 10, -10  # fronted: the shed's boat-door gable is the street edge, the yard behind it
 
 
 def build(place) -> Model:
@@ -107,10 +111,15 @@ def build(place) -> Model:
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "turf")
+    front, sf = fronted(place, "east")
     sx0, sx1, sz0, sz1 = SHED
-    # the yard: shingle; a timber slip from the boat door toward the street
-    m.box(sx1 + 1, X1, 0, 0, Z0 + 1, Z1 - 1, "shingle")
-    m.box(sx1 + 1, X1, 0, 0, 5, 6, "slip")
+    if not front:
+        # the yard: shingle; a timber slip from the boat door toward the street
+        m.box(sx1 + 1, X1, 0, 0, Z0 + 1, Z1 - 1, "shingle")
+        m.box(sx1 + 1, X1, 0, 0, 5, 6, "slip")
+    else:
+        m.box(X0, sx0 + SHED_DX - 1, 0, 0, Z0 + 1, Z1 - 1, "shingle")
+        m.dx = SHED_DX
     # ---------- the shed: plinth, posts at the corners and the storey line, boards
     m.box(sx0, sx1, 0, 0, sz0, sz1, "store_floor")
     for x in range(sx0, sx1 + 1):
@@ -176,6 +185,7 @@ def build(place) -> Model:
     m.set(9, LOFT + 1, 7, "lantern")
     m.set(3, LOFT + 1, 5, "lantern")
     # ---------- the yard: rows of net poles with nets slung between them
+    m.dx = YARD_DX if front else 0
     yx0, yx1, yz0, yz1 = YARD
     for z in (3, 8):
         for x in range(yx0 + 1, yx1, 2):
@@ -194,12 +204,15 @@ def build(place) -> Model:
     m.set(16, 1, 9, "barrel")
     m.set(15, 1, 9, "barrel")
     m.set(16, 2, 9, "barrel")
+    m.dx = SHED_DX if front else 0
     m.set(3, 1, 4, "barrel")
     # life: beach grass, a bush at the shed's corners, a flower bed under the south windows
+    dx, m.dx = m.dx, 0
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             if m.get(x, 1, z) is None and m.get(x, 0, z) in ("turf",) and hsh(x, z, 13) % 3 == 0:
                 m.set(x, 1, z, "beach_grass" if hsh(x, z, 1) % 2 else "tuft")
+    m.dx = dx
     for x in range(3, 10):
         m.set(x, 0, 9, "turf")
         m.set(x, 1, 9, ["f1", "f2", "f3", "fern"][hsh(x, 9, 4) % 4])
@@ -209,15 +222,29 @@ def build(place) -> Model:
     # potted flowers by the boat door and the bench
     m.set(11, 1, 4, "pot_a")
     m.set(11, 1, 7, "pot_d")
-    finish(m)
+    if not front:
+        finish(m)
     m.regions("loft", sx0, sx1, sz0, sz1)
+    m.dx = YARD_DX if front else 0
     m.regions("yard", yx0, yx1, yz0, yz1)
+    m.dx = 0
+    if front:
+        clip_to_space(m, place)
+        edge, rows, door_h, air = sf
+        townkit.street_front(m, edge, Z0, Z1, rows, air, {"wall": "boards", "lintel": "beam_z", "coping": "coping"},
+                             door_h=door_h)
+        finish(m)
     return m
 
 
 class NetLoft(Plot):
     MODEL = staticmethod(build)
     MARK_AT = {"node-netloft": (8, 5, "west")}   # inside the boat door, facing the hull
+
+    def lay_parts(self, parts):
+        if fronted(self, "east")[0]:
+            self.MARK_AT = {k: (x + SHED_DX, z, f) for k, (x, z, f) in type(self).MARK_AT.items()}
+        super().lay_parts(parts)
     REASON = "the loft's wall heads, the roof and the net poles' tops: seen, never stood on"
 
 

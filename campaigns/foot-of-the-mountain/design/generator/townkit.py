@@ -310,3 +310,49 @@ def street_front(m, x, z0, z1, door_rows, air, roles, door_h=3, solid=None):
         m.set(x, air, z, roles["coping"])
         for c in [c for c in m.v if c[0] == x and c[2] == z and c[1] > air]:
             del m.v[c]
+
+
+def shift(m, dx):
+    """Draw into `m` moved `dx` along x from here on: every write and read through
+    set, get, part and mark (and so box, door and roof) lands dx over. shift(m, 0)
+    ends it. A building drawn at its own coordinates is stood, whole, on the edge."""
+    for k in ("set", "get", "part", "mark"):
+        m.__dict__.pop(k, None)
+    if not dx:
+        return
+    cls = type(m)
+    m.set = lambda x, y, z, r: cls.set(m, x + dx, y, z, r)
+    m.get = lambda x, y, z: cls.get(m, x + dx, y, z)
+    m.part = lambda x0, x1, z0, z1, stem: cls.part(m, x0 + dx, x1 + dx, z0, z1, stem)
+    m.mark = lambda stem, x, z, facing="south": cls.mark(m, stem, x + dx, z, facing)
+
+
+def street_seam(place, face):
+    """Read a lot's street edge on `face` off its allocation (`place.a`):
+    (fronted, (edge column or row, the rows the seam leaves open, the doorway's
+    height, the course the street's air rises to)). Fronted means the seam is cut
+    to a doorway narrower than the edge: the lot then stands its building on the
+    edge. While it is uncut the rows are the whole edge. The street's air is the
+    height of the street's void on the ring beside the edge (the seam's own top
+    where no void is handed)."""
+    a = place.a
+    lo, hi = place.space
+    for c in a["seams"]:
+        if c.get("face") != face:
+            continue
+        (x0, y0, z0), (x1, y1, z1) = c["cells"]
+        air = y1
+        for v in a.get("voids", []):
+            (vx0, vy0, vz0), (vx1, vy1, vz1) = v["cells"]
+            if face in ("east", "west"):
+                beside = vx0 == vx1 == x0 + (1 if face == "east" else -1)
+            else:
+                beside = vz0 == vz1 == z0 + (1 if face == "south" else -1)
+            if beside:
+                air = vy1
+        if face in ("east", "west"):
+            rows, span, edge = set(range(z0, z1 + 1)), hi[2] - lo[2] + 1, x0
+        else:
+            rows, span, edge = set(range(x0, x1 + 1)), hi[0] - lo[0] + 1, z0
+        return len(rows) < span, (edge, rows, y1, air)
+    return False, None

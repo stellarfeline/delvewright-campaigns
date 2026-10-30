@@ -16,8 +16,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
+import townkit  # noqa: E402
 
 LAMP_PERIOD = 4  # one sconce (and one ceiling lamp) in four cells; yours to change
 
@@ -1259,39 +1263,9 @@ def hip(m: Model, x0, x1, z0, z1, y0, stair, ridge, ov=1):
     return y - 1
 
 
-def street_face(place, face):
-    """The lot's street edge on `face`: (edge column or row, the rows its seam
-    leaves open, the doorway's height, the course the street's air rises to).
-    Where the span is cut to a doorway the rows are the doorway's; while it is
-    uncut they are the whole edge, and the lot's front stays open across it. The
-    street's air is the height of the street's void on the ring beside the edge."""
-    a = place.a
-    for c in a["seams"]:
-        if c.get("face") != face:
-            continue
-        (x0, y0, z0), (x1, y1, z1) = c["cells"]
-        air = y1
-        for v in a.get("voids", []):
-            (vx0, vy0, vz0), (vx1, vy1, vz1) = v["cells"]
-            beside = (vx0 == vx1 == x0 + (1 if face == "east" else -1)) if face in ("east", "west") \
-                else (vz0 == vz1 == z0 + (1 if face == "south" else -1))
-            if beside:
-                air = vy1
-        if face in ("east", "west"):
-            return x0, set(range(z0, z1 + 1)), y1, air
-        return z0, set(range(x0, x1 + 1)), y1, air
-    return None
-
-
 def fronted(place, face):
-    """Whether the lot's street seam on `face` is cut to a doorway (the lot then
-    stands its building on the street edge), and the edge as `street_face` reads it."""
-    sf = street_face(place, face)
-    if sf is None:
-        return False, None
-    lo, hi = place.space
-    span = hi[2] - lo[2] + 1 if face in ("east", "west") else hi[0] - lo[0] + 1
-    return len(sf[1]) < span, sf
+    """The town kit's `street_seam` (one reading of a lot's street edge)."""
+    return townkit.street_seam(place, face)
 
 
 def clip_to_space(m, place):
