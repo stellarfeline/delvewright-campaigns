@@ -664,6 +664,19 @@ FRONTS = {
     "node/weaver": (5, 3, 3, "the weaver's shop doorway onto the street"),
     "node/merchant": (7, 5, 3, "the merchant's court mouth under its arch, onto the street"),
 }
+# The lower street's lots that are to front it, each span the doorway its
+# author builds its front round. Held apart until that front stands: a span
+# cut before it leaves the lot's open frontage a crossing no seam allows.
+# Set LOWER_FRONTS_READY to the nodes whose fronts stand.
+LOWER_FRONTS = {
+    "node/tavern": (5, 3, 3, "the tavern's door onto the market"),
+    "node/smithy": (4, 5, 3, "the smithy's open forge front onto the street"),
+    "node/chandler": (4, 3, 3, "the chandler's shop door onto the street"),
+    "node/fishmonger": (3, 5, 3, "the fishmonger's open stall front onto the street"),
+    "node/netloft": (4, 3, 3, "the net loft's boat-store doors onto the street"),
+}
+LOWER_FRONTS_READY = set()
+FRONTS.update({n: v for n, v in LOWER_FRONTS.items() if n in LOWER_FRONTS_READY})
 
 
 def overlaps(a, b, gap=0):
