@@ -22,9 +22,9 @@ DSL = "0.69.0"
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 
-RX, RZ = 320, 512          # region footprint (saltstair-a: 144 x 224; 5.08x)
+RX, RZ = 320, 512          # the island's frame (saltstair-a: 144 x 224; 5.08x); the region reaches past it
 RY0, RYN = 40, 176         # region y span
-BASE_Y, RANGE = 48, 160    # heightmap: y = 48 + v * 160 // 255
+BASE_Y, RANGE = 40, 168    # heightmap: y = 40 + v * 168 // 255
 SEA = 62
 
 boxes = []                 # site-plan boxes, in order
@@ -776,6 +776,20 @@ if bad:
 
 # ------------------------------------------------------------------- terrain
 
+# The world goes on past the island. The walk region is every box grown by the
+# boundary's margin; from any cell in it a player sees as far as the server's
+# view distance serves (ten chunks, plus the chunk the player stands in), so the
+# region reaches that far past the walk region on every side and the land and
+# sea run on to it. Nothing out there is reachable: the boundary returns a
+# player at the walk region's edge.
+MARGIN = 8                 # world.json boundary.margin
+SEEN = 176                 # the view distance's reach, chunk-rounded: 16 * (10 + 1)
+WALK = (min(p[0] for p in pos.values()) - MARGIN, max(p[0] + p[2] - 1 for p in pos.values()) + MARGIN,
+        min(p[1] for p in pos.values()) - MARGIN, max(p[1] + p[3] - 1 for p in pos.values()) + MARGIN)
+GX0, GZ0 = min(0, WALK[0] - SEEN), min(0, WALK[2] - SEEN)            # the region's corner
+GX = max(RX, WALK[1] + SEEN + 1) - GX0                               # the region's footprint
+GZ = max(RZ, WALK[3] + SEEN + 1) - GZ0
+
 
 def smooth(t):
     t = max(0.0, min(1.0, t))
@@ -848,10 +862,39 @@ def coast_z(x):
     return z
 
 
+# North of the neck the island is the mainland's: there is no north coast, and
+# the west and east coasts open out as they run north, so the land goes on
+# toward a mainland on the far side and the sea runs to the horizon elsewhere.
+Z_NECK = 40                # south of this row the island's frame is unchanged
+
+
+def shores(z):
+    """The west and east coast frame at row z: the island's frame south of the
+    neck, opening out north of it."""
+    k = max(0.0, Z_NECK - z)
+    k = 0.9 * k + 0.004 * k * k
+    return -k, RX - 1 + k
+
+
+def mainland(x, z):
+    """The mainland's hills behind the mountain: rising north to a range."""
+    t = smooth((Z_NECK - 30 - z) / 150)
+    r = ridged(x, z, 80, 4, 91)
+    return min(198.0, 58 + t * (30 + 110 * r) + (fbm(x, z, 30, 3, 93) - 0.5) * 12)
+
+
+def offshore(x, z):
+    """How far a column lies out to sea past the island's frame or the
+    mainland's coast; 0 inside them."""
+    lo, hi = shores(z)
+    return max(lo - x, x - hi, z - (RZ - 1), 0.0)
+
+
 def land(x, z):
     """1 on land, 0 at sea; the south coast slopes gently to beaches."""
     wob = (fbm(x, z, 40, 3, 1) - 0.5) * 30
-    inset = min(x, RX - 1 - x, z) + wob
+    lo, hi = shores(z)
+    inset = min(x - lo, hi - x) + wob
     edge = smooth((inset - 10) / 14)                 # cliffs on the far coasts
     south = smooth((coast_z(x) - z + wob * 0.3) / 18)  # a gentle shore by the town
     return min(edge, south)
@@ -883,7 +926,8 @@ def mountain(x, z):
     summit = CASTLE_WALK - 20 + 56 * (1 - smooth(p)) ** 1.3
     h = max(min(shoulder, CASTLE_WALK - 2), plateau, summit if p < 1 else 0)
     # fade the mountain into the island's low country east and west
-    fade = smooth((x - 8) / 40) * smooth((RX - 8 - x) / 40)
+    lo, hi = shores(z)
+    fade = smooth((x - lo - 8) / 40) * smooth((hi + 1 - 8 - x) / 40)
     h = 50 + (h - 50) * fade
     # uneven ledges and broken rock, strongest where the ground is high
     up = smooth((h - 90) / 40)
@@ -904,32 +948,41 @@ def base_height(x, z):
     the shore so the waterline follows the coast's coves and points, falling
     to the sea floor; cliffs only on the far coasts."""
     wob = (fbm(x, z, 40, 3, 1) - 0.5) * 30
-    inset = min(x, RX - 1 - x, z) + wob
+    lo, hi = shores(z)
+    inset = min(x - lo, hi - x) + wob
     edge = smooth((inset - 10) / 14)
     h_m, h_s = mountain(x, z), max(slope(x, z), 64.5)
     k = 6.0                                          # a soft maximum: no crease
     h = k * math.log(math.exp(h_m / k) + math.exp(h_s / k))
+    if z < Z_NECK:
+        # behind the summit the mountain falls to a saddle, and past it the
+        # mainland's hills rise to a range
+        fall = smooth(1 - (Z_NECK - z) / 110)
+        h = min(h, 66 + (h - 66) * fall)
+        h = max(h, mainland(x, z))
     shore = 62.5 + 0.35 * (coast_z(x) + wob * 0.3 - z)   # a beach rising from the waterline
-    sea_floor = 50 + (vnoise(x, z, 31, 4) - 0.5) * 4
+    # the seabed: as it was inside the frame, falling away out to sea
+    sea_floor = max(41.0, 50 + (vnoise(x, z, 31, 4) - 0.5) * 4 - 9 * smooth(offshore(x, z) / 80))
     h = max(sea_floor, min(h, shore))
     return sea_floor + (h - sea_floor) * edge
 
 
-H = [[base_height(x, z) for x in range(RX)] for z in range(RZ)]
+# H[z - GZ0][x - GX0] is column (x, z); every loop below reads world x, z
+H = [[base_height(x, z) for x in range(GX0, GX0 + GX)] for z in range(GZ0, GZ0 + GZ)]
 
 # each box: its columns at floor - 1; the ground eases to the natural ground
 # over a skirt. Doune's plot: inside the ring its ditch floor (walk - 4), the
 # ring at its surface course (walk - 1), flat, then the summit's own rock.
 rects = [(n, *pos[n]) for n in pos]
 HARBOUR_WATER = 6           # rows of the harbour plot over water, and its depth
-W = [[0.0] * RX for _ in range(RZ)]
-T = [[0.0] * RX for _ in range(RZ)]
+W = [[0.0] * GX for _ in range(GZ)]
+T = [[0.0] * GX for _ in range(GZ)]
 for n, x0, z0, dx, dz, f in rects:
     castle = n == "node/castle"
     road = n.startswith("node/road") or n == "node/gate-road"
     skirt = 28 if castle else (12 if road else (3 if n in ("node/quay", "node/lighthouse") else 12))
-    for z in range(max(0, z0 - 1 - skirt), min(RZ, z0 + dz + 1 + skirt)):
-        for x in range(max(0, x0 - 1 - skirt), min(RX, x0 + dx + 1 + skirt)):
+    for z in range(max(GZ0, z0 - 1 - skirt), min(GZ0 + GZ, z0 + dz + 1 + skirt)):
+        for x in range(max(GX0, x0 - 1 - skirt), min(GX0 + GX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
             ddz = max(z0 - z, 0, z - (z0 + dz - 1))
             d = math.hypot(ddx, ddz)
@@ -949,14 +1002,15 @@ for n, x0, z0, dx, dz, f in rects:
                 # the harbour's south rows stand over the basin: sea floor,
                 # HARBOUR_WATER deep at sea level, easing into the sea beyond
                 target = SEA - HARBOUR_WATER
-            if w > W[z][x] + 1e-9 or (abs(w - W[z][x]) < 1e-9 and target > T[z][x]):
-                W[z][x] = w
-                T[z][x] = target
-for z in range(RZ):
-    for x in range(RX):
-        w = W[z][x]
+            gz, gx = z - GZ0, x - GX0
+            if w > W[gz][gx] + 1e-9 or (abs(w - W[gz][gx]) < 1e-9 and target > T[gz][gx]):
+                W[gz][gx] = w
+                T[gz][gx] = target
+for gz in range(GZ):
+    for gx in range(GX):
+        w = W[gz][gx]
         if w > 0:
-            H[z][x] = H[z][x] * (1 - w) + T[z][x] * w
+            H[gz][gx] = H[gz][gx] * (1 - w) + T[gz][gx] * w
 
 # Behind the cathedral (north) and past its apse (east) the mountain's lower
 # terrace stands some thirty above the cathedral's floor. The ground falls from
@@ -968,20 +1022,20 @@ for z in range(RZ):
 # castle road) and south (the town) keep their own shaping.
 BACK_RISE, BACK_BEND, BACK_REACH, BACK_WEST = 1.0, 0.02, 44, 12
 _bx, _bz, _bdx, _bdz, _bf = pos["node/cathedral"]
-for z in range(max(0, _bz - 1 - BACK_REACH), min(RZ, _bz + _bdz + 1 + BACK_REACH)):
-    for x in range(_bx - BACK_WEST, min(RX, _bx + _bdx + 1 + BACK_REACH)):
+for z in range(max(GZ0, _bz - 1 - BACK_REACH), min(GZ0 + GZ, _bz + _bdz + 1 + BACK_REACH)):
+    for x in range(_bx - BACK_WEST, min(GX0 + GX, _bx + _bdx + 1 + BACK_REACH)):
         ddw = max(0, (_bx - 1) - x)               # past the west ring: eased out
         ddx = max(0, x - (_bx + _bdx))            # past the east ring
         ddz = max(0, (_bz - 1) - z, z - (_bz + _bdz))
-        if ddx == 0 and ddz == 0 or W[z][x] >= 1.0:
+        if ddx == 0 and ddz == 0 or W[z - GZ0][x - GX0] >= 1.0:
             continue
         if z > _bz + _bdz and ddx == 0:
             continue                               # south of the cathedral: the town's
         d = math.hypot(ddx, ddz)
         cap = (_bf - 1) + BACK_RISE * d + BACK_BEND * d * d \
             + (vnoise(x, z, 6, 61) - 0.5) * 2.0 + 1.5 * ddw
-        if H[z][x] > cap:
-            H[z][x] = cap
+        if H[z - GZ0][x - GX0] > cap:
+            H[z - GZ0][x - GX0] = cap
 
 # The inn backs onto the same slope: north of it (the mountain) and west of it
 # the ground rose over a short skirt to a bank. It eases the same way,
@@ -989,61 +1043,61 @@ for z in range(max(0, _bz - 1 - BACK_REACH), min(RZ, _bz + _bdz + 1 + BACK_REACH
 # square and the castle road east of it, and the street south, keep theirs.
 _ix, _iz, _idx, _idz, _if = pos["node/inn"]
 INN_RISE, INN_BEND = 0.6, 0.03    # gentler than the cathedral's: a lawn rising behind the yard
-for z in range(max(0, _iz - 1 - BACK_REACH), _iz + _idz + 1):
-    for x in range(max(0, _ix - 1 - BACK_REACH), _ix + _idx + 1):
+for z in range(max(GZ0, _iz - 1 - BACK_REACH), _iz + _idz + 1):
+    for x in range(max(GX0, _ix - 1 - BACK_REACH), _ix + _idx + 1):
         ddw = max(0, (_ix - 1) - x)
         ddz = max(0, (_iz - 1) - z)
-        if (ddw == 0 and ddz == 0) or W[z][x] >= 1.0:
+        if (ddw == 0 and ddz == 0) or W[z - GZ0][x - GX0] >= 1.0:
             continue
         d = math.hypot(ddw, ddz)
         cap = (_if - 1) + INN_RISE * d + INN_BEND * d * d + (vnoise(x, z, 6, 67) - 0.5) * 1.0
-        if H[z][x] > cap:
-            H[z][x] = cap
+        if H[z - GZ0][x - GX0] > cap:
+            H[z - GZ0][x - GX0] = cap
 
 # The lighthouse's point falls to the sea as rock: west, south and east of its
 # plot the ground drops in ledges, three or four a course, to the sea floor,
 # steep enough that it weathers as the wild's stone, andesite and tuff, with
 # the plot's own turf on top. The cliff path arrives from the north.
 _lx, _lz, _ldx, _ldz, _lf = pos["node/lighthouse"]
-for z in range(_lz - 1, min(RZ, _lz + _ldz + 1 + 14)):
-    for x in range(max(0, _lx - 1 - 14), min(RX, _lx + _ldx + 1 + 14)):
+for z in range(_lz - 1, min(GZ0 + GZ, _lz + _ldz + 1 + 14)):
+    for x in range(max(GX0, _lx - 1 - 14), min(GX0 + GX, _lx + _ldx + 1 + 14)):
         ddx = max(0, (_lx - 1) - x, x - (_lx + _ldx))
         ddz = max(0, z - (_lz + _ldz))
-        if (ddx == 0 and ddz == 0) or W[z][x] >= 1.0:
+        if (ddx == 0 and ddz == 0) or W[z - GZ0][x - GX0] >= 1.0:
             continue
         d = math.hypot(ddx, ddz)
         ledge = math.floor(d / 1.6) * 4 + (vnoise(x, z, 4, 71) - 0.5) * 3
         cap = (_lf - 1) - ledge
-        if H[z][x] > cap:
-            H[z][x] = max(cap, 50.0)
+        if H[z - GZ0][x - GX0] > cap:
+            H[z - GZ0][x - GX0] = max(cap, 50.0)
 
 # No pit a body cannot climb out of: a priority flood from the sea and the
 # region's rim raises every column to at least one under the column it is
 # reached from, so from anywhere a walk of steps no higher than one leads to
 # the shore. Cliffs stay: only hollows are filled.
 import heapq
-Q = [[int(round(H[z][x])) for x in range(RX)] for z in range(RZ)]
-seen = [[False] * RX for _ in range(RZ)]
+Q = [[int(round(H[z][x])) for x in range(GX)] for z in range(GZ)]
+seen = [[False] * GX for _ in range(GZ)]
 heap = []
-for z in range(RZ):
-    for x in range(RX):
-        if Q[z][x] < SEA + 1 or x in (0, RX - 1) or z in (0, RZ - 1):
+for z in range(GZ):
+    for x in range(GX):
+        if Q[z][x] < SEA + 1 or x in (0, GX - 1) or z in (0, GZ - 1):
             seen[z][x] = True
             heapq.heappush(heap, (Q[z][x], x, z))
 while heap:
     h, x, z = heapq.heappop(heap)
     for nx, nz in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)):
-        if 0 <= nx < RX and 0 <= nz < RZ and not seen[nz][nx]:
+        if 0 <= nx < GX and 0 <= nz < GZ and not seen[nz][nx]:
             seen[nz][nx] = True
             if Q[nz][nx] < h - 1:
                 Q[nz][nx] = h - 1
             heapq.heappush(heap, (Q[nz][nx], nx, nz))
-H = [[float(Q[z][x]) for x in range(RX)] for z in range(RZ)]
+H = [[float(Q[z][x]) for x in range(GX)] for z in range(GZ)]
 
 pix = bytearray()
-for z in range(RZ):
+for z in range(GZ):
     pix.append(0)
-    for x in range(RX):
+    for x in range(GX):
         v = round((H[z][x] - BASE_Y) * 255 / RANGE)
         # y = BASE_Y + v * RANGE // 255 must land on the intended course
         want = int(round(H[z][x]))
@@ -1067,7 +1121,7 @@ def png(path, w, h, raw):
 
 
 os.makedirs(os.path.join(ROOT, "terrain"), exist_ok=True)
-png(os.path.join(ROOT, "terrain", "island.png"), RX, RZ, pix)
+png(os.path.join(ROOT, "terrain", "island.png"), GX, GZ, pix)
 
 # ----------------------------------------------------------------- documents
 
@@ -1182,14 +1236,14 @@ write("site-plan.json", "site-plan", {
         {"cmp": "eq", "fact": "fact/region-span", "measure": {"axis": "x", "of": "region-extent"}},
         {"cmp": "eq", "fact": "fact/region-depth", "measure": {"axis": "z", "of": "region-extent"}},
     ],
-    "region": {"extent": [RX, RYN, RZ], "min": [0, RY0, 0]},
+    "region": {"extent": [GX, RYN, GZ], "min": [GX0, RY0, GZ0]},
     "seams": seams,
     "views": [],
     "volumes": [],
 })
 write("geometry-brief.json", "geometry-brief", {"facts": [
-    {"id": "fact/region-span", "note": "The region east to west.", "unit": "blocks", "value": float(RX)},
-    {"id": "fact/region-depth", "note": "The region north to south.", "unit": "blocks", "value": float(RZ)},
+    {"id": "fact/region-span", "note": "The region east to west.", "unit": "blocks", "value": float(GX)},
+    {"id": "fact/region-depth", "note": "The region north to south.", "unit": "blocks", "value": float(GZ)},
 ]})
 write("quest-plan.json", "quest-plan", {
     "finale": "quest/down-to-the-harbour",
