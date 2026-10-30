@@ -656,6 +656,15 @@ def holds_for(theme, dx, dz, node=None):
     return out
 
 
+# The trades whose fronts stand on the street, by the name their hanging sign
+# carries; the street hangs the sign on its own bracket before the doorway
+# (street.py marks the cell `sign-<stem>`), and the campaign writes the name.
+TRADES = {"node/bakery": "Bakery", "node/apothecary": "Apothecary", "node/merchant": "Merchant",
+          "node/weaver": "Weaver", "node/tavern": "Tavern", "node/smithy": "Smithy",
+          "node/chandler": "Chandler", "node/fishmonger": "Fishmonger", "node/netloft": "Net Loft"}
+SIGNED = []                 # (street, lot), in the order the lots are planned
+
+
 def plot(name, theme, street, face, at, meets, dx, dz):
     theme = theme.split("-")[0]
     node = f"node/{name}"
@@ -667,6 +676,8 @@ def plot(name, theme, street, face, at, meets, dx, dz):
         # the lot fronts the street: its building's front stands on its box
         # edge and the lot meets the street only at its doorway
         zs, w, h, form = FRONTS[node]
+        if node in TRADES:
+            SIGNED.append((street, node))
         seam(street, node, face, at + zs - 1, meets + zs - 1, "contact", form, span=(w, h))
     else:
         seam(street, node, face, at, meets, "contact",
@@ -1221,6 +1232,18 @@ def write(name, stage, content):
         fh.write("\n")
 
 
+# each sign is a station of the street it hangs over, and a `signs` entry
+# writes its trade's name, front and back
+SIGNS = []
+for street, lot in sorted(SIGNED, key=lambda sl: list(TRADES).index(sl[1])):
+    stem = lot.removeprefix("node/")
+    sn = next(n for n in nodes if n["id"] == street)
+    sn.setdefault("stations", []).append({
+        "anchor": f"anchor/sign-{stem}", "kind": "point",
+        "note": f"the {TRADES[lot].lower()}'s hanging sign, on the street's bracket before its doorway"})
+    SIGNS.append({"anchor": f"anchor/sign-{stem}", "back": ["", TRADES[lot]], "front": ["", TRADES[lot]],
+                  "id": f"sign/{stem}"})
+
 main_path = ["node/square"]
 for k in range(1, NFL + 1):
     main_path.append(f"node/flight-{k}")
@@ -1293,7 +1316,7 @@ write("quests.json", "quests", {
         "type": "reach-anchor"}],
     "on_complete": [{"happening": {"text": "The town is walked, square to harbour.", "verb": "departs"}, "type": "campaign-complete"}],
     "trigger": {"type": "campaign-start"},
-}]})
+}], "signs": SIGNS})
 
 print(f"boxes {len(boxes)}  seams {len(seams)}  plots {sum(1 for n in nodes if 'holds' in n)}")
 for n in ("node/square", "node/castle", "node/quay", "node/cathedral", "node/lighthouse"):
