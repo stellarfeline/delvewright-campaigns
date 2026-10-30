@@ -78,6 +78,53 @@ def seam_cols(place):
     return out
 
 
+# the trades whose fronts stand on the street, and the wood of the sign each hangs
+SIGNS = {"node/bakery": "spruce", "node/apothecary": "birch", "node/merchant": "dark_oak",
+         "node/weaver": "cherry", "node/tavern": "oak", "node/smithy": "spruce",
+         "node/chandler": "birch", "node/fishmonger": "mangrove", "node/netloft": "oak"}
+# which way a sign hung before a front on each face looks: back at the street
+SIGN_ROT = {"west": 12, "east": 4, "north": 0, "south": 8}
+
+
+def bracket(m, place, s, top):
+    """A shop sign on the street's own bracket, before a front's doorway: an oak
+    post in the verge beside the doorway, a stripped log beam in the top course
+    from the post over the doorway's first column, and the trade's hanging sign
+    under the beam, a course above any head. Post, beam and sign are the
+    street's blocks, so the sign hangs on nothing another piece places.
+    Returns the columns it takes, or None where the doorway has no room beside it."""
+    seam = s["seam"]
+    face, wood = seam["face"], SIGNS.get(seam["other"])
+    if wood is None:
+        return None
+    (lx, _, lz), (hx, _, hz) = seam["cells"]
+    (x0, _, z0), (x1, _, z1) = place.space
+    if face in ("west", "east"):
+        u = lx + 1 if face == "west" else lx - 1
+        lo, hi, amin, amax = lz, hz, z0 + 2, z1 - 2
+        cell = lambda a: (u, a)                      # noqa: E731
+        axis = "z"
+    else:
+        u = lz + 1 if face == "north" else lz - 1
+        lo, hi, amin, amax = lx, hx, x0 + 2, x1 - 2
+        cell = lambda a: (a, u)                      # noqa: E731
+        axis = "x"
+    if lo - 1 >= amin:
+        post, hang = lo - 1, lo
+    elif hi + 1 <= amax:
+        post, hang = hi + 1, hi
+    else:
+        return None
+    px, pz = cell(post)
+    sx, sz = cell(hang)
+    for y in range(1, top):
+        m.set(px, y, pz, fence("minecraft:oak"))
+    for x, z in ((px, pz), (sx, sz)):
+        m.set(x, top, z, f"minecraft:stripped_spruce_log[axis={axis}]")
+    m.set(sx, top - 1, sz, f"minecraft:{wood}_hanging_sign[attached=false,rotation={SIGN_ROT[face]},waterlogged=false]")
+    return {(px, pz), (sx, sz)}
+
+
 def lamp(m, x, z, y=1):
     for dy in (0, 1, 2):
         m.set(x, y + dy, z, fence("minecraft:oak"))
@@ -146,6 +193,26 @@ def stretch(m, place, stem):
                 role = "cobble"
             m.set(x, 0, z, role)
     keep = seam_cols(place)
+    # a front's doorway: its sign on the street's bracket, and the verge in
+    # front of the doorway kept clear for the way in
+    for s in place.seams:
+        if s["seam"]["other"] not in SIGNS:
+            continue
+        took = bracket(m, place, s, m.ey - 1)
+        if took:
+            keep |= took
+        (lx, _, lz), (hx, _, hz) = s["seam"]["cells"]
+        face = s["seam"]["face"]
+        for a in range(min(lz, hz) if face in ("west", "east") else min(lx, hx),
+                       (max(lz, hz) if face in ("west", "east") else max(lx, hx)) + 1):
+            if face == "west":
+                keep.add((lx + 1, a))
+            elif face == "east":
+                keep.add((lx - 1, a))
+            elif face == "north":
+                keep.add((a, lz + 1))
+            else:
+                keep.add((a, lz - 1))
     # the verge's own columns, off the lots' fronts and off the way
     lanes = [x for x in range(x0, x1 + 1) if (x < c0 or x > c1)]
     free = {(x, z) for x in lanes for z in range(z0 + 2, z1 - 1) if (x, z) not in keep}
