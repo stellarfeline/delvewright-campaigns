@@ -355,7 +355,10 @@ floor = SQF
 for k in range(1, NFL + 1):
     fl = f"node/flight-{k}"
     floor -= 2
-    box(fl, (STREET_W, FLIGHT_L), floor, OPEN(10), "a flight of the main street",
+    # a flight below a stretch of four courses' air rises no higher than that
+    # stretch's air, so no ring of its own stands over the stretch's edge
+    fair = STREET_AIR + 2 if (k - 1) in AIR_STRETCHES else 10
+    box(fl, (STREET_W, FLIGHT_L), floor, OPEN(fair), "a flight of the main street",
         f"Flight {k} of the main street: seven wide, two shallow steps down, "
         "between low kerbs.", way={"axis": "z", "clear": 5})
     at = 11 if prev == "node/square" else (prev_w - STREET_W) // 2
