@@ -85,7 +85,7 @@
     "handed/seam/flight-10-to-quay/x0": 28,
     "handed/seam/flight-10-to-quay/x1": 34,
     "handed/seam/flight-10-to-quay/y0": 1,
-    "handed/seam/flight-10-to-quay/y1": 8,
+    "handed/seam/flight-10-to-quay/y1": 6,
     "handed/seam/flight-10-to-quay/z0": 1,
     "handed/seam/flight-10-to-quay/z1": 1,
     "handed/seam/quay-to-harbour/x0": 61,
@@ -946,6 +946,10 @@
             {
               "op": "call",
               "symbol": "row_27"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
             }
           ],
           "op": "split",
@@ -954,6 +958,29 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/flight-10-to-quay/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/y0"
+                }
               },
               "size": "absolute"
             },
@@ -985,6 +1012,10 @@
             {
               "op": "call",
               "symbol": "row_27"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
             }
           ],
           "op": "split",
@@ -1015,6 +1046,37 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
