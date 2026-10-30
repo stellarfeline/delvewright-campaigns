@@ -882,11 +882,25 @@ def mainland(x, z):
     return min(198.0, 58 + t * (30 + 110 * r) + (fbm(x, z, 30, 3, 93) - 0.5) * 12)
 
 
-def offshore(x, z):
-    """How far a column lies out to sea past the island's frame or the
-    mainland's coast; 0 inside them."""
+# East and west the land runs on past the walk region and falls to the sea
+# over LAND_FALL blocks, so from the walk region's edge the ground drops away
+# in front of the player and the sea shows beyond it, rather than a cliff top
+# against the sky; the coast frame stands COAST_OUT past the walk region.
+COAST_OUT, LAND_FALL = 70, 55
+
+
+def coast(z):
+    """The coast frame at row z: the island's frame grown past the walk region
+    east and west, opening out north of the neck as the island's does."""
     lo, hi = shores(z)
-    return max(lo - x, x - hi, z - (RZ - 1), 0.0)
+    return min(lo, WALK[0] - COAST_OUT), max(hi, WALK[1] + COAST_OUT)
+
+
+def offshore(x, z):
+    """How far a column lies out to sea past the island's coast or the
+    mainland's; 0 inside them."""
+    lo, hi = coast(z)
+    return max(lo + 25 - x, x - (hi - 25), z - (RZ - 1), 0.0)
 
 
 def land(x, z):
@@ -947,7 +961,7 @@ def base_height(x, z):
     the shore so the waterline follows the coast's coves and points, falling
     to the sea floor; cliffs only on the far coasts."""
     wob = (fbm(x, z, 40, 3, 1) - 0.5) * 30
-    lo, hi = shores(z)
+    lo, hi = coast(z)
     inset = min(x - lo, hi - x) + wob
     edge = smooth((inset - 10) / 14)
     h_m, h_s = mountain(x, z), max(slope(x, z), 64.5)
@@ -959,6 +973,12 @@ def base_height(x, z):
         fall = smooth(1 - (Z_NECK - z) / 110)
         h = min(h, 66 + (h - 66) * fall)
         h = max(h, mainland(x, z))
+    # past the walk region east and west the land falls to the sea; north of
+    # the neck the mainland goes on
+    out = max(WALK[0] - x, x - WALK[1], 0)
+    if out > 0:
+        drop = smooth(out / LAND_FALL) * smooth((z - (Z_NECK - 80)) / 40)
+        h -= (h - 60) * drop
     shore = 62.5 + 0.35 * (coast_z(x) + wob * 0.3 - z)   # a beach rising from the waterline
     # the seabed: as it was inside the frame, falling away out to sea
     sea_floor = max(41.0, 50 + (vnoise(x, z, 31, 4) - 0.5) * 4 - 9 * smooth(offshore(x, z) / 80))
