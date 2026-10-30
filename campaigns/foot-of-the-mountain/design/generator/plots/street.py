@@ -229,7 +229,9 @@ def flight(m, place, stem):
         top, half_hi, mid, half_lo = rows[0], rows[1], rows[2], rows[3]
         m.set(x, 1, top, "setts"); m.set(x, 2, top, "setts")
         m.set(x, 1, half_hi, "setts"); m.set(x, 2, half_hi, stairs(STEP, climb))
-        m.set(x, 1, mid, "setts")
+        # below the opening's landing every step is a stair block, never a
+        # full block standing in the way at its walk plane (the clear width)
+        m.set(x, 1, mid, stairs(STEP, climb))
         m.set(x, 1, half_lo, stairs(STEP, climb))
         for r in rows[4:]:
             m.set(x, 0, r, "worn" if x in (x0, x1) else "cobble")
