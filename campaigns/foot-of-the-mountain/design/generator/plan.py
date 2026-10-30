@@ -900,11 +900,25 @@ def mainland(x, z):
 COAST_OUT, LAND_FALL = 70, 55
 
 
+def land_fall(z, side):
+    """How far past the walk region the land runs before it is under the sea,
+    along the east (side 1) or west (side 0) coast at row z: long where a
+    headland runs out, short in a cove, never under FALL_MIN, so the shore
+    stays clear of every box and its ring."""
+    v = fbm(side * 997, z, 70, 3, 101 + side)          # the coast's long swing
+    k = ridged(side * 991, z, 45, 2, 105 + side)       # a headland's point
+    return FALL_MIN + (FALL_MAX - FALL_MIN) * smooth(v * 1.3 - 0.15) + 28 * k * k
+
+
+FALL_MIN, FALL_MAX = 28, 96
+
+
 def coast(z):
     """The coast frame at row z: the island's frame grown past the walk region
-    east and west, opening out north of the neck as the island's does."""
+    east and west, as far as the land runs there, opening out north of the
+    neck as the island's does."""
     lo, hi = shores(z)
-    return min(lo, WALK[0] - COAST_OUT), max(hi, WALK[1] + COAST_OUT)
+    return (min(lo, WALK[0] - land_fall(z, 0) - 15), max(hi, WALK[1] + land_fall(z, 1) + 15))
 
 
 def offshore(x, z):
@@ -988,8 +1002,9 @@ def base_height(x, z):
     # the neck the mainland goes on
     out = max(WALK[0] - x, x - WALK[1], 0)
     if out > 0:
-        drop = smooth(out / LAND_FALL) * smooth((z - (Z_NECK - 80)) / 40)
-        h -= (h - 60) * drop
+        lf = land_fall(z, 1 if x > WALK[1] else 0)
+        drop = smooth(out / lf) * smooth((z - (Z_NECK - 80)) / 40)
+        h -= (h - 58) * drop
     shore = 62.5 + 0.35 * (coast_z(x) + wob * 0.3 - z)   # a beach rising from the waterline
     # the seabed: as it was inside the frame, falling away out to sea
     sea_floor = max(41.0, 50 + (vnoise(x, z, 31, 4) - 0.5) * 4 - 9 * smooth(offshore(x, z) / 80))
@@ -1010,7 +1025,7 @@ T = [[0.0] * GX for _ in range(GZ)]
 for n, x0, z0, dx, dz, f in rects:
     castle = n == "node/castle"
     road = n.startswith("node/road") or n == "node/gate-road"
-    skirt = 28 if castle else (12 if road else (3 if n in ("node/quay", "node/lighthouse") else 12))
+    skirt = 1 if castle else (12 if road else (3 if n in ("node/quay", "node/lighthouse") else 12))
     for z in range(max(GZ0, z0 - 1 - skirt), min(GZ0 + GZ, z0 + dz + 1 + skirt)):
         for x in range(max(GX0, x0 - 1 - skirt), min(GX0 + GX, x0 + dx + 1 + skirt)):
             ddx = max(x0 - x, 0, x - (x0 + dx - 1))
@@ -1041,6 +1056,39 @@ for gz in range(GZ):
         w = W[gz][gx]
         if w > 0:
             H[gz][gx] = H[gz][gx] * (1 - w) + T[gz][gx] * w
+
+# Doune stands on the summit, not on a table: past its ring a lawn of a few
+# cells, then the ground goes to the mountain's own in steps of rock, three
+# courses each, the bank's edge wandering so no side of it is straight. The
+# bank holds the ground to within its slope of the ring's course, up or down,
+# and touches only ground no other place shapes; past where the mountain
+# already lies within the bank it leaves the ground alone.
+BANK_LAWN, BANK_SLOPE, BANK_LEDGE, BANK_REACH = 3, 1.3, 3, 90
+BANK_TOUCHED = []          # skirt cells of another place the bank moved: (x, z, was, now)
+_cx, _cz, _cdx, _cdz, _cf = pos["node/castle"]
+# the terrace between the road's last stretch and the north wall stays level
+_trx, _trz, _trdx, _trdz, _ = pos["node/road-top"]
+_tx0, _tx1, _tz0, _tz1 = min(_trx, _cx) - 2, _cx + _cdx + 15, _trz + _trdz + 1, _cz - 2
+for z in range(max(GZ0, _cz - 1 - BANK_REACH), min(GZ0 + GZ, _cz + _cdz + 1 + BANK_REACH)):
+    for x in range(max(GX0, _cx - 1 - BANK_REACH), min(GX0 + GX, _cx + _cdx + 1 + BANK_REACH)):
+        gz, gx = z - GZ0, x - GX0
+        if W[gz][gx] >= 1.0:
+            continue
+        if _tx0 <= x <= _tx1 and _tz0 <= z <= _tz1:
+            H[gz][gx] = _cf - 1             # the terrace under the north wall: level
+            continue
+        ddx = max(0, (_cx - 1) - x, x - (_cx + _cdx))
+        ddz = max(0, (_cz - 1) - z, z - (_cz + _cdz))
+        d = math.hypot(ddx, ddz) + (fbm(x, z, 26, 3, 111) - 0.5) * 26
+        run = max(0.0, d - BANK_LAWN)
+        step = BANK_LEDGE * math.floor(run * BANK_SLOPE / BANK_LEDGE + vnoise(x, z, 7, 113) * 0.6)
+        lo, hi = (_cf - 1) - step, (_cf - 1) + step
+        was = H[gz][gx]
+        # in another place's skirt the bank only lowers: it never lifts the
+        # ground a neighbour eases toward its own floor
+        H[gz][gx] = min(was if W[gz][gx] > 0 else max(was, lo), hi)
+        if W[gz][gx] > 0 and H[gz][gx] != was:
+            BANK_TOUCHED.append((x, z, round(was), round(H[gz][gx])))
 
 # Behind the cathedral (north) and past its apse (east) the mountain's lower
 # terrace stands some thirty above the cathedral's floor. The ground falls from
