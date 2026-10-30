@@ -837,7 +837,8 @@ PALETTE = {
     "bow_e": "minecraft:oak_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
     "bow_w": "minecraft:oak_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
     "mast": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "yard": "minecraft:stripped_spruce_log[axis=x]",
+    "yard_x": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
+    "yard_z": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
     "sail": "minecraft:white_carpet",
     "cradle": "minecraft:spruce_log[axis=z]",
     "stem": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
@@ -894,7 +895,7 @@ def boat(m, axis, s0, zc, widths, masts, toward=1, shoulder=True):
     """A moored boat: the kit's hull with its waterline on the sea's surface course, and its masts."""
     townkit.hull(m, axis, s0, zc, widths, SEA, toward=toward, cols=BOAT_COLS, shoulder=shoulder)
     for (i, h) in masts:
-        townkit.mast(m, axis, s0 + toward * i, zc, 1, h, {"mast": "mast", "yard": "yard", "sail": "sail"})
+        townkit.mast(m, axis, s0 + toward * i, zc, 1, h, {"mast": "mast", "yard_x": "yard_x", "yard_z": "yard_z", "sail": "sail"})
 
 def build_model():
     m = Model()
@@ -1312,9 +1313,9 @@ def body(p, rules):
 
 FULL = {"floor", "wall", "lid", "stone", "pave", "kerb", "turf", "post", "beam_x", "beam_z", "infill", "boards",
         "floorb", "glass", "roof", "chimney", "chart", "shelf", "hay", "crate", "rope", "anchor", "hull",
-        "keel", "yard", "cradle", "sand", "barrel", "deck",
+        "keel", "cradle", "sand", "barrel", "deck",
         "gunwale_hi", "stem_post", "slip_wt"}
-TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem"}
+TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem", "yard_x", "yard_z"}
 LOW = {"roof_n", "roof_s", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
        "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep",
        "flare_n", "flare_s", "flare_e", "flare_w", "slip_lo", "slip_wl", "sail"}

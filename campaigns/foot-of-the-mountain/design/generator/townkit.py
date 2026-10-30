@@ -160,14 +160,15 @@ def mast(m, axis, s, c0, foot_y, top_y, roles):
     """A mast at station s on the cross line c0 from course foot_y to top_y, a yard two
     each side of it a course under the top, and the sail furled along the yard: a thin
     roll lying on the yard's top course beside the mast, never a block hung under it.
-    `roles` maps "mast", "yard" and "sail" (the sail a thin block that stands on the yard:
-    a carpet, or a bottom slab)."""
+    `roles` maps "mast", "yard_x" and "yard_z" (a thin spar running along x or along z:
+    a fence joined along it), and "sail" (a thin block that stands on the yard: a carpet).
+    The yard crosses the hull, so it runs along z on a boat laid along x."""
     x, z = (s, c0) if axis == "x" else (c0, s)
     for y in range(foot_y, top_y + 1):
         m.set(x, y, z, roles["mast"])
     for k in (-2, -1, 1, 2):
         xx, zz = (x + k, z) if axis == "z" else (x, z + k)
-        m.set(xx, top_y - 1, zz, roles["yard"])
+        m.set(xx, top_y - 1, zz, roles["yard_z" if axis == "x" else "yard_x"])
         m.set(xx, top_y, zz, roles["sail"])
 
 
