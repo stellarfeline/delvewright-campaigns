@@ -1289,6 +1289,18 @@ def plot_program(a: dict, cls, base_palette: dict, unwalked_reason: str) -> dict
                 n = (c[0] + dx, c[1] + dy, c[2] + dz)
                 if n in p.reached and space_of(n) != a_:
                     pairs.add(tuple(sorted((a_, space_of(n)))))
+    # a seam's opening is crossed from the space whose column stands just
+    # inside it (a doorway onto a shop's floor is the shop's, not the room's)
+    inward = {"east": (-1, 0), "west": (1, 0), "north": (0, 1), "south": (0, -1)}
+    for sm in p.seams:
+        (sx0, _, sz0), (sx1, _, sz1) = sm["seam"]["cells"]
+        ix, iz = inward.get(sm["seam"]["face"], (0, 0))
+        cx, cz = (sx0 + sx1) // 2 + ix, (sz0 + sz1) // 2 + iz
+        sp = space_of((cx, p.datum.value, cz))
+        if sp != "room":
+            for e in out_contract["edges"]:
+                if e.get("via") == f"{sm['stem']}-way" and e["a"] == "room":
+                    e["a"] = sp
     walked = {e["region"] for e in p.parts if e["walked"]} | {"room"}
     out_contract["edges"] = [e for e in out_contract["edges"]
                              if not (e["class"] == "walk" and e["a"] in walked and e["b"] in walked and "via" not in e)]

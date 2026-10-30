@@ -86,10 +86,6 @@ def build(a):
     m.set(HX0, 3, 8, DRESS)
     for z in (5, 6):
         window(m, HX0, z, GLASS)
-    # over the street, on the upper storey's sill: a window box in flower
-    for z in (5, 6):
-        m.set(HX0 - 1, 5, z, slab("minecraft:dark_oak", "top"))
-        m.set(HX0 - 1, 6, z, leaves("minecraft:flowering_azalea"))
     for (x, z) in ((6, HZ0), (6, HZ1), (9, HZ1)):
         window(m, x, z, GLASS)
     for (x, z) in ((5, HZ0), (7, HZ0), (5, HZ1), (7, HZ1), (10, HZ1), (HX0, 4), (HX0, 9), (HX1, 6), (HX1, 7)):
