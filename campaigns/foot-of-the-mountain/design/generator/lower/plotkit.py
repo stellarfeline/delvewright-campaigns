@@ -1021,6 +1021,14 @@ class Plot(Place):
             if kind[0] == "claim" and kind[1].startswith("side-") and y >= self.datum.value + 2 \
                     and kind[1].removeprefix("side-").split("-")[0] not in crossed:
                 return ("claim", "room", None)  # the side's opening is the body's height; above it, open air
+            if kind[0] == "claim" and kind[1].startswith("side-"):
+                # an open side's ring cell is a way out only where the cell inside it is
+                # walked air or a connection's opening; beside a front wall it is the lot's own air
+                lo, hi = self.space
+                inner = (min(max(x, lo[0]), hi[0]), y, min(max(z, lo[2]), hi[2]))
+                ik = self.cell(*inner)
+                if not (self.walkable(ik) or (ik[0] == "claim" and ik[1].endswith("-way"))):
+                    return ("claim", "room", None)
             return kind
         if kind[0] == "claim" and kind[1].endswith("-way"):
             return kind                        # the connection's opening, kept clear

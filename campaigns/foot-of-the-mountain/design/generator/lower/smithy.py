@@ -239,7 +239,7 @@ def build(place) -> Model:
     # the working objects: the anvil before the hearth, the tools to hand
     m.set(17, 1, 4, "anvil")
     m.set(fx0 + 1, 1, 6, "coal")
-    m.set(19, 1, 3, "grindstone")
+    m.set(19, 1, 3 if not front else 2, "grindstone")
     m.set(19, 1, 7, "quench")
     m.set(18, 1, 7, "quench")
     # tongs and hammers: chains from the beam, a lantern hung over the anvil
