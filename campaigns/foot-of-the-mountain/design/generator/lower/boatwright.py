@@ -25,6 +25,8 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 from starter import Model, run, stairs, trapdoor  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
+import townkit  # noqa: E402
 
 
 def hsh(*a):
@@ -36,21 +38,6 @@ def hsh(*a):
 
 
 
-
-
-def close_edge_gaps(m, X0, X1, Z0, Z1, role):
-    """On a column at the plot's edge, the ground the whole stitches to is its top:
-    close any air between a wall and the eave above it, so no edge stands over air."""
-    for x in range(X0, X1 + 1):
-        for z in range(Z0, Z1 + 1):
-            if x not in (X0, X1) and z not in (Z0, Z1):
-                continue
-            ys = sorted(y for (cx, y, cz) in m.v if cx == x and cz == z and y > 0 and m.v[(cx, y, cz)] != "~air")
-            if len(ys) < 2:
-                continue
-            for y in range(ys[0], ys[-1]):
-                if (x, y, z) not in m.v or m.v[(x, y, z)] == "~air":
-                    m.set(x, y, z, role(x, z) if callable(role) else role)
 
 
 PALETTE = {
@@ -77,6 +64,9 @@ PALETTE = {
     "strake": "minecraft:oak_planks",
     "lap_n": trapdoor("oak", "south", "bottom", True),
     "lap_s": trapdoor("oak", "north", "bottom", True),
+    "bow_plate_n": trapdoor("oak", "north", "bottom", True),   # on the inner (south) face
+    "bow_plate_s": trapdoor("oak", "south", "bottom", True),   # on the inner (north) face
+    "stem_post": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
@@ -158,43 +148,7 @@ def build(place):
     # rising to a point at the bow (east), a raked transom at the stern (west); the sheer
     # climbs toward both ends in half steps (slabs on the gunwale), the turn of the bilge is
     # upturned stairs, and the stern half still stands in bare frames on its ribband
-    s, n = KZ + 1, KZ - 1          # the lane side and the shed side of the keel
-    for x in (5, 8, 11):
-        m.set(x, 1, KZ, "stock")
-    m.box(4, 12, 2, 2, KZ, KZ, "keel")
-    # the stem: a post rising past the gunwale, capped with a fence point
-    m.box(13, 13, 2, 5, KZ, KZ, "stem")
-    m.set(13, 6, KZ, "stem_tip")
-    # the bow: the planking closes on the stem, the sheer at its highest
-    m.box(12, 12, 3, 4, KZ, KZ, "strake")
-    for z in (n, s):
-        m.set(12, 3, z, "bilge_n" if z == n else "bilge_s")
-        m.set(12, 4, z, "strake")
-        m.set(12, 5, z, "gunwale")                 # top 5.5
-        m.set(11, 2, z, "bilge_n" if z == n else "bilge_s")
-        m.set(11, 3, z, "strake")
-        m.set(11, 4, z, "gunwale_hi")              # top 5.0
-    # amidships, planked: bilge, strake, gunwale at its lowest
-    for x in (8, 9, 10):
-        for z in (n, s):
-            m.set(x, 2, z, "bilge_n" if z == n else "bilge_s")
-            m.set(x, 3, z, "lap_n" if z == n else "lap_s")   # lapped planks on the outer face
-            m.set(x, 4, z, "gunwale")              # top 4.5
-    # the stern half in frames: a frame at every other station, the ribband over them,
-    # the garboard plank laid along the keel
-    for x in (5, 6, 7):
-        for z in (n, s):
-            m.set(x, 2, z, "bilge_n" if z == n else "bilge_s")
-            if x % 2 == 1:
-                m.set(x, 3, z, "rib")
-            m.set(x, 4, z, "rib")
-    # the raked transom: its foot inboard on the keel, its head out over the stern, the
-    # sheer lifting to it
-    m.set(4, 3, KZ, "transom")
-    m.set(4, 3, n, "bilge_n")
-    m.set(4, 3, s, "bilge_s")
-    m.box(3, 3, 4, 4, n, s, "transom_rake")
-    m.set(3, 5, KZ, "gunwale")
+    townkit.hull_on_stocks(m, "x", HULL_X[0] + 1, HULL_X[1], KZ, 2, framed=3, stocks=(5, 8, 11))
     m.set(12, 1, 5, "lantern")            # a lantern on the yard's timber, by the bow
 
     # ---------- the yard: timber stacked to season, the winch at the slip head
@@ -209,7 +163,7 @@ def build(place):
     m.set(10, 2, 4, "barrel")
     m.set(1, 1, 9, "pot_a")
 
-    close_edge_gaps(m, X0, X1, Z0, Z1, "boards")
+    townkit.close_edge_gaps(m, X0, X1, Z0, Z1, "boards")
     m.finish()
     m.part(sx0, sx1, sz0, sz1, "shed")
     m.part(10, 13, 1, 5, "yard")
