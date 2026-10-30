@@ -35,7 +35,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from starter import Model, fence, lantern, leaves, run, slab, stairs  # noqa: E402
+from starter import Model, fence, lantern, leaves, run, slab, stairs, wall  # noqa: E402
 from starter import pillar as log  # noqa: E402
 
 COBBLE = [{"weight": 7, "block": "minecraft:cobblestone"},
@@ -64,7 +64,7 @@ POST = "minecraft:oak_fence"
 
 def palette(m):
     m.palette.update({"floor": WORN, "cobble": COBBLE, "worn": WORN, "setts": SETTS, "square": SQUARE,
-                      "kennel": KENNEL})
+                      "kennel": KENNEL, "road": ROAD, "trodden": TRODDEN})
 
 
 def seam_cols(place):
@@ -413,6 +413,103 @@ def lane(m, place, stem):
         n += 1
 
 
+ROAD = [{"weight": 6, "block": "minecraft:cobblestone"},
+        {"weight": 3, "block": "minecraft:mossy_cobblestone"},
+        {"weight": 2, "block": "minecraft:andesite"},
+        {"weight": 2, "block": "minecraft:stone"},
+        {"weight": 1, "block": "minecraft:coarse_dirt"}]
+TRODDEN = [{"weight": 5, "block": "minecraft:coarse_dirt"},
+           {"weight": 3, "block": "minecraft:stone"},
+           {"weight": 2, "block": "minecraft:rooted_dirt"},
+           {"weight": 2, "block": "minecraft:grass_block[snowy=false]"},
+           {"weight": 1, "block": "minecraft:tuff"}]
+PARAPET = ("minecraft:cobblestone", "minecraft:mossy_cobblestone")
+
+
+def frame(place):
+    """A way's frame: (along, across, length, width, cell) — `cell(a, b)` gives
+    (x, z) for row `a` along the way and column `b` across it."""
+    (x0, _, z0), (x1, _, z1) = place.space
+    if (x1 - x0) >= (z1 - z0):
+        return list(range(x0, x1 + 1)), list(range(z0, z1 + 1)), lambda a, b: (a, b)
+    return list(range(z0, z1 + 1)), list(range(x0, x1 + 1)), lambda a, b: (b, a)
+
+
+def road(m, place, stem):
+    """The castle road up the mountain's flank, five wide: cobbles worn and
+    mossed, its clear way four, laid from its low edge, so the high edge is a
+    verge carrying a low parapet broken where the hillside comes down, a lamp
+    at each turn and, on the long climbs, a wayside shrine. A ramp climbs its
+    four courses one step every two cells — a stair, then a landing — the
+    whole width, the verge stepping with it."""
+    rows, cols, cell = frame(place)
+    verge = cols[-1]
+    keep = seam_cols(place)
+    up = [s for s in place.seams if s["seam"].get("rise", 0) > 0]
+    k = int(stem.split("-")[1]) if stem.split("-")[1].isdigit() else 0
+    if up:
+        face = up[0]["seam"]["face"]
+        top_end = {"north": rows[0], "west": rows[0], "south": rows[-1], "east": rows[-1]}[face]
+        order = rows if top_end == rows[-1] else rows[::-1]      # from the foot up
+        climb = face
+        rise = up[0]["seam"]["rise"]
+        for i, a in enumerate(order):
+            # rows 0..1 at grade; then stair, landing, stair, landing ... to the top
+            if i < 2:
+                h, step = 0, False
+            else:
+                j = i - 2
+                h, step = min(j // 2 + 1, rise), (j % 2 == 0 and j // 2 + 1 <= rise)
+            for b in cols:
+                x, z = cell(a, b)
+                m.set(x, 0, z, "road")
+                for y in range(1, h):
+                    m.set(x, y, z, "road")
+                if h:
+                    m.set(x, h, z, stairs(STEP, climb) if step else "setts")
+        return
+    for a in rows:
+        for b in cols:
+            x, z = cell(a, b)
+            m.set(x, 0, z, "worn" if b == verge else "road")
+    if stem == "gate-road":
+        return
+    n = len(rows)
+    # the verge: parapet in runs, broken every few cells; a lamp at each end of a
+    # leg that turns; a shrine at the middle of a long climb
+    for i, a in enumerate(rows):
+        x, z = cell(a, verge)
+        if (x, z) in keep or i in (0, n - 1):
+            continue
+        if n >= 10 and i == n // 2 and k % 2 == 0:
+            m.set(x, 1, z, "minecraft:chiseled_stone_bricks")
+            m.set(x, 2, z, lantern(False))
+        elif (i in (1, n - 2) and n >= 6) or (n > 20 and i % 16 == 8):
+            lamp(m, x, z)
+        elif hsh(k, i, 13) < 0.72:
+            m.set(x, 1, z, wall(PARAPET[int(hsh(k, i, 17) * 2)]))
+
+
+def cliff(m, place, stem):
+    """The cliff path to the lighthouse: trodden earth and rock, its clear way
+    four from the low edge, a low rail of fence along the high edge, broken at
+    a bench and at every opening."""
+    rows, cols, cell = frame(place)
+    verge = cols[-1]
+    keep = seam_cols(place)
+    for i, a in enumerate(rows):
+        for b in cols:
+            x, z = cell(a, b)
+            m.set(x, 0, z, "trodden")
+        x, z = cell(a, verge)
+        if (x, z) in keep or i in (0, len(rows) - 1):
+            continue
+        if i % 9 == 4:
+            lamp(m, x, z)
+        else:
+            m.set(x, 1, z, fence("minecraft:spruce"))
+
+
 def build(place) -> Model:
     m = Model(place)
     palette(m)
@@ -424,6 +521,10 @@ def build(place) -> Model:
         flight(m, place, stem)
     elif kind == "street":
         stretch(m, place, stem)
+    elif kind in ("road", "gate"):
+        road(m, place, stem)
+    elif kind == "cliff":
+        cliff(m, place, stem)
     else:
         lane(m, place, stem)
     # where the place's air is low (four courses), a lamp's lantern stands in
