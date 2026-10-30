@@ -53,25 +53,27 @@ def build(place):
             m.set(x, 0, z, "kerb" if z == Z1 else "pave")
     # bollards along the water's edge
     for x in range(X0 + 3, X1 - 1, BOLLARD_EVERY):
-        m.set(x, 1, Z1 - 1, "bollard")
+        m.set(x, 1, Z1, "bollard")
     # lamps on posts along the back of the quay
     for x in LAMP_X:
-        m.set(x, 1, Z0 + 1, "lamp_post")
-        m.set(x, 2, Z0 + 1, "lantern")
+        m.set(x, 1, Z0, "lamp_post")
+        m.set(x, 2, Z0, "lantern")
     # the west end: crates stacked, nets drying over a rack
-    for (x, z, h) in ((X0 + 2, Z0 + 2, 2), (X0 + 3, Z0 + 2, 1), (X0 + 2, Z0 + 3, 1)):
+    # (everything stands on the two edge rows, the back and the kerb: the quay is a way
+    # eight clear across between them, DW1057)
+    for (x, z, h) in ((X0 + 2, Z0, 2), (X0 + 3, Z0, 1), (X0 + 2, Z0 + 1, 1)):
         for y in range(1, h + 1):
             m.set(x, y, z, "crate")
         m.set(x, h + 1, z, "crate_lid")
     for x in range(X0 + 8, X0 + 13):
-        m.set(x, 1, Z0 + 2, "rack")
+        m.set(x, 1, Z0, "rack")
         if (x - X0) % 2 == 0:
-            m.set(x, 2, Z0 + 2, "net")
-    # the middle: an anchor and a coil of rope laid on the stones
-    m.set(X0 + 40, 1, Z0 + 6, "anchor")
-    m.set(X0 + 41, 1, Z0 + 6, "rope")
+            m.set(x, 2, Z0, "net")
+    # by the edge: an anchor and a coil of rope laid on the stones
+    m.set(X0 + 42, 1, Z1, "anchor")
+    m.set(X0 + 43, 1, Z1, "rope")
     # the east end, by the harbour: barrels of salt fish
-    for (x, z) in ((X1 - 8, Z0 + 2), (X1 - 7, Z0 + 2), (X1 - 8, Z0 + 3)):
+    for (x, z) in ((X1 - 8, Z0), (X1 - 7, Z0), (X1 - 8, Z0 + 1)):
         m.set(x, 1, z, "barrel")
     m.finish()
     m.mark("node-quay", (X0 + X1) // 2, (Z0 + Z1) // 2, "south")
