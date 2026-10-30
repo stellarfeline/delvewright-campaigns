@@ -124,6 +124,10 @@ def build(place):
         m.door(hx1, 1, 6, "spruce", "west")
         m.box(hx1, hx1, 2, 3, 4, 4, "pane")
         m.box(hx1, hx1, 1, 1, 4, 4, "barrel_e")
+    else:
+        # the doorway takes three rows of the gable; the display window stands beside it
+        m.box(hx1, hx1, 2, 3, 7, 7, "pane")
+        m.box(hx1, hx1, 1, 1, 7, 7, "barrel_e")
     m.box(hx1, hx1, TOP, TOP, hz0 + 1, hz1 - 1, "lintel")
     # windows along the sides; the store's loading door to the yard, the hoist over it
     for x in (14, 16):
