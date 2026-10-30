@@ -1,0 +1,589 @@
+{
+  "contract": {
+    "edges": [
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "square-to-road-1-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "road-1-to-road-2-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "side-east"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "side-west"
+      }
+    ],
+    "entry": "room",
+    "spaces": {
+      "room": {
+        "envelope": "open"
+      }
+    }
+  },
+  "name": "road-1",
+  "palette": {
+    "floor": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 4
+      },
+      {
+        "block": "minecraft:coarse_dirt",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:tuff",
+        "weight": 2
+      },
+      {
+        "block": "minecraft:grass_block[snowy=false]",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 1
+      },
+      {
+        "block": "minecraft:packed_mud",
+        "weight": 1
+      }
+    ],
+    "road": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 6
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:andesite",
+        "weight": 2
+      },
+      {
+        "block": "minecraft:stone",
+        "weight": 2
+      },
+      {
+        "block": "minecraft:coarse_dirt",
+        "weight": 1
+      }
+    ],
+    "worn": [
+      {
+        "block": "minecraft:cobblestone",
+        "weight": 4
+      },
+      {
+        "block": "minecraft:coarse_dirt",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:tuff",
+        "weight": 2
+      },
+      {
+        "block": "minecraft:grass_block[snowy=false]",
+        "weight": 3
+      },
+      {
+        "block": "minecraft:mossy_cobblestone",
+        "weight": 1
+      },
+      {
+        "block": "minecraft:packed_mud",
+        "weight": 1
+      }
+    ]
+  },
+  "params": {
+    "handed/datum-y": 1,
+    "handed/seam/road-1-to-road-2/x0": 1,
+    "handed/seam/road-1-to-road-2/x1": 5,
+    "handed/seam/road-1-to-road-2/y0": 1,
+    "handed/seam/road-1-to-road-2/y1": 8,
+    "handed/seam/road-1-to-road-2/z0": 0,
+    "handed/seam/road-1-to-road-2/z1": 0,
+    "handed/seam/square-to-road-1/x0": 1,
+    "handed/seam/square-to-road-1/x1": 5,
+    "handed/seam/square-to-road-1/y0": 1,
+    "handed/seam/square-to-road-1/y1": 8,
+    "handed/seam/square-to-road-1/z0": 4,
+    "handed/seam/square-to-road-1/z1": 4
+  },
+  "rules": {
+    "column_2": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_1"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/square-to-road-1/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_5": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/square-to-road-1/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_7": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_6"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/square-to-road-1/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "place": [
+      {
+        "body": {
+          "body": {
+            "axis": "x",
+            "children": [
+              {
+                "op": "call",
+                "symbol": "column_2"
+              },
+              {
+                "op": "call",
+                "symbol": "column_5"
+              },
+              {
+                "op": "call",
+                "symbol": "column_7"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "param",
+                  "name": "handed/seam/square-to-road-1/x0"
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/square-to-road-1/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/square-to-road-1/x0"
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "mark": {
+            "anchor": "node-road-1",
+            "at": "offset",
+            "facing": "south",
+            "x": {
+              "expr": "int",
+              "value": 3
+            },
+            "y": {
+              "expr": "param",
+              "name": "handed/datum-y"
+            },
+            "z": {
+              "expr": "int",
+              "value": 2
+            }
+          },
+          "op": "mark"
+        },
+        "weight": 1
+      }
+    ],
+    "row_0": [
+      {
+        "body": {
+          "material": {
+            "role": "floor"
+          },
+          "op": "fill"
+        },
+        "weight": 1
+      }
+    ],
+    "row_1": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-west"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-1-to-road-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_3": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "floor"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "road"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "worn"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-1-to-road-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/square-to-road-1/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-1-to-road-2/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_4": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "road-1-to-road-2-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "square-to-road-1-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-1-to-road-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/square-to-road-1/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-1-to-road-2/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_6": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-1-to-road-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "shown_faces": [
+    "east",
+    "north",
+    "south",
+    "west"
+  ],
+  "start": "place",
+  "version": "1.14.0"
+}
