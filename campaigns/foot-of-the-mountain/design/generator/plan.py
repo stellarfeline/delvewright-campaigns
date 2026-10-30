@@ -690,12 +690,12 @@ FRONTS = {
 # Set LOWER_FRONTS_READY to the nodes whose fronts stand.
 LOWER_FRONTS = {
     "node/tavern": (5, 3, 3, "the tavern's door onto the market"),
-    "node/smithy": (4, 5, 3, "the smithy's open forge front onto the street"),
+    "node/smithy": (3, 4, 3, "the smithy's open forge front onto the street"),
     "node/chandler": (4, 3, 3, "the chandler's shop door onto the street"),
     "node/fishmonger": (3, 5, 3, "the fishmonger's open stall front onto the street"),
     "node/netloft": (4, 3, 3, "the net loft's boat-store doors onto the street"),
 }
-LOWER_FRONTS_READY = set()
+LOWER_FRONTS_READY = {"node/tavern", "node/smithy", "node/chandler", "node/fishmonger", "node/netloft"}
 FRONTS.update({n: v for n, v in LOWER_FRONTS.items() if n in LOWER_FRONTS_READY})
 
 
