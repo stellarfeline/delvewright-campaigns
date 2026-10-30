@@ -19,7 +19,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -44,17 +44,20 @@ BOARDS = "minecraft:dark_oak_planks"
 # the house: walls x 4..11, z 3..10, end-on to the street (gable west);
 # ground y 1..4, floor y 5, upper storey y 6..8, roof from y 9
 HX0, HX1, HZ0, HZ1 = 4, 11, 3, 10
+FRONT_DX = -3              # the house's front wall on the lot's street edge (x 1)
 STILL_WALL = 8
 
 
 def build(a):
     m = Model(a["extent"])
     guard_seams(m, a)
+    # the lot fronts the street: drawn as it stood, brought three cells west,
+    # the house's front wall on the lot's edge, its doorway the lot's
+    m.dx = FRONT_DX
     m.part(HX0, HX1, HZ0, HZ1, "house")
     m.part(12, 18, 2, 10, "garden")
 
     # ---- ground: a flagged step before the door, the garden's gravel paths
-    m.box(3, 3, 0, 0, HZ0, HZ1, "minecraft:stone_bricks")
 
     # ---- the house: stone ground storey with tuff quoins, timber upper storey
     corners = {(HX0, HZ0), (HX1, HZ0), (HX0, HZ1), (HX1, HZ1)}
@@ -81,11 +84,12 @@ def build(a):
     # the front: the door under a little hood, the jar window beside it
     door2(m, HX0, 8, "minecraft:dark_oak", "east")
     m.set(HX0, 3, 8, DRESS)
-    m.set(HX0 - 1, 4, 7, stairs(ROOF, "east")); m.set(HX0 - 1, 4, 8, stairs(ROOF, "east")); m.set(HX0 - 1, 4, 9, stairs(ROOF, "east"))
     for z in (5, 6):
         window(m, HX0, z, GLASS)
-    m.set(HX0 - 1, 1, 5, slab("minecraft:tuff_brick")); m.set(HX0 - 1, 1, 6, slab("minecraft:tuff_brick"))
-    m.set(HX0 - 1, 2, 5, "minecraft:potted_blue_orchid"); m.set(HX0 - 1, 2, 6, "minecraft:potted_allium")
+    # over the street, on the upper storey's sill: a window box in flower
+    for z in (5, 6):
+        m.set(HX0 - 1, 5, z, slab("minecraft:dark_oak", "top"))
+        m.set(HX0 - 1, 6, z, leaves("minecraft:flowering_azalea"))
     for (x, z) in ((6, HZ0), (6, HZ1), (9, HZ1)):
         window(m, x, z, GLASS)
     for (x, z) in ((5, HZ0), (7, HZ0), (5, HZ1), (7, HZ1), (10, HZ1), (HX0, 4), (HX0, 9), (HX1, 6), (HX1, 7)):
@@ -106,11 +110,11 @@ def build(a):
         m.set(x, 1, 4, "minecraft:bookshelf")
         m.set(x, 2, 4, slab("minecraft:dark_oak", "top"))
     m.set(5, 3, 4, "minecraft:flower_pot"); m.set(6, 3, 4, "minecraft:potted_fern"); m.set(7, 3, 4, "minecraft:flower_pot")
-    m.set(5, 2, 9, candle(3, "green"))
     for z in (6, 7):
         m.set(6, 1, z, stairs("minecraft:dark_oak", "west", "top"))
     m.set(6, 2, 6, candle(2)); m.set(6, 2, 7, "minecraft:potted_lily_of_the_valley")
-    m.set(5, 1, 9, slab("minecraft:dark_oak", "top")); m.set(6, 1, 9, slab("minecraft:dark_oak", "top"))
+    m.set(6, 1, 9, slab("minecraft:dark_oak", "top")); m.set(7, 1, 9, slab("minecraft:dark_oak", "top"))
+    m.set(7, 2, 9, candle(3, "green"))
     m.set(6, 4, 7, lantern(True))
     # the still room: the cauldron over its fire at the chimney, the work
     # table, herbs drying (leaves hung from the beam), a lectern with the herbal
@@ -151,9 +155,10 @@ def build(a):
     m.set(15, 1, 5, "minecraft:water_cauldron[level=3]")     # the watering trough
 
     # the street face: a bench, a bush
-    m.set(3, 0, 11, GRASS); m.set(3, 1, 11, leaves("minecraft:azalea"))
 
-    m.marks["node-apothecary"] = (3, 7, "east")
+    m.marks["node-apothecary"] = (6 + FRONT_DX, 8, "east")
+    # the street edge where the house does not stand: the yard wall
+    front(m, 1, 1, a["extent"][2] - 2, gap=set(range(7, 10)))
     return m
 
 

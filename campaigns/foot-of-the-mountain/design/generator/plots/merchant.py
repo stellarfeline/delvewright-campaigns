@@ -20,7 +20,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed, candle, door, fence, lantern, leaves, log, pane, plot_main, slab,  # noqa: E402
+from plotlib import (Model, Plot, bed, candle, door, fence, front, lantern, leaves, log, pane, plot_main, slab,  # noqa: E402
                      stairs, trapdoor, wall, wall_torch)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -56,6 +56,7 @@ BOARDS = "minecraft:dark_oak_planks"
 NX0, NX1, NZ0, NZ1 = 4, 17, 2, 6
 HX0, HX1, HZ0, HZ1 = 18, 25, 2, 11
 WX0, WX1 = 4, 17
+FRONT_DX = -3              # the wing's front wall and the court's arch on the lot's street edge (x 1)
 COUNT_WALL = 10            # the wall between the counting room (west) and the store
 
 
@@ -73,12 +74,15 @@ def build(a):
                 for z in range(z0, z1 + 1):
                     m.no_touch.add((x, y, z))
 
+    # the lot fronts the street: drawn as it stood, brought three cells west,
+    # the wing's front and the court's arch on the lot's edge
+    m.dx = FRONT_DX
     m.part(NX0, NX1, NZ0, NZ1, "house")
     m.part(HX0, HX1, HZ0, HZ1, "house")
     m.part(WX0, WX1, 7, 11, "court")
 
     # ---- ground: the court paved, a stone kerb along the verge
-    m.box(3, 17, 0, 0, 7, 9, "pave")
+    m.box(4, 17, 0, 0, 7, 9, "pave")
     m.box(NX0, HX1, 0, 0, 1, 12, "pave")
 
     # ---- the north wing: stone ground floor, timber-framed upper storey
@@ -235,30 +239,30 @@ def build(a):
         m.set(x, 1, 7, fl)
     for x, fl in ((6, "minecraft:poppy"), (7, "minecraft:cornflower"), (13, "minecraft:oxeye_daisy"), (14, "minecraft:poppy")):
         m.set(x, 0, 11, GRASS); m.set(x, 1, 11, fl)
-    m.set(5, 0, 7, GRASS); m.set(5, 1, 7, leaves("minecraft:azalea"))
     for x in (8, 9):
         m.set(x, 1, 11, stairs("minecraft:dark_oak", "north"))           # a bench facing the fountain
     m.set(15, 1, 10, "minecraft:barrel[facing=up,open=false]")
     m.set(16, 1, 11, "minecraft:barrel[facing=up,open=false]")
     m.set(16, 1, 10, "minecraft:white_wool")                              # a bale for the next ship
-    for (x, z) in ((5, 10), (12, 11)):
+    for (x, z) in ((7, 10), (12, 11)):
         for y in (1, 2):
             m.set(x, y, z, fence("minecraft:dark_oak"))
         m.set(x, 3, z, lantern(False))
-    # the arch over the court's mouth: tuff piers at the wing and the hedge,
-    # a stone lintel
+    # the arch over the court's mouth, on the street edge: tuff piers at the
+    # wing's corner and the hedge's end, a dressed lintel over the doorway the
+    # lot opens to the street, tiles over it
     for y in range(1, 6):
-        m.set(3, y, 6, PIER if y < 5 else QUOIN)
-        m.set(3, y, 12, PIER if y < 5 else QUOIN)
-    for z in range(6, 13):
-        m.set(3, 5, z, DRESS if z in (6, 12) else "minecraft:tuff_brick_slab[type=top,waterlogged=false]")
-        m.set(3, 6, z, slab(ROOF))
-    m.set(3, 6, 9, "minecraft:chiseled_tuff_bricks")
+        m.set(WX0, y, 6, PIER if y < 5 else QUOIN)
+        m.set(WX0, y, 12, PIER if y < 5 else QUOIN)
+    for z in range(7, 12):
+        m.set(WX0, 4, z, DRESS)
+        m.set(WX0, 5, z, "minecraft:tuff_brick_slab[type=bottom,waterlogged=false]")
+    m.set(WX0, 5, 9, "minecraft:chiseled_tuff_bricks")
     # the house's street face: a bench under the counting room's window
-    m.set(3, 1, 4, stairs("minecraft:dark_oak", "east"))
-    m.set(3, 1, 3, leaves("minecraft:oak"))
 
-    m.marks["node-merchant"] = (8, 8, "east")
+    m.marks["node-merchant"] = (8 + FRONT_DX, 8, "east")
+    # the street edge where the wing and the arch do not stand: the yard wall
+    front(m, 1, 1, a["extent"][2] - 2, gap=set(range(7, 12)))
     return m
 
 

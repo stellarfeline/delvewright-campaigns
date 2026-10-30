@@ -17,7 +17,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -43,18 +43,21 @@ BOARDS = "minecraft:spruce_planks"
 # the house: walls x 4..12, z 2..10, end-on to the street; ground y 1..4,
 # floor y 5, the upper storey y 6..8 jettied one cell over the yard (south)
 HX0, HX1, HZ0, HZ1 = 4, 12, 2, 10
+FRONT_DX = -3              # the house's front wall on the lot's street edge (x 1)
 LOOM_WALL = 7
 
 
 def build(a):
     m = Model(a["extent"])
     guard_seams(m, a)
+    # the lot fronts the street: drawn as it stood, brought three cells west,
+    # the house's front wall on the lot's edge, its doorway the lot's
+    m.dx = FRONT_DX
     m.part(HX0, HX1, HZ0, HZ1, "house")
     m.part(15, 21, 2, 4, "dye-shed")
     m.part(14, 21, 6, 12, "drying-yard")
 
     m.box(13, 21, 0, 0, 1, 12, "yard")
-    m.box(3, 3, 0, 0, HZ0, HZ1, "minecraft:stone_bricks")
 
     # ---- the house: a stone plinth, a spruce frame, the upper storey jettied
     corners = {(HX0, HZ0), (HX1, HZ0), (HX0, HZ1), (HX1, HZ1)}
@@ -94,9 +97,8 @@ def build(a):
     # the shop door to the street, a bolt of cloth shown on the sill
     door2(m, HX0, 6, "minecraft:spruce", "east")
     m.set(HX0, 3, 6, PLASTER)
-    m.set(HX0 - 1, 1, 4, slab("minecraft:spruce", "top")); m.set(HX0 - 1, 2, 4, "minecraft:red_wool")
-    m.set(HX0 - 1, 1, 8, slab("minecraft:spruce", "top")); m.set(HX0 - 1, 2, 8, "minecraft:blue_wool")
-    m.set(HX0 - 1, 3, 6, wall_torch("west"))
+    # bolts shown in the windows either side of the doorway
+    m.set(HX0 + 1, 1, 4, "minecraft:red_wool"); m.set(HX0 + 1, 1, 8, "minecraft:blue_wool")
     # the chimney on the north wall
     for y in range(1, top + 2):
         m.set(10, y, HZ0, "stone")
@@ -160,12 +162,13 @@ def build(a):
     bed_of(m, [(5, 12), (6, 12), (8, 12), (9, 12), (11, 12)],
            ["minecraft:cornflower", "minecraft:poppy", "minecraft:oxeye_daisy", "minecraft:allium"])
     m.set(13, 0, 12, GRASS); m.set(13, 1, 12, leaves("minecraft:azalea"))
-    m.set(3, 0, 12, GRASS); m.set(3, 1, 12, leaves("minecraft:oak"))
     for y in (1, 2, 3):
         m.set(13, y, 5, fence("minecraft:spruce"))
     m.set(13, 4, 5, lantern(False))
 
-    m.marks["node-weaver"] = (3, 6, "east")
+    m.marks["node-weaver"] = (6 + FRONT_DX, 6, "east")
+    # the street edge where the house does not stand: the yard wall
+    front(m, 1, 1, a["extent"][2] - 2, gap=set(range(5, 8)))
     return m
 
 
