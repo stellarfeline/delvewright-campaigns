@@ -4,8 +4,8 @@
     python3 street9.py --allocation <handout dir>/allocation.json \
         --out <campaign>/programs/street-9.json --delvec <delvec>
 
-The way runs along z (north: flight 9 at grade; south: flight 10, two down).
-`stretch` lays the cobbles, the wandering kennel, the kerb bands where the
+The way runs along z (north: flight 9 at grade; south: flight 10, two down),
+as the plan hands it (`place.way`). `stretch` lays the cobbles, the wandering kennel, the kerb bands where the
 flights land and the worn patches; `verge_life` furnishes the verges either
 side of the five-wide clear way. No lot fronts this stretch, so no sign hangs.
 """
