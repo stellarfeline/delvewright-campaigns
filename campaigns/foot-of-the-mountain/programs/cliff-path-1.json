@@ -52,32 +52,8 @@
     "b3": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
     "b4": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
     "b5": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
-    "floor": [
-      {
-        "block": "minecraft:cobblestone",
-        "weight": 4
-      },
-      {
-        "block": "minecraft:coarse_dirt",
-        "weight": 3
-      },
-      {
-        "block": "minecraft:tuff",
-        "weight": 2
-      },
-      {
-        "block": "minecraft:grass_block[snowy=false]",
-        "weight": 3
-      },
-      {
-        "block": "minecraft:mossy_cobblestone",
-        "weight": 1
-      },
-      {
-        "block": "minecraft:packed_mud",
-        "weight": 1
-      }
-    ],
+    "ground-0": "minecraft:coarse_dirt",
+    "ground-1": "minecraft:grass_block[snowy=false]",
     "trodden": [
       {
         "block": "minecraft:coarse_dirt",
@@ -117,18 +93,14 @@
     "handed/seam/lane-8-to-cliff-path-1/z1": 5
   },
   "rules": {
-    "column_13": [
+    "column_14": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_9"
+              "symbol": "row_5"
             },
             {
               "op": "call",
@@ -141,6 +113,10 @@
             {
               "op": "call",
               "symbol": "row_12"
+            },
+            {
+              "op": "call",
+              "symbol": "row_13"
             },
             {
               "op": "call",
@@ -228,18 +204,18 @@
         "weight": 1
       }
     ],
-    "column_15": [
+    "column_16": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_5"
             },
             {
               "op": "call",
-              "symbol": "row_14"
+              "symbol": "row_15"
             },
             {
               "op": "call",
@@ -297,11 +273,46 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_5"
             },
             {
               "op": "call",
-              "symbol": "row_16"
+              "symbol": "row_3"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_19": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_5"
+            },
+            {
+              "op": "call",
+              "symbol": "row_18"
             }
           ],
           "op": "split",
@@ -360,18 +371,18 @@
         "weight": 1
       }
     ],
-    "column_20": [
+    "column_22": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_18"
+              "symbol": "row_20"
             },
             {
               "op": "call",
-              "symbol": "row_19"
+              "symbol": "row_21"
             }
           ],
           "op": "split",
@@ -430,18 +441,18 @@
         "weight": 1
       }
     ],
-    "column_6": [
+    "column_7": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_5"
             },
             {
               "op": "call",
-              "symbol": "row_5"
+              "symbol": "row_6"
             },
             {
               "op": "call",
@@ -492,18 +503,18 @@
         "weight": 1
       }
     ],
-    "column_8": [
+    "column_9": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_5"
             },
             {
               "op": "call",
-              "symbol": "row_7"
+              "symbol": "row_8"
             },
             {
               "op": "call",
@@ -570,27 +581,23 @@
               },
               {
                 "op": "call",
-                "symbol": "column_6"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_8"
+                "symbol": "column_9"
               },
               {
                 "op": "call",
-                "symbol": "column_13"
+                "symbol": "column_14"
               },
               {
                 "op": "call",
-                "symbol": "column_8"
+                "symbol": "column_9"
               },
               {
                 "op": "call",
-                "symbol": "column_15"
-              },
-              {
-                "op": "call",
-                "symbol": "column_4"
+                "symbol": "column_16"
               },
               {
                 "op": "call",
@@ -598,7 +605,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_20"
+                "symbol": "column_19"
+              },
+              {
+                "op": "call",
+                "symbol": "column_22"
               }
             ],
             "op": "split",
@@ -742,7 +753,348 @@
           },
           "op": "mark"
         },
-        "weight": 1
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/y0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 5
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 4
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 2
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/x0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 12
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/datum-y"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/z0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            }
+          ]
+        }
       }
     ],
     "row_0": [
@@ -752,7 +1104,7 @@
           "children": [
             {
               "material": {
-                "role": "floor"
+                "role": "ground-1"
               },
               "op": "fill"
             },
@@ -764,7 +1116,7 @@
             },
             {
               "material": {
-                "role": "floor"
+                "role": "ground-0"
               },
               "op": "fill"
             }
@@ -905,7 +1257,7 @@
             },
             {
               "material": {
-                "role": "b1"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -997,7 +1349,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b1"
               },
               "op": "fill"
             },
@@ -1069,6 +1421,98 @@
       }
     ],
     "row_12": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-8-to-cliff-path-1/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_13": [
       {
         "body": {
           "axis": "z",
@@ -1161,7 +1605,7 @@
         "weight": 1
       }
     ],
-    "row_14": [
+    "row_15": [
       {
         "body": {
           "axis": "z",
@@ -1253,7 +1697,7 @@
         "weight": 1
       }
     ],
-    "row_16": [
+    "row_18": [
       {
         "body": {
           "axis": "z",
@@ -1324,18 +1768,18 @@
         "weight": 1
       }
     ],
-    "row_18": [
+    "row_20": [
       {
         "body": {
           "material": {
-            "role": "floor"
+            "role": "ground-1"
           },
           "op": "fill"
         },
         "weight": 1
       }
     ],
-    "row_19": [
+    "row_21": [
       {
         "body": {
           "axis": "z",
@@ -1483,6 +1927,74 @@
           "axis": "z",
           "children": [
             {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "trodden"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-8-to-cliff-path-1/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-8-to-cliff-path-1/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_6": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
               "body": {
                 "op": "void"
               },
@@ -1569,7 +2081,7 @@
         "weight": 1
       }
     ],
-    "row_7": [
+    "row_8": [
       {
         "body": {
           "axis": "z",
@@ -1591,98 +2103,6 @@
             {
               "material": {
                 "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/lane-8-to-cliff-path-1/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/lane-8-to-cliff-path-1/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/lane-8-to-cliff-path-1/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_9": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b2"
               },
               "op": "fill"
             },

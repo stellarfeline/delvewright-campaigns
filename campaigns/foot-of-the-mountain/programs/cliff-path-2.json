@@ -46,32 +46,8 @@
     "b3": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
     "b4": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
     "b5": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
-    "floor": [
-      {
-        "block": "minecraft:cobblestone",
-        "weight": 4
-      },
-      {
-        "block": "minecraft:coarse_dirt",
-        "weight": 3
-      },
-      {
-        "block": "minecraft:tuff",
-        "weight": 2
-      },
-      {
-        "block": "minecraft:grass_block[snowy=false]",
-        "weight": 3
-      },
-      {
-        "block": "minecraft:mossy_cobblestone",
-        "weight": 1
-      },
-      {
-        "block": "minecraft:packed_mud",
-        "weight": 1
-      }
-    ],
+    "ground-0": "minecraft:coarse_dirt",
+    "ground-1": "minecraft:grass_block[snowy=false]",
     "trodden": [
       {
         "block": "minecraft:coarse_dirt",
@@ -222,15 +198,11 @@
         "weight": 1
       }
     ],
-    "column_14": [
+    "column_15": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_0"
-            },
             {
               "op": "call",
               "symbol": "row_11"
@@ -242,6 +214,10 @@
             {
               "op": "call",
               "symbol": "row_13"
+            },
+            {
+              "op": "call",
+              "symbol": "row_14"
             }
           ],
           "op": "split",
@@ -401,7 +377,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_14"
+                "symbol": "column_15"
               }
             ],
             "op": "split",
@@ -479,14 +455,391 @@
           },
           "op": "mark"
         },
-        "weight": 1
+        "weight": 1,
+        "when": {
+          "cond": "all",
+          "of": [
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "z",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 2
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 40
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 4
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 32
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 4
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 6
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/x0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 5
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "x",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-lighthouse/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/datum-y"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/z0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            }
+          ]
+        }
       }
     ],
     "row_0": [
       {
         "body": {
           "material": {
-            "role": "floor"
+            "role": "ground-1"
           },
           "op": "fill"
         },
@@ -535,6 +888,58 @@
       }
     ],
     "row_11": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-0"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_12": [
       {
         "body": {
           "axis": "z",
@@ -611,7 +1016,7 @@
         "weight": 1
       }
     ],
-    "row_12": [
+    "row_13": [
       {
         "body": {
           "axis": "z",
@@ -772,7 +1177,7 @@
         "weight": 1
       }
     ],
-    "row_13": [
+    "row_14": [
       {
         "body": {
           "axis": "z",
@@ -826,7 +1231,7 @@
             },
             {
               "material": {
-                "role": "floor"
+                "role": "ground-1"
               },
               "op": "fill"
             }
