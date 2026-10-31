@@ -58,27 +58,17 @@
   },
   "name": "lane-5",
   "palette": {
-    "b0": "minecraft:cornflower",
+    "b0": "minecraft:allium",
     "b1": "minecraft:grass_block[snowy=false]",
     "b2": "minecraft:lantern[hanging=false,waterlogged=false]",
     "b3": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "b4": "minecraft:oak_leaves[distance=1,persistent=true,waterlogged=false]",
-    "b5": "minecraft:poppy",
+    "b5": "minecraft:short_grass",
     "b6": "minecraft:spruce_slab[type=top,waterlogged=false]",
     "b7": "minecraft:spruce_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
     "ground-0": "minecraft:coarse_dirt",
     "ground-1": "minecraft:grass_block[snowy=false]",
     "kennel": "minecraft:mossy_stone_bricks",
-    "kerb": [
-      {
-        "block": "minecraft:cobblestone",
-        "weight": 2
-      },
-      {
-        "block": "minecraft:andesite",
-        "weight": 1
-      }
-    ],
     "paving": [
       {
         "block": "minecraft:cobblestone",
@@ -126,15 +116,11 @@
     "handed/seam/street-5-to-lane-5/z1": 5
   },
   "rules": {
-    "column_11": [
+    "column_10": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_3"
-            },
             {
               "op": "call",
               "symbol": "row_8"
@@ -145,7 +131,73 @@
             },
             {
               "op": "call",
-              "symbol": "row_10"
+              "symbol": "row_5"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_14": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_11"
+            },
+            {
+              "op": "call",
+              "symbol": "row_12"
+            },
+            {
+              "op": "call",
+              "symbol": "row_13"
             },
             {
               "op": "call",
@@ -234,68 +286,6 @@
         "weight": 1
       }
     ],
-    "column_14": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_12"
-            },
-            {
-              "op": "call",
-              "symbol": "row_13"
-            },
-            {
-              "op": "call",
-              "symbol": "row_5"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "column_16": [
       {
         "body": {
@@ -303,7 +293,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_12"
+              "symbol": "row_8"
             },
             {
               "op": "call",
@@ -365,7 +355,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_3"
+              "symbol": "row_8"
             },
             {
               "op": "call",
@@ -462,7 +452,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_12"
+              "symbol": "row_3"
             },
             {
               "op": "call",
@@ -590,7 +580,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_21"
+              "symbol": "row_9"
             },
             {
               "op": "call",
@@ -641,14 +631,14 @@
         "weight": 1
       }
     ],
-    "column_25": [
+    "column_26": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_23"
+              "symbol": "row_25"
             },
             {
               "op": "call",
@@ -683,11 +673,19 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_26"
+              "symbol": "row_25"
             },
             {
               "op": "call",
-              "symbol": "row_15"
+              "symbol": "row_11"
+            },
+            {
+              "op": "call",
+              "symbol": "row_12"
+            },
+            {
+              "op": "call",
+              "symbol": "row_13"
             },
             {
               "op": "call",
@@ -707,10 +705,25 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/datum-y"
+                    "name": "handed/seam/street-5-to-lane-5/y1"
                   },
                   "op": "add",
                   "rhs": {
@@ -720,8 +733,31 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/y0"
+                  "expr": "int",
+                  "value": 4
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -925,7 +961,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_11"
+                "symbol": "column_10"
               },
               {
                 "op": "call",
@@ -937,11 +973,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_16"
+                "symbol": "column_7"
               },
               {
                 "op": "call",
-                "symbol": "column_7"
+                "symbol": "column_16"
               },
               {
                 "op": "call",
@@ -949,23 +985,31 @@
               },
               {
                 "op": "call",
-                "symbol": "column_7"
-              },
-              {
-                "op": "call",
-                "symbol": "column_11"
-              },
-              {
-                "op": "call",
-                "symbol": "column_7"
-              },
-              {
-                "op": "call",
                 "symbol": "column_20"
               },
               {
                 "op": "call",
+                "symbol": "column_10"
+              },
+              {
+                "op": "call",
                 "symbol": "column_7"
+              },
+              {
+                "op": "call",
+                "symbol": "column_14"
+              },
+              {
+                "op": "call",
+                "symbol": "column_7"
+              },
+              {
+                "op": "call",
+                "symbol": "column_16"
+              },
+              {
+                "op": "call",
+                "symbol": "column_18"
               },
               {
                 "op": "call",
@@ -977,7 +1021,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_25"
+                "symbol": "column_26"
               },
               {
                 "op": "call",
@@ -989,7 +1033,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_11"
+                "symbol": "column_16"
+              },
+              {
+                "op": "call",
+                "symbol": "column_18"
               },
               {
                 "op": "call",
@@ -1104,7 +1152,28 @@
               {
                 "blocks": {
                   "expr": "int",
-                  "value": 4
+                  "value": 2
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
                 },
                 "size": "absolute"
               },
@@ -1188,7 +1257,7 @@
                   "op": "sub",
                   "rhs": {
                     "expr": "int",
-                    "value": 24
+                    "value": 25
                   }
                 },
                 "size": "absolute"
@@ -1411,6 +1480,46 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "int",
                 "value": 4
               },
@@ -1452,46 +1561,6 @@
                 "lhs": {
                   "expr": "param",
                   "name": "handed/seam/street-5-to-lane-5/y1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/y0"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "dim": "y",
-                "expr": "dim"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
                 },
                 "op": "add",
                 "rhs": {
@@ -1561,7 +1630,7 @@
               "op": "gt",
               "rhs": {
                 "expr": "int",
-                "value": 24
+                "value": 25
               }
             },
             {
@@ -1838,7 +1907,191 @@
         "weight": 1
       }
     ],
-    "row_10": [
+    "row_11": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_12": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_13": [
       {
         "body": {
           "axis": "z",
@@ -1931,415 +2184,7 @@
         "weight": 1
       }
     ],
-    "row_12": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "ground-1"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "paving"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "kennel"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "ground-1"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 2
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_13": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "b5"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "row_15": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_17": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-5-to-lane-5/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_19": [
       {
         "body": {
           "axis": "z",
@@ -2435,7 +2280,103 @@
         "weight": 1
       }
     ],
-    "row_21": [
+    "row_17": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b5"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_19": [
       {
         "body": {
           "axis": "z",
@@ -2527,52 +2468,37 @@
         "weight": 1
       }
     ],
-    "row_23": [
+    "row_21": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "ground-0"
+                "role": "b7"
               },
               "op": "fill"
             },
             {
-              "material": {
-                "role": "paving"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "kennel"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "verge"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "ground-1"
-              },
-              "op": "fill"
+              "op": "claim",
+              "region": "room"
             }
           ],
           "op": "split",
@@ -2589,34 +2515,13 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 2
+                  "value": 5
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-5-to-lane-5/z0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -2655,7 +2560,7 @@
         "weight": 1
       }
     ],
-    "row_26": [
+    "row_23": [
       {
         "body": {
           "axis": "z",
@@ -2674,19 +2579,13 @@
             },
             {
               "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "kennel"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "kerb"
+                "role": "paving"
               },
               "op": "fill"
             },
@@ -2737,7 +2636,108 @@
             {
               "blocks": {
                 "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
                 "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_25": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-0"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "paving"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kennel"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "paving"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "verge"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 2
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
               },
               "size": "absolute"
             },
@@ -2745,6 +2745,13 @@
               "blocks": {
                 "expr": "int",
                 "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
@@ -2873,19 +2880,13 @@
             },
             {
               "material": {
-                "role": "kerb"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "kennel"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "kerb"
+                "role": "paving"
               },
               "op": "fill"
             },
@@ -2936,14 +2937,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
+                "value": 2
               },
               "size": "absolute"
             },
@@ -3201,31 +3195,40 @@
           "axis": "z",
           "children": [
             {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
               "material": {
-                "role": "b3"
+                "role": "ground-1"
               },
               "op": "fill"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "paving"
               },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "kennel"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "paving"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
             }
           ],
           "op": "split",
@@ -3242,13 +3245,27 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 2
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-5-to-lane-5/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
@@ -3308,7 +3325,7 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },
