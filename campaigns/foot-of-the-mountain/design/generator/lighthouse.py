@@ -884,8 +884,8 @@ R_IN = 2.25                  # the shaft's inside: the newel and the stair's lan
 R_PART = 4.25                # the tower's claimed columns: its inside and the wall's inner half
 LAMP_FLOOR = 32              # the lantern room's floor course, the gallery's walk
 LAMP_TOP = 37                # the last glazed course: a room five courses tall
-R_LAMP = 3.9                 # the lantern room's polygon
-R_GALLERY = 6.1              # the gallery's outer edge
+R_LAMP = 3.5                 # the lantern room's polygon: its diagonal faces long enough that the gallery's walk passes every corner
+R_GALLERY = 6.3              # the gallery's outer edge
 COTTAGE = (8, 19, 2, 8)      # walls inclusive (x0, x1, z0, z1): north-east of the tower
 C_TOP = 5                    # the cottage's wall head
 # the stair's lane: the ring of twelve cells round the 2x2 newel, clockwise from the north-west
@@ -998,16 +998,23 @@ def build_tower(m):
         for z in range(1, 21):
             if dist(x, z) <= R_LAMP + 0.6 and (x, z) not in well and not str(m.get(x, LAMP_FLOOR, z)).startswith("step"):
                 m.set(x, LAMP_FLOOR, z, "lamp_floor")
-    # the gallery: slabs on a corbel course round the lantern room, railed
-    for x in range(1, 21):
-        for z in range(1, 21):
-            d = dist(x, z)
-            if R_LAMP + 0.6 < d <= R_GALLERY:
-                m.set(x, LAMP_FLOOR, z, "gallery")
-                if d > r_at(LAMP_FLOOR - 1):
-                    m.set(x, LAMP_FLOOR - 1, z, "corbel")
-                if d > R_GALLERY - 1:
-                    m.set(x, LAMP_FLOOR + 1, z, "rail")
+    # the gallery: slabs on a corbel course round the lantern room, railed.
+    # The walk between the rail and the glass is a body wide all the way
+    # round, so a player who walks out of the door goes round the whole
+    # lantern room; where the rail steps on a diagonal its outer corner takes
+    # a post too, so the rail is closed and no gap between two posts opens
+    # onto the drop.
+    floor = {(x, z) for x in range(1, 21) for z in range(1, 21) if R_LAMP + 0.6 < dist(x, z) <= R_GALLERY}
+    rail = {(x, z) for (x, z) in floor if dist(x, z) > R_GALLERY - 1}
+    corners = {(x, z) for x in range(1, 21) for z in range(1, 21) if (x, z) not in floor
+               and any((x + dx, z) in rail and (x, z + dz) in rail and (x + dx, z + dz) in floor - rail
+                       for dx in (-1, 1) for dz in (-1, 1))}
+    for (x, z) in sorted(floor | corners):
+        m.set(x, LAMP_FLOOR, z, "gallery")
+        if dist(x, z) > r_at(LAMP_FLOOR - 1):
+            m.set(x, LAMP_FLOOR - 1, z, "corbel")
+        if (x, z) in rail | corners:
+            m.set(x, LAMP_FLOOR + 1, z, "rail")
     # the lantern room: an octagon of glass between dark mullions
     for y in range(LAMP_FLOOR + 1, LAMP_TOP + 1):
         polygon_ring(m, y, R_LAMP, "lamp_glass")
