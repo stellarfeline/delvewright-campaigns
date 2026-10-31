@@ -1022,7 +1022,7 @@ def build_tower(m):
         for z in range(1, 21):
             if m.get(x, LAMP_FLOOR + 1, z) == "lamp_glass":
                 dx, dz = abs(x - CX), abs(z - CZ)
-                if abs(dx - dz) < 1.1 or min(dx, dz) < 0.6:
+                if abs(dx - dz) < 0.6 or min(dx, dz) < 0.6:   # mullions on the diagonals and the axes; the faces between them glazed
                     for y in range(LAMP_FLOOR + 1, LAMP_TOP + 1):
                         m.set(x, y, z, "mullion")
     # a door onto the gallery, on the west
