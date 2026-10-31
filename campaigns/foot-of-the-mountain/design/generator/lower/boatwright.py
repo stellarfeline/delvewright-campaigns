@@ -90,7 +90,7 @@ PALETTE = {
     "timber_z": "minecraft:stripped_spruce_log[axis=z]",
     "timber_x": "minecraft:spruce_log[axis=x]",
     "winch": "minecraft:stripped_oak_log[axis=y]",
-    "winch_bar": trapdoor("oak", "north", "top"),
+    "winch_bar": trapdoor("oak", "north", "bottom"),
     "pot_a": "minecraft:potted_cornflower",
     "tuft": "minecraft:short_grass", "fern": "minecraft:fern",
 }

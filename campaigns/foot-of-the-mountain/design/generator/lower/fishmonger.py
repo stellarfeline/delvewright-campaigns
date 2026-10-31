@@ -77,7 +77,7 @@ PALETTE = {
     "smoke_fire": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]",
     "smoked": "minecraft:dried_kelp_block",
     "rack": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "rack_bar": "minecraft:spruce_slab[type=top,waterlogged=false]",
+    "rack_bar": "minecraft:spruce_slab[type=bottom,waterlogged=false]",   # resting on what holds it
     "vent": "minecraft:spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]",
     "logpile": "minecraft:oak_log[axis=z]",
     # life

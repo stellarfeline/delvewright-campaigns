@@ -112,7 +112,7 @@ def build(place) -> Model:
     for z in range(4, 9):
         m.set(3, 3, z, "minecraft:iron_chain[axis=z,waterlogged=false]")
     for (x, z) in ((6, 3), (7, 3)):
-        m.set(x, 1, z, trapdoor("minecraft:spruce", "north", "top"))    # a lobster pot on its frame
+        m.set(x, 1, z, trapdoor("minecraft:spruce", "north", "bottom"))  # a lobster pot's frame, on the ground
     m.set(6, 1, 10, stairs("minecraft:spruce", "north")); m.set(7, 1, 10, stairs("minecraft:spruce", "north"))
     m.set(5, 1, 10, "minecraft:barrel[facing=up,open=false]")
     m.set(8, 1, 1, fence("minecraft:spruce")); m.set(8, 2, 1, fence("minecraft:spruce"))   # oars stood against the wall

@@ -233,6 +233,8 @@ def build(a):
         for dz in (-1, 0, 1):
             if (dx, dz) != (0, 0):
                 m.set(cx + dx, 1, cz + dz, slab("minecraft:stone_brick"))
+    # the pot stands on a full-height pier in the rim, never on a slab's half-height top
+    m.set(cx, 1, cz - 1, "minecraft:stone_bricks")
     m.set(cx, 2, cz - 1, "minecraft:potted_white_tulip")
     for x in range(12, 17):
         m.set(x, 0, 7, GRASS)

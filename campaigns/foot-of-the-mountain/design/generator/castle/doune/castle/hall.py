@@ -6,7 +6,7 @@ PALETTE = {
     # the hall's own furniture and light, all of it under this part's names
     "hall/dais": "minecraft:polished_andesite",
     "hall/table_leg": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "hall/table_top": "minecraft:oak_slab[type=top,waterlogged=false]",
+    "hall/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "hall/bench": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "hall/hearth_kerb": "minecraft:cobblestone",
     "hall/fire": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]",

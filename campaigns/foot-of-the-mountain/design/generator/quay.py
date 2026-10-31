@@ -31,7 +31,7 @@ PALETTE = {
     "lamp_post": fence("dark_oak"),
     "lantern": lantern(),
     "crate": "minecraft:spruce_wood[axis=y]",
-    "crate_lid": trapdoor("spruce", "north", "top"),
+    "crate_lid": trapdoor("spruce", "north", "bottom"),
     "rack": fence("spruce"),
     "net": "minecraft:brown_carpet",
     "rope": "minecraft:brown_wool",

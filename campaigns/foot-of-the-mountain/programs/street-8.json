@@ -63,10 +63,11 @@
     "b1": "minecraft:lantern[hanging=false,waterlogged=false]",
     "b2": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "b3": "minecraft:oak_hanging_sign[attached=false,rotation=12,waterlogged=false]",
-    "b4": "minecraft:spruce_slab[type=top,waterlogged=false]",
-    "b5": "minecraft:spruce_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
-    "b6": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
-    "b7": "minecraft:stripped_spruce_log[axis=z]",
+    "b4": "minecraft:spruce_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "b5": "minecraft:spruce_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
+    "b6": "minecraft:spruce_stairs[facing=south,half=top,shape=straight,waterlogged=false]",
+    "b7": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+    "b8": "minecraft:stripped_spruce_log[axis=z]",
     "cobble": [
       {
         "block": "minecraft:cobblestone",
@@ -1390,16 +1391,8 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-lane-8/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
+                "expr": "int",
+                "value": 10
               },
               "op": "gt",
               "rhs": {
@@ -1413,6 +1406,26 @@
                   "expr": "int",
                   "value": 1
                 }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 10
               }
             },
             {
@@ -1465,26 +1478,6 @@
               "rhs": {
                 "expr": "int",
                 "value": 4
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 10
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-8-to-netloft/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
               }
             },
             {
@@ -1565,6 +1558,34 @@
               "rhs": {
                 "expr": "int",
                 "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-lane-8/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-8-to-netloft/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -3648,46 +3669,52 @@
             },
             {
               "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
                 "role": "b5"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -3764,7 +3791,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5033,7 +5067,7 @@
             },
             {
               "material": {
-                "role": "b7"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -5151,7 +5185,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -5164,7 +5198,13 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b5"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b6"
               },
               "op": "fill"
             },
@@ -5315,16 +5355,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/street-8-to-lane-8/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "int",
+                  "value": 10
                 },
                 "op": "sub",
                 "rhs": {
@@ -5338,6 +5370,29 @@
                     "expr": "int",
                     "value": 1
                   }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-8-to-lane-8/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
                 }
               },
               "size": "absolute"

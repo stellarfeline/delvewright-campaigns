@@ -247,7 +247,9 @@ def stretch(m, place, stem):
             elif kind == "barrel":
                 m.set(x, 1, z, "minecraft:barrel[facing=up,open=false]")
             elif kind == "cart" and (x, z + 1) in free:
-                m.set(x, 1, z, slab("minecraft:spruce", "top")); m.set(x, 1, z + 1, slab("minecraft:spruce", "top"))
+                # a cart's bed: two upside-down stairs back to back, each on
+                # its own end, so it rests on the street at both ends
+                m.set(x, 1, z, stairs("minecraft:spruce", "north", "top")); m.set(x, 1, z + 1, stairs("minecraft:spruce", "south", "top"))
                 m.set(x, 2, z, "minecraft:hay_block[axis=z]")
 
 
@@ -269,8 +271,11 @@ def market(m, free, c0, c1, z0, z1):
                 continue
             col = colours[n % len(colours)]
             n += 1
+            # the counter: upside-down stairs, their leg on the stall's side,
+            # so the board rests on the ground and never floats over it
+            back = "west" if side is left else "east"
             for zz in span:
-                m.set(inner, 1, zz, slab("minecraft:spruce", "top"))
+                m.set(inner, 1, zz, stairs("minecraft:spruce", back, "top"))
                 for x in side:
                     m.set(x, 4, zz, f"minecraft:{col}_wool" if zz % 2 else "minecraft:white_wool")
             for zz in (span[0], span[-1]):
@@ -370,7 +375,8 @@ def square(m, place):
     sx, sz = x0 + 4, z0 + 3
     if not any((sx + dx, sz + dz) in keep for dx in range(-1, 5) for dz in range(-1, 3)):
         for dx in range(4):
-            m.set(sx + dx, 1, sz, slab("minecraft:spruce", "top"))
+            # the counter: upside-down stairs, their leg on the stall's side
+            m.set(sx + dx, 1, sz, stairs("minecraft:spruce", "south", "top"))
             m.set(sx + dx, 4, sz, "minecraft:red_wool" if dx % 2 else "minecraft:white_wool")
             m.set(sx + dx, 4, sz + 1, "minecraft:red_wool" if dx % 2 else "minecraft:white_wool")
         for dx in (0, 3):
@@ -406,10 +412,13 @@ def lane(m, place, stem):
             # a handcart, a barrel or a bench, in turn
             kind = (n // 2) % 3
             if kind == 0:
-                m.set(x, 1, z, slab("minecraft:spruce", "top"))
+                # its bed two upside-down stairs back to back, each on its own
+                # end, so it rests on the lane; drawn only where both cells are clear
                 nx, nz = (x + 1, z) if axis == "x" else (x, z + 1)
                 if (nx, nz) not in keep:
-                    m.set(nx, 1, nz, slab("minecraft:spruce", "top"))
+                    near, far = ("west", "east") if axis == "x" else ("north", "south")
+                    m.set(x, 1, z, stairs("minecraft:spruce", near, "top"))
+                    m.set(nx, 1, nz, stairs("minecraft:spruce", far, "top"))
             elif kind == 1:
                 m.set(x, 1, z, "minecraft:barrel[facing=up,open=false]")
             else:

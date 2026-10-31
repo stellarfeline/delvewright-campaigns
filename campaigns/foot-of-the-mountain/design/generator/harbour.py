@@ -822,7 +822,7 @@ PALETTE = {
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
     "hay": "minecraft:hay_block[axis=y]",
     "crate": "minecraft:spruce_wood[axis=y]",
-    "crate_lid": "minecraft:spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]",
+    "crate_lid": "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
     "rope": "minecraft:brown_wool",
     "pot_a": "minecraft:potted_red_tulip",
     "pot_b": "minecraft:potted_cornflower",
@@ -855,11 +855,11 @@ PALETTE = {
     "barrel": "minecraft:barrel[facing=up,open=false]",
     "water": "minecraft:water[level=0]",
     "qstep": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
-    "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
+    "gunwale_hi": "minecraft:oak_slab[type=bottom,waterlogged=false]",    # sits on the flare, no air under it
     "stem_post": "minecraft:stripped_oak_log[axis=y]",
     "slip_lo": "minecraft:smooth_stone_slab[type=bottom,waterlogged=false]",
     "slip_wl": "minecraft:smooth_stone_slab[type=bottom,waterlogged=true]",
-    "slip_wt": "minecraft:smooth_stone_slab[type=top,waterlogged=true]",
+    "slip_wt": "minecraft:smooth_stone",                                 # the step's top, full height, never a slab over a gap
     "sand": "minecraft:sand",
 }
 

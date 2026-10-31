@@ -54,7 +54,7 @@ PALETTE = {
     "kt/candles": "minecraft:white_candle[candles=3,lit=true,waterlogged=false]",
     # the kitchen's own stuff
     "kt/table_leg": "minecraft:stripped_oak_log[axis=y]",
-    "kt/table_top": "minecraft:oak_slab[type=top,waterlogged=false]",
+    "kt/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "kt/stool": "minecraft:spruce_log[axis=y]",
     "kt/cask_x": "minecraft:spruce_log[axis=x]",
     "kt/cask_z": "minecraft:spruce_log[axis=z]",

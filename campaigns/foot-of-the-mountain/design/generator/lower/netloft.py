@@ -83,7 +83,7 @@ PALETTE = {
     # the yard: net poles, a capstan, crab pots, flowers
     "pole": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "capstan": "minecraft:stripped_spruce_log[axis=y]",
-    "capstan_bar": "minecraft:spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]",
+    "capstan_bar": "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
     "pot": "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
     "pot_body": "minecraft:composter[level=0]",
     "barrel": "minecraft:barrel[facing=up,open=false]",

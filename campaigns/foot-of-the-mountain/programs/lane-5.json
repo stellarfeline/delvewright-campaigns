@@ -61,7 +61,8 @@
     "b0": "minecraft:barrel[facing=up,open=false]",
     "b1": "minecraft:lantern[hanging=false,waterlogged=false]",
     "b2": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b3": "minecraft:spruce_slab[type=top,waterlogged=false]",
+    "b3": "minecraft:spruce_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
+    "b4": "minecraft:spruce_stairs[facing=west,half=top,shape=straight,waterlogged=false]",
     "ground-0": "minecraft:coarse_dirt",
     "ground-1": "minecraft:grass_block[snowy=false]",
     "kennel": "minecraft:polished_andesite",
@@ -367,6 +368,10 @@
           "children": [
             {
               "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
               "symbol": "row_16"
             },
             {
@@ -380,6 +385,29 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/street-5-to-lane-5/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/y0"
+                }
               },
               "size": "absolute"
             },
@@ -402,11 +430,11 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_3"
+              "symbol": "row_18"
             },
             {
               "op": "call",
-              "symbol": "row_18"
+              "symbol": "row_5"
             }
           ],
           "op": "split",
@@ -472,11 +500,46 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_3"
             },
             {
               "op": "call",
               "symbol": "row_20"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_23": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_22"
             }
           ],
           "op": "split",
@@ -629,6 +692,10 @@
               },
               {
                 "op": "call",
+                "symbol": "column_15"
+              },
+              {
+                "op": "call",
                 "symbol": "column_7"
               },
               {
@@ -638,10 +705,6 @@
               {
                 "op": "call",
                 "symbol": "column_7"
-              },
-              {
-                "op": "call",
-                "symbol": "column_15"
               },
               {
                 "op": "call",
@@ -649,6 +712,10 @@
               },
               {
                 "op": "call",
+                "symbol": "column_19"
+              },
+              {
+                "op": "call",
                 "symbol": "column_7"
               },
               {
@@ -661,11 +728,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_19"
+                "symbol": "column_21"
               },
               {
                 "op": "call",
-                "symbol": "column_21"
+                "symbol": "column_23"
               }
             ],
             "op": "split",
@@ -740,7 +807,14 @@
               {
                 "blocks": {
                   "expr": "int",
-                  "value": 2
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
                 },
                 "size": "absolute"
               },
@@ -1567,7 +1641,7 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -1659,7 +1733,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b3"
               },
               "op": "fill"
             },
@@ -1731,6 +1805,98 @@
       }
     ],
     "row_16": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-5-to-lane-5/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_18": [
       {
         "body": {
           "axis": "z",
@@ -1858,7 +2024,7 @@
         "weight": 1
       }
     ],
-    "row_18": [
+    "row_20": [
       {
         "body": {
           "axis": "z",
@@ -1929,7 +2095,7 @@
         "weight": 1
       }
     ],
-    "row_20": [
+    "row_22": [
       {
         "body": {
           "axis": "z",

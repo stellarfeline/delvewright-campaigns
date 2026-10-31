@@ -25,7 +25,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 from starter import (Model, barrel, chain, fence, grass_block, lantern, leaves, pane, pillar, run,  # noqa: E402
-                     slab, trapdoor)
+                     slab, stairs, trapdoor)
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # the town kit, one up
 import townkit  # noqa: E402
 
@@ -70,7 +70,9 @@ PALETTE = {
     # the yard: an anchor, rope coils, a handcart
     "anchor_shank": pane("iron_bars"),
     "anchor_crown": "minecraft:iron_block",
-    "cart_bed": slab("spruce", "top"),
+    # the cart's bed: two upside-down stairs back to back, each on its own end, resting on the yard
+    "cart_bed_w": stairs("spruce", "west", "top"),
+    "cart_bed_e": stairs("spruce", "east", "top"),
     "cart_wheel_n": trapdoor("dark_oak", "north", "bottom", True),
     "cart_wheel_s": trapdoor("dark_oak", "south", "bottom", True),
     "cart_handle": fence("spruce"),
@@ -184,8 +186,9 @@ def build(place):
     m.set(2, 1, 7, "coil")
     m.set(2, 2, 7, "coil_flat")
     m.set(3, 1, 7, "coil")
-    # the handcart: a slab bed on two wheels, its handle toward the store
-    m.box(4, 5, 1, 1, 9, 9, "cart_bed")
+    # the handcart: its bed resting on its two ends, its handle toward the store
+    m.set(4, 1, 9, "cart_bed_w")
+    m.set(5, 1, 9, "cart_bed_e")
     m.set(6, 1, 9, "cart_handle")
     for (x, z) in ((11, 9), (12, 9), (13, 9), (14, 9)):
         m.set(x, 1, z, "barrel")
