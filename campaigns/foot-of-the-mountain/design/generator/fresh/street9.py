@@ -32,7 +32,7 @@ def build(place):
         "verge": [
             {"block": "minecraft:coarse_dirt", "weight": 2},
             {"block": "minecraft:grass_block[snowy=false]", "weight": 3},
-            {"block": "minecraft:gravel", "weight": 1},
+            {"block": "minecraft:rooted_dirt", "weight": 1},
         ],
     })
     m.palette["floor"] = m.palette["verge"]  # the ground under the open sides' ring runs on as verge
