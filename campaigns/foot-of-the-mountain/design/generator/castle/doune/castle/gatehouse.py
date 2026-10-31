@@ -12,7 +12,7 @@ PALETTE = {
     "gate/kerb": "minecraft:cobblestone",
     "gate/fire": "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]",
     "gate/seat": "minecraft:smooth_stone_slab[type=bottom,waterlogged=false]",
-    "gate/shelf": "minecraft:smooth_stone_slab[type=bottom,waterlogged=false]",
+    "gate/shelf": "minecraft:smooth_stone",
     "gate/altar": "minecraft:smooth_quartz",
     "gate/basin": "minecraft:cauldron",
     "gate/privy": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
