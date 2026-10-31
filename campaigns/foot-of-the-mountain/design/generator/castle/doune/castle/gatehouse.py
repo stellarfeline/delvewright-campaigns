@@ -24,9 +24,9 @@ PALETTE = {
     "gate/chain": "minecraft:iron_chain[axis=y,waterlogged=false]",
     # timber
     "gate/table_leg": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "gate/table_top": "minecraft:oak_slab[type=bottom,waterlogged=false]",
+    "gate/table_top": "minecraft:oak_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
     "gate/round_leg": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "gate/round_top": "minecraft:dark_oak_slab[type=bottom,waterlogged=false]",
+    "gate/round_top": "minecraft:dark_oak_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
     "gate/bench": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "gate/stool": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "gate/chair": "minecraft:dark_oak_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
