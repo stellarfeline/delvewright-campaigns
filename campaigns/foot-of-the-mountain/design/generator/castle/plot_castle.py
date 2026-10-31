@@ -203,5 +203,5 @@ if not UNWALKED:
 if __name__ == "__main__":
     out = HERE.parent.parent.parent / "programs" / "castle.json"
     out.parent.mkdir(exist_ok=True)
-    out.write_text(json.dumps(PROGRAM, indent=2) + "\n", encoding="utf-8")
+    out.write_text(json.dumps(PROGRAM, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"wrote {out} ({out.stat().st_size} bytes), {X}x{Y - CUT}x{Z}")
