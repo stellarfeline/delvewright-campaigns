@@ -65,11 +65,7 @@ def build(place):
         "brick": "minecraft:bricks",
         "clay": "minecraft:clay",
         "path": "minecraft:dirt_path",
-        # the plot's ground: turf in the garden, worn earth in the yard
-        "floor": [
-            {"block": "minecraft:grass_block[snowy=false]", "weight": 5},
-            {"block": "minecraft:coarse_dirt", "weight": 1},
-        ],
+        # worn earth in the yard; the garden is the ground the plot is handed
         "yard_ground": [
             {"block": "minecraft:coarse_dirt", "weight": 3},
             {"block": "minecraft:gravel", "weight": 1},
@@ -148,7 +144,6 @@ def build(place):
     m.set(11, y, 5, campfire("west", lit=False))
     m.set(11, y + 1, 5, "brick")
     m.set(11, y + 2, 5, "brick")
-    m.box(11, 11, y + 3, HEAD, 5, 5, "brick")  # the chimney breast runs to the plate: no ledge under the roof
     for (x, z) in ((8, 8), (9, 8), (8, 9), (9, 9)):
         m.set(x, y, z, "minecraft:red_carpet")
     m.set(8, y + 1, 9, wall_torch("east"))

@@ -14,7 +14,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, run, stretch, verge_life, lamp  # noqa: E402
+from starter import Model, run, stretch, verge_life  # noqa: E402
 
 SEED = 9  # this stretch's own wear; the same on every run
 
@@ -35,26 +35,18 @@ def build(place):
             {"block": "minecraft:rooted_dirt", "weight": 1},
         ],
     })
-    m.palette["floor"] = m.palette["verge"]  # the ground under the open sides' ring runs on as verge
 
     def verge(m, frame):
-        verge_life(m, frame, things=("lamp", "bed", "bench", "lamp", "bed", "cart", "bed"), every=3)
-        # a second lamp, on the other verge and as far down the stretch as a
-        # free column allows from the lamp the round put down
-        y = place.datum.value
-        lit = [(x, z) for (x, yy, z), r in m.v.items() if "lantern" in str(r)]
-        taken = {(x, z) for (x, yy, z), r in m.v.items() if yy == y and r != "~air"}
-        free = sorted(c for c in frame["free"] if c not in taken)
-        if lit and free:
-            lx, lz = lit[0]
-            far = max(free, key=lambda c: (abs(c[0] - lx) > 1, abs(c[1] - lz), -c[0]))
-            lamp(m, far[0], far[1])
+        # a lamp at each end of the stretch, on opposite verges, and the
+        # rest of the verge furnished in turn between them
+        rows = frame["rows"]
+        verge_life(m, frame, things=("bed", "bench", "bed", "cart", "bed"), every=3,
+                   at=[("lamp", rows[2], "low"), ("lamp", rows[-3], "high")])
 
-    frame = stretch(m, place, "z", SEED, clear=5, fronts={}, verge=verge)
+    frame = stretch(m, place, seed=SEED, fronts={}, verge=verge)
     rows, c0, c1 = frame["rows"], frame["c0"], frame["c1"]
     x, z = frame["cell"](rows[len(rows) // 2], (c0 + c1) // 2)
     m.mark("node-street-9", x, z)
-    m.show("up")  # the lamps' lanterns stand on the frame's top course, in the open air
     m.finish()
     return m
 
