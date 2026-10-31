@@ -9,13 +9,6 @@
       },
       {
         "a": "room",
-        "b": "road-45-to-road-44-landing",
-        "class": "climb",
-        "rise": 4,
-        "via": "road-45-to-road-44-ladder"
-      },
-      {
-        "a": "road-45-to-road-44-landing",
         "b": "exterior",
         "class": "walk",
         "via": "road-45-to-road-44-way"
@@ -41,9 +34,6 @@
     ],
     "entry": "room",
     "spaces": {
-      "road-45-to-road-44-landing": {
-        "envelope": "open"
-      },
       "room": {
         "envelope": "open"
       }
@@ -56,9 +46,7 @@
     "ground-1": "minecraft:moss_block",
     "ground-2": "minecraft:podzol[snowy=false]",
     "ground-3": "minecraft:stone",
-    "ladder-south": "minecraft:ladder[facing=south,waterlogged=false]",
     "lamp": "minecraft:sea_lantern",
-    "pillar": "minecraft:cobblestone",
     "road": [
       {
         "block": "minecraft:cobblestone",
@@ -113,11 +101,15 @@
     "handed/seam/road-45-to-road-44/z1": 1
   },
   "rules": {
-    "column_15": [
+    "column_14": [
       {
         "body": {
           "axis": "y",
           "children": [
+            {
+              "op": "call",
+              "symbol": "row_7"
+            },
             {
               "op": "call",
               "symbol": "row_8"
@@ -141,10 +133,6 @@
             {
               "op": "call",
               "symbol": "row_13"
-            },
-            {
-              "op": "call",
-              "symbol": "row_14"
             }
           ],
           "op": "split",
@@ -283,14 +271,18 @@
         "weight": 1
       }
     ],
-    "column_22": [
+    "column_21": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_8"
+              "symbol": "row_7"
+            },
+            {
+              "op": "call",
+              "symbol": "row_15"
             },
             {
               "op": "call",
@@ -311,10 +303,6 @@
             {
               "op": "call",
               "symbol": "row_20"
-            },
-            {
-              "op": "call",
-              "symbol": "row_21"
             }
           ],
           "op": "split",
@@ -453,227 +441,26 @@
         "weight": 1
       }
     ],
-    "column_28": [
+    "column_23": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_8"
+              "symbol": "row_7"
             },
             {
               "op": "call",
-              "symbol": "row_23"
+              "symbol": "row_15"
             },
             {
               "op": "call",
-              "symbol": "row_24"
+              "symbol": "row_22"
             },
             {
               "op": "call",
-              "symbol": "row_25"
-            },
-            {
-              "op": "call",
-              "symbol": "row_26"
-            },
-            {
-              "op": "call",
-              "symbol": "row_27"
-            },
-            {
-              "op": "call",
-              "symbol": "row_20"
-            },
-            {
-              "op": "call",
-              "symbol": "row_21"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-43-to-road-44/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/y0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 4
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/y0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/y0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_31": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_29"
-            },
-            {
-              "op": "call",
-              "symbol": "row_16"
-            },
-            {
-              "op": "call",
-              "symbol": "row_30"
+              "symbol": "row_17"
             },
             {
               "op": "call",
@@ -686,10 +473,6 @@
             {
               "op": "call",
               "symbol": "row_20"
-            },
-            {
-              "op": "call",
-              "symbol": "row_21"
             }
           ],
           "op": "split",
@@ -828,14 +611,188 @@
         "weight": 1
       }
     ],
-    "column_33": [
+    "column_25": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_32"
+              "symbol": "row_24"
+            },
+            {
+              "op": "call",
+              "symbol": "row_15"
+            },
+            {
+              "op": "call",
+              "symbol": "row_22"
+            },
+            {
+              "op": "call",
+              "symbol": "row_17"
+            },
+            {
+              "op": "call",
+              "symbol": "row_18"
+            },
+            {
+              "op": "call",
+              "symbol": "row_19"
+            },
+            {
+              "op": "call",
+              "symbol": "row_20"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/road-43-to-road-44/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-43-to-road-44/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/y0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-43-to-road-44/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_27": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_26"
+            },
+            {
+              "op": "call",
+              "symbol": "row_8"
             },
             {
               "op": "call",
@@ -856,10 +813,6 @@
             {
               "op": "call",
               "symbol": "row_13"
-            },
-            {
-              "op": "call",
-              "symbol": "row_14"
             }
           ],
           "op": "split",
@@ -998,38 +951,34 @@
         "weight": 1
       }
     ],
-    "column_41": [
+    "column_34": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_34"
+              "symbol": "row_28"
             },
             {
               "op": "call",
-              "symbol": "row_35"
+              "symbol": "row_29"
             },
             {
               "op": "call",
-              "symbol": "row_36"
+              "symbol": "row_30"
             },
             {
               "op": "call",
-              "symbol": "row_37"
+              "symbol": "row_31"
             },
             {
               "op": "call",
-              "symbol": "row_38"
+              "symbol": "row_32"
             },
             {
               "op": "call",
-              "symbol": "row_39"
-            },
-            {
-              "op": "call",
-              "symbol": "row_40"
+              "symbol": "row_33"
             }
           ],
           "op": "split",
@@ -1134,29 +1083,6 @@
               "size": "absolute"
             },
             {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
               "size": "relative",
               "weight": {
                 "expr": "int",
@@ -1168,7 +1094,7 @@
         "weight": 1
       }
     ],
-    "column_7": [
+    "column_6": [
       {
         "body": {
           "axis": "y",
@@ -1196,10 +1122,6 @@
             {
               "op": "call",
               "symbol": "row_5"
-            },
-            {
-              "op": "call",
-              "symbol": "row_6"
             }
           ],
           "op": "split",
@@ -1304,29 +1226,6 @@
               "size": "absolute"
             },
             {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
               "size": "relative",
               "weight": {
                 "expr": "int",
@@ -1346,31 +1245,31 @@
             "children": [
               {
                 "op": "call",
-                "symbol": "column_7"
+                "symbol": "column_6"
               },
               {
                 "op": "call",
-                "symbol": "column_15"
+                "symbol": "column_14"
               },
               {
                 "op": "call",
-                "symbol": "column_22"
+                "symbol": "column_21"
               },
               {
                 "op": "call",
-                "symbol": "column_28"
+                "symbol": "column_23"
               },
               {
                 "op": "call",
-                "symbol": "column_31"
+                "symbol": "column_25"
               },
               {
                 "op": "call",
-                "symbol": "column_33"
+                "symbol": "column_27"
               },
               {
                 "op": "call",
-                "symbol": "column_41"
+                "symbol": "column_34"
               }
             ],
             "op": "split",
@@ -1599,26 +1498,6 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "int",
-                "value": 0
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
                   "name": "handed/seam/road-43-to-road-44/z1"
                 },
                 "op": "add",
@@ -1629,16 +1508,8 @@
               },
               "op": "gt",
               "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+                "expr": "int",
+                "value": 3
               }
             },
             {
@@ -1651,54 +1522,6 @@
               "rhs": {
                 "expr": "int",
                 "value": 0
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
               }
             },
             {
@@ -1811,26 +1634,6 @@
               "rhs": {
                 "expr": "int",
                 "value": 4
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/y1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/y0"
               }
             },
             {
@@ -1841,36 +1644,8 @@
               },
               "op": "gt",
               "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/y1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
-              },
-              "op": "gt",
-              "rhs": {
                 "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
+                "name": "handed/seam/road-45-to-road-44/y0"
               }
             },
             {
@@ -1881,16 +1656,8 @@
               },
               "op": "gt",
               "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
               }
             },
             {
@@ -1933,16 +1700,8 @@
               },
               "op": "gt",
               "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
               }
             },
             {
@@ -1961,20 +1720,12 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "int",
-                "value": 4
+                "value": 3
               },
               "op": "gt",
               "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
               }
             },
             {
@@ -1992,6 +1743,58 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 3
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/road-43-to-road-44/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "param",
                 "name": "handed/seam/road-43-to-road-44/z0"
               },
@@ -2000,12 +1803,12 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
+                  "name": "handed/seam/road-45-to-road-44/z1"
                 },
                 "op": "add",
                 "rhs": {
                   "expr": "int",
-                  "value": 2
+                  "value": 1
                 }
               }
             },
@@ -2032,22 +1835,10 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "handed/seam/road-43-to-road-44/z0"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "int",
-                "value": 4
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/y0"
+                  "name": "handed/seam/road-43-to-road-44/y1"
                 },
                 "op": "add",
                 "rhs": {
@@ -2064,23 +1855,15 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/y1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
+                "dim": "y",
+                "expr": "dim"
               },
               "op": "gt",
               "rhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/y0"
+                  "name": "handed/seam/road-43-to-road-44/y1"
                 },
                 "op": "add",
                 "rhs": {
@@ -2389,12 +2172,6 @@
             },
             {
               "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "road"
               },
               "op": "fill"
@@ -2446,44 +2223,13 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "int",
+                  "value": 3
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
                 }
               },
               "size": "absolute"
@@ -2512,7 +2258,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 7
+                  "value": 5
                 }
               },
               "size": "absolute"
@@ -2566,12 +2312,6 @@
             },
             {
               "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "setts"
               },
               "op": "fill"
@@ -2620,12 +2360,12 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
+                    "name": "handed/seam/road-45-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 },
                 "op": "sub",
@@ -2641,28 +2381,21 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 4
+                  "value": 3
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
+                    "name": "handed/seam/road-45-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -2676,7 +2409,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 3
                 }
               },
               "size": "absolute"
@@ -2729,10 +2462,11 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "pillar"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "road-45-to-road-44-way"
             },
             {
               "body": {
@@ -2772,12 +2506,12 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
+                    "name": "handed/seam/road-45-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 },
                 "op": "sub",
@@ -2800,12 +2534,12 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
+                    "name": "handed/seam/road-45-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 }
               },
@@ -2863,175 +2597,6 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "road-45-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-landing"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_14": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "side-south"
             }
           ],
@@ -3064,7 +2629,7 @@
         "weight": 1
       }
     ],
-    "row_16": [
+    "row_15": [
       {
         "body": {
           "axis": "z",
@@ -3072,12 +2637,6 @@
             {
               "material": {
                 "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
               },
               "op": "fill"
             },
@@ -3134,44 +2693,13 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
                   "expr": "int",
                   "value": 7
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z0"
                 }
               },
               "size": "absolute"
@@ -3240,7 +2768,7 @@
         "weight": 1
       }
     ],
-    "row_17": [
+    "row_16": [
       {
         "body": {
           "axis": "z",
@@ -3248,12 +2776,6 @@
             {
               "material": {
                 "role": "lamp"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
               },
               "op": "fill"
             },
@@ -3310,44 +2832,13 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
                   "expr": "int",
                   "value": 5
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z0"
                 }
               },
               "size": "absolute"
@@ -3416,7 +2907,7 @@
         "weight": 1
       }
     ],
-    "row_18": [
+    "row_17": [
       {
         "body": {
           "axis": "z",
@@ -3429,7 +2920,7 @@
             },
             {
               "material": {
-                "role": "pillar"
+                "role": "road"
               },
               "op": "fill"
             },
@@ -3480,16 +2971,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "int",
+                  "value": 3
                 },
                 "op": "sub",
                 "rhs": {
@@ -3501,24 +2984,8 @@
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3579,7 +3046,7 @@
         "weight": 1
       }
     ],
-    "row_19": [
+    "row_18": [
       {
         "body": {
           "axis": "z",
@@ -3592,7 +3059,13 @@
             },
             {
               "material": {
-                "role": "pillar"
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
               },
               "op": "fill"
             },
@@ -3634,12 +3107,157 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
+                    "name": "handed/seam/road-45-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-45-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-43-to-road-44/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 3
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-43-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-43-to-road-44/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_19": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "wall"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "road-45-to-road-44-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "road-43-to-road-44-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-45-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
                   }
                 },
                 "op": "sub",
@@ -3662,12 +3280,12 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
+                    "name": "handed/seam/road-45-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 }
               },
@@ -3795,174 +3413,6 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "road-45-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-landing"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_21": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "room"
             },
             {
@@ -4017,7 +3467,7 @@
         "weight": 1
       }
     ],
-    "row_23": [
+    "row_22": [
       {
         "body": {
           "axis": "z",
@@ -4027,22 +3477,6 @@
                 "role": "wall"
               },
               "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "ladder-south"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-ladder"
             },
             {
               "material": {
@@ -4097,245 +3531,14 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "int",
+                  "value": 5
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/road-45-to-road-44/z0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 9
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_24": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "ladder-south"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-ladder"
-            },
-            {
-              "material": {
-                "role": "road"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "setts"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -4403,518 +3606,7 @@
         "weight": 1
       }
     ],
-    "row_25": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "ladder-south"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-ladder"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 5
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_26": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "ladder-south"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-ladder"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 4
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_27": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-landing"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-45-to-road-44-ladder"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 4
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_29": [
+    "row_24": [
       {
         "body": {
           "axis": "z",
@@ -4966,6 +3658,192 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/road-45-to-road-44/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_26": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "road"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-2"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-43-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_28": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-2"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_29": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 9
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-43-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 9
                 }
               },
               "size": "absolute"
@@ -5059,368 +3937,6 @@
           "axis": "z",
           "children": [
             {
-              "material": {
-                "role": "wall"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "road"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "setts"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "road-43-to-road-44-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 7
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-43-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_32": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "ground-3"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "road"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "ground-2"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_34": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "ground-3"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "ground-2"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_35": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 9
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 9
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_36": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
               "body": {
                 "op": "void"
               },
@@ -5486,7 +4002,7 @@
         "weight": 1
       }
     ],
-    "row_37": [
+    "row_31": [
       {
         "body": {
           "axis": "z",
@@ -5557,7 +4073,7 @@
         "weight": 1
       }
     ],
-    "row_38": [
+    "row_32": [
       {
         "body": {
           "axis": "z",
@@ -5588,16 +4104,8 @@
           "sizes": [
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 2
-                }
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -5618,16 +4126,8 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "int",
+                  "value": 3
                 }
               },
               "size": "absolute"
@@ -5644,25 +4144,11 @@
         "weight": 1
       }
     ],
-    "row_39": [
+    "row_33": [
       {
         "body": {
           "axis": "z",
           "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
             {
               "body": {
                 "op": "void"
@@ -5701,7 +4187,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
+                    "name": "handed/seam/road-43-to-road-44/z1"
                   },
                   "op": "add",
                   "rhs": {
@@ -5713,68 +4199,6 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
                 }
               },
               "size": "absolute"
@@ -5822,117 +4246,30 @@
           "sizes": [
             {
               "blocks": {
+                "expr": "int",
+                "value": 3
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-43-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
-                "op": "add",
+                "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 2
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_40": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
+                  "value": 3
                 }
               },
               "size": "absolute"
@@ -5974,153 +4311,6 @@
               },
               "op": "claim",
               "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-west"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/road-45-to-road-44/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-43-to-road-44/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_6": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-west"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
             }
           ],
           "op": "split",
@@ -6167,7 +4357,7 @@
         "weight": 1
       }
     ],
-    "row_8": [
+    "row_7": [
       {
         "body": {
           "axis": "z",
@@ -6235,7 +4425,7 @@
         "weight": 1
       }
     ],
-    "row_9": [
+    "row_8": [
       {
         "body": {
           "axis": "z",
@@ -6246,12 +4436,6 @@
               },
               "op": "claim",
               "region": "room"
-            },
-            {
-              "material": {
-                "role": "pillar"
-              },
-              "op": "fill"
             },
             {
               "material": {
@@ -6306,44 +4490,13 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/road-45-to-road-44/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
                   "expr": "int",
                   "value": 7
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/road-45-to-road-44/z0"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z0"
                 }
               },
               "size": "absolute"
@@ -6373,6 +4526,146 @@
                 "rhs": {
                   "expr": "int",
                   "value": 9
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-43-to-road-44/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-43-to-road-44/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_9": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "road"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "setts"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "road-43-to-road-44-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/road-45-to-road-44/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-45-to-road-44/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-43-to-road-44/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 7
                 }
               },
               "size": "absolute"

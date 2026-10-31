@@ -295,6 +295,8 @@ def flight(m, place, stem):
     # rows counted from the top (the opening above) to the foot
     rows = list(range(z0, z1 + 1)) if face == "north" else list(range(z1, z0 - 1, -1))
     climb = "north" if face == "north" else "south"
+    if up and up[0].get("approach") is not None and up[0]["approach"]["ladder"] is not None:
+        m.climbs_to(up[0]["stem"])       # the steps are the way up: no ladder under the opening
     for x in range(x0, x1 + 1):
         top, half_hi, mid, half_lo = rows[0], rows[1], rows[2], rows[3]
         m.set(x, 1, top, "setts"); m.set(x, 2, top, "setts")
@@ -456,6 +458,8 @@ def road(m, place, stem):
         order = rows if top_end == rows[-1] else rows[::-1]      # from the foot up
         climb = face
         rise = up[0]["seam"]["rise"]
+        if up[0].get("approach") is not None and up[0]["approach"]["ladder"] is not None:
+            m.climbs_to(up[0]["stem"])   # the ramp is the way up: no ladder under the opening
         for i, a in enumerate(order):
             # rows 0..1 at grade; then stair, landing, stair, landing ... to the top
             if i < 2:
