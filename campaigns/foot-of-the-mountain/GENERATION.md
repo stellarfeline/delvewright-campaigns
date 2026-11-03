@@ -36,3 +36,5 @@ Answered by the planner for the owner, who plays this delve without seeing its s
 ## Languages
 
 `world.json` declares `zh-cn`. Its sidecar is written by the configured translation provider from the English documents.
+
+The sidecar is not written yet: two runs of `i18n-translate.py` against the configured provider stopped on the first batch of 19 keys with no complete reply (at the default 120 s deadline, then at 400 s), while the provider's model listing answered at once. `validate` and `analyze` therefore carry one refusal, `DW0180`, until the provider answers and the sidecar is written by it.
