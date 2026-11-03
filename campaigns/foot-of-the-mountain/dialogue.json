@@ -1,7 +1,936 @@
 {
   "campaign_id": "foot-of-the-mountain",
   "content": {
-    "dialogues": []
+    "dialogues": [
+      {
+        "nodes": [
+          {
+            "id": "dlg/hedda-welcome",
+            "options": [
+              {
+                "label": "We're not a troupe.",
+                "next": "dlg/hedda-not-troupe"
+              },
+              {
+                "label": "What's the play?",
+                "next": "dlg/hedda-legend"
+              },
+              {
+                "label": "Where do we go?",
+                "next": "dlg/hedda-missing"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/meet-hedda",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll do it.",
+                "tooltip": "Leave it to us: a Dragon, a Founder and a Loaf, by sunset."
+              }
+            ],
+            "text": "There you are: the troupe! Hedda Brask. I keep The Bell, and every year I direct the Founders' Play, here on the square, at sunset. Which is today. We have a stage. We do not have a Dragon, a Founder or a Loaf. Lady Agathe won't come down from the castle. Sanna, the net-mender, has run off to her aunt's lighthouse. And Oskar, the baker, can't bake, because Runa, the smith, has his oven door."
+          },
+          {
+            "id": "dlg/hedda-not-troupe",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hedda-welcome"
+              }
+            ],
+            "text": "Of course you're the troupe. You walked onto my square on the right afternoon with nothing to do. That is what a troupe is. Now, are you going to stand there, or are you going to help?"
+          },
+          {
+            "id": "dlg/hedda-legend",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hedda-welcome"
+              }
+            ],
+            "text": "The founding of Kelderby. A fisherwoman, the Founder, sails into the bay. A Dragon on the mountain says she may stay if she brings it one loaf a year. She bakes the first Mountain Loaf, the Dragon eats it and becomes the town's friend, and everyone goes to the tavern. The tavern isn't in the play. It's still true."
+          },
+          {
+            "id": "dlg/hedda-missing",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hedda-welcome"
+              }
+            ],
+            "text": "The Dragon is up at the castle, at the top of the long road from this square. The lighthouse is out on the headland: down the main street, along the lane near the bottom, then the cliff path. The bakery is just below the square, and the smithy is halfway down the main street, under the anvil sign."
+          },
+          {
+            "id": "dlg/hedda-errands",
+            "options": [
+              {
+                "label": "About Lady Agathe?",
+                "next": "dlg/hedda-agathe"
+              },
+              {
+                "label": "About Sanna?",
+                "next": "dlg/hedda-sanna"
+              },
+              {
+                "label": "Oskar and Runa?",
+                "next": "dlg/hedda-loaf"
+              },
+              {
+                "label": "Back to work."
+              }
+            ],
+            "text": "Still here? The sun isn't waiting. The Dragon is up at the castle, the Founder is out at the lighthouse, and the Loaf is somewhere between the bakery and the smithy. I'll hold the square."
+          },
+          {
+            "id": "dlg/hedda-agathe",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hedda-errands"
+              }
+            ],
+            "text": "She has played the Dragon for thirty years. She is my oldest friend and she roars like a landslide. If she says she won't come down, there's a reason, and it won't be the one she sent."
+          },
+          {
+            "id": "dlg/hedda-sanna",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hedda-errands"
+              }
+            ],
+            "text": "Sanna mends nets on the quay and knows every line of the Founder. She says them perfectly to the gulls. Faces are another matter."
+          },
+          {
+            "id": "dlg/hedda-loaf",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/hedda-errands"
+              }
+            ],
+            "text": "They have been arguing since they were nine. Runa mended Oskar's oven door, and now she won't give it back until he admits something he will never admit. Bread is involved. Mostly it's pride."
+          },
+          {
+            "id": "dlg/hedda-places",
+            "options": [
+              {
+                "label": "Curtain up!",
+                "next": "dlg/play-founder",
+                "requires_flags": [
+                  "flag/dragon-done",
+                  "flag/founder-done",
+                  "flag/loaf-done"
+                ]
+              },
+              {
+                "label": "Not yet.",
+                "next": "dlg/hedda-not-yet"
+              }
+            ],
+            "text": "Places! Places, everyone. The benches are filling and the sun is going down. The moment I have a Dragon, a Founder and a Loaf on this square, the curtain goes up. Have I?"
+          },
+          {
+            "id": "dlg/hedda-not-yet",
+            "text": "Then go and get them! I will hold the sun. I won't, but I will glare at it."
+          },
+          {
+            "id": "dlg/play-founder",
+            "options": [
+              {
+                "label": "Point at the buoys",
+                "next": "dlg/play-founder-buoys",
+                "requires_flags": [
+                  "flag/founder-buoys"
+                ]
+              },
+              {
+                "label": "Hum the work-song",
+                "next": "dlg/play-founder-song",
+                "requires_flags": [
+                  "flag/founder-song"
+                ]
+              },
+              {
+                "label": "Whisper her line",
+                "next": "dlg/play-founder-whisper"
+              }
+            ],
+            "text": "The curtain goes up on a painted sea. Sanna steps out as the Founder, opens her mouth, sees two hundred faces, and stops. The whole square waits. She looks at you."
+          },
+          {
+            "id": "dlg/play-founder-buoys",
+            "options": [
+              {
+                "label": "On with the play.",
+                "next": "dlg/play-dragon"
+              }
+            ],
+            "text": "Sanna finds the front row: six painted buoys, grinning on a bench. She talks to them, and she talks to them so well that the square forgets she ever stopped. 'I have crossed the cold sea,' she tells the buoys, 'and I mean to stay.'"
+          },
+          {
+            "id": "dlg/play-founder-song",
+            "options": [
+              {
+                "label": "On with the play.",
+                "next": "dlg/play-dragon"
+              }
+            ],
+            "text": "Sanna's hands start mending a net that isn't there, and the speech comes out as the work-song every net-mender on the quay knows. By the second verse the fishwives on the benches are singing it with her."
+          },
+          {
+            "id": "dlg/play-founder-whisper",
+            "options": [
+              {
+                "label": "On with the play.",
+                "next": "dlg/play-dragon"
+              }
+            ],
+            "text": "You whisper the line from the wings. Sanna says it after you, loud and clear, and then the next one without you. 'I have crossed the cold sea, and I mean to stay.'"
+          },
+          {
+            "id": "dlg/play-dragon",
+            "options": [
+              {
+                "label": "Cue the Dragon",
+                "next": "dlg/play-dragon-nest",
+                "requires_flags": [
+                  "flag/tail-nest-moved"
+                ]
+              },
+              {
+                "label": "Cue the Dragon",
+                "next": "dlg/play-dragon-dumpling",
+                "requires_flags": [
+                  "flag/tail-dumpling"
+                ]
+              },
+              {
+                "label": "Roar from the wings",
+                "next": "dlg/play-dragon-roar"
+              }
+            ],
+            "text": "Thunder on a sheet of tin. The lanterns along the stage flicker. The Dragon comes down from the mountain."
+          },
+          {
+            "id": "dlg/play-dragon-nest",
+            "options": [
+              {
+                "label": "On with the play.",
+                "next": "dlg/play-loaf"
+              }
+            ],
+            "text": "Lady Agathe sweeps on in the whole costume, tail and all, and roars like a landslide. Up in the castle courtyard, in the box you nailed up, a jackdaw sleeps through it."
+          },
+          {
+            "id": "dlg/play-dragon-dumpling",
+            "options": [
+              {
+                "label": "On with the play.",
+                "next": "dlg/play-loaf"
+              }
+            ],
+            "text": "Lady Agathe sweeps on, and behind her, wrapped in sailcloth, Dumpling floats in as the tail. The children in the front row scream with joy. Lady Agathe roars, and Dumpling, who has never heard her roar, hums louder."
+          },
+          {
+            "id": "dlg/play-dragon-roar",
+            "options": [
+              {
+                "label": "On with the play.",
+                "next": "dlg/play-loaf"
+              }
+            ],
+            "text": "You roar from the wings. Lady Agathe turns and roars back at you, twice as loud, and the square applauds the contest before the Dragon remembers the play."
+          },
+          {
+            "id": "dlg/play-loaf",
+            "options": [
+              {
+                "label": "Serve the Loaf",
+                "next": "dlg/play-loaf-oven",
+                "requires_flags": [
+                  "flag/loaf-oven"
+                ]
+              },
+              {
+                "label": "Serve the Loaf",
+                "next": "dlg/play-loaf-forge",
+                "requires_flags": [
+                  "flag/loaf-forge"
+                ]
+              }
+            ],
+            "text": "'Bring me my loaf!' roars the Dragon. The Founder turns to the wings, and the baker comes on with the Mountain Loaf."
+          },
+          {
+            "id": "dlg/play-loaf-oven",
+            "options": [
+              {
+                "label": "The curtain call",
+                "next": "dlg/play-curtain-call"
+              }
+            ],
+            "text": "Oskar carries the Mountain Loaf on in both arms, golden from his own oven with its own door. The Dragon takes one bite, then another, and then, against every rehearsal, the whole loaf. 'Friends,' says the Dragon, with its mouth full. That is the end of the play."
+          },
+          {
+            "id": "dlg/play-loaf-forge",
+            "options": [
+              {
+                "label": "The curtain call",
+                "next": "dlg/play-curtain-call"
+              }
+            ],
+            "text": "Runa carries the Mountain Loaf on, black as a horseshoe and twice as heavy. The Dragon bites. The Dragon's teeth do not. Lady Agathe tries again from the side. Somebody in the third row laughs, then everybody, and the play stops right there, one scene short of its end."
+          },
+          {
+            "id": "dlg/play-curtain-call",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/curtain-up",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Take a bow.",
+                "tooltip": "Step out in front of the whole town and bow."
+              }
+            ],
+            "text": "Hedda walks to the front of the stage and speaks to the benches, and to you. 'Kelderby, I have a confession. The troupe I hired never came. These are not actors. I knew it the moment they walked onto my square, and I said nothing, because they said yes. Give them a hand.'"
+          }
+        ],
+        "npc": "npc/hedda",
+        "root": "dlg/hedda-welcome"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/bernt-door",
+            "options": [
+              {
+                "label": "Is she well?",
+                "next": "dlg/bernt-well"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/ask-bernt",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Take us to her.",
+                "tooltip": "Ask Bernt to show you in to Lady Agathe."
+              }
+            ],
+            "text": "Visitors. Announced: several strangers, out of breath, at the door of Lady Agathe Holm. I am Bernt, her steward. You have come about the Dragon. Everybody has come about the Dragon."
+          },
+          {
+            "id": "dlg/bernt-well",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/bernt-door"
+              }
+            ],
+            "text": "Perfectly well. She has decided she is too old, and a jackdaw has decided the costume is a house. I could not say which she minds more. She will tell you herself. She tells everyone everything."
+          }
+        ],
+        "npc": "npc/bernt",
+        "root": "dlg/bernt-door"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/agathe-tail",
+            "options": [
+              {
+                "label": "Too old?",
+                "next": "dlg/agathe-old"
+              },
+              {
+                "label": "The jackdaw?",
+                "next": "dlg/agathe-jackdaw"
+              },
+              {
+                "label": "Who's Dumpling?",
+                "next": "dlg/agathe-dumpling"
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/tail-nest-moved",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/ask-lady-agathe",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/agathe",
+                  "text": "The nest goes to a box in the courtyard and the Dragon has its whole tail back.",
+                  "verb": "gains"
+                },
+                "label": "Move the nest",
+                "tooltip": "Carry the nest, eggs and all, to a box in the courtyard, and Lady Agathe wears the whole costume."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/tail-dumpling",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/ask-lady-agathe",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/dumpling",
+                  "text": "Dumpling becomes the Dragon's tail, and the jackdaw keeps her house.",
+                  "verb": "gains"
+                },
+                "label": "Dumpling as the tail",
+                "tooltip": "Leave the nest where it is. Dumpling floats behind her in sailcloth, and he is the tail."
+              }
+            ],
+            "text": "Hedda sent you. Of course she did. Sit, there's tea. Here is the trouble: a jackdaw has built her nest in the Dragon's tail and laid in it, and I will not turn a neighbour out of her house on the afternoon of a play. And here is the other trouble: I am seventy-eight, I am afraid I am too old to be a dragon, and I would rather not find out in front of the whole town."
+          },
+          {
+            "id": "dlg/agathe-old",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/agathe-tail"
+              }
+            ],
+            "text": "Dragons are old. That is rather the point of them. But a dragon is supposed to come down a mountain, and I am not sure my knees agree. I have been afraid of it since spring. There. I've said it, and you may tell Hedda, and she will shout."
+          },
+          {
+            "id": "dlg/agathe-jackdaw",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/agathe-tail"
+              }
+            ],
+            "text": "She came in through the window in March and chose the tail, because it is green and warm and full of wicker. Very sensible. She has four eggs. I have not named them yet."
+          },
+          {
+            "id": "dlg/agathe-dumpling",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/agathe-tail"
+              }
+            ],
+            "text": "My ghast, the big white one by the ceiling. He floats about the castle and hums. He follows me everywhere, which is lovely, and into the bath, which is not. He would follow me down to the square in a heartbeat, if anyone thought to ask him."
+          },
+          {
+            "id": "dlg/agathe-going",
+            "text": "I am down early to frighten the children while they're fresh. Tell Hedda the Dragon has come. Tell her I said I was afraid, too. She'll like that."
+          }
+        ],
+        "npc": "npc/agathe",
+        "root": "dlg/agathe-tail"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/dumpling-hum",
+            "text": "Dumpling hums at you, low and contented, and turns slowly so you can admire all of him."
+          },
+          {
+            "id": "dlg/dumpling-tail",
+            "text": "Dumpling, wrapped in sailcloth from end to end, hums at you. He has never been a tail before. He seems to think it is going well."
+          }
+        ],
+        "npc": "npc/dumpling",
+        "root": "dlg/dumpling-hum"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/inga-door",
+            "options": [
+              {
+                "label": "Buoys?",
+                "next": "dlg/inga-buoys"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-inga",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Can we see her?",
+                "next": "dlg/inga-go-on"
+              }
+            ],
+            "text": "You'll be from Hedda. Sanna's in here with me. Been here since noon, talking to buoys."
+          },
+          {
+            "id": "dlg/inga-buoys",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/inga-door"
+              }
+            ],
+            "text": "Six of them, with faces painted on. She says she can say her lines to anything that doesn't look back. She's right. I've heard her. Word perfect."
+          },
+          {
+            "id": "dlg/inga-go-on",
+            "text": "Go on. Gently. She's braver than she thinks. Don't tell her I said so."
+          }
+        ],
+        "npc": "npc/inga",
+        "root": "dlg/inga-door"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/sanna-buoys",
+            "options": [
+              {
+                "label": "Why buoys?",
+                "next": "dlg/sanna-why"
+              },
+              {
+                "label": "Say a line?",
+                "next": "dlg/sanna-line"
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/founder-buoys",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/talk-to-sanna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/sanna",
+                  "text": "The painted buoys will sit in the front row for Sanna.",
+                  "verb": "gains"
+                },
+                "label": "Bring the buoys",
+                "tooltip": "The buoys go down to the square and sit in the front row, and Sanna speaks to them."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/founder-song",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/talk-to-sanna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/sanna",
+                  "text": "Sanna will sing the Founder's lines as the net-mending song.",
+                  "verb": "gains"
+                },
+                "label": "Make it a song",
+                "tooltip": "Turn the Founder's speeches into the net-mending song. Her hands know it already."
+              }
+            ],
+            "text": "Oh! People. Faces. Hello. 'I have crossed the cold sea—' sorry. I'm the Founder. I know every line right up until somebody looks at me, and then I know nothing at all. I'm frightened of the square. I'm frightened of two hundred faces. These six are fine. They're buoys."
+          },
+          {
+            "id": "dlg/sanna-why",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/sanna-buoys"
+              }
+            ],
+            "text": "They don't blink. They don't whisper to the person next to them. They don't know my mother. I painted the faces so they'd feel like an audience, and then I made them all look pleased."
+          },
+          {
+            "id": "dlg/sanna-line",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/sanna-buoys"
+              }
+            ],
+            "text": "'I have crossed the cold sea in a boat no bigger than a door, and I mean to stay.' See? Fine. Now look at me. No, look at me. Gone. All of it. Even the door."
+          }
+        ],
+        "npc": "npc/sanna",
+        "root": "dlg/sanna-buoys"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/oskar-door",
+            "options": [
+              {
+                "label": "Why won't she?",
+                "next": "dlg/oskar-why"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/ask-oskar",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll see Runa.",
+                "tooltip": "Go down the main street to the smithy and talk to Runa about the door."
+              }
+            ],
+            "text": "A Mountain Loaf? I'd love to bake you a Mountain Loaf. I have the flour, the honey, the caraway and forty years. What I don't have is my oven door, because Runa the smith mended it in spring and hung it over her forge like a stag's head. An oven without a door is a fireplace with ambitions."
+          },
+          {
+            "id": "dlg/oskar-why",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/oskar-door"
+              }
+            ],
+            "text": "She wants somebody to say a forge bakes better than an oven. A forge! She baked a loaf in hers once, when we were nine. We used it to stop the mill door banging. I'll say it when the sea is dry."
+          },
+          {
+            "id": "dlg/oskar-news",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/tell-oskar",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "About the Loaf.",
+                "tooltip": "Tell Oskar where his Mountain Loaf is going to be baked."
+              }
+            ],
+            "text": "Well? Don't stand in the door letting the heat out. What's happened?"
+          }
+        ],
+        "npc": "npc/oskar",
+        "root": "dlg/oskar-door"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/runa-forge",
+            "options": [
+              {
+                "label": "Bakes better?",
+                "next": "dlg/runa-bakes"
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/loaf-oven",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/ask-runa",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/oskar",
+                  "text": "Runa hands back the oven door, and the Loaf will be baked in Oskar's oven.",
+                  "verb": "gains"
+                },
+                "label": "A forge bakes better",
+                "tooltip": "Say it. Runa takes the door down, and you carry it back to Oskar's oven."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/loaf-forge",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/ask-runa",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/runa",
+                  "text": "The Mountain Loaf goes into Runa's forge.",
+                  "verb": "gains"
+                },
+                "label": "Bake it here",
+                "tooltip": "Bake the Mountain Loaf in Runa's forge. She swears it's quicker."
+              }
+            ],
+            "text": "Come for the door, have you? Beautiful door. I mended it. Best thing in my forge. Oskar can have it back the moment somebody admits that a forge bakes better than an oven. Not him, even. Anybody. I'm not proud."
+          },
+          {
+            "id": "dlg/runa-bakes",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/runa-forge"
+              }
+            ],
+            "text": "Hotter. Faster. A loaf in an oven takes an hour. A loaf in my forge takes four minutes. What comes out is a loaf. Mostly. You can knock with it."
+          }
+        ],
+        "npc": "npc/runa",
+        "root": "dlg/runa-forge"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/fenna-chorus",
+            "options": [
+              {
+                "label": "Where are they?",
+                "next": "dlg/fenna-where"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/ask-fenna",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll find them.",
+                "tooltip": "Find Kettil, Mari and Sverre and bring them back to the chorus."
+              }
+            ],
+            "text": "Haul away, haul away— oh, hello. I lead the shanty chorus for the sea crossing in the play, and my chorus has gone. Kettil is our cooper, Mari keeps the net loft, and Sverre is the boatwright: three voices, all somewhere in town, none of them here."
+          },
+          {
+            "id": "dlg/fenna-where",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/fenna-chorus"
+              }
+            ],
+            "text": "Kettil's at his cooperage, lower down the main street. He sings, but only where nobody can see him. Mari's at the net loft near the bottom of the street; she's the high notes. Sverre's at the boatwright's shed along the side lane. He'll sing if you ask him properly. By name. He's very particular."
+          }
+        ],
+        "npc": "npc/fenna",
+        "root": "dlg/fenna-chorus"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/kettil-cooper",
+            "options": [
+              {
+                "label": "Close your eyes?",
+                "next": "dlg/kettil-eyes"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-kettil",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Sing in a barrel",
+                "tooltip": "Sing from inside a barrel at the back of the stage, where nobody can see you."
+              }
+            ],
+            "text": "Knock, knock. Fenna sent you. I'll sing. I can't sing if anyone's looking at me. I've tried. My voice goes into my boots. Knock, knock."
+          },
+          {
+            "id": "dlg/kettil-eyes",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/kettil-cooper"
+              }
+            ],
+            "text": "Then I can't see them, but they can still see me. That's the half that matters. Knock, knock."
+          }
+        ],
+        "npc": "npc/kettil",
+        "root": "dlg/kettil-cooper"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/mari-loft",
+            "options": [
+              {
+                "label": "The high bit?",
+                "next": "dlg/mari-high"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-mari",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Come and sing",
+                "tooltip": "Ask Mari to come back and sing the harmony in the chorus."
+              }
+            ],
+            "text": "Fenna sent you! I knew she would, I told her she'd send someone, she said she wouldn't, ha! I only came up here to practise the high bit where nobody would complain. The gulls complained."
+          },
+          {
+            "id": "dlg/mari-high",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/mari-loft"
+              }
+            ],
+            "text": "Top of the third verse. Nobody else can reach it. Kettil tried once and his cat left home. Ha!"
+          }
+        ],
+        "npc": "npc/mari",
+        "root": "dlg/mari-loft"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/sverre-boat",
+            "options": [
+              {
+                "label": "Will you sing?",
+                "next": "dlg/sverre-who"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/find-sverre",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Sing, Sverre?",
+                "next": "dlg/sverre-yes",
+                "tooltip": "Ask him properly, by his name."
+              }
+            ],
+            "text": "Measure twice, cut once. Fenna sent you to ask me to sing. Then ask."
+          },
+          {
+            "id": "dlg/sverre-who",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/sverre-boat"
+              }
+            ],
+            "text": "Keel first, then the ribs. Who are you asking? There's a lot of people in this shed. There's me."
+          },
+          {
+            "id": "dlg/sverre-yes",
+            "text": "Asked by name. Properly. That's how a hull holds together. I'll be there."
+          }
+        ],
+        "npc": "npc/sverre",
+        "root": "dlg/sverre-boat"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/elin-loom",
+            "options": [
+              {
+                "label": "Why not?",
+                "next": "dlg/elin-why"
+              },
+              {
+                "effects": [
+                  {
+                    "objective": "obj/ask-elin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll see Vidar.",
+                "tooltip": "Go to the guildhall on the main street and talk to Vidar Foss about the curtain."
+              }
+            ],
+            "text": "You're the troupe? Then you can help me with the curtain. I've woven the play a new one: red, with the Dragon and the Founder's boat in gold, nine hundred threads to the hand. I want it hung on the square tonight. Vidar Foss at the guildhall says I can't."
+          },
+          {
+            "id": "dlg/elin-why",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/elin-loom"
+              }
+            ],
+            "text": "He says it blocks a fire lane. He says a lot of things. He's usually right, which is the worst thing about him."
+          },
+          {
+            "id": "dlg/elin-news",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/tell-elin",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "He was right.",
+                "tooltip": "Tell Elin to hang it three paces back from the stage, and the fire lane stays clear."
+              }
+            ],
+            "text": "Well? Did he say no again? He says no beautifully."
+          }
+        ],
+        "npc": "npc/elin",
+        "root": "dlg/elin-loom"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/vidar-hall",
+            "options": [
+              {
+                "label": "Read by-law nine?",
+                "next": "dlg/vidar-law"
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/bylaw-heard",
+                    "type": "set-flag"
+                  },
+                  {
+                    "objective": "obj/ask-vidar",
+                    "type": "complete-objective"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/vidar",
+                  "text": "The party learn where the curtain may hang without blocking the fire lane.",
+                  "verb": "learns"
+                },
+                "label": "We'll move it back.",
+                "tooltip": "Agree to hang the curtain three paces back from the stage, so the fire lane stays clear."
+              }
+            ],
+            "text": "I move that you state your business. Ah, the curtain. I move that it is a very fine curtain. I also move that, hung where Elin wants it, it blocks the fire lane on the square, which by-law nine keeps four paces wide. I don't make the by-laws. I only love them."
+          },
+          {
+            "id": "dlg/vidar-law",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/vidar-hall"
+              }
+            ],
+            "text": "'The way from the well to the cathedral steps shall be kept four paces clear on the night of any assembly, play or wedding, against fire.' Hang her curtain three paces back and nobody burns. I'd love to see it hung. I've seen every play for forty years. Don't tell Hedda."
+          }
+        ],
+        "npc": "npc/vidar",
+        "root": "dlg/vidar-hall"
+      }
+    ]
   },
   "dsl_version": "0.69.0",
   "stage": "dialogue"
