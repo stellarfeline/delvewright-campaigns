@@ -1,16 +1,185 @@
 {
   "campaign_id": "foot-of-the-mountain",
   "content": {
-    "finale": "quest/down-to-the-harbour",
+    "branch_points": [
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/tail-nest-moved"
+            ],
+            "id": "branch/nest-moved",
+            "leads_to": "quest/opening-night"
+          },
+          {
+            "flags": [
+              "flag/tail-dumpling"
+            ],
+            "id": "branch/dumpling-tail",
+            "leads_to": "quest/opening-night"
+          }
+        ],
+        "forks_on": [
+          "flag/tail-nest-moved",
+          "flag/tail-dumpling"
+        ],
+        "id": "branch-point/the-tail",
+        "opens_at": "quest/the-dragon"
+      },
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/loaf-oven"
+            ],
+            "id": "branch/oven-loaf",
+            "leads_to": "quest/opening-night"
+          },
+          {
+            "flags": [
+              "flag/loaf-forge"
+            ],
+            "id": "branch/forge-loaf",
+            "leads_to": "ending/no-ending"
+          }
+        ],
+        "forks_on": [
+          "flag/loaf-oven",
+          "flag/loaf-forge"
+        ],
+        "id": "branch-point/the-loaf",
+        "opens_at": "quest/the-loaf"
+      },
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/chorus-done"
+            ],
+            "id": "branch/chorus-sings",
+            "leads_to": "quest/opening-night"
+          },
+          {
+            "flags": [],
+            "id": "branch/no-chorus",
+            "leads_to": "quest/opening-night"
+          }
+        ],
+        "forks_on": [
+          "flag/chorus-done"
+        ],
+        "id": "branch-point/the-chorus",
+        "opens_at": "quest/the-chorus"
+      }
+    ],
+    "endings_read": {
+      "at_least": 3,
+      "deeds_at_least": 1
+    },
+    "finale": "quest/opening-night",
     "quests": [
       {
         "act": 1,
         "area": "area/site",
         "depends_on": [],
-        "goal": "Walk the town from the square down to the harbour.",
-        "id": "quest/down-to-the-harbour",
+        "goal": "Be taken for the travelling troupe and hear what the play is missing.",
+        "id": "quest/the-troupe",
         "mandatory": true,
-        "npcs": []
+        "npcs": [
+          "npc/hedda"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-troupe"
+        ],
+        "goal": "Climb the castle road and bring the town its Dragon.",
+        "id": "quest/the-dragon",
+        "mandatory": true,
+        "npcs": [
+          "npc/bernt",
+          "npc/agathe",
+          "npc/dumpling"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-troupe"
+        ],
+        "goal": "Go out to the lighthouse and bring the town its Founder.",
+        "id": "quest/the-founder",
+        "mandatory": true,
+        "npcs": [
+          "npc/inga",
+          "npc/sanna"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-troupe"
+        ],
+        "goal": "Settle the oven door between the baker and the smith, and bring the town its Loaf.",
+        "id": "quest/the-loaf",
+        "mandatory": true,
+        "npcs": [
+          "npc/oskar",
+          "npc/runa"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-troupe"
+        ],
+        "goal": "Gather the tavern's scattered shanty chorus.",
+        "id": "quest/the-chorus",
+        "mandatory": false,
+        "npcs": [
+          "npc/fenna",
+          "npc/kettil",
+          "npc/mari",
+          "npc/sverre"
+        ]
+      },
+      {
+        "act": 2,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-troupe"
+        ],
+        "goal": "Get the weaver's new curtain hung on the square, by-law and all.",
+        "id": "quest/the-curtain",
+        "mandatory": false,
+        "npcs": [
+          "npc/elin",
+          "npc/vidar"
+        ]
+      },
+      {
+        "act": 3,
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-dragon",
+          "quest/the-founder",
+          "quest/the-loaf"
+        ],
+        "goal": "Put on the Founders' Play at sunset.",
+        "id": "quest/opening-night",
+        "mandatory": true,
+        "npcs": [
+          "npc/hedda",
+          "npc/agathe",
+          "npc/sanna",
+          "npc/oskar",
+          "npc/runa"
+        ]
       }
     ]
   },
