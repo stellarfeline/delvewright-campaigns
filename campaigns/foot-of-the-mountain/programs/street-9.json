@@ -17,6 +17,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "street-9-to-cottages-3-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-east"
       },
       {
@@ -128,6 +134,12 @@
     "handed/seam/flight-9-to-street-9/y1": 4,
     "handed/seam/flight-9-to-street-9/z0": 1,
     "handed/seam/flight-9-to-street-9/z1": 1,
+    "handed/seam/street-9-to-cottages-3/x0": 0,
+    "handed/seam/street-9-to-cottages-3/x1": 0,
+    "handed/seam/street-9-to-cottages-3/y0": 1,
+    "handed/seam/street-9-to-cottages-3/y1": 4,
+    "handed/seam/street-9-to-cottages-3/z0": 3,
+    "handed/seam/street-9-to-cottages-3/z1": 12,
     "handed/seam/street-9-to-flight-10/x0": 2,
     "handed/seam/street-9-to-flight-10/x1": 8,
     "handed/seam/street-9-to-flight-10/y0": 1,
@@ -556,8 +568,16 @@
             "sizes": [
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/x1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "size": "absolute"
               },
@@ -570,8 +590,16 @@
                   },
                   "op": "sub",
                   "rhs": {
-                    "expr": "int",
-                    "value": 1
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/street-9-to-cottages-3/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
                   }
                 },
                 "size": "absolute"
@@ -753,12 +781,52 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
-                "name": "handed/seam/street-9-to-flight-10/z0"
+                "name": "handed/seam/street-9-to-cottages-3/z0"
               },
               "op": "gt",
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/flight-9-to-street-9/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-9-to-cottages-3/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/street-9-to-flight-10/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -800,13 +868,25 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "int",
-                "value": 3
+                "expr": "param",
+                "name": "handed/seam/street-9-to-flight-10/z0"
               },
               "op": "gt",
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/flight-9-to-street-9/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 5
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-9-to-cottages-3/z0"
               }
             },
             {
@@ -844,8 +924,8 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "int",
-                "value": 3
+                "expr": "param",
+                "name": "handed/seam/street-9-to-cottages-3/z0"
               },
               "op": "gt",
               "rhs": {
@@ -864,13 +944,33 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "int",
+                "value": 4
+              },
+              "op": "gt",
+              "rhs": {
                 "expr": "param",
-                "name": "handed/seam/street-9-to-flight-10/z0"
+                "name": "handed/seam/street-9-to-cottages-3/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               },
               "op": "gt",
               "rhs": {
                 "expr": "int",
-                "value": 13
+                "value": 12
               }
             },
             {
@@ -936,13 +1036,73 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "int",
+                "value": 6
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-9-to-cottages-3/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 6
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "param",
                 "name": "handed/seam/flight-9-to-street-9/x0"
               },
               "op": "gt",
               "rhs": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -1041,7 +1201,31 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
+                "name": "handed/seam/street-9-to-cottages-3/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
                 "name": "handed/seam/street-9-to-flight-10/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-9-to-street-9/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/street-9-to-cottages-3/y0"
               },
               "op": "eq",
               "rhs": {
@@ -1185,6 +1369,20 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "street-9-to-cottages-3-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-west"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -1202,12 +1400,58 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/street-9-to-flight-10/z0"
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/flight-9-to-street-9/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-flight-10/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1273,8 +1517,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1286,8 +1530,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 10
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -1300,8 +1560,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 13
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1385,8 +1653,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1398,8 +1666,16 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 3
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -1419,8 +1695,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
               },
               "size": "absolute"
             },
@@ -1433,8 +1725,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 13
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1512,8 +1812,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1525,8 +1825,16 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 2
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -1539,8 +1847,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 7
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 6
+                }
               },
               "size": "absolute"
             },
@@ -1553,8 +1877,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 13
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1656,8 +1988,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1669,8 +2001,16 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 3
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -1711,8 +2051,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
               },
               "size": "absolute"
             },
@@ -1725,8 +2081,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 13
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1893,8 +2257,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1914,8 +2278,16 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -1970,8 +2342,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
               },
               "size": "absolute"
             },
@@ -1984,8 +2372,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 13
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -2260,8 +2656,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -2273,8 +2669,16 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 2
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -2469,8 +2873,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
                 },
                 "op": "sub",
                 "rhs": {
@@ -2490,8 +2894,16 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-9-to-cottages-3/z0"
+                }
               },
               "size": "absolute"
             },
@@ -2546,8 +2958,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 12
+                }
               },
               "size": "absolute"
             },
@@ -2560,8 +2988,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 13
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/street-9-to-cottages-3/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"

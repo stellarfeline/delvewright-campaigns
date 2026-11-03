@@ -171,6 +171,14 @@ REFS = {
          "shows": "A community-built Minecraft harbour town's fishermen's village: small cottages close together near the water.",
          "terms": "CC BY 4.0 (ideas only)"},
     ],
+    "node/cottages-3": [
+        {"url": "https://en.wikipedia.org/wiki/True%27s_Yard_Fisherfolk_Museum",
+         "shows": "Fisherfolk cottages of one room down and one up, a whole family in each, in a row off a shared yard.",
+         "terms": "CC BY-SA 4.0 (ideas only)"},
+        {"url": "https://sketchfab.com/3d-models/medieval-port-city-e66255aa77c041ed9517426ee0926856",
+         "shows": "A community-built Minecraft harbour town's fishermen's village: small cottages close together near the water.",
+         "terms": "CC BY 4.0 (ideas only)"},
+    ],
     "node/fishmonger": [
         {"url": "https://buildinghistory.org/buildings/shops.shtml",
          "shows": "How a medieval shop front was built: a wide unglazed opening whose upper shutter hooks up as an awning and whose lower one folds down as the counter, the living or working space behind.",
@@ -383,7 +391,8 @@ for k in range(1, NFL + 1):
     w = STRETCH_W[k]
     box(sg, (w, SEG_L), floor, OPEN(STREET_AIR if k in AIR_STRETCHES else 8), "a stretch of the main street",
         f"Stretch {k} of the main street, walk plane {floor}: cobbles with a "
-        "kennel, the plots' fronts on both sides" + (", widening into the market before the guildhall." if k == 4 else "."),
+        + ("kennel; the cottages' gardens open onto its west side, and its east verge onto the ground beyond." if k == 9 else
+         "kennel, the plots' fronts on both sides" + (", widening into the market before the guildhall." if k == 4 else ".")),
         way={"axis": "z", "clear": 5})
     seam(fl, sg, "south", 0, (w - STREET_W) // 2, "contact", "the street runs on at grade")
     segs.append(sg)
@@ -742,6 +751,7 @@ MAIN = [  # (street, face, theme, dx, dz, at): a plot stays inside its stretch
     ("street-6", "west", "chandler", 20, 10, 2), ("street-6", "east", "cooper", 22, 10, 2),
     ("street-7", "west", "fishmonger", 20, 10, 2), ("street-7", "east", "tannery", 22, 10, 2),
     ("street-8", "west", "netloft", 20, 10, 2),
+    ("street-9", "west", "cottages-3", 14, 10, 2),
 ]
 LANE = [  # (lane, face, theme, at, dx, dz)
     ("lane-3", "north", "carpenter", 2, 16, 16), ("lane-3", "south", "potter", 2, 16, 11),
