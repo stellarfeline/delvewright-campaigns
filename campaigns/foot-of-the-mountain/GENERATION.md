@@ -153,3 +153,47 @@ On the build that ships, manifest `a0f583083c4c2de725be6cda7b115819a1107fe605e07
 - The 32 world chronicles are byte-identical to the previous build's, so the step 11 table stands.
 - Visual review of the four new places, one frame each from outside: each reads as what it is at playable scale.
 - Staging gate: **STAGEABLE**, admitted with no override (`red_count` 0; 78 of 159 classes inapplicable).
+
+## Round 3 (the quests rewritten so the town is played, not walked)
+
+The owner played the previous version to an ending in about twenty minutes and found every line the same: walk to a place, talk, walk on. The map, the cast and their faces stay; the quests, their dialogue and the side content are re-authored from step 3, on the skill pages at engine `main` @ 71536aeb3 against the released `delvec` 1.15.0.
+
+### Research: a town's quest content (round 3)
+
+The question: what fills a hub town with play when nobody fights, and how much of it a two-to-three-hour evening needs. Each rule below says whether it is **cited** (a source says it) or **authored** (this campaign's own judgement from the cited material). The sources are design writing and published talks; none is a licensed asset, and nothing here takes their content, names or quests.
+
+#### Sources
+
+- [S1] J. Doran and I. Parberry, "A Prototype Quest Generator Based on a Structural Analysis of Quests from Four MMORPGs", PCGames 2011 — https://ianparberry.com/pubs/pcg2011.pdf (read: Tables 1–4).
+- [S2] J. Alexander, "The Three Clue Rule", The Alexandrian — https://thealexandrian.net/wordpress/1101/roleplaying-games/three-clue-rule-part-3-the-three-clue-rule ; and "Running Mysteries: The Two Types of Leads" — https://thealexandrian.net/wordpress/50095/roleplaying-games/running-mysteries-the-two-types-of-leads
+- [S3] H. Smith and M. Worch, "What Happened Here? Environmental Storytelling", GDC 2010 — https://gdcvault.com/play/1012647/What-Happened-Here-Environmental
+- [S4] W. Spector, "Postmortem: Ion Storm's Deus Ex", Game Developer — https://www.gamedeveloper.com/view/feature/131523/postmortem_ion_storms_deus_ex.php ; and the GDC 2017 Classic Game Postmortem — https://gdcvault.com/play/1024338/Classic-Game-Postmortem-Deus-Ex
+- [S5] PC Gamer, "Larian gave Baldur's Gate 3 its acclaimed reactivity by approaching it as 'weird Dungeon Masters'" — https://pcgamer.com/games/rpg/larian-gave-baldurs-gate-3-its-acclaimed-reactivity-by-approaching-it-as-weird-dungeon-masters ; and "Larian boss says we should think of Baldur's Gate 3's entire first act as the tutorial" — https://pcgamer.com/larian-boss-says-we-should-think-of-baldurs-gate-3s-entire-first-act-as-the-tutorial (press accounts of interviews; the transcripts were not read).
+- [S6] The Escapist, Fallout: New Vegas reputation interview (Sawyer) — https://www.escapistmagazine.com/?p=76707 ; and the community record of the Fame/Infamy mechanics — https://fallout-archive.fandom.com/wiki/Fallout:_New_Vegas_reputations
+- [S7] "Adding life to worlds with dialogue barks", Game Developer — https://www.gamedeveloper.com/design/adding-life-to-worlds-with-dialogue-barks ; E. Ruskin, "AI-driven Dynamic Dialog through Fuzzy Pattern Matching", GDC 2012 (summary: https://emshort.blog/tag/valve/).
+- [S8] The engine's own `docs/reference/web-narrative.md` (§3, §4), for the hub, the spokes and endings that read the run.
+
+#### What the sources say
+
+- **A quest is a sequence of atomic actions, and a town's quests differ by which actions they are made of** (cited, S1): over 750 quests from four games reduce to nine NPC motivations, each served by a few strategies, each a short sequence of atomic actions — goto, get, give, listen, report, use, repair, exchange, spy, steal, damage, escort. A talk-only line is the strategy "goto, listen, goto, report" repeated; S1's own table carries it only under Knowledge ("Interview NPC") and Serenity ("Check on NPC").
+- **Without combat the action set is get, give, use, repair, exchange, listen, spy and goto** (authored, from S1 Table 4 with the damage, kill, defend and escort actions struck out).
+- **An investigation wants at least three clues to each conclusion it needs, because a player misses, ignores or misreads them** (cited, S2); **and a problem the adventure needs solved wants at least three solutions** (cited, S2, the chokepoint extension).
+- **One problem with several solutions, each with its own consequence later** (cited, S4: "problems, not puzzles"; every problem several solutions; the further course reflects which was taken). **Larian's "n+1": a solution for the player who broke everything** (cited, S5).
+- **A scene the player reads for what happened is a story told by the place; the elements draw from the main premise** (cited, S3).
+- **Overheard banter and thinking aloud are the cheapest way to make a place feel lived in, and they can point at a quest** (cited, S7); **a line matched to the world state makes the ambient voice notice what the player did** (cited, S7, Ruskin).
+- **Reputation is what a faction knows about you; pleasing one side angers another** (cited, S6).
+- **A hub's first act is a long tutorial that teaches by escalating its challenges, always with more than one way through** (cited, S5).
+- **An ending composed of per-thread outcomes, seeded early and read late** (cited, S8 §3).
+
+#### Rules this campaign adopts
+
+1. **Each line has a body that is not talk** (authored, from S1): the castle is a search (get), the lighthouse a hide-and-seek (spy, get), the loaf a gathering with a vessel on the mountain (get, use) and a door won one of four ways (exchange, steal, listen, report), the chorus a hunt by ear (listen) and a bell (use), the curtain a records search and a measurement (get, goto) ending in a side taken. Talk opens and closes a line; it is never the body.
+2. **Every needed find has three ways to be found** (authored, from S2): its hint, the line's own speaker who names the place again, and the thing itself, which stands out in its place. A clue that unlocks a better answer is never the only answer: the plain answer stays.
+3. **The door the loaf needs has four ways** (authored, from S2 and S4): talk Runa round with what a found page tells, trade her what was found on the mountain, lift it off its hook while she is busy at the anvil, or admit what she wants admitted (the n+1 of S5: always open). Runa remembers which, and says so later.
+4. **Side content is exploration that pays** (authored, from S3, S7): eight overheard scenes, two of them pointing at a strand; nine finds that each tell a piece of the town's story and pay a penny, five of them opening a better line with someone; a stall that sells for pennies.
+5. **The curtain asks the party to take a side** (authored, from S6): either way the curtain is settled and the applause counted, and the side not taken says so afterwards.
+6. **No combat, no fail state** (pinned by the owner); a wrong move costs a line of dialogue, never progress.
+
+#### How long, and how it is estimated
+
+Estimated, not measured; the measurement is the owner's next playtest. The method: the previous version's owner playthrough, 18 objectives (16 talks, 2 reaches) and the route the build measured (2380 blocks), took about 20 minutes, so a talk-and-walk objective costs about one minute and the route is walked at about twice the engine's 60 blocks a minute. On that rate, each activity is budgeted from what the player does at it (authored): a talk 1–2 min (the new trees are about twice as long), a find with its search 3–5 min, a use with its vessel 2 min, an overheard scene 0.5 min, a side find with its reading 1–2 min, a shop visit 2 min, plus the new route at 120 blocks a minute. The per-line sums and the total are in `DESIGN.md`, *How long*.
