@@ -56,24 +56,24 @@ PALETTE = {
     "pane": "minecraft:glass_pane[east=false,north=false,south=false,waterlogged=false,west=false]",
     # the boat
     "stock": "minecraft:stripped_spruce_wood[axis=y]",
-    "keel": "minecraft:stripped_oak_log[axis=x]",
+    "keel": "minecraft:stripped_oak_log[axis=z]",
     "stem": "minecraft:stripped_oak_log[axis=y]",
     "stem_tip": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "bilge_n": stairs("oak", "south", "top"),
-    "bilge_s": stairs("oak", "north", "top"),
+    "bilge_w": stairs("oak", "east", "top"),
+    "bilge_e": stairs("oak", "west", "top"),
     "strake": "minecraft:oak_planks",
-    "lap_n": trapdoor("oak", "south", "bottom", True),
-    "lap_s": trapdoor("oak", "north", "bottom", True),
-    "bow_plate_n": trapdoor("oak", "north", "bottom", True),   # on the inner (south) face
-    "bow_plate_s": trapdoor("oak", "south", "bottom", True),   # on the inner (north) face
-    "stem_post": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
+    "lap_w": trapdoor("oak", "east", "bottom", True),
+    "lap_e": trapdoor("oak", "west", "bottom", True),
+    "bow_plate_w": trapdoor("oak", "west", "bottom", True),   # on the inner (east) face
+    "bow_plate_e": trapdoor("oak", "east", "bottom", True),   # on the inner (west) face
+    "stem_post": "minecraft:oak_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "bow_n": stairs("oak", "south", "bottom"),
     "bow_s": stairs("oak", "north", "bottom"),
     "transom": "minecraft:oak_planks",
-    "transom_rake": stairs("oak", "east", "top"),
+    "transom_rake": stairs("oak", "south", "top"),
     "transom_top": stairs("oak", "west", "bottom"),
     # the shed's work
     "bench": "minecraft:crafting_table",
@@ -97,8 +97,8 @@ PALETTE = {
 
 SHED = (2, 9, 1, 5)     # walls on the north, west and east; open along the south
 PLATE = 4
-HULL_X = (3, 13)        # transom at x 3, stem at x 13
-KZ = 7                  # the keel's line
+HULL_Z = (4, 8)         # transom at z 4 inside the shed, stem at z 8 out toward the lane
+KX = 7                  # the keel's line, between the shed's front posts at x 5 and x 9
 
 
 def build(place):
@@ -112,7 +112,7 @@ def build(place):
     sx0, sx1, sz0, sz1 = SHED
     m.box(X0, X1, 0, 0, sz1 + 1, Z1, "yard")
     m.box(sx1 + 1, X1, 0, 0, Z0, sz1, "yard")
-    m.box(HULL_X[0], HULL_X[1], 0, 0, KZ - 1, KZ + 1, "chips")
+    m.box(KX - 1, KX + 1, 0, 0, sz1 + 1, HULL_Z[1], "chips")
 
     # ---------- the shed: a boarded back and ends on posts, open to the boat
     m.box(sx0, sx1, 0, 0, sz0, sz1, "shed_floor")
@@ -139,17 +139,16 @@ def build(place):
     m.set(8, 3, 2, "steam_box")
     m.set(8, 1, 2, "tar")
     m.box(3, 3, 1, 3, 4, 4, "oars")
-    m.box(6, 8, 1, 1, 4, 4, "planks_stack")
+    m.box(3, 4, 1, 1, 3, 3, "planks_stack")
     m.set(4, 1, 4, "barrel")
-    m.box(sx0 + 1, sx1 - 1, PLATE, PLATE, 3, 3, "beam_x")
+    m.box(sx0 + 1, 5, PLATE, PLATE, 3, 3, "beam_x")
     m.set(5, PLATE - 1, 3, "lantern_h")
 
-    # ---------- the boat on its stocks, side-on to the lane: a long narrow hull, its stem
-    # rising to a point at the bow (east), a raked transom at the stern (west); the sheer
-    # climbs toward both ends in half steps (slabs on the gunwale), the turn of the bilge is
-    # upturned stairs, and the stern half still stands in bare frames on its ribband
-    townkit.hull_on_stocks(m, "x", HULL_X[0] + 1, HULL_X[1], KZ, 2, framed=3, stocks=(5, 8, 11))
-    m.set(12, 1, 5, "lantern")            # a lantern on the yard's timber, by the bow
+    # ---------- the boat on its stocks, end-on to the lane: its stem rises to a point toward
+    # the lane, its raked transom stands inside the open shed, its stern station still in bare
+    # frames; nothing of it stands across the line from the lane into the shed or the yard
+    townkit.hull_on_stocks(m, "z", HULL_Z[0], HULL_Z[1], KX, 2, framed=1, stocks=(5, 7))
+    m.set(12, 1, 5, "lantern")            # a lantern on the yard's timber
 
     # ---------- the yard: timber stacked to season, the winch at the slip head
     m.box(11, 12, 1, 1, 1, 4, "timber_z")
@@ -168,7 +167,7 @@ def build(place):
     m.part(sx0, sx1, sz0, sz1, "shed")
     m.part(10, 13, 1, 5, "yard")
     m.part(2, 13, 6, 7, "yard")
-    m.mark("node-boatwright", 6, 3, "south")
+    m.mark("node-boatwright", 4, 5, "south")
     return m
 
 

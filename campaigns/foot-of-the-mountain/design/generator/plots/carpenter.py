@@ -159,10 +159,18 @@ def build(a):
         m.set(7, 1, z, "minecraft:stripped_spruce_wood[axis=y]" if z == 9 else stairs("minecraft:spruce", "west", "top"))
     m.set(7, 2, 9, candle(2))
     m.set(7, 2, 10, "minecraft:potted_poppy")
-    # a finished chair and table by the window, for a customer to see
-    m.set(3, 1, 12, stairs("minecraft:oak", "east"))
-    m.set(4, 1, 12, "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]")
-    m.set(4, 2, 12, "minecraft:oak_pressure_plate[powered=false]")
+    # behind the front window, in the line from the lane: the bench with its
+    # tools (the fletching table's clamps, the crafting table's saw and square)
+    m.set(6, 1, 12, "minecraft:fletching_table")
+    m.set(7, 1, 12, "minecraft:crafting_table")
+    # on the bench, up in the glass at eye height: a board being worked and
+    # the grindstone the tools are sharpened on
+    m.set(6, 2, 12, slab("minecraft:oak", "bottom"))
+    m.set(7, 2, 12, "minecraft:grindstone[face=floor,facing=east]")
+    # by the west window: boards stacked to the sill, and a finished chair
+    m.set(3, 1, 12, "minecraft:oak_planks")
+    m.set(3, 2, 12, slab("minecraft:oak", "bottom"))
+    m.set(4, 1, 12, stairs("minecraft:oak", "east"))
     m.set(3, 1, 9, "minecraft:bookshelf")            # the pattern book and the order book
     m.set(3, 1, 10, "minecraft:cartography_table")   # drawings of the work
     m.set(5, 4, 11, lantern(True))
@@ -189,10 +197,11 @@ def build(a):
     # ---- the front garden: two flower beds by the path, a bench
     for x in (2, 3, 4, 6, 7, 8):
         m.set(x, 0, 14, "minecraft:podzol[snowy=false]" if x in (2, 8) else "minecraft:grass_block[snowy=false]")
-    for x, fl in ((3, "minecraft:poppy"), (4, "minecraft:oxeye_daisy"), (6, "minecraft:cornflower"), (7, "minecraft:allium")):
+    for x, fl in ((3, "minecraft:poppy"), (4, "minecraft:oxeye_daisy")):
         m.set(x, 1, 14, fl)
     m.set(2, 1, 14, leaves("minecraft:oak"))
-    m.set(8, 1, 14, leaves("minecraft:azalea"))
+    # under the shop window nothing stands: the line from the lane runs
+    # through the glass to the bench behind it
     m.set(1, 1, 12, stairs("minecraft:spruce", "east"))  # a bench against the west wall
     m.set(1, 1, 11, stairs("minecraft:spruce", "east"))
 
@@ -231,31 +240,32 @@ def build(a):
     m.set(13, 4, 5, lantern(True))
     m.set(12, 1, 6, "minecraft:scaffolding[bottom=false,distance=0,waterlogged=false]")   # a half-made frame
 
-    # ---- the timber yard: logs racked between posts, boards seasoning
-    for (x, z) in ((11, 10), (11, 13), (14, 10), (14, 13)):
-        for y in (1, 2, 3):
-            m.set(x, y, z, fence("minecraft:spruce"))
-    for x in (12, 13):                                # the rack: oak logs lying east-west
-        for z in (10, 11, 12, 13):
-            m.set(x, 1, z, log("minecraft:oak_log", "z"))
-            if z in (11, 12):
-                m.set(x, 2, z, log("minecraft:spruce_log", "z"))
-    m.set(12, 3, 11, log("minecraft:birch_log", "z"))
-    # boards in a stickered stack by the shed
-    m.box(14, 15, 1, 1, 8, 8, slab("minecraft:oak", "bottom"))
-    m.set(15, 1, 14, "minecraft:barrel[facing=up,open=false]")      # nails and pegs
-    m.box(15, 15, 1, 1, 10, 12, "minecraft:stripped_oak_wood[axis=z]")   # one high: the gap by the rack is never a pit
-    # a handcart: a bed of slabs on a wheel (a trapdoor end on), shafts of fence
+    # ---- the timber yard, seen from the lane: the bench by the path on the
+    # left, the log pile on the right, the board stack before the saw shed
+    # in the middle, and nothing standing in the line between
+    m.set(10, 1, 10, "minecraft:grindstone[face=floor,facing=east]")
+    m.set(10, 1, 11, "minecraft:smithing_table")       # the bench: tools hung on its side
+    m.set(10, 1, 12, "minecraft:crafting_table")
+    # the log pile: oak lying east-west, three wide, a second course on top
+    for x in (13, 14, 15):
+        for z in (10, 11, 12):
+            m.set(x, 1, z, log("minecraft:oak_log", "x"))
+        m.set(x, 2, 11, log("minecraft:spruce_log", "x"))
+    # boards in a stickered stack before the shed: planks with boards over
+    m.box(12, 15, 1, 1, 8, 8, "minecraft:oak_planks")
+    m.box(12, 15, 2, 2, 8, 8, slab("minecraft:oak", "bottom"))
+    m.set(15, 1, 13, "minecraft:barrel[facing=up,open=false]")      # nails and pegs
+    # a handcart: a bed of slabs, shafts of fence
     m.set(12, 1, 14, slab("minecraft:spruce", "top"))
     m.set(13, 1, 14, slab("minecraft:spruce", "top"))
     m.set(11, 1, 14, fence("minecraft:spruce"))
     # sawdust and chips: a little leaf litter on the yard
-    for (x, z) in ((12, 8), (13, 9), (11, 8)):
+    for (x, z) in ((11, 9), (13, 9)):
         m.set(x, 1, z, "minecraft:leaf_litter[facing=north,segment_amount=3]")
-    # a lantern post at the yard's mouth, over the lane
+    # a lantern post at the yard's east corner, out of the line from the lane
     for y in (1, 2, 3):
-        m.set(10, y, 14, fence("minecraft:spruce"))
-    m.set(10, 4, 14, lantern(False))
+        m.set(15, y, 14, fence("minecraft:spruce"))
+    m.set(15, 4, 14, lantern(False))
 
     m.marks["node-carpenter"] = (9, 12, "south")
     return m
