@@ -42,10 +42,32 @@ The sidecar is not written yet: two runs of `i18n-translate.py` against the conf
 ## Build (step 8)
 
 - `DW0307`: the happy ghast's two marks stood four courses in the air, where a `move-npc` walk can neither start nor end. Both marks now stand on the ground of the same plots (`npcs.json`, 15 cast and move offsets in `quests.json`).
-- `DW0210` stops the build: the finale's `set-time` to the setting sun is judged at the night sky (4), and 5155 reachable walkable cells measure below light 3 — 5100 in 309 regions of the island's ground outside every plot, 55 in 24 detailed places. The town's light was placed and proven at noon. Under the late-afternoon world hour alone the same build measures 0 dark cells.
-- `DW0430`, met on a scratch copy past the two above: 4 stair blocks in `node/flight-1` and `node/flight-5` on the proven route face away from the climb the route makes onto them. The repair is in those two places' programs.
-- Steps 8b to 13 wait on a build that exits 0.
+- `DW0210` stopped the first build: the finale's `set-time` to the setting sun is judged at the night sky (4), and 5155 reachable walkable cells measured below light 3 (5100 in 309 regions of the island's ground outside every plot, 55 in 24 detailed places). The finale now plays at `{"daytime": 11867}`, the latest hour judged as day (`DESIGN.md`, *The hour*), and the two Scene 7 pictures are redrawn at it; the build measures 0 dark cells.
+- `DW0430` on `node/flight-1` and `node/flight-5`, and `DW0450` on Bernt, are step 9's (below).
+- The build that ships exits 0: `DW0210` 0 dark of 111802; 4017 attached blocks held, 0 dropped; 14 watchers drawable; the pacing line measures 2376 blocks of route, about 40 minutes at the metrics table's rate, against `target_minutes` 150 — the rest of the evening is conversation, which the route does not measure.
 
+## Showcase cameras (step 8b)
+
+17 cameras, one per approved picture, each estimated from its picture and moved against the build's previews until the subject was in frame. Three were moved again on the build's refusals: `lighthouse-near` (lens in a wall), `from-the-castle` (`DW0956`, subject 166 blocks away past the 160-block view), `plan` (`DW0724`, lens above the build height). No camera states an `after`: the world after `obj/take-places` is the world at load block for block (`DW0721`).
+
+## Detail (step 9)
+
+Handouts are regenerable files under `.out/handouts/`. Wave bound as `allocation --all` printed it: `concurrency: 0 = min(0, max(1, 10 / 2))` (every place already carries a passing program); two authors ran at once for the two refused places.
+
+| place | attempt | handout | tokens | duration | repaired | commit exit |
+|---|---|---|---|---|---|---|
+| `node/flight-1` | 1 | `.out/handouts/flight-1/handout-1.md` | 93329 | 626 s | `DW0430` | 3 (battery: `DW0430` on `node/flight-5`) |
+| `node/flight-5` | 1 | `.out/handouts/flight-5/handout-1.md` | 117425 | 756 s | `DW0430` | 3 (battery: `DW0450` on `npc/bernt`) |
+
+`DW0450`: Bernt's mark stood inside a stone mass of the castle piece; it moved to the clear side of the same anchor (`+[-3, 0, 0]`). Adjustments in this step: 2 bodies moved inside their plots (Dumpling, Bernt), 0 stations changed, 2 places re-authored.
+
+## Ladder (step 10)
+
+On the build at manifest `c13baa369261bf74f365ce69911ff077dea75371aab86d3ced17f4119c5c3bed`:
+
+- PackTest exit 0.
+- Bot critical path exit 0 (run timeout raised to 60 minutes for a walk the route measures at 40); `die-retry`, `death-loop` and `crush-death` have nothing to prove (no combat, no lethal volume, no crush gate).
+- Written world: `DW0955`, 27 cells the server holds differently from the engine's model — 24 `dirt_path` the server turns to `dirt` (in `node/bakery` and `node/cottages`), 3 harbour stairs the server waterlogs at sea level. Every other class agrees. This is the engine's model, not the campaign.
 ## Branch chronicle (step 11)
 
 The build writes 32 world chronicles (`validation/world-chronicle-<n>.md`, `validation/branch-plan.json`), one per assignment of the five binary threads: tail (nest / Dumpling), Founder (buoys / work-song), Loaf (oven / forge), chorus (done / not), curtain (done / not). Each was read end to end against `DESIGN.md` and against the flag-gated dialogue and epilogue lines reachable on it. A chronicle line is cited as `w<world>:<storyline item>`.
@@ -68,3 +90,15 @@ The build writes 32 world chronicles (`validation/world-chronicle-<n>.md`, `vali
 | `ending/no-ending` (forge) | `branch/forge-loaf` | `on_complete/13` loses, 16 worlds | cleared (16 of 16) |
 
 No finding: every flag-gated dialogue option and epilogue line is licensed by a chronicle line on exactly the worlds whose flags it requires, and every chronicle line is a beat `DESIGN.md` licenses on that branch.
+
+## Visual review (step 12)
+
+`delvec frames` on the build that ships: `renderer: lumenwright 0.3.0, backend cpu (16 threads) (auto: fell back to cpu — no usable GPU (only a software Gpu adapter is available))`; 958 shots (637 POV, 190 interior, 116 threshold, 14 NPC, 1 spawn), 5:11 wall on the remote.
+
+- **POV sequence, in route order.** Inside the town the walk reads as the town: flagged streets, flights, lit lamps, the shop counters with their keepers. Between places the proven route leaves the streets and crosses open ground — the terraced flanks of the mountain behind the cathedral and the castle walls, and the grass between the lower plots and the harbour — so long runs of frames show turf, rock and sky rather than the road the design draws. Finding: the town's ground outside its plots is walkable and shorter than the streets; whether a player is steered along the streets is a site-plan question, outside this round's remit.
+- **Scene 7 against its pictures.** The square holds the well, the benches and the two trees; the stage the pictures show is not built. Finding at `node/square`'s program, outside this round's remit.
+- `threshold read: 116 frame(s), trade misses 27, front misses 0, thing misses 0, holding misses 0`. The 60 way frames read as streets, flights and roads. Part frames whose trade cannot be named from the picture alone: cathedral 4 (a wall fills the frame), inn 3, potter 3, harbour 3, lighthouse 3, weaver 3 and net loft 2 (a keeper's back fills the frame), townhall 2, carpenter 2, boatwright 2. Findings at those places' programs, outside this round's remit.
+
+## Toolchain
+
+`/new-delve` plugin 1.15.0 (the skill pages at engine tag `delvec--v1.15.0`), engine release `delvec--v1.15.0`, `dsl_version` 0.69.0. The prefab library is this repository's own `prefabs/`; the shipped library was not taken.
