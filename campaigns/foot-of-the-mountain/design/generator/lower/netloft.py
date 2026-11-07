@@ -70,6 +70,7 @@ PALETTE = {
     "hull_low": "minecraft:spruce_slab[type=top,waterlogged=false]",
     "hull_n": st("spruce", "north", "top"), "hull_s": st("spruce", "south", "top"),
     "keel": "minecraft:stripped_spruce_log[axis=x]",
+    "bow": st("spruce", "west", "top"),
     "oar": "minecraft:stripped_spruce_log[axis=y]",
     "float": "minecraft:white_wool",
     "float_r": "minecraft:red_wool",
@@ -166,14 +167,18 @@ def build(place) -> Model:
     # ---------- the boat store: a hull on trestles, oars, floats
     for x in (4, 7):
         m.set(x, 1, 6, "trestle")
-    m.box(3, 8, 2, 2, 6, 6, "keel")
+    m.box(3, 7, 2, 2, 6, 6, "keel")
+    m.set(8, 2, 6, "bow")                 # the stem toward the door, so the hull reads end-on as a boat
     m.box(4, 7, 2, 2, 5, 5, "hull_n")
     m.box(4, 7, 2, 2, 7, 7, "hull_s")
+    m.box(5, 6, 3, 3, 5, 7, "net_pile")   # a net thrown over the hull, mended in the yard
+    # a net hung on the back wall above the floats, at the end of the line from the door
+    m.box(sx0 + 1, sx0 + 1, 3, 4, 5, 6, "net")
     m.set(sx0 + 1, 1, sz1 - 1, "oar")
     m.set(sx0 + 1, 2, sz1 - 1, "oar")
     m.set(sx0 + 1, 1, sz1 - 2, "float")
     m.set(sx0 + 1, 1, 5, "float_r")
-    m.set(9, 1, 7, "lantern")
+    m.set(8, 1, 7, "lantern")
     # ---------- the loft: nets on racks, rolls of net, hanging from the beams
     m.set(3, LOFT + 1, 7, "net_roll")
     m.set(3, LOFT + 2, 7, "net_roll")
@@ -239,7 +244,10 @@ def build(place) -> Model:
 
 class NetLoft(Plot):
     MODEL = staticmethod(build)
-    MARK_AT = {"node-netloft": (8, 5, "west")}   # inside the boat door, facing the hull
+    # the net-maker stands in the boat store's south corner beside the door, behind its
+    # jamb: to one side of the line from the boat door, so the doorway shows the boat,
+    # the stair to the nets and the net on the back wall
+    MARK_AT = {"node-netloft": (9, 7, "north")}   # shed coordinates, before the shed's shift
 
     def lay_parts(self, parts):
         if fronted(self, "east")[0]:

@@ -139,12 +139,14 @@ def build(place) -> Model:
         m.set(bx, top + 2, bz, "minecraft:dark_oak_planks"); m.set(bx + 1, top + 2, bz, "minecraft:dark_oak_planks")
         m.set(bx, top + 2, bz + 1, "minecraft:dark_oak_planks"); m.set(bx + 1, top + 2, bz + 1, "minecraft:dark_oak_planks")
 
-    # ---- the forecourt: a market cross, benches, beds, a lantern post
-    for y in (1, 2, 3):
-        m.set(21, y, 6, "stone" if y == 1 else "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]")
-    m.set(21, 4, 6, lantern(False))
-    m.set(20, 1, 6, stairs("minecraft:stone_brick", "west")); m.set(22, 1, 6, stairs("minecraft:stone_brick", "east"))
-    m.set(21, 1, 5, stairs("minecraft:stone_brick", "north")); m.set(21, 1, 7, stairs("minecraft:stone_brick", "south"))
+    # ---- the forecourt: the line from the street into the arcade stands clear;
+    # two lamp posts flank it, in line with the hall's corner piers, then
+    # benches and beds along the sides
+    for z in (HZ0, HZ1):
+        m.set(21, 1, z, "stone")
+        for y in (2, 3):
+            m.set(21, y, z, "minecraft:stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]")
+        m.set(21, 4, z, lantern(False))
     for x in (8, 9):
         m.set(x, 1, 11, stairs("minecraft:spruce", "north"))
     bed_of(m, [(12, 11), (13, 11), (14, 11), (16, 11), (17, 11)],
