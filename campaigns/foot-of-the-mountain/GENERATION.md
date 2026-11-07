@@ -44,11 +44,13 @@ The sidecar is not written yet: two runs of `i18n-translate.py` against the conf
 - `DW0307`: the happy ghast's two marks stood four courses in the air, where a `move-npc` walk can neither start nor end. Both marks now stand on the ground of the same plots (`npcs.json`, 15 cast and move offsets in `quests.json`).
 - `DW0210` stopped the first build: the finale's `set-time` to the setting sun is judged at the night sky (4), and 5155 reachable walkable cells measured below light 3 (5100 in 309 regions of the island's ground outside every plot, 55 in 24 detailed places). The finale now plays at `{"daytime": 11867}`, the latest hour judged as day (`DESIGN.md`, *The hour*), and the two Scene 7 pictures are redrawn at it; the build measures 0 dark cells.
 - `DW0430` on `node/flight-1` and `node/flight-5`, and `DW0450` on Bernt, are step 9's (below).
-- The build that ships exits 0: `DW0210` 0 dark of 111802; 4017 attached blocks held, 0 dropped; 14 watchers drawable; the pacing line measures 2376 blocks of route, about 40 minutes at the metrics table's rate, against `target_minutes` 150 — the rest of the evening is conversation, which the route does not measure.
+- The build that ships (manifest `e0e78f7e2533cfdec8d6c19a216c3dda5d66897d9a3d0863dc354f986f70e359`) exits 0: `DW0210` 0 dark of 111808; 4025 attached blocks held, 0 dropped; the pacing line measures 2380 blocks of route, about 40 minutes at the metrics table's rate, against `target_minutes` 150 — the rest of the evening is conversation, which the route does not measure. 394 s wall, 2.81 GB peak, macOS arm64.
 
 ## Showcase cameras (step 8b)
 
 17 cameras, one per approved picture, each estimated from its picture and moved against the build's previews until the subject was in frame. Three were moved again on the build's refusals: `lighthouse-near` (lens in a wall), `from-the-castle` (`DW0956`, subject 166 blocks away past the 160-block view), `plan` (`DW0724`, lens above the build height). No camera states an `after`: the world after `obj/take-places` is the world at load block for block (`DW0721`).
+
+The square now carries the stage (step 9), and the two Scene 7 cameras were drawn again against the build that ships without being moved: `stage-near` frames the stage's boards, lanterns and painted flats with the cathedral front behind them; `square-far-evening`, from the cathedral steps, frames the stage from its back across the benches. The two pictures disagree on which way the stage faces; the build follows the near picture.
 
 ## Detail (step 9)
 
@@ -60,6 +62,24 @@ Handouts are regenerable files under `.out/handouts/`. Wave bound as `allocation
 | `node/flight-5` | 1 | `.out/handouts/flight-5/handout-1.md` | 117425 | 756 s | `DW0430` | 3 (battery: `DW0450` on `npc/bernt`) |
 
 `DW0450`: Bernt's mark stood inside a stone mass of the castle piece; it moved to the clear side of the same anchor (`+[-3, 0, 0]`). Adjustments in this step: 2 bodies moved inside their plots (Dumpling, Bernt), 0 stations changed, 2 places re-authored.
+
+A second pass repaired what steps 10 and 12 found on the build at `c13baa36…`. Each finding went into the place's node `note` (the stage, and the five doorways) and into its handout as the refusal (`--from`, a file stating the finding: the written world's cells, the threshold frames and the census entries, since `handout.py` writes no handout for a program `detail --check` passes). Wave bound as `allocation --all` printed it: `concurrency: 0 = min(0, max(1, 10 / 2))`; two authors ran at once.
+
+| place | attempt | handout | tokens | duration | repaired | commit exit |
+|---|---|---|---|---|---|---|
+| `node/bakery` | 1 | `.out/handouts/bakery/handout-1.md` | 95462 | 110 s | `DW0955` | 0 |
+| `node/cottages` | 1 | `.out/handouts/cottages/handout-1.md` | 80909 | 108 s | `DW0955` | 0 |
+| `node/square` | 1 | `.out/handouts/square/handout-1.md` | 120892 | 394 s | `DW0845` (the stage) | 0 |
+| `node/harbour` | 1 | `.out/handouts/harbour/handout-1.md` | 82448 | 74 s | `DW0955` | 0 |
+| `node/weaver` | 1 | `.out/handouts/weaver/handout-1.md` | 90929 | 514 s | threshold read | 0 |
+| `node/netloft` | 1 | `.out/handouts/netloft/handout-1.md` | 111043 | 925 s | threshold read | 0 |
+| `node/townhall` | 1 | `.out/handouts/townhall/handout-1.md` | 82965 | 397 s | threshold read | 0 |
+| `node/boatwright` | 1 | `.out/handouts/boatwright/handout-1.md` | 96376 | 507 s | threshold read | 0 |
+| `node/carpenter` | 1 | `.out/handouts/carpenter/handout-1.md` | 106755 | 1017 s | threshold read | 0 |
+| `node/weaver` | 2 | `.out/handouts/weaver/handout-2.md` | 83612 | 307 s | `DW0955` | 0 |
+| `node/boatwright` | 2 | `.out/handouts/boatwright/handout-2.md` | 106792 | 596 s | threshold read | 0 |
+
+Adjustments in this pass: 1 station added (`anchor/stage`, the square), 4 marks moved inside their plots (the square's `node-square` and `spawn`, the weaver's, the net-maker's, the boatwright's), 9 places re-authored, no shell changed.
 
 ## Ladder (step 10)
 
@@ -95,11 +115,11 @@ No finding: every flag-gated dialogue option and epilogue line is licensed by a 
 
 ## Visual review (step 12)
 
-`delvec frames` on the build that ships: `renderer: lumenwright 0.3.0, backend cpu (16 threads) (auto: fell back to cpu — no usable GPU (only a software Gpu adapter is available))`; 958 shots (637 POV, 190 interior, 116 threshold, 14 NPC, 1 spawn), 5:11 wall on the remote.
+`delvec frames` on the build that ships (`e0e78f7e…`): `renderer: lumenwright 0.3.0, backend apple m2 pro (metal) (auto)`; 955 shots (634 POV, 190 interior, 116 threshold, 14 NPC, 1 spawn), 209 s wall, 3.04 GB peak.
 
-- **POV sequence, in route order.** Inside the town the walk reads as the town: flagged streets, flights, lit lamps, the shop counters with their keepers. Between places the proven route leaves the streets and crosses open ground — the terraced flanks of the mountain behind the cathedral and the castle walls, and the grass between the lower plots and the harbour — so long runs of frames show turf, rock and sky rather than the road the design draws. Finding: the town's ground outside its plots is walkable and shorter than the streets; whether a player is steered along the streets is a site-plan question, outside this round's remit.
-- **Scene 7 against its pictures.** The square holds the well, the benches and the two trees; the stage the pictures show is not built. Finding at `node/square`'s program, outside this round's remit.
-- `threshold read: 116 frame(s), trade misses 27, front misses 0, thing misses 0, holding misses 0`. The 60 way frames read as streets, flights and roads. Part frames whose trade cannot be named from the picture alone: cathedral 4 (a wall fills the frame), inn 3, potter 3, harbour 3, lighthouse 3, weaver 3 and net loft 2 (a keeper's back fills the frame), townhall 2, carpenter 2, boatwright 2. Findings at those places' programs, outside this round's remit.
+- **Scene 7 against its pictures.** The square holds the stage the two pictures show: boards on trestles on its east half, lanterns along the front edge, painted flats at the back, rows of benches facing it on the west half, the well and the two trees kept. The near picture is answered; the far picture is answered from the stage's back (above, *Showcase cameras*).
+- **The route between places.** The proven route still leaves the streets: from the square to the castle 204 of 424 route columns lie outside every place's box and only 21 on a way, and from the castle to the lighthouse 488 of 650 lie outside every box and none on a way (the thinned waypoints of `validation/critical-path-waypoints.json` against `delvec allocation --all`'s boxes). Cause, read in the engine at `delvec--v1.15.0`: the router is an A* over every standable cell of the assembled world (`crates/delvec/src/compiler/nav/route/mod.rs:129-196`, `find_path_avoiding`), whose step cost is one flat step plus 2 per sixteenth of height change (`crates/delvec/src/compiler/nav/world/body.rs:1348-1359`) and knows nothing of ways, so the terraced flanks the island's terrain lays outside every plot (1-block steps, walked by jump edges) are cheaper than the zig-zag road. The bot, the POV frames (`crates/delvec/src/compiler/emit/routes.rs:1118`) and every route proof walk that one route. A player is led by the compass, which points straight at the objective's place (`crates/delvec/src/compiler/emit/guidance.rs:1407-1416`, a `lodestone_tracker` target), and by the streets they see; nothing stands between the streets and the open ground, so a player who follows the needle crosses the same flanks. The fix is the terrain outside the plots (the site plan's ground, `terrain/island.png`) or the router, neither of which is a station or furnishing: not changed here.
+- **Threshold read**, re-read on the 28 frames of the places this pass touched or that missed before: `threshold read: 28 frame(s), trade misses 18, front misses 0, thing misses 0, holding misses 0`. Repaired: weaver 3 (the loom first from the door), net loft 2 (the hull and the hung nets), guildhall 2 (the arcade's market), carpenter 2 (bench, log pile, plank stack). Still missed: boatwright 2 after two attempts (the shed frame shows a fire and a cauldron, the yard frame a block-built hull at a slant that does not read as a boat); cathedral 4 (the eye on the square stands before a buttress of the west front), inn 3 (a porch wall and window), potter 3 (a closed door and a wall of the house), harbour 3 (the harbourmaster's house corner stands between the quay crossing and the boats), lighthouse 3 (the cottage's side wall): each is the shell or the plot's arrangement facing the crossing, outside this pass. The square's threshold reads as a square (well, benches, stage).
 
 ## Toolchain
 
