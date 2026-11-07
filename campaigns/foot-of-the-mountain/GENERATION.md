@@ -83,13 +83,12 @@ Adjustments in this pass: 1 station added (`anchor/stage`, the square), 4 marks 
 
 ## Ladder (step 10)
 
-On the build at manifest `c13baa369261bf74f365ce69911ff077dea75371aab86d3ced17f4119c5c3bed`:
+On the build that ships, manifest `e0e78f7e2533cfdec8d6c19a216c3dda5d66897d9a3d0863dc354f986f70e359`:
 
-- PackTest exit 0.
-- Bot critical path exit 0 (run timeout raised to 60 minutes for a walk the route measures at 40); `die-retry`, `death-loop` and `crush-death` have nothing to prove (no combat, no lethal volume, no crush gate).
-- Branch runs: all 32 worlds selected (`DELVEWRIGHT_BRANCHES=all`); world/0 to world/2 PASSED (about 9 minutes a world) when the build machine was taken back mid-run; the rest ran on unobserved and their record is not read here. Step 10 is not complete until it is.
-- The same campaign built on two hosts (Linux x86-64 release archive, macOS arm64 release archive) gives one manifest, `c13baa36…`.
-- Written world: `DW0955`, 27 cells the server holds differently from the engine's model — 24 `dirt_path` the server turns to `dirt` (in `node/bakery` and `node/cottages`), 3 harbour stairs the server waterlogs at sea level. Every other class agrees. This is the engine's model, not the campaign.
+- PackTest exit 0: 96 of 96 required tests passed (137 s wall, macOS arm64).
+- Bot critical path exit 0: 13 steps PASSED, 4 advisory findings; 14 watchers, 9 within reach on the proven path and asserted; `die-retry`, `death-loop` and `crush-death` have nothing to prove (no combat, no lethal volume, no crush gate). Run timeout 60 minutes; 438 s wall.
+- Branch runs: all 32 worlds selected and run, each in a fresh world, every run report naming this manifest: **32 of 32 PASSED**, the endings each world's chronicle predicts reached (encore 4, curtain call 12, no ending 16). World 0 to 15 ran on the Linux x86-64 build machine on a byte copy of this build tree (896 files, same manifest), worlds 16 to 31 on macOS arm64 (8725 s for the sixteen).
+- Written world exit 0: `model` 0 differing cells of 5038456 compared (from 27 on the previous build: 24 dirt paths under a block in the bakery, the cottages and the weaver's yard, 3 harbour stairs in sea cells); every other class is the server's physics or clock (random-tick 213, re-derived 28888); objects 236 block entities and 28 entities, each the server's.
 ## Branch chronicle (step 11)
 
 The build writes 32 world chronicles (`validation/world-chronicle-<n>.md`, `validation/branch-plan.json`), one per assignment of the five binary threads: tail (nest / Dumpling), Founder (buoys / work-song), Loaf (oven / forge), chorus (done / not), curtain (done / not). Each was read end to end against `DESIGN.md` and against the flag-gated dialogue and epilogue lines reachable on it. A chronicle line is cited as `w<world>:<storyline item>`.
@@ -127,4 +126,4 @@ No finding: every flag-gated dialogue option and epilogue line is licensed by a 
 
 ## Hand-over (step 13)
 
-The staging gate on the build at manifest `c13baa36…`, with the bot's run report and the written-world record: the findings ledger reads **STAGEABLE** (52 bound, 80 inapplicable, 27 declared uncoverable, 0 unbound); the gate refuses on one reason only, the written world (`DW0955`, 27 cells, the engine's model). Nothing is staged by this run.
+The staging gate on the build at manifest `e0e78f7e…`, with the bot's run report and the written-world record: **STAGEABLE**, admitted with no override (`red_count` 0; 53 bound, 79 inapplicable, 27 declared uncoverable, 0 unbound). Nothing is staged by this run. The quest documents did not change, so the chronicle table above stands; the 32 chronicles this build writes cite the same items. The storybook's square picture is redrawn from its camera on this build.
