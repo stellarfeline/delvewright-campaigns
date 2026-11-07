@@ -8,7 +8,7 @@
 
 ## Engine
 
-- `dsl_version` 0.69.0, `delvec` 1.15.0 built from source at engine `main`, the skill's source floor (the town surface is newer than the pinned release).
+- `dsl_version` 0.69.0, `delvec` 1.15.0 from the release archive `delvec--v1.15.0` (steps 8 on); steps 1 to 7 ran on the same version built from source before the release was published.
 
 ## Placement
 
@@ -38,3 +38,10 @@ Answered by the planner for the owner, who plays this delve without seeing its s
 `world.json` declares `zh-cn`. Its sidecar is written by the configured translation provider from the English documents.
 
 The sidecar is not written yet: two runs of `i18n-translate.py` against the configured provider stopped on the first batch of 19 keys with no complete reply (at the default 120 s deadline, then at 400 s), while the provider's model listing answered at once. `validate` and `analyze` therefore carry one refusal, `DW0180`, until the provider answers and the sidecar is written by it.
+
+## Build (step 8)
+
+- `DW0307`: the happy ghast's two marks stood four courses in the air, where a `move-npc` walk can neither start nor end. Both marks now stand on the ground of the same plots (`npcs.json`, 15 cast and move offsets in `quests.json`).
+- `DW0210` stops the build: the finale's `set-time` to the setting sun is judged at the night sky (4), and 5155 reachable walkable cells measure below light 3 — 5100 in 309 regions of the island's ground outside every plot, 55 in 24 detailed places. The town's light was placed and proven at noon. Under the late-afternoon world hour alone the same build measures 0 dark cells.
+- `DW0430`, met on a scratch copy past the two above: 4 stair blocks in `node/flight-1` and `node/flight-5` on the proven route face away from the climb the route makes onto them. The repair is in those two places' programs.
+- Steps 8b to 13 wait on a build that exits 0.
