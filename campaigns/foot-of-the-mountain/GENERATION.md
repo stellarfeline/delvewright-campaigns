@@ -67,6 +67,8 @@ On the build at manifest `c13baa369261bf74f365ce69911ff077dea75371aab86d3ced17f4
 
 - PackTest exit 0.
 - Bot critical path exit 0 (run timeout raised to 60 minutes for a walk the route measures at 40); `die-retry`, `death-loop` and `crush-death` have nothing to prove (no combat, no lethal volume, no crush gate).
+- Branch runs: all 32 worlds selected (`DELVEWRIGHT_BRANCHES=all`); world/0 to world/2 PASSED (about 9 minutes a world) when the build machine was taken back mid-run; the rest ran on unobserved and their record is not read here. Step 10 is not complete until it is.
+- The same campaign built on two hosts (Linux x86-64 release archive, macOS arm64 release archive) gives one manifest, `c13baa36…`.
 - Written world: `DW0955`, 27 cells the server holds differently from the engine's model — 24 `dirt_path` the server turns to `dirt` (in `node/bakery` and `node/cottages`), 3 harbour stairs the server waterlogs at sea level. Every other class agrees. This is the engine's model, not the campaign.
 ## Branch chronicle (step 11)
 
@@ -102,3 +104,7 @@ No finding: every flag-gated dialogue option and epilogue line is licensed by a 
 ## Toolchain
 
 `/new-delve` plugin 1.15.0 (the skill pages at engine tag `delvec--v1.15.0`), engine release `delvec--v1.15.0`, `dsl_version` 0.69.0. The prefab library is this repository's own `prefabs/`; the shipped library was not taken.
+
+## Hand-over (step 13)
+
+The staging gate on the build at manifest `c13baa36…`, with the bot's run report and the written-world record: the findings ledger reads **STAGEABLE** (52 bound, 80 inapplicable, 27 declared uncoverable, 0 unbound); the gate refuses on one reason only, the written world (`DW0955`, 27 cells, the engine's model). Nothing is staged by this run.
