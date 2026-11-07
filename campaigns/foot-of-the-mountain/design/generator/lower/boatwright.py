@@ -66,14 +66,14 @@ PALETTE = {
     "lap_e": trapdoor("oak", "west", "bottom", True),
     "bow_plate_w": trapdoor("oak", "west", "bottom", True),   # on the inner (east) face
     "bow_plate_e": trapdoor("oak", "east", "bottom", True),   # on the inner (west) face
-    "stem_post": "minecraft:oak_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
+    "stem_post": "minecraft:oak_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
     "gunwale": "minecraft:oak_slab[type=bottom,waterlogged=false]",
     "gunwale_hi": "minecraft:oak_slab[type=top,waterlogged=false]",
     "rib": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "bow_n": stairs("oak", "south", "bottom"),
     "bow_s": stairs("oak", "north", "bottom"),
     "transom": "minecraft:oak_planks",
-    "transom_rake": stairs("oak", "south", "top"),
+    "transom_rake": stairs("oak", "north", "top"),
     "transom_top": stairs("oak", "west", "bottom"),
     # the shed's work
     "bench": "minecraft:crafting_table",
@@ -97,8 +97,19 @@ PALETTE = {
 
 SHED = (2, 9, 1, 5)     # walls on the north, west and east; open along the south
 PLATE = 4
-HULL_Z = (4, 8)         # transom at z 4 inside the shed, stem at z 8 out toward the lane
-KX = 7                  # the keel's line, between the shed's front posts at x 5 and x 9
+HULL_Z = (7, 2)         # transom at z 7 toward the lane (the row behind the opening kept clear), stem at z 2 up the yard
+KX = 12                 # the keel's line, east of both lines of sight from the lane into the shed and the yard
+
+
+class _Flipped:
+    """The model seen with z turned end for end about `axis2 / 2`, so the town kit's hull,
+    drawn bow toward +z, is laid bow toward -z."""
+
+    def __init__(self, m, axis2):
+        self.m, self.axis2 = m, axis2
+
+    def set(self, x, y, z, role):
+        self.m.set(x, y, self.axis2 - z, role)
 
 
 def build(place):
@@ -112,7 +123,7 @@ def build(place):
     sx0, sx1, sz0, sz1 = SHED
     m.box(X0, X1, 0, 0, sz1 + 1, Z1, "yard")
     m.box(sx1 + 1, X1, 0, 0, Z0, sz1, "yard")
-    m.box(KX - 1, KX + 1, 0, 0, sz1 + 1, HULL_Z[1], "chips")
+    m.box(KX - 1, KX + 1, 0, 0, HULL_Z[1], HULL_Z[0] + 1, "chips")
 
     # ---------- the shed: a boarded back and ends on posts, open to the boat
     m.box(sx0, sx1, 0, 0, sz0, sz1, "shed_floor")
@@ -144,22 +155,24 @@ def build(place):
     m.box(sx0 + 1, 5, PLATE, PLATE, 3, 3, "beam_x")
     m.set(5, PLATE - 1, 3, "lantern_h")
 
-    # ---------- the boat on its stocks, end-on to the lane: its stem rises to a point toward
-    # the lane, its raked transom stands inside the open shed, its stern station still in bare
-    # frames; nothing of it stands across the line from the lane into the shed or the yard
-    townkit.hull_on_stocks(m, "z", HULL_Z[0], HULL_Z[1], KX, 2, framed=1, stocks=(5, 7))
-    m.set(12, 1, 5, "lantern")            # a lantern on the yard's timber
+    # ---------- the boat on its stocks along the yard's east side, beside the shed: its raked
+    # transom toward the lane, its stem rising up the yard; from the lane its port side is
+    # seen at a slant, planked forward and in bare frames aft, and both lines of sight from
+    # the lane into the shed and the yard pass west of it
+    flip = HULL_Z[0] + HULL_Z[1]
+    townkit.hull_on_stocks(_Flipped(m, flip), "z", flip - HULL_Z[0], flip - HULL_Z[1], KX, 2,
+                           framed=1, stocks=(flip - (HULL_Z[0] - 1), flip - (HULL_Z[1] + 2)))
+    m.set(14, 1, 6, "lantern")            # a lantern by the boat's quarter
 
-    # ---------- the yard: timber stacked to season, the winch at the slip head
-    m.box(11, 12, 1, 1, 1, 4, "timber_z")
-    m.box(11, 12, 2, 2, 1, 3, "timber_z")
-    m.box(11, 11, 3, 3, 2, 3, "timber_z")
-    m.box(13, 13, 1, 1, 1, 2, "timber_x")
-    m.set(13, 1, 5, "winch")
-    m.set(13, 2, 5, "winch_bar")
-    m.set(13, 1, 4, "barrel")
-    m.set(10, 1, 4, "barrel")
-    m.set(10, 2, 4, "barrel")
+    # ---------- the yard: the winch at the head of the stocks, barrels by the fence line,
+    # timber stacked to season in the west corner off the lane, low and out of the line
+    m.set(KX, 1, 1, "winch")
+    m.set(KX, 2, 1, "winch_bar")
+    m.set(14, 1, 1, "barrel")
+    m.set(14, 2, 1, "barrel")
+    m.set(14, 1, 2, "barrel")
+    m.box(1, 3, 1, 1, 7, 8, "timber_x")
+    m.box(1, 2, 2, 2, 7, 8, "timber_x")
     m.set(1, 1, 9, "pot_a")
 
     townkit.close_edge_gaps(m, X0, X1, Z0, Z1, "boards")

@@ -17,7 +17,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (AIR, Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -30,6 +30,10 @@ VARIANTS = {
     "yard": [{"weight": 6, "block": "minecraft:grass_block[snowy=false]"},
              {"weight": 2, "block": "minecraft:coarse_dirt"},
              {"weight": 1, "block": "minecraft:dirt_path"}],
+    # the yard's ground under a wall, a post or anything standing: no path,
+    # which the server turns to dirt under a block
+    "yard-under": [{"weight": 6, "block": "minecraft:grass_block[snowy=false]"},
+                   {"weight": 2, "block": "minecraft:coarse_dirt"}],
 }
 ROOF = "minecraft:deepslate_tile"
 POST = log("minecraft:spruce_log", "y")
@@ -173,6 +177,12 @@ def build(a):
     m.marks["node-weaver"] = (6 + FRONT_DX, 4, "south")
     # the street edge where the house does not stand: the yard wall
     front(m, 1, 1, a["extent"][2] - 2, gap=set(range(5, 8)))
+    # a worn path only where open air (or a gate) stands over it
+    for (x, y, z), s in list(m.v.items()):
+        if s == "yard":
+            above = m.v.get((x, y + 1, z))
+            if above not in (None, AIR) and "_fence_gate" not in above:
+                m.v[(x, y, z)] = "yard-under"
     return m
 
 
