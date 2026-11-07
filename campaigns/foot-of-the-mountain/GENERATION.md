@@ -127,3 +127,29 @@ No finding: every flag-gated dialogue option and epilogue line is licensed by a 
 ## Hand-over (step 13)
 
 The staging gate on the build at manifest `e0e78f7e…`, with the bot's run report and the written-world record: **STAGEABLE**, admitted with no override (`red_count` 0; 53 bound, 79 inapplicable, 27 declared uncoverable, 0 unbound). Nothing is staged by this run. The quest documents did not change, so the chronicle table above stands; the 32 chronicles this build writes cite the same items. The storybook's square picture is redrawn from its camera on this build.
+
+## Round 2 (after the first playtest)
+
+What the owner met, and what changed, structure only:
+
+- **The spokes ran in no order at all.** The five act-2 quests open together when the hub completes, and the cast dispatch lets the last-ranked open quest's clause win; `"unchanged"` lowers to an ungated clause carrying the previous clause's scene. On the owner's world (checkpoint `02`, hub complete) the steward, the castle's lady, the baker and the lighthouse keeper each opened a bark pool or a post-quest root: no mandatory spoke's next step could be pressed. Every quest after the hub now declares each NPC's whole ledger as a partition over flags, with no `"unchanged"`; the four moves that cross spokes are gated on their quest's completion flag. The dialogue mask already orders each spoke's steps. `dialogue.json` is unchanged.
+- **Faces.** 13 player-model skins composed from the cast section's briefs (`skins/cast.json`); the ghast keeps its own body.
+- **The climb.** Four small places stand one ring cell off four level legs of the castle road (a spring, a bee garden, a herder's hut, a lookout), each authored by its own agent from its handout (attempt 1 each, `.out/handouts/poi-*/handout-1.md`; `handout.py` taken from engine `main` @ f2b106d09). The four road legs that gained a seam were re-drawn by their own generator; no road box moved.
+
+| place | attempt | handout | tokens | duration | repaired | commit exit |
+|---|---|---|---|---|---|---|
+| `node/poi-spring` | 1 | `.out/handouts/poi-spring/handout-1.md` | 132854 | 478 s | — | 0 (`detail --all`) |
+| `node/poi-bees` | 1 | `.out/handouts/poi-bees/handout-1.md` | 151214 | 625 s | — | 0 (`detail --all`) |
+| `node/poi-hut` | 1 | `.out/handouts/poi-hut/handout-1.md` | 146763 | 561 s | — | 0 (`detail --all`) |
+| `node/poi-lookout` | 1 | `.out/handouts/poi-lookout/handout-1.md` | 155828 | 506 s | — | 0 (`detail --all`) |
+
+Wave bound as `allocation --all` printed it: `concurrency: 4 = min(4, max(1, 10 / 2))`; two authors ran at once.
+
+On the build that ships, manifest `a0f583083c4c2de725be6cda7b115819a1107fe605e07ed69c61b4dfa527207f` (built twice, on the macOS arm64 machine and on the Linux x86-64 build machine: the same manifest):
+
+- PackTest exit 0 (121 s wall). Bot critical path exit 0: 13 steps PASSED, 4 advisory findings (574 s wall). Written world exit 0, verdict pass, 5038505 cells compared.
+- Branch runs: all 32 worlds selected, each in a fresh world, in three parallel tiers on the Linux x86-64 build machine: **32 of 32 PASSED** (tiers 1:41:12, 1:48:25, 1:29:19 wall); the endings each world predicts reached (encore 4, curtain call 12, no ending 16).
+- Several players at once: five bots in one world, each on its own line from the hub (the three spokes and the two strands), started together: every line step of every bot passed; each bot stopped at its closing `assert-complete`, the finale being no line's step (161 s wall).
+- The 32 world chronicles are byte-identical to the previous build's, so the step 11 table stands.
+- Visual review of the four new places, one frame each from outside: each reads as what it is at playable scale.
+- Staging gate: **STAGEABLE**, admitted with no override (`red_count` 0; 78 of 159 classes inapplicable).
