@@ -10,16 +10,34 @@
     "quests": [
       {
         "cast": {
-          "npc/agathe": {
-            "at": "anchor/node-castle",
-            "dialogue": {
-              "barks": [
-                "If Hedda sent you, there's tea.",
-                "I am not coming down. Probably."
+          "npc/agathe": [
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/dragon-done"
               ]
             },
-            "doing": "in the great hall, not coming down"
-          },
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/bernt": {
             "at": {
               "anchor": "anchor/node-castle",
@@ -185,43 +203,104 @@
               ]
             }
           ],
-          "npc/oskar": {
-            "at": "anchor/node-bakery",
-            "dialogue": {
-              "barks": [
-                "Bread doesn't argue. That's why I like it.",
-                "Flour, honey, caraway. And a door. One day."
+          "npc/oskar": [
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": {
+                "barks": [
+                  "Bread doesn't argue. That's why I like it.",
+                  "Flour, honey, caraway. And a door. One day."
+                ]
+              },
+              "doing": "in the bakery, no oven door",
+              "forbids_flags": [
+                "flag/loaf-done"
               ]
             },
-            "doing": "in the bakery, no oven door"
-          },
-          "npc/runa": {
-            "at": "anchor/node-smithy",
-            "dialogue": {
-              "barks": [
-                "Best door in Kelderby, that. I mended it.",
-                "A forge bakes better. Ask anyone. Ask me."
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": {
+                "barks": [
+                  "Bread doesn't argue. That's why I like it.",
+                  "Flour, honey, caraway. And a door. One day."
+                ]
+              },
+              "doing": "in the bakery, no oven door",
+              "requires_flags": [
+                "flag/loaf-done"
+              ]
+            }
+          ],
+          "npc/runa": [
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "forbids_flags": [
+                "flag/loaf-done"
               ]
             },
-            "doing": "at her forge"
-          },
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                -2,
-                0,
-                0
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "requires_flags": [
+                "flag/loaf-done"
+              ]
+            }
+          ],
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "'I have crossed the cold sea—' no. Again.",
-                "Don't look at me. Please."
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "requires_flags": [
+                "flag/founder-done"
               ]
-            },
-            "doing": "rehearsing to herself"
-          },
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
@@ -293,23 +372,85 @@
       },
       {
         "cast": {
-          "npc/agathe": {
-            "at": "anchor/node-castle",
-            "dialogue": "dlg/agathe-tail",
-            "doing": "in the great hall beside the costume, with tea"
-          },
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-castle",
-              "offset": [
-                -3,
-                0,
-                0
+          "npc/agathe": [
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/bernt-asked",
+                "flag/dragon-done"
               ]
             },
-            "dialogue": "dlg/bernt-door",
-            "doing": "at the castle door, announcing visitors"
-          },
+            {
+              "at": "anchor/node-castle",
+              "dialogue": "dlg/agathe-tail",
+              "doing": "in the great hall beside the costume, with tea",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ],
+              "requires_flags": [
+                "flag/bernt-asked"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": "dlg/agathe-going",
+              "doing": "on the square in the costume, early",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
+          "npc/bernt": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/bernt-door",
+              "doing": "at the castle door, announcing visitors",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The castle is very quiet. I find I don't care for it.",
+                  "I have put the kettle on for nobody. Habit."
+                ]
+              },
+              "doing": "alone in the castle with the kettle on",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/dumpling": [
             {
               "at": {
@@ -320,9 +461,10 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-hum",
               "doing": "floating in the great hall and humming",
               "forbids_flags": [
+                "flag/dragon-done",
                 "flag/tail-dumpling"
               ]
             },
@@ -335,31 +477,90 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
-              "doing": "floating in the great hall and humming",
+              "dialogue": {
+                "barks": [
+                  "Dumpling hums at the window and looks down at the town, where the noise is."
+                ]
+              },
+              "doing": "floating in the great hall",
+              "forbids_flags": [
+                "flag/tail-dumpling"
+              ],
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -3,
+                  0,
+                  -9
+                ]
+              },
+              "dialogue": "dlg/dumpling-tail",
+              "doing": "floating over the square in sailcloth",
               "requires_flags": [
                 "flag/tail-dumpling"
               ]
             }
           ],
-          "npc/elin": {
-            "at": "anchor/node-weaver",
-            "dialogue": "unchanged",
-            "doing": "in her loom room"
-          },
+          "npc/elin": [
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard"
+              ],
+              "requires_flags": [
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-news",
+              "doing": "in the loom room, waiting to hear what Vidar said",
+              "requires_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            }
+          ],
           "npc/fenna": [
             {
               "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/fenna-chorus",
+              "doing": "in the tavern garden with no chorus",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -7,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four voices again. Haul away!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -370,31 +571,67 @@
             "dialogue": "dlg/hedda-errands",
             "doing": "holding the square and sending people up and down the town"
           },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/inga": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/inga-door",
+              "doing": "at the lighthouse, keeping an eye on her niece",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "at the lighthouse"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "She went down the path on her own feet. I watched her all the way.",
+                  "Lamp's trimmed. I'll see the play from the gallery."
+                ]
+              },
+              "doing": "at the lighthouse, watching the path to town",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/kettil": [
             {
               "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/kettil-cooper",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -8,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "My barrel's at the back. Don't look at it."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -403,56 +640,293 @@
           "npc/mari": [
             {
               "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/mari-loft",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -6,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Top of the third verse, me. Ha!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
             }
           ],
-          "npc/oskar": {
-            "at": "anchor/node-bakery",
-            "dialogue": "unchanged",
-            "doing": "in the bakery"
-          },
-          "npc/runa": {
-            "at": "anchor/node-smithy",
-            "dialogue": "unchanged",
-            "doing": "at her forge"
-          },
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                -2,
-                0,
-                0
+          "npc/oskar": [
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-door",
+              "doing": "in the bakery with no oven door",
+              "forbids_flags": [
+                "flag/loaf-oven",
+                "flag/loaf-forge"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "rehearsing to herself"
-          },
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Golden. Mine. Don't touch.",
+                  "Same oven, same door. Same as every year."
+                ]
+              },
+              "doing": "on the square with the Mountain Loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "It's a loaf. She says. I've tapped it. It rang.",
+                  "Four minutes. I've been baking forty years."
+                ]
+              },
+              "doing": "on the square beside the forge loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-forge"
+              ]
+            }
+          ],
+          "npc/runa": [
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven",
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": "dlg/runa-forge",
+              "doing": "at her forge under the hanging oven door",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven"
+              ],
+              "requires_flags": [
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Tell Oskar the door's still warm. I polished it."
+                ]
+              },
+              "doing": "at her forge, the hook over it empty",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Four minutes. Watch."
+                ]
+              },
+              "doing": "at her forge with the Mountain Loaf in the coals",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The door's back on. I polished it first.",
+                  "A forge bakes better. You said so. I heard you."
+                ]
+              },
+              "doing": "on the square, pretending not to care",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four minutes! Told you.",
+                  "Crust like a horseshoe. That's how you know it's done."
+                ]
+              },
+              "doing": "on the square, holding a black loaf like a trophy",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-forge"
+              ]
+            }
+          ],
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done",
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/sanna-buoys",
+              "doing": "rehearsing to a row of painted buoys",
+              "forbids_flags": [
+                "flag/founder-done"
+              ],
+              "requires_flags": [
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  0,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "I'm here. I'm on the square. I haven't run away yet.",
+                  "'I have crossed the cold sea—' see? Easy."
+                ]
+              },
+              "doing": "on the square, going over her first speech",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/sverre-boat",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -9,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Asked by name. Here I am."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -460,8 +934,8 @@
           ],
           "npc/vidar": {
             "at": "anchor/node-townhall",
-            "dialogue": "unchanged",
-            "doing": "at the guildhall"
+            "dialogue": "dlg/vidar-hall",
+            "doing": "on the guildhall steps with by-law nine"
           }
         },
         "happening": {
@@ -539,7 +1013,12 @@
                 -5
               ]
             },
-            "type": "move-npc"
+            "type": "move-npc",
+            "when": {
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
           },
           {
             "happening": {
@@ -564,6 +1043,14 @@
             }
           }
         ],
+        "on_objective_complete": {
+          "obj/ask-bernt": [
+            {
+              "flag": "flag/bernt-asked",
+              "type": "set-flag"
+            }
+          ]
+        },
         "trigger": {
           "quest": "quest/the-troupe",
           "type": "quest-complete"
@@ -571,41 +1058,85 @@
       },
       {
         "cast": {
-          "npc/agathe": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -3,
-                0,
-                -5
+          "npc/agathe": [
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/bernt-asked",
+                "flag/dragon-done"
               ]
             },
-            "dialogue": "dlg/agathe-going",
-            "doing": "on the square in the costume, early",
-            "requires_flags": [
-              "flag/dragon-done"
-            ]
-          },
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-castle",
-              "offset": [
-                -3,
-                0,
-                0
+            {
+              "at": "anchor/node-castle",
+              "dialogue": "dlg/agathe-tail",
+              "doing": "in the great hall beside the costume, with tea",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ],
+              "requires_flags": [
+                "flag/bernt-asked"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "The castle is very quiet. I find I don't care for it.",
-                "I have put the kettle on for nobody. Habit."
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": "dlg/agathe-going",
+              "doing": "on the square in the costume, early",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
+          "npc/bernt": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/bernt-door",
+              "doing": "at the castle door, announcing visitors",
+              "forbids_flags": [
+                "flag/dragon-done"
               ]
             },
-            "doing": "alone in the castle with the kettle on",
-            "requires_flags": [
-              "flag/dragon-done"
-            ]
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The castle is very quiet. I find I don't care for it.",
+                  "I have put the kettle on for nobody. Habit."
+                ]
+              },
+              "doing": "alone in the castle with the kettle on",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/dumpling": [
             {
               "at": {
@@ -616,10 +1147,33 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-hum",
+              "doing": "floating in the great hall and humming",
+              "forbids_flags": [
+                "flag/dragon-done",
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  0,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Dumpling hums at the window and looks down at the town, where the noise is."
+                ]
+              },
               "doing": "floating in the great hall",
               "forbids_flags": [
                 "flag/tail-dumpling"
+              ],
+              "requires_flags": [
+                "flag/dragon-done"
               ]
             },
             {
@@ -638,24 +1192,61 @@
               ]
             }
           ],
-          "npc/elin": {
-            "at": "anchor/node-weaver",
-            "dialogue": "unchanged",
-            "doing": "in her loom room"
-          },
+          "npc/elin": [
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard"
+              ],
+              "requires_flags": [
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-news",
+              "doing": "in the loom room, waiting to hear what Vidar said",
+              "requires_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            }
+          ],
           "npc/fenna": [
             {
               "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/fenna-chorus",
+              "doing": "in the tavern garden with no chorus",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -7,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four voices again. Haul away!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -663,34 +1254,70 @@
           ],
           "npc/hedda": {
             "at": "anchor/node-square",
-            "dialogue": "unchanged",
-            "doing": "holding the square"
+            "dialogue": "dlg/hedda-errands",
+            "doing": "holding the square and sending people up and down the town"
           },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/inga": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/inga-door",
+              "doing": "at the lighthouse, keeping an eye on her niece",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": "dlg/inga-door",
-            "doing": "at the lighthouse, keeping an eye on her niece"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "She went down the path on her own feet. I watched her all the way.",
+                  "Lamp's trimmed. I'll see the play from the gallery."
+                ]
+              },
+              "doing": "at the lighthouse, watching the path to town",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/kettil": [
             {
               "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/kettil-cooper",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -8,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "My barrel's at the back. Don't look at it."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -699,56 +1326,293 @@
           "npc/mari": [
             {
               "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/mari-loft",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -6,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Top of the third verse, me. Ha!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
             }
           ],
-          "npc/oskar": {
-            "at": "anchor/node-bakery",
-            "dialogue": "unchanged",
-            "doing": "in the bakery"
-          },
-          "npc/runa": {
-            "at": "anchor/node-smithy",
-            "dialogue": "unchanged",
-            "doing": "at her forge"
-          },
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                -2,
-                0,
-                0
+          "npc/oskar": [
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-door",
+              "doing": "in the bakery with no oven door",
+              "forbids_flags": [
+                "flag/loaf-oven",
+                "flag/loaf-forge"
               ]
             },
-            "dialogue": "dlg/sanna-buoys",
-            "doing": "rehearsing to a row of painted buoys"
-          },
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Golden. Mine. Don't touch.",
+                  "Same oven, same door. Same as every year."
+                ]
+              },
+              "doing": "on the square with the Mountain Loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "It's a loaf. She says. I've tapped it. It rang.",
+                  "Four minutes. I've been baking forty years."
+                ]
+              },
+              "doing": "on the square beside the forge loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-forge"
+              ]
+            }
+          ],
+          "npc/runa": [
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven",
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": "dlg/runa-forge",
+              "doing": "at her forge under the hanging oven door",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven"
+              ],
+              "requires_flags": [
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Tell Oskar the door's still warm. I polished it."
+                ]
+              },
+              "doing": "at her forge, the hook over it empty",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Four minutes. Watch."
+                ]
+              },
+              "doing": "at her forge with the Mountain Loaf in the coals",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The door's back on. I polished it first.",
+                  "A forge bakes better. You said so. I heard you."
+                ]
+              },
+              "doing": "on the square, pretending not to care",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four minutes! Told you.",
+                  "Crust like a horseshoe. That's how you know it's done."
+                ]
+              },
+              "doing": "on the square, holding a black loaf like a trophy",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-forge"
+              ]
+            }
+          ],
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done",
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/sanna-buoys",
+              "doing": "rehearsing to a row of painted buoys",
+              "forbids_flags": [
+                "flag/founder-done"
+              ],
+              "requires_flags": [
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  0,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "I'm here. I'm on the square. I haven't run away yet.",
+                  "'I have crossed the cold sea—' see? Easy."
+                ]
+              },
+              "doing": "on the square, going over her first speech",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/sverre-boat",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -9,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Asked by name. Here I am."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -756,8 +1620,8 @@
           ],
           "npc/vidar": {
             "at": "anchor/node-townhall",
-            "dialogue": "unchanged",
-            "doing": "at the guildhall"
+            "dialogue": "dlg/vidar-hall",
+            "doing": "on the guildhall steps with by-law nine"
           }
         },
         "happening": {
@@ -819,9 +1683,22 @@
                 -5
               ]
             },
-            "type": "move-npc"
+            "type": "move-npc",
+            "when": {
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
           }
         ],
+        "on_objective_complete": {
+          "obj/find-inga": [
+            {
+              "flag": "flag/inga-found",
+              "type": "set-flag"
+            }
+          ]
+        },
         "trigger": {
           "quest": "quest/the-troupe",
           "type": "quest-complete"
@@ -829,31 +1706,102 @@
       },
       {
         "cast": {
-          "npc/agathe": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -3,
-                0,
-                -5
+          "npc/agathe": [
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/bernt-asked",
+                "flag/dragon-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square in the costume"
-          },
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-castle",
-              "offset": [
-                -3,
-                0,
-                0
+            {
+              "at": "anchor/node-castle",
+              "dialogue": "dlg/agathe-tail",
+              "doing": "in the great hall beside the costume, with tea",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ],
+              "requires_flags": [
+                "flag/bernt-asked"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "alone in the castle"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": "dlg/agathe-going",
+              "doing": "on the square in the costume, early",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
+          "npc/bernt": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/bernt-door",
+              "doing": "at the castle door, announcing visitors",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The castle is very quiet. I find I don't care for it.",
+                  "I have put the kettle on for nobody. Habit."
+                ]
+              },
+              "doing": "alone in the castle with the kettle on",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/dumpling": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  0,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": "dlg/dumpling-hum",
+              "doing": "floating in the great hall and humming",
+              "forbids_flags": [
+                "flag/dragon-done",
+                "flag/tail-dumpling"
+              ]
+            },
             {
               "at": {
                 "anchor": "anchor/node-castle",
@@ -871,6 +1819,9 @@
               "doing": "floating in the great hall",
               "forbids_flags": [
                 "flag/tail-dumpling"
+              ],
+              "requires_flags": [
+                "flag/dragon-done"
               ]
             },
             {
@@ -882,31 +1833,68 @@
                   -9
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
                 "flag/tail-dumpling"
               ]
             }
           ],
-          "npc/elin": {
-            "at": "anchor/node-weaver",
-            "dialogue": "unchanged",
-            "doing": "in her loom room"
-          },
+          "npc/elin": [
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard"
+              ],
+              "requires_flags": [
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-news",
+              "doing": "in the loom room, waiting to hear what Vidar said",
+              "requires_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            }
+          ],
           "npc/fenna": [
             {
               "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/fenna-chorus",
+              "doing": "in the tavern garden with no chorus",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -7,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four voices again. Haul away!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -914,42 +1902,70 @@
           ],
           "npc/hedda": {
             "at": "anchor/node-square",
-            "dialogue": "unchanged",
-            "doing": "holding the square"
+            "dialogue": "dlg/hedda-errands",
+            "doing": "holding the square and sending people up and down the town"
           },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/inga": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/inga-door",
+              "doing": "at the lighthouse, keeping an eye on her niece",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "She went down the path on her own feet. I watched her all the way.",
-                "Lamp's trimmed. I'll see the play from the gallery."
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "She went down the path on her own feet. I watched her all the way.",
+                  "Lamp's trimmed. I'll see the play from the gallery."
+                ]
+              },
+              "doing": "at the lighthouse, watching the path to town",
+              "requires_flags": [
+                "flag/founder-done"
               ]
-            },
-            "doing": "at the lighthouse, watching the path to town",
-            "requires_flags": [
-              "flag/founder-done"
-            ]
-          },
+            }
+          ],
           "npc/kettil": [
             {
               "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/kettil-cooper",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -8,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "My barrel's at the back. Don't look at it."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -958,16 +1974,27 @@
           "npc/mari": [
             {
               "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/mari-loft",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -6,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Top of the third verse, me. Ha!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -987,6 +2014,9 @@
               "at": "anchor/node-bakery",
               "dialogue": "dlg/oskar-news",
               "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
               "requires_flags": [
                 "flag/loaf-oven"
               ]
@@ -995,7 +2025,52 @@
               "at": "anchor/node-bakery",
               "dialogue": "dlg/oskar-news",
               "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
               "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Golden. Mine. Don't touch.",
+                  "Same oven, same door. Same as every year."
+                ]
+              },
+              "doing": "on the square with the Mountain Loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "It's a loaf. She says. I've tapped it. It rang.",
+                  "Four minutes. I've been baking forty years."
+                ]
+              },
+              "doing": "on the square beside the forge loaf",
+              "requires_flags": [
+                "flag/loaf-done",
                 "flag/loaf-forge"
               ]
             }
@@ -1003,11 +2078,29 @@
           "npc/runa": [
             {
               "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven",
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
               "dialogue": "dlg/runa-forge",
               "doing": "at her forge under the hanging oven door",
               "forbids_flags": [
-                "flag/loaf-oven",
-                "flag/loaf-forge"
+                "flag/loaf-forge",
+                "flag/loaf-oven"
+              ],
+              "requires_flags": [
+                "flag/oskar-asked"
               ]
             },
             {
@@ -1018,6 +2111,9 @@
                 ]
               },
               "doing": "at her forge, the hook over it empty",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
               "requires_flags": [
                 "flag/loaf-oven"
               ]
@@ -1030,44 +2126,141 @@
                 ]
               },
               "doing": "at her forge with the Mountain Loaf in the coals",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
               "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The door's back on. I polished it first.",
+                  "A forge bakes better. You said so. I heard you."
+                ]
+              },
+              "doing": "on the square, pretending not to care",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four minutes! Told you.",
+                  "Crust like a horseshoe. That's how you know it's done."
+                ]
+              },
+              "doing": "on the square, holding a black loaf like a trophy",
+              "requires_flags": [
+                "flag/loaf-done",
                 "flag/loaf-forge"
               ]
             }
           ],
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                0,
-                0,
-                -5
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done",
+                "flag/inga-found"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "I'm here. I'm on the square. I haven't run away yet.",
-                "'I have crossed the cold sea—' see? Easy."
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/sanna-buoys",
+              "doing": "rehearsing to a row of painted buoys",
+              "forbids_flags": [
+                "flag/founder-done"
+              ],
+              "requires_flags": [
+                "flag/inga-found"
               ]
             },
-            "doing": "on the square, going over her first speech",
-            "requires_flags": [
-              "flag/founder-done"
-            ]
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  0,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "I'm here. I'm on the square. I haven't run away yet.",
+                  "'I have crossed the cold sea—' see? Easy."
+                ]
+              },
+              "doing": "on the square, going over her first speech",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/sverre-boat",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
             },
             {
-              "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -9,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Asked by name. Here I am."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -1075,8 +2268,8 @@
           ],
           "npc/vidar": {
             "at": "anchor/node-townhall",
-            "dialogue": "unchanged",
-            "doing": "at the guildhall"
+            "dialogue": "dlg/vidar-hall",
+            "doing": "on the guildhall steps with by-law nine"
           }
         },
         "happening": {
@@ -1149,7 +2342,12 @@
                 -5
               ]
             },
-            "type": "move-npc"
+            "type": "move-npc",
+            "when": {
+              "requires_flags": [
+                "flag/loaf-done"
+              ]
+            }
           },
           {
             "happening": {
@@ -1166,10 +2364,21 @@
                 -5
               ]
             },
-            "type": "move-npc"
+            "type": "move-npc",
+            "when": {
+              "requires_flags": [
+                "flag/loaf-done"
+              ]
+            }
           }
         ],
         "on_objective_complete": {
+          "obj/ask-oskar": [
+            {
+              "flag": "flag/oskar-asked",
+              "type": "set-flag"
+            }
+          ],
           "obj/tell-oskar": [
             {
               "text": "Oskar hangs his own door back on his own oven, pats it twice, and the Mountain Loaf goes in.",
@@ -1198,30 +2407,85 @@
       },
       {
         "cast": {
-          "npc/agathe": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -3,
-                0,
-                -5
+          "npc/agathe": [
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/bernt-asked",
+                "flag/dragon-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square in the costume"
-          },
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-castle",
-              "offset": [
-                -3,
-                0,
-                0
+            {
+              "at": "anchor/node-castle",
+              "dialogue": "dlg/agathe-tail",
+              "doing": "in the great hall beside the costume, with tea",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ],
+              "requires_flags": [
+                "flag/bernt-asked"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "alone in the castle"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": "dlg/agathe-going",
+              "doing": "on the square in the costume, early",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
+          "npc/bernt": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/bernt-door",
+              "doing": "at the castle door, announcing visitors",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The castle is very quiet. I find I don't care for it.",
+                  "I have put the kettle on for nobody. Habit."
+                ]
+              },
+              "doing": "alone in the castle with the kettle on",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/dumpling": [
             {
               "at": {
@@ -1232,10 +2496,33 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-hum",
+              "doing": "floating in the great hall and humming",
+              "forbids_flags": [
+                "flag/dragon-done",
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  0,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Dumpling hums at the window and looks down at the town, where the noise is."
+                ]
+              },
               "doing": "floating in the great hall",
               "forbids_flags": [
                 "flag/tail-dumpling"
+              ],
+              "requires_flags": [
+                "flag/dragon-done"
               ]
             },
             {
@@ -1247,18 +2534,44 @@
                   -9
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
                 "flag/tail-dumpling"
               ]
             }
           ],
-          "npc/elin": {
-            "at": "anchor/node-weaver",
-            "dialogue": "unchanged",
-            "doing": "in her loom room"
-          },
+          "npc/elin": [
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard"
+              ],
+              "requires_flags": [
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-news",
+              "doing": "in the loom room, waiting to hear what Vidar said",
+              "requires_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            }
+          ],
           "npc/fenna": [
             {
               "at": "anchor/node-tavern",
@@ -1269,9 +2582,20 @@
               ]
             },
             {
-              "at": "anchor/node-tavern",
-              "dialogue": "dlg/fenna-chorus",
-              "doing": "in the tavern garden with no chorus",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -7,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four voices again. Haul away!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -1279,21 +2603,46 @@
           ],
           "npc/hedda": {
             "at": "anchor/node-square",
-            "dialogue": "unchanged",
-            "doing": "holding the square"
+            "dialogue": "dlg/hedda-errands",
+            "doing": "holding the square and sending people up and down the town"
           },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/inga": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/inga-door",
+              "doing": "at the lighthouse, keeping an eye on her niece",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "at the lighthouse"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "She went down the path on her own feet. I watched her all the way.",
+                  "Lamp's trimmed. I'll see the play from the gallery."
+                ]
+              },
+              "doing": "at the lighthouse, watching the path to town",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/kettil": [
             {
               "at": "anchor/node-cooper",
@@ -1304,9 +2653,20 @@
               ]
             },
             {
-              "at": "anchor/node-cooper",
-              "dialogue": "dlg/kettil-cooper",
-              "doing": "at home, not singing",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -8,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "My barrel's at the back. Don't look at it."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -1322,15 +2682,57 @@
               ]
             },
             {
-              "at": "anchor/node-netloft",
-              "dialogue": "dlg/mari-loft",
-              "doing": "at home, not singing",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -6,
+                  0,
+                  6
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Top of the third verse, me. Ha!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
             }
           ],
           "npc/oskar": [
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-door",
+              "doing": "in the bakery with no oven door",
+              "forbids_flags": [
+                "flag/loaf-oven",
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
             {
               "at": {
                 "anchor": "anchor/node-square",
@@ -1348,6 +2750,7 @@
               },
               "doing": "on the square with the Mountain Loaf",
               "requires_flags": [
+                "flag/loaf-done",
                 "flag/loaf-oven"
               ]
             },
@@ -1368,11 +2771,69 @@
               },
               "doing": "on the square beside the forge loaf",
               "requires_flags": [
+                "flag/loaf-done",
                 "flag/loaf-forge"
               ]
             }
           ],
           "npc/runa": [
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven",
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": "dlg/runa-forge",
+              "doing": "at her forge under the hanging oven door",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven"
+              ],
+              "requires_flags": [
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Tell Oskar the door's still warm. I polished it."
+                ]
+              },
+              "doing": "at her forge, the hook over it empty",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Four minutes. Watch."
+                ]
+              },
+              "doing": "at her forge with the Mountain Loaf in the coals",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
             {
               "at": {
                 "anchor": "anchor/node-square",
@@ -1390,6 +2851,7 @@
               },
               "doing": "on the square, pretending not to care",
               "requires_flags": [
+                "flag/loaf-done",
                 "flag/loaf-oven"
               ]
             },
@@ -1410,22 +2872,72 @@
               },
               "doing": "on the square, holding a black loaf like a trophy",
               "requires_flags": [
+                "flag/loaf-done",
                 "flag/loaf-forge"
               ]
             }
           ],
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                0,
-                0,
-                -5
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done",
+                "flag/inga-found"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/sanna-buoys",
+              "doing": "rehearsing to a row of painted buoys",
+              "forbids_flags": [
+                "flag/founder-done"
+              ],
+              "requires_flags": [
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  0,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "I'm here. I'm on the square. I haven't run away yet.",
+                  "'I have crossed the cold sea—' see? Easy."
+                ]
+              },
+              "doing": "on the square, going over her first speech",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
@@ -1436,9 +2948,20 @@
               ]
             },
             {
-              "at": "anchor/node-boatwright",
-              "dialogue": "dlg/sverre-boat",
-              "doing": "at home, not singing",
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -9,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Asked by name. Here I am."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -1446,8 +2969,8 @@
           ],
           "npc/vidar": {
             "at": "anchor/node-townhall",
-            "dialogue": "unchanged",
-            "doing": "at the guildhall"
+            "dialogue": "dlg/vidar-hall",
+            "doing": "on the guildhall steps with by-law nine"
           }
         },
         "happening": {
@@ -1625,30 +3148,85 @@
       },
       {
         "cast": {
-          "npc/agathe": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -3,
-                0,
-                -5
+          "npc/agathe": [
+            {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/bernt-asked",
+                "flag/dragon-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square in the costume"
-          },
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-castle",
-              "offset": [
-                -3,
-                0,
-                0
+            {
+              "at": "anchor/node-castle",
+              "dialogue": "dlg/agathe-tail",
+              "doing": "in the great hall beside the costume, with tea",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ],
+              "requires_flags": [
+                "flag/bernt-asked"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "alone in the castle"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": "dlg/agathe-going",
+              "doing": "on the square in the costume, early",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
+          "npc/bernt": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/bernt-door",
+              "doing": "at the castle door, announcing visitors",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The castle is very quiet. I find I don't care for it.",
+                  "I have put the kettle on for nobody. Habit."
+                ]
+              },
+              "doing": "alone in the castle with the kettle on",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/dumpling": [
             {
               "at": {
@@ -1659,10 +3237,33 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-hum",
+              "doing": "floating in the great hall and humming",
+              "forbids_flags": [
+                "flag/dragon-done",
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  0,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Dumpling hums at the window and looks down at the town, where the noise is."
+                ]
+              },
               "doing": "floating in the great hall",
               "forbids_flags": [
                 "flag/tail-dumpling"
+              ],
+              "requires_flags": [
+                "flag/dragon-done"
               ]
             },
             {
@@ -1674,7 +3275,7 @@
                   -9
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
                 "flag/tail-dumpling"
@@ -1687,7 +3288,19 @@
               "dialogue": "dlg/elin-loom",
               "doing": "in the loom room with the new curtain across the floor",
               "forbids_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
                 "flag/bylaw-heard"
+              ],
+              "requires_flags": [
+                "flag/curtain-asked"
               ]
             },
             {
@@ -1695,15 +3308,16 @@
               "dialogue": "dlg/elin-news",
               "doing": "in the loom room, waiting to hear what Vidar said",
               "requires_flags": [
-                "flag/bylaw-heard"
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
               ]
             }
           ],
           "npc/fenna": [
             {
               "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/fenna-chorus",
+              "doing": "in the tavern garden with no chorus",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -1730,26 +3344,51 @@
           ],
           "npc/hedda": {
             "at": "anchor/node-square",
-            "dialogue": "unchanged",
-            "doing": "holding the square"
+            "dialogue": "dlg/hedda-errands",
+            "doing": "holding the square and sending people up and down the town"
           },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/inga": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/inga-door",
+              "doing": "at the lighthouse, keeping an eye on her niece",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "at the lighthouse"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "She went down the path on her own feet. I watched her all the way.",
+                  "Lamp's trimmed. I'll see the play from the gallery."
+                ]
+              },
+              "doing": "at the lighthouse, watching the path to town",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/kettil": [
             {
               "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/kettil-cooper",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -1777,8 +3416,8 @@
           "npc/mari": [
             {
               "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/mari-loft",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -1803,47 +3442,248 @@
               ]
             }
           ],
-          "npc/oskar": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                3,
-                0,
-                -5
+          "npc/oskar": [
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-door",
+              "doing": "in the bakery with no oven door",
+              "forbids_flags": [
+                "flag/loaf-oven",
+                "flag/loaf-forge"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square"
-          },
-          "npc/runa": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                5,
-                0,
-                -5
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square"
-          },
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                0,
-                0,
-                -5
+            {
+              "at": "anchor/node-bakery",
+              "dialogue": "dlg/oskar-news",
+              "doing": "in the bakery waiting for news of his door",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "on the square"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Golden. Mine. Don't touch.",
+                  "Same oven, same door. Same as every year."
+                ]
+              },
+              "doing": "on the square with the Mountain Loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  3,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "It's a loaf. She says. I've tapped it. It rang.",
+                  "Four minutes. I've been baking forty years."
+                ]
+              },
+              "doing": "on the square beside the forge loaf",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-forge"
+              ]
+            }
+          ],
+          "npc/runa": [
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Best door in Kelderby, that. I mended it.",
+                  "A forge bakes better. Ask anyone. Ask me."
+                ]
+              },
+              "doing": "at her forge",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven",
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": "dlg/runa-forge",
+              "doing": "at her forge under the hanging oven door",
+              "forbids_flags": [
+                "flag/loaf-forge",
+                "flag/loaf-oven"
+              ],
+              "requires_flags": [
+                "flag/oskar-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Tell Oskar the door's still warm. I polished it."
+                ]
+              },
+              "doing": "at her forge, the hook over it empty",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": "anchor/node-smithy",
+              "dialogue": {
+                "barks": [
+                  "Four minutes. Watch."
+                ]
+              },
+              "doing": "at her forge with the Mountain Loaf in the coals",
+              "forbids_flags": [
+                "flag/loaf-done"
+              ],
+              "requires_flags": [
+                "flag/loaf-forge"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The door's back on. I polished it first.",
+                  "A forge bakes better. You said so. I heard you."
+                ]
+              },
+              "doing": "on the square, pretending not to care",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-oven"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  5,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Four minutes! Told you.",
+                  "Crust like a horseshoe. That's how you know it's done."
+                ]
+              },
+              "doing": "on the square, holding a black loaf like a trophy",
+              "requires_flags": [
+                "flag/loaf-done",
+                "flag/loaf-forge"
+              ]
+            }
+          ],
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done",
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/sanna-buoys",
+              "doing": "rehearsing to a row of painted buoys",
+              "forbids_flags": [
+                "flag/founder-done"
+              ],
+              "requires_flags": [
+                "flag/inga-found"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  0,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "I'm here. I'm on the square. I haven't run away yet.",
+                  "'I have crossed the cold sea—' see? Easy."
+                ]
+              },
+              "doing": "on the square, going over her first speech",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/sverre-boat",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -1948,6 +3788,31 @@
         "cast": {
           "npc/agathe": [
             {
+              "at": "anchor/node-castle",
+              "dialogue": {
+                "barks": [
+                  "If Hedda sent you, there's tea.",
+                  "I am not coming down. Probably."
+                ]
+              },
+              "doing": "in the great hall, not coming down",
+              "forbids_flags": [
+                "flag/bernt-asked",
+                "flag/dragon-done"
+              ]
+            },
+            {
+              "at": "anchor/node-castle",
+              "dialogue": "dlg/agathe-tail",
+              "doing": "in the great hall beside the costume, with tea",
+              "forbids_flags": [
+                "flag/dragon-done"
+              ],
+              "requires_flags": [
+                "flag/bernt-asked"
+              ]
+            },
+            {
               "at": {
                 "anchor": "anchor/node-square",
                 "offset": [
@@ -1964,6 +3829,7 @@
               },
               "doing": "on the square in the whole costume, tail and all",
               "requires_flags": [
+                "flag/dragon-done",
                 "flag/tail-nest-moved"
               ]
             },
@@ -1984,22 +3850,48 @@
               },
               "doing": "on the square in the costume, Dumpling behind her",
               "requires_flags": [
+                "flag/dragon-done",
                 "flag/tail-dumpling"
               ]
             }
           ],
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-castle",
-              "offset": [
-                -3,
-                0,
-                0
+          "npc/bernt": [
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/bernt-door",
+              "doing": "at the castle door, announcing visitors",
+              "forbids_flags": [
+                "flag/dragon-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "alone in the castle"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  -3,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The castle is very quiet. I find I don't care for it.",
+                  "I have put the kettle on for nobody. Habit."
+                ]
+              },
+              "doing": "alone in the castle with the kettle on",
+              "requires_flags": [
+                "flag/dragon-done"
+              ]
+            }
+          ],
           "npc/dumpling": [
             {
               "at": {
@@ -2010,10 +3902,33 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-hum",
+              "doing": "floating in the great hall and humming",
+              "forbids_flags": [
+                "flag/dragon-done",
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-castle",
+                "offset": [
+                  0,
+                  0,
+                  4
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Dumpling hums at the window and looks down at the town, where the noise is."
+                ]
+              },
               "doing": "floating in the great hall",
               "forbids_flags": [
                 "flag/tail-dumpling"
+              ],
+              "requires_flags": [
+                "flag/dragon-done"
               ]
             },
             {
@@ -2025,28 +3940,49 @@
                   -9
                 ]
               },
-              "dialogue": "unchanged",
+              "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
                 "flag/tail-dumpling"
               ]
             }
           ],
-          "npc/elin": {
-            "at": "anchor/node-weaver",
-            "dialogue": {
-              "barks": [
-                "Nine hundred threads to the hand. I counted. Twice.",
-                "Red and gold. Wait till you see it hung."
+          "npc/elin": [
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
               ]
             },
-            "doing": "at the weaver's, fussing over her curtain"
-          },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-loom",
+              "doing": "in the loom room with the new curtain across the floor",
+              "forbids_flags": [
+                "flag/bylaw-heard"
+              ],
+              "requires_flags": [
+                "flag/curtain-asked"
+              ]
+            },
+            {
+              "at": "anchor/node-weaver",
+              "dialogue": "dlg/elin-news",
+              "doing": "in the loom room, waiting to hear what Vidar said",
+              "requires_flags": [
+                "flag/bylaw-heard",
+                "flag/curtain-asked"
+              ]
+            }
+          ],
           "npc/fenna": [
             {
               "at": "anchor/node-tavern",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/fenna-chorus",
+              "doing": "in the tavern garden with no chorus",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -2060,8 +3996,12 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
-              "doing": "on the square with the chorus",
+              "dialogue": {
+                "barks": [
+                  "Four voices again. Haul away!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -2072,23 +4012,48 @@
             "dialogue": "dlg/hedda-places",
             "doing": "on the square calling places"
           },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-lighthouse",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/inga": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/inga-door",
+              "doing": "at the lighthouse, keeping an eye on her niece",
+              "forbids_flags": [
+                "flag/founder-done"
               ]
             },
-            "dialogue": "unchanged",
-            "doing": "at the lighthouse"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "She went down the path on her own feet. I watched her all the way.",
+                  "Lamp's trimmed. I'll see the play from the gallery."
+                ]
+              },
+              "doing": "at the lighthouse, watching the path to town",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/kettil": [
             {
               "at": "anchor/node-cooper",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/kettil-cooper",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -2102,8 +4067,12 @@
                   6
                 ]
               },
-              "dialogue": "unchanged",
-              "doing": "on the square with the chorus",
+              "dialogue": {
+                "barks": [
+                  "My barrel's at the back. Don't look at it."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -2112,8 +4081,8 @@
           "npc/mari": [
             {
               "at": "anchor/node-netloft",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/mari-loft",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -2127,8 +4096,12 @@
                   6
                 ]
               },
-              "dialogue": "unchanged",
-              "doing": "on the square with the chorus",
+              "dialogue": {
+                "barks": [
+                  "Top of the third verse, me. Ha!"
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
@@ -2218,28 +4191,72 @@
               ]
             }
           ],
-          "npc/sanna": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                0,
-                0,
-                -5
+          "npc/sanna": [
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "'I have crossed the cold sea—' no. Again.",
+                  "Don't look at me. Please."
+                ]
+              },
+              "doing": "rehearsing to herself",
+              "forbids_flags": [
+                "flag/founder-done",
+                "flag/inga-found"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "Two hundred faces. I'm only going to look at the ones I need.",
-                "I know every line. Ask me one. No, don't."
+            {
+              "at": {
+                "anchor": "anchor/node-lighthouse",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/sanna-buoys",
+              "doing": "rehearsing to a row of painted buoys",
+              "forbids_flags": [
+                "flag/founder-done"
+              ],
+              "requires_flags": [
+                "flag/inga-found"
               ]
             },
-            "doing": "on the square in the Founder's smock"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  0,
+                  0,
+                  -5
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Two hundred faces. I'm only going to look at the ones I need.",
+                  "I know every line. Ask me one. No, don't."
+                ]
+              },
+              "doing": "on the square in the Founder's smock",
+              "requires_flags": [
+                "flag/founder-done"
+              ]
+            }
+          ],
           "npc/sverre": [
             {
               "at": "anchor/node-boatwright",
-              "dialogue": "unchanged",
-              "doing": "at home",
+              "dialogue": "dlg/sverre-boat",
+              "doing": "at home, not singing",
               "forbids_flags": [
                 "flag/chorus-done"
               ]
@@ -2253,23 +4270,40 @@
                   4
                 ]
               },
-              "dialogue": "unchanged",
-              "doing": "on the square with the chorus",
+              "dialogue": {
+                "barks": [
+                  "Asked by name. Here I am."
+                ]
+              },
+              "doing": "on the square with the chorus, warming up",
               "requires_flags": [
                 "flag/chorus-done"
               ]
             }
           ],
-          "npc/vidar": {
-            "at": "anchor/node-townhall",
-            "dialogue": {
-              "barks": [
-                "I move that the fire lane stays clear.",
-                "By-law nine. Four paces. Every year."
+          "npc/vidar": [
+            {
+              "at": "anchor/node-townhall",
+              "dialogue": "dlg/vidar-hall",
+              "doing": "on the guildhall steps with by-law nine",
+              "forbids_flags": [
+                "flag/bylaw-heard"
               ]
             },
-            "doing": "at the guildhall, counting paces"
-          }
+            {
+              "at": "anchor/node-townhall",
+              "dialogue": {
+                "barks": [
+                  "I move that the fire lane stays clear.",
+                  "By-law nine. Four paces. Every year."
+                ]
+              },
+              "doing": "at the guildhall, counting paces",
+              "requires_flags": [
+                "flag/bylaw-heard"
+              ]
+            }
+          ]
         },
         "happening": {
           "subject": "npc/hedda",
