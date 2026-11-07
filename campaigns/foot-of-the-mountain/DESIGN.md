@@ -22,8 +22,9 @@ The town as built, with nothing rebuilt. Placement named where things happen (la
 | the bakery (`node/bakery`) and the smithy (`node/smithy`) on the main street | spoke C, the Loaf: Oskar, Runa |
 | the tavern, the cooper's, the net loft, the boatwright's | optional strand, the chorus: Fenna, Kettil, Mari, Sverre |
 | the weaver's and the guildhall | optional strand, the curtain: Elin, Vidar |
+| beside the castle road: a wayside spring, a bee garden, a herder's hut, a lookout (`node/poi-*`) | nothing the story needs: small places to wander into on the climb, one on each traverse |
 
-The spokes are in three districts — the mountain, the middle street, the headland — and none of them shuts or opens a way another one crosses. No connection is gated.
+The spokes are in three districts — the mountain, the middle street, the headland — and none of them shuts or opens a way another one crosses. No connection is gated. The three spokes and the two strands are taken in any order, by one player or by several at once; inside each one its steps keep their order.
 
 ## The web
 
