@@ -98,7 +98,7 @@ def build(a):
     door2(m, HX0, 6, "minecraft:spruce", "east")
     m.set(HX0, 3, 6, PLASTER)
     # bolts shown in the windows either side of the doorway
-    m.set(HX0 + 1, 1, 4, "minecraft:red_wool"); m.set(HX0 + 1, 1, 8, "minecraft:blue_wool")
+    m.set(HX0 + 1, 1, 8, "minecraft:blue_wool")
     # the chimney on the north wall
     for y in range(1, top + 2):
         m.set(10, y, HZ0, "stone")
@@ -116,6 +116,10 @@ def build(a):
     m.set(5, 1, 9, slab("minecraft:spruce", "top")); m.set(6, 1, 9, slab("minecraft:spruce", "top"))
     m.set(5, 2, 9, "minecraft:white_carpet"); m.set(6, 2, 9, candle(2))
     m.set(6, 1, 7, stairs("minecraft:spruce", "north"))
+    # the shop loom, the first thing seen from the doorway: its face to the
+    # door, one cell north of the line from it, the weaver at work at its
+    # north side, off the line and never between the door and the work
+    m.set(6, 1, 5, "minecraft:loom[facing=west]")
     m.set(5, 4, 6, lantern(True))
     # the loom room: three looms facing the window wall, the wool bale, a wheel
     for x in (8, 9, 11):
@@ -166,7 +170,7 @@ def build(a):
         m.set(13, y, 5, fence("minecraft:spruce"))
     m.set(13, 4, 5, lantern(False))
 
-    m.marks["node-weaver"] = (6 + FRONT_DX, 6, "east")
+    m.marks["node-weaver"] = (6 + FRONT_DX, 4, "south")
     # the street edge where the house does not stand: the yard wall
     front(m, 1, 1, a["extent"][2] - 2, gap=set(range(5, 8)))
     return m

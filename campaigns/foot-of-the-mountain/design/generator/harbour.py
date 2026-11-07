@@ -855,6 +855,7 @@ PALETTE = {
     "barrel": "minecraft:barrel[facing=up,open=false]",
     "water": "minecraft:water[level=0]",
     "qstep": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "qstep_wl": "minecraft:stone_brick_stairs[facing=north,half=bottom,shape=straight,waterlogged=true]",  # a step stood in the sea
     "gunwale_hi": "minecraft:oak_slab[type=bottom,waterlogged=false]",    # sits on the flare, no air under it
     "stem_post": "minecraft:stripped_oak_log[axis=y]",
     "slip_lo": "minecraft:smooth_stone_slab[type=bottom,waterlogged=false]",
@@ -916,9 +917,9 @@ def build_model():
     # water stairs at both ends of the basin, so a swimmer climbs back onto the quay:
     # a submerged step, a step one over the surface, then the quay's own level
     for x in (1,):
-        m.set(x, SEA - 1, 22, "qstep")
+        m.set(x, SEA - 1, 22, "qstep_wl")
         m.box(x, x, BED + 1, SEA - 2, 22, 22, "stone")
-        m.set(x, SEA, 21, "qstep")
+        m.set(x, SEA, 21, "qstep_wl")
         m.box(x, x, BED + 1, SEA - 1, 21, 21, "stone")
         for z in range(EDGE + 1, 21):
             m.set(x, 0, z, "qstep" if z == 20 else "kerb")
@@ -935,7 +936,7 @@ def build_model():
     # a short pier between the trader's bow and the fishing boat, water steps at its head
     townkit.pier(m, PIER_X, EDGE + 1, PIER_END, 0, BED + 1, {"fill": "stone", "pave": "pave", "kerb": "kerb"},
                  kerb_x=PIER_X[1])
-    townkit.water_step(m, PIER_X[0], PIER_END + 1, SEA, BED + 1, {"step": "qstep", "fill": "stone"})
+    townkit.water_step(m, PIER_X[0], PIER_END + 1, SEA, BED + 1, {"step": "qstep_wl", "fill": "stone"})
     # the slipway at the east end: a ramp of slabs running down off the quay under the water
     townkit.slipway(m, SLIP_X, EDGE, 22, SEA, BED + 1, 0,
                     {"low": "slip_lo", "wet_lo": "slip_wl", "wet_hi": "slip_wt", "fill": "stone", "water": "water"})
@@ -1341,7 +1342,7 @@ FULL = {"floor", "wall", "lid", "stone", "pave", "kerb", "turf", "post", "beam_x
         "gunwale_hi", "stem_post", "slip_wt", "load_door"}
 TALL = {"bollard", "rack", "rack_x", "mast", "lamp_post", "stem", "yard_x", "yard_z", "hoist_chain"}
 LOW = {"roof_n", "roof_s", "roof_e", "roof_w", "roof_e_in", "roof_w_in", "ridge", "desk", "chair", "lectern", "candles", "lantern", "crate_lid", "pot_a",
-       "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep",
+       "pot_b", "pot_c", "shutter_w", "bench", "gunwale", "bow_e", "bow_w", "net", "qstep", "qstep_wl",
        "flare_n", "flare_s", "flare_e", "flare_w", "slip_lo", "slip_wl", "sail"}
 
 _starter_contract = contract

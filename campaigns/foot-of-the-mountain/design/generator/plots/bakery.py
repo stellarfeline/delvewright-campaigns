@@ -18,7 +18,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (AIR, Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -30,7 +30,7 @@ VARIANTS = {
               {"weight": 1, "block": "minecraft:mossy_stone_bricks"}],
     "yard": [{"weight": 5, "block": "minecraft:coarse_dirt"},
              {"weight": 3, "block": "minecraft:packed_mud"},
-             {"weight": 2, "block": "minecraft:dirt_path"}],
+             {"weight": 2, "block": "minecraft:dirt"}],     # no dirt path in the fill: the yard runs under walls and floors
     "dome": [{"weight": 5, "block": "minecraft:bricks"},
              {"weight": 2, "block": "minecraft:mud_bricks"}],
 }
@@ -168,6 +168,11 @@ def build(a):
             for y in (4, 5, 6):
                 if abs(x + 1) + abs(z - 4) + (y - 4) <= 3 and (x, z) != (-1, 4) or (y == 6 and (x, z) == (-1, 4)):
                     m.set(x, y, z, leaves("minecraft:oak"))
+    # the worn track from the bake room's back door to the oven's mouth: a dirt
+    # path only where nothing stands over it (vanilla turns one under a block to dirt)
+    for (x, z) in ((8, 5), (7, 6), (6, 6), (5, 6), (4, 6), (7, 7), (7, 8)):
+        if m.get(x, 1, z) in (None, AIR):
+            m.set(x, 0, z, "minecraft:dirt_path")
     m.marks["node-bakery"] = (17 + FRONT_DX, 7, "east")
     # the street edge where the shop does not stand: the yard wall
     front(m, a["extent"][0] - 2, 1, a["extent"][2] - 2, gap=set(range(6, 9)))

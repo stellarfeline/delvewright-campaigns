@@ -81,6 +81,10 @@ def build(place) -> Model:
         "yard": [{"weight": 5, "block": "minecraft:grass_block[snowy=false]"},
                  {"weight": 2, "block": "minecraft:coarse_dirt"},
                  {"weight": 1, "block": "minecraft:dirt_path"}],
+        # the yard's ground where something stands on it: no worn path, which
+        # the game turns back to dirt under any block but air
+        "yard-under": [{"weight": 5, "block": "minecraft:grass_block[snowy=false]"},
+                       {"weight": 2, "block": "minecraft:coarse_dirt"}],
     })
     m.box(1, 18, 0, 0, 1, 12, "yard")
 
@@ -124,6 +128,11 @@ def build(place) -> Model:
     m.part(2, 7, 3, 9, "gardens")
 
     m.mark("node-cottages", 17, 4, "west")
+    # a worn path survives only under open air: under a wall, a pot or a
+    # barrel the yard is laid without one
+    for (x, y, z), r in list(m.v.items()):
+        if y == 0 and r in ("yard", "minecraft:dirt_path") and m.v.get((x, 1, z)) not in (None, "~air"):
+            m.v[(x, y, z)] = "yard-under"
     m.finish()
     return m
 
