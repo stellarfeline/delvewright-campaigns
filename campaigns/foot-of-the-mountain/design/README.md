@@ -21,5 +21,5 @@ Every image was drawn under one style contract (`style.txt`), each later image a
 | `concept/lane-far` | Scene 5, far: the lower street with the boatwright's shed, the cooperage and the net loft, the harbour beyond. | late afternoon, clear |
 | `concept/weaver-near` | Scene 6, near: Elin in her loom room holding up the new red-and-gold curtain. | late afternoon, clear |
 | `concept/guildhall-far` | Scene 6, far: the guildhall on its arcade with the clock over the door, Vidar Foss on the steps, the tavern across the street. | late afternoon, clear |
-| `concept/stage-near` | Scene 7, near: the play on the stage on the square at sunset, the Dragon and the Founder with her loaf, the town on the benches. | sunset, clear |
-| `concept/square-far-sunset` | Scene 7, far: the square from the cathedral steps at sunset, the stage and the full benches, the town and the sea beyond. | sunset, clear |
+| `concept/stage-near` | Scene 7, near: the play on the stage on the square in the last hour before sunset, the Dragon and the Founder with her loaf, the town on the benches. | low evening sun, clear |
+| `concept/square-far-evening` | Scene 7, far: the square from the cathedral steps in the last hour before sunset, the stage and the full benches, the town and the low sun over the sea beyond. | low evening sun, clear |
