@@ -237,6 +237,7 @@ What the engine at 1.15.0 refused on the way, and what stands in for it:
 - Dumpling's six window barks and the 14 castle rows' `doing` now describe it waiting outdoors on the gate road; the six barks are transcreated into zh-cn by `i18n-translate.py` (6 rows, 6 accepted).
 - `DW0451`: leaving the gate road, Dumpling's 4 × 4 body brushed the hilltop road's fence line at [241, 164, 31]. Its walk now goes in three legs: north off the gate road to the hilltop road's open side, `anchor/node-road-top` + `[63, 0, -1]`, along it to its west end, `+ [-61, 0, -1]`, then on to the square, each leg with its own `happening`.
 - `DW0450` then refused the third leg: down the mountain road's steps a 4 × 4 body overlaps the road itself (first at [121, 163, 46]), so Dumpling does not walk at all. When the tail is chosen, the castle-side Dumpling is despawned at the end of the Dragon and a deferred second Dumpling, `npc/dumpling-square` (same body and name), is spawned at the square's mark `anchor/node-square` + `[-3, 0, -10]`; the square rows, the `dlg/dumpling-tail` node and its zh-cn line (re-keyed, transcreated: 1 row, 1 accepted) belong to it, and each body is declared offstage on the branches where it is not there.
+- `DW0450` at the summon: the square's benches stand inside a 4 × 4 body at `[-3, 0, -10]`, so the square-side Dumpling's mark moves five blocks east onto clear paving, `anchor/node-square` + `[2, 0, -10]`, still in front of the troupe's line and at least 5.1 blocks from every body on it.
 
 ### The machine ladder (step 10), on the build that ships
 
