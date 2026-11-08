@@ -1098,14 +1098,30 @@
             "after": [
               "obj/find-the-head"
             ],
-            "anchor": "anchor/oratory",
+            "anchor": "anchor/stop-duchess-hall",
+            "happening": {
+              "subject": "npc/agathe",
+              "text": "The party reach the lady's rooms, where the candles of the latch stand.",
+              "verb": "arrives"
+            },
+            "hint": "Up the stair to the castle's top floor, where the lady's rooms and their candles are.",
+            "id": "obj/climb-to-the-ladys-rooms",
+            "radius": 4,
+            "title": "Climb to the lady's rooms",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/climb-to-the-ladys-rooms"
+            ],
+            "anchor": "anchor/stop-royal-apartments",
             "count": 1,
             "happening": {
               "subject": "item/dragon-wings",
-              "text": "The candle latch gives, and the party take the Dragon's wings from the oratory trunk.",
+              "text": "The candle latch gives, and the party take the Dragon's wings from the trunk in the royal apartments.",
               "verb": "gains"
             },
-            "hint": "In the oratory trunk upstairs. It opens when the three candles in the lady's rooms are lit in the order the play is told.",
+            "hint": "In the trunk in the royal apartments upstairs. It opens when the three candles in the lady's rooms are lit in the order the play is told; the lady keeps the play's programmes framed in the lord's hall.",
             "id": "obj/find-the-wings",
             "item": "minecraft:elytra",
             "item_name": "The Dragon's Wings",
@@ -1202,10 +1218,14 @@
           }
         ],
         "on_objective_complete": {
-          "obj/ask-bernt": [
+          "obj/climb-to-the-ladys-rooms": [
             {
-              "flag": "flag/candles-told",
+              "flag": "flag/candles-reached",
               "type": "set-flag"
+            },
+            {
+              "text": "Three rooms, three candles, all cold: a blue, a red and a yellow, each in an old brass holder.",
+              "type": "narrate"
             }
           ],
           "obj/climb-to-the-tail": [
@@ -1216,7 +1236,7 @@
           ],
           "obj/find-the-head": [
             {
-              "text": "The head grins up at you from the trunk, a little moth-eaten about the nostrils. The Dragon's Wings, the green silk pair, will be upstairs in the oratory trunk with the candle latch.",
+              "text": "The head grins up at you from the trunk, a little moth-eaten about the nostrils. The Dragon's Wings, the green silk pair, will be upstairs in the royal apartments, in the trunk with the candle latch.",
               "type": "narrate"
             }
           ]
@@ -5748,13 +5768,13 @@
       },
       {
         "answers": {
-          "done": "Thirty programmes, thirty Dragons, one lady."
+          "done": "Thirty programmes: the Founder's blue sea, the Dragon's red mountain, the Loaf's golden oven, in that order every year."
         },
-        "at": "anchor/stop-royal-apartments",
+        "at": "anchor/stop-lords-hall",
         "audience": "presser",
         "effects": [
           {
-            "text": "A board of old programmes, thirty of them, every one saying THE DRAGON ... LADY AGATHE HOLM. On the oldest someone has written in pencil: 'First time. Terrified. Roared anyway.'",
+            "text": "A board of old programmes, thirty of them, every one the same three scenes: 'I. The Founder, who came over the blue sea. II. The Dragon, red on the mountain. III. The Loaf, golden from the oven.' On the oldest someone has written in pencil: 'First time. Terrified. Roared anyway.'",
             "type": "narrate"
           },
           {
@@ -6021,7 +6041,7 @@
             "type": "set-block"
           },
           {
-            "anchor": "anchor/stop-lords-hall",
+            "anchor": "anchor/oratory",
             "block": "minecraft:yellow_candle[lit=false]",
             "type": "set-block"
           },
@@ -6053,7 +6073,7 @@
           "block": "minecraft:blue_candle[lit=false]"
         },
         "requires_flags": [
-          "flag/candles-told"
+          "flag/candles-reached"
         ]
       },
       {
@@ -6091,7 +6111,7 @@
             }
           },
           {
-            "anchor": "anchor/stop-lords-hall",
+            "anchor": "anchor/oratory",
             "block": "minecraft:yellow_candle[lit=false]",
             "type": "set-block",
             "when": {
@@ -6187,14 +6207,14 @@
           "block": "minecraft:red_candle[lit=false]"
         },
         "requires_flags": [
-          "flag/candles-told"
+          "flag/candles-reached"
         ]
       },
       {
         "answers": {
-          "not_yet": "A candle in the old brass holder of the latch. Bernt knows the rule of it."
+          "not_yet": "The yellow candle won't take while the others are cold."
         },
-        "at": "anchor/stop-lords-hall",
+        "at": "anchor/oratory",
         "effects": [
           {
             "anchor": "anchor/stop-duchess-hall",
@@ -6225,7 +6245,7 @@
             }
           },
           {
-            "anchor": "anchor/stop-lords-hall",
+            "anchor": "anchor/oratory",
             "block": "minecraft:yellow_candle[lit=false]",
             "type": "set-block",
             "when": {
@@ -6280,7 +6300,7 @@
             }
           },
           {
-            "anchor": "anchor/stop-lords-hall",
+            "anchor": "anchor/oratory",
             "block": "minecraft:yellow_candle[lit=true]",
             "type": "set-block",
             "when": {
@@ -6319,7 +6339,14 @@
           "block": "minecraft:yellow_candle[lit=false]"
         },
         "requires_flags": [
-          "flag/candles-told"
+          "flag/candles-reached"
+        ],
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/candles",
+            "value": 1
+          }
         ]
       },
       {
