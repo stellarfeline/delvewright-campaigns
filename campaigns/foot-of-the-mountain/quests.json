@@ -1081,7 +1081,10 @@
               "obj/ask-bernt"
             ],
             "anchor": "anchor/stop-kitchen",
-            "count": 1,
+            "answers": {
+              "done": "Empty now but for moth and tissue paper.",
+              "not_yet": "An old costume trunk. Bernt packed it."
+            },
             "happening": {
               "subject": "item/dragon-head",
               "text": "The party find the Dragon's head in the kitchen trunk.",
@@ -1089,10 +1092,11 @@
             },
             "hint": "Down in the castle kitchen, in the trunk by the great hearth.",
             "id": "obj/find-the-head",
-            "item": "minecraft:dragon_head",
-            "item_name": "The Dragon's Head",
-            "title": "Take the Dragon's head",
-            "type": "collect"
+            "prop": {
+              "block": "minecraft:chest[facing=east]"
+            },
+            "title": "Open the kitchen trunk",
+            "type": "interact"
           },
           {
             "after": [
@@ -1184,7 +1188,10 @@
               "obj/light-candle-3"
             ],
             "anchor": "anchor/stop-royal-apartments",
-            "count": 1,
+            "answers": {
+              "done": "Empty now but for tissue paper.",
+              "not_yet": "The trunk's latch holds fast. Three candles somewhere decide it."
+            },
             "happening": {
               "subject": "item/dragon-wings",
               "text": "The candle latch gives, and the party take the Dragon's wings from the trunk in the royal apartments.",
@@ -1192,10 +1199,11 @@
             },
             "hint": "In the trunk in the royal apartments upstairs, now that the candles burn.",
             "id": "obj/find-the-wings",
-            "item": "minecraft:elytra",
-            "item_name": "The Dragon's Wings",
-            "title": "Take the Dragon's wings",
-            "type": "collect"
+            "prop": {
+              "block": "minecraft:chest[facing=east]"
+            },
+            "title": "Open the latched trunk",
+            "type": "interact"
           },
           {
             "after": [
@@ -1298,8 +1306,22 @@
           ],
           "obj/find-the-head": [
             {
+              "count": 1,
+              "item": "minecraft:dragon_head",
+              "name": "The Dragon's Head",
+              "type": "give-item"
+            },
+            {
               "text": "The head grins up at you from the trunk, a little moth-eaten about the nostrils. The Dragon's Wings, the green silk pair, will be upstairs in the royal apartments, in the trunk with the candle latch.",
               "type": "narrate"
+            }
+          ],
+          "obj/find-the-wings": [
+            {
+              "count": 1,
+              "item": "minecraft:elytra",
+              "name": "The Dragon's Wings",
+              "type": "give-item"
             }
           ],
           "obj/light-candle-1": [
@@ -4326,7 +4348,10 @@
               "obj/check-the-bench"
             ],
             "anchor": "anchor/node-cathedral",
-            "count": 1,
+            "answers": {
+              "done": "The town's ledgers and nothing else of use.",
+              "not_yet": "The parish chest, where the town keeps its old books."
+            },
             "happening": {
               "subject": "item/bylaw-book",
               "text": "The by-law book is open at the fire lane, with a playbill for a bookmark.",
@@ -4334,10 +4359,11 @@
             },
             "hint": "In the cathedral on the square, where the town keeps its old books.",
             "id": "obj/find-the-bylaw",
-            "item": "minecraft:writable_book",
-            "item_name": "The By-Law Book",
-            "title": "Take the by-law book",
-            "type": "collect"
+            "prop": {
+              "block": "minecraft:chest[facing=south]"
+            },
+            "title": "Open the parish chest",
+            "type": "interact"
           },
           {
             "after": [
@@ -4446,6 +4472,12 @@
             {
               "flag": "flag/clue-bylaw",
               "type": "set-flag"
+            },
+            {
+              "count": 1,
+              "item": "minecraft:writable_book",
+              "name": "The By-Law Book",
+              "type": "give-item"
             },
             {
               "text": "The book falls open at by-law nine, the fire lane: four paces clear of anything that burns. The bookmark is a playbill for tonight. Somebody has pencilled 'MEASURE!' across it.",

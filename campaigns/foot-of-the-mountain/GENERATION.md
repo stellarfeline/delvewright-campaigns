@@ -202,3 +202,30 @@ Estimated, not measured; the measurement is the owner's next playtest. The metho
 ### The design gate
 
 Answered by the planner for the owner: yes, with three changes, applied in the step 3 documents and `DESIGN.md` before step 5. The chorus became the hunt itself (the tub, the bell and the hull are pressed; two talks); every line holds at most two `talk-to` objectives, the hub and the finale excepted; the curtain became the investigation, with a wrong name that costs something and can be mended; the castle search holds one environmental puzzle, the three candles. The approved pictures under `design/` stand: the map did not change, and no picture was drawn.
+
+### Content (steps 5 to 7)
+
+`quests.json` and `dialogue.json` were written from the design; the zh-cn sidecar is transcreated by the configured provider (650 keys, exact coverage). Census of the build that ships: 35 objectives, 12 `talk-to`, 4 `reach-anchor`, 3 `collect`, 16 `interact`; 18 triggers (8 overheard, 9 finds, 1 press on the oven door), 3 pulses, 1 firework, 1 stall of 4 offers; 14 dialogue trees, 69 nodes. `analyze` exits 0 with `DW0467` (the ghast's hum, carried from the previous version), `DW0813` and `DW0822` (3238 blocks of route, about 54 minutes at the table's rate).
+
+What the engine at 1.15.0 refused on the way, and what stands in for it:
+
+- A lectern cannot be a prop (`DW1059`); a conjured chest cannot stand among scenery barrels (`DW1024`); no prop may stand on a way's mark (`DW1057`); a fence prop made a pen (`DW0921`). The finds are signs, pots and the like, on the marks of plots.
+- A trigger the critical path needs must be in sight where it becomes pressable (`DW0863`): the candles arm when the party reach the lady's rooms.
+- The candle latch was first a party datum with a reset on a wrong press, then three triggers gated on that datum, then three triggers chained by flags. The proof credited the latch flag to one press in the first two forms (the critical path held only the yellow candle) and refused the third as an undeclared fork (`DW0480`). The candles are three ordered `interact` objectives, the compass hidden, each hint naming the play's scene and never the colour; a candle pressed out of turn answers that it will not take. The reset is gone.
+- PackTest's prop test asserts every prop at tick 0 in a world it shares with the tests that press or complete the oven door, which cleared it. No effect clears a prop's cell: a found pumpkin is chalked and rolled home by the children; the oven door stays on Runa's bench.
+- An ungated completing option that set a flag beside gated siblings that set others had `flag/loaf-done` refused as an undeclared fork; the always-open way sets no flag. The proof took a gated door option first, putting a side find on the path (`DW0863`); the always-open way stands first.
+
+### Build, cameras and detail (steps 8, 8b, 9)
+
+- Step 8's first build refused `DW0430`: the new route crosses the outer tread columns of `node/flight-6` and `node/flight-7` sideways. Each was re-authored by its own agent from its handout (attempt 1, the build's refusal as the finding): the outer columns are masonry and low wall kerbs.
+- The castle declares nine of the rooms its program already marks as stations; its `detail --check` passes (688 s, 2.44 GB peak).
+- The written-world check later found a dirt path under two props (below); `node/poi-spring` and `node/cottages` were re-authored by their own agents (attempt 2 each): the cell under each mark is cobblestone and packed mud.
+
+| place | attempt | handout | repaired | commit |
+|---|---|---|---|---|
+| `node/flight-6` | 1 | `.out/handouts/flight-6/handout-1.md` | `DW0430` | written (178 s, 3.18 GB) |
+| `node/flight-7` | 1 | `.out/handouts/flight-7/handout-1.md` | `DW0430` | written (613 s, 1.90 GB) |
+| `node/poi-spring` | 2 | `.out/handouts/poi-spring/handout-2.md` | `DW0955` | written (638 s, 2.07 GB) |
+| `node/cottages` | 2 | `.out/handouts/cottages/handout-2.md` | `DW0955` | written (641 s, 1.91 GB) |
+
+- Step 8b: the six cameras whose subjects changed (street-far, lane-far, forge-near, weaver-near, stage-near, square-near) were drawn again (463 s, 2.6 GB peak); each still frames its picture, and none moved.
