@@ -1114,6 +1114,75 @@
             "after": [
               "obj/climb-to-the-ladys-rooms"
             ],
+            "anchor": "anchor/stop-duchess-hall",
+            "answers": {
+              "done": "The candle burns steady.",
+              "not_yet": "The wick won't take. Not in this order."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "npc/agathe",
+              "text": "The first candle of the latch burns.",
+              "verb": "gains"
+            },
+            "hint": "In the lady's rooms upstairs: the candle of the play's first scene. The play's programmes hang in the lord's hall.",
+            "id": "obj/light-candle-1",
+            "prop": {
+              "block": "minecraft:blue_candle[lit=false]"
+            },
+            "title": "Light the first candle",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/light-candle-1"
+            ],
+            "anchor": "anchor/bedchamber",
+            "answers": {
+              "done": "The candle burns steady.",
+              "not_yet": "The wick won't take. Not in this order."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "npc/agathe",
+              "text": "The second candle of the latch burns.",
+              "verb": "gains"
+            },
+            "hint": "In the lady's rooms upstairs: the candle of the play's second scene.",
+            "id": "obj/light-candle-2",
+            "prop": {
+              "block": "minecraft:red_candle[lit=false]"
+            },
+            "title": "Light the second candle",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/light-candle-2"
+            ],
+            "anchor": "anchor/oratory",
+            "answers": {
+              "done": "The candle burns steady.",
+              "not_yet": "The wick won't take. Not in this order."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "npc/agathe",
+              "text": "The third candle burns and the latch opens.",
+              "verb": "gains"
+            },
+            "hint": "In the lady's rooms upstairs: the candle of the play's last scene.",
+            "id": "obj/light-candle-3",
+            "prop": {
+              "block": "minecraft:yellow_candle[lit=false]"
+            },
+            "title": "Light the third candle",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/light-candle-3"
+            ],
             "anchor": "anchor/stop-royal-apartments",
             "count": 1,
             "happening": {
@@ -1121,13 +1190,10 @@
               "text": "The candle latch gives, and the party take the Dragon's wings from the trunk in the royal apartments.",
               "verb": "gains"
             },
-            "hint": "In the trunk in the royal apartments upstairs. It opens when the three candles in the lady's rooms are lit in the order the play is told; the lady keeps the play's programmes framed in the lord's hall.",
+            "hint": "In the trunk in the royal apartments upstairs, now that the candles burn.",
             "id": "obj/find-the-wings",
             "item": "minecraft:elytra",
             "item_name": "The Dragon's Wings",
-            "requires_flags": [
-              "flag/candles-lit"
-            ],
             "title": "Take the Dragon's wings",
             "type": "collect"
           },
@@ -1220,10 +1286,6 @@
         "on_objective_complete": {
           "obj/climb-to-the-ladys-rooms": [
             {
-              "flag": "flag/candles-reached",
-              "type": "set-flag"
-            },
-            {
               "text": "Three rooms, three candles, all cold: a blue, a red and a yellow, each in an old brass holder.",
               "type": "narrate"
             }
@@ -1237,6 +1299,41 @@
           "obj/find-the-head": [
             {
               "text": "The head grins up at you from the trunk, a little moth-eaten about the nostrils. The Dragon's Wings, the green silk pair, will be upstairs in the royal apartments, in the trunk with the candle latch.",
+              "type": "narrate"
+            }
+          ],
+          "obj/light-candle-1": [
+            {
+              "anchor": "anchor/stop-duchess-hall",
+              "block": "minecraft:blue_candle[lit=true]",
+              "type": "set-block"
+            },
+            {
+              "style": "actionbar",
+              "text": "The blue candle takes, for the Founder's sea.",
+              "type": "narrate"
+            }
+          ],
+          "obj/light-candle-2": [
+            {
+              "anchor": "anchor/bedchamber",
+              "block": "minecraft:red_candle[lit=true]",
+              "type": "set-block"
+            },
+            {
+              "style": "actionbar",
+              "text": "The red candle takes, for the Dragon.",
+              "type": "narrate"
+            }
+          ],
+          "obj/light-candle-3": [
+            {
+              "anchor": "anchor/oratory",
+              "block": "minecraft:yellow_candle[lit=true]",
+              "type": "set-block"
+            },
+            {
+              "text": "The yellow candle takes, for the Loaf, and in the royal apartments a latch clicks open.",
               "type": "narrate"
             }
           ]
@@ -1824,7 +1921,7 @@
             ],
             "anchor": "anchor/node-harbour",
             "answers": {
-              "done": "Only a damp ring on the ground where a pumpkin sat.",
+              "done": "Found and ticked. The children will roll it home.",
               "not_yet": "A pumpkin with a face carved in it, looking very pleased with its hiding place."
             },
             "happening": {
@@ -1837,7 +1934,7 @@
             "prop": {
               "block": "minecraft:carved_pumpkin[facing=south]"
             },
-            "title": "Pick up the harbour pumpkin",
+            "title": "Tag the harbour pumpkin",
             "type": "interact"
           },
           {
@@ -1846,7 +1943,7 @@
             ],
             "anchor": "anchor/node-fishmonger",
             "answers": {
-              "done": "Only a damp ring on the ground where a pumpkin sat.",
+              "done": "Found and ticked. The children will roll it home.",
               "not_yet": "A pumpkin with a face carved in it, looking very pleased with its hiding place."
             },
             "happening": {
@@ -1859,7 +1956,7 @@
             "prop": {
               "block": "minecraft:carved_pumpkin[facing=south]"
             },
-            "title": "Pick up the fishy pumpkin",
+            "title": "Tag the fishy pumpkin",
             "type": "interact"
           },
           {
@@ -1868,7 +1965,7 @@
             ],
             "anchor": "anchor/node-chandler",
             "answers": {
-              "done": "Only a damp ring on the ground where a pumpkin sat.",
+              "done": "Found and ticked. The children will roll it home.",
               "not_yet": "A pumpkin with a face carved in it, looking very pleased with its hiding place."
             },
             "happening": {
@@ -1881,7 +1978,7 @@
             "prop": {
               "block": "minecraft:carved_pumpkin[facing=south]"
             },
-            "title": "Pick up the candle pumpkin",
+            "title": "Tag the candle pumpkin",
             "type": "interact"
           },
           {
@@ -1890,7 +1987,7 @@
             ],
             "anchor": "anchor/node-cottages-2",
             "answers": {
-              "done": "Only a damp ring on the ground where a pumpkin sat.",
+              "done": "Found and ticked. The children will roll it home.",
               "not_yet": "A pumpkin with a face carved in it, looking very pleased with its hiding place."
             },
             "happening": {
@@ -1903,7 +2000,7 @@
             "prop": {
               "block": "minecraft:carved_pumpkin[facing=south]"
             },
-            "title": "Pick up the last pumpkin",
+            "title": "Tag the last pumpkin",
             "type": "interact"
           },
           {
@@ -1957,62 +2054,30 @@
         "on_objective_complete": {
           "obj/pumpkin-chandler": [
             {
-              "anchor": "anchor/node-chandler",
-              "block": "minecraft:air",
-              "type": "set-block"
-            },
-            {
-              "carrier": "one",
-              "count": 1,
-              "item": "minecraft:carved_pumpkin",
-              "name": "Sanna's Pumpkin",
-              "type": "give-item"
+              "text": "You chalk the children's tick on it: found. By the rules of the game, a found pumpkin goes home, and two small boys are already rolling it towards the lighthouse.",
+              "type": "narrate"
             }
           ],
           "obj/pumpkin-cottages": [
             {
-              "anchor": "anchor/node-cottages-2",
-              "block": "minecraft:air",
-              "type": "set-block"
+              "text": "You chalk the children's tick on it: found. By the rules of the game, a found pumpkin goes home, and two small boys are already rolling it towards the lighthouse.",
+              "type": "narrate"
             },
             {
-              "carrier": "one",
-              "count": 1,
-              "item": "minecraft:carved_pumpkin",
-              "name": "Sanna's Pumpkin",
-              "type": "give-item"
-            },
-            {
-              "text": "Four pumpkins. That's the whole audience. Sanna will want them back before the light goes.",
+              "text": "Four ticks: the whole audience, found. The children are rolling the last of them up the cliff path.",
               "type": "narrate"
             }
           ],
           "obj/pumpkin-fishmonger": [
             {
-              "anchor": "anchor/node-fishmonger",
-              "block": "minecraft:air",
-              "type": "set-block"
-            },
-            {
-              "carrier": "one",
-              "count": 1,
-              "item": "minecraft:carved_pumpkin",
-              "name": "Sanna's Pumpkin",
-              "type": "give-item"
+              "text": "You chalk the children's tick on it: found. By the rules of the game, a found pumpkin goes home, and two small boys are already rolling it towards the lighthouse.",
+              "type": "narrate"
             }
           ],
           "obj/pumpkin-harbour": [
             {
-              "anchor": "anchor/node-harbour",
-              "block": "minecraft:air",
-              "type": "set-block"
-            },
-            {
-              "carrier": "one",
-              "count": 1,
-              "item": "minecraft:carved_pumpkin",
-              "name": "Sanna's Pumpkin",
-              "type": "give-item"
+              "text": "You chalk the children's tick on it: found. By the rules of the game, a found pumpkin goes home, and two small boys are already rolling it towards the lighthouse.",
+              "type": "narrate"
             }
           ]
         },
@@ -2796,11 +2861,6 @@
             {
               "flag": "flag/door-won",
               "type": "set-flag"
-            },
-            {
-              "anchor": "anchor/node-smithy",
-              "block": "minecraft:air",
-              "type": "set-block"
             },
             {
               "text": "Runa lifts the door off her bench and hands it over. 'Tell him I mended the hinge as well. For nothing.'",
@@ -5479,12 +5539,6 @@
         "scope": "party"
       },
       {
-        "id": "state/candles",
-        "initial": 0,
-        "note": "How many of the lady's three candles are lit, in the play's order.",
-        "scope": "party"
-      },
-      {
         "display": "sidebar",
         "id": "state/pennies",
         "initial": 0,
@@ -6026,149 +6080,14 @@
       },
       {
         "answers": {
-          "not_yet": "The blue candle is burning, or the latch is open."
-        },
-        "at": "anchor/stop-duchess-hall",
-        "effects": [
-          {
-            "state": "state/candles",
-            "type": "set-state",
-            "value": 1
-          },
-          {
-            "anchor": "anchor/stop-duchess-hall",
-            "block": "minecraft:blue_candle[lit=true]",
-            "type": "set-block"
-          },
-          {
-            "style": "actionbar",
-            "text": "The blue candle takes, for the Founder's sea.",
-            "type": "narrate"
-          }
-        ],
-        "forbids_flags": [
-          "flag/candles-lit"
-        ],
-        "id": "trigger/candle-blue",
-        "on": {
-          "on": "use"
-        },
-        "once": false,
-        "prop": {
-          "block": "minecraft:blue_candle[lit=false]"
-        },
-        "requires_flags": [
-          "flag/candles-reached"
-        ],
-        "requires_state": [
-          {
-            "op": "equals",
-            "state": "state/candles",
-            "value": 0
-          }
-        ]
-      },
-      {
-        "answers": {
-          "not_yet": "The wick won't take. Not in this order."
-        },
-        "at": "anchor/bedchamber",
-        "effects": [
-          {
-            "state": "state/candles",
-            "type": "set-state",
-            "value": 2
-          },
-          {
-            "anchor": "anchor/bedchamber",
-            "block": "minecraft:red_candle[lit=true]",
-            "type": "set-block"
-          },
-          {
-            "style": "actionbar",
-            "text": "The red candle takes, for the Dragon.",
-            "type": "narrate"
-          }
-        ],
-        "forbids_flags": [
-          "flag/candles-lit"
-        ],
-        "id": "trigger/candle-red",
-        "on": {
-          "on": "use"
-        },
-        "once": false,
-        "prop": {
-          "block": "minecraft:red_candle[lit=false]"
-        },
-        "requires_flags": [
-          "flag/candles-reached"
-        ],
-        "requires_state": [
-          {
-            "op": "equals",
-            "state": "state/candles",
-            "value": 1
-          }
-        ]
-      },
-      {
-        "answers": {
-          "not_yet": "The wick won't take. Not in this order."
-        },
-        "at": "anchor/oratory",
-        "effects": [
-          {
-            "flag": "flag/candles-lit",
-            "type": "set-flag"
-          },
-          {
-            "anchor": "anchor/oratory",
-            "block": "minecraft:yellow_candle[lit=true]",
-            "type": "set-block"
-          },
-          {
-            "text": "The yellow candle takes, for the Loaf, and somewhere upstairs a latch clicks open.",
-            "type": "narrate"
-          }
-        ],
-        "forbids_flags": [
-          "flag/candles-lit"
-        ],
-        "id": "trigger/candle-yellow",
-        "on": {
-          "on": "use"
-        },
-        "once": false,
-        "prop": {
-          "block": "minecraft:yellow_candle[lit=false]"
-        },
-        "requires_flags": [
-          "flag/candles-reached"
-        ],
-        "requires_state": [
-          {
-            "op": "equals",
-            "state": "state/candles",
-            "value": 2
-          }
-        ]
-      },
-      {
-        "answers": {
-          "done": "The bench is bare where the door lay.",
-          "not_yet": "An oven door on the bench by the forge. Runa's trophy."
+          "done": "You have already lifted what you came for.",
+          "not_yet": "A heavy iron door on Runa's bench, mended, polished, and very much hers."
         },
         "at": "anchor/node-smithy",
         "effects": [
           {
             "flag": "flag/door-lifted",
             "type": "set-flag"
-          },
-          {
-            "anchor": "anchor/node-smithy",
-            "block": "minecraft:air",
-            "type": "set-block"
           },
           {
             "text": "You lift the oven door off Runa's bench while she has her back to you at the anvil. She has not noticed. Yet.",
