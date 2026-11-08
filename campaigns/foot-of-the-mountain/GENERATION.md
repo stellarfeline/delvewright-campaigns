@@ -234,6 +234,7 @@ What the engine at 1.15.0 refused on the way, and what stands in for it:
 - `DW0450` then refused Dumpling's walk from the great hall to the square, a 4 × 4 body in the castle's player-sized ways: a happy ghast flies, and flight is not authored on this engine, so Dumpling no longer walks — the one `move-npc` is removed and the square's cast row places it at its mark when the tail is chosen.
 - `DW0461` refused that: a cast mark cannot place a body nothing walks there, so Dumpling's `move-npc` is restored as it was.
 - A 4 × 4 happy ghast does not fit the castle's three-wide approach, so Dumpling waits outdoors at the gate road, in sight of the castle's door: its declared anchor and its 14 castle cast rows move from `anchor/node-castle` + `[0, 0, 4]` to `anchor/node-gate-road` + `[1, 0, 0]`, and its walk to the square starts there.
+- Dumpling's six window barks and the 14 castle rows' `doing` now describe it waiting outdoors on the gate road; the six barks are transcreated into zh-cn by `i18n-translate.py` (6 rows, 6 accepted).
 
 ### The machine ladder (step 10), on the build that ships
 
