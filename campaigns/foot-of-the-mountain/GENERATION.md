@@ -232,6 +232,7 @@ What the engine at 1.15.0 refused on the way, and what stands in for it:
 - The cottages' letter and the spring's basin stood on a dirt path the server turns to dirt under a block it treats as solid (the written-world check below); the weaver's mark is the drying frame's board, and Elin stands in her loom room (`node-weaver` + `[7, 0, 0]`), off the shop's one walkway, where her body had stalled the bot.
 - `DW0489` on the engine that sizes every registered body from the registry: the happy ghast (4 × 4) stood 4.00 blocks from Lady Agathe on the square where 4.60 is owed, so Dumpling's square mark moves one block further behind her, `anchor/node-square` + `[-3, 0, -10]` (7 cast and move offsets in `quests.json`).
 - `DW0450` then refused Dumpling's walk from the great hall to the square, a 4 × 4 body in the castle's player-sized ways: a happy ghast flies, and flight is not authored on this engine, so Dumpling no longer walks — the one `move-npc` is removed and the square's cast row places it at its mark when the tail is chosen.
+- `DW0461` refused that: a cast mark cannot place a body nothing walks there, so Dumpling's `move-npc` is restored as it was.
 
 ### The machine ladder (step 10), on the build that ships
 
