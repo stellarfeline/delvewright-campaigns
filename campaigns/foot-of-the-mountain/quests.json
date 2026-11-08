@@ -2803,7 +2803,7 @@
               "type": "set-block"
             },
             {
-              "text": "Runa lifts the door off its hook and hands it over. 'Tell him I mended the hinge as well. For nothing.'",
+              "text": "Runa lifts the door off her bench and hands it over. 'Tell him I mended the hinge as well. For nothing.'",
               "type": "narrate",
               "when": {
                 "requires_flags": [
@@ -2821,7 +2821,7 @@
               }
             },
             {
-              "text": "'You lifted it right over my head,' says Runa, delighted. 'Go on, then. Thief.'",
+              "text": "'You lifted it right from under my nose,' says Runa, delighted. 'Go on, then. Thief.'",
               "type": "narrate",
               "when": {
                 "requires_flags": [
@@ -6026,25 +6026,10 @@
       },
       {
         "answers": {
-          "not_yet": "A candle in the old brass holder of the latch. Bernt knows the rule of it."
+          "not_yet": "The blue candle is burning, or the latch is open."
         },
         "at": "anchor/stop-duchess-hall",
         "effects": [
-          {
-            "anchor": "anchor/stop-duchess-hall",
-            "block": "minecraft:blue_candle[lit=false]",
-            "type": "set-block"
-          },
-          {
-            "anchor": "anchor/bedchamber",
-            "block": "minecraft:red_candle[lit=false]",
-            "type": "set-block"
-          },
-          {
-            "anchor": "anchor/oratory",
-            "block": "minecraft:yellow_candle[lit=false]",
-            "type": "set-block"
-          },
           {
             "state": "state/candles",
             "type": "set-state",
@@ -6074,125 +6059,35 @@
         },
         "requires_flags": [
           "flag/candles-reached"
+        ],
+        "requires_state": [
+          {
+            "op": "equals",
+            "state": "state/candles",
+            "value": 0
+          }
         ]
       },
       {
         "answers": {
-          "not_yet": "A candle in the old brass holder of the latch. Bernt knows the rule of it."
+          "not_yet": "The wick won't take. Not in this order."
         },
         "at": "anchor/bedchamber",
         "effects": [
           {
-            "anchor": "anchor/stop-duchess-hall",
-            "block": "minecraft:blue_candle[lit=false]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "anchor": "anchor/bedchamber",
-            "block": "minecraft:red_candle[lit=false]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "anchor": "anchor/oratory",
-            "block": "minecraft:yellow_candle[lit=false]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
             "state": "state/candles",
             "type": "set-state",
-            "value": 0,
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "The candles gutter out, all three. Wrong order.",
-            "type": "narrate",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          {
-            "state": "state/candles",
-            "type": "set-state",
-            "value": 2,
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
+            "value": 2
           },
           {
             "anchor": "anchor/bedchamber",
             "block": "minecraft:red_candle[lit=true]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
+            "type": "set-block"
           },
           {
             "style": "actionbar",
             "text": "The red candle takes, for the Dragon.",
-            "type": "narrate",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/candles",
-                  "value": 1
-                }
-              ]
-            }
+            "type": "narrate"
           }
         ],
         "forbids_flags": [
@@ -6208,123 +6103,33 @@
         },
         "requires_flags": [
           "flag/candles-reached"
+        ],
+        "requires_state": [
+          {
+            "op": "equals",
+            "state": "state/candles",
+            "value": 1
+          }
         ]
       },
       {
         "answers": {
-          "not_yet": "The yellow candle won't take while the others are cold."
+          "not_yet": "The wick won't take. Not in this order."
         },
         "at": "anchor/oratory",
         "effects": [
           {
-            "anchor": "anchor/stop-duchess-hall",
-            "block": "minecraft:blue_candle[lit=false]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "anchor": "anchor/bedchamber",
-            "block": "minecraft:red_candle[lit=false]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "anchor": "anchor/oratory",
-            "block": "minecraft:yellow_candle[lit=false]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "state": "state/candles",
-            "type": "set-state",
-            "value": 0,
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
-            "style": "actionbar",
-            "text": "The candles gutter out, all three. Wrong order.",
-            "type": "narrate",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "not-equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
-          },
-          {
             "flag": "flag/candles-lit",
-            "type": "set-flag",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
+            "type": "set-flag"
           },
           {
             "anchor": "anchor/oratory",
             "block": "minecraft:yellow_candle[lit=true]",
-            "type": "set-block",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
+            "type": "set-block"
           },
           {
             "text": "The yellow candle takes, for the Loaf, and somewhere upstairs a latch clicks open.",
-            "type": "narrate",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "equals",
-                  "state": "state/candles",
-                  "value": 2
-                }
-              ]
-            }
+            "type": "narrate"
           }
         ],
         "forbids_flags": [
@@ -6343,16 +6148,16 @@
         ],
         "requires_state": [
           {
-            "op": "at-least",
+            "op": "equals",
             "state": "state/candles",
-            "value": 1
+            "value": 2
           }
         ]
       },
       {
         "answers": {
-          "done": "The hook is empty.",
-          "not_yet": "An oven door on a hook over the forge. Runa's trophy."
+          "done": "The bench is bare where the door lay.",
+          "not_yet": "An oven door on the bench by the forge. Runa's trophy."
         },
         "at": "anchor/node-smithy",
         "effects": [
@@ -6366,7 +6171,7 @@
             "type": "set-block"
           },
           {
-            "text": "You lift the oven door off its hook while Runa has her back to you at the anvil. She has not noticed. Yet.",
+            "text": "You lift the oven door off Runa's bench while she has her back to you at the anvil. She has not noticed. Yet.",
             "type": "narrate"
           }
         ],
@@ -6379,7 +6184,7 @@
         },
         "once": true,
         "prop": {
-          "block": "minecraft:iron_trapdoor[facing=south,half=top,open=true]"
+          "block": "minecraft:iron_trapdoor[facing=south,half=bottom,open=false]"
         },
         "requires_flags": [
           "flag/recipe-read"
