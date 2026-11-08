@@ -76,6 +76,9 @@ def build(place):
     m.part(x0, x0, tz - 1, z1, "spring-green")
     m.part(x1, x1, tz - 1, z1, "spring-green")
 
+    # the stand before the trough: worn stone flags the bucket is set down on,
+    # never dirt_path (a path under a solid block reverts to dirt)
+    m.set(x0 + 2, g, tz - 2, "minecraft:cobblestone")
     m.mark("node-poi-spring", x0 + 2, tz - 2, facing="south")
     m.finish()
     return m

@@ -128,6 +128,9 @@ def build(place) -> Model:
     m.part(2, 7, 3, 9, "gardens")
 
     m.mark("node-cottages", 17, 4, "west")
+    # the campaign stands a sign on the mark; a worn path turns to dirt under
+    # anything but air, so the path's head at the mark is packed earth
+    m.set(17, 0, 4, "minecraft:packed_mud")
     # a worn path survives only under open air: under a wall, a pot or a
     # barrel the yard is laid without one
     for (x, y, z), r in list(m.v.items()):

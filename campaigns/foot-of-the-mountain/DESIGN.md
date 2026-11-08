@@ -87,19 +87,19 @@ Four parts in a travelling troupe, each a prop and bread for the walk: The Lead 
 
 An estimate, not a measurement; the method is `GENERATION.md`, *Research*, last section. Per line, for an attentive party:
 
-| line | what takes the time | minutes |
-|---|---|---|
-| arrival and hub | the square, Hedda, the overheard scene, the stall seen | 6–8 |
-| the Dragon | the climb and back (the road's four roadside places on the way), Bernt, three rooms searched, the candle puzzle, Agathe | 27–37 |
-| the Founder | the lower town and the headland, four pumpkins searched, Inga, Sanna | 22–30 |
-| the Loaf | the recipe, the spring and the bee garden up the road and back, the door one of four ways, Oskar | 22–30 |
-| the chorus | the hum hunt, the bell, the hull, Fenna twice | 12–18 |
-| the curtain | three clues, three witnesses, the name, a wrong name mended | 15–22 |
-| the finale | the lever, the play's three scenes, the curtain call, the epilogue | 8–12 |
-| side content | 8 overheard, 9 finds, the stall | 15–25 |
-| **total** | | **127–182** |
+| line | objectives | what takes the time | minutes |
+|---|---|---|---|
+| arrival and hub | 1 | the square, Hedda, the overheard scene, the stall seen | 6–8 |
+| the Dragon | 10 | the climb and back (the road's four roadside places on the way), Bernt, the kitchen trunk, the lady's rooms and the three candles (the programmes in the lord's hall read first), the wings, the wall walk, Agathe | 30–40 |
+| the Founder | 6 | the lower town and the headland, four pumpkins searched, Inga, Sanna | 22–30 |
+| the Loaf | 5 | the recipe, the spring and the bee garden up the road and back, the door one of four ways, Oskar | 22–30 |
+| the chorus | 5 | the hum hunt, the bell, the hull, Fenna twice | 12–18 |
+| the curtain | 5 | three clues, three witnesses, the name, a wrong name mended | 15–22 |
+| the finale | 3 | the lever, the play's three scenes, the curtain call, the epilogue | 8–12 |
+| side content | — | 8 overheard, 9 finds, the stall | 15–25 |
+| **total** | **35** | | **130–185** |
 
-A party that takes only the mainline needs about 85–117 minutes; the strands and the side content are what carry the evening to two to three hours.
+A party that takes only the mainline needs about 88–120 minutes; the strands and the side content are what carry the evening to two to three hours.
 
 ## The hour
 
