@@ -39,9 +39,13 @@ You are a small travelling company, walking into town on the afternoon of the pl
 
 ## What kind of delve this is
 
-A walk through a town and a lot of conversations, in adventure mode. Nothing in Kelderby is hostile, and nobody can be hurt.
+A day in a busy town, in adventure mode: errands that send you searching yards and castle rooms, a little puzzling, people worth overhearing, and a lot of conversations. Nothing in Kelderby is hostile, and nobody can be hurt.
 
 **Talking.** Right-click a townsperson to talk; choose an answer from the list. What you choose is remembered.
+
+**Looking around.** Kelderby rewards the curious: notices, letters and odd things left about the town can be read by right-clicking them, and some of them change what people will say to you. Each find puts a penny in your purse, shown at the side of the screen, and the merchant's stall on the main street has things to spend it on.
+
+**The compass and the journal.** Your compass points at what you are doing next; right-click it to choose between errands. Your journal lists them all.
 
 **Getting about.** The main street steps down from the square to the harbour in short flights. The castle road climbs the mountain in long zig-zags; the cliff path to the lighthouse leaves the lower town by the harbour.
 
