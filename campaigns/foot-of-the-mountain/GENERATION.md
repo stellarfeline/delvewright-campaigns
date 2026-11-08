@@ -229,3 +229,63 @@ What the engine at 1.15.0 refused on the way, and what stands in for it:
 | `node/cottages` | 2 | `.out/handouts/cottages/handout-2.md` | `DW0955` | written (641 s, 1.91 GB) |
 
 - Step 8b: the six cameras whose subjects changed (street-far, lane-far, forge-near, weaver-near, stage-near, square-near) were drawn again (463 s, 2.6 GB peak); each still frames its picture, and none moved.
+- The cottages' letter and the spring's basin stood on a dirt path the server turns to dirt under a block it treats as solid (the written-world check below); the weaver's mark is the drying frame's board, and Elin stands in her loom room (`node-weaver` + `[7, 0, 0]`), off the shop's one walkway, where her body had stalled the bot.
+
+### The machine ladder (step 10), on the build that ships
+
+Manifest `c87b8d3f40a18c4eea607747d653da4da7d925a4eea65b9b9abefb884aaa203d`, content `67187b4f`, built on the Linux x86-64 build machine (14:41 wall, 3.48 GB peak); the same documents built on macOS arm64 at an earlier revision gave the same manifest as the build machine (`285ac653`, then `a24c56b8`).
+
+- PackTest exit 0: 179 of 179 required tests (93 s).
+- Bot critical path exit 0: 27 steps PASSED, 4 advisory findings; 14 watchers, 9 within reach on the proven path and asserted; 2 of 3 pulses heard at a listening station (the cooper's hum has no station on the forced route, the chorus being optional); 21:52 wall.
+- Written world exit 0, verdict pass: `model` 0 differing cells of 5038534 compared; random-tick 8, re-derived 28740, each the server's.
+- Several players at once: five bots in one world, one per line from the hub, started together; every line step of every bot passed and each stopped at its closing campaign check, the finale being no line's step (576 s).
+- Branch runs: the build enumerates 160 story worlds, 32 distinct walks (`validation/world-path-*.json` by sha256; the other 128 walk the same bytes, the door's and the wrong name's alternatives being counted but never walked). One world per distinct walk, the lowest-numbered, was run in five tiers: **30 of 32 PASSED**, endings encore 4, curtain call 12, no ending 14. `world/60` and `world/61` FAILED: both servers were shut down by their watchdog at the same minute, with every server of the five reporting 35–44 s behind, while another job on the build machine held its load average above 80; neither failure is a step of the campaign.
+
+| sha256 (12) | worlds | run |
+|---|---|---|
+| 01e8256415ad | 0,4,5,9,10,14,15,19 | 0 |
+| 4a37cf0ff898 | 1,6,11,16 | 1 |
+| 919e16925187 | 2,7,12,17 | 2 |
+| 080dbd3a2317 | 3,8,13,18 | 3 |
+| a003cc17076d | 20,24,25,29,30,34,35,39 | 20 |
+| de7bd4adc953 | 21,26,31,36 | 21 |
+| ef39a56e82bf | 22,27,32,37 | 22 |
+| 37cb6654a591 | 23,28,33,38 | 23 |
+| 66049e5c752d | 40,44,45,49,50,54,55,59 | 40 |
+| 3a640aaa4de6 | 41,46,51,56 | 41 |
+| 6cbf88f9e8fb | 42,47,52,57 | 42 |
+| a77d734897c6 | 43,48,53,58 | 43 |
+| 9761bdc8d966 | 60,64,65,69,70,74,75,79 | 60 |
+| 3c46e2720e28 | 61,66,71,76 | 61 |
+| 7adb2e22c2c9 | 62,67,72,77 | 62 |
+| df56b7977c1a | 63,68,73,78 | 63 |
+| d5ed91dc8a49 | 80,84,85,89,90,94,95,99 | 80 |
+| f46515e8cf5a | 81,86,91,96 | 81 |
+| e69bc7a72fe4 | 82,87,92,97 | 82 |
+| b00b6ec72f89 | 83,88,93,98 | 83 |
+| f8176853105f | 100,104,105,109,110,114,115,119 | 100 |
+| 93113056a452 | 101,106,111,116 | 101 |
+| bdde4232e142 | 102,107,112,117 | 102 |
+| b6d8ac2136f2 | 103,108,113,118 | 103 |
+| 9969319e398e | 120,124,125,129,130,134,135,139 | 120 |
+| f44be64776d4 | 121,126,131,136 | 121 |
+| eebaf6bb19eb | 122,127,132,137 | 122 |
+| 21e2a84eaa7c | 123,128,133,138 | 123 |
+| 2b3450df408b | 140,144,145,149,150,154,155,159 | 140 |
+| c5548134265c | 141,146,151,156 | 141 |
+| 108bdc5a3cff | 142,147,152,157 | 142 |
+| 0b8aabdb8c17 | 143,148,153,158 | 143 |
+
+(The map is of the build at `1b07da3c`; the walks are the same set on `c87b8d3f`, whose change moved one body.)
+
+### Branch chronicle (step 11)
+
+All 160 chronicles of the build that ships were read against the flags each world holds: every fork choice appears in exactly the worlds holding its flag (the tail, the Founder and the Loaf: 80 present, 80 absent each; the chorus and the curtain: 96 and 64), none missing and none stray; the ending each world reaches follows its Loaf (no ending on the forge in all 80, the oven's two endings split by applause: encore 32, curtain call 48).
+
+### Visual review (step 12)
+
+`delvec frames` on the build at `a24c56b8`: `renderer: lumenwright 0.3.0, backend apple m2 pro (metal) (auto)`; 1623 shots (1271 POV, 198 interior, 123 threshold, 16 interact, 14 NPC, 1 spawn), 366 s, 3.9 GB peak. Every new pressable reads as what its text names (the candles, the pumpkins, the recipe board, the hive, the tub, the bell, the boards, the lever); the hive's frame stands its camera inside the block. The route still crosses the open hillside between the town and the castle (the router, recorded in round 1).
+
+### Hand-over (step 13)
+
+The staging gate on manifest `c87b8d3f`, with the bot's run report and the written-world record: **STAGEABLE**, admitted with no override; 63 of 159 finding classes inapplicable. On the way, the gate refused the three `collect`s that conjured a chest (findings `isl-33`, `isl-53`, unbound); those finds are chests the party opens. The storybook's "what kind of delve" section is rewritten for searching, the bit of puzzling, the finds that pay a penny and the stall; the zh-cn edition's changed paragraphs are transcreated by the provider. Nothing is staged by this run.
