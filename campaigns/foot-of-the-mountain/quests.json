@@ -128,6 +128,20 @@
               ]
             }
           ],
+          "npc/dumpling-square": [
+            {
+              "at": "offstage",
+              "forbids_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            }
+          ],
           "npc/elin": {
             "at": {
               "anchor": "anchor/node-weaver",
@@ -590,7 +604,9 @@
               "requires_flags": [
                 "flag/dragon-done"
               ]
-            },
+            }
+          ],
+          "npc/dumpling-square": [
             {
               "at": {
                 "anchor": "anchor/node-square",
@@ -603,6 +619,12 @@
               "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "forbids_flags": [
                 "flag/tail-dumpling"
               ]
             }
@@ -1271,57 +1293,25 @@
           {
             "happening": {
               "subject": "npc/dumpling",
-              "text": "Dumpling floats off the gate road onto the hilltop road after her, to be the tail.",
-              "verb": "arrives"
+              "text": "Dumpling lifts off the gate road and floats away down the mountain after her, to be the tail.",
+              "verb": "departs"
             },
             "npc": "npc/dumpling",
-            "on_arrive": [
-              {
-                "happening": {
-                  "subject": "npc/dumpling",
-                  "text": "Dumpling comes along the hilltop road under the castle to the top of the mountain road.",
-                  "verb": "arrives"
-                },
-                "npc": "npc/dumpling",
-                "on_arrive": [
-                  {
-                    "happening": {
-                      "subject": "npc/dumpling",
-                      "text": "Dumpling floats down the mountain after her to the square, to be the tail.",
-                      "verb": "arrives"
-                    },
-                    "npc": "npc/dumpling",
-                    "to": {
-                      "anchor": "anchor/node-square",
-                      "offset": [
-                        -3,
-                        0,
-                        -10
-                      ]
-                    },
-                    "type": "move-npc"
-                  }
-                ],
-                "to": {
-                  "anchor": "anchor/node-road-top",
-                  "offset": [
-                    -61,
-                    0,
-                    -1
-                  ]
-                },
-                "type": "move-npc"
-              }
-            ],
-            "to": {
-              "anchor": "anchor/node-road-top",
-              "offset": [
-                63,
-                0,
-                -1
+            "type": "despawn-npc",
+            "when": {
+              "requires_flags": [
+                "flag/tail-dumpling"
               ]
+            }
+          },
+          {
+            "happening": {
+              "subject": "npc/dumpling",
+              "text": "Dumpling floats down the mountain after her to the square, to be the tail.",
+              "verb": "arrives"
             },
-            "type": "move-npc",
+            "npc": "npc/dumpling-square",
+            "type": "spawn-npc",
             "when": {
               "requires_flags": [
                 "flag/tail-dumpling"
@@ -1507,6 +1497,14 @@
               ]
             },
             {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            }
+          ],
+          "npc/dumpling-square": [
+            {
               "at": {
                 "anchor": "anchor/node-square",
                 "offset": [
@@ -1518,6 +1516,12 @@
               "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "forbids_flags": [
                 "flag/tail-dumpling"
               ]
             }
@@ -2250,6 +2254,14 @@
               ]
             },
             {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            }
+          ],
+          "npc/dumpling-square": [
+            {
               "at": {
                 "anchor": "anchor/node-square",
                 "offset": [
@@ -2261,6 +2273,12 @@
               "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "forbids_flags": [
                 "flag/tail-dumpling"
               ]
             }
@@ -3071,6 +3089,14 @@
               ]
             },
             {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            }
+          ],
+          "npc/dumpling-square": [
+            {
               "at": {
                 "anchor": "anchor/node-square",
                 "offset": [
@@ -3082,6 +3108,12 @@
               "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "forbids_flags": [
                 "flag/tail-dumpling"
               ]
             }
@@ -3869,6 +3901,14 @@
               ]
             },
             {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            }
+          ],
+          "npc/dumpling-square": [
+            {
               "at": {
                 "anchor": "anchor/node-square",
                 "offset": [
@@ -3880,6 +3920,12 @@
               "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "forbids_flags": [
                 "flag/tail-dumpling"
               ]
             }
@@ -4659,6 +4705,14 @@
               ]
             },
             {
+              "at": "offstage",
+              "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            }
+          ],
+          "npc/dumpling-square": [
+            {
               "at": {
                 "anchor": "anchor/node-square",
                 "offset": [
@@ -4670,6 +4724,12 @@
               "dialogue": "dlg/dumpling-tail",
               "doing": "floating over the square in sailcloth",
               "requires_flags": [
+                "flag/tail-dumpling"
+              ]
+            },
+            {
+              "at": "offstage",
+              "forbids_flags": [
                 "flag/tail-dumpling"
               ]
             }
