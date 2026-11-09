@@ -21,3 +21,10 @@ Pinned:
 - The feel of a small two-player level of a cheerful co-op game. Fun first.
 
 Invented: everything `DESIGN.md` names beyond that.
+
+## Step 2 — placement
+
+- The map's reference was drawn as a series of single views on `gemini-native`, view 1 from the prompt and every later view chained to view 1's interaction, under one style contract (`design/reference/style.txt`). Kept: view 1 (the whole garden from high in the south-west), the straight-down plan and the eye-height lane. A view from the lookout deck came back twice in breach of the contract (the gate tower inside the maze, the hedge caps gone) and was dropped from the series; it is not redrawn.
+- Nearest reference works: The Treehouse Camp (places at two heights joined by a bridge and ladders; a connector is a place) and Vesperhold (one box holding a whole site). The maze is one place whose piece draws every lane; the courts, the well and the bells are stations inside it.
+- The maze's size was settled at 85 × 85 against the warden's 16-block hearing reach: 28 lanes of a 3-block pitch, the nearest the pitch allows to 84 with an outer wall on both sides. The pattern, its dead-end and loop counts and its critical route are the generator's, measured on the built map.
+- `edge/onto-the-bridge` and `edge/the-great-gate` are both gated on `flag/gate-wound`: one turn of the winch opens the gate and raises the bridge.
