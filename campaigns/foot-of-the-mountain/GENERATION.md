@@ -297,3 +297,28 @@ All 160 chronicles of the build that ships were read against the flags each worl
 ### Hand-over (step 13)
 
 The staging gate on manifest `c87b8d3f`, with the bot's run report and the written-world record: **STAGEABLE**, admitted with no override; 63 of 159 finding classes inapplicable. On the way, the gate refused the three `collect`s that conjured a chest (findings `isl-33`, `isl-53`, unbound); those finds are chests the party opens. The storybook's "what kind of delve" section is rewritten for searching, the bit of puzzling, the finds that pay a penny and the stall; the zh-cn edition's changed paragraphs are transcreated by the provider. Nothing is staged by this run.
+
+## Release renders
+
+Every showcase picture drawn again at release quality on the content of this round, `delvec` 1.16.0 built from source; the campaign's text, quests, NPCs and geometry are unchanged. Build of this content: 1102 s wall, 3.3 GB peak. Every frame: `renderer: lumenwright 0.3.0, backend apple m2 pro (metal) (auto)`, 1600 × 900, 4096 samples (the record's `spp`, raised from 300 for every camera), drawn from the world at load under its picture's sky; `sea` in one run, the other 16 in a run of 20 frames (15370 s wall, 2.39 GB peak footprint), about 13 minutes a frame; saved as JPEG at quality 92 under `media/`.
+
+- Camera `castle-near` moved: it stood outside the great hall looking at the bailey; it now stands at the hall's west end, the long tables leading to Lady Agathe at the high table.
+- Camera `lighthouse-near` moved: it looked out of the tower's door passage between two walls; it now stands in the keeper's room's north-west corner with Sanna and Inga in frame.
+- Camera `weaver-near` moved: it looked at a bare wall corner; it now looks across the loom room to its three looms under the window.
+- `media/kelderby-from-the-sea.jpg` (`sea`): the whole town from the sea, the castle above, the lighthouse in front.
+- `media/from-the-castle.jpg` (`from-the-castle`): the town and the cathedral from the castle road.
+- `media/plan.jpg` (`plan`): the town from straight above.
+- `media/square-near.jpg` (`square-near`): Hedda on the square by the well, the inn and the stage's flats beside her.
+- `media/the-square.jpg` (`square-far`): the square from the top of the main street, the inn and the cathedral either side.
+- `media/castle-near.jpg` (`castle-near`): the great hall, lamp-lit, Lady Agathe at the high table.
+- `media/castle-far.jpg` (`castle-far`): the castle gate from the last stretch of its road.
+- `media/lighthouse-near.jpg` (`lighthouse-near`): Sanna and Inga in the keeper's room.
+- `media/lighthouse-far.jpg` (`lighthouse-far`): the cliff path to the lighthouse, the harbour beside it.
+- `media/forge-near.jpg` (`forge-near`): Runa at her open forge.
+- `media/the-main-street.jpg` (`street-far`): the main street stepping down to the harbour.
+- `media/tavern-near.jpg` (`tavern-near`): the sailors' tavern, Fenna inside by the fire.
+- `media/lane-far.jpg` (`lane-far`): the lower lane past the cottages to the sheds.
+- `media/weaver-near.jpg` (`weaver-near`): the weaver's loom room.
+- `media/guildhall-far.jpg` (`guildhall-far`): the guildhall with the market stalls before it.
+- `media/stage-near.jpg` (`stage-near`): the stage on the square in the last hour before sunset, the cathedral behind.
+- `media/square-far-evening.jpg` (`square-far-evening`): the square from the cathedral steps in the last hour before sunset, the stage's back and the benches.
