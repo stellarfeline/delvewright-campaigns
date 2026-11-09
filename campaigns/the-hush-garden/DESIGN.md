@@ -28,3 +28,35 @@ Why these numbers (from `warden-behaviour.md` and `maze-craft.md`, the engine's 
 - The warden walks a 1-wide lane as fast as a 2-wide one, so the 2-wide lanes are for two players passing and for reading from the deck, not shelter.
 - The deck and the bridge stand 22 above the lanes: the warden's sniff and its ranged attack both reach 20 blocks up, so a caller on the deck is never its target.
 - The maze is braided (loops, few dead ends): a dead end the warden can reach while the walker is in it is a trap with no second way out. Dead ends are kept only away from the well.
+
+## 3. The story
+
+**Premise.** At closing time Wren Applegate, the Hush Garden's head gardener, winds the great gate shut without seeing two friends still in the maze. They are at the heart, by the watchtower, with her note on the bench: the gate's crank handle is on the sundial in the rose quarter; wind the gate from the gate tower on the east side; walk softly, because something old sleeps under the well in the green quarter and it wakes to footsteps.
+
+**The two roles.** Each player picks a class at the start; either can be played alone.
+- **Runner** — soft-soled boots and bread. Runs the lanes for the crank and then for the gate.
+- **Caller** — a spyglass, sixteen eggs, a bow and sixteen arrows. Climbs the watchtower, watches the lanes from 22 blocks up and calls the way, draws the sleeper off with thrown eggs and arrows, and rings the garden's bells from the deck.
+
+**The cast.** One character: Wren Applegate, in the meadow beyond the great gate. Everything before the gate is the two friends, the note, the garden and the sleeper.
+
+**The sleeper.** A warden (`minecraft:warden`), asleep under the old well in the green quarter's far corner, out of every lane the critical route uses. It is not in the world at the start. When the runner takes the crank handle from the sundial, a close-up shows it digging up out of the ground at the well (about seven seconds, in which it hears nothing and cannot be hurt). Then it searches: it walks to every sound it hears within 16 blocks — a footstep that is not sneaking, a landing egg or arrow, a rung bell. When it has heard a player enough it hunts that player, at about 5 blocks a second, faster than a running player, and nothing lures it off until it loses the trail. It cannot be beaten; nothing in the level asks anyone to try.
+
+**The two phases** (from the engine's measurements, `warden-behaviour.md` and the T11 trial in `GENERATION.md`):
+1. *Searching.* The runner sneaks (silent beyond 6 blocks) and the caller steers it: one egg or arrow landing near it turns it to the spot for about ten seconds; a bell on the deck's lectern rings that quarter's bell, which turns it from up to 16 blocks away. Each bell can be rung three times, and a rung bell is quiet for twenty seconds before it can ring again, so the sleeper cannot be held forever. A thrown egg or arrow is not free: it puts the thrower on the sleeper's list a little each time, a lot when two land within five seconds, and a direct hit makes the thrower its quarry. The bells cost nothing but are few.
+2. *Hunting.* Once it hunts the runner, lures are ignored. The runner breaks the chase by running a loop of the maze until more than 16 blocks of wall stand between them; the caller can only call the way.
+
+**Monsters.** A few slimes bounce in the lanes of the rose and yellow quarters: harmless enough on their own, but every hop is a sound the sleeper hears, and a runner who fights one makes more.
+
+**The end.** At the gate tower the runner fits the crank to the winch and winds. The great gate swings open onto the meadow and, from the gate tower's top, a plank bridge on chains rises across the maze to the watchtower's deck, so the caller walks across the top of the maze and climbs down to meet the runner. Wren is waiting in the meadow. The ending reads whether the two came out together (the caller crossed the bridge) or the runner came out alone.
+
+## 4. The lines and the evening
+
+| line | body | acts | minutes |
+|---|---|---|---|
+| `quest/locked-in` (hub) | take the note from the bench at the heart; pick roles | take | 2 |
+| `quest/the-crank` | find the way through the rose quarter to the sundial and take the crank handle; the sleeper digs out | reach, take | 8 |
+| `quest/the-watch` (optional) | climb the watchtower's ladder and ring a bell from the deck | reach, use | 3 |
+| `quest/out` (finale) | get to the gate tower under the sleeper's search and hunt, wind the gate, walk out and talk to Wren | reach, use, talk | 12 |
+| | | **sum** | **25** |
+
+`target_minutes` is 25: a small level for an evening's first half hour, longer when the sleeper catches the runner and the run restarts at the last checkpoint.

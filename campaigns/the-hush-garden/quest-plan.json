@@ -1,19 +1,67 @@
 {
   "campaign_id": "the-hush-garden",
   "content": {
-    "finale": "quest/stub",
+    "finale": "quest/out",
     "quests": [
       {
         "act": 1,
         "activity": [
-          "reach"
+          "take"
         ],
         "area": "area/site",
         "depends_on": [],
-        "goal": "Stub, replaced at step 3.",
-        "id": "quest/stub",
+        "goal": "Take the gardener's note from the bench at the heart of the maze and read why the gate is shut.",
+        "id": "quest/locked-in",
         "mandatory": true,
         "npcs": []
+      },
+      {
+        "act": 1,
+        "activity": [
+          "reach",
+          "take"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/locked-in"
+        ],
+        "goal": "Find the sundial in the rose quarter and take the gate's crank handle from it, and the old well wakes.",
+        "id": "quest/the-crank",
+        "mandatory": true,
+        "npcs": []
+      },
+      {
+        "act": 1,
+        "activity": [
+          "reach",
+          "use"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/locked-in"
+        ],
+        "goal": "Climb the watchtower and ring one of the garden's bells from the deck.",
+        "id": "quest/the-watch",
+        "mandatory": false,
+        "npcs": []
+      },
+      {
+        "act": 2,
+        "activity": [
+          "reach",
+          "use",
+          "talk"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-crank"
+        ],
+        "goal": "Wind the great gate open with the crank at the gate tower, then walk out to the gardener in the meadow.",
+        "id": "quest/out",
+        "mandatory": true,
+        "npcs": [
+          "npc/wren"
+        ]
       }
     ]
   },

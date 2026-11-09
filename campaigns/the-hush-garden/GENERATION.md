@@ -28,3 +28,11 @@ Invented: everything `DESIGN.md` names beyond that.
 - Nearest reference works: The Treehouse Camp (places at two heights joined by a bridge and ladders; a connector is a place) and Vesperhold (one box holding a whole site). The maze is one place whose piece draws every lane; the courts, the well and the bells are stations inside it.
 - The maze's size was settled at 85 × 85 against the warden's 16-block hearing reach: 28 lanes of a 3-block pitch, the nearest the pitch allows to 84 with an outer wall on both sides. The pattern, its dead-end and loop counts and its critical route are the generator's, measured on the built map.
 - `edge/onto-the-bridge` and `edge/the-great-gate` are both gated on `flag/gate-wound`: one turn of the winch opens the gate and raises the bridge.
+
+## Step 3 — the story documents
+
+- One character, the gardener, met at the end; two classes, Runner and Caller, either playable alone. The level needs no second player (`min_players` is absent).
+- The plan is a hub (the note), one mandatory spoke (the crank, which wakes the sleeper), one optional strand (ringing a bell from the deck) and the finale (wind the gate, walk out, talk). The ending is to read whether the caller crossed the bridge, an elective deed.
+- The bell budget (three rings a bell, twenty seconds between rings) and the price of a thrown egg or arrow come from the measurements: a bell is a lure with no thrower, a projectile puts its thrower on the warden's list.
+- `target_minutes` came down from 30 to 25 when the lines were budgeted by activity.
+- The validation state at the end of the step is the step-3 state: the planned quests have no expansion yet (`DW0150`), the gate's flag and its opener are written at step 5 (`DW0818`, `DW0816`, `DW0817`, `DW1028`), the gardener's dialogue tree and the `zh-cn` sidecar are step 5's (`DW0152`, `DW0180`). Beside them, `DW0890` names the three map reference views under `design/reference/`, which have no row in the design record until step 4 writes it.
