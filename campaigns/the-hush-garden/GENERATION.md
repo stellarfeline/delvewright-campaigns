@@ -41,3 +41,14 @@ Invented: everything `DESIGN.md` names beyond that.
 
 - The walkthrough (the three map views, then seven scenes each with a near and a far view, each under its hour and weather) was handed over, and the answer was an explicit yes to this delve. The approved pictures, their sidecars and prompts are in `design/`, one row each in `design.json`.
 - `concept/lane-near` was drawn twice; the first was dark and muddy against the style contract. The deck's near view was drawn once; the deck's far view is the heart's.
+
+## Step 5 — quests and dialogue
+
+- **Posture note.** Three axes off the machine default: Wren names her feeling outright (*I was frightened for you the whole way across*); the note addresses the reader directly (*If you're reading this you're locked in*); and the escalation is uneven, a quiet garden errand broken by one disproportionate beat, the warden digging out in a close-up, with nothing resolved about it at the end (the sleeper is never beaten and is still under the garden).
+- The bells are four `use` triggers on the deck's buttons, each a party datum counting its rings (three) and a second datum holding it quiet for 400 ticks after a ring. A ring is a redstone block set beside the bell for 4 ticks and cleared: the measured way to ring a bell a warden hears (`warden-behaviour.md` §5).
+- The optional strand's body is reading the bell book on the deck (an `interact` on a bookshelf); a lectern cannot carry a click box (`DW1059`).
+- The finale's winch takes the crank from the hand (`requires_item` + `takes_item`), so the line performs `present` and `give` beside `use`; the plan's declaration was brought up to it.
+- The warden (`actor/the-sleeper`) is unleashed with `entrance: "native"` and `outrun: true` when the crank is taken, followed by a 7-second push-in on it; the checkpoint moves to the sundial court in the same beat.
+- `difficulty` is left to the engine's derivation (`easy`, as the campaign stages waves).
+- The `zh-cn` sidecar was transcreated by `tools/creator/i18n-translate.py` on DeepSeek (61 rows, 0 refused); seven lines were then held to one word for the garden's bells (钟) through `delvec l10n-apply`.
+- Census at the close of the step: `activity census: 4 line(s) over 8 objective(s) — reach 3, talk 1, take 2, use 2, present 1, give 1; about 14 min of activity (12 on the mandatory lines) against target_minutes 25; 0 line(s) talk-or-reach only`. `DW0822`: 133 blocks of route over the plan's boxes, about 3 minutes; about 17 minutes in all against 25. The route through the maze's lanes is measured on the built map.

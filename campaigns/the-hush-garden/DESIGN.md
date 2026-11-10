@@ -55,8 +55,16 @@ Why these numbers (from `warden-behaviour.md` and `maze-craft.md`, the engine's 
 |---|---|---|---|
 | `quest/locked-in` (hub) | take the note from the bench at the heart; pick roles | take | 2 |
 | `quest/the-crank` | find the way through the rose quarter to the sundial and take the crank handle; the sleeper digs out | reach, take | 8 |
-| `quest/the-watch` (optional) | climb the watchtower's ladder and ring a bell from the deck | reach, use | 3 |
-| `quest/out` (finale) | get to the gate tower under the sleeper's search and hunt, wind the gate, walk out and talk to Wren | reach, use, talk | 12 |
+| `quest/the-watch` (optional) | climb the watchtower's ladder and read the bell book on the deck (which button rings which bell) | reach, use | 3 |
+| `quest/out` (finale) | get to the gate tower under the sleeper's search and hunt, fit the crank to the winch and wind, walk out and talk to Wren | reach, use, present, give, talk | 12 |
 | | | **sum** | **25** |
 
 `target_minutes` is 25: a small level for an evening's first half hour, longer when the sleeper catches the runner and the run restarts at the last checkpoint.
+
+## 5. Endings
+
+One fork, `branch-point/who-comes-out`, opening at the finale: `flag/crossed-the-bridge` is set when a player walks onto the bridge after it rises.
+- `ending/together` — the caller crossed the bridge: Wren greets both friends and says she was frightened for them the whole way across.
+- `ending/alone` — nobody crossed: Wren greets the runner and says the bridge is down for the friend on the tower, if they have the nerve.
+
+The sleeper is not beaten in either ending; it is still under the garden.

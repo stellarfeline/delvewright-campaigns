@@ -1,7 +1,814 @@
 {
   "campaign_id": "the-hush-garden",
   "content": {
-    "quests": []
+    "actors": [
+      {
+        "anchor": "anchor/the-well",
+        "entity": "minecraft:warden",
+        "entrance": "native",
+        "facing": "north",
+        "id": "actor/the-sleeper",
+        "offset": [
+          0,
+          0,
+          2
+        ],
+        "outrun": true
+      }
+    ],
+    "quests": [
+      {
+        "cast": {
+          "npc/wren": {
+            "at": "anchor/gardener",
+            "dialogue": {
+              "barks": [
+                "Wren is too far off to hear, beyond the great gate."
+              ]
+            },
+            "doing": "Out in the meadow beyond the great gate, still tidying up after closing, not knowing anyone is inside."
+          }
+        },
+        "happening": {
+          "text": "The two friends find out they are locked in, and how to get out.",
+          "verb": "learns"
+        },
+        "id": "quest/locked-in",
+        "objectives": [
+          {
+            "anchor": "anchor/note-basket",
+            "count": 1,
+            "happening": {
+              "text": "The note says the gate is wound shut, where the crank is, and what sleeps under the well.",
+              "verb": "learns"
+            },
+            "hint": "In the barrel beside the bench, at the foot of the watchtower.",
+            "holder": "anchor/note-basket",
+            "id": "obj/take-the-note",
+            "item": "minecraft:paper",
+            "item_name": "Wren's Note",
+            "title": "Take the note from the barrel",
+            "type": "collect"
+          }
+        ],
+        "on_complete": [
+          {
+            "happening": {
+              "subject": "wave/rose-slimes",
+              "text": "Slimes bounce in the rose lanes.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/rose-slimes"
+          },
+          {
+            "happening": {
+              "subject": "wave/yellow-slimes",
+              "text": "Slimes bounce in the yellow lanes.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/yellow-slimes"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/take-the-note": [
+            {
+              "text": "\"Closing! Gate wound shut. If you're reading this you're locked in, and I'm so sorry.\"",
+              "type": "narrate"
+            },
+            {
+              "text": "\"The crank handle hangs on the sundial in the rose quarter. Fit it to the winch in the gate tower, the tall pale one at the far edge of the maze, and wind.\"",
+              "type": "narrate"
+            },
+            {
+              "text": "\"And walk softly. Something old sleeps under the well in the green quarter, and it wakes to footsteps. If it's up, crouch. A bell will turn its head. — Wren\"",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      },
+      {
+        "cast": {
+          "npc/wren": {
+            "at": "anchor/gardener",
+            "dialogue": {
+              "barks": [
+                "Wren is too far off to hear, beyond the great gate."
+              ]
+            },
+            "doing": "Still in the meadow, humming, coiling a hose."
+          }
+        },
+        "happening": {
+          "text": "The runner fetches the crank handle, and the sleeper under the well wakes.",
+          "verb": "gains"
+        },
+        "id": "quest/the-crank",
+        "objectives": [
+          {
+            "anchor": "anchor/sundial",
+            "happening": {
+              "text": "The runner finds the sundial court.",
+              "verb": "arrives"
+            },
+            "hint": "In a little round court in the rose-paved quarter.",
+            "id": "obj/find-the-sundial",
+            "radius": 4,
+            "title": "Find the sundial",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/find-the-sundial"
+            ],
+            "anchor": "anchor/crank-frame",
+            "count": 1,
+            "happening": {
+              "subject": "item/gate-crank",
+              "text": "The runner lifts the crank handle off the sundial.",
+              "verb": "gains"
+            },
+            "hint": "It hangs in the frame on the sundial.",
+            "holder": "anchor/crank-frame",
+            "id": "obj/take-the-crank",
+            "item": "minecraft:tripwire_hook",
+            "item_name": "Gate Crank",
+            "title": "Take the crank handle",
+            "type": "collect"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/take-the-crank": [
+            {
+              "anchor": "anchor/sundial",
+              "happening": {
+                "text": "The sundial court is where the runner comes back to.",
+                "verb": "arrives"
+              },
+              "type": "set-checkpoint"
+            },
+            {
+              "actor": "actor/the-sleeper",
+              "happening": {
+                "subject": "actor/the-sleeper",
+                "text": "The sleeper digs up out of the ground by the old well.",
+                "verb": "arrives"
+              },
+              "type": "unleash-actor"
+            },
+            {
+              "shots": [
+                {
+                  "bearing": 180,
+                  "seconds": 7,
+                  "shot_style": "push-in",
+                  "subject": {
+                    "actor": "actor/the-sleeper"
+                  }
+                }
+              ],
+              "type": "cutscene"
+            },
+            {
+              "style": "title",
+              "text": "It's awake.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/locked-in",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/wren": {
+            "at": "anchor/gardener",
+            "dialogue": "unchanged",
+            "doing": "Still in the meadow, humming, coiling a hose."
+          }
+        },
+        "happening": {
+          "text": "The caller climbs the watchtower and learns the bells.",
+          "verb": "learns"
+        },
+        "id": "quest/the-watch",
+        "objectives": [
+          {
+            "anchor": "anchor/node-lookout",
+            "happening": {
+              "text": "The caller reaches the deck.",
+              "verb": "arrives"
+            },
+            "hint": "Up the ladder inside the tower at the heart.",
+            "id": "obj/climb-the-tower",
+            "radius": 3,
+            "title": "Climb the watchtower",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/climb-the-tower"
+            ],
+            "anchor": "anchor/bell-book",
+            "answers": {
+              "done": "Rose, yellow, blue, green: one button for each quarter's bell.",
+              "not_yet": "A book of bell-ringing. It can wait until you are out of the lanes."
+            },
+            "happening": {
+              "text": "The card says each button rings one quarter's bell, three rings each, and a bell must settle between rings.",
+              "verb": "learns"
+            },
+            "hint": "On the deck, beside the four buttons.",
+            "id": "obj/read-the-bell-card",
+            "prop": {
+              "block": "minecraft:bookshelf"
+            },
+            "title": "Read the bell book on the shelf",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "flag": "flag/read-the-bells",
+            "type": "set-flag"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/read-the-bell-card": [
+            {
+              "text": "THE BELLS. One button rings each quarter's bell: rose, yellow, blue, green. Three rings to a bell, and let it settle between rings, or you'll pull the rope through.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/locked-in",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/wren": [
+            {
+              "at": "anchor/gardener",
+              "dialogue": "dlg/wren-together",
+              "doing": "Waiting in the meadow, wringing her hat, after the gate swung open on its own.",
+              "requires_flags": [
+                "flag/crossed-the-bridge"
+              ]
+            },
+            {
+              "at": "anchor/gardener",
+              "dialogue": "dlg/wren-alone",
+              "doing": "Waiting in the meadow, wringing her hat, after the gate swung open on its own.",
+              "forbids_flags": [
+                "flag/crossed-the-bridge"
+              ]
+            }
+          ]
+        },
+        "happening": {
+          "text": "The runner winds the gate open, the bridge rises, and the friends walk out to the gardener.",
+          "verb": "departs"
+        },
+        "id": "quest/out",
+        "objectives": [
+          {
+            "anchor": "anchor/winch",
+            "happening": {
+              "text": "The runner reaches the gate tower's hall.",
+              "verb": "arrives"
+            },
+            "hint": "The tall pale tower at the far edge of the maze, past the yellow quarter.",
+            "id": "obj/reach-the-gate-tower",
+            "radius": 3,
+            "title": "Go to the gate tower",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/reach-the-gate-tower"
+            ],
+            "anchor": "anchor/winch",
+            "answers": {
+              "done": "The gate is wound open. Out you go.",
+              "missing_item": "Hold the crank handle to fit it to the winch.",
+              "not_yet": "The winch has no handle. The crank hangs on the sundial in the rose quarter."
+            },
+            "happening": {
+              "subject": "anchor/seam-the-great-gate",
+              "text": "The great gate swings open and the bridge rises.",
+              "verb": "opens"
+            },
+            "hint": "The winch beside the great gate. Hold the crank handle.",
+            "id": "obj/wind-the-gate",
+            "prop": {
+              "block": "minecraft:grindstone[face=floor,facing=west]"
+            },
+            "requires_item": "minecraft:tripwire_hook",
+            "takes_item": true,
+            "title": "Fit the crank to the winch and wind",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/wind-the-gate"
+            ],
+            "happening": {
+              "subject": "npc/wren",
+              "text": "Wren finds out who she locked in.",
+              "verb": "learns"
+            },
+            "hint": "Out through the great gate, in the meadow.",
+            "id": "obj/meet-wren",
+            "npc": "npc/wren",
+            "title": "Talk to Wren",
+            "type": "talk-to"
+          }
+        ],
+        "on_complete": [
+          {
+            "ending": "ending/together",
+            "happening": {
+              "text": "The two friends walk out of the Hush Garden together.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete",
+            "when": {
+              "requires_flags": [
+                "flag/crossed-the-bridge"
+              ]
+            }
+          },
+          {
+            "ending": "ending/alone",
+            "happening": {
+              "text": "The runner walks out of the Hush Garden alone.",
+              "verb": "departs"
+            },
+            "type": "campaign-complete",
+            "when": {
+              "forbids_flags": [
+                "flag/crossed-the-bridge"
+              ]
+            }
+          }
+        ],
+        "on_objective_complete": {
+          "obj/wind-the-gate": [
+            {
+              "flag": "flag/gate-wound",
+              "type": "set-flag"
+            },
+            {
+              "anchor": "anchor/seam-the-great-gate",
+              "happening": {
+                "subject": "anchor/seam-the-great-gate",
+                "text": "The great gate swings open onto the meadow.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "anchor": "anchor/seam-onto-the-bridge",
+              "happening": {
+                "subject": "anchor/seam-onto-the-bridge",
+                "text": "The bridge rises up to the watchtower's deck.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "sound": "minecraft:block.chain.place",
+              "type": "play-sound",
+              "volume": 2.0
+            },
+            {
+              "shots": [
+                {
+                  "seconds": 5,
+                  "shot_style": "pull-back-reveal",
+                  "subject": {
+                    "place": "node/bridge"
+                  }
+                }
+              ],
+              "type": "cutscene"
+            },
+            {
+              "style": "title",
+              "text": "The gate is open.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-crank",
+          "type": "quest-complete"
+        }
+      }
+    ],
+    "state": [
+      {
+        "id": "state/rose-bell-rings",
+        "initial": 0,
+        "note": "How many times the rose bell has been rung from the deck; it rings three times in all.",
+        "scope": "party"
+      },
+      {
+        "id": "state/rose-bell-quiet",
+        "initial": 0,
+        "note": "1 while the rose bell is still swinging from its last ring, 0 when it can ring again.",
+        "scope": "party"
+      },
+      {
+        "id": "state/yellow-bell-rings",
+        "initial": 0,
+        "note": "How many times the yellow bell has been rung from the deck; it rings three times in all.",
+        "scope": "party"
+      },
+      {
+        "id": "state/yellow-bell-quiet",
+        "initial": 0,
+        "note": "1 while the yellow bell is still swinging from its last ring, 0 when it can ring again.",
+        "scope": "party"
+      },
+      {
+        "id": "state/blue-bell-rings",
+        "initial": 0,
+        "note": "How many times the blue bell has been rung from the deck; it rings three times in all.",
+        "scope": "party"
+      },
+      {
+        "id": "state/blue-bell-quiet",
+        "initial": 0,
+        "note": "1 while the blue bell is still swinging from its last ring, 0 when it can ring again.",
+        "scope": "party"
+      },
+      {
+        "id": "state/green-bell-rings",
+        "initial": 0,
+        "note": "How many times the green bell has been rung from the deck; it rings three times in all.",
+        "scope": "party"
+      },
+      {
+        "id": "state/green-bell-quiet",
+        "initial": 0,
+        "note": "1 while the green bell is still swinging from its last ring, 0 when it can ring again.",
+        "scope": "party"
+      }
+    ],
+    "triggers": [
+      {
+        "answers": {
+          "not_yet": "Nothing: the rose bell is still swinging, or it has rung its last."
+        },
+        "at": "anchor/button-nw",
+        "effects": [
+          {
+            "amount": 1,
+            "state": "state/rose-bell-rings",
+            "type": "add-state"
+          },
+          {
+            "state": "state/rose-bell-quiet",
+            "type": "set-state",
+            "value": 1
+          },
+          {
+            "anchor": "anchor/bell-nw-power",
+            "block": "minecraft:redstone_block",
+            "type": "set-block"
+          },
+          {
+            "style": "actionbar",
+            "text": "Far below, the rose bell rings.",
+            "type": "narrate"
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 4,
+                "effects": [
+                  {
+                    "anchor": "anchor/bell-nw-power",
+                    "block": "minecraft:air",
+                    "type": "set-block"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 400,
+                "effects": [
+                  {
+                    "state": "state/rose-bell-quiet",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/ring-rose-bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:stone_button[face=floor,facing=east,powered=false]"
+        },
+        "requires_state": [
+          {
+            "op": "at-most",
+            "state": "state/rose-bell-rings",
+            "value": 2
+          },
+          {
+            "op": "equals",
+            "state": "state/rose-bell-quiet",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "answers": {
+          "not_yet": "Nothing: the yellow bell is still swinging, or it has rung its last."
+        },
+        "at": "anchor/button-ne",
+        "effects": [
+          {
+            "amount": 1,
+            "state": "state/yellow-bell-rings",
+            "type": "add-state"
+          },
+          {
+            "state": "state/yellow-bell-quiet",
+            "type": "set-state",
+            "value": 1
+          },
+          {
+            "anchor": "anchor/bell-ne-power",
+            "block": "minecraft:redstone_block",
+            "type": "set-block"
+          },
+          {
+            "style": "actionbar",
+            "text": "Far below, the yellow bell rings.",
+            "type": "narrate"
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 4,
+                "effects": [
+                  {
+                    "anchor": "anchor/bell-ne-power",
+                    "block": "minecraft:air",
+                    "type": "set-block"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 400,
+                "effects": [
+                  {
+                    "state": "state/yellow-bell-quiet",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/ring-yellow-bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:stone_button[face=floor,facing=east,powered=false]"
+        },
+        "requires_state": [
+          {
+            "op": "at-most",
+            "state": "state/yellow-bell-rings",
+            "value": 2
+          },
+          {
+            "op": "equals",
+            "state": "state/yellow-bell-quiet",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "answers": {
+          "not_yet": "Nothing: the blue bell is still swinging, or it has rung its last."
+        },
+        "at": "anchor/button-se",
+        "effects": [
+          {
+            "amount": 1,
+            "state": "state/blue-bell-rings",
+            "type": "add-state"
+          },
+          {
+            "state": "state/blue-bell-quiet",
+            "type": "set-state",
+            "value": 1
+          },
+          {
+            "anchor": "anchor/bell-se-power",
+            "block": "minecraft:redstone_block",
+            "type": "set-block"
+          },
+          {
+            "style": "actionbar",
+            "text": "Far below, the blue bell rings.",
+            "type": "narrate"
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 4,
+                "effects": [
+                  {
+                    "anchor": "anchor/bell-se-power",
+                    "block": "minecraft:air",
+                    "type": "set-block"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 400,
+                "effects": [
+                  {
+                    "state": "state/blue-bell-quiet",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/ring-blue-bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:stone_button[face=floor,facing=east,powered=false]"
+        },
+        "requires_state": [
+          {
+            "op": "at-most",
+            "state": "state/blue-bell-rings",
+            "value": 2
+          },
+          {
+            "op": "equals",
+            "state": "state/blue-bell-quiet",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "answers": {
+          "not_yet": "Nothing: the green bell is still swinging, or it has rung its last."
+        },
+        "at": "anchor/button-sw",
+        "effects": [
+          {
+            "amount": 1,
+            "state": "state/green-bell-rings",
+            "type": "add-state"
+          },
+          {
+            "state": "state/green-bell-quiet",
+            "type": "set-state",
+            "value": 1
+          },
+          {
+            "anchor": "anchor/bell-sw-power",
+            "block": "minecraft:redstone_block",
+            "type": "set-block"
+          },
+          {
+            "style": "actionbar",
+            "text": "Far below, the green bell rings.",
+            "type": "narrate"
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 4,
+                "effects": [
+                  {
+                    "anchor": "anchor/bell-sw-power",
+                    "block": "minecraft:air",
+                    "type": "set-block"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 400,
+                "effects": [
+                  {
+                    "state": "state/green-bell-quiet",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "id": "trigger/ring-green-bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:stone_button[face=floor,facing=east,powered=false]"
+        },
+        "requires_state": [
+          {
+            "op": "at-most",
+            "state": "state/green-bell-rings",
+            "value": 2
+          },
+          {
+            "op": "equals",
+            "state": "state/green-bell-quiet",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "at": "anchor/node-bridge",
+        "effects": [
+          {
+            "flag": "flag/crossed-the-bridge",
+            "type": "set-flag"
+          },
+          {
+            "style": "actionbar",
+            "text": "The planks hold. Don't look down.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/cross-the-bridge",
+        "on": {
+          "on": "approach",
+          "range": 3
+        },
+        "requires_flags": [
+          "flag/gate-wound"
+        ]
+      }
+    ],
+    "waves": [
+      {
+        "anchor": "anchor/slimes-rose",
+        "id": "wave/rose-slimes",
+        "mobs": [
+          {
+            "attributes": {
+              "max_health": 1.0
+            },
+            "count": 3,
+            "entity": "minecraft:slime"
+          }
+        ]
+      },
+      {
+        "anchor": "anchor/slimes-yellow",
+        "id": "wave/yellow-slimes",
+        "mobs": [
+          {
+            "attributes": {
+              "max_health": 1.0
+            },
+            "count": 3,
+            "entity": "minecraft:slime"
+          }
+        ]
+      }
+    ]
   },
   "dsl_version": "0.71.0",
   "stage": "quests"
