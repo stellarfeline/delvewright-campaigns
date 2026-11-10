@@ -192,6 +192,8 @@ On the build with manifest `ccc71c49aa708b5547401e2d828b331f9a3f9ec86dec451a2032
 | # | finding (as reported) | round | status |
 |---|---|---|---|
 | 1 | The warden rises too far from where the runner takes the crank; roaming, it only paces round its well and is barely felt. | 1 | fixed@r2 |
+| 2 | Pressing a bell button lures the warden, but the players hear nothing. | 2 | fixed@r3 |
+| 3 | The lookout's arms and deck hide the lanes below them. | 2 | fixed@r3 |
 
 ## Round 2 — the sleeper wakes near the sundial
 
@@ -200,3 +202,11 @@ On the build with manifest `ccc71c49aa708b5547401e2d828b331f9a3f9ec86dec451a2032
 - Machine record: one validation loop to green at build; DW codes hit: none new (the build's standing warnings `DW0822`, `DW0813`, `DW0781`, `DW1076`, `DW0451` x1).
 - General form, for the engine's cross-campaign ledger (not written here, the engine tree is read-only to this round): a body declared `outrun` whose entrance stands beyond its kind's hearing reach of the beat that unleashes it is a pursuit nobody feels — a candidate advisory measuring the unleash point to the entrance against the kind's hearing.
 - Ladder on the round-2 build (manifest `e5dee100017b6a431d8c60d34c40c492d87306824e293b4eadd66537c9a116aa`): bot critical path passed, 8 steps; `[pursuit] 3 pursued step(s) of 8, 1 pursuer(s), 34 reading(s); closest approach 12.98 block(s)` (27.73 in round 1). Branch runs: `world/0`, `world/1`, `world/2` ran and passed (closest approaches 2.04, 15.27 and 9.48 blocks; no death). PackTest: the same one red (`wave_census_yellow_slimes`, the engine's census test on a body of maximum health 1). Written world: the same `DW0955` on the four bell power cells. Staging gate: the same `doune-04` UNBOUND.
+
+## Round 3 — the bells are heard, the cross is glass
+
+- Finding 2: each bell button now also plays `minecraft:block.bell.use` at the bell for every player, volume 4 (heard to 64 blocks: the far arm tips to the far bells are about 57), category `block`, beside the redstone pulse. The pulse is what the warden hears (`warden-behaviour.md` §5: a played sound is not a vibration), and it is unchanged. Emitted as `playsound minecraft:block.bell.use block @a <bell> 4` in each `trig_ring_<colour>_bell`.
+- Finding 3: the lookout's deck (inside a spruce rim) and the four arms are floored in clear glass, on dark oak beams under the rails only. Rails unchanged and unjumpable; the build's leak, soft-lock and boundary proofs (`DW0838`, `DW0921`, `DW0322`) are clean.
+- Sight lines over the built pieces (glass counted see-through, leaves opaque; 104 eye points at the deck rail and the arm rails; 4,875 lane cells): a standing runner's head is seen in 86 % of lane cells (98 % within 15 blocks, 98 % at 15–30, 80 % at 30–45, 67 % beyond 45), the warden's head in 95 % (98, 100, 94, 85). From the deck rail alone: 26 % and 51 %.
+- Machine record: one transient `DW1054` while the lookout stood as a stand-in (the gate tower's hatch seen across it), cleared when the lookout was detailed; no other code hit.
+- Ladder on the round-3 build (manifest `1613e6dc31aec614fa4a0b8313dd6558867f0497ed146281e9fecc847e333e88`): bot critical path passed, 8 steps; `[pursuit] 3 pursued step(s) of 8, 1 pursuer(s), 34 reading(s); closest approach 14.97 block(s)`. Branch runs `world/0`–`world/2` ran and passed (closest approaches 15.01, 13.48, 13.79). PackTest: the same one red (the census test on a body of maximum health 1). Written world: the same `DW0955` on the four bell power cells. Staging gate: the same `doune-04` UNBOUND.
