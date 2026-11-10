@@ -139,15 +139,20 @@ def build(place):
         m.set(cx, d, z, "counter")
         m.clear(cx, cx, d + 1, d + 1, z, z)
         m.mark(stem, cx, z, facing="west", y=d + 1)
-    # the beam under the lid over the walk behind the counter, and the
-    # quarter's colour hung from it over each button
-    bx = sx1
-    m.box(bx, bx, lid - 1, lid - 1, sz0, sz1, "beam")
+    # the beam under the lid straight over the counter, and the quarter's
+    # colour hung from it one course over each button: the counter's top has
+    # a single course of headroom, so no body stands on it to vault the rail
+    m.box(cx, cx, d + 3, lid - 1, sz0, sz0 + len(BUTTONS) - 1, "beam")
     for i, (_, wool) in enumerate(BUTTONS):
-        m.set(bx, lid - 2, sz0 + i, f"minecraft:{wool}")
+        m.set(cx, d + 2, sz0 + i, f"minecraft:{wool}")
 
-    # the bell book's place, on the deck beside the counter's south end
-    m.mark("bell-book", cx - 1, sz0 + len(BUTTONS) - 1, facing="east", y=d)
+    # the bell book's place, on the deck beside the counter's south end, under
+    # a spruce card board hung from the lid on a fence: the shelf the story
+    # stands there has one course of headroom too
+    bbx, bbz = cx - 1, sz0 + len(BUTTONS) - 1
+    m.mark("bell-book", bbx, bbz, facing="west", y=d)
+    m.set(bbx, d + 2, bbz, "minecraft:spruce_planks")
+    m.box(bbx, bbx, d + 3, lid - 1, bbz, bbz, "rail")
 
     # light: lanterns hung from the lid
     for x, z in ((sx0, sz0), (sx0, sz1), (sx0 + 2, sz0 + 2)):

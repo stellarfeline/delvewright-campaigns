@@ -37,24 +37,26 @@
   "palette": {
     "b0": "minecraft:air",
     "b1": "minecraft:blue_wool",
-    "b10": "minecraft:waxed_weathered_cut_copper_slab[type=bottom,waterlogged=false]",
-    "b11": "minecraft:waxed_weathered_cut_copper_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
-    "b12": "minecraft:waxed_weathered_cut_copper_stairs[facing=north,half=bottom,shape=outer_left,waterlogged=false]",
-    "b13": "minecraft:waxed_weathered_cut_copper_stairs[facing=north,half=bottom,shape=outer_right,waterlogged=false]",
-    "b14": "minecraft:waxed_weathered_cut_copper_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
-    "b15": "minecraft:waxed_weathered_cut_copper_stairs[facing=south,half=bottom,shape=outer_left,waterlogged=false]",
-    "b16": "minecraft:waxed_weathered_cut_copper_stairs[facing=south,half=bottom,shape=outer_right,waterlogged=false]",
-    "b17": "minecraft:waxed_weathered_cut_copper_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
-    "b18": "minecraft:waxed_weathered_cut_copper_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
-    "b19": "minecraft:yellow_wool",
+    "b10": "minecraft:spruce_fence[east=true,north=false,south=true,waterlogged=false,west=true]",
+    "b11": "minecraft:spruce_planks",
+    "b12": "minecraft:waxed_weathered_cut_copper_slab[type=bottom,waterlogged=false]",
+    "b13": "minecraft:waxed_weathered_cut_copper_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "b14": "minecraft:waxed_weathered_cut_copper_stairs[facing=north,half=bottom,shape=outer_left,waterlogged=false]",
+    "b15": "minecraft:waxed_weathered_cut_copper_stairs[facing=north,half=bottom,shape=outer_right,waterlogged=false]",
+    "b16": "minecraft:waxed_weathered_cut_copper_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "b17": "minecraft:waxed_weathered_cut_copper_stairs[facing=south,half=bottom,shape=outer_left,waterlogged=false]",
+    "b18": "minecraft:waxed_weathered_cut_copper_stairs[facing=south,half=bottom,shape=outer_right,waterlogged=false]",
+    "b19": "minecraft:waxed_weathered_cut_copper_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
     "b2": "minecraft:green_wool",
+    "b20": "minecraft:waxed_weathered_cut_copper_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
+    "b21": "minecraft:yellow_wool",
     "b3": "minecraft:lantern[hanging=true,waterlogged=false]",
     "b4": "minecraft:pink_wool",
     "b5": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
     "b6": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
     "b7": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
-    "b8": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
-    "b9": "minecraft:spruce_fence[east=true,north=false,south=true,waterlogged=false,west=true]",
+    "b8": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
+    "b9": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
     "bar-onto-the-bridge": "minecraft:iron_bars[east=false,north=false,south=false,waterlogged=false,west=false]",
     "beam": "minecraft:spruce_log[axis=z]",
     "counter": "minecraft:smooth_stone",
@@ -720,7 +722,7 @@
         "weight": 1
       }
     ],
-    "column_25": [
+    "column_26": [
       {
         "body": {
           "axis": "y",
@@ -739,11 +741,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_14"
+              "symbol": "row_23"
             },
             {
               "op": "call",
-              "symbol": "row_23"
+              "symbol": "row_24"
             },
             {
               "op": "call",
@@ -759,7 +761,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_24"
+              "symbol": "row_25"
             }
           ],
           "op": "split",
@@ -960,7 +962,7 @@
         "weight": 1
       }
     ],
-    "column_28": [
+    "column_31": [
       {
         "body": {
           "axis": "y",
@@ -971,7 +973,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_26"
+              "symbol": "row_27"
             },
             {
               "op": "call",
@@ -979,7 +981,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_14"
+              "symbol": "row_28"
+            },
+            {
+              "op": "call",
+              "symbol": "row_29"
             },
             {
               "op": "call",
@@ -995,7 +1001,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_27"
+              "symbol": "row_30"
             }
           ],
           "op": "split",
@@ -1081,8 +1087,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "handed/roof/lid-y"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1095,6 +1109,29 @@
                   "rhs": {
                     "expr": "int",
                     "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/roof/lid-y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
                   }
                 }
               },
@@ -1165,7 +1202,7 @@
         "weight": 1
       }
     ],
-    "column_32": [
+    "column_33": [
       {
         "body": {
           "axis": "y",
@@ -1184,11 +1221,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_29"
-            },
-            {
-              "op": "call",
-              "symbol": "row_30"
+              "symbol": "row_14"
             },
             {
               "op": "call",
@@ -1200,7 +1233,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_31"
+              "symbol": "row_32"
             },
             {
               "op": "call",
@@ -1290,16 +1323,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/onto-the-bridge/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "param",
+                  "name": "handed/roof/lid-y"
                 },
                 "op": "sub",
                 "rhs": {
@@ -1321,29 +1346,6 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "handed/roof/lid-y"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/onto-the-bridge/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
@@ -1390,200 +1392,6 @@
               "blocks": {
                 "expr": "int",
                 "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_36": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_5"
-            },
-            {
-              "op": "call",
-              "symbol": "row_33"
-            },
-            {
-              "op": "call",
-              "symbol": "row_34"
-            },
-            {
-              "op": "call",
-              "symbol": "row_8"
-            },
-            {
-              "op": "call",
-              "symbol": "row_9"
-            },
-            {
-              "op": "call",
-              "symbol": "row_35"
-            },
-            {
-              "op": "call",
-              "symbol": "row_3"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/up-the-tower/y1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/up-the-tower/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/onto-the-bridge/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/roof/lid-y"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/onto-the-bridge/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/roof/lid-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/roof/lid-y"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 7
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/roof/lid-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
               },
               "size": "absolute"
             },
@@ -1606,11 +1414,27 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_5"
             },
             {
               "op": "call",
-              "symbol": "row_1"
+              "symbol": "row_34"
+            },
+            {
+              "op": "call",
+              "symbol": "row_35"
+            },
+            {
+              "op": "call",
+              "symbol": "row_36"
+            },
+            {
+              "op": "call",
+              "symbol": "row_8"
+            },
+            {
+              "op": "call",
+              "symbol": "row_9"
             },
             {
               "op": "call",
@@ -1642,6 +1466,99 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
                   "expr": "param",
                   "name": "handed/roof/lid-y"
                 },
@@ -1650,7 +1567,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/up-the-tower/y1"
+                    "name": "handed/seam/onto-the-bridge/y1"
                   },
                   "op": "add",
                   "rhs": {
@@ -1680,6 +1597,29 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/roof/lid-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/roof/lid-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1793,6 +1733,103 @@
         "weight": 1
       }
     ],
+    "column_40": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_1"
+            },
+            {
+              "op": "call",
+              "symbol": "row_39"
+            },
+            {
+              "op": "call",
+              "symbol": "row_3"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/up-the-tower/y1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/roof/lid-y"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/roof/lid-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/roof/lid-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "place": [
       {
         "body": {
@@ -1823,23 +1860,23 @@
                           },
                           {
                             "op": "call",
-                            "symbol": "column_25"
+                            "symbol": "column_26"
                           },
                           {
                             "op": "call",
-                            "symbol": "column_28"
+                            "symbol": "column_31"
                           },
                           {
                             "op": "call",
-                            "symbol": "column_32"
-                          },
-                          {
-                            "op": "call",
-                            "symbol": "column_36"
+                            "symbol": "column_33"
                           },
                           {
                             "op": "call",
                             "symbol": "column_38"
+                          },
+                          {
+                            "op": "call",
+                            "symbol": "column_40"
                           }
                         ],
                         "op": "split",
@@ -2090,7 +2127,7 @@
           "mark": {
             "anchor": "bell-book",
             "at": "offset",
-            "facing": "east",
+            "facing": "west",
             "x": {
               "expr": "int",
               "value": 4
@@ -2513,23 +2550,6 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "param",
-                "name": "handed/seam/up-the-tower/z0"
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "int",
-                "value": 2
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 7
-              },
-              "op": "gt",
-              "rhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
@@ -2540,6 +2560,23 @@
                   "expr": "int",
                   "value": 1
                 }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/up-the-tower/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 2
               }
             },
             {
@@ -2560,34 +2597,6 @@
               "rhs": {
                 "expr": "int",
                 "value": 2
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/onto-the-bridge/y1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
               }
             },
             {
@@ -2803,19 +2812,19 @@
             },
             {
               "material": {
-                "role": "b15"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b13"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b15"
               },
               "op": "fill"
             },
@@ -2879,7 +2888,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -2892,7 +2901,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -3249,7 +3258,7 @@
             },
             {
               "material": {
-                "role": "b17"
+                "role": "b19"
               },
               "op": "fill"
             },
@@ -3262,7 +3271,7 @@
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b16"
               },
               "op": "fill"
             },
@@ -3330,19 +3339,19 @@
             },
             {
               "material": {
-                "role": "b15"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b13"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b15"
               },
               "op": "fill"
             },
@@ -3450,7 +3459,7 @@
             },
             {
               "material": {
-                "role": "b17"
+                "role": "b19"
               },
               "op": "fill"
             },
@@ -3463,7 +3472,7 @@
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b16"
               },
               "op": "fill"
             },
@@ -3564,19 +3573,19 @@
           "children": [
             {
               "material": {
-                "role": "b15"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b13"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b15"
               },
               "op": "fill"
             }
@@ -3623,19 +3632,19 @@
             },
             {
               "material": {
-                "role": "b15"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b13"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b15"
               },
               "op": "fill"
             },
@@ -3882,7 +3891,7 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -3923,8 +3932,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/up-the-tower/z0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -3941,7 +3958,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/up-the-tower/z1"
+                    "name": "handed/seam/onto-the-bridge/z1"
                   },
                   "op": "add",
                   "rhs": {
@@ -3951,8 +3968,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/up-the-tower/z0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -3969,7 +3994,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/seam/up-the-tower/z1"
+                    "name": "handed/seam/onto-the-bridge/z1"
                   },
                   "op": "add",
                   "rhs": {
@@ -4005,6 +4030,183 @@
           "axis": "z",
           "children": [
             {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/up-the-tower/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/up-the-tower/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_25": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
               "body": {
                 "op": "void"
               },
@@ -4013,19 +4215,19 @@
             },
             {
               "material": {
-                "role": "b17"
+                "role": "b19"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b12"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b16"
               },
               "op": "fill"
             },
@@ -4127,7 +4329,7 @@
         "weight": 1
       }
     ],
-    "row_26": [
+    "row_27": [
       {
         "body": {
           "axis": "z",
@@ -4137,7 +4339,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -4156,7 +4358,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -4245,135 +4447,7 @@
         "weight": 1
       }
     ],
-    "row_27": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "roof"
-            },
-            {
-              "material": {
-                "role": "b16"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b18"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b12"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "roof"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/onto-the-bridge/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/up-the-tower/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/onto-the-bridge/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/up-the-tower/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/up-the-tower/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/onto-the-bridge/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/up-the-tower/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_29": [
+    "row_28": [
       {
         "body": {
           "axis": "z",
@@ -4395,7 +4469,7 @@
             },
             {
               "material": {
-                "role": "b19"
+                "role": "b21"
               },
               "op": "fill"
             },
@@ -4570,19 +4644,7 @@
         "weight": 1
       }
     ],
-    "row_3": [
-      {
-        "body": {
-          "body": {
-            "op": "void"
-          },
-          "op": "claim",
-          "region": "roof"
-        },
-        "weight": 1
-      }
-    ],
-    "row_30": [
+    "row_29": [
       {
         "body": {
           "axis": "z",
@@ -4601,6 +4663,13 @@
                 "role": "beam"
               },
               "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
             },
             {
               "material": {
@@ -4630,8 +4699,47 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 5
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -4654,7 +4762,19 @@
         "weight": 1
       }
     ],
-    "row_31": [
+    "row_3": [
+      {
+        "body": {
+          "body": {
+            "op": "void"
+          },
+          "op": "claim",
+          "region": "roof"
+        },
+        "weight": 1
+      }
+    ],
+    "row_30": [
       {
         "body": {
           "axis": "z",
@@ -4668,9 +4788,131 @@
             },
             {
               "material": {
-                "role": "b16"
+                "role": "b18"
               },
               "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b14"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "roof"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/onto-the-bridge/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/up-the-tower/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/onto-the-bridge/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/up-the-tower/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_32": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "roof"
             },
             {
               "material": {
@@ -4680,7 +4922,13 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -4774,7 +5022,7 @@
         "weight": 1
       }
     ],
-    "row_33": [
+    "row_34": [
       {
         "body": {
           "axis": "z",
@@ -4916,7 +5164,157 @@
         "weight": 1
       }
     ],
-    "row_34": [
+    "row_35": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "op": "void"
+            },
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b0"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "bar-onto-the-bridge"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "seam-onto-the-bridge"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b0"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "post"
+              },
+              "op": "fill"
+            },
+            {
+              "op": "void"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/onto-the-bridge/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/onto-the-bridge/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_36": [
       {
         "body": {
           "axis": "z",
@@ -5058,7 +5456,7 @@
         "weight": 1
       }
     ],
-    "row_35": [
+    "row_37": [
       {
         "body": {
           "axis": "z",
@@ -5072,19 +5470,19 @@
             },
             {
               "material": {
-                "role": "b16"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "b18"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -5138,17 +5536,11 @@
         "weight": 1
       }
     ],
-    "row_37": [
+    "row_39": [
       {
         "body": {
           "axis": "z",
           "children": [
-            {
-              "material": {
-                "role": "b16"
-              },
-              "op": "fill"
-            },
             {
               "material": {
                 "role": "b18"
@@ -5157,7 +5549,13 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b14"
               },
               "op": "fill"
             }
@@ -5469,7 +5867,7 @@
           "children": [
             {
               "material": {
-                "role": "b17"
+                "role": "b19"
               },
               "op": "fill"
             },
@@ -5481,7 +5879,7 @@
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b16"
               },
               "op": "fill"
             }

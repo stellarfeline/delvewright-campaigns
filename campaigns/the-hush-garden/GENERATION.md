@@ -103,3 +103,25 @@ No finding at 3 or 4; the loop stops here. Fifteen findings at 1 and 2. Fixed: F
 
 - The bridge is shut at both ends until the gate is wound (`edge/onto-the-bridge` and `edge/off-the-bridge`): with only the deck end shut, a body walked round through the gate tower onto the bridge before it rose (`DW1011`). Both ends are `told`: a chain post beside each barred end answers a press (*The bridge is chained up from this post*). The great gate is `seen` from the hall.
 - The bridge cutscene stands its camera on the deck looking along the bridge (a styled shot from the bridge itself was occluded, `DW1033`).
+
+## Step 8 — the first builds
+
+- The build over the stand-ins exited 3 on refusals the stand-ins themselves raise (a body on the stand-in gate top jumps onto the shut bridge, `DW0921`; stations placed by the stand-in inside a wave's reach, `DW0478`); they cleared as the places were detailed. Step 9 began on that tree.
+- The site is ringed by a low brick garden wall two courses high (`volumes[]`, massif), the wall the reference views show round the lawn.
+
+## Step 9 — detail
+
+Wave bound as `allocation --all` printed it: `concurrency: 5 = min(6, max(1, 10 / 2))`; at most five authors were in flight. Handouts are regenerable files under `.out/handouts/<place>/handout-<n>.md`.
+
+| place | attempt | tokens | duration | repaired | commit exit |
+|---|---|---|---|---|---|
+| node/meadow | 1 | 136363 | 208 s | — | 3 (battery: `DW0921` on the stand-in bridge) |
+| node/bridge | 1 | 172974 | 531 s | — | 3 (battery: `DW0921`) |
+| node/gatehouse | 1 | 194004 | 599 s | — | 3 (battery: `DW0478`, stand-in stations) |
+| node/gate-top | 1 | 114653 | 263 s | — | 3 (battery: `DW0986`) |
+| node/lookout | 1 | 177001 | 699 s | — | 3 (`DW0838`, `DW0986`) |
+| node/maze | 1 | 229209 | 814 s | — | 3 (battery: `DW0986`) |
+| node/gate-top | 2 | 133613 | 240 s | `DW0986` | 3 (battery: `DW0838` at the lookout) |
+| node/lookout | 2 | 93205 | 194 s | `DW0838` | 3 (battery: `DW0322`) |
+
+The maze's generator printed: 784 cells; 80 dead ends before braiding, 13 after, the nearest kept one 26.7 blocks from the well; 67 independent loops, 5 of them with every pair of opposite points more than 16 blocks apart; 142 blocks of route from the heart to the sundial and 211 from the sundial to the gate tower's door; about 45 % of lane columns within 16 blocks of each quarter's bell.
