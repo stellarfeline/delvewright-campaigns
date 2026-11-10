@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
 """node/arm-east: the east arm of the lookout's cross.
 
-A plank walkway three wide running east from the deck over the maze: spruce
-planks laid across dark oak stringers, a dark oak cross beam every six cells,
-a low spruce rail along both sides at hand height, a lantern set on the
-rail's post over each cross beam on both rails, and at the far end a dark oak gate frame
-holding the bar the bridge's end is closed with until the gate is wound.
+A walkway three wide running east from the deck over the maze, floored in
+clear glass so the caller sees the lanes straight below: the glass rests on
+two dark oak beams that run under the rails and nowhere under the walk, a low
+spruce rail stands on each beam at hand height, a lantern sits on the rail's
+post every six cells on both rails, and at the far end a dark oak gate frame
+holds the bar the bridge's end is closed with until the gate is wound.
+
+Palette measured with `tools/creator/block-appearance.py` against the pinned
+client jar: glass #b0d6db at 65/255 coverage (the floor reads clear), dark oak
+log #402e18, spruce fence #735531, lantern, iron chain, iron bars.
 
 The rail is one course: a body cannot jump a fence, and the eye stands over
-it, so the lanes below are seen across it. Above the rail the ring is the
-arm's open air (the starter would stand a full-height wall on every ring cell
-the drawing leaves; `open_rail` below hands those cells back as the room's
-air, as the starter itself does for an open place's corner posts).
+it, so the lanes below are seen across it as well as through the floor. Above
+the rail the ring is the arm's open air (the starter would stand a full-height
+wall on every ring cell the drawing leaves; `open_rail` below hands those
+cells back as the room's air, as the starter itself does for an open place's
+corner posts).
 """
 
 import os
@@ -21,7 +27,7 @@ sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 import starter  # noqa: E402
 from starter import Model, run, chain, fence, lantern, pillar  # noqa: E402
 
-PERIOD = 6  # a cross beam, and a lantern on each rail, every six cells
+PERIOD = 6  # a lantern on each rail every six cells
 
 
 def build(place):
@@ -32,9 +38,9 @@ def build(place):
     zn, zs = z0 - 1, z1 + 1  # the two rail lines (the ring's north and south runs)
     xe = x1 + 1  # the far end's plane, where the bar stands
 
-    m.palette["boards"] = "minecraft:spruce_planks"
-    m.palette["stringer"] = pillar("minecraft:dark_oak_log", "x")
-    m.palette["beam"] = pillar("minecraft:dark_oak_log", "z")
+    m.palette["glass"] = "minecraft:glass"
+    m.palette["beam"] = pillar("minecraft:dark_oak_log", "x")
+    m.palette["sill"] = pillar("minecraft:dark_oak_log", "z")
     m.palette["post"] = pillar("minecraft:dark_oak_log", "y")
     m.palette["lintel"] = pillar("minecraft:dark_oak_log", "x")
     m.palette["rail"] = fence("minecraft:spruce")
@@ -43,26 +49,24 @@ def build(place):
             # the bar's block as the seam hands it, bound for the survey too
             m.palette[f"bar-{s['stem']}"] = starter.full_state(s["seam"]["bar_block"])
 
-    beams = [x for x in range(x0, x1 + 1) if x % PERIOD == PERIOD // 2]
+    lamps = [x for x in range(x0, x1 + 1) if x % PERIOD == PERIOD // 2]
 
-    # the deck: planks across the walk, a cross beam every six cells, and the
-    # two stringers under the rails carrying both, run on to the far end
+    # the floor: glass across the whole walk, carried by the two beams under
+    # the rails, run on to the far end; the far end's sill under the bar ties
+    # the beams' ends together
     for x in range(x0, xe + 1):
-        m.set(x, fy, zn, "stringer")
-        m.set(x, fy, zs, "stringer")
+        m.set(x, fy, zn, "beam")
+        m.set(x, fy, zs, "beam")
         for z in range(z0, z1 + 1):
-            m.set(x, fy, z, "beam" if x in beams else "boards")
-    for z in range(z0, z1 + 1):
-        m.set(xe, fy, z, "beam")  # the sill under the bar
+            m.set(x, fy, z, "sill" if x == xe else "glass")
 
     # the rail, one course high along both sides
     for x in range(x0, x1 + 1):
         m.set(x, d, zn, "rail")
         m.set(x, d, zs, "rail")
-    # a lantern on the rail's post over every cross beam, on both rails: set
-    # on the rail itself, so its top is no step up from the rail's top toward
-    # the head of the bar, which a body standing there could cross
-    for x in beams:
+    # a lantern on the rail's post every six cells, on both rails: set on the
+    # rail itself, so its top is no step up from the rail's top
+    for x in lamps:
         for z in (zn, zs):
             m.set(x, d + 1, z, lantern(False))
 
@@ -84,8 +88,8 @@ def build(place):
     m.show("up")  # the posts' heads stand on the frame's top course
 
     m.mark("node-arm-east", (x0 + x1) // 2, (z0 + z1) // 2, facing="east")
-    # the name is that chain's cell, beside the bar in its plane, outside
-    # the way's clear width, never a cell a body stands in
+    # the name is that chain's cell, beside the bar in its plane, outside the
+    # way's clear width, never a cell a body stands in
     m.mark("bridge-bar-deck", xe, zs, facing="north", y=d)
     m.finish()
     return m
@@ -100,8 +104,6 @@ _base_cell = starter.Plot.base_cell
 def open_rail(self, x, y, z):
     kind = _base_cell(self, x, y, z)
     if kind[0] == "fill" and any((mx, my, mz) == (x, y, z) for mx, mz, _, my in self.model.marks.values()):
-        # a named block in the rail line stands in the arm's own air, so the
-        # name lands in the space it belongs to
         return ("claim", "room", kind[1])
     if kind in (("fill", "wall"), ("fill", "lamp")) and y >= self.datum.value and self.model.get(x, y, z) is None:
         return ("claim", "room", None)
@@ -116,6 +118,8 @@ starter.Plot.base_cell = open_rail
 # as isolated posts a body slips between; the bar here stands in an east/west
 # face, so its arms run north and south, joining each other and the posts.
 
+_full_state = starter.full_state
+
 
 def joined_bar(block: str) -> str:
     if block == "minecraft:iron_bars":
@@ -123,7 +127,6 @@ def joined_bar(block: str) -> str:
     return _full_state(block)
 
 
-_full_state = starter.full_state
 starter.full_state = joined_bar
 
 raise SystemExit(run(build))

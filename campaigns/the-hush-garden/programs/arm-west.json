@@ -25,9 +25,9 @@
     "b5": "minecraft:spruce_fence[east=true,north=true,south=false,waterlogged=false,west=false]",
     "beam-x": "minecraft:dark_oak_log[axis=x]",
     "beam-z": "minecraft:dark_oak_log[axis=z]",
+    "glass": "minecraft:glass",
     "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "open": "minecraft:air",
-    "planks": "minecraft:spruce_planks"
+    "open": "minecraft:air"
   },
   "params": {
     "handed/datum-y": 1,
@@ -46,7 +46,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_0"
+              "symbol": "row_5"
             },
             {
               "op": "call",
@@ -713,10 +713,67 @@
     "row_0": [
       {
         "body": {
-          "material": {
-            "role": "beam-z"
-          },
-          "op": "fill"
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "beam-x"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam-z"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam-x"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/out-the-west-arm/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/out-the-west-arm/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/out-the-west-arm/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
         },
         "weight": 1
       }
@@ -1145,7 +1202,7 @@
             },
             {
               "material": {
-                "role": "planks"
+                "role": "glass"
               },
               "op": "fill"
             },

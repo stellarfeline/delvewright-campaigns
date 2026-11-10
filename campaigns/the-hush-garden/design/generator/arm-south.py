@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""node/arm-south: the lookout's south arm — a railed spruce walkway on dark oak beams, 22 over the maze.
+"""node/arm-south: the lookout's south arm — a railed glass walkway on thin dark oak beams, 22 over the maze.
 
 Palette, measured with tools/creator/block-appearance.py against the pinned client jar:
-  deck     minecraft:spruce_planks     #735531
-  beam     minecraft:dark_oak_log      #402e18 (stringers along each edge, a cross beam every six cells)
+  deck     minecraft:glass             clear: the caller sees the lanes straight below
+  beam     minecraft:dark_oak_log      #402e18 (a stringer under each side rail and one under the far rail; none under the walk)
   rail     minecraft:spruce_fence      #735531 (one course: low enough to see the lanes over)
   lamp     minecraft:lantern           #6b5c55 (standing on a fence post, every six cells)
 """
@@ -23,7 +23,7 @@ def build(place):
     floor = d - 1
     xe, xw = 0, ex - 1          # the two edge columns (the ring)
     zend = ez - 1               # the far end's ring row
-    m.palette["deck"] = "minecraft:spruce_planks"
+    m.palette["deck"] = "minecraft:glass"
     m.palette["stringer"] = pillar("minecraft:dark_oak_log", "z")
     m.palette["crossbeam"] = pillar("minecraft:dark_oak_log", "x")
     m.palette["rail"] = fence("spruce")
@@ -32,14 +32,13 @@ def build(place):
     # rail is the only thing between a body and the drop
     m.palette["open-air"] = "minecraft:air"
 
-    # the deck course: planks between two dark oak stringers
+    # the deck course: clear glass between two dark oak stringers
     m.box(xe + 1, xw - 1, floor, floor, 0, zend - 1, "deck")
     m.box(xe, xe, floor, floor, 0, zend - 1, "stringer")
     m.box(xw, xw, floor, floor, 0, zend - 1, "stringer")
-    # a dark oak cross beam every six cells, and one under the far end's rail
+    # a dark oak beam under the far end's rail only: nothing under the walk
     posts = list(range(POST_PERIOD - 1, zend, POST_PERIOD))
-    for z in posts + [zend]:
-        m.box(xe, xw, floor, floor, z, z, "crossbeam")
+    m.box(xe, xw, floor, floor, zend, zend, "crossbeam")
     # the clear above the deck
     m.clear(xe + 1, xw - 1, d, ey - 1, 0, zend - 1)
     # one course of rail along both sides and across the far end

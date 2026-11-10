@@ -32,11 +32,11 @@
     "b3": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
     "b4": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
     "bar-onto-the-bridge": "minecraft:iron_bars[east=false,north=true,south=true,waterlogged=false,west=false]",
-    "beam": "minecraft:dark_oak_log[axis=z]",
-    "boards": "minecraft:spruce_planks",
+    "beam": "minecraft:dark_oak_log[axis=x]",
+    "glass": "minecraft:glass",
     "lintel": "minecraft:dark_oak_log[axis=x]",
     "post": "minecraft:dark_oak_log[axis=y]",
-    "stringer": "minecraft:dark_oak_log[axis=x]"
+    "sill": "minecraft:dark_oak_log[axis=z]"
   },
   "params": {
     "handed/datum-y": 1,
@@ -54,7 +54,7 @@
     "handed/seam/out-the-east-arm/z1": 3
   },
   "rules": {
-    "column_11": [
+    "column_10": [
       {
         "body": {
           "axis": "y",
@@ -65,7 +65,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_10"
+              "symbol": "row_9"
             }
           ],
           "op": "split",
@@ -89,7 +89,7 @@
         "weight": 1
       }
     ],
-    "column_15": [
+    "column_14": [
       {
         "body": {
           "axis": "y",
@@ -100,15 +100,15 @@
             },
             {
               "op": "call",
+              "symbol": "row_11"
+            },
+            {
+              "op": "call",
               "symbol": "row_12"
             },
             {
               "op": "call",
               "symbol": "row_13"
-            },
-            {
-              "op": "call",
-              "symbol": "row_14"
             }
           ],
           "op": "split",
@@ -193,7 +193,7 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_7"
+              "symbol": "row_15"
             },
             {
               "op": "call",
@@ -372,14 +372,14 @@
         "weight": 1
       }
     ],
-    "column_9": [
+    "column_8": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_7"
+              "symbol": "row_0"
             },
             {
               "op": "call",
@@ -387,7 +387,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_8"
+              "symbol": "row_7"
             },
             {
               "op": "call",
@@ -486,7 +486,7 @@
                 },
                 {
                   "op": "call",
-                  "symbol": "column_9"
+                  "symbol": "column_8"
                 },
                 {
                   "op": "call",
@@ -494,7 +494,7 @@
                 },
                 {
                   "op": "call",
-                  "symbol": "column_9"
+                  "symbol": "column_8"
                 },
                 {
                   "op": "call",
@@ -502,7 +502,7 @@
                 },
                 {
                   "op": "call",
-                  "symbol": "column_9"
+                  "symbol": "column_8"
                 },
                 {
                   "op": "call",
@@ -510,15 +510,15 @@
                 },
                 {
                   "op": "call",
-                  "symbol": "column_9"
+                  "symbol": "column_8"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_11"
+                  "symbol": "column_10"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_15"
+                  "symbol": "column_14"
                 },
                 {
                   "op": "call",
@@ -1022,19 +1022,19 @@
           "children": [
             {
               "material": {
-                "role": "stringer"
+                "role": "beam"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "boards"
+                "role": "glass"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "stringer"
+                "role": "beam"
               },
               "op": "fill"
             }
@@ -1152,76 +1152,7 @@
         "weight": 1
       }
     ],
-    "row_10": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "post"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "post"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/onto-the-bridge/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/onto-the-bridge/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/onto-the-bridge/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_12": [
+    "row_11": [
       {
         "body": {
           "axis": "z",
@@ -1290,7 +1221,7 @@
         "weight": 1
       }
     ],
-    "row_13": [
+    "row_12": [
       {
         "body": {
           "axis": "z",
@@ -1359,7 +1290,7 @@
         "weight": 1
       }
     ],
-    "row_14": [
+    "row_13": [
       {
         "body": {
           "axis": "z",
@@ -1380,6 +1311,74 @@
             {
               "material": {
                 "role": "lintel"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/onto-the-bridge/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/onto-the-bridge/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/onto-the-bridge/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_15": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "beam"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "sill"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "beam"
               },
               "op": "fill"
             }
@@ -1735,19 +1734,20 @@
           "children": [
             {
               "material": {
-                "role": "stringer"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
-              "material": {
-                "role": "beam"
+              "body": {
+                "op": "void"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "room"
             },
             {
               "material": {
-                "role": "stringer"
+                "role": "b1"
               },
               "op": "fill"
             }
@@ -1796,14 +1796,14 @@
         "weight": 1
       }
     ],
-    "row_8": [
+    "row_9": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "b1"
+                "role": "post"
               },
               "op": "fill"
             },
@@ -1816,7 +1816,7 @@
             },
             {
               "material": {
-                "role": "b1"
+                "role": "post"
               },
               "op": "fill"
             }
