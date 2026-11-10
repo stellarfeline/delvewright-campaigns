@@ -186,7 +186,11 @@
         "cast": {
           "npc/wren": {
             "at": "anchor/gardener",
-            "dialogue": "unchanged",
+            "dialogue": {
+              "barks": [
+                "Wren is too far off to hear, beyond the great gate."
+              ]
+            },
             "doing": "Still in the meadow, humming, coiling a hose."
           }
         },
@@ -383,6 +387,15 @@
               "type": "open-gate"
             },
             {
+              "anchor": "anchor/seam-off-the-bridge",
+              "happening": {
+                "subject": "anchor/seam-off-the-bridge",
+                "text": "The bridge comes down onto the gate tower's roof.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
               "sound": "minecraft:block.chain.place",
               "type": "play-sound",
               "volume": 2.0
@@ -390,8 +403,20 @@
             {
               "shots": [
                 {
+                  "look_at": {
+                    "anchor": "anchor/node-bridge"
+                  },
+                  "path": [
+                    {
+                      "anchor": "anchor/node-lookout",
+                      "offset": [
+                        -1,
+                        1,
+                        0
+                      ]
+                    }
+                  ],
                   "seconds": 5,
-                  "shot_style": "pull-back-reveal",
                   "subject": {
                     "place": "node/bridge"
                   }
@@ -780,6 +805,56 @@
         "requires_flags": [
           "flag/gate-wound"
         ]
+      },
+      {
+        "answers": {
+          "done": "The chain is slack. The bridge is down."
+        },
+        "at": "anchor/bridge-bar-deck",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The bridge is chained up from this post. It comes down when the gate is wound.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/shut-onto-the-bridge",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:iron_chain[axis=y,waterlogged=false]"
+        },
+        "serves": {
+          "gate": "anchor/seam-onto-the-bridge"
+        }
+      },
+      {
+        "answers": {
+          "done": "The chain is slack. The bridge is down."
+        },
+        "at": "anchor/bridge-bar-far",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The bridge is chained up from this post. It comes down when the gate is wound.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/shut-off-the-bridge",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:iron_chain[axis=y,waterlogged=false]"
+        },
+        "serves": {
+          "gate": "anchor/seam-off-the-bridge"
+        }
       }
     ],
     "waves": [

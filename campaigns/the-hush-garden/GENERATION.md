@@ -81,3 +81,25 @@ Script review: ran; the prompt pinned the maze, the two roles, the warden's two 
 - F7 (2, the runner's objectives walk them to each place): fixed; the sundial and the gate tower carry no compass.
 - F8 (2, the caller has nothing to do after the book): answered; the caller's play after the book is the watching, the bells and the throws, which is the level's other half and no objective.
 - F9 (1): fixed; the note says why the crank hangs on the sundial. F14 (1): fixed in the bell book. F11 (1): fixed in the hub's goal. F10, F12, F13 (1): left.
+
+### Round 2 — verdict `build`
+
+| Question | Findings | Worst severity |
+|---|---|---|
+| Q1 | 3 | 2 |
+| Q2 | 1 | 1 |
+| Q3 | 0 | — |
+| Q4 | 1 | 1 |
+| Q5 | 4 | 1 |
+| Q6 | 1 | 1 |
+| Q7 | 1 | 2 |
+| Q8 | 0 | — |
+| Q9 | 1 | 1 |
+| Q10 | 3 | 2 |
+
+No finding at 3 or 4; the loop stops here. Fifteen findings at 1 and 2. Fixed: F11 (Wren's cast during the optional strand carried `unchanged`, which reads as a node that does not exist; she now carries her bark like the other lines). Answered, standing as designed: F1 (the crank inside the maze is the level's reason to run it); F13 and F14 (the ending reads whether anyone crossed the bridge; a party that both ran the lanes, or a runner who answers *Just me tonight* while a friend is still on the tower, has made that choice in play).
+
+### Ways shut by the story, and what tells the player
+
+- The bridge is shut at both ends until the gate is wound (`edge/onto-the-bridge` and `edge/off-the-bridge`): with only the deck end shut, a body walked round through the gate tower onto the bridge before it rose (`DW1011`). Both ends are `told`: a chain post beside each barred end answers a press (*The bridge is chained up from this post*). The great gate is `seen` from the hall.
+- The bridge cutscene stands its camera on the deck looking along the bridge (a styled shot from the bridge itself was occluded, `DW1033`).
