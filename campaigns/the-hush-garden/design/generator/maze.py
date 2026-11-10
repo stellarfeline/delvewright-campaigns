@@ -88,6 +88,7 @@ BELLS = {  # stem -> (cell a, cell b, the column the bell stands on)
     "sw": ((6, 21), (7, 21)),
 }
 WELL_POINT = (2, 80)  # anchor/the-well's column
+SIGHT_FROM = 22  # the first cell row of the straight west lane that looks down to the well
 
 
 def quarter(k: int, j: int) -> str:
@@ -175,6 +176,10 @@ def generate():
         prefer = [(m, e) for m, e in closed if dead(m)]
         m, e = rng.choice(prefer or closed)
         opened.add(frozenset(e))
+    # the west lane runs straight down to the well court from row 22: the
+    # sleeper's waking is watched down it, so no wall stands across it
+    for j in range(SIGHT_FROM, min(j for _, j in WELL)):
+        opened.add(frozenset(((0, j), (0, j + 1))))
     kept = [n for n in nodes if dead(n)]
     for n in kept:
         assert cell_dist(n, WELL_POINT) > HEAR, f"a dead end {n} stands within {HEAR} of the well"
@@ -300,6 +305,7 @@ def build(place):
 
     opened, stats = generate()
     TOP = 21  # the play space's top course, piece-local (place.space)
+    RING = 6  # the enclosing wall's hedge course: two over the lane walls' (4)
     assert place.space[1][1] == TOP
 
     # -- floor (y 0) and walls (y 1..4) over the whole frame --
@@ -326,13 +332,18 @@ def build(place):
     for x in range(0, 85):
         for z in range(0, 85):
             ring = x in (0, 84) or z in (0, 84)
-            if ring or (x, z) not in open_cols:
+            if ring:
+                # the garden's enclosing wall stands two courses over the lane
+                # walls: a body that reached a lane wall's head could neither
+                # step up onto it nor jump from it clear of the garden
+                m.set(x, 0, z, "footing")
+                m.box(x, x, 1, RING - 1, z, z, "wallstone")
+                m.set(x, RING, z, "hedge")
+                m.box(x, x, RING + 1, TOP, z, z, "minecraft:air")
+            elif (x, z) not in open_cols:
                 m.set(x, 0, z, "footing")
                 m.box(x, x, 1, 3, z, z, "wallstone")
                 m.set(x, 4, z, "hedge")
-                if ring:
-                    # an open place's ring is the same 4-course wall, open sky above
-                    m.box(x, x, 5, TOP, z, z, "minecraft:air")
             else:
                 m.set(x, 0, z, floor_role(x, z))
 
@@ -523,7 +534,7 @@ def post(path: str) -> None:
     rung_in(doc["rules"])
     assert hatch["n"] == 1, hatch
     # Cells the starter writes as bare fills that the contract must hold: the
-    # ring's open air over the 4-course wall (its top is floor no body reaches),
+    # ring's open air over the 6-course wall (its top is floor no body reaches),
     # the bells on the walls (their anchors), and the note basket (its anchor).
     wrap = {}
     for role, state in doc["palette"].items():
