@@ -14,7 +14,27 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, fence, lantern, run, slab, stairs  # noqa: E402
+import starter  # noqa: E402
+from starter import Model, fence, ladder, lantern, run, slab, stairs  # noqa: E402
+
+# The climb up the gate tower comes through a hole in this deck, and the plane
+# is this place's: the rung in the hole is the hole owner's to hang (the lower
+# place hangs its ladder only up to its own ceiling), or a body on the top
+# rung below meets the deck's underside and nothing to hold. The starter keeps
+# every opening cell air, so the hole's cells are answered here with the rung,
+# still claimed as the seam's way.
+HATCH = "up-the-gate-tower"
+_base_cell = starter.Place.base_cell
+
+
+def _hatch_cell(self, x, y, z):
+    kind = _base_cell(self, x, y, z)
+    if kind[0] == "claim" and kind[1] == f"{HATCH}-way":
+        return ("claim", kind[1], "hatch-rung")
+    return kind
+
+
+starter.Place.base_cell = _hatch_cell
 
 
 def build(place):
@@ -38,6 +58,8 @@ def build(place):
         "corner": "minecraft:chiseled_sandstone",
         "crenel": slab("smooth_sandstone"),
         "lantern": lantern(),
+        # the top rung, in the hatch, hung on the paving east of it
+        "hatch-rung": ladder("west"),
         # the starter's ring wall stands where the drawing leaves a ring cell
         # unwritten or cleared; over the parapet that is open sky
         "wall": "minecraft:air",
