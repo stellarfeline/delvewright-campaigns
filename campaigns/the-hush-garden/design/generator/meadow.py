@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""node/meadow: a flower meadow beyond the great gate, walled in low red brick.
+"""node/meadow: a flower meadow beyond the great gate, open onto the lawn.
 
 Scene: a body steps out of the gate tower's great gate onto a gravel path that
 runs east to a round gravel patch in the meadow's middle, where Wren stands by
 a watering cauldron, a bench and her wheelbarrow; grass and drifts of poppies,
 cornflowers, oxeye daisies and tulips fill the rest, under four round oaks,
-inside a low red-brick wall with brick piers and a clipped hedge on it.
+open on its north, east and south sides onto the lawn behind a low clipped
+border broken every fourth cell by a flower.
 
 Palette, measured with tools/creator/block-appearance.py --mix:
-  wall   minecraft:bricks       #976253 (C_mean 0.074, hue 36)
+  wall   minecraft:bricks       #976253 (C_mean 0.074, hue 36) — the west ring, the starter's
   path   gravel, one cell in five coarse_dirt (measured 3:1 mix #81756e, chroma_mass 0.019)
 """
 import os
@@ -40,17 +41,23 @@ def build(place):
     cx, cz = (x0 + x1) // 2 + 1, (gz0 + gz1) // 2  # the meadow's middle, on the gate's line
     m.palette["wall"] = "minecraft:bricks"
 
-    # -- the low red-brick wall on the ring: three courses of brick, a brick
-    # pier every five cells, and a clipped hedge on the wall between the piers
-    # up to the frame's top course (the wall's head is never open floor)
+    # -- the open sides: no wall on the ring; a low border of clipped box
+    # (one course of leaves a body steps over) one cell inside it, broken by a
+    # flower every fourth cell so a body walks round it onto the lawn
     m.palette["hedge"] = leaves("oak")
-    ring = [(x, z) for x in range(0, ex) for z in range(0, ez)
-            if (x in (0, ex - 1) or z in (0, ez - 1))]
-    for x, z in ring:
-        along = z if x in (0, ex - 1) else x
-        pier = along % 5 == 0 or (x in (0, ex - 1) and z in (0, ez - 1))
-        m.box(x, x, d, d + 2, z, z, "wall")
-        m.box(x, x, d + 3, ey - 1, z, z, "wall" if pier else "hedge")
+    border = []
+    for z in range(z0, z1 + 1):
+        border.append((x1, z, z))
+    for x in range(x0, x1):
+        border.append((x, z0, x))
+        border.append((x, z1, x))
+    border_cells = set()
+    for x, z, along in border:
+        border_cells.add((x, z))
+        if along % 4 == 3:
+            m.set(x, d, z, FLOWERS[h(x, z, 5) % len(FLOWERS)])
+        else:
+            m.set(x, d, z, "hedge")
 
     # -- the gravel path from the gate to the middle, and the round patch there
     path = set()
