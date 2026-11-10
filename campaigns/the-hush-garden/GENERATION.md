@@ -125,3 +125,7 @@ Wave bound as `allocation --all` printed it: `concurrency: 5 = min(6, max(1, 10 
 | node/lookout | 2 | 93205 | 194 s | `DW0838` | 3 (battery: `DW0322`) |
 
 The maze's generator printed: 784 cells; 80 dead ends before braiding, 13 after, the nearest kept one 26.7 blocks from the well; 67 independent loops, 5 of them with every pair of opposite points more than 16 blocks apart; 142 blocks of route from the heart to the sundial and 211 from the sundial to the gate tower's door; about 45 % of lane columns within 16 blocks of each quarter's bell.
+
+## Step 8b — the showcase cameras
+
+Sixteen cameras, one per approved picture, estimated from the pictures and moved on the built tree with `delvec cameras --draft` until each frames its subject (`design/cameras.json`, all `estimated`). The four inside the maze's courts and the gate hall were moved once: the first estimates stood in a wall or faced one.
