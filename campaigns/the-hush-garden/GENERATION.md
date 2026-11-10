@@ -36,3 +36,8 @@ Invented: everything `DESIGN.md` names beyond that.
 - The bell budget (three rings a bell, twenty seconds between rings) and the price of a thrown egg or arrow come from the measurements: a bell is a lure with no thrower, a projectile puts its thrower on the warden's list.
 - `target_minutes` came down from 30 to 25 when the lines were budgeted by activity.
 - The validation state at the end of the step is the step-3 state: the planned quests have no expansion yet (`DW0150`), the gate's flag and its opener are written at step 5 (`DW0818`, `DW0816`, `DW0817`, `DW1028`), the gardener's dialogue tree and the `zh-cn` sidecar are step 5's (`DW0152`, `DW0180`). Beside them, `DW0890` names the three map reference views under `design/reference/`, which have no row in the design record until step 4 writes it.
+
+## Step 4 — the design gate
+
+- The walkthrough (the three map views, then seven scenes each with a near and a far view, each under its hour and weather) was handed over, and the answer was an explicit yes to this delve. The approved pictures, their sidecars and prompts are in `design/`, one row each in `design.json`.
+- `concept/lane-near` was drawn twice; the first was dark and muddy against the style contract. The deck's near view was drawn once; the deck's far view is the heart's.
