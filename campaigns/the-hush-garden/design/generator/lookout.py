@@ -3,11 +3,11 @@
 
 Scene: a 5 x 5 spruce deck 22 above the lanes, railed in spruce fence, four
 spruce posts carrying a small hipped roof of light-green weathered cut copper.
-The ladder comes up through a hatch in the middle of the deck. Toward the gate
-tower (east) a stone counter one course high carries the four bell buttons,
-and over each button, hung from a spruce beam under the roof, a cloth panel in
-its quarter's colour (rose, yellow, blue, green). Behind the counter the deck
-runs to the east rail, where the bridge leaves through a barred gap.
+The ladder comes up through a hatch in the middle of the deck. Four railed
+arms leave through 3-wide gaps in the middle of each side. In each corner of
+the deck a stone counter one course high carries that quarter's bell button,
+and over each, hung from the lid on a fence, a cloth panel in its quarter's
+colour (rose NW, yellow NE, blue SE, green SW).
 
 Palette, measured with `tools/creator/block-appearance.py` against the pinned
 1.21.11 client jar:
@@ -26,7 +26,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
 import starter  # noqa: E402
-from starter import AIR, Model, fence, ladder, lantern, pane, pillar, run, slab  # noqa: E402
+from starter import Model, fence, ladder, lantern, pane, pillar, run, slab  # noqa: E402
 
 # The starter starts the survey's walk in a down-face opening's own cells, a
 # hole with nothing under it in this frame, so a body climbing up through the
@@ -88,9 +88,11 @@ starter.Plot.base_cell = _base_cell_with_ladder
 
 COPPER = "waxed_weathered_cut_copper"
 
-# The buttons in the story's order, north to south along the counter, each
-# with its quarter's colour.
-BUTTONS = [("button-nw", "pink_wool"), ("button-ne", "yellow_wool"), ("button-se", "blue_wool"), ("button-sw", "green_wool")]
+# The four buttons, each at the deck's corner over its own quarter of the
+# maze, in its quarter's colour: x runs east, z runs south.
+BUTTONS = [("button-nw", "pink_wool", 0, 0), ("button-ne", "yellow_wool", 1, 0),
+           ("button-se", "blue_wool", 1, 1), ("button-sw", "green_wool", 0, 1)]
+FACING = {(0, 0): "south", (1, 0): "west", (1, 1): "north", (0, 1): "east"}
 
 
 def build(place):
@@ -101,13 +103,10 @@ def build(place):
         "deck": "minecraft:spruce_planks",
         "lid": "minecraft:spruce_planks",
         "post": pillar("spruce_log", "y"),
-        "beam": pillar("spruce_log", "z"),
         "rail": fence("spruce"),
         "counter": "minecraft:smooth_stone",
     })
     m.palette[HATCH_LADDER] = ladder("north")
-    # the bar each barred seam is filled with, bound here because the survey
-    # writes the drawing before the program's palette binds it
     for seam in place.seams:
         if seam["bar"] is not None:
             m.palette[f"bar-{seam['stem']}"] = pane(seam["seam"]["bar_block"].removeprefix("minecraft:"))
@@ -120,42 +119,43 @@ def build(place):
     # the deck: one course of planks under the walk plane, ring included
     m.box(rx0, rx1, d - 1, d - 1, rz0, rz1, "deck")
 
-    # the ring: a fence rail one course high, open above it to the lid
+    # the ring: a fence rail one course high, open above it to the lid; the
+    # starter cuts each arm's 3-wide gap out of it
     for x in range(rx0, rx1 + 1):
         for z in range(rz0, rz1 + 1):
             if x in (rx0, rx1) or z in (rz0, rz1):
                 m.set(x, d, z, "rail")
-                m.box(x, x, d + 1, lid - 1, z, z, "minecraft:air")  # the ring is the wall's unless written
+                m.box(x, x, d + 1, lid - 1, z, z, "minecraft:air")
     # four corner posts carrying the roof
     for x in (rx0, rx1):
         for z in (rz0, rz1):
             m.box(x, x, d, lid - 1, z, z, "post")
 
-    # the counter toward the gate tower, one course high, with the bridge
-    # deck running behind it to the east rail
-    cx = sx1 - 1
-    for i, (stem, _) in enumerate(BUTTONS):
-        z = sz0 + i
-        m.set(cx, d, z, "counter")
-        m.clear(cx, cx, d + 1, d + 1, z, z)
-        m.mark(stem, cx, z, facing="west", y=d + 1)
-    # the beam under the lid straight over the counter, and the quarter's
-    # colour hung from it one course over each button: the counter's top has
-    # a single course of headroom, so no body stands on it to vault the rail
-    m.box(cx, cx, d + 3, lid - 1, sz0, sz0 + len(BUTTONS) - 1, "beam")
-    for i, (_, wool) in enumerate(BUTTONS):
-        m.set(cx, d + 2, sz0 + i, f"minecraft:{wool}")
+    # the counter: one stone course in each corner of the deck, the arms'
+    # lanes running between them; on it the button's place, and one course
+    # over it the quarter's colour hung from the lid on a fence, so the
+    # counter's top has a single course of headroom and no body stands on it
+    # to vault the rail
+    for stem, wool, i, k in BUTTONS:
+        x, z = (sx0, sx1)[i], (sz0, sz1)[k]
+        m.set(x, d, z, "counter")
+        m.clear(x, x, d + 1, d + 1, z, z)
+        m.mark(stem, x, z, facing=FACING[(i, k)], y=d + 1)
+        m.set(x, d + 2, z, f"minecraft:{wool}")
+        m.box(x, x, d + 3, lid - 1, z, z, "rail")
 
-    # the bell book's place, on the deck beside the counter's south end, under
-    # a spruce card board hung from the lid on a fence: the shelf the story
-    # stands there has one course of headroom too
-    bbx, bbz = cx - 1, sz0 + len(BUTTONS) - 1
-    m.mark("bell-book", bbx, bbz, facing="west", y=d)
+    # the bell book's place, on the deck one in from the north-west counter
+    # (clear of the rows behind the arms' gaps), under a spruce card board hung
+    # from the lid: the shelf the story stands there has one course of
+    # headroom too
+    bbx, bbz = sx0 + 1, sz0 + 1
+    m.mark("bell-book", bbx, bbz, facing="east", y=d)
     m.set(bbx, d + 2, bbz, "minecraft:spruce_planks")
     m.box(bbx, bbx, d + 3, lid - 1, bbz, bbz, "rail")
 
-    # light: lanterns hung from the lid
-    for x, z in ((sx0, sz0), (sx0, sz1), (sx0 + 2, sz0 + 2)):
+    # light: lanterns hung from the lid over each arm's mouth
+    cx, cz = (sx0 + sx1) // 2, (sz0 + sz1) // 2
+    for x, z in ((cx, sz0), (cx, sz1), (sx1, cz), (sx0 + 1, cz)):
         m.set(x, lid - 1, z, lantern(hanging=True))
 
     # the lid and a hipped copper roof on the posts, its eaves one out
@@ -166,9 +166,8 @@ def build(place):
         m.set(c, top, c, slab(COPPER))
     m.show("up")  # the roof stands on the frame's top course in the open air
 
-    # where the caller arrives, and where a body stands at the bar
-    m.mark("node-lookout", sx0 + 1, (sz0 + sz1) // 2, facing="east")
-    m.mark("bridge-bar-deck", sx1, (sz0 + sz1) // 2, facing="east")
+    # where the caller arrives: off the hatch, facing the gate tower (east)
+    m.mark("node-lookout", cx + 1, cz, facing="east")
 
     m.finish()
     return m
