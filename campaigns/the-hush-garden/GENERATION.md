@@ -129,3 +129,18 @@ The maze's generator printed: 784 cells; 80 dead ends before braiding, 13 after,
 ## Step 8b — the showcase cameras
 
 Sixteen cameras, one per approved picture, estimated from the pictures and moved on the built tree with `delvec cameras --draft` until each frames its subject (`design/cameras.json`, all `estimated`). The four inside the maze's courts and the gate hall were moved once: the first estimates stood in a wall or faced one.
+
+## Step 11 — the branch chronicle
+
+One fork, `branch-point/who-comes-out`, three story worlds (`world/0` and `world/2` reach `ending/together`, `world/1` reaches `ending/alone`). Read end to end. One finding on the first read: the finale's own `happening` said *the friends walk out to the gardener* on every world, the alone world included; it now says the way out is open, and the endings say who walks out. Line numbers below are the re-read chronicles.
+
+| claim reviewed (dialogue/design beat) | branch | chronicle line(s) | verdict |
+|---|---|---|---|
+| Wren: "you're out, both of you … you came over the bridge?" (`dlg/wren-together`) | `branch/together` (`world/0`, `world/2`) | flag assignment `flag/crossed-the-bridge=set`; 16/13 the bridge rises; 19/16 `departs` together | cleared |
+| Wren: "I was frightened just watching you come over it." | `branch/together` | as above | cleared |
+| Wren: "Is there anyone else in there? … the bridge is up now" (`dlg/wren-alone`) | `branch/alone` (`world/1`) | flag `unset`; 13 the bridge rises; 16 `departs` alone | cleared |
+| Option "Just me tonight." ends the delve alone | `branch/alone` | 16 `departs` alone | cleared |
+| Option "I'll wait for them." closes the talk, no ending | `branch/alone` | no line (no effect) | cleared |
+| The Listener "sleeps under the old well … Tonight it didn't." (both trees) | both | 8 the sleeper digs up by the well | cleared |
+| DESIGN §5: the sleeper is never beaten in either ending | both | no `dies` line on any world | cleared |
+| Finale `happening` "the friends walk out" on the alone world | `branch/alone` | 9 (first read) | **FINDING**, fixed: the happening now says the way out is open |
