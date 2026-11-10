@@ -102,7 +102,7 @@
       {
         "id": "node/maze",
         "intent": "the maze and its heart",
-        "note": "The whole hedge maze: braided lanes in four coloured quarters, the heart court with the watchtower's foot in the middle, the sundial court in the north-west quarter, the old well in the south-west corner, a bell at the middle of each quarter. The tower's shaft and ladder stand in the heart.",
+        "note": "A braided hedge maze filling the whole play space, the heart of the level. LANES: a grid of 28 x 28 cells at a pitch of 3 blocks inside the play space: each cell a lane 2 blocks wide, each wall 1 block thick, so lanes run on play-space columns 3k and 3k+1 and walls on 3k+2. Lane floors on the walk plane. WALLS: 4 courses high — three courses of mossy and plain stone bricks (full, occluding blocks: nobody sees over or through them from a lane) under one course of clipped hedge (persistent leaves). The outer ring is the same wall. QUARTERS: the four quarters around the heart are told apart by lane floor: rose (pink terracotta) toward north-west, yellow (yellow terracotta) north-east, blue (light blue terracotta) south-east, green (lime terracotta) south-west. GENERATION (research: docs/reference/maze-craft.md): a recursive backtracker (randomized depth-first) over the cell grid from the heart, seeded from the program's seed through its own named PRNG, gives long winding lanes; then a braiding pass opens one wall at every dead end within 16 blocks of the well and at about 85 per cent of the other dead ends, preferring to join a neighbouring dead end, so the maze has loops and few dead ends. The generator asserts and prints, every run: the cell count, the dead-end count, the number of independent loops, how many loops have every pair of opposite points more than 16 blocks apart (the warden's hearing reach), the route length in blocks from the heart to the sundial court and from there to the gate tower's door, and each kept dead end's distance from the well (every one more than 16). THE HEART: the courts are open floor with no inner walls. The heart is a court of 4 x 4 cells at the middle, paved in pale stone, with the watchtower's shaft standing in its middle from the walk plane to the top of the play space: a 5 x 5 tower of pale stone (smooth sandstone or calcite), hollow, with a ladder up its inside to the hatch the climb seam names, and an arched door 1 wide and 2 high on the court (the warden, 2.9 tall, cannot enter). Beside the tower: a garden bench of stairs with a barrel beside it (anchor/note-basket is the barrel: the note is put in it), two lanterns on posts. Spawn is in the heart. THE SUNDIAL COURT: a court of 2 x 2 cells in the rose quarter, about a third of the way from the heart to the rose quarter's far corner, paved rose. In its middle a stone sundial on a stepped plinth, with an item frame on the plinth's face (anchor/crank-frame is that item frame; the crank handle is put in it). anchor/sundial is the floor cell in front of the frame. THE OLD WELL: a court of 2 x 2 cells in the green quarter's far corner. A ring of cracked deepslate bricks around a well mouth closed by an iron grate (a closed iron trapdoor), sculk blocks and sculk veins spread over the floor round it. No sculk sensor and no shrieker. anchor/the-well is the open floor cell beside the rim where the sleeper digs out: three courses of air over it, every neighbouring floor cell open. THE BELLS: one bell for each quarter, near the quarter's middle, standing on top of a wall where a lane passes beneath it (the hedge cap removed in that one column, the bell set floor-attached on the wall's top stone course) so it is seen from the lanes. anchor/bell-<nw|ne|se|sw> is the bell; anchor/bell-<..>-power is the air cell directly above that bell (the story sets a redstone block there for a moment to ring it). Each bell stands within 16 blocks of most of its quarter's lanes. SLIMES: anchor/slimes-rose is a lane junction in the rose quarter on the way to the sundial; anchor/slimes-yellow a lane junction in the yellow quarter on the way to the gate tower. THE GATE: the gate tower's door seam opens the outer wall where the lane in front of it ends; the lanes reach it. Nothing in the maze is lit by torches: it is played in the late-afternoon sun.",
         "stations": [
           {
             "anchor": "anchor/bench",
@@ -184,7 +184,19 @@
       {
         "id": "node/lookout",
         "intent": "the caller's deck",
-        "note": "The watchtower's top, 22 above the lanes: a railed deck under a small copper roof, with the bell lectern of four buttons, one per quarter.",
+        "note": "The watchtower's top, 22 above the lanes: a deck of spruce planks 5 x 5 with a spruce railing round it, four spruce posts holding a small copper roof (weathered cut copper stairs and slabs, light green) in the roof zone. The ladder from the tower's shaft comes up through a hatch in the deck. On the side toward the gate tower, a stone counter one course high carrying the four buttons: anchor/button-nw, -ne, -se, -sw are the air cells on top of the counter where the story places a stone button each, in that order, each under a small sign or banner in its quarter's colour (rose, yellow, blue, green). anchor/bell-book is an air cell on the deck beside the counter where the story places a bookshelf (the bell book). The bridge's opening is barred until the gate is wound.",
+        "references": [
+          {
+            "shows": "The Longleat hedge maze: yew walls round a central tower, with raised footbridges, the real garden maze whose middle a visitor climbs to look over the lanes; take the tower at the maze's middle as a place to see the whole maze from.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Longleat"
+          },
+          {
+            "shows": "A watchtower is a high, safe place from which a guard observes the area around it; take the deck as a lookout first, its rail and roof for safety and shade, nothing else on it but what the watcher uses.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Watchtower"
+          }
+        ],
         "stations": [
           {
             "anchor": "anchor/button-nw",
@@ -216,12 +228,24 @@
       {
         "id": "node/bridge",
         "intent": "the bridge across the maze",
-        "note": "A plank bridge on iron chains from the lookout to the gate tower's top, straight across the maze's east half. It stands shut at the lookout end until the gate is wound."
+        "note": "A plank bridge 3 wide straight across the top of the maze from the lookout to the gate tower's top: spruce planks on dark oak beams, a rope-like railing of spruce fences each side, chains hanging under the beams. It stands from the start; the lookout end is barred until the gate is wound."
       },
       {
         "id": "node/gatehouse",
         "intent": "the gate tower's hall",
-        "note": "The ground floor of the gate tower on the maze's east edge: the winch that winds the great gate and the bridge, and a ladder up the tower.",
+        "note": "The gate tower's hall, pale stone (smooth sandstone and sandstone with chiselled bands), lit by the doorways and arrow slits. The door from the maze is an arch. The great gate opposite is wide oak, barred until wound; chains run from beside it up into the tower. The winch stands beside the great gate: anchor/winch is the air cell on the floor where the story places the winch block. A ladder climbs the inner wall to the hatch onto the tower's top. The hall is tall and empty above; floors of beams every few courses, no floor a body can stand on except the hall's own.",
+        "references": [
+          {
+            "shows": "A gatehouse holds and controls an entrance, often a tower of two or three storeys over the gate passage; take the hall as the gate passage with the gate at one end and the tower rising over it.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Gatehouse"
+          },
+          {
+            "shows": "A portcullis is raised and lowered by chains or ropes attached to an internal winch; take the winch standing inside beside the gate with its chains running up to the gate.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Portcullis"
+          }
+        ],
         "stations": [
           {
             "anchor": "anchor/winch",
@@ -233,12 +257,12 @@
       {
         "id": "node/gate-top",
         "intent": "the gate tower's top",
-        "note": "The gate tower's roof, level with the lookout: where the bridge lands."
+        "note": "The gate tower's flat roof, pale stone with a crenellated parapet, level with the lookout deck. The bridge lands through a gap in the parapet; the ladder comes up through a hatch."
       },
       {
         "id": "node/meadow",
         "intent": "outside",
-        "note": "The flower meadow beyond the great gate, where the gardener waits.",
+        "note": "A flower meadow beyond the great gate, walled in low red brick: grass, poppies, cornflowers, oxeye daisies and tulips, four round oak trees, a wheelbarrow, a garden shed is not needed. A gravel path from the gate to anchor/gardener in the meadow's middle, where Wren stands.",
         "stations": [
           {
             "anchor": "anchor/gardener",

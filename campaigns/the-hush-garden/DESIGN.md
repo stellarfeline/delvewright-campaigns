@@ -65,6 +65,8 @@ Why these numbers (from `warden-behaviour.md` and `maze-craft.md`, the engine's 
 
 One fork, `branch-point/who-comes-out`, opening at the finale: `flag/crossed-the-bridge` is set when a player walks onto the bridge after it rises.
 - `ending/together` — the caller crossed the bridge: Wren greets both friends and says she was frightened for them the whole way across.
-- `ending/alone` — nobody crossed: Wren greets the runner and says the bridge is down for the friend on the tower, if they have the nerve.
+- `ending/alone` — nobody crossed: Wren greets the runner, asks whether anyone else is inside and says the bridge is up for anyone on the tower. The runner can answer *I'll wait for them* (the conversation closes and the friend can still cross) or *Just me tonight*, which ends the delve alone.
+
+The maze objectives (the sundial, the gate tower) carry no compass: finding the way is the runner's and the caller's job.
 
 The sleeper is not beaten in either ending; it is still under the garden.

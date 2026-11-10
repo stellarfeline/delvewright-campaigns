@@ -52,3 +52,32 @@ Invented: everything `DESIGN.md` names beyond that.
 - `difficulty` is left to the engine's derivation (`easy`, as the campaign stages waves).
 - The `zh-cn` sidecar was transcreated by `tools/creator/i18n-translate.py` on DeepSeek (61 rows, 0 refused); seven lines were then held to one word for the garden's bells (钟) through `delvec l10n-apply`.
 - Census at the close of the step: `activity census: 4 line(s) over 8 objective(s) — reach 3, talk 1, take 2, use 2, present 1, give 1; about 14 min of activity (12 on the mandatory lines) against target_minutes 25; 0 line(s) talk-or-reach only`. `DW0822`: 133 blocks of route over the plan's boxes, about 3 minutes; about 17 minutes in all against 25. The route through the maze's lanes is measured on the built map.
+
+## Step 5b — the script review
+
+Script review: ran; the prompt pinned the maze, the two roles, the warden's two phases, the lures and the bridge, and left the note, the crank, the gardener and every line's deed and reason to me.
+
+### Round 1 — verdict `revise`
+
+| Question | Findings | Worst severity |
+|---|---|---|
+| Q1 | 2 | 2 |
+| Q2 | 1 | 1 |
+| Q3 | 0 | — |
+| Q4 | 2 | 3 |
+| Q5 | 3 | 2 |
+| Q6 | 1 | 2 |
+| Q7 | 1 | 1 |
+| Q8 | 0 | — |
+| Q9 | 1 | 2 |
+| Q10 | 5 | 3 |
+
+- F1 (3, the caller is never told how to get out): fixed. Winding the gate now narrates the bridge swinging up to the deck and says whoever is on the deck can walk across; the note says beforehand that winding raises the bridge.
+- F2 (3, the ending fires before the caller has crossed): fixed. When nobody has crossed, Wren asks whether anyone else is inside and the runner can answer *I'll wait for them* (closes) or *Just me tonight* (completes). `DESIGN.md` §5 updated.
+- F3 (2, the bridge is said to be down, not raised): fixed in the note, the wind beat and Wren's line.
+- F4 (2, Wren contradicts herself): fixed; she watched the crossing from the meadow.
+- F5 (2, the solo ending asks after a friend): fixed with F2's wording.
+- F6 (2, the bell book does not pair colours with buttons): fixed; each button sits under a sign of its quarter's colour, and the book says so.
+- F7 (2, the runner's objectives walk them to each place): fixed; the sundial and the gate tower carry no compass.
+- F8 (2, the caller has nothing to do after the book): answered; the caller's play after the book is the watching, the bells and the throws, which is the level's other half and no objective.
+- F9 (1): fixed; the note says why the crank hangs on the sundial. F14 (1): fixed in the bell book. F11 (1): fixed in the hub's goal. F10, F12, F13 (1): left.
