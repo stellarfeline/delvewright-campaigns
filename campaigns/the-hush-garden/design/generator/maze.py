@@ -10,8 +10,8 @@ Palette (measured, block-appearance.py against the pinned 1.21.11 client jar):
   wall stone   stone_bricks #7a7a7a 5 : mossy_stone_bricks #737969 4 : cracked_stone_bricks 1
                (mix mean #777973, chroma_mass 0.0125, loudest member mossy at 40%)
   hedge cap    azalea_leaves #5a732c (persistent)
-  rose floor   pink_terracotta #a24e4f      yellow floor yellow_terracotta #ba8523
-  blue floor   light_blue_terracotta #716d8a green floor lime_terracotta #687635
+  rose floor   pink_concrete_powder #e599b5       yellow floor yellow_concrete_powder #e9c737
+  blue floor   light_blue_concrete_powder #4ab5d5 green floor lime_concrete_powder #7dbd2a
   heart paving calcite #dfe0dd               tower smooth_sandstone #e0d6aa
   well rim     cracked_deepslate_bricks #414141, sculk #0d1c22
 """
@@ -288,10 +288,10 @@ def build(place):
         {"block": leaves("azalea"), "weight": 7},
         {"block": leaves("flowering_azalea"), "weight": 1},
     ]
-    P["rose"] = "minecraft:pink_terracotta"
-    P["yellow"] = "minecraft:yellow_terracotta"
-    P["blue"] = "minecraft:light_blue_terracotta"
-    P["green"] = "minecraft:lime_terracotta"
+    P["rose"] = "minecraft:pink_concrete_powder"
+    P["yellow"] = "minecraft:yellow_concrete_powder"
+    P["blue"] = "minecraft:light_blue_concrete_powder"
+    P["green"] = "minecraft:lime_concrete_powder"
     P["paving"] = "minecraft:calcite"
     P["footing"] = "minecraft:stone_bricks"
     P["tower"] = "minecraft:smooth_sandstone"
@@ -466,15 +466,13 @@ def build(place):
         assert cand, f"no junction in the {q} quarter on the route"
         return cand[min(len(cand) - 1, int(len(cand) * frac))]
 
-    sr = pick(r1, "rose", 0.5)
     sy = pick(r2, "yellow", 0.5)
-    m.mark("slimes-rose", sr[0], sr[1], "south")
     m.mark("slimes-yellow", sy[0], sy[1], "south")
 
     # -- what the generator asserts and prints --
     stats["route_heart_to_sundial_blocks"] = len(r1) - 1
     stats["route_sundial_to_gate_blocks"] = len(r2) - 1
-    stats["slimes"] = {"rose": sr, "yellow": sy}
+    stats["slimes_yellow"] = sy
     cover = {}
     for stem, (bx, bz) in bell_cells.items():
         q = {"nw": "rose", "ne": "yellow", "se": "blue", "sw": "green"}[stem]
