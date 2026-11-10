@@ -10,7 +10,11 @@
       {
         "a": "room",
         "b": "exterior",
-        "class": "walk",
+        "bar": {
+          "block": "bar-up-the-gate-tower",
+          "region": "seam-up-the-gate-tower"
+        },
+        "class": "barred",
         "via": "up-the-gate-tower-way"
       }
     ],
@@ -26,6 +30,7 @@
     "b0": "minecraft:light_blue_banner[rotation=4]",
     "b1": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
     "b2": "minecraft:spruce_fence[east=true,north=true,south=false,waterlogged=false,west=false]",
+    "bar-up-the-gate-tower": "minecraft:iron_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
     "corner": "minecraft:chiseled_sandstone",
     "crenel": "minecraft:smooth_sandstone_slab[type=bottom,waterlogged=false]",
     "hatch-rung": "minecraft:ladder[facing=west,waterlogged=false]",
@@ -366,7 +371,7 @@
         "weight": 1
       }
     ],
-    "column_19": [
+    "column_20": [
       {
         "body": {
           "axis": "y",
@@ -377,7 +382,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_10"
+              "symbol": "row_19"
             },
             {
               "op": "call",
@@ -463,15 +468,11 @@
         "weight": 1
       }
     ],
-    "column_24": [
+    "column_25": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_20"
-            },
             {
               "op": "call",
               "symbol": "row_21"
@@ -483,6 +484,10 @@
             {
               "op": "call",
               "symbol": "row_23"
+            },
+            {
+              "op": "call",
+              "symbol": "row_24"
             }
           ],
           "op": "split",
@@ -560,7 +565,7 @@
         "weight": 1
       }
     ],
-    "column_26": [
+    "column_27": [
       {
         "body": {
           "axis": "y",
@@ -579,7 +584,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_25"
+              "symbol": "row_26"
             }
           ],
           "op": "split",
@@ -855,211 +860,191 @@
       {
         "body": {
           "body": {
-            "body": {
-              "axis": "x",
-              "children": [
-                {
-                  "op": "call",
-                  "symbol": "column_4"
+            "axis": "x",
+            "children": [
+              {
+                "op": "call",
+                "symbol": "column_4"
+              },
+              {
+                "op": "call",
+                "symbol": "column_9"
+              },
+              {
+                "op": "call",
+                "symbol": "column_13"
+              },
+              {
+                "op": "call",
+                "symbol": "column_15"
+              },
+              {
+                "op": "call",
+                "symbol": "column_17"
+              },
+              {
+                "op": "call",
+                "symbol": "column_15"
+              },
+              {
+                "op": "call",
+                "symbol": "column_20"
+              },
+              {
+                "op": "call",
+                "symbol": "column_25"
+              },
+              {
+                "op": "call",
+                "symbol": "column_27"
+              }
+            ],
+            "op": "split",
+            "sizes": [
+              {
+                "blocks": {
+                  "expr": "param",
+                  "name": "handed/seam/off-the-bridge/x0"
                 },
-                {
-                  "op": "call",
-                  "symbol": "column_9"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_13"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_15"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_17"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_15"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_19"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_24"
-                },
-                {
-                  "op": "call",
-                  "symbol": "column_26"
-                }
-              ],
-              "op": "split",
-              "sizes": [
-                {
-                  "blocks": {
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/off-the-bridge/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "op": "sub",
+                  "rhs": {
                     "expr": "param",
                     "name": "handed/seam/off-the-bridge/x0"
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "arith",
-                      "lhs": {
-                        "expr": "param",
-                        "name": "handed/seam/off-the-bridge/x1"
-                      },
-                      "op": "add",
-                      "rhs": {
-                        "expr": "int",
-                        "value": 1
-                      }
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "param",
-                      "name": "handed/seam/off-the-bridge/x0"
-                    }
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "int",
-                      "value": 3
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "arith",
-                      "lhs": {
-                        "expr": "param",
-                        "name": "handed/seam/off-the-bridge/x1"
-                      },
-                      "op": "add",
-                      "rhs": {
-                        "expr": "int",
-                        "value": 1
-                      }
-                    }
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "int",
-                    "value": 1
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "int",
-                    "value": 1
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "param",
-                      "name": "handed/seam/up-the-gate-tower/x0"
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "int",
-                      "value": 5
-                    }
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "arith",
-                      "lhs": {
-                        "expr": "param",
-                        "name": "handed/seam/up-the-gate-tower/x1"
-                      },
-                      "op": "add",
-                      "rhs": {
-                        "expr": "int",
-                        "value": 1
-                      }
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "param",
-                      "name": "handed/seam/up-the-gate-tower/x0"
-                    }
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "blocks": {
-                    "expr": "arith",
-                    "lhs": {
-                      "expr": "int",
-                      "value": 8
-                    },
-                    "op": "sub",
-                    "rhs": {
-                      "expr": "arith",
-                      "lhs": {
-                        "expr": "param",
-                        "name": "handed/seam/up-the-gate-tower/x1"
-                      },
-                      "op": "add",
-                      "rhs": {
-                        "expr": "int",
-                        "value": 1
-                      }
-                    }
-                  },
-                  "size": "absolute"
-                },
-                {
-                  "size": "relative",
-                  "weight": {
-                    "expr": "int",
-                    "value": 1
                   }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/off-the-bridge/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-gate-tower/x0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 5
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/up-the-gate-tower/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-gate-tower/x0"
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "int",
+                    "value": 8
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/up-the-gate-tower/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
+                },
+                "size": "absolute"
+              },
+              {
+                "size": "relative",
+                "weight": {
+                  "expr": "int",
+                  "value": 1
                 }
-              ]
-            },
-            "mark": {
-              "anchor": "node-gate-top",
-              "at": "offset",
-              "facing": "west",
-              "x": {
-                "expr": "int",
-                "value": 4
-              },
-              "y": {
-                "expr": "param",
-                "name": "handed/datum-y"
-              },
-              "z": {
-                "expr": "int",
-                "value": 6
               }
-            },
-            "op": "mark"
+            ]
           },
           "mark": {
-            "anchor": "bridge-bar-far",
+            "anchor": "node-gate-top",
             "at": "offset",
-            "facing": "east",
+            "facing": "west",
             "x": {
               "expr": "int",
-              "value": 2
+              "value": 4
             },
             "y": {
               "expr": "param",
@@ -1313,6 +1298,26 @@
                   "expr": "int",
                   "value": 1
                 }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/up-the-gate-tower/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 10
               },
               "op": "gt",
               "rhs": {
@@ -1958,6 +1963,130 @@
         "weight": 1
       }
     ],
+    "row_19": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "parapet"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "bar-up-the-gate-tower"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "seam-up-the-gate-tower"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "parapet"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/off-the-bridge/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-gate-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/off-the-bridge/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 10
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/up-the-gate-tower/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "row_2": [
       {
         "body": {
@@ -2186,7 +2315,7 @@
         "weight": 1
       }
     ],
-    "row_20": [
+    "row_21": [
       {
         "body": {
           "axis": "z",
@@ -2238,7 +2367,7 @@
         "weight": 1
       }
     ],
-    "row_21": [
+    "row_22": [
       {
         "body": {
           "axis": "z",
@@ -2304,7 +2433,7 @@
         "weight": 1
       }
     ],
-    "row_22": [
+    "row_23": [
       {
         "body": {
           "axis": "z",
@@ -2370,7 +2499,7 @@
         "weight": 1
       }
     ],
-    "row_23": [
+    "row_24": [
       {
         "body": {
           "axis": "z",
@@ -2382,10 +2511,14 @@
               "op": "fill"
             },
             {
-              "material": {
-                "role": "b0"
+              "body": {
+                "material": {
+                  "role": "b0"
+                },
+                "op": "fill"
               },
-              "op": "fill"
+              "op": "claim",
+              "region": "room"
             },
             {
               "body": {
@@ -2436,7 +2569,7 @@
         "weight": 1
       }
     ],
-    "row_25": [
+    "row_26": [
       {
         "body": {
           "axis": "z",

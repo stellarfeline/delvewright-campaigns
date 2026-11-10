@@ -64,6 +64,10 @@ def build(place):
         # unwritten or cleared; over the parapet that is open sky
         "wall": "minecraft:air",
     })
+    # The hatch's iron trapdoor is the seam's bar: its block is the handed one.
+    for s in place.seams:
+        if s["bar"] is not None:
+            m.palette[f"bar-{s['stem']}"] = starter.full_state(s["seam"]["bar_block"])
 
     # The deck: a kerb of cut sandstone under the parapet, paving inside, and
     # a worn strip where feet pass from the bridge's landing to the hatch.
@@ -95,7 +99,6 @@ def build(place):
     m.box(x1 - 1, x1 - 1, d, d + 1, 1, 1, fence("spruce"))
     m.set(x1 - 1, d + 2, 1, "minecraft:light_blue_banner[rotation=4]")
 
-    m.mark("bridge-bar-far", 2, 6, facing="east")
     m.mark("node-gate-top", 4, 6, facing="west")
     m.finish()
     return m

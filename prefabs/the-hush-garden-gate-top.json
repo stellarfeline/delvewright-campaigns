@@ -12,15 +12,6 @@
     "generator": "crates/delvec/src/grammar"
   },
   "anchors": {
-    "anchor/bridge-bar-far": {
-      "pos": [
-        2,
-        1,
-        6
-      ],
-      "facing": "east",
-      "resolves_to": "space:room"
-    },
     "anchor/node-gate-top": {
       "pos": [
         4,
@@ -29,6 +20,22 @@
       ],
       "facing": "west",
       "resolves_to": "space:room"
+    },
+    "anchor/seam-up-the-gate-tower": {
+      "region": {
+        "from": [
+          6,
+          1,
+          5
+        ],
+        "to": [
+          6,
+          1,
+          5
+        ]
+      },
+      "block": "minecraft:iron_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
+      "resolves_to": "bar:seam-up-the-gate-tower"
     }
   },
   "connectors": [],
@@ -36,17 +43,17 @@
     "profile": "lit",
     "measured_min_light": 6,
     "measured": "",
-    "method": "static light estimate (delvec prefab, the compiler's block+sky flood): min over 61 floor cell(s) reachable on foot from 18 ground-level entry cell(s), of 61 standable in the region box; the piece stands in open air, so sky light enters through its openings. Taken at effective sky 4 (a clear night, the darkest the engine models); under full daylight (sky 15) the same minimum is 15. NOT a live-server probe; dark_threshold=3. Re-probe live for borderline pieces."
+    "method": "static light estimate (delvec prefab, the compiler's block+sky flood): min over 62 floor cell(s) reachable on foot from 18 ground-level entry cell(s), of 62 standable in the region box; the piece stands in open air, so sky light enters through its openings. Taken at effective sky 4 (a clear night, the darkest the engine models); under full daylight (sky 15) the same minimum is 15. NOT a live-server probe; dark_threshold=3. Re-probe live for borderline pieces."
   },
   "license": {
     "source": "original",
     "spdx": "GPL-3.0-or-later",
     "note": "Original Delvewright project asset, derived from a grammar program in this repository. No third-party material is ingested at expansion time; the generator itself is a port credited in docs/ACKNOWLEDGEMENTS.md.",
-    "provenance": "Generated deterministically by crates/delvec/src/grammar (spec-0027) from grammar program \"gate-top\" with handed/datum-y=1, handed/seam/off-the-bridge/x0=1, handed/seam/off-the-bridge/x1=1, handed/seam/off-the-bridge/y0=1, handed/seam/off-the-bridge/y1=3, handed/seam/off-the-bridge/z0=5, handed/seam/off-the-bridge/z1=7, handed/seam/up-the-gate-tower/x0=6, handed/seam/up-the-gate-tower/x1=6, handed/seam/up-the-gate-tower/y0=0, handed/seam/up-the-gate-tower/y1=0, handed/seam/up-the-gate-tower/z0=5, handed/seam/up-the-gate-tower/z1=5, 2 run(s) of cells the place does not own voided (sha256:dd6dd9cc515f1aded45113b07b492d31bca0862d2ebca530a66d6ae6a7e3a40e) at seed 17222658243138732451 over a 9x4x11 region; ADR-0006: the inputs in `generated_by` regenerate this NBT byte for byte.",
+    "provenance": "Generated deterministically by crates/delvec/src/grammar (spec-0027) from grammar program \"gate-top\" with handed/datum-y=1, handed/seam/off-the-bridge/x0=1, handed/seam/off-the-bridge/x1=1, handed/seam/off-the-bridge/y0=1, handed/seam/off-the-bridge/y1=3, handed/seam/off-the-bridge/z0=5, handed/seam/off-the-bridge/z1=7, handed/seam/up-the-gate-tower/x0=6, handed/seam/up-the-gate-tower/x1=6, handed/seam/up-the-gate-tower/y0=0, handed/seam/up-the-gate-tower/y1=0, handed/seam/up-the-gate-tower/z0=5, handed/seam/up-the-gate-tower/z1=5, 2 run(s) of cells the place does not own voided (sha256:5f07b725213660dcac404752893570dc29ff3030eb2affd52bcc32f351e557f3) at seed 17222658243138732451 over a 9x4x11 region; ADR-0006: the inputs in `generated_by` regenerate this NBT byte for byte.",
     "generated_by": {
       "generator": "grammar",
       "program": "gate-top",
-      "program_hash": "sha256:dd6dd9cc515f1aded45113b07b492d31bca0862d2ebca530a66d6ae6a7e3a40e",
+      "program_hash": "sha256:5f07b725213660dcac404752893570dc29ff3030eb2affd52bcc32f351e557f3",
       "seed": 17222658243138732451,
       "region": [
         9,
@@ -310,6 +317,18 @@
             "to": [
               6,
               1,
+              4
+            ]
+          },
+          {
+            "from": [
+              6,
+              1,
+              6
+            ],
+            "to": [
+              6,
+              1,
               9
             ]
           },
@@ -359,6 +378,18 @@
               7,
               2,
               9
+            ]
+          },
+          {
+            "from": [
+              7,
+              3,
+              1
+            ],
+            "to": [
+              7,
+              3,
+              1
             ]
           },
           {
@@ -428,7 +459,7 @@
       {
         "a": "room",
         "b": "exterior",
-        "class": "walk",
+        "class": "barred",
         "rise": 0,
         "via": {
           "region": "up-the-gate-tower-way",
@@ -446,6 +477,24 @@
               ]
             }
           ]
+        },
+        "bar": {
+          "region": "seam-up-the-gate-tower",
+          "boxes": [
+            {
+              "from": [
+                6,
+                1,
+                5
+              ],
+              "to": [
+                6,
+                1,
+                5
+              ]
+            }
+          ],
+          "block": "minecraft:iron_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]"
         }
       }
     ],
@@ -469,7 +518,7 @@
       },
       {
         "space": "room",
-        "class": "walk",
+        "class": "barred",
         "dir": "down",
         "opening": {
           "from": [

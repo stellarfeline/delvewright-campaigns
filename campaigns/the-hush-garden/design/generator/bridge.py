@@ -5,7 +5,7 @@ A deck of spruce planks three wide, framed by dark oak stringers along both
 edges and dark oak cross beams on a six-cell module; a spruce-fence rail on
 each side, broken by stripped dark oak posts on the same module, each post
 carrying a lantern; the gate-tower end framed by two full-height posts round
-the iron grille. Every handed value is read through the starter.
+the landing gap in the tower's parapet. Every handed value is read through the starter.
 """
 
 import json
@@ -67,7 +67,7 @@ def build(place):
                 for y in range(d + 1, top + 1):
                     m.set(x, y, z, "minecraft:air")
 
-    # the gate-tower end: two posts the full height of the grille
+    # the gate-tower end: two full-height posts framing the landing gap
     for z in (zr0, zr1):
         for y in range(d, top + 1):
             m.set(ex - 1, y, z, "post")
@@ -91,7 +91,10 @@ def join_grilles(path: str) -> None:
             continue
         doc["palette"][role] = "minecraft:iron_bars[east=false,north=true,south=true,waterlogged=false,west=false]"
         n += 1
-    assert n == len(GRILLES) == 1, f"joined {n} grille(s) of {len(GRILLES)}"
+    assert n == len(GRILLES), f"joined {n} grille(s) of {len(GRILLES)}"
+    print(f"bridge: joined {n} grille(s) of {len(GRILLES)} bar(s) the place owns")
+    if n == 0:
+        return
     with open(path, "w", encoding="utf-8") as f:
         f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
