@@ -67,26 +67,26 @@ def build(place):
             m.set(x, d + 1, z, lantern(False))
 
     # the far end's frame: on each rail a pair of dark oak posts the full
-    # height of the bar, one at the corner and one a cell back, with the bar
-    # between the corners; the cell between each pair is where the chain post
-    # stands (south), so a body that climbs onto the chain is held between
-    # two posts it cannot get over, never stepped up onto the rail
-    # under a dark oak lintel on the pair; a chain hangs from the lintel to
-    # the rail, so the chain post the story stands below it hangs whole and
-    # leaves no headroom over itself for a body to stand on
+    # height of the bar, one at the corner and one two cells back, under a
+    # dark oak lintel on the pair, a chain hung from the lintel to the rail
+    # between them, so nothing there is a step a body can stand on
     for z in (zn, zs):
         for y in range(d, d + 3):
             m.set(xe, y, z, "post")
             m.set(x1 - 1, y, z, "post")
         m.set(x1, d + 2, z, "lintel")
         m.set(x1, d + 1, z, chain("y"))
+    # the chain post the bridge hangs from is the foot of the south corner
+    # post: a chain under the post's head, in the bar's own plane and
+    # face-adjacent to the bar, so a press on it answers for the bar, and
+    # outside the way's three columns
+    m.set(xe, d, zs, chain("y"))
     m.show("up")  # the posts' heads stand on the frame's top course
 
     m.mark("node-arm-east", (x0 + x1) // 2, (z0 + z1) // 2, facing="east")
-    # the chain post the bridge hangs from stands in the rail line beside the
-    # bar, outside the way's clear width: the name is the rail's cell there,
-    # the block the story replaces, never a cell a body stands in
-    m.mark("bridge-bar-deck", x1, zs, facing="east", y=d)
+    # the name is that chain's cell, beside the bar in its plane, outside
+    # the way's clear width, never a cell a body stands in
+    m.mark("bridge-bar-deck", xe, zs, facing="north", y=d)
     m.finish()
     return m
 
