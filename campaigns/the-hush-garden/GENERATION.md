@@ -186,3 +186,17 @@ On the build with manifest `ccc71c49aa708b5547401e2d828b331f9a3f9ec86dec451a2032
 - Threshold read: 19 frames — the deck with its counters and coloured panels, the arms and the bridge, the gate hall with the winch and the portcullis, the gate tower's roof, the meadow. Trade misses 0, front misses 0.
 - The heart court is tighter than the approved heart picture: the tower fills most of it. Not changed.
 - The gate hall's interior renders dark in the showcase camera.
+
+## Findings ledger
+
+| # | finding (as reported) | round | status |
+|---|---|---|---|
+| 1 | The warden rises too far from where the runner takes the crank; roaming, it only paces round its well and is barely felt. | 1 | fixed@r2 |
+
+## Round 2 — the sleeper wakes near the sundial
+
+- Finding 1 is content, not a capability gap. The ruling: the warden's emergence stands within its hearing of the crank, so a runner who runs off instead of sneaking is heard at once (it turns toward the sound, not yet hunting); the seven deaf seconds of the emerge are the runner's grace. No anger is seeded: the warden drifts toward a stationary player from 20–24 blocks on its own (the T11 controls).
+- The old well moved into the rose quarter: its mouth is 12.1 blocks from the crank's frame, two turns and 20 blocks of lane away, out of sight of the sundial court (5,625 sight lines tested by the generator, none open). The sundial court has four ways out; a loop of 72.8 blocks back through the heart passes beyond 16 blocks of the well after 7.7 blocks; no dead end lies within 16 blocks of the well (nearest 16.3); the ways to the heart and the gate never come nearer the well than the sundial. Maze attempt 4; the note's line about the well, `DESIGN.md` and the two well cameras follow it.
+- Machine record: one validation loop to green at build; DW codes hit: none new (the build's standing warnings `DW0822`, `DW0813`, `DW0781`, `DW1076`, `DW0451` x1).
+- General form, for the engine's cross-campaign ledger (not written here, the engine tree is read-only to this round): a body declared `outrun` whose entrance stands beyond its kind's hearing reach of the beat that unleashes it is a pursuit nobody feels — a candidate advisory measuring the unleash point to the entrance against the kind's hearing.
+- Ladder on the round-2 build (manifest `e5dee100017b6a431d8c60d34c40c492d87306824e293b4eadd66537c9a116aa`): bot critical path passed, 8 steps; `[pursuit] 3 pursued step(s) of 8, 1 pursuer(s), 34 reading(s); closest approach 12.98 block(s)` (27.73 in round 1). Branch runs: `world/0`, `world/1`, `world/2` ran and passed (closest approaches 2.04, 15.27 and 9.48 blocks; no death). PackTest: the same one red (`wave_census_yellow_slimes`, the engine's census test on a body of maximum health 1). Written world: the same `DW0955` on the four bell power cells. Staging gate: the same `doune-04` UNBOUND.
