@@ -144,3 +144,45 @@ One fork, `branch-point/who-comes-out`, three story worlds (`world/0` and `world
 | The Listener "sleeps under the old well … Tonight it didn't." (both trees) | both | 8 the sleeper digs up by the well | cleared |
 | DESIGN §5: the sleeper is never beaten in either ending | both | no `dies` line on any world | cleared |
 | Finale `happening` "the friends walk out" on the alone world | `branch/alone` | 9 (first read) | **FINDING**, fixed: the happening now says the way out is open |
+
+### Step 9, after the cross and the visual review
+
+The lookout became a cross of four arms 24 blocks long (a ruling of the person's, given when the deck alone showed the runner in 38 % of lane cells); the bridge was shortened to run on from the east arm. Wave bound: `concurrency: 5 = min(7, max(1, 10 / 2))`.
+
+| place | attempt | tokens | duration | repaired | commit exit |
+|---|---|---|---|---|---|
+| node/bridge | 2 | 76957 | 75 s | `DW0843` (the old frame) | 3 (battery: the maze stand-in) |
+| node/arm-north | 1 | 110850 | 154 s | — | 3 (battery) |
+| node/lookout | 3 | 92842 | 194 s | `DW0844` (the four arm seams) | 3 (battery) |
+| node/arm-south | 1 | 108800 | 155 s | — | 3 (battery) |
+| node/arm-west | 1 | 105077 | 172 s | — | 3 (battery) |
+| node/arm-east | 1 | 187198 | 625 s | — | 3 (battery) |
+| node/maze | 2 | 163227 | 654 s | `DW0322` (a way onto the wall tops) | 3 (battery: `DW0921`, the lawn) |
+| node/meadow | 2 | 111094 | 137 s | `DW0921` (the meadow opens onto the lawn) | 3 (battery: `DW0881`, `DW0429`) |
+| node/arm-east | 2 | 96545 | 111 s | `DW0429` (the chain post beside the bar) | 3 (battery: `DW0429` at the far end) |
+| node/gate-top | 3 | 98078 | 145 s | `DW0429` | not committed: no cell can answer the bridge's far bar (`DW0429` against `DW0845`); the hatch was shut instead |
+| node/bridge | 3 | 82369 | 61 s | `DW0844` (no bar at the far end) | 0 |
+| node/gate-top | 4 | 81190 | 79 s | `DW0845` (the hatch's bar) | 0 |
+| node/maze | 3 | 106518 | 131 s | visual review: the quarters' floors | 0 |
+
+From the arms' rails, measured by sight lines over the built pieces (`.scratch` measurement, 104 eye points along the deck rail and the arms' rails, 4,837 lane cells, leaves opaque): a standing runner's head is seen in 67 % of lane cells (14 % within 15 blocks of the tower, under the arms' own decks; 78 % at 15–30; 72 % at 30–45; 66 % beyond 45), the warden's head in 80 %. From the deck's rail alone, before the arms: 3 % and 11 %.
+
+## Step 10 — the machine ladder
+
+On the build with manifest `ccc71c49aa708b5547401e2d828b331f9a3f9ec86dec451a2032166cb74186ab`, run on the remote build machine from the engine tree at `ffe9b58ae`:
+
+- **Bot, critical path**: passed, 8 steps. **`pursuit` bound**: 3 pursued steps of 8 (reach the gate tower, wind the gate, meet Wren), 1 pursuer (`actor/the-sleeper`), 55 readings, closest approach 27.73 blocks; the bot walked out alive. `[sculk]` darkness 0, warden spawns heard 1. `[watch]` 1 watcher asserted. Die-retry unbound: no mandatory encounter.
+- **Branch runs**: `world/0`, `world/1`, `world/2` ran and passed.
+- **PackTest**: red, 1 required test: the generated `wave_census_yellow_slimes` sets one body's health to 1.0 and expects it counted damaged, and a small slime's maximum health is 1. An engine defect, reported; the campaign is unchanged.
+- **Written world**: `DW0955` on 4 cells: the engine's load world holds a redstone block at each bell's power cell, which only a press of that bell's button sets for four ticks; the server holds air. An engine defect in the model, reported.
+- **Staging gate**: refused on one ledger row, `doune-04` UNBOUND (the equipment check over an actor that wears nothing).
+
+## Step 12 — visual review
+
+`renderer: lumenwright 0.3.0, backend apple m2 pro (metal)`. 158 POV frames read in route order (sampled every fourth frame and every leg end on contact sheets), 19 threshold frames read blind, 3 cutscene frames, 16 showcase cameras.
+
+- The lanes read as the approved lane picture: walls above the eye, hedge caps, the tower over the wall tops.
+- Finding, fixed: the quarters' floors in terracotta read lavender, ochre and olive against the approved sky blue, butter yellow and mint; the maze was re-detailed in concrete powder (attempt 3).
+- Threshold read: 19 frames — the deck with its counters and coloured panels, the arms and the bridge, the gate hall with the winch and the portcullis, the gate tower's roof, the meadow. Trade misses 0, front misses 0.
+- The heart court is tighter than the approved heart picture: the tower fills most of it. Not changed.
+- The gate hall's interior renders dark in the showcase camera.
