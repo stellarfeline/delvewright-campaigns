@@ -77,7 +77,7 @@ def wall_at(k: int) -> int:
 
 HEART = {(k, j) for k in range(12, 16) for j in range(12, 16)}
 SUNDIAL = {(k, j) for k in (7, 8) for j in (7, 8)}
-WELL = {(k, j) for k in (0, 1) for j in (26, 27)}
+WELL = {(k, j) for k in (4, 5) for j in (4, 5)}  # rose quarter, beyond the sundial toward (0, 0)
 COURTS = {"heart": HEART, "sundial": SUNDIAL, "well": WELL}
 GATE_CELL = (27, 13)
 # The bells: a wall segment between two cells near each quarter's middle, kept closed.
@@ -87,8 +87,45 @@ BELLS = {  # stem -> (cell a, cell b, the column the bell stands on)
     "se": ((20, 21), (21, 21)),
     "sw": ((6, 21), (7, 21)),
 }
-WELL_POINT = (2, 80)  # anchor/the-well's column
-SIGHT_FROM = 22  # the first cell row of the straight west lane that looks down to the well
+WELL_POINT = (14, 16)  # anchor/the-well's column: open floor beside the rim
+WELL_MOUTH = (16, 14)  # the grate in the middle of the rim (rim 15..17 x 13..15), clear of the lane in
+CRANK_FRAME = (24, 2, 25)  # the item frame on the plinth's south face
+# The way from the sundial to the well: out of the court's west side on its
+# south row, north up one lane, west into the well court -- two turns, and the
+# well court's walls stand between (it is out of sight from the dial).
+CORRIDOR = [((7, 8), (6, 8)), ((6, 8), (6, 7)), ((6, 7), (6, 6)), ((6, 6), (6, 5)), ((6, 5), (5, 5))]
+# The well court's ways out: the corridor's, and one more from its outer corner
+# (a court with one way out is a dead end beside the well).
+WELL_EXITS = [((4, 4), (3, 4)), ((4, 4), (4, 3))]
+
+
+def _run(cells):
+    return [(a, b) for a, b in zip(cells, cells[1:])]
+
+
+# The dial's fair loop, on the side away from the well: out of the court's east
+# side along its north row, down to the heart, west along the heart's row and
+# back up into the court's south side -- a square with the dial and the heart at
+# opposite corners, every pair of its opposite points beyond the hunter's hearing.
+FAIR_RING = (_run([(8, 7)] + [(k, 7) for k in range(9, 14)] + [(13, j) for j in range(8, 13)])
+             + _run([(12, 13)] + [(k, 13) for k in range(11, 6, -1)] + [(7, j) for j in range(12, 7, -1)]))
+
+
+def forbidden_edges() -> set:
+    """Every wall of the sundial court on its well side and of the well court
+    that is not one of the ways designed above stays shut."""
+    out = set()
+    allowed = {frozenset(e) for e in CORRIDOR + WELL_EXITS}
+    for court, sides in ((SUNDIAL, ((-1, 0), (0, -1))), (WELL, ((-1, 0), (0, -1), (1, 0), (0, 1)))):
+        for k, j in court:
+            for dk, dj in sides:
+                o = (k + dk, j + dj)
+                if o in court or not (0 <= o[0] < N and 0 <= o[1] < N):
+                    continue
+                e = frozenset(((k, j), o))
+                if e not in allowed:
+                    out.add(e)
+    return out
 
 
 def quarter(k: int, j: int) -> str:
@@ -117,10 +154,14 @@ def cell_dist(c, p) -> float:
     return min(math.hypot(x + 0.5 - (p[0] + 0.5), z + 0.5 - (p[1] + 0.5)) for x in lane(c[0]) for z in lane(c[1]))
 
 
+def well_dist(c) -> float:
+    return min(cell_dist(c, WELL_POINT), cell_dist(c, WELL_MOUTH))
+
+
 def generate():
     rng = SplitMix64(MAZE_SEED)
     cells = [(k, j) for k in range(N) for j in range(N)]
-    blocked = {frozenset(ab) for ab in BELLS.values()}
+    blocked = {frozenset(ab) for ab in BELLS.values()} | forbidden_edges()
     adj: dict = {}
     for k, j in cells:
         for dk, dj in ((1, 0), (0, 1)):
@@ -152,6 +193,13 @@ def generate():
         tree[n] = top
         stack.append(n)
     assert len(seen) == len(nodes), "the backtracker left cells unvisited"
+    # the designed ways round the dial and the well
+    for e in CORRIDOR + WELL_EXITS + FAIR_RING:
+        a, b = (node_of(c) for c in e)
+        if a == b:
+            continue
+        assert b in adj[a], e
+        opened.add(frozenset(e))
     tree_edges = set(opened)
 
     def degree(n) -> int:
@@ -167,7 +215,7 @@ def generate():
     for n in order:
         if not dead(n):
             continue
-        near = cell_dist(n, WELL_POINT) <= HEAR
+        near = well_dist(n) <= HEAR
         if not near and rng.unit() >= BRAID:
             continue
         closed = [(m, e) for m, es in sorted(adj[n].items(), key=lambda t: str(t[0])) for e in sorted(es) if frozenset(e) not in opened]
@@ -176,13 +224,9 @@ def generate():
         prefer = [(m, e) for m, e in closed if dead(m)]
         m, e = rng.choice(prefer or closed)
         opened.add(frozenset(e))
-    # the west lane runs straight down to the well court from row 22: the
-    # sleeper's waking is watched down it, so no wall stands across it
-    for j in range(SIGHT_FROM, min(j for _, j in WELL)):
-        opened.add(frozenset(((0, j), (0, j + 1))))
     kept = [n for n in nodes if dead(n)]
     for n in kept:
-        assert cell_dist(n, WELL_POINT) > HEAR, f"a dead end {n} stands within {HEAR} of the well"
+        assert well_dist(n) > HEAR, f"a dead end {n} stands within {HEAR} of the well"
     braids = opened - tree_edges
     # the node graph after braiding
     g: dict = {n: set() for n in nodes}
@@ -213,16 +257,148 @@ def generate():
         L = len(pts)
         ok = L >= 4 and all(math.dist(pts[i], pts[(i + L // 2) % L]) > HEAR for i in range(L))
         wide += ok
+    loop = fair_loop(g, centre)
+    added = []
+    if loop is None:
+        # open the one closed wall near the dial that gives the shortest fair loop
+        best = None
+        for n in nodes:
+            for o, es in sorted(adj[n].items(), key=lambda t: str(t[0])):
+                for e in sorted(es):
+                    fe = frozenset(e)
+                    if fe in opened or math.dist(centre(n), centre("sundial")) > 30:
+                        continue
+                    a, b = node_of(e[0]), node_of(e[1])
+                    g[a].add(b)
+                    g[b].add(a)
+                    cand = fair_loop(g, centre)
+                    g[a].discard(b)
+                    g[b].discard(a)
+                    if cand is not None and (best is None or cand[0] < best[0][0]):
+                        best = (cand, fe)
+        assert best is not None, "no wall opens a fair loop through the sundial court"
+        loop = best[0]
+        opened.add(best[1])
+        added.append(sorted(best[1]))
+        a, b = (node_of(c) for c in best[1])
+        g[a].add(b)
+        g[b].add(a)
+        edges = sum(len(v) for v in g.values()) // 2
+        loops = edges - len(nodes) + 1
+    length, cyc = loop
+    # how far a runner leaving the dial along that loop runs before the well is out of earshot
+    def out_after(c):
+        walked = 0.0
+        for i in range(1, len(c)):
+            walked += math.dist(centre(c[i - 1]), centre(c[i]))
+            if math.dist(centre(c[i]), (WELL_MOUTH[0] + 0.5, WELL_MOUTH[1] + 0.5)) > HEAR:
+                return round(walked, 1)
+        return None
+
+    outs = [o for o in (out_after(cyc), out_after(list(reversed(cyc)))) if o is not None]
+    run_out = min(outs) if outs else None
+    print("maze.py: fair loop " + json.dumps([n if isinstance(n, str) else list(n) for n in cyc]), file=sys.stderr)
+    assert run_out is not None and run_out <= 12, f"the fair loop leaves the well's hearing only after {run_out} blocks"
+    sundial_ways = len(g["sundial"])
+    assert sundial_ways >= 3, f"the sundial court has {sundial_ways} way(s) out"
     stats = {
+        "sundial_ways_out": sundial_ways,
+        "fair_loop_blocks": round(length, 1),
+        "fair_loop_nodes": len(cyc) - 1,
+        "fair_loop_out_of_well_hearing_after_blocks": run_out,
+        "fair_loop_walls_opened_for_it": added,
         "cells": N * N,
         "nodes": len(nodes),
         "dead_ends_before_braid": len(dead0),
         "dead_ends_kept": len(kept),
         "independent_loops": loops,
         "fundamental_loops_opposite_points_beyond_16": wide,
-        "kept_dead_end_distance_from_well": sorted(round(cell_dist(n, WELL_POINT), 1) for n in kept),
+        "kept_dead_end_distance_from_well": sorted(round(well_dist(n), 1) for n in kept),
     }
     return opened, stats
+
+
+def fair_loop(g, centre):
+    """The shortest loop through the sundial court that a runner can circle
+    with the hunter kept out of earshot: it winds round a point, keeps a disk
+    round that point clear, and every pair of its opposite points stands more
+    than HEAR apart. (length, nodes) or None."""
+    from collections import deque
+    S = "sundial"
+    sc = centre(S)
+    # the loop leaves by the dial's own ways, never down the well's lane
+    shut = {"well"} | {c for e in CORRIDOR for c in e if node_of(c) not in ("sundial", "well")}
+    g = {n: {o for o in vs if o not in shut} for n, vs in g.items() if n not in shut}
+    best = None
+    # the designed ring first: a loop of the open walls, checked as any other
+    ring = ["sundial"]
+    for e in FAIR_RING:
+        for c in e:
+            n = node_of(c)
+            if n != ring[-1]:
+                ring.append(n)
+    ring.append("sundial")
+    if all(ring[i + 1] in g.get(ring[i], ()) for i in range(len(ring) - 1)):
+        pts = [centre(n) for n in ring[:-1]]
+        L = len(pts)
+        if len(set(ring[:-1])) == L and all(math.dist(pts[i], pts[(i + L // 2) % L]) > HEAR for i in range(L)):
+            best = (sum(math.dist(centre(ring[i]), centre(ring[i + 1])) for i in range(L)), ring)
+    for a in range(0, 29):
+        for b in range(0, 29):
+            px, pz = 3 * a + 0.37, 3 * b + 0.61
+            d = math.dist((px, pz), sc)
+            if d > 24:
+                continue
+            for R in (6.5, 7.5, 8.5, 9.5, 11.0):
+                if d < R:
+                    continue
+                found = _wind(g, centre, S, px, pz, R)
+                if found is None:
+                    continue
+                length, cyc = found
+                ring = cyc[:-1]
+                pts = [centre(n) for n in ring]
+                L = len(pts)
+                if len(set(ring)) != L or L < 4:
+                    continue
+                if not all(math.dist(pts[i], pts[(i + L // 2) % L]) > HEAR for i in range(L)):
+                    continue
+                if best is None or length < best[0]:
+                    best = (length, cyc)
+    return best
+
+
+def _wind(g, centre, S, px, pz, R):
+    """The fewest-node closed walk from S winding once round (px, pz), every node outside radius R of it."""
+    from collections import deque
+
+    def cross(u, v):
+        (xu, zu), (xv, zv) = centre(u), centre(v)
+        if (zu - pz) * (zv - pz) >= 0:
+            return 0
+        xi = xu + (pz - zu) * (xv - xu) / (zv - zu)
+        return 1 if xi > px else 0
+
+    par = {(S, 0): None}
+    q = deque([(S, 0)])
+    while q:
+        st = q.popleft()
+        n, k = st
+        for o in sorted(g[n], key=str):
+            ns = (o, k ^ cross(n, o))
+            if o == S:
+                if ns[1] == 1 and par[st] is not None:
+                    path = [st]
+                    while par[path[-1]] is not None:
+                        path.append(par[path[-1]])
+                    cyc = [S] + [x[0] for x in reversed(path)][1:] + [S]
+                    length = sum(math.dist(centre(cyc[i]), centre(cyc[i + 1])) for i in range(len(cyc) - 1))
+                    return length, cyc
+                continue
+            if ns not in par and math.dist(centre(o), (px, pz)) >= R:
+                par[ns] = st
+                q.append(ns)
+    return None
 
 
 def route(m: Model, a, b) -> int:
@@ -407,20 +583,59 @@ def build(place):
             if max(abs(x - 24), abs(z - 24)) == 2:
                 m.set(x, 0, z, "minecraft:smooth_stone")
 
-    # -- the old well (green quarter's far corner) --
-    for x in range(3, 6):
-        for z in range(81, 84):
+    # -- the old well (rose quarter, beyond the dial): a rim in the court's
+    # dial-side corner, the grate in its middle, sculk spread over the floor --
+    mx, mz = WELL_MOUTH
+    for x in range(mx - 1, mx + 2):
+        for z in range(mz - 1, mz + 2):
             m.set(x, 1, z, "rim")
-    m.set(4, 1, 82, trapdoor("iron", "north"))
-    m.set(4, 0, 82, "sculk")
+    m.set(mx, 1, mz, trapdoor("iron", "north"))
+    m.set(mx, 0, mz, "sculk")
+    frame_to_mouth = math.dist(CRANK_FRAME, (mx, 1, mz))
+    assert 10 <= frame_to_mouth <= 14, f"the well mouth stands {frame_to_mouth:.1f} from the crank's frame"
     vein = "minecraft:sculk_vein[down=true,east=false,north=false,south=false,up=false,waterlogged=false,west=false]"
-    sculk_floor = [(1, 83), (2, 83), (1, 82), (2, 82), (3, 80), (4, 80), (5, 80), (5, 79), (1, 81), (3, 79), (6, 82), (4, 79)]
+    wx, wz = WELL_POINT
+    rim = {(x, z) for x in range(mx - 1, mx + 2) for z in range(mz - 1, mz + 2)}
+    sculk_floor = sorted({(x, z) for x in range(mx - 2, mx + 2) for z in range(mz - 1, mz + 3)} - rim) + [(13, 14), (13, 16), (15, 17), (17, 17)]
     for x, z in sculk_floor:
-        if (x, z) in open_cols:
-            m.set(x, 0, z, "sculk")
-    for x, z in ((1, 79), (3, 79), (1, 81), (1, 83)):
-        if (x, z) in open_cols and m.get(x, 1, z) is None and (x, z) != WELL_POINT:
-            m.set(x, 1, z, vein)
+        assert (x, z) in open_cols and m.get(x, 1, z) is None, (x, z)
+        m.set(x, 0, z, "sculk")
+    for x, z in ((13, 13), (16, 17), (13, 17)):
+        assert (x, z) in open_cols and m.get(x, 1, z) is None, (x, z)
+        m.set(x, 1, z, vein)
+    for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        x, z = wx + dx, wz + dz
+        assert (x, z) in open_cols and m.get(x, 1, z) is None, f"the well's dig-out cell has a closed neighbour {x, z}"
+    assert all(m.get(wx, y, wz) is None for y in (1, 2, 3))
+
+    # -- the dial does not see the well: every sight line between their floors is walled --
+    def court_cols(cells):
+        xs = [x for k, _ in cells for x in lane(k)]
+        zs = [z for _, j in cells for z in lane(j)]
+        return [(x, z) for x in range(min(xs), max(xs) + 1) for z in range(min(zs), max(zs) + 1)]
+
+    def seen(a, b) -> bool:
+        (ax, az), (bx, bz) = a, b
+        steps = int(math.dist(a, b) * 8) + 1
+        for i in range(steps + 1):
+            t = i / steps
+            x, z = math.floor(ax + (bx - ax) * t), math.floor(az + (bz - az) * t)
+            if (x, z) not in open_cols:
+                return False
+        return True
+
+    offs = (0.05, 0.5, 0.95)
+    sight = 0
+    rays = 0
+    for a in court_cols(SUNDIAL):
+        for b in court_cols(WELL):
+            for fa in offs:
+                for fb in offs:
+                    rays += 1
+                    if seen((a[0] + fa, a[1] + fb), (b[0] + fb, b[1] + fa)):
+                        sight += 1
+    assert sight == 0, f"{sight} of {rays} sight line(s) from the dial's court reach the well's"
+    stats["dial_to_well_sight_lines_open"] = f"{sight}/{rays}"
 
     # -- the bells: on the wall's top stone course, hedge cap removed --
     bell_cells = {}
@@ -448,7 +663,7 @@ def build(place):
     m.mark("note-basket", 39, 43, "east", y=1)
     m.mark("crank-frame", 24, 25, "south", y=2)
     m.mark("sundial", 24, 26, "north")
-    m.mark("the-well", WELL_POINT[0], WELL_POINT[1], "south")
+    m.mark("the-well", WELL_POINT[0], WELL_POINT[1], "east")
     gate = (83, 40)
     sundial = (24, 26)
     spawn = (42, 46)
@@ -466,7 +681,75 @@ def build(place):
         assert cand, f"no junction in the {q} quarter on the route"
         return cand[min(len(cand) - 1, int(len(cand) * frac))]
 
-    sy = pick(r2, "yellow", 0.5)
+    # turns from the dial to the well, along the fewest cells between the courts
+    from collections import deque as _dq
+    start = sorted(SUNDIAL)[0]
+    par = {start: None}
+    q = _dq([start])
+    while q:
+        u = q.popleft()
+        if u in WELL:
+            break
+        for dk, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            v = (u[0] + dk, u[1] + dj)
+            if v in par or not (0 <= v[0] < N and 0 <= v[1] < N):
+                continue
+            same = node_of(u) == node_of(v) and isinstance(node_of(u), str)
+            if same or frozenset((u, v)) in opened:
+                par[v] = u
+                q.appendleft(v) if same else q.append(v)
+    cells_ = [u]
+    while par[cells_[-1]] is not None:
+        cells_.append(par[cells_[-1]])
+    cells_.reverse()
+    dirs = [(v[0] - u_[0], v[1] - u_[1]) for u_, v in zip(cells_, cells_[1:])
+            if not (node_of(u_) == node_of(v) and isinstance(node_of(v), str))]
+    rw = route_cells(m, sundial, WELL_POINT)
+    turns = sum(1 for d0, d1 in zip(dirs, dirs[1:]) if d0 != d1)
+    assert 2 <= turns <= 3, f"the well is {turns} turn(s) from the dial"
+    stats["dial_to_well_turns"] = turns
+    stats["dial_to_well_blocks"] = len(rw) - 1
+    stats["crank_frame_to_well_mouth_blocks"] = round(frame_to_mouth, 1)
+
+    # the way from the dial toward the heart and the gate leads away from the well
+    def wd(c):
+        return math.dist(c, WELL_MOUTH)
+
+    dial_floor = set(court_cols(SUNDIAL))
+    for name, path in (("heart", r1), ("gate", r2)):
+        assert min(wd(c) for c in path if c not in dial_floor) >= wd(sundial) - 0.01, f"the way from the dial to the {name} passes the well"
+    stats["dial_way_nearest_to_well_blocks"] = round(min(wd(c) for c in r1 + r2 if c not in dial_floor), 1)
+
+    # the slimes: a junction on the way to the gate in the yellow quarter, out
+    # of the dial's and the heart's reach, with a way round their reach
+    from collections import deque
+
+    def court_near(c, cells, r):
+        return any(math.dist(c, q) <= r for q in court_cols(cells))
+
+    def bypass(c, r) -> bool:
+        def ok(x, z):
+            return (x, z) in open_cols and 1 <= x <= 83 and 1 <= z <= 83 and math.dist((x, z), c) > r \
+                and all(m.get(x, y, z) in (None, AIR) for y in (1, 2))
+        seen_ = {sundial}
+        q = deque([sundial])
+        while q:
+            u = q.popleft()
+            if u == gate:
+                return True
+            for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                v = (u[0] + dx, u[1] + dz)
+                if v not in seen_ and ok(*v):
+                    seen_.add(v)
+                    q.append(v)
+        return False
+
+    cand = [c for c in r2 if quarter(min((c[0] - 1) // 3, 27), min((c[1] - 1) // 3, 27)) == "yellow" and junction(c)
+            and not court_near(c, SUNDIAL, HEAR + 1) and not court_near(c, HEART, HEAR + 1)]
+    mid = len(cand) // 2
+    cand = [c for _, c in sorted(enumerate(cand), key=lambda t: (abs(t[0] - mid), t[0]))]
+    sy = next((c for c in cand if bypass(c, HEAR + 1)), None)
+    assert sy is not None, "no junction on the way to the gate has a way round it"
     m.mark("slimes-yellow", sy[0], sy[1], "south")
 
     # -- what the generator asserts and prints --
