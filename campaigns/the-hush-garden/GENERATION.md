@@ -220,3 +220,27 @@ Run with `delvec 1.16.0` from the release archive alone (no engine built from so
 - **Written world**: passed (`DW0955`, 28786 cells compared, `model` 0 differing; 52 `random-tick` and 2653 `re-derived` cells are the classes the check names and excludes; 6 block entities and 6 entities as written). The bell power cells that failed on the unreleased engine agree.
 - **Staging gate**: admitted — all 159 findings carry a live binding check or a justified exemption, `UNBOUND` 0, 48 `INAPPLICABLE`, 27 `DECLARED-UNCOVERABLE`. The gate reads the critical-path run report and the written-world record, not the branch runs, so it admits a build whose `world/0` run is red.
 - **Release notes**: `tools/release-notes.py render` first refused the storybook (no **Players** row); the header table (Players 1–2, Playtime ~25 minutes, Mode, Languages, Classes, Licence) is now in both editions, and `render` for `release/the-hush-garden/v1.0.0` exits 0. `check-storybook-version.py` passes (marker `0.71.0` / `delvec 1.16.0`).
+
+## The ladder on the engine branch `fix/maze-pursued-leg`
+
+Run with `delvec` built from the engine branch `fix/maze-pursued-leg` at `0e82b70cb` (unreleased; harness from the same tree), with no override on any rung, on the build with manifest `901f74b73357a746e4e74fc65118f9f9f87aa7958853d2dd726248dfbfc6ddfc`. The engine changes between this and the released run:
+
+- the bot holds a sneak leg's crouch on every tick;
+- a trigger performed in front of a stealth objective is walked crouched;
+- the bot stands only for a leg's `stand_ups` (a climb down, a step down, a jump);
+- a downward climb takes hold before it slides;
+- a death on a pursued step is a measurement: the bot respawns and walks the step again, and only a death loop is red (a life that gets no further along the step's route than an earlier one);
+- the staging gate reads the branch runs.
+
+The campaign's own change: the five objectives walked while the sleeper is loose declare `stealth`. The two showcase cameras changed too: `garden-top` is new, and `garden-oblique` moved closer.
+
+- **PackTest**: passed, 61 required tests.
+- **Bot, critical path**: passed, 8 steps. `[pursuit] 3 pursued step(s) of 8, 1 pursuer(s), 96 reading(s); closest approach 13.58 block(s); 0 death(s)`.
+- **Branch runs** (deaths are the measurement; each pursued attempt counts as one pursued step):
+  - `world/0` passed: `[pursuit] 10 pursued step(s) of 11, 407 readings; closest approach 0.67; 4 death(s)`. Step 6 took one death, step 8 one, step 9 two; every respawn was at the sundial.
+  - `world/1` passed: 3 pursued steps of 8, 95 readings, closest 13.39, 0 deaths.
+  - **`world/2` RED by death loop**: on step 7 (`talk-to obj/meet-wren`) the bot died at leg 6 waypoints 7, 17 and 16, at 09:06:06, 09:06:33 and 09:06:57. The third life got no further than the second. `[pursuit] 6 pursued step(s) of 8, 282 readings; closest approach 0.42; 3 death(s)`.
+- **Written world**: passed (`model` 0 differing of 28,786 cells).
+- **Staging gate** (with `--branch-runs`): refused, `branch runs: world/2 is RED`.
+
+Diagnosis of the `world/2` red: the three deaths came 27 s and 24 s apart. The warden's anger at the bot decays 1 a second from up to 150 (`warden-behaviour.md` §2), so it outlives a respawn. Each new life left the sundial and walked the 25 blocks back to the tower's foot into a warden still hunting it.
