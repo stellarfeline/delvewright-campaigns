@@ -944,8 +944,11 @@ def stair_path():
         after_gap = False
         i = (RING0 + k) % 12
         x, z = RING[i]
+        # a tread faces the way the climb arrives at it: at a corner that is
+        # the run coming in, which a body walks up onto it (DW0430)
+        px, pz = RING[(i - 1) % 12]
         nx, nz = RING[(i + 1) % 12]
-        d = FACING[(nx - x, nz - z)] if (nx - x, nz - z) in FACING else "e"
+        d = FACING.get((x - px, z - pz), "e")
         # either side of a gap the tread is a full landing block, so the hop is
         # from a level floor to a level floor
         role = "landing" if (k - 1 in BROKEN or k + 1 in BROKEN) else "step_" + d
