@@ -148,11 +148,12 @@ def pen(m, W, D, d, g, side, floor_block, animal_part, shelter_part):
     # one clear column between the pen's fence and the shelter's posts, so
     # nothing a body steps into beside the fence is a pocket
     for (x, z) in ((x0 + 2, fz), (x0 + 5, fz), (x0 + 2, fz + 2), (x0 + 5, fz + 2)):
-        m.set(x, d, z, fence(WOOD))
-        m.set(x, d + 1, z, fence(WOOD))
+        for y in (d, d + 1, d + 2):
+            m.set(x, y, z, fence(WOOD))
+    # the roof a course higher than a body standing on the hay needs
     for x in range(x0 + 2, x0 + 6):
         for z in range(fz, fz + 3):
-            m.set(x, d + 2, z, slab(WOOD, "bottom"))
+            m.set(x, d + 3, z, slab(WOOD, "bottom"))
     m.set(x0 + 3, d, fz + 1, "minecraft:hay_block[axis=x]")
     m.set(x0 + 4, d, fz + 1, "minecraft:hay_block[axis=x]")
     m.set(x0 + 3, d + 1, fz + 1, lantern())
