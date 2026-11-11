@@ -916,16 +916,29 @@ def tower_inside(x, z):
     return dist(x, z) <= R_IN
 
 
+# The festival day: three treads have fallen out of the stair, each on a straight
+# run between two corners, so the climb is three one-block hops over a gap one
+# cell wide to the next tread one course up. Positions are counted along the
+# lane from the first step; a broken position holds no tread and adds no rise.
+BROKEN = (10, 19, 28)
+
+
 def stair_path():
     """The stair's steps, bottom to top: (x, z, y, role). One step a ring cell, a
-    course a step, twelve courses a revolution, up to the lantern room's floor."""
+    course a step, twelve courses a revolution, up to the lantern room's floor;
+    a broken position is skipped, so the tread after it is one course up."""
     out = []
-    for k in range(LAMP_FLOOR):
+    y = 0
+    for k in range(LAMP_FLOOR + len(BROKEN)):
+        if k in BROKEN:
+            continue
+        y += 1
         i = (RING0 + k) % 12
         x, z = RING[i]
         nx, nz = RING[(i + 1) % 12]
         d = FACING[(nx - x, nz - z)] if (nx - x, nz - z) in FACING else "e"
-        out.append((x, z, k + 1, "step_" + d))
+        out.append((x, z, y, "step_" + d))
+    assert y == LAMP_FLOOR
     return out
 
 
@@ -1030,9 +1043,11 @@ def build_tower(m):
         for x in range(9, 12):
             if m.get(x, LAMP_FLOOR + 1, z) in ("lamp_glass", "mullion"):
                 m.box(x, x, LAMP_FLOOR + 1, LAMP_FLOOR + 2, z, z, AIR)
-    # the great lamp on the newel's head
-    for (x, z) in NEWEL:
-        m.box(x, x, LAMP_FLOOR + 1, LAMP_FLOOR + 2, z, z, "great_lamp")
+    # the great lamp on the newel's head: the lamp itself, which the campaign
+    # stands at the lamp-room mark (cold until it is relit), and candles on the
+    # head's other three cells, which light the room while the lamp is cold
+    for (x, z) in NEWEL[1:]:
+        m.set(x, LAMP_FLOOR + 1, z, "candles")
     # the cap: a dark cornice, then a cone of tile stairs stepping in to a finial
     polygon_ring(m, LAMP_TOP + 1, R_LAMP + 0.7, "dark", "cap")
     for k, r in enumerate((R_LAMP - 0.4, R_LAMP - 1.4, R_LAMP - 2.4)):
@@ -1332,6 +1347,15 @@ class Lighthouse(Place):
                     if (nx, ny, nz) in walk and (nx, ny, nz) not in seen and kind(nx, y, nz) == "pass":
                         seen.add((nx, ny, nz))
                         todo.append((nx, ny, nz))
+                # a hop over a gap one cell wide, level or one course up: the
+                # broken treads of the stair (BROKEN), jumped as the route proof jumps them
+                jx, jz = x + 2 * dx, z + 2 * dz
+                if (x, z) in RING and (jx, jz) in RING and all(kind(nx, yy, nz) == "pass" for yy in (y, y + 1, y + 2)):
+                    for ny in (y, y + 1):
+                        if (jx, ny, jz) in walk and (jx, ny, jz) not in seen:
+                            seen.add((jx, ny, jz))
+                            todo.append((jx, ny, jz))
+                            break
         for c in cells - seen:
             e = self.col_part.get((c[0], c[2]))
             if e is None or e["walked"]:
@@ -1430,7 +1454,9 @@ def shown_faces(p):
     return ["east", "north", "south", "west"]
 
 
-MARK_AT = {"node-lighthouse": (14, 6, "west")}   # in the keeper's cottage, facing its front door
+MARK_AT = {"node-lighthouse": (14, 6, "west"),   # in the keeper's cottage, facing its front door
+           # the lamp on the newel's head, on the lantern room's floor
+           "lamp-room": (13, 13, "west", LAMP_FLOOR + 1)}
 
 
 def marks(p, inner):
@@ -1438,9 +1464,13 @@ def marks(p, inner):
     out = inner
     for name in reversed(p.a["owed_anchors"]):
         stem = name.removeprefix("anchor/")
-        x, z, facing = MARK_AT[stem]
-        assert p.walkable(p.cell(x, p.datum.value, z)), stem
-        mark = {"anchor": stem, "at": "offset", "facing": facing, "y": p.datum.expr, "x": num(x), "z": num(z)}
+        x, z, facing, *up = MARK_AT[stem]
+        if up:
+            y = arith(p.datum.expr, "add", num(up[0] - 1))
+        else:
+            assert p.walkable(p.cell(x, p.datum.value, z)), stem
+            y = p.datum.expr
+        mark = {"anchor": stem, "at": "offset", "facing": facing, "y": y, "x": num(x), "z": num(z)}
         out = {"body": out, "mark": mark, "op": "mark"}
     return out
 

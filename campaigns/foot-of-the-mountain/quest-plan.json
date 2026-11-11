@@ -1,82 +1,10 @@
 {
   "campaign_id": "foot-of-the-mountain",
   "content": {
-    "branch_points": [
-      {
-        "branches": [
-          {
-            "flags": [
-              "flag/tail-nest-moved"
-            ],
-            "id": "branch/nest-moved",
-            "leads_to": "quest/opening-night"
-          },
-          {
-            "flags": [
-              "flag/tail-dumpling"
-            ],
-            "id": "branch/dumpling-tail",
-            "leads_to": "quest/opening-night"
-          }
-        ],
-        "forks_on": [
-          "flag/tail-nest-moved",
-          "flag/tail-dumpling"
-        ],
-        "id": "branch-point/the-tail",
-        "opens_at": "quest/the-dragon"
-      },
-      {
-        "branches": [
-          {
-            "flags": [
-              "flag/loaf-oven"
-            ],
-            "id": "branch/oven-loaf",
-            "leads_to": "quest/opening-night"
-          },
-          {
-            "flags": [
-              "flag/loaf-forge"
-            ],
-            "id": "branch/forge-loaf",
-            "leads_to": "ending/no-ending"
-          }
-        ],
-        "forks_on": [
-          "flag/loaf-oven",
-          "flag/loaf-forge"
-        ],
-        "id": "branch-point/the-loaf",
-        "opens_at": "quest/the-loaf"
-      },
-      {
-        "branches": [
-          {
-            "flags": [
-              "flag/chorus-done"
-            ],
-            "id": "branch/chorus-sings",
-            "leads_to": "quest/opening-night"
-          },
-          {
-            "flags": [],
-            "id": "branch/no-chorus",
-            "leads_to": "quest/opening-night"
-          }
-        ],
-        "forks_on": [
-          "flag/chorus-done"
-        ],
-        "id": "branch-point/the-chorus",
-        "opens_at": "quest/the-chorus"
-      }
-    ],
     "endings_read": {
-      "at_least": 3,
-      "deeds_at_least": 1
+      "at_least": 2
     },
-    "finale": "quest/opening-night",
+    "finale": "quest/the-festival",
     "quests": [
       {
         "act": 1,
@@ -85,134 +13,83 @@
         ],
         "area": "area/site",
         "depends_on": [],
-        "goal": "Be taken for the travelling troupe and hear what the play is missing.",
-        "id": "quest/the-troupe",
+        "goal": "Hear the host open the festival on the stage, and hear everything go wrong at once.",
+        "id": "quest/opening",
         "mandatory": true,
         "npcs": [
           "npc/hedda"
         ]
       },
       {
+        "act": 1,
+        "activity": [
+          "talk",
+          "reach",
+          "use"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/opening"
+        ],
+        "goal": "Climb the lighthouse past its broken stairs and light the lamp before the window closes.",
+        "id": "quest/the-lamp",
+        "mandatory": true,
+        "npcs": [
+          "npc/inga"
+        ]
+      },
+      {
+        "act": 1,
+        "activity": [
+          "reach",
+          "take"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/the-lamp"
+        ],
+        "goal": "Chase the fox up the castle road from hiding place to hiding place to its den, and fetch the fireworks from the castle storeroom in time.",
+        "id": "quest/the-fox",
+        "mandatory": true,
+        "npcs": [
+          "npc/bernt"
+        ]
+      },
+      {
         "act": 2,
         "activity": [
           "reach",
-          "talk",
-          "use"
+          "kill"
         ],
         "area": "area/site",
         "depends_on": [
-          "quest/the-troupe"
+          "quest/the-fox"
         ],
-        "goal": "Climb to the castle, search its rooms, light the lady's candles in the play's order, and bring the town its Dragon.",
-        "id": "quest/the-dragon",
+        "goal": "Come back to the stage at dusk and drive three landings of raiders off the festival.",
+        "id": "quest/dusk",
         "mandatory": true,
         "npcs": [
-          "npc/bernt",
-          "npc/agathe",
-          "npc/dumpling",
-          "npc/dumpling-square"
-        ]
-      },
-      {
-        "act": 2,
-        "activity": [
-          "talk",
-          "use"
-        ],
-        "area": "area/site",
-        "depends_on": [
-          "quest/the-troupe"
-        ],
-        "goal": "Find the pumpkin audience the harbour children hid around the lower town, and bring the town its Founder.",
-        "id": "quest/the-founder",
-        "mandatory": true,
-        "npcs": [
-          "npc/inga",
-          "npc/sanna"
-        ]
-      },
-      {
-        "act": 2,
-        "activity": [
-          "talk",
-          "use"
-        ],
-        "area": "area/site",
-        "depends_on": [
-          "quest/the-troupe"
-        ],
-        "goal": "Read the recipe, fetch spring water and mountain honey, win the oven door back from the smith one way or another, and bring the town its Loaf.",
-        "id": "quest/the-loaf",
-        "mandatory": true,
-        "npcs": [
-          "npc/oskar",
-          "npc/runa"
-        ]
-      },
-      {
-        "act": 2,
-        "activity": [
-          "talk",
-          "use"
-        ],
-        "area": "area/site",
-        "depends_on": [
-          "quest/the-troupe"
-        ],
-        "goal": "Find the tavern's scattered shanty chorus by ear, by bell and by name.",
-        "id": "quest/the-chorus",
-        "mandatory": false,
-        "npcs": [
-          "npc/fenna",
-          "npc/kettil",
-          "npc/mari",
-          "npc/sverre"
-        ]
-      },
-      {
-        "act": 2,
-        "activity": [
-          "talk",
-          "use"
-        ],
-        "area": "area/site",
-        "depends_on": [
-          "quest/the-troupe"
-        ],
-        "goal": "Find out who took the weaver's new curtain off her drying frame, and name them.",
-        "id": "quest/the-curtain",
-        "mandatory": false,
-        "npcs": [
-          "npc/elin",
-          "npc/vidar"
+          "npc/hedda"
         ]
       },
       {
         "act": 3,
         "activity": [
-          "reach",
-          "talk",
-          "use"
+          "talk"
         ],
         "area": "area/site",
         "depends_on": [
-          "quest/the-dragon",
-          "quest/the-founder",
-          "quest/the-loaf"
+          "quest/dusk"
         ],
-        "goal": "Put on the Founders' Play at sunset.",
-        "id": "quest/opening-night",
+        "goal": "Hold the festival at night, made of whatever the day managed.",
+        "id": "quest/the-festival",
         "mandatory": true,
         "npcs": [
-          "npc/hedda",
-          "npc/agathe",
-          "npc/sanna",
-          "npc/oskar",
-          "npc/runa"
+          "npc/hedda"
         ]
       }
     ]
   },
-  "dsl_version": "0.71.0",
+  "dsl_version": "0.72.0",
   "stage": "quest-plan"
 }
