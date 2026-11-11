@@ -1,0 +1,191 @@
+{
+  "campaign_id": "the-bell-changes-the-tune",
+  "content": {
+    "quests": [
+      {
+        "cast": {},
+        "happening": {
+          "subject": "anchor/bell",
+          "text": "The party comes in at the lychgate at dusk to ring the passing bell that nobody has rung in forty years.",
+          "verb": "arrives"
+        },
+        "id": "quest/ring-the-passing-bell",
+        "objectives": [
+          {
+            "anchor": "anchor/threshold",
+            "happening": {
+              "subject": "anchor/threshold",
+              "text": "The party steps in out of the yard under the chapel roof, and the yard's tune falls away behind them.",
+              "verb": "arrives"
+            },
+            "hint": "Up the flagstone path through the stones, in at the chapel door.",
+            "id": "obj/enter-the-chapel",
+            "radius": 2,
+            "title": "Go into the chapel",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/enter-the-chapel"
+            ],
+            "anchor": "anchor/bell",
+            "happening": {
+              "subject": "anchor/bell",
+              "text": "The passing bell rings for the names on the stones, and the yard takes up a different tune.",
+              "verb": "opens"
+            },
+            "hint": "At the far end of the nave, on its frame on the altar step.",
+            "id": "obj/ring-the-bell",
+            "prop": {
+              "block": "minecraft:bell[attachment=floor,facing=south,powered=false]"
+            },
+            "title": "Ring the passing bell",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/ring-the-bell"
+            ],
+            "anchor": "anchor/yew",
+            "happening": {
+              "subject": "anchor/yew",
+              "text": "Out among the oldest stones the party hears what the yard is playing now.",
+              "verb": "learns"
+            },
+            "hint": "Back out of the door and across to the old yew in the far corner of the yard.",
+            "id": "obj/go-out-among-the-stones",
+            "radius": 2,
+            "title": "Go out among the stones",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/go-out-among-the-stones"
+            ],
+            "anchor": "anchor/node-chapel",
+            "happening": {
+              "subject": "anchor/node-chapel",
+              "text": "The party comes back in under the roof, and the yard's new tune stops dead at the door.",
+              "verb": "arrives"
+            },
+            "hint": "Back up the path and in at the chapel door.",
+            "id": "obj/come-back-inside",
+            "radius": 2,
+            "title": "Come back inside",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "hears": "atmosphere/dread",
+            "look_at": {
+              "anchor": "anchor/node-chapel"
+            },
+            "music": {
+              "audio/background_music": {
+                "default": {
+                  "max_delay": 0,
+                  "min_delay": 0,
+                  "replace_current_music": true,
+                  "sound": "minecraft:music_disc.mellohi"
+                }
+              }
+            },
+            "path": [
+              {
+                "anchor": "anchor/node-yard",
+                "offset": [
+                  0,
+                  8,
+                  8
+                ]
+              },
+              {
+                "anchor": "anchor/node-yard",
+                "offset": [
+                  0,
+                  6,
+                  1
+                ]
+              }
+            ],
+            "seconds": 8,
+            "subject": {
+              "anchor": "anchor/node-chapel"
+            },
+            "type": "cutscene"
+          },
+          {
+            "ending": "ending/the-yard-is-still-playing",
+            "happening": {
+              "subject": "anchor/node-yard",
+              "text": "The bell has been rung, and the churchyard keeps the tune it started.",
+              "verb": "survives"
+            },
+            "type": "campaign-complete"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/come-back-inside": [
+            {
+              "category": "music",
+              "type": "stop-sound"
+            }
+          ],
+          "obj/go-out-among-the-stones": [
+            {
+              "flag": "flag/dread-heard",
+              "type": "set-flag"
+            },
+            {
+              "style": "chat",
+              "text": "It is not the tune the yard was playing when you came in. It does not stop between verses.",
+              "type": "narrate"
+            }
+          ],
+          "obj/ring-the-bell": [
+            {
+              "atmosphere": "atmosphere/dread",
+              "happening": {
+                "subject": "anchor/node-yard",
+                "text": "The churchyard's air turns, and its tune with it.",
+                "verb": "opens"
+              },
+              "place": "node/yard",
+              "type": "set-atmosphere"
+            },
+            {
+              "style": "chat",
+              "text": "The bell's note goes out through the door and over the stones. Out in the yard, something takes it up.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "type": "campaign-start"
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/threshold",
+        "effects": [
+          {
+            "category": "music",
+            "type": "stop-sound"
+          }
+        ],
+        "id": "trigger/the-door-shuts-it-out",
+        "on": {
+          "on": "approach",
+          "range": 3
+        },
+        "requires_flags": [
+          "flag/dread-heard"
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.56.0",
+  "stage": "quests"
+}

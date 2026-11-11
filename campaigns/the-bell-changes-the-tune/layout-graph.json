@@ -1,0 +1,76 @@
+{
+  "campaign_id": "the-bell-changes-the-tune",
+  "content": {
+    "beats": [
+      {
+        "node": "node/chapel",
+        "objective": "obj/enter-the-chapel",
+        "quest": "quest/ring-the-passing-bell"
+      },
+      {
+        "node": "node/chapel",
+        "objective": "obj/ring-the-bell",
+        "quest": "quest/ring-the-passing-bell"
+      },
+      {
+        "node": "node/yard",
+        "objective": "obj/go-out-among-the-stones",
+        "quest": "quest/ring-the-passing-bell"
+      },
+      {
+        "node": "node/chapel",
+        "objective": "obj/come-back-inside",
+        "quest": "quest/ring-the-passing-bell"
+      }
+    ],
+    "critical_path": [
+      "node/yard",
+      "node/chapel",
+      "node/yard",
+      "node/chapel"
+    ],
+    "edges": [
+      {
+        "a": "node/yard",
+        "b": "node/chapel",
+        "class": "walk",
+        "id": "edge/chapel-door"
+      }
+    ],
+    "entry": "node/yard",
+    "goal": "node/chapel",
+    "nodes": [
+      {
+        "id": "node/yard",
+        "intent": "churchyard",
+        "note": "A walled churchyard under open sky: the lychgate in the south wall, a flagstone path straight up to the chapel door, leaning headstones on either side and an old yew in the north-east corner.",
+        "stations": [
+          {
+            "anchor": "anchor/yew",
+            "kind": "point",
+            "note": "Under the old yew in the yard's north-east corner, among the oldest stones, facing back across the yard."
+          }
+        ]
+      },
+      {
+        "id": "node/chapel",
+        "intent": "chapel nave",
+        "note": "A small stone chapel, one nave under a pitched roof: a door in the south front, two rows of pews, and the bell standing on its frame on the altar step at the north end.",
+        "stations": [
+          {
+            "anchor": "anchor/bell",
+            "kind": "point",
+            "note": "The passing bell, on its floor frame on the altar step at the north end of the nave."
+          },
+          {
+            "anchor": "anchor/threshold",
+            "kind": "point",
+            "note": "Just inside the door, on the nave floor, where a body coming in from the yard first stands under the roof."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.56.0",
+  "stage": "layout-graph"
+}
