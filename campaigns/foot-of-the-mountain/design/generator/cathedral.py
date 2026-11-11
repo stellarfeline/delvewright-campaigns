@@ -937,34 +937,53 @@ def church_footprint(x, z):
 
 
 def gable(m, x0, x1, z0, z1, y0, along, wall_role="stone", end_walls=True):
-    """A pitched roof over [x0..x1]x[z0..z1] from course y0, ridge along `along`."""
+    """A pitched roof over [x0..x1]x[z0..z1] from course y0, ridge along `along`.
+
+    Steep, as a Gothic church's roof is: each row in from the eave rises two
+    courses (a tile stair over a course of tiles), so the roof reads as a ridged
+    pitch from the mountain and the castle, never a flat top; the ridge carries
+    a dark capping course its whole length."""
     if along == "x":
         lo, hi = z0, z1
         k = 0
         while lo <= hi:
-            y = y0 + k
-            if lo == hi:
-                m.box(x0, x1, y, y, lo, lo, "ridge")
-            else:
-                m.box(x0, x1, y, y, lo, lo, "roof_s")
-                m.box(x0, x1, y, y, hi, hi, "roof_n")
-                if end_walls:   # the gable ends filled in behind the slopes
+            y = y0 + 2 * k
+            if lo == hi or lo + 1 == hi:
+                for z in range(lo, hi + 1):
+                    m.box(x0, x1, y, y, z, z, "roof")
+                    m.box(x0, x1, y + 1, y + 1, z, z, "ridge")
+                if end_walls:
                     for x in (x0, x1):
-                        m.box(x, x, y, y, lo + 1, hi - 1, wall_role)
+                        m.box(x, x, y, y, lo, hi, wall_role)
+                break
+            m.box(x0, x1, y, y, lo, lo, "roof")
+            m.box(x0, x1, y, y, hi, hi, "roof")
+            m.box(x0, x1, y + 1, y + 1, lo, lo, "roof_s")
+            m.box(x0, x1, y + 1, y + 1, hi, hi, "roof_n")
+            if end_walls:   # the gable ends filled in behind the slopes
+                for x in (x0, x1):
+                    m.box(x, x, y, y + 1, lo + 1, hi - 1, wall_role)
             lo, hi, k = lo + 1, hi - 1, k + 1
     else:
         lo, hi = x0, x1
         k = 0
         while lo <= hi:
-            y = y0 + k
-            if lo == hi:
-                m.box(lo, lo, y, y, z0, z1, "ridge")
-            else:
-                m.box(lo, lo, y, y, z0, z1, "roof_e")
-                m.box(hi, hi, y, y, z0, z1, "roof_w")
+            y = y0 + 2 * k
+            if lo == hi or lo + 1 == hi:
+                for x in range(lo, hi + 1):
+                    m.box(x, x, y, y, z0, z1, "roof")
+                    m.box(x, x, y + 1, y + 1, z0, z1, "ridge")
                 if end_walls:
                     for z in (z0, z1):
-                        m.box(lo + 1, hi - 1, y, y, z, z, wall_role)
+                        m.box(lo, hi, y, y, z, z, wall_role)
+                break
+            m.box(lo, lo, y, y, z0, z1, "roof")
+            m.box(hi, hi, y, y, z0, z1, "roof")
+            m.box(lo, lo, y + 1, y + 1, z0, z1, "roof_e")
+            m.box(hi, hi, y + 1, y + 1, z0, z1, "roof_w")
+            if end_walls:
+                for z in (z0, z1):
+                    m.box(lo + 1, hi - 1, y, y + 1, z, z, wall_role)
             lo, hi, k = lo + 1, hi - 1, k + 1
 
 
@@ -1147,10 +1166,10 @@ def build_model() -> Model:
                     m.set(x, yy, z, "roof")
                 m.set(x, y, z, "roof")
     # a flèche over the crossing
-    m.box(41, 41, EAVE + 6, EAVE + 13, ZC, ZC, "spire")
-    m.set(41, EAVE + 14, ZC, "finial")
+    m.box(41, 41, EAVE + 12, EAVE + 20, ZC, ZC, "spire")
+    m.set(41, EAVE + 21, ZC, "finial")
     for (dx, dz) in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-        m.box(41 + dx, 41 + dx, EAVE + 6, EAVE + 8, ZC + dz, ZC + dz, "spire")
+        m.box(41 + dx, 41 + dx, EAVE + 12, EAVE + 15, ZC + dz, ZC + dz, "spire")
 
     # ---------- the west front
     fx0, fx1 = FRONT
