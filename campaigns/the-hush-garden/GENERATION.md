@@ -267,3 +267,25 @@ The ladder, with no override; deaths are the measurement:
 - A diagnostic run of `world/0` (engine `bb0ebde0c`, same build) prints every darkness the bot receives. It passed, with 3 deaths and 44 darknesses, every one with a warden the client saw in reach. The nearest warden ran up to 19.0 blocks, against the ear's 20.
 - The darkness the ladder run counted is therefore one whose warden the client placed just past 20 blocks, while the server, which applies the pulse, placed it inside. It is not tied to the deaths: 0 to 2 deaths had been taken at each darkness.
 - What to do about that boundary is open on the engine side.
+
+### Green at engine `edf9246aa`, build `613d5d93…`
+
+What changed in the engine since the run above:
+- the sculk ear judges a warden's darkness on the pursuit census's server positions, not on the client's entity table;
+- a branch whose run exits non-zero is never a passed row;
+- the ladder scripts run compose from the engine root, so the image builds from the content tree as well.
+
+The whole ladder ran from the content tree, with no override; deaths are the measurement:
+
+- **PackTest**: passed, 61 required tests.
+- **Bot, critical path**: passed, 8 steps, 0 deaths (`[pursuit] 3 pursued step(s) of 8, 95 readings; closest approach 15.55; 0 death(s)`). `[sculk]` darkness 0 (2 more with a warden in reach).
+- **Hatch stand**: passed; 1 shut floor gate, 1 stand point, held.
+- **Branch runs**:
+  - `world/0`: passed, **3 deaths**, one each on steps 6, 8 and 9 (bounds 52, 51, 47); every respawn at the sundial. `[sculk]` darkness 0 (34 with a warden in reach).
+  - `world/1`: passed, **0 deaths**.
+  - `world/2`: passed, **0 deaths**; closest approach 2.43. `[sculk]` darkness 0 (24 with a warden in reach).
+  - On every darkness, the client and the census agreed about the warden in reach.
+- **Written world**: passed (`model` 0 differing of 28,786 cells).
+- **Staging gate** (with `--branch-runs`): admitted. All 159 findings carry a live, binding check or a justified exemption; 48 are INAPPLICABLE.
+
+The release pictures, `media/garden-top.jpg` and `media/garden-oblique.jpg`, were rendered in quick mode from this same tree (content `e9ee75f8`, which builds to this manifest).
