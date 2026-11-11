@@ -946,7 +946,10 @@ def stair_path():
         x, z = RING[i]
         nx, nz = RING[(i + 1) % 12]
         d = FACING[(nx - x, nz - z)] if (nx - x, nz - z) in FACING else "e"
-        out.append((x, z, y, "step_" + d))
+        # either side of a gap the tread is a full landing block, so the hop is
+        # from a level floor to a level floor
+        role = "landing" if (k - 1 in BROKEN or k + 1 in BROKEN) else "step_" + d
+        out.append((x, z, y, role))
         k += 1
     assert y == LAMP_FLOOR and all(RING[(RING0 + b) % 12][0] == RING[(RING0 + b - 1) % 12][0] or RING[(RING0 + b) % 12][1] == RING[(RING0 + b - 1) % 12][1] for b in BROKEN)
     return out

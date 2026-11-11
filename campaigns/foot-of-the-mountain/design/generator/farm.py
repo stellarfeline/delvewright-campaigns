@@ -145,22 +145,24 @@ def pen(m, W, D, d, g, side, floor_block, animal_part, shelter_part):
         m.set(x, d, gz, fence_gate(WOOD, "north" if side == "north" else "south", open=True))
     # the shelter: a lean-to roof on posts in the pen's far corner, a hay rack under it
     fz = z0 + 1 if side == "south" else z1 - 3
-    for (x, z) in ((x0 + 1, fz), (x0 + 4, fz), (x0 + 1, fz + 2), (x0 + 4, fz + 2)):
+    # one clear column between the pen's fence and the shelter's posts, so
+    # nothing a body steps into beside the fence is a pocket
+    for (x, z) in ((x0 + 2, fz), (x0 + 5, fz), (x0 + 2, fz + 2), (x0 + 5, fz + 2)):
         m.set(x, d, z, fence(WOOD))
         m.set(x, d + 1, z, fence(WOOD))
-    for x in range(x0 + 1, x0 + 5):
+    for x in range(x0 + 2, x0 + 6):
         for z in range(fz, fz + 3):
             m.set(x, d + 2, z, slab(WOOD, "bottom"))
-    m.set(x0 + 2, d, fz + 1, "minecraft:hay_block[axis=x]")
     m.set(x0 + 3, d, fz + 1, "minecraft:hay_block[axis=x]")
-    m.set(x0 + 2, d + 1, fz + 1, lantern())
-    m.set(x1 - 2, d, (z0 + z1) // 2, "minecraft:water_cauldron[level=3]")
-    part(m, x0 + 1, x0 + 4, fz, fz + 2, shelter_part)
+    m.set(x0 + 4, d, fz + 1, "minecraft:hay_block[axis=x]")
+    m.set(x0 + 3, d + 1, fz + 1, lantern())
+    m.set(x1 - 3, d, (z0 + z1) // 2, "minecraft:water_cauldron[level=3]")
+    part(m, x0 + 2, x0 + 5, fz, fz + 2, shelter_part)
     if side == "south":
         lamp_post(m, gx - 1, gz + 1, d)
     for z in range(1, D + 1):
         for x in range(1, W + 1):
-            if not (x0 + 1 <= x <= x0 + 4 and fz <= z <= fz + 2) and 1 < z < D:
+            if not (x0 + 2 <= x <= x0 + 5 and fz <= z <= fz + 2) and 1 < z < D:
                 part(m, x, x, z, z, animal_part)
 
 
