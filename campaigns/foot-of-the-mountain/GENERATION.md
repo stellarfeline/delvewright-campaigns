@@ -8,12 +8,9 @@
 
 ## Engine
 
-- `delvec` 1.16.0, `dsl` 0.73.0, built from source in release profile from `stellarfeline/delvewright` `feature/festival-day` at `b4f61cd47` (cargo exit 0, 119 s, 4.0 GB peak). Earlier steps were authored at `eea5c7d997600bf19e5444a16081e58a3f96f647` (spec-0133, `dsl` 0.72.0) and `aa5484754` (spec-0134's first part). Dev mode; the skill page read is the revision's own.
-- On the surfaces that have landed: the dusk waves scale with the party (`count {base, per_player}`); the castle's crossbows and starred rockets are handed out at dusk, sixteen or eight by the fireworks' fate; the keeper hands over her spyglass and the fox is first seen through it from the lamp room (`use-item`), which opens the chase; the key is taken off the fox at its den (`use-actor`, setting the flag the storeroom waits on); the cake is taken when a raider of either kind stands on the stage (`counts` over the stage, `body-enters`), and the ending reads it.
-- Written but not emitted, on two engine defects of the `shot` surface: a `shot` trigger without a `prop` is refused (`DW1090`, "add a prop") and with one is refused (`DW0964`, "a shot has no cell to place a prop in"); and the target's station, which stands in the bell tower's opening where no body stands, is refused at detail (`DW0845`, which admits a no-body station only for a pit or a gate's answer). Task C (the clerk's bow, three hits, the bell rung, the bell's glow on the raiders at dusk) is in the author's source behind one switch and enters the documents when the pair agrees; the forecourt bell's station is placed.
-- Not moved, though the surface has landed: the goats (task B): the census and `body-enters` are here, but the pen on the main street and the goats' three start points on the terraces are not yet built. The supply chests' food is task A's payoff and waits with A for boats.
-- Also measured: the critical path's route proof does not cross a gap one cell wide at grade between two level floors (the lighthouse's broken stair); the same build with the stair whole walks every leg.
-- Waiting on the branch: by-effect world edits (the night's lamps and bunting), the quorum, `give-item from` an actor (the key as an item), vehicles (task A's boats, the pig race).
+- `delvec` 1.16.0, `dsl` 0.73.0, built from source in release profile from `stellarfeline/delvewright` `feature/festival-day` at `0f0f9db12399e74ea78f5bc3974116b8754e94b1` (cargo exit 0, 275 s, 4.7 GB peak). Earlier steps were authored at `eea5c7d997600bf19e5444a16081e58a3f96f647` (spec-0133, `dsl` 0.72.0), `aa5484754` (spec-0134's first part) and `b4f61cd47`. Dev mode; the skill page read is the revision's own.
+- On the surfaces that have landed: the dusk waves scale with the party (`count {base, per_player}`); the castle's crossbows and starred rockets are handed out at dusk, sixteen or eight by the fireworks' fate; the keeper hands over her spyglass and the fox is first seen through it from the lamp room (`use-item`), which opens the chase; the key is taken off the fox at its den (`use-actor`); the clerk's bow and three hits on the belfry's target (`shot`, its prop `minecraft:target`, its station in the tower's opening); the cake is taken off its table when a raider of either kind stands on the stage (`counts` over the stage, `body-enters`), and the ending reads it.
+- Two engine defects stop the documents. (1) `DW0879` dates a loop's count as moved by bodies but not a census (`counts`), so a gate on a census is judged against the path's writes, which a census never has: task B's latch (`requires_state` on the three goats' censuses) is refused. B is in the author's source behind one switch; on a copy of `delvec` that dates a census as it dates a loop's count, B validates and its three goats' seats are proven to reach the pen (`census binding (DW1089): 5 counted datum(s); 3 body seat(s) proven`). (2) `DW0807`: the PackTest template for a limited objective's expiry (`limit_o_<obj>_expires`) does not write the data the objective's `requires_state` reads — `dw.s_belfry_hits` for the bell, the three censuses for the goats — so the build of these documents is refused once the bell is in them.
 
 ## The design record
 
@@ -22,17 +19,21 @@ The approved pictures of the replaced story showed it at late afternoon and at s
 ## Placement (step 2)
 
 - The farm district on the empty flank east of the town: a farm track off the end of lane 5 and six plots off it (wheat field, orchard, sheep fold, duck pond, cattle pen, barn), each a contact on the track. Drawn by `design/generator/farm.py`.
-- The lighthouse gains the station `anchor/lamp-room`.
-- The engine refuses crops in a piece (`DW0730`: farmland and wheat change after the proofs judged them), so the wheat field is drawn cut, its sheaves stood in stooks of hay.
+- The goat pen, hung off stretch 5's east face between the tavern and lane 5 (its box held to nine cells deep by the tavern's and the lane's rings), its gate on the stretch of the seam; the station `anchor/goat-pen-gate`. Drawn by `farm.py`.
+- The net green west of the cliff path and the beacon point east of it, each the full length of its contact with the path. Drawn by `farm.py`.
+- The lighthouse gains the station `anchor/lamp-room`, on the newel head's south-east cell; the cathedral `anchor/belfry-target` in the bell tower's west opening and `anchor/forecourt-bell` on the close; the square `anchor/cake-table` on the stage's deck.
+- The engine refuses crops in a piece (`DW0730`: farmland and wheat change after the proofs judged them), so the wheat field is drawn cut, its sheaves stood in stooks of hay; it refuses a cake for the same reason, so the cake is set on its table by the opening.
+- Not placed: the gap beside the guildhall. A yard hung off flight 5 is refused three ways (`DW1057` the flight's steps fill the seam's columns, `DW0844` a seam on the landing alone falls on the yard's corner, `DW0827` a deeper yard meets stretch 5's ring); the gap needs the flight or the neighbouring plots moved in the plan. Nor the grid of streets west of the main street: the slope falls two courses every stretch, so a back street needs its own flights and a re-laid west half of the plan.
 
 ## Content (step 5)
 
 - Every objective is bound to the place it happens in (`layout-graph.json` `beats[]`), and the authored critical path is re-derived as the walk through those places in order.
-- Windows: the lamp, 6000 ticks from reaching the lamp room's climb; the fireworks, 9600 ticks from the fox's first flight. Each is an expiry world the ladder waits out.
+- Windows: the lamp, 6000 ticks from reaching the lamp room's climb; the bell, 6000 ticks from its activation; the fireworks, 9600 ticks from the fox's first flight; the goats (held), 12000 ticks from Kettil's ask. Each is an expiry world the ladder waits out.
+- Task B is a fork the plan declares (`branch-point/goats`): the goats home or astray, both leading to the festival, because the night stages three goats on the stage when they are astray.
 
 ## Languages
 
-`world.json` declares `zh-cn`. The sidecar is written in this run from the English documents through `delvec l10n-apply` (146 of 146 rows); no translation provider was configured.
+`world.json` declares `zh-cn`. The sidecar is written in this run from the English documents through `delvec l10n-apply` (178 of 178 rows; 197 with task B); no translation provider was configured.
 
 ## Light at night (step 8)
 
