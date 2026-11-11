@@ -71,8 +71,10 @@ The owner's map notes from the town's pictures are carried in the same fill: far
 
 ## Departures from the script
 
-- The party comes back from a death in the inn's taproom across the square, not on the stage: the stage is where every raider's lane ends, and a body brought back there is brought back into the fight.
-- The fireworks storeroom does not wait on the key taken off the fox: a task step that opens only at the den cannot show the party where the storeroom is in time. The key is still taken off the fox at the den.
+- The party comes back from a death in the inn's taproom across the square, not on the stage: the stage is where every raider's lane ends, and a body brought back there is brought back into the fight (`DW0478`).
+- The fireworks storeroom does not wait on the key taken off the fox: an objective gated on the key is armed only once the party stands at the den, out of sight of the cellars, so its hint would come too late (`DW0863`, measured again with the gate on the key). The key is still taken off the fox at the den.
+- The wheat field is drawn cut, its sheaves stood in stooks of hay: a piece may not hold crops, which change after the proofs have judged them (`DW0730`). The wheat the goats follow is taken from the field's chest by the hay cart.
+- *Authored*: the goats stray to the castle road's switchbacks above the square (Pearl), the wayside spring (Barley) and the orchard on the farm track (the Admiral); the pen is on the main street's fifth stretch, opening east off it halfway down.
 
 ## Characters
 
@@ -80,4 +82,8 @@ Hedda Brask (host), Inga (lighthouse keeper, D), Bernt (castle steward, firework
 
 ## What the build carries now, and what waits
 
-`GENERATION.md` names the engine revision. Built: the opening; D with the climb, the relight and the spyglass that spots the fox; E with the chase, the key taken off the fox at its den and the fireworks fetched in time; the dusk waves scaled to the party, the crossbows and starred rockets, the lighthouse's warning, the stage as the checkpoint and the cake taken by a raider who reaches it; the night, the gathered town, the lavish show and the ending reading the lamp, the fireworks and the cake. Waiting: A (rowing: vehicles), B (the census has landed; its pen on the main street and the goats' start points are not built yet), C (the `shot` surface's two refusals, recorded in `GENERATION.md`), the key as an item in hand (`give-item from` an actor), the night's lamps and bunting (`by-effect` world edits), the pig race (vehicles), the crowd's hop of joy. Nothing of these is replaced by another verb in the meantime.
+`GENERATION.md` names the engine revision. Built: the opening; C with Vidar's bow, three hits on the belfry target, the bell on the close and its glow on the raiders at dusk; D with the climb, the relight and the spyglass that spots the fox; E with the chase, the key taken off the fox at its den and the fireworks fetched in time; the dusk waves scaled to the party, the crossbows and starred rockets, the lighthouse's warning, the inn across the square as the checkpoint and the cake taken off its table by a raider who reaches it; the night, the gathered town, the lavish show and the ending reading the lamp, the bell, the fireworks and the cake. On the map: the goat pen on the main street, the cake table and the third line's supply chest on the stage, the net green on the open land by the lighthouse and the beacon point on the headland.
+
+Written but not emitted: B (the goats, the wheat, the pen's latch, the goats on the stage when they are lost), on an engine defect: a gate on a census datum is judged against the path's writes (`DW0879`), which a census never has.
+
+Waiting: A (rowing: vehicles; the bay's sandbar and its six crate points are built with it), the supply chests' food (A's payoff), the key as an item in hand (`give-item from` an actor), the night's lamps and bunting (`by-effect` world edits), the pig race (vehicles), the crowd's hop of joy, the goats' charge at dusk (no scripted charge with knock-back exists). Nothing of these is replaced by another verb in the meantime.

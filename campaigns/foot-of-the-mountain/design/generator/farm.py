@@ -383,31 +383,6 @@ def beacon_point(m, W, D, d, g):
                 m.part(x, x, z, z, "point")
 
 
-def smithy_yard(m, W, D, d, g):
-    """The smithy's yard in the gap between the guildhall and the forge, open
-    to the foot of the flight on its east edge (x W, kept clear): a lean-to on
-    posts along the back over the coal and the iron stock, cart wheels against
-    the wall, a quench trough and a grindstone."""
-    ground(m, W, D, g, "minecraft:cobblestone")
-    for x in range(1, W + 1):
-        m.set(x, g, D, "minecraft:gravel" if x % 3 else "minecraft:cobblestone")
-    # the lean-to over the back row: posts every four cells, a slab roof
-    for x in range(1, W - 2, 4):
-        for y in (d, d + 1, d + 2):
-            m.set(x, y, 1, fence(WOOD))
-    for x in range(1, W - 2):
-        m.set(x, d + 3, 1, slab(WOOD, "bottom"))
-        m.set(x, d + 3, 2, slab(WOOD, "bottom"))
-    for x in range(2, W - 3, 4):
-        m.set(x, d, 1, "minecraft:coal_block")
-        m.set(x + 1, d, 1, "minecraft:iron_bars[east=true,north=false,south=false,waterlogged=false,west=true]")
-        m.set(x + 1, d + 2, 2, lantern(hanging=True))
-    m.set(W - 4, d, D - 1, "minecraft:water_cauldron[level=3]")
-    m.set(W - 6, d, D - 1, "minecraft:grindstone[face=floor,facing=east]")
-    m.set(3, d, D, "minecraft:barrel[facing=up,open=false]")
-    m.part(1, W - 3, 1, 2, "lean-to")
-
-
 def farm_lane(m, W, D, d, g):
     for x in range(1, W + 1):
         for z in range(1, D + 1):
@@ -445,8 +420,6 @@ def build(place):
         net_green(m, W, D, d, g)
     elif stem == "beacon-point":
         beacon_point(m, W, D, d, g)
-    elif stem == "smithy-yard":
-        smithy_yard(m, W, D, d, g)
     elif stem == "goat-pen":
         gz = goat_pen(m, W, D, d, g)
         # the latch: on the street before the gatepost, where a body stands to drop it
