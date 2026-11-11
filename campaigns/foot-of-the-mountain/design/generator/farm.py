@@ -254,6 +254,160 @@ def barn(m, W, D, d, g, side):
                 part(m, x, x, z, z, "barn-yard")
 
 
+def goat_pen(m, W, D, d, g):
+    """Kettil's goat pen on the main street (the festival day's task B): the
+    street is its west edge (x 1, kept clear), a fence round a yard of trodden
+    earth with a field gate to the street, the lean-to and hay rack in the far
+    corner, a trough, and the latch on the gatepost by the street."""
+    ground(m, W, D, g, "minecraft:coarse_dirt")
+    for z in range(1, D + 1):
+        m.set(1, g, z, "minecraft:dirt_path")
+    x0, x1, z0, z1 = 3, W - 1, 1, D
+    # the gate faces the stretch of street the pen's seam opens on: its south end
+    gz = z1 - 2
+    for x in range(x0, x1 + 1):
+        for z in (z0, z1):
+            m.set(x, d, z, fence(WOOD))
+    for z in range(z0, z1 + 1):
+        for x in (x0, x1):
+            m.set(x, d, z, fence(WOOD))
+    # the gate to the street, two leaves, left open for the goats to come in
+    for z in (gz, gz + 1):
+        m.set(x0, d, z, fence_gate(WOOD, "east", open=True))
+    # the lean-to in the far north-east corner, one clear column off the fence
+    for (x, z) in ((x1 - 4, z0 + 2), (x1 - 2, z0 + 2)):
+        for y in (d, d + 1, d + 2):
+            m.set(x, y, z, fence(WOOD))
+    for x in range(x1 - 4, x1):
+        for z in range(z0 + 1, z0 + 3):
+            m.set(x, d + 3, z, slab(WOOD, "bottom"))
+    m.set(x1 - 3, d + 2, z0 + 1, lantern(hanging=True))
+    m.set(x1 - 3, d, z0 + 1, "minecraft:hay_block[axis=x]")
+    m.set(x1 - 2, d, z0 + 1, "minecraft:hay_block[axis=x]")
+    m.set(x1 - 2, d, z1 - 2, "minecraft:water_cauldron[level=3]")
+    m.part(x1 - 4, x1 - 1, z0 + 1, z0 + 2, "lean-to")
+    # lamps: one on the street side, one in the pen's corner by the gate, so the pen reads at night
+    lamp_post(m, 2, z0, d)
+    lamp_post(m, x0 + 1, z1 - 1, d)
+    for x in range(x0 + 1, x1):
+        for z in range(z0 + 1, z1):
+            if not (x1 - 4 <= x <= x1 - 1 and z0 + 1 <= z <= z0 + 2) and (x, z) not in LAMPS:
+                m.part(x, x, z, z, "pen")
+    # a lamp post's head is seen, never stood on: the lean-to's part holds it
+    for (x, z) in sorted(LAMPS):
+        m.part(x, x, z, z, "lean-to")
+    return gz
+
+
+def net_green(m, W, D, d, g):
+    """The fishermen's drying green west of the cliff path (its east edge, x W,
+    kept clear): net poles with lines strung between them, an upturned boat on
+    trestles, pots and barrels, and the tarred gear shed at the south end."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    for z in range(1, D + 1):
+        m.set(W, g, z, "minecraft:coarse_dirt" if z % 3 else "minecraft:gravel")
+    # the net poles: two rows down the green, a line of chain between each pair
+    for z in range(3, D - 8, 4):
+        for x in (2, 4):
+            for y in (d, d + 1, d + 2):
+                m.set(x, y, z, fence(WOOD))
+        m.set(3, d + 2, z, "minecraft:iron_chain[axis=x,waterlogged=false]")
+    # the upturned boat on its trestles, halfway down
+    bz = D - 9
+    for x in (2, 3, 4):
+        m.set(x, d, bz, fence(WOOD))
+        m.set(x, d, bz + 3, fence(WOOD))
+    for z in range(bz, bz + 4):
+        m.set(2, d + 1, z, stairs(WOOD, "west", "top"))
+        m.set(3, d + 1, z, "minecraft:spruce_planks")
+        m.set(4, d + 1, z, stairs(WOOD, "east", "top"))
+    # pots and barrels along the west edge
+    for z in (2, 6, 10):
+        m.set(1, d, z, "minecraft:barrel[facing=up,open=false]")
+    # the tarred gear shed at the south end, its door to the path
+    sx0, sx1, sz0, sz1 = 1, W - 3, D - 4, D
+    m.hollow(sx0, sx1, d, d + 2, sz0, sz1, "minecraft:dark_oak_planks")
+    m.clear(sx0 + 1, sx1 - 1, d, d + 2, sz0 + 1, sz1 - 1)
+    m.box(sx0, sx1, d + 3, d + 3, sz0, sz1, slab("dark_oak", "bottom"))
+    m.set(sx1, d, sz0 + 2, "minecraft:air")
+    m.set(sx1, d + 1, sz0 + 2, "minecraft:air")
+    m.set(sx0 + 1, d + 2, sz0 + 1, lantern(hanging=True))
+    m.set(sx0 + 1, d, sz1 - 1, "minecraft:barrel[facing=up,open=false]")
+    m.part(sx0, sx1, sz0, sz1, "shed")
+    lamp_post(m, 1, bz - 2, d)
+    lamp_post(m, 1, 1, d)
+    for x in range(1, W - 1):
+        for z in range(1, sz0):
+            if (x, z) not in LAMPS:
+                m.part(x, x, z, z, "green")
+
+
+def beacon_point(m, W, D, d, g):
+    """The headland's point east of the cliff path (its west edge, x 1, kept
+    clear): the beacon's raised stone platform with its fire basket, benches to
+    the sea, the flagpole, flowers."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    for z in range(1, D + 1):
+        m.set(1, g, z, "minecraft:coarse_dirt" if z % 2 else "minecraft:gravel")
+    cx, cz = W // 2 + 2, D // 2
+    px0, px1, pz0, pz1 = cx - 3, cx + 3, cz - 3, cz + 3
+    # the platform, one course up, a stair up on its west side
+    m.box(px0, px1, d, d, pz0, pz1, "minecraft:stone_bricks")
+    for z in (cz - 1, cz, cz + 1):
+        m.set(px0 - 1, d, z, stairs("stone_brick", "east"))
+    # the iron fire basket on its plinth in the middle, lit for the festival
+    m.set(cx, d + 1, cz, "minecraft:chiseled_stone_bricks")
+    m.set(cx, d + 2, cz, "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]")
+    for (x, z) in ((cx - 1, cz), (cx + 1, cz), (cx, cz - 1), (cx, cz + 1)):
+        m.set(x, d + 1, z, "minecraft:iron_bars[east=false,north=false,south=false,waterlogged=false,west=false]")
+    # lanterns at the platform's corners
+    for (x, z) in ((px0, pz0), (px1, pz0), (px0, pz1), (px1, pz1)):
+        m.set(x, d + 1, z, lantern())
+    # benches looking out to sea (east), the flagpole, flower beds
+    for z in (2, 3, D - 2, D - 1):
+        m.set(W - 1, d, z, stairs(WOOD, "west"))
+    for y in range(d, d + 5):
+        m.set(W - 2, y, cz, fence(WOOD))
+    m.set(W - 2, d + 5, cz, "minecraft:white_wool")
+    for x in range(3, W - 3, 2):
+        m.set(x, d, 1, "minecraft:poppy" if x % 4 == 1 else "minecraft:cornflower")
+        m.set(x, d, D, "minecraft:oxeye_daisy" if x % 4 == 1 else "minecraft:dandelion")
+    # lanterns set on the grass along the path side, so the point reads at night
+    for z in (3, cz, D - 2):
+        m.set(4, d, z, lantern())
+    m.part(px0 - 1, px1, pz0, pz1, "beacon")
+    m.part(W - 2, W - 2, cz, cz, "beacon")
+    for x in range(3, W + 1):
+        for z in range(1, D + 1):
+            if (x, z) not in LAMPS and not (px0 - 1 <= x <= px1 and pz0 <= z <= pz1) and (x, z) != (W - 2, cz):
+                m.part(x, x, z, z, "point")
+
+
+def smithy_yard(m, W, D, d, g):
+    """The smithy's yard in the gap between the guildhall and the forge, open
+    to the foot of the flight on its east edge (x W, kept clear): a lean-to on
+    posts along the back over the coal and the iron stock, cart wheels against
+    the wall, a quench trough and a grindstone."""
+    ground(m, W, D, g, "minecraft:cobblestone")
+    for x in range(1, W + 1):
+        m.set(x, g, D, "minecraft:gravel" if x % 3 else "minecraft:cobblestone")
+    # the lean-to over the back row: posts every four cells, a slab roof
+    for x in range(1, W - 2, 4):
+        for y in (d, d + 1, d + 2):
+            m.set(x, y, 1, fence(WOOD))
+    for x in range(1, W - 2):
+        m.set(x, d + 3, 1, slab(WOOD, "bottom"))
+        m.set(x, d + 3, 2, slab(WOOD, "bottom"))
+    for x in range(2, W - 3, 4):
+        m.set(x, d, 1, "minecraft:coal_block")
+        m.set(x + 1, d, 1, "minecraft:iron_bars[east=true,north=false,south=false,waterlogged=false,west=true]")
+        m.set(x + 1, d + 2, 2, lantern(hanging=True))
+    m.set(W - 4, d, D - 1, "minecraft:water_cauldron[level=3]")
+    m.set(W - 6, d, D - 1, "minecraft:grindstone[face=floor,facing=east]")
+    m.set(3, d, D, "minecraft:barrel[facing=up,open=false]")
+    m.part(1, W - 3, 1, 2, "lean-to")
+
+
 def farm_lane(m, W, D, d, g):
     for x in range(1, W + 1):
         for z in range(1, D + 1):
@@ -287,6 +441,19 @@ def build(place):
         pond(m, W, D, d, g, side)
     elif stem == "barn":
         barn(m, W, D, d, g, side)
+    elif stem == "net-green":
+        net_green(m, W, D, d, g)
+    elif stem == "beacon-point":
+        beacon_point(m, W, D, d, g)
+    elif stem == "smithy-yard":
+        smithy_yard(m, W, D, d, g)
+    elif stem == "goat-pen":
+        gz = goat_pen(m, W, D, d, g)
+        # the latch: on the street before the gatepost, where a body stands to drop it
+        m.mark("goat-pen-gate", 2, gz - 1, facing="east")
+        m.mark("node-goat-pen", (W + 4) // 2, gz, facing="west")
+        m.finish()
+        return m
     else:
         sys.exit(f"farm.py: no drawing for {stem}")
     m.mark(f"node-{stem}", *(free_mark(m, W, D, d) if stem != "barn" else yard_mark(m, W, D, d, side)), facing="south")

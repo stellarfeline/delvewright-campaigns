@@ -1062,7 +1062,10 @@ def build_tower(m):
     # the great lamp on the newel's head: the lamp itself, which the campaign
     # stands at the lamp-room mark (cold until it is relit), and candles on the
     # head's other three cells, which light the room while the lamp is cold
-    for (x, z) in NEWEL[1:]:
+    # the lamp stands on the newel head's south-east cell, the one the stair's
+    # last turn does not pass beside, so the lamp room's mark is the only floor
+    # its tolerance reaches (DW0881)
+    for (x, z) in NEWEL[:3]:
         m.set(x, LAMP_FLOOR + 1, z, "candles")
     # the cap: a dark cornice, then a cone of tile stairs stepping in to a finial
     polygon_ring(m, LAMP_TOP + 1, R_LAMP + 0.7, "dark", "cap")
@@ -1472,7 +1475,7 @@ def shown_faces(p):
 
 MARK_AT = {"node-lighthouse": (14, 6, "west"),   # in the keeper's cottage, facing its front door
            # the lamp on the newel's head, on the lantern room's floor
-           "lamp-room": (13, 13, "west", LAMP_FLOOR + 1)}
+           "lamp-room": (14, 14, "west", LAMP_FLOOR + 1)}
 
 
 def marks(p, inner):

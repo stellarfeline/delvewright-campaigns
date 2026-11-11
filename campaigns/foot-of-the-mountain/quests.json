@@ -155,6 +155,16 @@
           {
             "flag": "flag/day-open",
             "type": "set-flag"
+          },
+          {
+            "anchor": "anchor/cake-table",
+            "block": "minecraft:cake[bites=0]",
+            "type": "set-block"
+          },
+          {
+            "style": "chat",
+            "text": "Oskar sets the festival cake on its table on the stage: four tiers and a sugar lighthouse.",
+            "type": "narrate"
           }
         ],
         "trigger": {
@@ -738,6 +748,188 @@
           },
           "npc/hedda": {
             "at": "anchor/stage",
+            "dialogue": "dlg/hedda-day",
+            "doing": "on the stage, holding the festival together by shouting"
+          },
+          "npc/inga": {
+            "at": {
+              "anchor": "anchor/node-lighthouse",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/kettil": {
+            "at": {
+              "anchor": "anchor/node-street-5",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/kettil-day",
+            "doing": "about the festival"
+          },
+          "npc/oskar": {
+            "at": {
+              "anchor": "anchor/node-bakery",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/oskar-day",
+            "doing": "about the festival"
+          },
+          "npc/sverre": {
+            "at": {
+              "anchor": "anchor/node-quay",
+              "offset": [
+                6,
+                0,
+                -2
+              ]
+            },
+            "dialogue": "dlg/sverre-day",
+            "doing": "about the festival"
+          },
+          "npc/vidar": {
+            "at": {
+              "anchor": "anchor/node-street-1",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/vidar-day",
+            "doing": "at the top of the main street with a bow he cannot use, staring up at the bell tower"
+          }
+        },
+        "happening": {
+          "subject": "npc/vidar",
+          "text": "The festival bell's rope has snapped, its knot caught on the target in the bell tower's opening.",
+          "verb": "learns"
+        },
+        "id": "quest/the-bell",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/vidar",
+              "text": "Vidar hands over the bow and asks for three clean hits on the belfry target.",
+              "verb": "learns"
+            },
+            "hint": "At the top of the main street, just below the square: the clerk with the bow.",
+            "id": "obj/ask-vidar",
+            "npc": "npc/vidar",
+            "title": "Speak to the clerk",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/ask-vidar"
+            ],
+            "anchor": "anchor/forecourt-bell",
+            "answers": {
+              "done": "The bell sings out over the square.",
+              "not_yet": "A dull clunk. The rope's knot is still caught in the tower."
+            },
+            "happening": {
+              "subject": "anchor/forecourt-bell",
+              "text": "Three arrows knock the rope's knot free and the festival bell rings again.",
+              "verb": "opens"
+            },
+            "hint": "Three arrows into the target in the bell tower's opening, from the top of the main street. Then use the bell on the close.",
+            "id": "obj/ring-the-bell",
+            "limit": {
+              "from": "activation",
+              "on_expire": [
+                {
+                  "style": "chat",
+                  "text": "Vidar lowers his eyes from the tower. 'By-law fourteen will have to wait. I shall go up with a ladder after supper.' The bell stays silent for now.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 6000
+            },
+            "prop": {
+              "block": "minecraft:bell[attachment=floor,facing=east,powered=false]"
+            },
+            "requires_state": [
+              {
+                "op": "at-least",
+                "state": "state/belfry-hits",
+                "value": 3
+              }
+            ],
+            "title": "Shoot the belfry target",
+            "type": "interact"
+          }
+        ],
+        "on_complete": [
+          {
+            "flag": "flag/bell-settled",
+            "type": "set-flag"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/ask-vidar": [
+            {
+              "count": 1,
+              "item": "minecraft:bow",
+              "name": "Vidar's Bow",
+              "type": "give-item"
+            },
+            {
+              "count": 24,
+              "item": "minecraft:arrow",
+              "type": "give-item"
+            }
+          ],
+          "obj/ring-the-bell": [
+            {
+              "flag": "flag/bell-fixed",
+              "type": "set-flag"
+            },
+            {
+              "style": "chat",
+              "text": "The bell rings out over the square. Vidar, with tears in his eyes, says it is exactly on time, and notes it in his book.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/opening",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/agathe": {
+            "at": "anchor/stop-great-hall",
+            "dialogue": "dlg/agathe-day",
+            "doing": "about the festival"
+          },
+          "npc/bernt": {
+            "at": {
+              "anchor": "anchor/node-castle",
+              "offset": [
+                -3,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/bernt-day",
+            "doing": "about the festival"
+          },
+          "npc/hedda": {
+            "at": "anchor/stage",
             "dialogue": "dlg/hedda-dusk",
             "doing": "on the stage, guarding the festival cake with a ladle"
           },
@@ -825,7 +1017,8 @@
             "radius": 5,
             "requires_flags": [
               "flag/lamp-settled",
-              "flag/fox-settled"
+              "flag/fox-settled",
+              "flag/bell-settled"
             ],
             "title": "Back to the stage",
             "type": "reach-anchor"
@@ -1028,6 +1221,10 @@
               "type": "set-time"
             },
             {
+              "flag": "flag/dusk-begun",
+              "type": "set-flag"
+            },
+            {
               "at": {
                 "anchor": "anchor/node-quay",
                 "at": "anchor"
@@ -1172,6 +1369,16 @@
                   "effects": [
                     {
                       "style": "title",
+                      "text": "Boats on the beach!",
+                      "type": "narrate",
+                      "when": {
+                        "requires_flags": [
+                          "flag/lighthouse-lit"
+                        ]
+                      }
+                    },
+                    {
+                      "style": "chat",
                       "text": "The lighthouse beam swings round and holds: boats running up on the beach past the harbour! Thirty breaths away.",
                       "type": "narrate",
                       "when": {
@@ -1272,7 +1479,7 @@
             },
             "dialogue": {
               "barks": [
-                "Three goats. Pearl, Barley and the Admiral. The Admiral is the problem."
+                "Three goats, and one of them is the problem."
               ]
             },
             "doing": "about the festival"
@@ -1364,6 +1571,26 @@
             "when": {
               "forbids_flags": [
                 "flag/lighthouse-lit"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "On the stroke of midnight the festival bell rings the festival in.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/bell-fixed"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Halfway through Hedda's speech, Vidar finally gets the bell to ring, and the whole square cheers the interruption.",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/bell-fixed"
               ]
             }
           },
@@ -7969,6 +8196,18 @@
     ],
     "state": [
       {
+        "id": "state/belfry-hits",
+        "initial": 0,
+        "note": "Arrows the party has put in the belfry target; three free the rope's knot.",
+        "scope": "party"
+      },
+      {
+        "id": "state/bell-cooldown",
+        "initial": 0,
+        "note": "1 while the forecourt bell is still humming from its last ring at dusk; it can be rung again at 0.",
+        "scope": "party"
+      },
+      {
         "counts": {
           "of": {
             "kind": "minecraft:pillager"
@@ -8035,6 +8274,35 @@
         ]
       },
       {
+        "at": "anchor/belfry-target",
+        "effects": [
+          {
+            "amount": 1,
+            "state": "state/belfry-hits",
+            "type": "add-state"
+          },
+          {
+            "style": "actionbar",
+            "text": "Thock. The rope's knot jumps on the target.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/bell-fixed"
+        ],
+        "id": "trigger/belfry-shot",
+        "on": {
+          "on": "shot"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:target[power=0]"
+        },
+        "serves": {
+          "objective": "obj/ring-the-bell"
+        }
+      },
+      {
         "answers": {
           "done": "The fox has nothing left to give you but a look.",
           "not_yet": "The fox shies away from your hand and keeps its prize."
@@ -8063,10 +8331,97 @@
         ]
       },
       {
+        "answers": {
+          "not_yet": "The bell is still humming. Give it a moment."
+        },
+        "at": "anchor/forecourt-bell",
+        "effects": [
+          {
+            "audience": {
+              "wave": "wave/dock-landing"
+            },
+            "effect": "minecraft:glowing",
+            "hide_particles": true,
+            "seconds": 10,
+            "type": "give-effect"
+          },
+          {
+            "audience": {
+              "wave": "wave/beach-landing"
+            },
+            "effect": "minecraft:glowing",
+            "hide_particles": true,
+            "seconds": 10,
+            "type": "give-effect"
+          },
+          {
+            "audience": {
+              "wave": "wave/the-captain"
+            },
+            "effect": "minecraft:glowing",
+            "hide_particles": true,
+            "seconds": 10,
+            "type": "give-effect"
+          },
+          {
+            "state": "state/bell-cooldown",
+            "type": "set-state",
+            "value": 1
+          },
+          {
+            "style": "actionbar",
+            "text": "The bell booms, and every raider in the town lights up like a lantern.",
+            "type": "narrate"
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 400,
+                "effects": [
+                  {
+                    "state": "state/bell-cooldown",
+                    "type": "set-state",
+                    "value": 0
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "forbids_flags": [
+          "flag/raiders-gone"
+        ],
+        "id": "trigger/ring-for-glow",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:bell[attachment=floor,facing=east,powered=false]"
+        },
+        "requires_flags": [
+          "flag/bell-fixed",
+          "flag/dusk-begun"
+        ],
+        "requires_state": [
+          {
+            "op": "equals",
+            "state": "state/bell-cooldown",
+            "value": 0
+          }
+        ]
+      },
+      {
         "effects": [
           {
             "flag": "flag/cake-taken",
             "type": "set-flag"
+          },
+          {
+            "anchor": "anchor/cake-table",
+            "block": "minecraft:air",
+            "type": "set-block"
           },
           {
             "style": "chat",
@@ -8096,6 +8451,11 @@
           {
             "flag": "flag/cake-taken",
             "type": "set-flag"
+          },
+          {
+            "anchor": "anchor/cake-table",
+            "block": "minecraft:air",
+            "type": "set-block"
           },
           {
             "style": "chat",

@@ -17,6 +17,18 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "cliff-path-2-to-net-green-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
+        "via": "cliff-path-2-to-beacon-point-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-east"
       },
       {
@@ -42,10 +54,11 @@
   "palette": {
     "b0": "minecraft:lantern[hanging=false,waterlogged=false]",
     "b1": "minecraft:oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b2": "minecraft:oak_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
-    "b3": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
-    "b4": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
-    "b5": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
+    "b2": "minecraft:oak_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
+    "b3": "minecraft:oak_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
+    "b4": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=false]",
+    "b5": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
+    "b6": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
     "ground-0": "minecraft:coarse_dirt",
     "ground-1": "minecraft:grass_block[snowy=false]",
     "trodden": [
@@ -79,12 +92,24 @@
     "handed/seam/cliff-path-1-to-cliff-path-2/y1": 8,
     "handed/seam/cliff-path-1-to-cliff-path-2/z0": 0,
     "handed/seam/cliff-path-1-to-cliff-path-2/z1": 0,
+    "handed/seam/cliff-path-2-to-beacon-point/x0": 6,
+    "handed/seam/cliff-path-2-to-beacon-point/x1": 6,
+    "handed/seam/cliff-path-2-to-beacon-point/y0": 1,
+    "handed/seam/cliff-path-2-to-beacon-point/y1": 8,
+    "handed/seam/cliff-path-2-to-beacon-point/z0": 12,
+    "handed/seam/cliff-path-2-to-beacon-point/z1": 29,
     "handed/seam/cliff-path-2-to-lighthouse/x0": 1,
     "handed/seam/cliff-path-2-to-lighthouse/x1": 5,
     "handed/seam/cliff-path-2-to-lighthouse/y0": 1,
     "handed/seam/cliff-path-2-to-lighthouse/y1": 8,
     "handed/seam/cliff-path-2-to-lighthouse/z0": 41,
-    "handed/seam/cliff-path-2-to-lighthouse/z1": 41
+    "handed/seam/cliff-path-2-to-lighthouse/z1": 41,
+    "handed/seam/cliff-path-2-to-net-green/x0": 0,
+    "handed/seam/cliff-path-2-to-net-green/x1": 0,
+    "handed/seam/cliff-path-2-to-net-green/y0": 1,
+    "handed/seam/cliff-path-2-to-net-green/y1": 8,
+    "handed/seam/cliff-path-2-to-net-green/z0": 10,
+    "handed/seam/cliff-path-2-to-net-green/z1": 33
   },
   "rules": {
     "column_10": [
@@ -463,12 +488,52 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
-                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+                "name": "handed/seam/cliff-path-2-to-net-green/z0"
               },
               "op": "gt",
               "rhs": {
                 "expr": "int",
                 "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-net-green/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-net-green/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-net-green/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -505,6 +570,18 @@
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
               }
             },
             {
@@ -565,6 +642,30 @@
                   "expr": "int",
                   "value": 1
                 }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-net-green/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 11
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-net-green/z0"
               }
             },
             {
@@ -643,6 +744,102 @@
                 "lhs": {
                   "expr": "param",
                   "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 11
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 31
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
                 },
                 "op": "add",
                 "rhs": {
@@ -779,7 +976,83 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-net-green/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-net-green/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-beacon-point/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-1-to-cliff-path-2/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
                 "name": "handed/seam/cliff-path-2-to-lighthouse/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-net-green/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-1-to-cliff-path-2/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/cliff-path-2-to-beacon-point/y0"
               },
               "op": "eq",
               "rhs": {
@@ -863,6 +1136,20 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "cliff-path-2-to-net-green-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-west"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -871,7 +1158,53 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+                "name": "handed/seam/cliff-path-2-to-net-green/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-net-green/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-net-green/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-net-green/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -970,6 +1303,34 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "cliff-path-2-to-beacon-point-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -985,7 +1346,75 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 38
+                "value": 9
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 11
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 31
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 9
               },
               "size": "absolute"
             },
@@ -1047,21 +1476,7 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-east"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
+              "region": "cliff-path-2-to-beacon-point-way"
             },
             {
               "body": {
@@ -1110,36 +1525,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 8
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 31
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -1194,6 +1635,20 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "cliff-path-2-to-beacon-point-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -1202,7 +1657,53 @@
             {
               "blocks": {
                 "expr": "param",
-                "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+                "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-beacon-point/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-lighthouse/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/cliff-path-2-to-beacon-point/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -1357,15 +1858,40 @@
             },
             {
               "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b3"
               },
               "op": "fill"
             },
             {
               "material": {
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b5"
               },
               "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
             },
             {
               "material": {
@@ -1375,49 +1901,13 @@
             },
             {
               "material": {
-                "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
+                "role": "b6"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b4"
               },
               "op": "fill"
             },
@@ -1499,36 +1989,38 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 8
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-net-green/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 11
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/cliff-path-2-to-net-green/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
+                "value": 20
               },
               "size": "absolute"
             },
@@ -1626,32 +2118,6 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
               "body": {
                 "op": "void"
               },
@@ -1709,35 +2175,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
+                "value": 26
               },
               "size": "absolute"
             },
@@ -1821,32 +2259,6 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
               "body": {
                 "op": "void"
               },
@@ -1904,35 +2316,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
+                "value": 26
               },
               "size": "absolute"
             },
@@ -2022,34 +2406,6 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "unwalked"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "cliff-path-2-to-lighthouse-way"
             }
           ],
@@ -2103,35 +2459,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 8
+                "value": 26
               },
               "size": "absolute"
             },

@@ -1326,6 +1326,10 @@ def build_model() -> Model:
     m.box(tx0 + 1, tx1 - 1, 28, 28, tz0 + 1, tz1 - 1, "beam")
     m.set(14, 27, tz0 + 3, "bell")
     m.set(15, 27, tz0 + 4, "bell")
+    # the ringers' lanterns in the four corners of the belfry's floor, so the
+    # bell chamber the target opens on is lit at night as by day (DW0210)
+    for (x, z) in ((tx0 + 1, tz0 + 1), (tx1 - 1, tz0 + 1), (tx0 + 1, tz1 - 1), (tx1 - 1, tz1 - 1)):
+        m.set(x, 22, z, "lantern")
     # battlement and corner pinnacles, then the spire
     for x in range(tx0, tx1 + 1):
         for z in range(tz0, tz1 + 1):
@@ -2095,7 +2099,7 @@ MARK_AT = {"node-cathedral": (41, ZC, "west"),   # in the crossing, facing the w
            # the festival day: the target hung in the bell tower's west opening over
            # the square (the block the campaign's `shot` trigger stands there), and
            # the bell that stands on the close before the west front
-           # "belfry-target": (11, 23, "west", 25), held back with task C (DW0845 on a station in the tower)
+           "belfry-target": (11, 23, "west", 25),
            "forecourt-bell": (5, 33, "east")}
 
 

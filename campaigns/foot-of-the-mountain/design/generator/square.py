@@ -125,6 +125,19 @@ def build(place):
     # props stacked at the stage's north foot, clear of the cathedral walk
     m.set(sx0 + 1, w, sz0 - 1, "minecraft:hay_block[axis=y]")
     m.set(sx0 + 2, w, sz0 - 1, "minecraft:barrel[facing=up,open=false]")
+    # the third defence line's supply chest beside them, and a cart of hay bales for cover
+    m.set(sx0 + 3, w, sz0 - 1, "minecraft:chest[facing=south,type=single,waterlogged=false]")
+    # the cake table on the deck: a trestle under a white cloth, the festival
+    # cake on it (the `cake-table` mark, which the cake's theft clears)
+    ct = (sx0 + 2, (sz0 + sz1) // 2)
+    m.set(ct[0], deck + 1, ct[1], "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]")
+    m.set(ct[0], deck + 1, ct[1] - 1, "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]")
+    m.set(ct[0], deck + 1, ct[1] + 1, "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]")
+    for dz in (-1, 1):
+        m.set(ct[0], deck + 2, ct[1] + dz, "minecraft:white_carpet")
+    # the cake itself is the campaign's: set on the cloth when the festival
+    # opens, and cleared by the raider who takes it (a cake is not a block a
+    # piece may hold, DW0730)
 
     # ---- lamp posts at the square's four quarters ----
     for lx, lz in ((11, 3), (19, 3), (11, 22), (19, 22)):
@@ -142,6 +155,8 @@ def build(place):
     m.mark("node-square", 12, 13, facing="east")
     # the stage's station: before the stage's front, at its middle
     m.mark("stage", sx0 - 1, (sz0 + sz1) // 2, facing="east")
+    # the cake on the table, between the two ends of its cloth
+    m.mark("cake-table", sx0 + 2, (sz0 + sz1) // 2, facing="west", y=w + 3)
     # the party come up the main street and spawn at its head
     m.mark("spawn", 15, 21, facing="north")
     return m

@@ -29,6 +29,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "street-5-to-goat-pen-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-east"
       },
       {
@@ -150,6 +156,12 @@
     "handed/seam/street-5-to-flight-6/y1": 4,
     "handed/seam/street-5-to-flight-6/z0": 15,
     "handed/seam/street-5-to-flight-6/z1": 15,
+    "handed/seam/street-5-to-goat-pen/x0": 10,
+    "handed/seam/street-5-to-goat-pen/x1": 10,
+    "handed/seam/street-5-to-goat-pen/y0": 1,
+    "handed/seam/street-5-to-goat-pen/y1": 4,
+    "handed/seam/street-5-to-goat-pen/z0": 1,
+    "handed/seam/street-5-to-goat-pen/z1": 3,
     "handed/seam/street-5-to-lane-5/x0": 10,
     "handed/seam/street-5-to-lane-5/x1": 10,
     "handed/seam/street-5-to-lane-5/y0": 1,
@@ -1598,12 +1610,24 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
-                "name": "handed/seam/street-5-to-lane-5/z0"
+                "name": "handed/seam/street-5-to-smithy/z0"
               },
               "op": "gt",
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/flight-5-to-street-5/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
               }
             },
             {
@@ -1786,6 +1810,18 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
+                "name": "handed/seam/street-5-to-goat-pen/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
                 "name": "handed/seam/street-5-to-flight-6/y0"
               },
               "op": "eq",
@@ -1811,6 +1847,18 @@
               "lhs": {
                 "expr": "param",
                 "name": "handed/seam/street-5-to-smithy/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-5-to-street-5/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-goat-pen/y0"
               },
               "op": "eq",
               "rhs": {
@@ -1848,6 +1896,38 @@
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/flight-5-to-street-5/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-goat-pen/z0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-5-to-street-5/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-goat-pen/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-smithy/z0"
               }
             }
           ]
@@ -4300,6 +4380,13 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "street-5-to-goat-pen-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "side-east"
             },
             {
@@ -4338,12 +4425,27 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
+                  "name": "handed/seam/street-5-to-smithy/z0"
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/flight-5-to-street-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-smithy/z0"
                 }
               },
               "size": "absolute"
