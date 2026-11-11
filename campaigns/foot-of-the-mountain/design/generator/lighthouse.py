@@ -1064,10 +1064,10 @@ def build_tower(m):
     # head's other three cells, which light the room while the lamp is cold
     # the lamp stands on the newel head's south-east cell, the one the stair's
     # last turn does not pass beside, so the lamp room's mark is the only floor
-    # its tolerance reaches (DW0881); candles on the head's two northern cells,
-    # the west cell left clear as the floor a body stands on beside the lamp
-    for (x, z) in NEWEL[:2]:
-        m.set(x, LAMP_FLOOR + 1, z, "candles")
+    # its tolerance reaches (DW0881); the head's other three cells are clear floor,
+    # so a body that waits by the lamp walks back to the stair, and the room is lit
+    # while the lamp is cold by a lantern hung from the cap over the newel
+    m.set(13, LAMP_TOP, 13, "lantern_h")
     # the cap: a dark cornice, then a cone of tile stairs stepping in to a finial
     polygon_ring(m, LAMP_TOP + 1, R_LAMP + 0.7, "dark", "cap")
     for k, r in enumerate((R_LAMP - 0.4, R_LAMP - 1.4, R_LAMP - 2.4)):
