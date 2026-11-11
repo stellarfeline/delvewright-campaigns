@@ -6,7 +6,16 @@
 
 The Hush Garden is a walled hedge maze with a watchtower in its middle. At closing time the head gardener winds the great gate shut, and two friends are still inside, at the foot of the tower. Something old sleeps under the garden's well, and it wakes to footsteps.
 
-A small two-player level, about twenty-five minutes. Either part can be played alone.
+| | |
+|---|---|
+| **Players** | 1–2 |
+| **Playtime** | ~25 minutes |
+| **Mode** | adventure, no fighting |
+| **Languages** | English, 简体中文 (`zh-cn`) |
+| **Classes** | two — Runner, Caller |
+| **Licence** | CC BY-SA 4.0 |
+
+A small two-player level. Either part can be played alone.
 
 ![The heart of the maze](media/heart-near.jpg)
 

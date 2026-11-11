@@ -163,18 +163,18 @@ additionally holds it to the `delvec` line, the only line whose release carries
 the binary. A commit somebody merely
 stopped looking at cannot supply that, and neither can a hand-written tag.
 
-WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.14.0` (engine commit
-`e51f8bbe`, `delvec 1.14.0, dsl 0.56.0, mc 1.21.11`). Three demo levels on this
-tree — The Ferry Bell, The Bell Changes the Tune and The Thing Across the Water
-— are written in dsl 0.56.0, which the 1.13.0 release (dsl 0.39.0) refuses, so a
-release of any of them needs this engine. Each builds with the release's
-`aarch64-apple-darwin` archive (its `SHA256SUMS` row OK): `delvec --prefabs
-prefabs build campaigns/<id>`, exit 0, twice, the two output trees identical;
-the datapack, resource pack, server, creator and PackTest datapacks and SKINS.md
-are byte-identical to the playtested build, and `manifest.json` differs
-only in what the engine stamps (its version, its code list, and the review
-outputs it writes). The campaigns on this tree in older dsl versions are
-released versions built by their own pinned engines, and stay as they are.
+WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.16.0` (engine commit
+`fcad3bc4e`, `delvec 1.16.0, dsl 0.71.0, mc 1.21.11`). The warden maze, The
+Hush Garden, is written in dsl 0.71.0, which the 1.14.0 release (dsl 0.56.0)
+refuses, so a release of it needs this engine. It builds with the release's
+`aarch64-apple-darwin` and `x86_64-unknown-linux-gnu` archives (each
+`SHA256SUMS` row OK): `delvec --prefabs prefabs build campaigns/<id>`, exit 0,
+three times (workstation twice, build machine once), `manifest.json`
+byte-identical in all three. The campaigns on this tree in older dsl versions
+are released versions built by their own pinned engines and stay as they are;
+this engine refuses the three demo levels written in dsl 0.56.0 (`DW0100`, the
+quest plan's required `activity`), so a new release of one of those first
+brings its documents to the engine's surface.
 
 WHY IT NAMES A TAG AND NOT A COMMIT. The value used to be `70eea629`, the commit
 `v1.5.0` points at. That is no longer a value this policy accepts, and it is not
