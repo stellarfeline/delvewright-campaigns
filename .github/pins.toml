@@ -138,7 +138,7 @@ and this paragraph is what says so.
 
 [[pin]]
 id = "engine-release"
-value = "delvec--v1.16.0"
+value = "delvec--v1.16.1"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "release"
@@ -163,14 +163,15 @@ additionally holds it to the `delvec` line, the only line whose release carries
 the binary. A commit somebody merely
 stopped looking at cannot supply that, and neither can a hand-written tag.
 
-WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.16.0` (engine commit
-`fcad3bc4e`, `delvec 1.16.0, dsl 0.71.0, mc 1.21.11`). The warden maze, The
+WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.16.1` (engine commit
+`fa90c09f4`, `delvec 1.16.1, dsl 0.71.0, mc 1.21.11`). The warden maze, The
 Hush Garden, is written in dsl 0.71.0, which the 1.14.0 release (dsl 0.56.0)
-refuses, so a release of it needs this engine. It builds with the release's
-`aarch64-apple-darwin` and `x86_64-unknown-linux-gnu` archives (each
-`SHA256SUMS` row OK): `delvec --prefabs prefabs build campaigns/<id>`, exit 0,
-three times (workstation twice, build machine once), `manifest.json`
-byte-identical in all three. The campaigns on this tree in older dsl versions
+refuses, and it is proven on this release's own binary: the bot's `pursuit`
+stage here records a death on a pursued step as a measurement and walks it
+again, and the staging gate reads every branch world, which 1.16.0 did not. It
+builds with the release's `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`
+archives (each `SHA256SUMS` row OK): `delvec --prefabs prefabs build
+campaigns/<id>`, exit 0. The campaigns on this tree in older dsl versions
 are released versions built by their own pinned engines and stay as they are;
 this engine refuses the three demo levels written in dsl 0.56.0 (`DW0100`, the
 quest plan's required `activity`), so a new release of one of those first
