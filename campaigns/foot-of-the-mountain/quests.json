@@ -282,7 +282,7 @@
             },
             "hint": "Up the stair inside the tower: where steps are missing, jump the gap.",
             "id": "obj/climb-the-tower",
-            "radius": 2,
+            "radius": 1,
             "title": "Climb to the lamp room",
             "type": "reach-anchor"
           },
@@ -344,11 +344,19 @@
           },
           {
             "style": "chat",
-            "text": "From the top of the lighthouse you can see the whole town, and on the castle road a fox trotting uphill with something bright in its mouth. Inga squints after it: 'That's Bernt's storeroom key. The fireworks are locked in there.'",
+            "text": "Inga's voice comes up the stairwell: 'While you're up there, have a look through my spyglass. Something has been bothering the castle road all morning.'",
             "type": "narrate"
           }
         ],
         "on_objective_complete": {
+          "obj/ask-inga": [
+            {
+              "count": 1,
+              "item": "minecraft:spyglass",
+              "name": "Keeper's Spyglass",
+              "type": "give-item"
+            }
+          ],
           "obj/light-the-lamp": [
             {
               "anchor": "anchor/lamp-room",
@@ -481,6 +489,9 @@
             "hint": "Up the castle road from the square, to the wayside spring beside the road.",
             "id": "obj/flush-1",
             "radius": 3,
+            "requires_flags": [
+              "flag/fox-spotted"
+            ],
             "title": "Find the fox",
             "type": "reach-anchor"
           },
@@ -576,6 +587,9 @@
               ],
               "ticks": 9600
             },
+            "requires_flags": [
+              "flag/key-taken"
+            ],
             "title": "Fetch the fireworks",
             "type": "collect"
           }
@@ -599,6 +613,10 @@
         ],
         "on_objective_complete": {
           "obj/corner-the-fox": [
+            {
+              "flag": "flag/fox-denned",
+              "type": "set-flag"
+            },
             {
               "style": "chat",
               "text": "The fox sits down in front of its den with the key in its mouth and looks at you as if you were the one being unreasonable.",
@@ -1369,6 +1387,26 @@
             "when": {
               "forbids_flags": [
                 "flag/lighthouse-lit"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Oskar's cake stands on the stage, four tiers and a sugar lighthouse, without a mark on it.",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Hedda gives the toast to the cake's empty plate, and the town toasts the plate.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken"
               ]
             }
           },
@@ -7704,23 +7742,23 @@
                 "effects": [
                   {
                     "look_at": {
-                      "anchor": "anchor/node-street-2"
+                      "anchor": "anchor/node-square"
                     },
                     "path": [
                       {
-                        "anchor": "anchor/stage",
+                        "anchor": "anchor/node-square",
                         "offset": [
-                          1,
-                          3,
-                          -4
+                          2,
+                          5,
+                          -11
                         ]
                       },
                       {
-                        "anchor": "anchor/stage",
+                        "anchor": "anchor/node-square",
                         "offset": [
-                          1,
-                          5,
-                          2
+                          -2,
+                          7,
+                          -11
                         ]
                       }
                     ],
@@ -7770,23 +7808,23 @@
                 "effects": [
                   {
                     "look_at": {
-                      "anchor": "anchor/node-street-1"
+                      "anchor": "anchor/node-square"
                     },
                     "path": [
                       {
                         "anchor": "anchor/node-square",
                         "offset": [
-                          -14,
-                          2,
-                          -9
+                          -6,
+                          8,
+                          -10
                         ]
                       },
                       {
                         "anchor": "anchor/node-square",
                         "offset": [
-                          -14,
-                          4,
-                          -3
+                          -10,
+                          9,
+                          -10
                         ]
                       }
                     ],
@@ -7950,6 +7988,160 @@
           "Net Loft"
         ],
         "id": "sign/netloft"
+      }
+    ],
+    "state": [
+      {
+        "counts": {
+          "of": {
+            "kind": "minecraft:pillager"
+          },
+          "region": {
+            "anchor": "anchor/stage",
+            "extent": [
+              3,
+              2,
+              3
+            ]
+          }
+        },
+        "id": "state/raiders-at-the-cake-pillager",
+        "initial": 0,
+        "note": "How many pillagers stand on the stage by the cake.",
+        "scope": "party"
+      },
+      {
+        "counts": {
+          "of": {
+            "kind": "minecraft:vindicator"
+          },
+          "region": {
+            "anchor": "anchor/stage",
+            "extent": [
+              3,
+              2,
+              3
+            ]
+          }
+        },
+        "id": "state/raiders-at-the-cake-vindicator",
+        "initial": 0,
+        "note": "How many vindicators stand on the stage by the cake.",
+        "scope": "party"
+      }
+    ],
+    "triggers": [
+      {
+        "at": "anchor/lamp-room",
+        "effects": [
+          {
+            "flag": "flag/fox-spotted",
+            "type": "set-flag"
+          },
+          {
+            "style": "chat",
+            "text": "Through the spyglass: on the castle road, a fox trotting uphill with something bright in its mouth. Inga squints up the stair: 'That's Bernt's storeroom key. The fireworks are locked in there.'",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/fox-spotted"
+        ],
+        "id": "trigger/spot-the-fox",
+        "on": {
+          "item": "minecraft:spyglass",
+          "on": "use-item",
+          "range": 8
+        },
+        "requires_flags": [
+          "flag/lamp-settled"
+        ]
+      },
+      {
+        "answers": {
+          "done": "The fox has nothing left to give you but a look.",
+          "not_yet": "The fox shies away from your hand and keeps its prize."
+        },
+        "effects": [
+          {
+            "flag": "flag/key-taken",
+            "type": "set-flag"
+          },
+          {
+            "style": "chat",
+            "text": "The fox considers you for a long moment, then opens its mouth and lets you take the key. It looks offended.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/key-taken"
+        ],
+        "id": "trigger/take-the-key",
+        "on": {
+          "actor": "actor/fox",
+          "on": "use-actor"
+        },
+        "requires_flags": [
+          "flag/fox-denned"
+        ]
+      },
+      {
+        "effects": [
+          {
+            "flag": "flag/cake-taken",
+            "type": "set-flag"
+          },
+          {
+            "style": "chat",
+            "text": "A raider bounds onto the stage, snatches Oskar's cake and is gone with it into the dusk.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/cake-taken",
+          "flag/raiders-gone"
+        ],
+        "id": "trigger/cake-taken-pillager",
+        "on": {
+          "on": "body-enters",
+          "state": "state/raiders-at-the-cake-pillager"
+        },
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/raiders-at-the-cake-pillager",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "effects": [
+          {
+            "flag": "flag/cake-taken",
+            "type": "set-flag"
+          },
+          {
+            "style": "chat",
+            "text": "A raider bounds onto the stage, snatches Oskar's cake and is gone with it into the dusk.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/cake-taken",
+          "flag/raiders-gone"
+        ],
+        "id": "trigger/cake-taken-vindicator",
+        "on": {
+          "on": "body-enters",
+          "state": "state/raiders-at-the-cake-vindicator"
+        },
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/raiders-at-the-cake-vindicator",
+            "value": 1
+          }
+        ]
       }
     ],
     "waves": [

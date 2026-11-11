@@ -828,6 +828,7 @@ PALETTE = {
     "lantern": "minecraft:lantern[hanging=false,waterlogged=false]",
     "lantern_h": "minecraft:lantern[hanging=true,waterlogged=false]",
     "bell": "minecraft:bell[attachment=ceiling,facing=north,powered=false]",
+    "target": "minecraft:target[power=0]",
     "beam": "minecraft:dark_oak_planks",
     "louvre_x": "minecraft:dark_oak_slab[type=top,waterlogged=false]",
     "louvre_z": "minecraft:dark_oak_slab[type=bottom,waterlogged=false]",
@@ -1318,6 +1319,9 @@ def build_model() -> Model:
                     # opening reads as slatted and no body passes or stands in it
                     for y in range(24, 28):
                         m.set(x, y, z, "louvre_x" if y % 2 == 0 else "louvre_z")
+    # the festival day's target: the louvres out of one cell of the west
+    # opening, where the target block stands (`belfry-target`)
+    m.set(tx0, 25, tz0 + 4, AIR)
     # the bell, hung from the belfry's floor beam
     m.box(tx0 + 1, tx1 - 1, 28, 28, tz0 + 1, tz1 - 1, "beam")
     m.set(14, 27, tz0 + 3, "bell")
@@ -2061,7 +2065,7 @@ def body(p, rules):
     return split("x", cx, rx)
 
 
-FULL = {"floor", "wall", "lid", "stone", "dress", "quoin", "pier", "plinth", "glass", "glass_blue", "glass_red",
+FULL = {"target", "floor", "wall", "lid", "stone", "dress", "quoin", "pier", "plinth", "glass", "glass_blue", "glass_red",
         "glass_gold", "roof", "spire", "nave_a", "nave_b", "aisle_floor", "pave", "path", "turf", "altar", "beam",
         "cwall", "yew_log", "yew", "bush", "woodpile", "font", "louvre_x", "louvre_z",
         "vault", "rib", "capital"}
@@ -2087,7 +2091,12 @@ def shown_faces(p):
     """The four sides; the top course is the sky over the spire, which holds nothing."""
     return ["east", "north", "south", "west"]
 
-MARK_AT = {"node-cathedral": (41, ZC, "west")}   # in the crossing, facing the west door
+MARK_AT = {"node-cathedral": (41, ZC, "west"),   # in the crossing, facing the west door
+           # the festival day: the target hung in the bell tower's west opening over
+           # the square (the block the campaign's `shot` trigger stands there), and
+           # the bell that stands on the close before the west front
+           # "belfry-target": (11, 23, "west", 25), held back with task C (DW0845 on a station in the tower)
+           "forecourt-bell": (5, 33, "east")}
 
 
 def marks(p, inner):
@@ -2095,9 +2104,13 @@ def marks(p, inner):
     out = inner
     for name in reversed(p.a["owed_anchors"]):
         stem = name.removeprefix("anchor/")
-        x, z, facing = MARK_AT[stem]
-        assert p.walkable(p.cell(x, p.datum.value, z)), stem
-        mark = {"anchor": stem, "at": "offset", "facing": facing, "y": p.datum.expr, "x": num(x), "z": num(z)}
+        x, z, facing, *up = MARK_AT[stem]
+        if up:
+            y = arith(p.datum.expr, "add", num(up[0] - 1))
+        else:
+            assert p.walkable(p.cell(x, p.datum.value, z)), stem
+            y = p.datum.expr
+        mark = {"anchor": stem, "at": "offset", "facing": facing, "y": y, "x": num(x), "z": num(z)}
         out = {"body": out, "mark": mark, "op": "mark"}
     return out
 
