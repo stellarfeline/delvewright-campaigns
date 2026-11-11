@@ -8,8 +8,10 @@
 
 ## Engine
 
-- `delvec` 1.16.0, `dsl` 0.72.0, built from source in release profile from `stellarfeline/delvewright` `feature/festival-day` at `eea5c7d997600bf19e5444a16081e58a3f96f647` (spec-0133, the timed beat). Dev mode; the skill page read is that revision's.
-- Waiting on the branch: spec-0134 (small surfaces) and spec-0135 (vehicles). What each one carries for this delve is listed in `DESIGN.md`, *What the build carries now, and what waits*.
+- `delvec` 1.16.0, `dsl` 0.73.0, built from source in release profile from `stellarfeline/delvewright` `feature/festival-day` at `aa5484754` (spec-0133, the timed beat; spec-0134's first part: water in the route proof, per-player wave counts, rockets' stars, deferred loot fills, effects aimed at a body). The steps before were authored at `eea5c7d997600bf19e5444a16081e58a3f96f647` (spec-0133 alone, `dsl` 0.72.0). Dev mode; the skill page read is the revision's own.
+- Moved onto the new surfaces: every dusk wave but the captain scales with the party (`count {base, per_player: 1}`); at the return to the stage the party is handed the castle's crossbows and rockets carrying stars, sixteen when the fireworks were fetched in time and eight when not.
+- Not moved, though the surface has landed: the supply chests' food (`fill-loot`) is task A's payoff and waits with A for boats; the bell's glow on the raiders (an effect aimed at a wave) is task C's payoff and waits with C for the shot trigger. Task A is rowing, not swimming: water in the route proof alone does not carry it.
+- Waiting on the branch: the rest of spec-0134 (census and `body-enters`, `shot`, `use-item`, `by-effect` world edits, quorum, taking from an actor) and spec-0135 (vehicles).
 
 ## The design record
 
