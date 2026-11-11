@@ -917,28 +917,38 @@ def tower_inside(x, z):
 
 
 # The festival day: three treads have fallen out of the stair, each on a straight
-# run between two corners, so the climb is three one-block hops over a gap one
-# cell wide to the next tread one course up. Positions are counted along the
-# lane from the first step; a broken position holds no tread and adds no rise.
+# run between two corners, so the climb is three hops over a gap one cell wide
+# to the next tread at the same course (the hop a body makes without a run-up).
+# Positions are counted along the lane from the first step; a broken position
+# holds no tread, and the tread after it stands level with the one before, so
+# the stair takes three more positions to reach the lantern room's floor.
 BROKEN = (10, 19, 28)
 
 
 def stair_path():
     """The stair's steps, bottom to top: (x, z, y, role). One step a ring cell, a
     course a step, twelve courses a revolution, up to the lantern room's floor;
-    a broken position is skipped, so the tread after it is one course up."""
+    a broken position is skipped, and the tread after it is level with the one
+    before the gap."""
     out = []
     y = 0
-    for k in range(LAMP_FLOOR + len(BROKEN)):
+    after_gap = False
+    k = 0
+    while y < LAMP_FLOOR:
         if k in BROKEN:
+            after_gap = True
+            k += 1
             continue
-        y += 1
+        if not after_gap:
+            y += 1
+        after_gap = False
         i = (RING0 + k) % 12
         x, z = RING[i]
         nx, nz = RING[(i + 1) % 12]
         d = FACING[(nx - x, nz - z)] if (nx - x, nz - z) in FACING else "e"
         out.append((x, z, y, "step_" + d))
-    assert y == LAMP_FLOOR
+        k += 1
+    assert y == LAMP_FLOOR and all(RING[(RING0 + b) % 12][0] == RING[(RING0 + b - 1) % 12][0] or RING[(RING0 + b) % 12][1] == RING[(RING0 + b - 1) % 12][1] for b in BROKEN)
     return out
 
 
@@ -1347,11 +1357,11 @@ class Lighthouse(Place):
                     if (nx, ny, nz) in walk and (nx, ny, nz) not in seen and kind(nx, y, nz) == "pass":
                         seen.add((nx, ny, nz))
                         todo.append((nx, ny, nz))
-                # a hop over a gap one cell wide, level or one course up: the
+                # a hop over a gap one cell wide, level: the
                 # broken treads of the stair (BROKEN), jumped as the route proof jumps them
                 jx, jz = x + 2 * dx, z + 2 * dz
                 if (x, z) in RING and (jx, jz) in RING and all(kind(nx, yy, nz) == "pass" for yy in (y, y + 1, y + 2)):
-                    for ny in (y, y + 1):
+                    for ny in (y,):
                         if (jx, ny, jz) in walk and (jx, ny, jz) not in seen:
                             seen.add((jx, ny, jz))
                             todo.append((jx, ny, jz))
