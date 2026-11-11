@@ -154,9 +154,10 @@ def pen(m, W, D, d, g, side, floor_block, animal_part, shelter_part):
     for x in range(x0 + 2, x0 + 6):
         for z in range(fz, fz + 3):
             m.set(x, d + 3, z, slab(WOOD, "bottom"))
-    m.set(x0 + 3, d, fz + 1, "minecraft:hay_block[axis=x]")
-    m.set(x0 + 4, d, fz + 1, "minecraft:hay_block[axis=x]")
-    m.set(x0 + 3, d + 1, fz + 1, lantern())
+    # under the roof: a lantern hung from it and nothing on the ground a
+    # body climbs onto (a block there leaves a pocket between it and the
+    # pen's fence)
+    m.set(x0 + 3, d + 2, fz + 1, lantern(hanging=True))
     m.set(x1 - 3, d, (z0 + z1) // 2, "minecraft:water_cauldron[level=3]")
     part(m, x0 + 2, x0 + 5, fz, fz + 2, shelter_part)
     if side == "south":

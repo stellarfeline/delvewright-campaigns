@@ -65,6 +65,10 @@ Over the town as built, filling the empty flank with places that have a use befo
 
 The owner's map notes from the town's pictures are carried in the same fill: farmland, ponds, orchards, sheep and cattle pens and buildings on the empty land between the town and the forest; a grid of streets and buildings beside the main street; the cathedral's flat cross-shaped top becomes a ridged pitched roof; the gap beside the guildhall is closed; the lighthouse's bare ground and the headland beyond its trees get something worth looking at.
 
+## The ending
+
+*Owner's requirement*: the festival ends on a cutscene of a very lavish firework show — the sky full of rockets — over the townsfolk gathered together on the square. Built: three shots of eleven seconds each (from the stage over the crowd toward the sky over the main street; from high over the street back at the square; from behind the crowd), and under them rockets in layered volleys from ten marks along the top of the main street every half second, every flight, every shape and a mix of colours, closing on a finale burst from every mark at once; the ending follows the last shot. When the fireworks were not fetched in time the same cutscene plays over a few rockets with long gaps between them (the script's `fireworks_full` lost line). The townsfolk stand in a loose crowd on the square's west half, each on a cell with open sky and a clear cell round it. *Waiting on an engine capability*: the crowd hopping and bouncing for joy — an NPC has no movement of its own and the engine has no celebrate action; the crowd's marks are spaced so a hop slots in without moving anybody.
+
 ## Characters
 
 Hedda Brask (host), Inga (lighthouse keeper, D), Bernt (castle steward, fireworks, E), Sverre (boatwright, A), Kettil (cooper and goat keeper, B), Vidar Foss (guildhall clerk, who rings the bell, C), Oskar (baker of the cake), Lady Agathe Holm (guest of honour). The fox is an actor; the raiders are waves.
