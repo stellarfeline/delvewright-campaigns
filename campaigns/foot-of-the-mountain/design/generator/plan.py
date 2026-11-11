@@ -18,7 +18,7 @@ import sys
 import zlib
 
 CAMPAIGN = "foot-of-the-mountain"
-DSL = "0.69.0"
+DSL = "0.71.0"
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 
