@@ -3,7 +3,7 @@
 > **Requires delve engine 0.71.0 or newer** — last verified with delvec 1.16.0 on Minecraft Java 1.21.11.
 > 需要上面标注版本或更新的 delve 引擎。
 
-![从高处俯瞰静谧花园](media/garden-oblique.jpg)
+![从高处俯瞰静谧花园](media/garden-top.jpg)
 
 静谧花园是一座围墙环绕的树篱迷宫，正中立着一座瞭望塔。闭园时，园丁长把大门绞上了——可还有两个朋友留在里面，就在塔脚下。花园的老井下面睡着一个古老的东西，脚步声会把它吵醒。
 
@@ -18,7 +18,7 @@
 
 这是一关双人小关卡。两个角色都可以一个人玩。
 
-![迷宫中心](media/heart-near.jpg)
+![迷宫正中的瞭望塔](media/garden-oblique.jpg)
 
 ## 两个角色
 
@@ -30,8 +30,6 @@
 ## 你会遇到的人
 
 **雷恩·阿普尔盖特**，园丁长：说话快、心肠热，总在道歉。她照看静谧花园已经三十个夏天了。
-
-![大门外的草地](media/meadow-near.jpg)
 
 ## 怎么玩
 

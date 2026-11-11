@@ -2,7 +2,7 @@
 
 > **Requires delve engine 0.71.0 or newer** — last verified with delvec 1.16.0 on Minecraft Java 1.21.11.
 
-![The Hush Garden from above](media/garden-oblique.jpg)
+![The Hush Garden from above](media/garden-top.jpg)
 
 The Hush Garden is a walled hedge maze with a watchtower in its middle. At closing time the head gardener winds the great gate shut, and two friends are still inside, at the foot of the tower. Something old sleeps under the garden's well, and it wakes to footsteps.
 
@@ -17,7 +17,7 @@ The Hush Garden is a walled hedge maze with a watchtower in its middle. At closi
 
 A small two-player level. Either part can be played alone.
 
-![The heart of the maze](media/heart-near.jpg)
+![The watchtower in the middle of the maze](media/garden-oblique.jpg)
 
 ## The parts
 
@@ -29,8 +29,6 @@ Talk to each other. The caller can see much more of the maze than the runner can
 ## Who you will meet
 
 **Wren Applegate**, the head gardener: quick, warm, and sorry. She has kept the Hush Garden for thirty summers.
-
-![The meadow beyond the gate](media/meadow-near.jpg)
 
 ## Playing it
 
