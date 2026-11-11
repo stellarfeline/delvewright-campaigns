@@ -23,6 +23,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "lane-5-to-farm-lane-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-east"
       },
       {
@@ -121,6 +127,12 @@
     "handed/seam/lane-5-to-cottages-2/y1": 8,
     "handed/seam/lane-5-to-cottages-2/z0": 6,
     "handed/seam/lane-5-to-cottages-2/z1": 6,
+    "handed/seam/lane-5-to-farm-lane/x0": 41,
+    "handed/seam/lane-5-to-farm-lane/x1": 41,
+    "handed/seam/lane-5-to-farm-lane/y0": 1,
+    "handed/seam/lane-5-to-farm-lane/y1": 8,
+    "handed/seam/lane-5-to-farm-lane/z0": 2,
+    "handed/seam/lane-5-to-farm-lane/z1": 4,
     "handed/seam/street-5-to-lane-5/x0": 1,
     "handed/seam/street-5-to-lane-5/x1": 1,
     "handed/seam/street-5-to-lane-5/y0": 1,
@@ -1016,13 +1028,45 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "int",
-                "value": 2
+                "expr": "param",
+                "name": "handed/seam/lane-5-to-farm-lane/z0"
               },
               "op": "gt",
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/street-5-to-lane-5/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 3
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-5-to-farm-lane/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 4
               }
             },
             {
@@ -1041,8 +1085,16 @@
               },
               "op": "gt",
               "rhs": {
-                "expr": "int",
-                "value": 5
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -1088,8 +1140,16 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "int",
-                "value": 5
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               },
               "op": "gt",
               "rhs": {
@@ -1187,6 +1247,26 @@
                   "expr": "int",
                   "value": 1
                 }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-5-to-farm-lane/z0"
               }
             },
             {
@@ -1337,6 +1417,26 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
+                "name": "handed/seam/lane-5-to-farm-lane/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-boatwright/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
                 "name": "handed/seam/lane-5-to-boatwright/y0"
               },
               "op": "eq",
@@ -1350,6 +1450,18 @@
               "lhs": {
                 "expr": "param",
                 "name": "handed/seam/lane-5-to-cottages-2/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/street-5-to-lane-5/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/lane-5-to-farm-lane/y0"
               },
               "op": "eq",
               "rhs": {
@@ -1574,8 +1686,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1602,8 +1722,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1666,8 +1794,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1694,8 +1830,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1758,8 +1902,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1786,8 +1938,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1850,8 +2010,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1878,8 +2046,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -1957,13 +2133,28 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 2
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z0"
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z0"
                 }
               },
               "size": "absolute"
@@ -1977,15 +2168,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
               },
               "size": "absolute"
             },
@@ -2006,8 +2206,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -2119,6 +2327,20 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "lane-5-to-farm-lane-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-east"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -2128,6 +2350,44 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/street-5-to-lane-5/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z0"
+                }
               },
               "size": "absolute"
             },
@@ -2148,8 +2408,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/street-5-to-lane-5/z0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -2227,13 +2495,28 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 2
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z0"
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/street-5-to-lane-5/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/lane-5-to-farm-lane/z0"
                 }
               },
               "size": "absolute"
@@ -2247,15 +2530,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 4
+                }
               },
               "size": "absolute"
             },
@@ -2276,8 +2568,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -2482,8 +2782,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -2510,8 +2818,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -2574,8 +2890,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -2602,8 +2926,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "int",
-                  "value": 5
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/lane-5-to-farm-lane/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
