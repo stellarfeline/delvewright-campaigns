@@ -1071,6 +1071,12 @@
         ],
         "on_complete": [
           {
+            "count": 1,
+            "item": "minecraft:carrot_on_a_stick",
+            "name": "Race Carrot",
+            "type": "give-item"
+          },
+          {
             "flag": "flag/raiders-gone",
             "type": "set-flag"
           },
@@ -8074,6 +8080,160 @@
           "quest": "quest/dusk",
           "type": "quest-complete"
         }
+      },
+      {
+        "cast": {
+          "npc/agathe": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "Sixty-one festivals, and every one of them went wrong somewhere. That is how you know it is the festival."
+              ]
+            },
+            "doing": "about the festival"
+          },
+          "npc/bernt": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -10,
+                0,
+                2
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "The fireworks are in the storeroom. The storeroom key is, at present, in a fox."
+              ]
+            },
+            "doing": "about the festival"
+          },
+          "npc/hedda": {
+            "at": "anchor/stage",
+            "dialogue": "dlg/hedda-night",
+            "doing": "on the stage at night with her speech in her hand"
+          },
+          "npc/inga": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                -4
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "Mind the stairs. The stairs do not mind you."
+              ]
+            },
+            "doing": "about the festival"
+          },
+          "npc/kettil": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -10,
+                0,
+                -1
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "Three goats, and one of them is the problem."
+              ]
+            },
+            "doing": "about the festival"
+          },
+          "npc/oskar": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                -1
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "The cake is resting. Do not slam any doors near the cake."
+              ]
+            },
+            "doing": "about the festival"
+          },
+          "npc/sverre": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -10,
+                0,
+                -4
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "Six crates of the feast in the bay. Row gently. Crates are shy."
+              ]
+            },
+            "doing": "about the festival"
+          },
+          "npc/vidar": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -12,
+                0,
+                -1
+              ]
+            },
+            "dialogue": {
+              "barks": [
+                "By-law fourteen: the bell rings at dusk. By-law fourteen did not foresee the rope."
+              ]
+            },
+            "doing": "about the festival"
+          }
+        },
+        "happening": {
+          "subject": "npc/oskar",
+          "text": "The festival's pig race is about to start at the top of the main street.",
+          "verb": "learns"
+        },
+        "id": "quest/the-pig-race",
+        "objectives": [
+          {
+            "anchor": "anchor/node-quay",
+            "happening": {
+              "subject": "anchor/node-quay",
+              "text": "The party ride Turnip down the main street to the quay.",
+              "verb": "arrives"
+            },
+            "hint": "Oskar's racing pig is called Turnip, and waits saddled at the top of the main street: ride him all the way down to the quay.",
+            "id": "obj/race-the-pig",
+            "radius": 4,
+            "ride": "vehicle/race-pig",
+            "title": "Win the pig race",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "style": "chat",
+            "text": "Turnip crosses the quay first by a snout. The town declares it the fastest pig race in living memory, since it is the only one.",
+            "type": "narrate"
+          }
+        ],
+        "trigger": {
+          "quest": "quest/dusk",
+          "type": "quest-complete"
+        }
       }
     ],
     "signs": [
@@ -8480,6 +8640,30 @@
         ]
       }
     ],
+    "vehicles": [
+      {
+        "at": {
+          "anchor": "anchor/node-street-1"
+        },
+        "bounds": {
+          "anchor": "anchor/node-street-5",
+          "extent": [
+            6,
+            12,
+            100
+          ]
+        },
+        "entity": "minecraft:pig",
+        "equipment": {
+          "saddle": {
+            "item": "minecraft:saddle"
+          }
+        },
+        "facing": "south",
+        "id": "vehicle/race-pig",
+        "name": "Turnip"
+      }
+    ],
     "waves": [
       {
         "anchor": "anchor/node-street-9",
@@ -8580,6 +8764,6 @@
       }
     ]
   },
-  "dsl_version": "0.73.0",
+  "dsl_version": "0.74.0",
   "stage": "quests"
 }

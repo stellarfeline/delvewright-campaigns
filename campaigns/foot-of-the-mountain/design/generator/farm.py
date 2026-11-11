@@ -383,6 +383,43 @@ def beacon_point(m, W, D, d, g):
                 m.part(x, x, z, z, "point")
 
 
+def bay(m, W, D, d, g):
+    """The bay below the quay (task A): the quay is the north edge (z 1); clear water
+    a course deep over sand, the slip's steps at the seam, sand shoals breaking the surface,
+    a bar across the bay's mouth with a channel at its east end, and the six crates'
+    shoals, two out past the bar. Returns the marks."""
+    WATER = "minecraft:water[level=0]"
+    for x in range(1, W + 1):
+        for z in range(1, D + 1):
+            m.set(x, g - 1, z, "minecraft:sand")
+            m.set(x, g, z, WATER)
+    def shoal(x0, z0, w, d_):
+        for x in range(x0, x0 + w):
+            for z in range(z0, z0 + d_):
+                if 1 <= x <= W and 1 <= z <= D:
+                    m.set(x, g - 1, z, "minecraft:sand")
+                    m.set(x, g, z, "minecraft:sand")
+    # the slip: two steps of sand from the quay's edge down to the water, at the seam
+    for x in (6, 7, 8):
+        for z in (1, 2):
+            m.set(x, g, z, "minecraft:sand")
+    # the bar across the bay's mouth, a channel at its east end
+    BAR = D - 8
+    shoal(1, BAR, W - 10, 2)
+    # the crates' shoals: four inside the bar, two beyond it
+    CRATES = [(14, 8), (30, 12), (44, 6), (22, 17), (12, BAR + 5), (38, BAR + 5)]
+    for (x, z) in CRATES:
+        shoal(x - 1, z - 1, 3, 3)
+    for x in range(1, W + 1):
+        for z in range(3, D + 1):
+            if m.get(x, g, z) == "minecraft:sand":
+                m.part(x, x, z, z, "shoals")
+    marks = {f"crate-{k + 1}": (x, z, None) for k, (x, z) in enumerate(CRATES)}
+    marks["slip-1"] = (5, 3, g)
+    marks["slip-2"] = (10, 3, g)
+    return marks
+
+
 def farm_lane(m, W, D, d, g):
     for x in range(1, W + 1):
         for z in range(1, D + 1):
@@ -420,6 +457,12 @@ def build(place):
         net_green(m, W, D, d, g)
     elif stem == "beacon-point":
         beacon_point(m, W, D, d, g)
+    elif stem == "bay":
+        for name, (x, z, y) in bay(m, W, D, d, g).items():
+            m.mark(name, x, z, facing="south", y=y)
+        m.mark("node-bay", 7, 2, facing="south")
+        m.finish()
+        return m
     elif stem == "goat-pen":
         gz = goat_pen(m, W, D, d, g)
         # the latch: on the street before the gatepost, where a body stands to drop it

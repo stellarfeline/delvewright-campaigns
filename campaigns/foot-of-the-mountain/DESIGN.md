@@ -57,6 +57,8 @@ The clock jumps to midnight, the whole town's lamps come on, the townsfolk walk 
 | `fireworks_full` | a full sky | a few rockets |
 | `cake_safe` | the cake stands | the host speaks to an empty plate |
 
+The woods stay walkable at night and are hung with festival lanterns, placed as part of the woods' design, until every cell under the trees clears the light check (the owner's ruling).
+
 Optional: a pig race on the festival night, carrot on a stick, from the cathedral down the main street to the dock. For fun; not part of finishing.
 
 ## The map this needs
@@ -84,6 +86,6 @@ Hedda Brask (host), Inga (lighthouse keeper, D), Bernt (castle steward, firework
 
 `GENERATION.md` names the engine revision. Built: the opening; C with Vidar's bow, three hits on the belfry target, the bell on the close and its glow on the raiders at dusk; D with the climb, the relight and the spyglass that spots the fox; E with the chase, the key taken out of the fox's mouth at its den and the fireworks fetched in time; the dusk waves scaled to the party, the crossbows and starred rockets, the lighthouse's warning, the inn across the square as the checkpoint and the cake taken off its table by a raider who reaches it; the night, the gathered town, the lavish show and the ending reading the lamp, the bell, the fireworks and the cake. On the map: the goat pen on the main street, the cake table and the third line's supply chest on the stage, the net green on the open land by the lighthouse and the beacon point on the headland.
 
-Written but not emitted, on engine defects and limits: B (the goats, the wheat, the pen's latch, the goats on the stage when they are lost), because a gate on a census datum is judged against the path's writes (`DW0879`), which a census never has; the night's bunting and lanterns over the main street, a batch the festival's beat applies, because the darkness survey after it passes the engine's reach budget (`DW1042`). The bell (C) is in the documents, and the build stops on the engine's PackTest template for its window (`DW0807`).
+Written but not emitted, on engine defects and limits: B (the goats, the wheat, the pen's latch, the goats on the stage when they are lost), because a gate on a census datum is judged against the path's writes (`DW0879`), which a census never has; the night's bunting and lanterns over the main street, a batch the festival's beat applies, and the woods' festival lanterns (the owner's ruling: the woods stay walkable and are hung with lanterns until every cell under the trees clears the night's light check), a batch set at build, because the darkness survey after any batch passes the engine's reach budget (`DW1042`). The bell (C) is in the documents, and the build stops on the engine's PackTest template for its window (`DW0807`).
 
 Waiting: A (rowing: vehicles; the bay's sandbar and its six crate points are built with it), the supply chests' food (A's payoff), the pig race (vehicles), the crowd's hop of joy, the goats' charge at dusk (no scripted charge with knock-back exists). The key is now handed over from the fox's mouth. Nothing of these is replaced by another verb in the meantime.
