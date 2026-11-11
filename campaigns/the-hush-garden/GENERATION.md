@@ -244,3 +244,26 @@ The campaign's own change: the five objectives walked while the sleeper is loose
 - **Staging gate** (with `--branch-runs`): refused, `branch runs: world/2 is RED`.
 
 Diagnosis of the `world/2` red: the three deaths came 27 s and 24 s apart. The warden's anger at the bot decays 1 a second from up to 150 (`warden-behaviour.md` §2), so it outlives a respawn. Each new life left the sundial and walked the 25 blocks back to the tower's foot into a warden still hunting it.
+
+### Re-run at engine `19d2f296d`, build `613d5d93…`
+
+What changed since the run above:
+- the death-loop bound is the step's proven waypoints, and progress is not required;
+- `garden-oblique` is the angle chosen in game.
+
+The ladder, with no override; deaths are the measurement:
+
+- **PackTest**: passed, 61 required tests.
+- **Bot, critical path**: passed, 8 steps, 0 deaths (`[pursuit] 3 of 8, 95 readings, closest 13.30; 0 death(s)`).
+- **Hatch stand**: the local Docker refused the image build before the stand ran (buildx bake asked for an `fs.read` entitlement on the engine's `Dockerfile.delve`), so nothing was compared. The same rung, on the same build and engine revision on the build machine (classic builder), passed: 1 shut floor gate, 1 stand point, held.
+- **Branch runs**:
+  - `world/0`: walked to its ending with 2 deaths (steps 6 and 8, one each), but **RED**: the run exited non-zero on the sculk ear, `darkness 1 (33 more with a warden in reach)`.
+  - `world/1`: passed, 0 deaths.
+  - `world/2`: passed, 3 deaths (all on step 7; bound 47).
+- **Written world**: passed.
+- **Staging gate**: admitted the build, wrongly. The merged branch record carried `world/0` as passed because the bot's report had every stage green, so the gate never saw the non-zero exit. Fixed in the engine (`bb0ebde0c`): a branch whose run exits non-zero after a passing walk is merged as not passed.
+
+**Diagnosis of the `world/0` darkness.**
+- A diagnostic run of `world/0` (engine `bb0ebde0c`, same build) prints every darkness the bot receives. It passed, with 3 deaths and 44 darknesses, every one with a warden the client saw in reach. The nearest warden ran up to 19.0 blocks, against the ear's 20.
+- The darkness the ladder run counted is therefore one whose warden the client placed just past 20 blocks, while the server, which applies the pulse, placed it inside. It is not tied to the deaths: 0 to 2 deaths had been taken at each darkness.
+- What to do about that boundary is open on the engine side.
