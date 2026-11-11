@@ -69,6 +69,11 @@ The owner's map notes from the town's pictures are carried in the same fill: far
 
 *Owner's requirement*: the festival ends on a cutscene of a very lavish firework show — the sky full of rockets — over the townsfolk gathered together on the square. Built: three shots of eleven seconds each (from the stage over the crowd toward the sky over the main street; from high over the street back at the square; from behind the crowd), and under them rockets in layered volleys from ten marks along the top of the main street every half second, every flight, every shape and a mix of colours, closing on a finale burst from every mark at once; the ending follows the last shot. When the fireworks were not fetched in time the same cutscene plays over a few rockets with long gaps between them (the script's `fireworks_full` lost line). The townsfolk stand in a loose crowd on the square's west half, each on a cell with open sky and a clear cell round it. *Waiting on an engine capability*: the crowd hopping and bouncing for joy — an NPC has no movement of its own and the engine has no celebrate action; the crowd's marks are spaced so a hop slots in without moving anybody.
 
+## Departures from the script
+
+- The party comes back from a death in the inn's taproom across the square, not on the stage: the stage is where every raider's lane ends, and a body brought back there is brought back into the fight.
+- The fireworks storeroom does not wait on the key taken off the fox: a task step that opens only at the den cannot show the party where the storeroom is in time. The key is still taken off the fox at the den.
+
 ## Characters
 
 Hedda Brask (host), Inga (lighthouse keeper, D), Bernt (castle steward, fireworks, E), Sverre (boatwright, A), Kettil (cooper and goat keeper, B), Vidar Foss (guildhall clerk, who rings the bell, C), Oskar (baker of the cake), Lady Agathe Holm (guest of honour). The fox is an actor; the raiders are waves.
