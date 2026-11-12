@@ -1,0 +1,332 @@
+{
+  "campaign_id": "the-hush-garden",
+  "content": {
+    "beats": [
+      {
+        "node": "node/maze",
+        "objective": "obj/take-the-note",
+        "quest": "quest/locked-in"
+      },
+      {
+        "node": "node/maze",
+        "objective": "obj/find-the-sundial",
+        "quest": "quest/the-crank"
+      },
+      {
+        "node": "node/maze",
+        "objective": "obj/take-the-crank",
+        "quest": "quest/the-crank"
+      },
+      {
+        "node": "node/lookout",
+        "objective": "obj/climb-the-tower",
+        "quest": "quest/the-watch"
+      },
+      {
+        "node": "node/lookout",
+        "objective": "obj/read-the-bell-card",
+        "quest": "quest/the-watch"
+      },
+      {
+        "node": "node/gatehouse",
+        "objective": "obj/reach-the-gate-tower",
+        "quest": "quest/out"
+      },
+      {
+        "node": "node/gatehouse",
+        "objective": "obj/wind-the-gate",
+        "quest": "quest/out"
+      },
+      {
+        "node": "node/meadow",
+        "objective": "obj/meet-wren",
+        "quest": "quest/out"
+      }
+    ],
+    "critical_path": [
+      "node/maze",
+      "node/gatehouse",
+      "node/meadow"
+    ],
+    "edges": [
+      {
+        "a": "node/maze",
+        "b": "node/lookout",
+        "class": "climb",
+        "id": "edge/up-the-tower"
+      },
+      {
+        "a": "node/arm-east",
+        "b": "node/bridge",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/gate-wound"
+          ],
+          "learned": "told"
+        },
+        "id": "edge/onto-the-bridge"
+      },
+      {
+        "a": "node/bridge",
+        "b": "node/gate-top",
+        "class": "walk",
+        "id": "edge/off-the-bridge"
+      },
+      {
+        "a": "node/maze",
+        "b": "node/gatehouse",
+        "class": "walk",
+        "id": "edge/into-the-gatehouse"
+      },
+      {
+        "a": "node/gatehouse",
+        "b": "node/gate-top",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/gate-wound"
+          ],
+          "learned": "seen"
+        },
+        "id": "edge/up-the-gate-tower"
+      },
+      {
+        "a": "node/gatehouse",
+        "b": "node/meadow",
+        "class": "walk",
+        "gating": {
+          "flags": [
+            "flag/gate-wound"
+          ],
+          "learned": "seen"
+        },
+        "id": "edge/the-great-gate"
+      },
+      {
+        "a": "node/lookout",
+        "b": "node/arm-north",
+        "class": "walk",
+        "id": "edge/out-the-north-arm"
+      },
+      {
+        "a": "node/lookout",
+        "b": "node/arm-south",
+        "class": "walk",
+        "id": "edge/out-the-south-arm"
+      },
+      {
+        "a": "node/lookout",
+        "b": "node/arm-west",
+        "class": "walk",
+        "id": "edge/out-the-west-arm"
+      },
+      {
+        "a": "node/lookout",
+        "b": "node/arm-east",
+        "class": "walk",
+        "id": "edge/out-the-east-arm"
+      }
+    ],
+    "entry": "node/maze",
+    "goal": "node/meadow",
+    "nodes": [
+      {
+        "id": "node/maze",
+        "intent": "the maze and its heart",
+        "note": "A braided hedge maze filling the whole play space, the heart of the level. LANES: a grid of 28 x 28 cells at a pitch of 3 blocks inside the play space: each cell a lane 2 blocks wide, each wall 1 block thick, so lanes run on play-space columns 3k and 3k+1 and walls on 3k+2. Lane floors on the walk plane. WALLS: 4 courses high — three courses of mossy and plain stone bricks (full, occluding blocks: nobody sees over or through them from a lane) under one course of clipped hedge (persistent leaves). The outer ring is the same wall. QUARTERS: the four quarters around the heart are told apart by lane floor, in concrete powder: rose (pink_concrete_powder, #e599b5) toward north-west, yellow (yellow_concrete_powder, #e9c737) north-east, blue (light_blue_concrete_powder, #4ab5d5) south-east, green (lime_concrete_powder, #7dbd2a) south-west. A visual review found the terracotta floors read wrong against the approved pictures: light blue terracotta measures #716d8a and reads lavender-grey, yellow terracotta #ba8523 reads ochre, lime terracotta #687635 reads olive; the approved pictures show sky blue, butter yellow and mint. Keep everything else of the maze as it is. GENERATION (research: docs/reference/maze-craft.md): a recursive backtracker (randomized depth-first) over the cell grid from the heart, seeded from the program's seed through its own named PRNG, gives long winding lanes; then a braiding pass opens one wall at every dead end within 16 blocks of the well and at about 85 per cent of the other dead ends, preferring to join a neighbouring dead end, so the maze has loops and few dead ends. The generator asserts and prints, every run: the cell count, the dead-end count, the number of independent loops, how many loops have every pair of opposite points more than 16 blocks apart (the warden's hearing reach), the route length in blocks from the heart to the sundial court and from there to the gate tower's door, and each kept dead end's distance from the well (every one more than 16). THE HEART: the courts are open floor with no inner walls. The heart is a court of 4 x 4 cells at the middle, paved in pale stone, with the watchtower's shaft standing in its middle from the walk plane to the top of the play space: a 5 x 5 tower of pale stone (smooth sandstone or calcite), hollow, with a ladder up its inside to the hatch the climb seam names, and an arched door 1 wide and 2 high on the court (the warden, 2.9 tall, cannot enter). Beside the tower: a garden bench of stairs with a barrel beside it (anchor/note-basket is the barrel: the note is put in it), two lanterns on posts. Spawn is in the heart. THE SUNDIAL COURT: a court of 2 x 2 cells in the rose quarter, about a third of the way from the heart to the rose quarter's far corner, paved rose. In its middle a stone sundial on a stepped plinth, with an item frame on the plinth's face (anchor/crank-frame is that item frame; the crank handle is put in it). anchor/sundial is the floor cell in front of the frame. THE OLD WELL: a court of 2 x 2 cells in the rose quarter, beyond the sundial court toward the quarter's outer corner, its well mouth 10 to 14 blocks from the crank's item frame (within the warden's 16-block hearing, so a runner who runs off from the sundial is heard). A ring of cracked deepslate bricks around a well mouth closed by an iron grate (a closed iron trapdoor), sculk blocks and sculk veins spread over the floor round it. No sculk sensor and no shrieker. anchor/the-well is the open floor cell beside the rim where the sleeper digs out: three courses of air over it, every neighbouring floor cell open; from the sundial court the well court is not in sight (walls between), but it is two or three turns away. FAIRNESS ROUND THE WELL AND THE SUNDIAL: no dead end within 16 blocks of the well; and from the sundial court at least two ways out, one of them a loop that takes a runner more than 16 blocks from the well within a short run (the hunter decides a loop's minimum size). The way from the sundial toward the heart and the gate tower leads away from the well, not past it. THE BELLS: one bell for each quarter, near the quarter's middle, standing on top of a wall where a lane passes beneath it (the hedge cap removed in that one column, the bell set floor-attached on the wall's top stone course) so it is seen from the lanes. anchor/bell-<nw|ne|se|sw> is the bell; anchor/bell-<..>-power is the air cell directly above that bell (the story sets a redstone block there for a moment to ring it). Each bell stands within 16 blocks of most of its quarter's lanes. SLIMES: anchor/slimes-yellow is a lane junction in the yellow quarter on the way to the gate tower, more than 16 blocks from the sundial court and from the heart. THE GATE: the gate tower's door seam opens the outer wall where the lane in front of it ends; the lanes reach it. Nothing in the maze is lit by torches: it is played in the late-afternoon sun. NO WAY ONTO THE WALL TOPS: nothing in a lane or a court — the sundial's plinth, the bench, the barrel, the lantern posts, the well's rim, the bells — may lift a body to where it can jump onto a wall top. A body standing on a wall top walks the maze from above, drops onto the lawn outside it and walks off the edge of the world (the engine refused exactly this, DW0322, when the sundial's stepped plinth stood high enough to jump from). Keep every fixture at most one course high where it stands within jumping reach of a wall, or cap the space above it so no body can stand on it.",
+        "stations": [
+          {
+            "anchor": "anchor/bench",
+            "kind": "point",
+            "note": "The heart's garden bench, where the gardener's note is left."
+          },
+          {
+            "anchor": "anchor/sundial",
+            "kind": "point",
+            "note": "The sundial in the north-west quarter's court; the gate's crank handle hangs on it."
+          },
+          {
+            "anchor": "anchor/the-well",
+            "kind": "point",
+            "note": "The floor cell beside the old well's rim, in the rose quarter near the sundial court, where the sleeper digs out."
+          },
+          {
+            "anchor": "anchor/bell-nw",
+            "kind": "point",
+            "note": "The rose quarter's bell."
+          },
+          {
+            "anchor": "anchor/bell-ne",
+            "kind": "point",
+            "note": "The yellow quarter's bell."
+          },
+          {
+            "anchor": "anchor/bell-se",
+            "kind": "point",
+            "note": "The blue quarter's bell."
+          },
+          {
+            "anchor": "anchor/bell-sw",
+            "kind": "point",
+            "note": "The green quarter's bell."
+          },
+          {
+            "anchor": "anchor/bell-nw-power",
+            "kind": "point",
+            "note": "The cell beside the rose bell that powers it."
+          },
+          {
+            "anchor": "anchor/bell-ne-power",
+            "kind": "point",
+            "note": "The cell beside the yellow bell that powers it."
+          },
+          {
+            "anchor": "anchor/bell-se-power",
+            "kind": "point",
+            "note": "The cell beside the blue bell that powers it."
+          },
+          {
+            "anchor": "anchor/bell-sw-power",
+            "kind": "point",
+            "note": "The cell beside the green bell that powers it."
+          },
+          {
+            "anchor": "anchor/note-basket",
+            "kind": "point",
+            "note": "A barrel beside the heart's bench holding the gardener's note."
+          },
+          {
+            "anchor": "anchor/crank-frame",
+            "kind": "point",
+            "note": "An item frame on the sundial's face; the crank handle hangs in it."
+          },
+          {
+            "anchor": "anchor/slimes-yellow",
+            "kind": "point",
+            "note": "A lane junction in the yellow quarter on the way to the gate tower, more than 16 blocks from the sundial court and from the heart (a few small slimes bounce there; the respawn points must stay out of their reach)."
+          }
+        ]
+      },
+      {
+        "id": "node/lookout",
+        "intent": "the caller's deck",
+        "note": "The watchtower's top, 22 above the lanes: a railed deck 5 x 5 floored in clear glass (minecraft:glass) round a spruce rim, so the caller sees down through it, under a small copper roof, the middle of a cross — four railed arms reach out from its four sides over the maze, so the caller can walk out above the far lanes. The ladder from the tower's shaft comes up through a hatch in the deck. A stone counter one course high carries the four buttons: anchor/button-nw, -ne, -se, -sw are the cells on top of the counter where the story places a stone button each, under a hung panel in its quarter's colour (rose, yellow, blue, green). anchor/bell-book is a deck cell beside the counter where the story places a bookshelf. Nothing on the deck may be a step a body can stand on and jump the rail from.",
+        "references": [
+          {
+            "shows": "The Longleat hedge maze: yew walls round a central tower, with raised footbridges, the real garden maze whose middle a visitor climbs to look over the lanes; take the tower at the maze's middle as a place to see the whole maze from.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Longleat"
+          },
+          {
+            "shows": "A watchtower is a high, safe place from which a guard observes the area around it; take the deck as a lookout first, its rail and roof for safety and shade, nothing else on it but what the watcher uses.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Watchtower"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/button-nw",
+            "kind": "point",
+            "note": "Rings the rose quarter's bell."
+          },
+          {
+            "anchor": "anchor/button-ne",
+            "kind": "point",
+            "note": "Rings the yellow quarter's bell."
+          },
+          {
+            "anchor": "anchor/button-se",
+            "kind": "point",
+            "note": "Rings the blue quarter's bell."
+          },
+          {
+            "anchor": "anchor/button-sw",
+            "kind": "point",
+            "note": "Rings the green quarter's bell."
+          },
+          {
+            "anchor": "anchor/bell-book",
+            "kind": "point",
+            "note": "A bookshelf on the deck holding the bell book."
+          }
+        ]
+      },
+      {
+        "id": "node/bridge",
+        "intent": "the bridge across the maze",
+        "note": "A plank bridge 3 wide straight across the top of the maze from the lookout to the gate tower's top: spruce planks on dark oak beams, a rope-like railing of spruce fences each side, chains hanging under the beams. It stands from the start; the lookout end is barred until the gate is wound."
+      },
+      {
+        "id": "node/gatehouse",
+        "intent": "the gate tower's hall",
+        "note": "The gate tower's hall, pale stone (smooth sandstone and sandstone with chiselled bands), lit by the doorways and arrow slits. The door from the maze is an arch. The great gate opposite is wide oak, barred until wound; chains run from beside it up into the tower. The winch stands beside the great gate: anchor/winch is the air cell on the floor where the story places the winch block. A ladder climbs the inner wall to the hatch onto the tower's top. The hall is tall and empty above; floors of beams every few courses, no floor a body can stand on except the hall's own.",
+        "references": [
+          {
+            "shows": "A gatehouse holds and controls an entrance, often a tower of two or three storeys over the gate passage; take the hall as the gate passage with the gate at one end and the tower rising over it.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Gatehouse"
+          },
+          {
+            "shows": "A portcullis is raised and lowered by chains or ropes attached to an internal winch; take the winch standing inside beside the gate with its chains running up to the gate.",
+            "terms": "CC BY-SA 4.0",
+            "url": "https://en.wikipedia.org/wiki/Portcullis"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/winch",
+            "kind": "point",
+            "note": "The winch; the crank handle fits it."
+          }
+        ]
+      },
+      {
+        "id": "node/gate-top",
+        "intent": "the gate tower's top",
+        "note": "The gate tower's flat roof, pale stone with a crenellated parapet a body cannot climb, level with the lookout's cross. The bridge lands through a gap in the parapet. The ladder from the hall comes up through a hatch that stays shut (an iron trapdoor over it) until the gate is wound."
+      },
+      {
+        "id": "node/meadow",
+        "intent": "outside",
+        "note": "A flower meadow beyond the great gate, open on its three outer sides onto the lawn that runs round the whole garden inside its low brick garden wall, so anyone who ends up on the lawn walks back to the meadow: grass, poppies, cornflowers, oxeye daisies and tulips, four round oak trees, a wheelbarrow, a bench. A gravel path from the great gate to anchor/gardener in the meadow's middle, where Wren stands. Mark the open sides with low planting a body steps over or round (a flower border, a gap every few cells), never a wall.",
+        "stations": [
+          {
+            "anchor": "anchor/gardener",
+            "kind": "point",
+            "note": "Where the gardener stands."
+          }
+        ]
+      },
+      {
+        "id": "node/arm-north",
+        "intent": "an arm of the lookout",
+        "note": "An arm of the lookout's cross, a walkway 3 wide reaching 24 blocks out from the deck over the maze between the rose and yellow quarters, 22 above the lanes: a floor of clear glass (minecraft:glass) so the caller sees the lanes straight below through it, held by thin dark oak beams only under the rails and nowhere under the walk, a spruce rail on both sides and across its far end, nothing a body can stand on to jump the rail (a body that got over it would fall onto the maze's wall tops). A lantern on a post every six cells. It is a place to look down from, so keep the rail low enough to see the lanes over it."
+      },
+      {
+        "id": "node/arm-south",
+        "intent": "an arm of the lookout",
+        "note": "An arm of the lookout's cross, a walkway 3 wide reaching 24 blocks out from the deck over the maze between the green and blue quarters, 22 above the lanes: a floor of clear glass (minecraft:glass) so the caller sees the lanes straight below through it, held by thin dark oak beams only under the rails and nowhere under the walk, a spruce rail on both sides and across its far end, nothing a body can stand on to jump the rail (a body that got over it would fall onto the maze's wall tops). A lantern on a post every six cells. It is a place to look down from, so keep the rail low enough to see the lanes over it."
+      },
+      {
+        "id": "node/arm-west",
+        "intent": "an arm of the lookout",
+        "note": "An arm of the lookout's cross, a walkway 3 wide reaching 24 blocks out from the deck over the maze between the rose and green quarters, 22 above the lanes: a floor of clear glass (minecraft:glass) so the caller sees the lanes straight below through it, held by thin dark oak beams only under the rails and nowhere under the walk, a spruce rail on both sides and across its far end, nothing a body can stand on to jump the rail (a body that got over it would fall onto the maze's wall tops). A lantern on a post every six cells. It is a place to look down from, so keep the rail low enough to see the lanes over it."
+      },
+      {
+        "id": "node/arm-east",
+        "intent": "an arm of the lookout",
+        "note": "An arm of the lookout's cross, a walkway 3 wide reaching 24 blocks out from the deck over the maze between the yellow and blue quarters, 22 above the lanes: a floor of clear glass (minecraft:glass) so the caller sees the lanes straight below through it, held by thin dark oak beams only under the rails and nowhere under the walk, a spruce rail on both sides and across its far end, nothing a body can stand on to jump the rail (a body that got over it would fall onto the maze's wall tops). A lantern on a post every six cells. It is a place to look down from, so keep the rail low enough to see the lanes over it. At its far end the bridge continues to the gate tower's top: the bridge's end is barred until the gate is wound, and anchor/bridge-bar-deck is the floor cell beside that bar where the story stands the chain post the bridge hangs from.",
+        "stations": [
+          {
+            "anchor": "anchor/bridge-bar-deck",
+            "kind": "point",
+            "note": "Beside the barred end of the bridge at the arm's far end: a floor cell where the story stands the chain post the bridge hangs from."
+          }
+        ]
+      }
+    ]
+  },
+  "dsl_version": "0.71.0",
+  "stage": "layout-graph"
+}

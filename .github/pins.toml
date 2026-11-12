@@ -16,12 +16,12 @@
 
 [[pin]]
 id = "admit-ref"
-value = "a574df3277caa4b7eb1dfdb3b192278f6de0bfad"
+value = "fa90c09f49fd1af71590ddf15d883c973c0ae393"
 sites = [".github/workflows/prefab-audit.yml"]
 repo = "stellarfeline/delvewright"
 policy = "held"
 judged_by = ".github/workflows/prefab-audit.yml"
-reviewed = "a574df3277caa4b7eb1dfdb3b192278f6de0bfad"
+reviewed = "fa90c09f49fd1af71590ddf15d883c973c0ae393"
 vendors = ["tools/ci/check-pins.py", "tools/lib/release_tags.py"]
 why = """
 WHAT THIS PIN IS. The pipeline command `delvec prefab audit` — the audit every
@@ -54,42 +54,29 @@ measurement of the piece is held to the piece's own bytes (`DW0888`): `walk_y`,
 `trigger_block` and `furniture`, each connector's `opening` and `socket`, and
 the jigsaw blocks the document declares.
 
-WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 616 commits, from
-`90433f24` (the commit `delvec--v1.7.1` points at) to this value, which is the
-commit after `delvec--v1.12.0` that makes the standalone audit judge a scenery
-piece the way its writer did, and the tip of the upstream default branch when it
-was read; 348 of them touch `crates/`, 2 touch a vendored file
-(`tools/ci/check-pins.py`, re-vendored with this pin). The audit moved for this
-library in one way that matters: pieces built by the 1.12.0 engine carry
-spec-0098's 3D boxes, sky spaces and scenery places (`reached: false` in a
-campaign's layout graph), and the older judge refused 11 such pieces that their
-own writer had passed. The newer judge reads a piece's place kind from every
-campaign's detail plan and layout graph, so a scenery piece owes no way in and
-no floor, and a reached piece is still held to both. Every piece already in the
-library gets the same verdict from both judges, so the library is ready for it
-by measurement.
+WHAT INTERVAL THIS PIN JUDGED, and what the judgement found. 1315 commits, from
+`a574df32` (the previous value) to this value, which is the commit
+`delvec--v1.16.1` points at, so the judge is the engine release the campaigns
+here pin; 743 of them touch `crates/`, 2 touch a vendored file
+(`tools/ci/check-pins.py`, `tools/lib/release_tags.py`, both re-vendored with
+this pin, comment-only differences). The audit moved for this library in one
+way that matters: `contract-well-formed` no longer holds a space to one floor,
+and an opening shut by its own bar counts as touching the room through the bar.
+The co-op warden maze built by the 1.16.1 engine carries a three-storey meadow
+and maze zone and a barred gate top, which the previous judge refused (`DW0782`
+`contract-well-formed`, 3 units); this judge admits them and still refuses a
+fall-in pocket in a space of more than two levels through `contract-reachability`.
+Every piece the previous judge admitted gets the same verdict from this one: 72
+of 72 units pass.
 
-WHAT WAS BUILT AND RUN. `delvec` built from source at this value (`cargo build
--p delvec --bin delvec --release`, exit 0, `cargo 1.97.1` / `rustc 1.97.1`),
-printing `delvec 1.12.0, dsl 0.38.0, mc 1.21.11`. `tools/prefab-audit.py` run
-with it over the whole repository: 42 audited units over 173 in-scope `.nbt`
-files, PASS 42 of 42 at exit 0. Run over the tree that adds the first campaign
-built on the 1.12.0 engine: 53 audited units over 184 in-scope `.nbt` files,
-PASS 53 of 53 at exit 0, two of them scenery pieces whose place kind the judge
-reports from the detail plan that places them. Cross-checked by a second channel
-sharing no configuration with the source build: the `delvec--v1.12.0` release
-archive for `aarch64-apple-darwin` (its `SHA256SUMS` line OK, exit 0) gives the
-same 42 verdicts over this repository, and its 42 reports equal the source
-build's once the two report fields the newer judge adds (`owners`, `sealed`)
-are set aside.
-
-The byte-claim arm (`DW0888`) is still bound, checked by planting on a scratch
-copy of the tree rather than assumed: a fictitious `walk_y: 40` on
-`keep-shrine`, a piece whose own bytes stand a body lowest at local y=1, is
-refused at exit 1, FAILED 1 of 42, `DW0888`. The scenery arm is bound the same
-way: flipping one scenery place to `reached: true` in a scratch copy of that
-campaign's layout graph makes the judge refuse its piece at exit 1, FAILED 1 of
-53, `DW0782`.
+WHAT WAS BUILT AND RUN. The `delvec--v1.16.1` release binary for
+`aarch64-apple-darwin`, printing `delvec 1.16.1, dsl 0.71.0, mc 1.21.11`.
+`tools/prefab-audit.py` run with it over the tree that adds the maze: 72 audited
+units (67 single-file prefabs and 5 tiled zones covering 144 tiles) over 211
+in-scope `.nbt` files, PASS 72 of 72 at exit 0. The vendored files compare
+byte-for-byte against a checkout of this value (2 files, `check-vendored` ok),
+and `check-pins --online` judges this entry against upstream history with that
+checkout.
 
 WHY THIS PIN IS `held` AND NOT `track`. `value` is the revision the tool is
 BUILT from; `reviewed` is the revision its upstream history has been JUDGED
@@ -138,7 +125,7 @@ and this paragraph is what says so.
 
 [[pin]]
 id = "engine-release"
-value = "delvec--v1.14.0"
+value = "delvec--v1.16.1"
 sites = ["versions.toml"]
 repo = "stellarfeline/delvewright"
 policy = "release"
@@ -163,18 +150,19 @@ additionally holds it to the `delvec` line, the only line whose release carries
 the binary. A commit somebody merely
 stopped looking at cannot supply that, and neither can a hand-written tag.
 
-WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.14.0` (engine commit
-`e51f8bbe`, `delvec 1.14.0, dsl 0.56.0, mc 1.21.11`). Three demo levels on this
-tree — The Ferry Bell, The Bell Changes the Tune and The Thing Across the Water
-— are written in dsl 0.56.0, which the 1.13.0 release (dsl 0.39.0) refuses, so a
-release of any of them needs this engine. Each builds with the release's
-`aarch64-apple-darwin` archive (its `SHA256SUMS` row OK): `delvec --prefabs
-prefabs build campaigns/<id>`, exit 0, twice, the two output trees identical;
-the datapack, resource pack, server, creator and PackTest datapacks and SKINS.md
-are byte-identical to the playtested build, and `manifest.json` differs
-only in what the engine stamps (its version, its code list, and the review
-outputs it writes). The campaigns on this tree in older dsl versions are
-released versions built by their own pinned engines, and stay as they are.
+WHAT THIS VALUE IS, AND WHAT WAS RUN. `delvec--v1.16.1` (engine commit
+`fa90c09f4`, `delvec 1.16.1, dsl 0.71.0, mc 1.21.11`). The warden maze, The
+Hush Garden, is written in dsl 0.71.0, which the 1.14.0 release (dsl 0.56.0)
+refuses, and it is proven on this release's own binary: the bot's `pursuit`
+stage here records a death on a pursued step as a measurement and walks it
+again, and the staging gate reads every branch world, which 1.16.0 did not. It
+builds with the release's `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`
+archives (each `SHA256SUMS` row OK): `delvec --prefabs prefabs build
+campaigns/<id>`, exit 0. The campaigns on this tree in older dsl versions
+are released versions built by their own pinned engines and stay as they are;
+this engine refuses the three demo levels written in dsl 0.56.0 (`DW0100`, the
+quest plan's required `activity`), so a new release of one of those first
+brings its documents to the engine's surface.
 
 WHY IT NAMES A TAG AND NOT A COMMIT. The value used to be `70eea629`, the commit
 `v1.5.0` points at. That is no longer a value this policy accepts, and it is not
@@ -205,9 +193,9 @@ decides which engine the NEXT release of this content is built with; it never
 reaches one already out, because a release builds from what `versions.toml` says
 at its own tag and every shipped delve carries its own. Moving it forward
 with a release is this pin's normal cadence, not an exception to it. The engine
-it now names and the engine this repository's audit judge is built from
-(`admit-ref`) are different decisions: the audit judge follows when the library
-is judged ready for it, never because this pin moved.
+it names and the engine this repository's audit judge is built from
+(`admit-ref`) are different decisions, made separately; they name the same
+release when the library is judged ready for it.
 """
 
 [[pin]]
