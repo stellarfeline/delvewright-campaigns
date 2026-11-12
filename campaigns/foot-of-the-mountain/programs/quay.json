@@ -23,6 +23,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "quay-to-west-track-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-west"
       },
       {
@@ -107,7 +113,13 @@
     "handed/seam/quay-to-harbour/y0": 1,
     "handed/seam/quay-to-harbour/y1": 8,
     "handed/seam/quay-to-harbour/z0": 1,
-    "handed/seam/quay-to-harbour/z1": 10
+    "handed/seam/quay-to-harbour/z1": 10,
+    "handed/seam/quay-to-west-track/x0": 0,
+    "handed/seam/quay-to-west-track/x1": 0,
+    "handed/seam/quay-to-west-track/y0": 1,
+    "handed/seam/quay-to-west-track/y1": 8,
+    "handed/seam/quay-to-west-track/z0": 4,
+    "handed/seam/quay-to-west-track/z1": 6
   },
   "rules": {
     "column_10": [
@@ -2003,15 +2015,39 @@
             "sizes": [
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-west-track/x1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "size": "absolute"
               },
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 2
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "int",
+                    "value": 3
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/quay-to-west-track/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
                 },
                 "size": "absolute"
               },
@@ -2397,6 +2433,38 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-west-track/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-west-track/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-west-track/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
@@ -2410,8 +2478,16 @@
               },
               "op": "gt",
               "rhs": {
-                "expr": "param",
-                "name": "handed/seam/flight-10-to-quay/z0"
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-west-track/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -2496,6 +2572,26 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
+                  "name": "handed/seam/quay-to-harbour/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
                   "name": "handed/seam/flight-10-to-quay/z1"
                 },
                 "op": "add",
@@ -2794,6 +2890,46 @@
                 "lhs": {
                   "expr": "param",
                   "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-west-track/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 3
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-west-track/x1"
                 },
                 "op": "add",
                 "rhs": {
@@ -2958,6 +3094,18 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "param",
+                "name": "handed/seam/quay-to-west-track/x0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
                 "name": "handed/seam/quay-to-harbour/y0"
               },
               "op": "eq",
@@ -2971,6 +3119,18 @@
               "lhs": {
                 "expr": "param",
                 "name": "handed/seam/quay-to-bay/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-west-track/y0"
               },
               "op": "eq",
               "rhs": {
@@ -3081,6 +3241,20 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "quay-to-west-track-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-west"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "room"
             }
           ],
@@ -3090,6 +3264,44 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-west-track/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-west-track/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-west-track/z0"
+                }
               },
               "size": "absolute"
             },
@@ -3110,8 +3322,16 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-10-to-quay/z0"
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-west-track/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"

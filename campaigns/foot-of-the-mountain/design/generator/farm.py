@@ -47,12 +47,201 @@ def ground(m, W, D, g, block):
     m.box(1, W, g, g, 1, D, block)
 
 
+OLD_PLOTS = ("wheat-field", "orchard", "sheep-pen", "goat-pen", "net-green", "beacon-point", "bay")
+TRACKS = ("farm-lane", "west-track", "meadow-track", "lane-8", "cathedral")
+
+
 def track_side(place):
-    """The side of the plot the farm track runs along: south for the plots north of it."""
+    """The side of the plot the track it opens off runs along: south for the plots north of it."""
     for s in place.seams:
-        if "farm-lane" in s["stem"]:
+        if any(t in s["stem"] for t in TRACKS):
             return s["seam"]["face"]
     return None
+
+
+STRIPES = (("minecraft:red_wool", "minecraft:white_wool"), ("minecraft:blue_wool", "minecraft:yellow_wool"),
+           ("minecraft:lime_wool", "minecraft:white_wool"), ("minecraft:orange_wool", "minecraft:yellow_wool"),
+           ("minecraft:pink_wool", "minecraft:white_wool"))
+
+
+def stall(m, x0, z0, d, k, facing_z):
+    """A festival stall three wide and two deep: corner posts, a striped awning, a
+    counter of barrels and a slab along its front (the side toward facing_z)."""
+    a, b = STRIPES[k % len(STRIPES)]
+    zf, zb = (z0, z0 + 1) if facing_z < z0 else (z0 + 1, z0)
+    for x in (x0, x0 + 2):
+        for z in (z0, z0 + 1):
+            m.set(x, d, z, fence(WOOD)); m.set(x, d + 1, z, fence(WOOD))
+    for x in range(x0, x0 + 3):
+        for z in (z0, z0 + 1):
+            m.set(x, d + 2, z, a if (x + z) % 2 else b)
+    m.set(x0 + 1, d, zf, "minecraft:barrel[facing=up,open=false]")
+    m.set(x0 + 1, d, zb, "minecraft:spruce_slab[type=top,waterlogged=false]")
+
+
+def target(m, x, z, d):
+    """A straw butt: two bales stacked, a red mark painted on the top one's face."""
+    m.set(x, d, z, "minecraft:hay_block[axis=y]")
+    m.set(x, d + 1, z, "minecraft:hay_block[axis=y]")
+    m.set(x, d + 2, z, "minecraft:red_wool")
+
+
+def bench(m, x0, x1, z, d, facing):
+    for x in range(x0, x1 + 1):
+        m.set(x, d, z, stairs(WOOD, facing))
+
+
+def butts(m, W, D, d, g, side):
+    """The archery butts: a mown range, the targets at the far end, the shooting
+    line of rails by the track with a gap to walk through, the bow stall."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    far, near = (2, D - 2) if side == "south" else (D - 1, 3)
+    for x in range(4, W - 2, 6):
+        target(m, x, far, d)
+    for x in range(2, W):
+        if x % 6 not in (0, 1):
+            m.set(x, d, near, fence(WOOD))
+    for x in range(2, W, 2):
+        m.set(x, g, near + (1 if side == "north" else -1), "minecraft:dirt_path")
+    stall(m, W - 4, near - 3 if side == "south" else near + 2, d, 0, near)
+    lamp_post(m, 1, far, d)
+    lamp_post(m, W, far, d)
+    lamp_post(m, 1, near, d)
+    lamp_post(m, W, near, d)
+    part(m, 1, W, 2, D - 1, "range")
+
+
+def allotments(m, W, D, d, g, side):
+    """Beds of pumpkins and melons in rows, paths between them, compost heaps, a
+    scarecrow in a festival hat, a lean-to for the tools."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    rows = range(3, D - 2, 4)
+    for z in rows:
+        for x in range(2, W):
+            if x % 5 == 1:
+                continue
+            m.set(x, g, z, "minecraft:coarse_dirt")
+            m.set(x, g, z + 1, "minecraft:podzol[snowy=false]")
+            if (x + z) % 3 == 0:
+                m.set(x, d, z, "minecraft:pumpkin")
+            elif (x + z) % 3 == 1:
+                m.set(x, d, z + 1, "minecraft:melon")
+        for x in range(1, W + 1):
+            m.set(x, g, z + 2, "minecraft:dirt_path")
+    m.set(2, d, 1, "minecraft:composter[level=8]")
+    m.set(W - 1, d, 1, "minecraft:composter[level=4]")
+    sx, sz = W // 2, rows[0] + 1
+    m.set(sx, d, sz, fence(WOOD)); m.set(sx, d + 1, sz, "minecraft:hay_block[axis=y]")
+    m.set(sx, d + 2, sz, "minecraft:carved_pumpkin[facing=south]")
+    lamp_post(m, 1, 1, d)
+    lamp_post(m, W, 1, d)
+    lamp_post(m, 1, D, d)
+    lamp_post(m, W, D, d)
+    part(m, 1, W, 2, D - 1, "beds")
+
+
+def fair(m, W, D, d, g, side):
+    """The festival fair: a maypole hung with ribbons at the middle, a ring of
+    striped stalls and an open tent, benches and bales to sit on, lamps on posts."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    cx, cz = (W + 1) // 2, (D + 1) // 2
+    for y in range(d, d + 9):
+        m.set(cx, y, cz, pillar("minecraft:stripped_birch_log"))
+    m.set(cx, d + 9, cz, "minecraft:white_banner[rotation=0]")
+    for k, (dx, dz) in enumerate(((1, 0), (-1, 0), (0, 1), (0, -1))):
+        m.set(cx + dx, d + 8, cz + dz, STRIPES[k][0].replace("_wool", "_carpet") if False else STRIPES[k][0])
+    for x in range(1, W + 1):
+        for z in range(1, D + 1):
+            if abs(x - cx) + abs(z - cz) in (4, 5) and (x + z) % 2 == 0:
+                m.set(x, g, z, "minecraft:dirt_path")
+    k = 0
+    for x0 in range(2, W - 3, 5):
+        stall(m, x0, 3, d, k, D); k += 1
+        stall(m, x0, D - 4, d, k, 1); k += 1
+    # the tent: an open canopy on posts at the west end, benches under it
+    for z in (cz - 2, cz + 2):
+        for x in (2, 5):
+            m.set(x, d, z, fence(WOOD)); m.set(x, d + 1, z, fence(WOOD)); m.set(x, d + 2, z, fence(WOOD))
+    for x in range(2, 6):
+        for z in range(cz - 2, cz + 3):
+            m.set(x, d + 3, z, "minecraft:white_wool" if z % 2 else "minecraft:red_wool")
+    m.set(3, d + 2, cz, lantern(hanging=True))
+    bench(m, 3, 4, cz - 1, d, "north")
+    bench(m, 3, 4, cz + 1, d, "south")
+    for (x, z) in ((W - 3, cz - 1), (W - 3, cz + 1), (W - 2, cz)):
+        m.set(x, d, z, "minecraft:hay_block[axis=x]")
+    for (x, z) in ((cx - 3, cz - 3), (cx + 3, cz - 3), (cx - 3, cz + 3), (cx + 3, cz + 3), (1, 1), (W, 1), (1, D), (W, D)):
+        lamp_post(m, x, z, d)
+    part(m, 1, W, 2, D - 1, "fair")
+
+
+def bees(m, W, D, d, g, side):
+    """Hives in rows among wildflowers, a honey stand on trestles, a bench."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    flowers = ("minecraft:cornflower", "minecraft:oxeye_daisy", "minecraft:poppy", "minecraft:allium",
+               "minecraft:azure_bluet", "minecraft:dandelion", "minecraft:lily_of_the_valley")
+    for x in range(1, W + 1):
+        for z in range(2, D):
+            if (x * 3 + z * 5) % 7 == 0:
+                m.set(x, d, z, flowers[(x + z) % len(flowers)])
+    for x in range(3, W - 1, 4):
+        for z in range(4, D - 3, 5):
+            m.set(x, d, z, "minecraft:beehive[facing=south,honey_level=0]")
+    stall(m, W // 2 - 1, 2 if side == "north" else D - 3, d, 3, D if side == "north" else 1)
+    bench(m, 2, 3, D - 1 if side == "north" else 2, d, "north" if side == "north" else "south")
+    for (x, z) in ((1, 1), (W, 1), (1, D), (W, D), (W // 2, D // 2)):
+        lamp_post(m, x, z, d)
+    part(m, 1, W, 2, D - 1, "meadow")
+
+
+def garden(m, W, D, d, g, side):
+    """The cathedral's garth: square herb beds with paths to a stone fountain at the
+    middle, benches, a stall where the herbs are sold, lamps."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    cx, cz = (W + 1) // 2, (D + 1) // 2
+    herbs = ("minecraft:allium", "minecraft:azure_bluet", "minecraft:lily_of_the_valley", "minecraft:cornflower",
+             "minecraft:oxeye_daisy", "minecraft:fern", "minecraft:short_grass")
+    for x in range(1, W + 1):
+        for z in range(1, D + 1):
+            if x in (cx - 1, cx, cx + 1) or z in (cz - 1, cz, cz + 1) or x in (1, W) or z in (1, D):
+                m.set(x, g, z, "minecraft:gravel" if (x + z) % 3 else "minecraft:dirt_path")
+            elif (x + z) % 2 == 0:
+                m.set(x, g, z, "minecraft:podzol[snowy=false]")
+                m.set(x, d, z, herbs[(x * 3 + z) % len(herbs)])
+    # the fountain: a stone rim round water at the middle, a lamp on each corner
+    for x in range(cx - 1, cx + 2):
+        for z in range(cz - 1, cz + 2):
+            m.set(x, g, z, "minecraft:stone_bricks")
+            if (x, z) != (cx, cz):
+                m.set(x, d, z, "minecraft:stone_brick_slab[type=bottom,waterlogged=false]")
+    m.set(cx, d, cz, "minecraft:water_cauldron[level=3]")
+    for (x, z) in ((cx - 2, cz - 2), (cx + 2, cz + 2), (1, 1), (W, D), (W, 1), (1, D)):
+        lamp_post(m, x, z, d)
+    stall(m, W - 4, 2 if side == "north" else D - 3, d, 2, D if side == "north" else 1)
+    bench(m, 3, 5, cz + 2, d, "north")
+    part(m, 1, W, 2, D - 1, "garth")
+
+
+def games(m, W, D, d, g, side):
+    """The games yard: stalls for the ring toss and the coconut shy, tubs for
+    apple bobbing, a row of straw targets, benches."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    for x in range(1, W + 1):
+        for z in range(1, D + 1):
+            if (x + 2 * z) % 5 == 0:
+                m.set(x, g, z, "minecraft:dirt_path")
+    back = D - 2 if side == "north" else 2
+    for k, x0 in enumerate(range(2, W - 3, 5)):
+        stall(m, x0, back if side == "north" else back, d, k, 1 if side == "north" else D)
+    mid = D // 2
+    for x in (4, 7, 10):
+        m.set(x, d, mid, "minecraft:water_cauldron[level=3]")
+    for x in (W - 6, W - 3):
+        target(m, x, mid, d)
+    bench(m, 3, 5, mid + 2 if side == "north" else mid - 2, d, "north")
+    for (x, z) in ((1, mid), (W, mid), (W // 2, mid + 2)):
+        lamp_post(m, x, z, d)
+    part(m, 1, W, 2, D - 1, "games")
 
 
 def wheat_field(m, W, D, d, g):
@@ -441,8 +630,8 @@ def build(place):
     stem = place.a["place"].removeprefix("node/")
     side = track_side(place)
     FREE_ROWS.clear()
-    FREE_ROWS.update({D} if side == "south" else {1, 2})
-    if stem == "farm-lane":
+    FREE_ROWS.update(({D} if stem in OLD_PLOTS else {D - 1, D}) if side == "south" else {1, 2})
+    if stem in ("farm-lane", "west-track", "meadow-track"):
         farm_lane(m, W, D, d, g)
     elif stem == "wheat-field":
         wheat_field(m, W, D, d, g)
@@ -454,8 +643,26 @@ def build(place):
         pen(m, W, D, d, g, side, "minecraft:coarse_dirt", "yard", "byre")
     elif stem == "pond":
         pond(m, W, D, d, g, side)
-    elif stem == "barn":
+    elif stem in ("barn", "croft", "dune-cottage", "lantern-yard"):
         barn(m, W, D, d, g, side)
+        if stem == "lantern-yard":
+            # finished lanterns set out along the yard's far edge to be looked over
+            yz = D if side == "north" else 1
+            for x in range(4, W - 2, 3):
+                m.set(x, d, yz, "minecraft:spruce_slab[type=top,waterlogged=false]")
+                m.set(x, d + 1, yz, lantern())
+    elif stem == "butts":
+        butts(m, W, D, d, g, side)
+    elif stem == "allotments":
+        allotments(m, W, D, d, g, side)
+    elif stem == "fair-field":
+        fair(m, W, D, d, g, side)
+    elif stem == "bee-meadow":
+        bees(m, W, D, d, g, side)
+    elif stem == "cathedral-garden":
+        garden(m, W, D, d, g, side)
+    elif stem == "games-yard":
+        games(m, W, D, d, g, side)
     elif stem == "net-green":
         net_green(m, W, D, d, g)
     elif stem == "beacon-point":
@@ -476,7 +683,7 @@ def build(place):
         return m
     else:
         sys.exit(f"farm.py: no drawing for {stem}")
-    m.mark(f"node-{stem}", *(free_mark(m, W, D, d) if stem != "barn" else yard_mark(m, W, D, d, side)), facing="south")
+    m.mark(f"node-{stem}", *(free_mark(m, W, D, d) if stem not in ("barn", "croft", "dune-cottage", "lantern-yard") else yard_mark(m, W, D, d, side)), facing="south")
     m.finish()
     return m
 

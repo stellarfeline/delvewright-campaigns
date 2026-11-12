@@ -706,7 +706,7 @@
         "weight": 1
       }
     ],
-    "column_23": [
+    "column_24": [
       {
         "body": {
           "axis": "y",
@@ -714,6 +714,10 @@
             {
               "op": "call",
               "symbol": "row_21"
+            },
+            {
+              "op": "call",
+              "symbol": "row_22"
             },
             {
               "op": "call",
@@ -725,7 +729,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_22"
+              "symbol": "row_23"
             },
             {
               "op": "call",
@@ -745,13 +749,44 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/road-19-to-road-20/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -806,15 +841,11 @@
         "weight": 1
       }
     ],
-    "column_28": [
+    "column_29": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_24"
-            },
             {
               "op": "call",
               "symbol": "row_25"
@@ -825,15 +856,19 @@
             },
             {
               "op": "call",
-              "symbol": "row_25"
-            },
-            {
-              "op": "call",
               "symbol": "row_27"
             },
             {
               "op": "call",
-              "symbol": "row_25"
+              "symbol": "row_26"
+            },
+            {
+              "op": "call",
+              "symbol": "row_28"
+            },
+            {
+              "op": "call",
+              "symbol": "row_26"
             }
           ],
           "op": "split",
@@ -1164,11 +1199,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_23"
+                "symbol": "column_24"
               },
               {
                 "op": "call",
-                "symbol": "column_28"
+                "symbol": "column_29"
               }
             ],
             "op": "split",
@@ -1680,6 +1715,26 @@
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/road-21-to-road-20/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 4
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -2507,6 +2562,97 @@
                 "op": "void"
               },
               "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "road"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/road-19-to-road-20/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/road-19-to-road-20/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/road-19-to-road-20/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 5
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_23": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
               "region": "side-north"
             },
             {
@@ -2568,7 +2714,7 @@
         "weight": 1
       }
     ],
-    "row_24": [
+    "row_25": [
       {
         "body": {
           "axis": "z",
@@ -2607,7 +2753,7 @@
         "weight": 1
       }
     ],
-    "row_25": [
+    "row_26": [
       {
         "body": {
           "axis": "z",
@@ -2661,7 +2807,7 @@
         "weight": 1
       }
     ],
-    "row_26": [
+    "row_27": [
       {
         "body": {
           "axis": "z",
@@ -2728,7 +2874,7 @@
         "weight": 1
       }
     ],
-    "row_27": [
+    "row_28": [
       {
         "body": {
           "axis": "z",

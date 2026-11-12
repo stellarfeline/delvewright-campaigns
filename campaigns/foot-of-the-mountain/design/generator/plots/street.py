@@ -497,6 +497,11 @@ def road(m, place, stem):
                 continue          # a stair's tread: the lamp stands on a landing or at grade
             lamp(m, x, z, y=h + 1)
             break
+        # a lantern in a niche at the foot of the embankment's high end, where
+        # the turn below the next leg is otherwise dark at night
+        if rise >= 2:
+            x, z = cell(order[-1], verge)
+            m.set(x, 1, z, lantern(False))
         return
     for a in rows:
         for b in cols:
