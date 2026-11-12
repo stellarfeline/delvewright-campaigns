@@ -127,9 +127,9 @@ def build(place):
     # the flats' braces behind them, on the back of the deck
     for z in range(sz0 + 2, sz1 - 1, 3):
         m.box(sx1, sx1, deck + 1, deck + 2, z, z, fence(SPRUCE))
-    # props stacked at the stage's north foot, clear of the cathedral walk
+    # props stacked at the stage's north foot, clear of the cathedral walk: a hay bale and an empty wooden tub
     m.set(sx0 + 1, w, sz0 - 1, "minecraft:hay_block[axis=y]")
-    m.set(sx0 + 2, w, sz0 - 1, "minecraft:barrel[facing=up,open=false]")
+    m.set(sx0 + 2, w, sz0 - 1, "minecraft:composter[level=0]")
     # the third defence line's supply chest beside them, and a cart of hay bales for cover
     m.set(sx0 + 3, w, sz0 - 1, "minecraft:chest[facing=south,type=single,waterlogged=false]")
     m.mark("supply-stage", sx0 + 3, sz0 - 1, facing="south", y=w)

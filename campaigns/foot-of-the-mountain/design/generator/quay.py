@@ -72,9 +72,10 @@ def build(place):
     # by the edge: an anchor and a coil of rope laid on the stones
     m.set(X0 + 42, 1, Z1, "anchor")
     m.set(X0 + 43, 1, Z1, "rope")
-    # the east end, by the harbour: barrels of salt fish
-    for (x, z) in ((X1 - 9, Z0), (X1 - 8, Z0), (X1 - 7, Z0)):
+    # the east end, by the harbour: barrels of salt fish, each holding its fish
+    for i, (x, z) in enumerate(((X1 - 9, Z0), (X1 - 8, Z0), (X1 - 7, Z0)), start=1):
         m.set(x, 1, z, "barrel")
+        m.mark(f"salt-fish-{i}", x, z, "south", y=1)
     # the first defence line's supply chest beside them, a hay bale for cover
     m.set(X1 - 6, 1, Z0, "minecraft:chest[facing=south,type=single,waterlogged=false]")
     m.set(X1 - 5, 1, Z0, "minecraft:hay_block[axis=y]")
