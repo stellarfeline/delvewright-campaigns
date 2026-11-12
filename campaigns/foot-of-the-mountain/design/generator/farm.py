@@ -681,11 +681,26 @@ def bay(m, W, D, d, g, place):
                 m.set(x, y, z, WATER)
             if t + 1 < g:
                 m.set(x, t, z, "minecraft:sand" if n(x * 3, z * 3, 5.5) < 0.8 else "minecraft:gravel")
+    # the quay's steps come down into the cove where the seam meets it: a flight of sandstone
+    # from under the seam's opening to the water's edge
+    for s in place.a.get("seams", []):
+        if any(ps["seam"]["edge"] == s["edge"] and ps.get("approach") and ps["approach"]["ladder"] for ps in place.seams):
+            m.climbs_to(s["edge"])
+        (x0, y0, z0), (x1, y1, z1) = s["cells"]
+        for x in range(x0, x1 + 1):
+            for k, y in enumerate(range(y0 - 1, g, -1)):
+                z = z0 + k
+                if z > D:
+                    break
+                m.set(x, y, z, "minecraft:sandstone")
+                if k:
+                    for yy in range(y + 1, y0 + 3):
+                        m.set(x, yy, z, "~air")
     for (x, z) in sorted(shoal | bar):
         m.part(x, x, z, z, "shoals")
     marks = {f"crate-{k + 1}": (x, z, None) for k, (x, z) in enumerate(CRATES)}
-    marks["slip-1"] = (5, 3, g)
-    marks["slip-2"] = (12, 3, g)
+    marks["slip-1"] = (9, 2, g)
+    marks["slip-2"] = (11, 3, g)
     marks["node-bay"] = (CRATES[0][0], CRATES[0][1] + 1, None)
     return marks
 

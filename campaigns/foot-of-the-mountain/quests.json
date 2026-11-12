@@ -101,6 +101,56 @@
             "dialogue": "dlg/oskar-day",
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-quay",
@@ -142,6 +192,7 @@
             "hint": "On the stage on the square, by the cathedral's front.",
             "id": "obj/hear-the-host",
             "npc": "npc/hedda",
+            "record": "Hedda, the host, opened the festival from the stage on the square.",
             "title": "Hear the host",
             "type": "talk-to"
           }
@@ -167,6 +218,7 @@
             "type": "narrate"
           }
         ],
+        "on_objective_complete": {},
         "trigger": {
           "type": "campaign-start"
         }
@@ -231,6 +283,56 @@
             "dialogue": "dlg/oskar-day",
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-quay",
@@ -272,6 +374,7 @@
             "hint": "Down the main street, left along the last side street and out along the cliff path to the white lighthouse.",
             "id": "obj/ask-inga",
             "npc": "npc/inga",
+            "record": "Inga, the lighthouse keeper, needed somebody to climb her tower: the lamp had gone out in the night.",
             "title": "Speak to the keeper",
             "type": "talk-to"
           },
@@ -288,6 +391,7 @@
             "hint": "Up the stair inside the tower: where steps are missing, jump the gap.",
             "id": "obj/climb-the-tower",
             "radius": 1,
+            "record": "The lighthouse stair had given way in three places on the way up to the lamp room.",
             "title": "Climb to the lamp room",
             "type": "reach-anchor"
           },
@@ -313,6 +417,11 @@
               },
               "on_expire": [
                 {
+                  "line": "The oil went cold before you reached the lamp, and the lighthouse stayed dark.",
+                  "objective": "obj/light-the-lamp",
+                  "type": "record-outcome"
+                },
+                {
                   "style": "chat",
                   "text": "From far below, Inga shouts that the oil has gone cold in the can. The lamp stays dark tonight.",
                   "type": "narrate"
@@ -323,6 +432,7 @@
             "prop": {
               "block": "minecraft:waxed_copper_bulb[lit=false,powered=false]"
             },
+            "record": "The lighthouse lamp had to be relit before the oil went cold in the can.",
             "title": "Light the lamp",
             "type": "interact"
           }
@@ -351,6 +461,11 @@
             "style": "chat",
             "text": "Inga's voice comes up the stairwell: 'While you're up there, have a look through my spyglass. Something has been bothering the castle road all morning.'",
             "type": "narrate"
+          },
+          {
+            "amount": 2,
+            "state": "state/pennies",
+            "type": "add-state"
           }
         ],
         "on_objective_complete": {
@@ -363,6 +478,11 @@
             }
           ],
           "obj/light-the-lamp": [
+            {
+              "line": "You lit the great lamp, and its beam swung out over the bay.",
+              "objective": "obj/light-the-lamp",
+              "type": "record-outcome"
+            },
             {
               "anchor": "anchor/lamp-room",
               "block": "minecraft:waxed_copper_bulb[lit=true,powered=false]",
@@ -452,6 +572,56 @@
             "dialogue": "dlg/oskar-day",
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-quay",
@@ -494,6 +664,7 @@
             "hint": "Up the castle road from the square, to the wayside spring beside the road.",
             "id": "obj/flush-1",
             "radius": 3,
+            "record": "A fox ran off with the key to the castle's fireworks store, and hid at the wayside spring on the castle road.",
             "requires_flags": [
               "flag/fox-spotted"
             ],
@@ -513,6 +684,7 @@
             "hint": "Further up the castle road, to the bee garden beside the road, where the fox ran.",
             "id": "obj/flush-2",
             "radius": 3,
+            "record": "The fox ran on up the castle road and hid at the bee garden.",
             "title": "Chase the fox",
             "type": "reach-anchor"
           },
@@ -529,6 +701,7 @@
             "hint": "Further up the castle road, to the herder's hut beside the road, where the fox ran.",
             "id": "obj/flush-3",
             "radius": 3,
+            "record": "The fox ran on up the castle road and hid at the herder's hut.",
             "title": "Chase the fox",
             "type": "reach-anchor"
           },
@@ -545,6 +718,7 @@
             "hint": "Further up the castle road, to the lookout beside the road, where the fox ran.",
             "id": "obj/flush-4",
             "radius": 3,
+            "record": "The fox ran on up the castle road and hid at the lookout.",
             "title": "Chase the fox",
             "type": "reach-anchor"
           },
@@ -561,6 +735,7 @@
             "hint": "At the top of the castle road, by the castle gate: the fox's den under the gate road's bank.",
             "id": "obj/corner-the-fox",
             "radius": 4,
+            "record": "The fox ran home to its den under the bank by the castle gate, the key still in its mouth.",
             "title": "Corner the fox",
             "type": "reach-anchor"
           },
@@ -586,6 +761,11 @@
               },
               "on_expire": [
                 {
+                  "line": "You reached the storeroom too late: half the rockets had gone down the hill and the fox had chewed the fuses on the rest.",
+                  "objective": "obj/fetch-the-fireworks",
+                  "type": "record-outcome"
+                },
+                {
                   "style": "chat",
                   "text": "By the time you reach the storeroom, Bernt has sent half the rockets down the hill with the stable boys, and the fox has chewed the fuses on the rest of the top shelf. Half a show, then.",
                   "type": "narrate"
@@ -593,6 +773,7 @@
               ],
               "ticks": 9600
             },
+            "record": "The castle's fireworks were locked in the storeroom under the great hall, and had to be fetched before the steward gave up on them.",
             "title": "Fetch the fireworks",
             "type": "collect"
           }
@@ -612,6 +793,11 @@
             "style": "chat",
             "text": "Noon. Down on the square Hedda is ringing a handbell, which is not the festival bell, and shouting for everybody to come back to the stage for the evening.",
             "type": "narrate"
+          },
+          {
+            "amount": 2,
+            "state": "state/pennies",
+            "type": "add-state"
           }
         ],
         "on_objective_complete": {
@@ -627,6 +813,11 @@
             }
           ],
           "obj/fetch-the-fireworks": [
+            {
+              "line": "You carried the castle's whole store of rockets out of the storeroom.",
+              "objective": "obj/fetch-the-fireworks",
+              "type": "record-outcome"
+            },
             {
               "flag": "flag/fireworks-full",
               "type": "set-flag"
@@ -788,6 +979,56 @@
             "dialogue": "dlg/oskar-day",
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-quay",
@@ -829,6 +1070,7 @@
             "hint": "At the top of the main street, just below the square: the clerk with the bow.",
             "id": "obj/ask-vidar",
             "npc": "npc/vidar",
+            "record": "Vidar, the guildhall clerk, could not ring the festival bell: its rope had snapped and the knot was caught on the target in the bell tower.",
             "title": "Speak to the clerk",
             "type": "talk-to"
           },
@@ -852,6 +1094,11 @@
               "from": "activation",
               "on_expire": [
                 {
+                  "line": "The bell stayed silent: Vidar had to go up with a ladder after supper.",
+                  "objective": "obj/ring-the-bell",
+                  "type": "record-outcome"
+                },
+                {
                   "style": "chat",
                   "text": "Vidar lowers his eyes from the tower. 'By-law fourteen will have to wait. I shall go up with a ladder after supper.' The bell stays silent for now.",
                   "type": "narrate"
@@ -862,6 +1109,7 @@
             "prop": {
               "block": "minecraft:bell[attachment=floor,facing=east,powered=false]"
             },
+            "record": "Three arrows in the belfry target would shake the rope's knot free, so the bell could ring.",
             "requires_state": [
               {
                 "op": "at-least",
@@ -877,6 +1125,11 @@
           {
             "flag": "flag/bell-settled",
             "type": "set-flag"
+          },
+          {
+            "amount": 2,
+            "state": "state/pennies",
+            "type": "add-state"
           }
         ],
         "on_objective_complete": {
@@ -894,6 +1147,11 @@
             }
           ],
           "obj/ring-the-bell": [
+            {
+              "line": "You put three arrows in the belfry target and rang the festival bell on time.",
+              "objective": "obj/ring-the-bell",
+              "type": "record-outcome"
+            },
             {
               "flag": "flag/bell-fixed",
               "type": "set-flag"
@@ -970,6 +1228,56 @@
             "dialogue": "dlg/oskar-day",
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-quay",
@@ -1011,6 +1319,7 @@
             "hint": "Halfway down the main street, at the empty goat pen.",
             "id": "obj/ask-kettil",
             "npc": "npc/kettil",
+            "record": "Kettil the cooper's three goats got out of their pen on the main street and strayed up the slopes.",
             "title": "Speak to the cooper",
             "type": "talk-to"
           },
@@ -1029,6 +1338,7 @@
             "id": "obj/gather-wheat",
             "item": "minecraft:wheat",
             "item_name": "Festival Wheat",
+            "record": "The goats would follow wheat, and the wheat was in the field out on the farm track.",
             "title": "Fetch wheat",
             "type": "collect"
           },
@@ -1054,6 +1364,11 @@
               },
               "on_expire": [
                 {
+                  "line": "Kettil gave up waiting, fetched his goats himself, and left them standing on the stage.",
+                  "objective": "obj/pen-the-goats",
+                  "type": "record-outcome"
+                },
+                {
                   "type": "despawn-wave",
                   "wave": "wave/goat-pearl"
                 },
@@ -1076,6 +1391,7 @@
             "prop": {
               "block": "minecraft:lever[face=floor,facing=east,powered=false]"
             },
+            "record": "Kettil's three goats had to be led back into their pen and latched in before dusk.",
             "requires_state": [
               {
                 "op": "at-least",
@@ -1101,6 +1417,11 @@
           {
             "flag": "flag/goats-settled",
             "type": "set-flag"
+          },
+          {
+            "amount": 2,
+            "state": "state/pennies",
+            "type": "add-state"
           }
         ],
         "on_objective_complete": {
@@ -1131,9 +1452,23 @@
               },
               "type": "spawn-wave",
               "wave": "wave/goat-admiral"
+            },
+            {
+              "flag": "flag/heard-of-the-calf",
+              "type": "set-flag"
+            },
+            {
+              "style": "chat",
+              "text": "Kettil, over his shoulder: 'And if you want Runa's mare without paying for it, tell her her sister's cow is calving. She'd leave a burning stable for that cow.'",
+              "type": "narrate"
             }
           ],
           "obj/pen-the-goats": [
+            {
+              "line": "You led all three goats into the pen and dropped the latch.",
+              "objective": "obj/pen-the-goats",
+              "type": "record-outcome"
+            },
             {
               "flag": "flag/goats-home",
               "type": "set-flag"
@@ -1214,6 +1549,56 @@
             "dialogue": "dlg/oskar-day",
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-quay",
@@ -1256,6 +1641,7 @@
             "hint": "Up the main street to the square, where Hedda is calling everybody in.",
             "id": "obj/back-to-the-stage",
             "radius": 5,
+            "record": "Hedda called the whole town back to the stage at dusk.",
             "requires_flags": [
               "flag/lamp-settled",
               "flag/fox-settled",
@@ -1276,6 +1662,7 @@
             },
             "hint": "Down the main street toward the quay: the raiders coming up from the boats.",
             "id": "obj/hold-the-dock",
+            "record": "Raiders landed at the quay at dusk and came up the main street for the festival.",
             "title": "Drive off the dock landing",
             "type": "kill",
             "wave": "wave/dock-landing"
@@ -1291,6 +1678,7 @@
             },
             "hint": "Along the cliff path from the lighthouse side, coming up the last side street.",
             "id": "obj/hold-the-beach",
+            "record": "A second landing of raiders came ashore on the beach by the harbour.",
             "title": "Drive off the beach landing",
             "type": "kill",
             "wave": "wave/beach-landing"
@@ -1306,12 +1694,23 @@
             },
             "hint": "Up the main street from the quay: the captain and his last push.",
             "id": "obj/stop-the-captain",
+            "record": "Captain Gull landed last and led his best up the main street, after the cake.",
             "title": "Stop the captain",
             "type": "kill",
             "wave": "wave/the-captain"
           }
         ],
         "on_complete": [
+          {
+            "line": "You held the raiders off the stage, and Oskar's cake stood whole.",
+            "objective": "obj/stop-the-captain",
+            "type": "record-outcome",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
+          },
           {
             "count": 1,
             "item": "minecraft:carrot_on_a_stick",
@@ -1460,12 +1859,33 @@
           },
           {
             "style": "chat",
-            "text": "Night. Bunting goes up across the main street, the whole town comes up it to the square, and the festival begins.",
+            "text": "Night. Bunting and lanterns go up across the main street, the whole town comes up it to the square, and the festival begins.",
             "type": "narrate"
           }
         ],
         "on_objective_complete": {
           "obj/back-to-the-stage": [
+            {
+              "happening": {
+                "subject": "npc/runa",
+                "text": "Runa goes up the flank with a lantern to look for her mare.",
+                "verb": "departs"
+              },
+              "npc": "npc/runa",
+              "speed": 1.0,
+              "to": {
+                "anchor": "anchor/node-orchard"
+              },
+              "type": "move-npc",
+              "when": {
+                "forbids_flags": [
+                  "flag/mare-home"
+                ],
+                "requires_flags": [
+                  "flag/mare-out"
+                ]
+              }
+            },
             {
               "time": {
                 "daytime": 12000
@@ -1752,6 +2172,63 @@
             },
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-orchard"
+              },
+              "dialogue": {
+                "barks": [
+                  "Moss! Moss! Has anybody seen a grey mare?"
+                ]
+              },
+              "doing": "out on the flank with a lantern, calling for her mare",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/mare-out"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The mare is resting. Mares rest. That is what mares do."
+                ]
+              },
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "The mare is resting. Mares rest. That is what mares do."
+                ]
+              },
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/mare-out"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-square",
@@ -1801,11 +2278,35 @@
             "hint": "On the stage on the square, where the whole town is waiting.",
             "id": "obj/open-the-festival",
             "npc": "npc/hedda",
+            "record": "Hedda opened the night's festival on the square, made of whatever the day had managed.",
             "title": "Tell Hedda to begin",
             "type": "talk-to"
           }
         ],
         "on_complete": [
+          {
+            "style": "chat",
+            "text": "Runa watches the show from the square, a carrot in her pocket for the mare back in her stall.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/mare-home"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Out on the flank a lantern bobs between the orchard trees: Runa, still calling for her mare, missing every rocket.",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/mare-out"
+              ]
+            }
+          },
           {
             "style": "chat",
             "text": "The lighthouse beam sweeps over the square, and every face turns up into it as it passes.",
@@ -8461,6 +8962,9 @@
                   "npc": "npc/inga"
                 },
                 {
+                  "npc": "npc/oskar"
+                },
+                {
                   "npc": "npc/kettil"
                 },
                 {
@@ -8587,6 +9091,9 @@
                   "npc": "npc/inga"
                 },
                 {
+                  "npc": "npc/oskar"
+                },
+                {
                   "npc": "npc/kettil"
                 },
                 {
@@ -8669,6 +9176,7 @@
             }
           }
         ],
+        "on_objective_complete": {},
         "trigger": {
           "quest": "quest/dusk",
           "type": "quest-complete"
@@ -8761,6 +9269,56 @@
             },
             "doing": "about the festival"
           },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
           "npc/sverre": {
             "at": {
               "anchor": "anchor/node-square",
@@ -8811,6 +9369,7 @@
             "hint": "Oskar's racing pig is called Turnip, and waits saddled at the top of the main street: ride him all the way down to the quay.",
             "id": "obj/race-the-pig",
             "radius": 4,
+            "record": "Oskar's racing pig, Turnip, had to be ridden down the main street to the quay in the festival's pig race.",
             "ride": "vehicle/race-pig",
             "title": "Win the pig race",
             "type": "reach-anchor"
@@ -8823,10 +9382,100 @@
             "type": "narrate"
           }
         ],
+        "on_objective_complete": {},
         "trigger": {
           "quest": "quest/dusk",
           "type": "quest-complete"
         }
+      }
+    ],
+    "shops": [
+      {
+        "anchor": "anchor/stable-counter",
+        "id": "shop/stable",
+        "offers": [
+          {
+            "effects": [
+              {
+                "style": "chat",
+                "text": "Runa counts your pennies twice and leads Moss out to the hitching rail by the square. 'Not past dusk. And she does not like the sea.'",
+                "type": "narrate",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/pennies",
+                      "value": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "style": "chat",
+                "text": "Runa looks at your pennies and then at you. 'That is not a horse's worth.'",
+                "type": "narrate",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-most",
+                      "state": "state/pennies",
+                      "value": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "flag": "flag/mare-out",
+                "type": "set-flag",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/pennies",
+                      "value": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "seat-vehicle",
+                "vehicle": "vehicle/mare",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/pennies",
+                      "value": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "amount": -4,
+                "state": "state/pennies",
+                "type": "add-state",
+                "when": {
+                  "requires_state": [
+                    {
+                      "op": "at-least",
+                      "state": "state/pennies",
+                      "value": 4
+                    }
+                  ]
+                }
+              }
+            ],
+            "forbids_flags": [
+              "flag/mare-out"
+            ],
+            "label": "Hire the grey mare (4 pennies)",
+            "tooltip": "Moss, the grey mare, saddled, until dusk."
+          }
+        ],
+        "prop": {
+          "block": "minecraft:barrel[facing=up,open=false]"
+        },
+        "title": "Runa's Stable"
       }
     ],
     "signs": [
@@ -9043,6 +9692,31 @@
         "initial": 0,
         "note": "How many vindicators stand on the stage by the cake.",
         "scope": "party"
+      },
+      {
+        "id": "state/pennies",
+        "initial": 0,
+        "name": "Festival Pennies",
+        "note": "The party's Festival Pennies: the town pays two for each of the day's troubles settled.",
+        "scope": "party"
+      },
+      {
+        "counts": {
+          "of": {
+            "riders": "vehicle/mare"
+          },
+          "region": {
+            "anchor": "anchor/stable-yard",
+            "extent": [
+              4,
+              2,
+              4
+            ]
+          }
+        },
+        "id": "state/mare-home",
+        "note": "Riders on the grey mare inside the stable yard.",
+        "scope": "party"
       }
     ],
     "triggers": [
@@ -9225,6 +9899,11 @@
             "type": "set-flag"
           },
           {
+            "line": "A raider reached the stage in the fight and ran off with Oskar's cake.",
+            "objective": "obj/stop-the-captain",
+            "type": "record-outcome"
+          },
+          {
             "anchor": "anchor/cake-table",
             "block": "minecraft:air",
             "type": "set-block"
@@ -9259,6 +9938,11 @@
             "type": "set-flag"
           },
           {
+            "line": "A raider reached the stage in the fight and ran off with Oskar's cake.",
+            "objective": "obj/stop-the-captain",
+            "type": "record-outcome"
+          },
+          {
             "anchor": "anchor/cake-table",
             "block": "minecraft:air",
             "type": "set-block"
@@ -9282,6 +9966,103 @@
           {
             "op": "at-least",
             "state": "state/raiders-at-the-cake-vindicator",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "at": "anchor/stable-yard",
+        "effects": [
+          {
+            "flag": "flag/mare-out",
+            "type": "set-flag"
+          },
+          {
+            "happening": {
+              "subject": "npc/runa",
+              "text": "Runa runs off up the farm track to her sister's cow.",
+              "verb": "departs"
+            },
+            "npc": "npc/runa",
+            "speed": 1.2,
+            "to": {
+              "anchor": "anchor/node-barn"
+            },
+            "type": "move-npc"
+          },
+          {
+            "type": "seat-vehicle",
+            "vehicle": "vehicle/mare"
+          },
+          {
+            "style": "chat",
+            "text": "Runa drops her brush and runs. Out at the hitching rail by the square, Moss stands saddled and looks at you with interest.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/mare-out"
+        ],
+        "id": "trigger/runa-runs",
+        "on": {
+          "on": "approach",
+          "range": 8
+        },
+        "requires_flags": [
+          "flag/runa-fooled"
+        ]
+      },
+      {
+        "effects": [
+          {
+            "flag": "flag/mare-home",
+            "type": "set-flag"
+          },
+          {
+            "happening": {
+              "subject": "npc/runa",
+              "text": "Runa comes back down to her stable to find her mare there.",
+              "verb": "arrives"
+            },
+            "npc": "npc/runa",
+            "speed": 1.0,
+            "to": {
+              "anchor": "anchor/stable-yard",
+              "offset": [
+                -2,
+                0,
+                0
+              ]
+            },
+            "type": "move-npc",
+            "when": {
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Moss walks into the stable yard as if she had never been anywhere. Runa pats her neck and says nothing at all.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/mare-home",
+          "flag/dusk-begun"
+        ],
+        "id": "trigger/mare-home",
+        "on": {
+          "on": "body-enters",
+          "state": "state/mare-home"
+        },
+        "requires_flags": [
+          "flag/mare-out"
+        ],
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/mare-home",
             "value": 1
           }
         ]
@@ -9309,6 +10090,30 @@
         "facing": "south",
         "id": "vehicle/race-pig",
         "name": "Turnip"
+      },
+      {
+        "at": {
+          "anchor": "anchor/mare-rail"
+        },
+        "bounds": {
+          "anchor": "anchor/node-street-5",
+          "extent": [
+            150,
+            60,
+            200
+          ]
+        },
+        "entity": "minecraft:horse",
+        "equipment": {
+          "saddle": {
+            "item": "minecraft:saddle"
+          }
+        },
+        "facing": "west",
+        "id": "vehicle/mare",
+        "left": "where-left",
+        "name": "Moss",
+        "seated": "by-story"
       }
     ],
     "waves": [
@@ -9458,6 +10263,6 @@
       }
     ]
   },
-  "dsl_version": "0.75.0",
+  "dsl_version": "0.76.0",
   "stage": "quests"
 }

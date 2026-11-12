@@ -330,6 +330,11 @@ def build(a):
     m.set(IX0 - 1, 3, 4, wall_torch("west"))
 
     m.marks["node-inn"] = (PX - 1, 8, "west")
+    # the stable keeper's counter by the stalls, the yard where her horses stand, and the
+    # cart way's hitching rail by the square, where a hired horse is led out and tied
+    m.marks["stable-counter"] = (4, 12, "north")
+    m.marks["stable-yard"] = (7, 13, "north")
+    m.marks["mare-rail"] = (23, 17, "west")
     return m
 
 
