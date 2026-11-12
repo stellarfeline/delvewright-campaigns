@@ -45,4 +45,10 @@ The night act is judged at the darkest sky the world reaches (effective 4), and 
 
 ## Build (step 8) — where it stands
 
-The documents build at `af68169c4` with task A, Oskar's hop, the mare and the supply fills held (build exit 0, 665 s, 2.8 GB peak on this Mac; the remote had no free slot). The ladder's record is below.
+The documents build at `af68169c4` with task A, Oskar's hop, the mare and the supply fills held (build exit 0, 665 s, 2.8 GB peak on this Mac; the remote had no free slot). The ladder (step 10), on this build at `af68169c4`:
+
+- PackTest: 133 of 133 required tests passed (the limit-expiry templates included).
+- The critical-path bot: failed at step 3, the belfry shot: the harness walks a `shot` step to its target, in the tower's opening, before its stance ([132, 91, 223]), so the bot never reaches it (an engine defect, reported).
+- The written world: 6037107 cells compared; 0 in the model class (none the server's physics does not explain); 210 random-tick and 29869 re-derived cells explained.
+- Branch runs: 7 worlds, each stopping at the same belfry step (the same harness defect).
+- The staging gate: refused on 2 of 160 rows, `drill3-01` and `drill3-03` (no design record: the reference sheet waits on the image provider's credit); `isl-33` and `isl-53` are bound now that the fireworks come from the steward's chest.
