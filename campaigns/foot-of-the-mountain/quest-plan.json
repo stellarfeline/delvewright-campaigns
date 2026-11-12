@@ -1,6 +1,29 @@
 {
   "campaign_id": "foot-of-the-mountain",
   "content": {
+    "branch_points": [
+      {
+        "branches": [
+          {
+            "flags": [
+              "flag/goats-home"
+            ],
+            "id": "branch/goats-home",
+            "leads_to": "quest/the-festival"
+          },
+          {
+            "flags": [],
+            "id": "branch/goats-astray",
+            "leads_to": "quest/the-festival"
+          }
+        ],
+        "forks_on": [
+          "flag/goats-home"
+        ],
+        "id": "branch-point/goats",
+        "opens_at": "quest/the-goats"
+      }
+    ],
     "endings_read": {
       "at_least": 2
     },
@@ -58,6 +81,42 @@
       {
         "act": 1,
         "activity": [
+          "talk",
+          "take",
+          "reach"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/opening"
+        ],
+        "goal": "Row out into the bay in the boatwright's boats and fish the feast's six crates off the shoals before they sink, two of them out past the sandbar, and land them at the harbour.",
+        "id": "quest/the-cargo",
+        "mandatory": true,
+        "npcs": [
+          "npc/sverre"
+        ]
+      },
+      {
+        "act": 1,
+        "activity": [
+          "talk",
+          "take",
+          "use"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/opening"
+        ],
+        "goal": "Fetch wheat from the field on the flank, lure Kettil's three goats down from the castle road, the spring and the orchard into their pen on the main street, and drop the latch before dusk.",
+        "id": "quest/the-goats",
+        "mandatory": true,
+        "npcs": [
+          "npc/kettil"
+        ]
+      },
+      {
+        "act": 1,
+        "activity": [
           "reach",
           "take"
         ],
@@ -81,7 +140,9 @@
         "area": "area/site",
         "depends_on": [
           "quest/the-fox",
-          "quest/the-bell"
+          "quest/the-bell",
+          "quest/the-goats",
+          "quest/the-cargo"
         ],
         "goal": "Come back to the stage at dusk and drive three landings of raiders off the festival.",
         "id": "quest/dusk",
@@ -124,6 +185,6 @@
       }
     ]
   },
-  "dsl_version": "0.74.0",
+  "dsl_version": "0.75.0",
   "stage": "quest-plan"
 }

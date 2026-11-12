@@ -483,6 +483,20 @@ def road(m, place, stem):
                     m.set(x, y, z, "road")
                 if h:
                     m.set(x, h, z, stairs(STEP, climb) if step else "setts")
+        # a lamp on the verge at the ramp's foot, on the first cell no opening
+        # keeps clear, so the turn below the climb is lit at night
+        for i, a in enumerate(order[:6]):
+            if i == 0:
+                continue
+            x, z = cell(a, verge)
+            if (x, z) in keep:
+                continue
+            j = i - 2
+            h = 0 if i < 2 else min(j // 2 + 1, rise)
+            if i >= 2 and j % 2 == 0:
+                continue          # a stair's tread: the lamp stands on a landing or at grade
+            lamp(m, x, z, y=h + 1)
+            break
         return
     for a in rows:
         for b in cols:
@@ -492,7 +506,17 @@ def road(m, place, stem):
         return
     n = len(rows)
     # the verge: parapet in runs, broken every few cells; a lamp at each end of a
-    # leg that turns; a shrine at the middle of a long climb
+    # leg that turns; a shrine at the middle of a long climb. An end whose verge
+    # cell a neighbour's opening keeps clear takes its lamp on the first free
+    # cell inward, so the turn is lit at night all the same
+    ends = set()
+    if n >= 6:
+        for t, step in ((1, 1), (n - 2, -1)):
+            i = t
+            while 0 < i < n - 1 and cell(rows[i], verge) in keep:
+                i += step
+            if 0 < i < n - 1:
+                ends.add(i)
     for i, a in enumerate(rows):
         x, z = cell(a, verge)
         if (x, z) in keep or i in (0, n - 1):
@@ -509,7 +533,7 @@ def road(m, place, stem):
         elif n >= 10 and i == n // 2 and k % 2 == 0:
             m.set(x, 1, z, "minecraft:chiseled_stone_bricks")
             m.set(x, 2, z, lantern(False))
-        elif (i in (1, n - 2) and n >= 6) or (n > 20 and i % 16 == 8):
+        elif i in ends or (n > 20 and i % 16 == 8):
             lamp(m, x, z)
         elif hsh(k, i, 13) < 0.72:
             m.set(x, 1, z, wall(PARAPET[int(hsh(k, i, 17) * 2)]))

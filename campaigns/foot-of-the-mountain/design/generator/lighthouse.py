@@ -1183,7 +1183,7 @@ def build_model():
     for (x, z) in ((3, 15), (6, 15), (6, 16), (7, 12), (6, 5), (3, 8)):
         if m.get(x, 1, z) is None:
             m.set(x, 1, z, "tuft" if (x + z) % 2 else "daisy")
-    for (x, z) in ((6, 3), (3, 9), (19, 11)):
+    for (x, z) in ((6, 3), (3, 9), (19, 11), (9, 17)):
         m.set(x, 1, z, "lamp_post")
         m.set(x, 2, z, "lantern")
     # the east garden behind the cottage: a hedge of bushes, a bench

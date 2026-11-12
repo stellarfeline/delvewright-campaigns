@@ -17,6 +17,12 @@
         "a": "room",
         "b": "exterior",
         "class": "walk",
+        "via": "quay-to-bay-way"
+      },
+      {
+        "a": "room",
+        "b": "exterior",
+        "class": "walk",
         "via": "side-west"
       },
       {
@@ -47,12 +53,14 @@
   "name": "quay",
   "palette": {
     "anchor": "minecraft:anvil[facing=north]",
-    "b0": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b1": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
-    "b2": "minecraft:polished_deepslate_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
-    "b3": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
-    "b4": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
-    "b5": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
+    "b0": "minecraft:chest[facing=south,type=single,waterlogged=false]",
+    "b1": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b2": "minecraft:dark_oak_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
+    "b3": "minecraft:hay_block[axis=y]",
+    "b4": "minecraft:polished_deepslate_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]",
+    "b5": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
+    "b6": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
+    "b7": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
     "barrel": "minecraft:barrel[facing=up,open=false]",
     "crate": "minecraft:spruce_wood[axis=y]",
     "crate_lid": "minecraft:spruce_trapdoor[facing=north,half=bottom,open=false,powered=false,waterlogged=false]",
@@ -88,6 +96,12 @@
     "handed/seam/flight-10-to-quay/y1": 6,
     "handed/seam/flight-10-to-quay/z0": 1,
     "handed/seam/flight-10-to-quay/z1": 1,
+    "handed/seam/quay-to-bay/x0": 6,
+    "handed/seam/quay-to-bay/x1": 8,
+    "handed/seam/quay-to-bay/y0": 1,
+    "handed/seam/quay-to-bay/y1": 3,
+    "handed/seam/quay-to-bay/z0": 11,
+    "handed/seam/quay-to-bay/z1": 11,
     "handed/seam/quay-to-harbour/x0": 61,
     "handed/seam/quay-to-harbour/x1": 61,
     "handed/seam/quay-to-harbour/y0": 1,
@@ -290,7 +304,7 @@
         "weight": 1
       }
     ],
-    "column_14": [
+    "column_15": [
       {
         "body": {
           "axis": "y",
@@ -309,6 +323,10 @@
             },
             {
               "op": "call",
+              "symbol": "row_14"
+            },
+            {
+              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -370,6 +388,37 @@
                   "rhs": {
                     "expr": "int",
                     "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-bay/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
                   }
                 }
               },
@@ -387,7 +436,7 @@
         "weight": 1
       }
     ],
-    "column_17": [
+    "column_16": [
       {
         "body": {
           "axis": "y",
@@ -398,11 +447,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_15"
-            },
-            {
-              "op": "call",
-              "symbol": "row_16"
+              "symbol": "row_14"
             },
             {
               "op": "call",
@@ -425,7 +470,7 @@
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
-                    "name": "handed/datum-y"
+                    "name": "handed/seam/quay-to-bay/y1"
                   },
                   "op": "add",
                   "rhs": {
@@ -437,37 +482,6 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/flight-10-to-quay/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
                 }
               },
               "size": "absolute"
@@ -492,6 +506,10 @@
             {
               "op": "call",
               "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_17"
             },
             {
               "op": "call",
@@ -530,6 +548,37 @@
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -581,7 +630,7 @@
         "weight": 1
       }
     ],
-    "column_20": [
+    "column_21": [
       {
         "body": {
           "axis": "y",
@@ -592,11 +641,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_18"
-            },
-            {
-              "op": "call",
-              "symbol": "row_16"
+              "symbol": "row_20"
             },
             {
               "op": "call",
@@ -636,37 +681,6 @@
               "size": "absolute"
             },
             {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
               "size": "relative",
               "weight": {
                 "expr": "int",
@@ -689,11 +703,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_21"
+              "symbol": "row_20"
             },
             {
               "op": "call",
-              "symbol": "row_16"
+              "symbol": "row_18"
             },
             {
               "op": "call",
@@ -790,7 +804,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_13"
+              "symbol": "row_18"
             },
             {
               "op": "call",
@@ -872,7 +886,7 @@
         "weight": 1
       }
     ],
-    "column_26": [
+    "column_27": [
       {
         "body": {
           "axis": "y",
@@ -887,6 +901,103 @@
             },
             {
               "op": "call",
+              "symbol": "row_26"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_29": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_28"
+            },
+            {
+              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -934,7 +1045,7 @@
         "weight": 1
       }
     ],
-    "column_28": [
+    "column_31": [
       {
         "body": {
           "axis": "y",
@@ -945,7 +1056,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_27"
+              "symbol": "row_30"
             },
             {
               "op": "call",
@@ -996,7 +1107,7 @@
         "weight": 1
       }
     ],
-    "column_30": [
+    "column_33": [
       {
         "body": {
           "axis": "y",
@@ -1007,11 +1118,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_29"
+              "symbol": "row_32"
             },
             {
               "op": "call",
-              "symbol": "row_27"
+              "symbol": "row_30"
             },
             {
               "op": "call",
@@ -1077,68 +1188,6 @@
                     "expr": "int",
                     "value": 1
                   }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_32": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_3"
-            },
-            {
-              "op": "call",
-              "symbol": "row_31"
-            },
-            {
-              "op": "call",
-              "symbol": "row_4"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/flight-10-to-quay/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-10-to-quay/y0"
                 }
               },
               "size": "absolute"
@@ -1163,14 +1212,6 @@
             {
               "op": "call",
               "symbol": "row_3"
-            },
-            {
-              "op": "call",
-              "symbol": "row_33"
-            },
-            {
-              "op": "call",
-              "symbol": "row_13"
             },
             {
               "op": "call",
@@ -1214,6 +1255,76 @@
               "size": "absolute"
             },
             {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_38": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_36"
+            },
+            {
+              "op": "call",
+              "symbol": "row_26"
+            },
+            {
+              "op": "call",
+              "symbol": "row_37"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
               "blocks": {
                 "expr": "arith",
                 "lhs": {
@@ -1248,8 +1359,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-bay/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1279,7 +1398,7 @@
         "weight": 1
       }
     ],
-    "column_37": [
+    "column_40": [
       {
         "body": {
           "axis": "y",
@@ -1290,7 +1409,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_36"
+              "symbol": "row_39"
             },
             {
               "op": "call",
@@ -1341,7 +1460,228 @@
         "weight": 1
       }
     ],
-    "column_39": [
+    "column_42": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_41"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_44": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_43"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_46": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_3"
+            },
+            {
+              "op": "call",
+              "symbol": "row_45"
+            },
+            {
+              "op": "call",
+              "symbol": "row_26"
+            },
+            {
+              "op": "call",
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_48": [
       {
         "body": {
           "axis": "y",
@@ -1352,7 +1692,7 @@
             },
             {
               "op": "call",
-              "symbol": "row_38"
+              "symbol": "row_47"
             }
           ],
           "op": "split",
@@ -1469,8 +1809,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-bay/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -1528,15 +1876,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_14"
+                "symbol": "column_15"
               },
               {
                 "op": "call",
-                "symbol": "column_5"
-              },
-              {
-                "op": "call",
-                "symbol": "column_17"
+                "symbol": "column_16"
               },
               {
                 "op": "call",
@@ -1544,11 +1888,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_20"
-              },
-              {
-                "op": "call",
-                "symbol": "column_19"
+                "symbol": "column_21"
               },
               {
                 "op": "call",
@@ -1556,7 +1896,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_5"
+                "symbol": "column_21"
               },
               {
                 "op": "call",
@@ -1568,7 +1908,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_26"
+                "symbol": "column_27"
               },
               {
                 "op": "call",
@@ -1576,15 +1916,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_28"
-              },
-              {
-                "op": "call",
-                "symbol": "column_30"
-              },
-              {
-                "op": "call",
-                "symbol": "column_28"
+                "symbol": "column_29"
               },
               {
                 "op": "call",
@@ -1592,7 +1924,15 @@
               },
               {
                 "op": "call",
-                "symbol": "column_26"
+                "symbol": "column_31"
+              },
+              {
+                "op": "call",
+                "symbol": "column_33"
+              },
+              {
+                "op": "call",
+                "symbol": "column_31"
               },
               {
                 "op": "call",
@@ -1600,7 +1940,11 @@
               },
               {
                 "op": "call",
-                "symbol": "column_32"
+                "symbol": "column_29"
+              },
+              {
+                "op": "call",
+                "symbol": "column_5"
               },
               {
                 "op": "call",
@@ -1608,11 +1952,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_5"
-              },
-              {
-                "op": "call",
-                "symbol": "column_26"
+                "symbol": "column_38"
               },
               {
                 "op": "call",
@@ -1620,7 +1960,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_37"
+                "symbol": "column_29"
               },
               {
                 "op": "call",
@@ -1628,7 +1968,19 @@
               },
               {
                 "op": "call",
-                "symbol": "column_24"
+                "symbol": "column_40"
+              },
+              {
+                "op": "call",
+                "symbol": "column_42"
+              },
+              {
+                "op": "call",
+                "symbol": "column_44"
+              },
+              {
+                "op": "call",
+                "symbol": "column_46"
               },
               {
                 "op": "call",
@@ -1636,7 +1988,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_26"
+                "symbol": "column_29"
               },
               {
                 "op": "call",
@@ -1644,7 +1996,7 @@
               },
               {
                 "op": "call",
-                "symbol": "column_39"
+                "symbol": "column_48"
               }
             ],
             "op": "split",
@@ -1679,29 +2031,77 @@
               },
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-bay/x0"
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 5
+                  }
                 },
                 "size": "absolute"
               },
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "int",
+                    "value": 7
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-bay/x0"
+                  }
                 },
                 "size": "absolute"
               },
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 2
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/quay-to-bay/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 7
+                  }
                 },
                 "size": "absolute"
               },
               {
                 "blocks": {
-                  "expr": "int",
-                  "value": 1
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "int",
+                    "value": 10
+                  },
+                  "op": "sub",
+                  "rhs": {
+                    "expr": "arith",
+                    "lhs": {
+                      "expr": "param",
+                      "name": "handed/seam/quay-to-bay/x1"
+                    },
+                    "op": "add",
+                    "rhs": {
+                      "expr": "int",
+                      "value": 1
+                    }
+                  }
                 },
                 "size": "absolute"
               },
@@ -1903,7 +2303,14 @@
               {
                 "blocks": {
                   "expr": "int",
-                  "value": 2
+                  "value": 1
+                },
+                "size": "absolute"
+              },
+              {
+                "blocks": {
+                  "expr": "int",
+                  "value": 1
                 },
                 "size": "absolute"
               },
@@ -2154,8 +2561,16 @@
             {
               "cond": "cmp",
               "lhs": {
-                "expr": "int",
-                "value": 4
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-bay/y1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               },
               "op": "gt",
               "rhs": {
@@ -2168,6 +2583,26 @@
                 "rhs": {
                   "expr": "int",
                   "value": 2
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-bay/y1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
                 }
               }
             },
@@ -2262,6 +2697,26 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-bay/y1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "dim": "y",
                 "expr": "dim"
               },
@@ -2339,6 +2794,70 @@
                 "lhs": {
                   "expr": "param",
                   "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-bay/x0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 7
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-bay/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-bay/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 7
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 10
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-bay/x1"
                 },
                 "op": "add",
                 "rhs": {
@@ -2450,6 +2969,18 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-bay/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
@@ -2489,6 +3020,26 @@
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/flight-10-to-quay/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/quay-to-bay/z0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/quay-to-harbour/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             }
           ]
@@ -2591,7 +3142,7 @@
             },
             {
               "material": {
-                "role": "b1"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -2607,7 +3158,7 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south"
+              "region": "quay-to-bay-way"
             }
           ],
           "op": "split",
@@ -2715,7 +3266,7 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south"
+              "region": "quay-to-bay-way"
             }
           ],
           "op": "split",
@@ -2793,7 +3344,78 @@
         "weight": 1
       }
     ],
-    "row_15": [
+    "row_14": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "quay-to-bay-way"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_17": [
       {
         "body": {
           "axis": "z",
@@ -2807,7 +3429,7 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b6"
               },
               "op": "fill"
             },
@@ -2901,7 +3523,7 @@
         "weight": 1
       }
     ],
-    "row_16": [
+    "row_18": [
       {
         "body": {
           "axis": "z",
@@ -3013,7 +3635,7 @@
         "weight": 1
       }
     ],
-    "row_18": [
+    "row_20": [
       {
         "body": {
           "axis": "z",
@@ -3027,7 +3649,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -3105,135 +3727,6 @@
                     "expr": "int",
                     "value": 1
                   }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_21": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b3"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/flight-10-to-quay/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/flight-10-to-quay/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-10-to-quay/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 10
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/flight-10-to-quay/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/quay-to-harbour/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 10
                 }
               },
               "size": "absolute"
@@ -3264,7 +3757,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b5"
               },
               "op": "fill"
             },
@@ -3276,11 +3769,17 @@
               "region": "room"
             },
             {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
               "body": {
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-south"
+              "region": "room"
             }
           ],
           "op": "split",
@@ -3319,16 +3818,8 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/quay-to-harbour/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "int",
+                  "value": 10
                 },
                 "op": "sub",
                 "rhs": {
@@ -3342,6 +3833,29 @@
                     "expr": "int",
                     "value": 1
                   }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
                 }
               },
               "size": "absolute"
@@ -3368,106 +3882,13 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "room"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b1"
               },
               "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/flight-10-to-quay/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 10
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/flight-10-to-quay/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/quay-to-harbour/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 10
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_27": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "flight-10-to-quay-way"
             },
             {
               "body": {
@@ -3559,7 +3980,7 @@
         "weight": 1
       }
     ],
-    "row_29": [
+    "row_26": [
       {
         "body": {
           "axis": "z",
@@ -3569,25 +3990,11 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "flight-10-to-quay-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "room"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "lantern"
               },
               "op": "fill"
             },
@@ -3597,6 +4004,13 @@
               },
               "op": "claim",
               "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -3635,8 +4049,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 10
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -3650,6 +4072,75 @@
                     "expr": "int",
                     "value": 1
                   }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_28": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 10
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
                 }
               },
               "size": "absolute"
@@ -3778,7 +4269,246 @@
         "weight": 1
       }
     ],
-    "row_31": [
+    "row_30": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-10-to-quay-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_32": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "flight-10-to-quay-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 10
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_34": [
       {
         "body": {
           "axis": "z",
@@ -3870,7 +4600,7 @@
         "weight": 1
       }
     ],
-    "row_33": [
+    "row_36": [
       {
         "body": {
           "axis": "z",
@@ -3884,7 +4614,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b1"
               },
               "op": "fill"
             },
@@ -3999,7 +4729,7 @@
         "weight": 1
       }
     ],
-    "row_34": [
+    "row_37": [
       {
         "body": {
           "axis": "z",
@@ -4108,7 +4838,7 @@
         "weight": 1
       }
     ],
-    "row_36": [
+    "row_39": [
       {
         "body": {
           "axis": "z",
@@ -4216,7 +4946,7 @@
         "weight": 1
       }
     ],
-    "row_38": [
+    "row_4": [
       {
         "body": {
           "axis": "z",
@@ -4226,14 +4956,7 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "quay-to-harbour-way"
+              "region": "side-north"
             },
             {
               "body": {
@@ -4241,6 +4964,13 @@
               },
               "op": "claim",
               "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
             }
           ],
           "op": "split",
@@ -4287,7 +5017,7 @@
         "weight": 1
       }
     ],
-    "row_4": [
+    "row_41": [
       {
         "body": {
           "axis": "z",
@@ -4297,7 +5027,13 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-north"
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
             },
             {
               "body": {
@@ -4312,6 +5048,324 @@
               },
               "op": "claim",
               "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_43": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_45": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/flight-10-to-quay/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/flight-10-to-quay/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/quay-to-harbour/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/flight-10-to-quay/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_47": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "quay-to-harbour-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
             }
           ],
           "op": "split",
@@ -4605,7 +5659,7 @@
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b4"
               },
               "op": "fill"
             },

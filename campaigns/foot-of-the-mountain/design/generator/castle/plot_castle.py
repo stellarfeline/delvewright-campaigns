@@ -33,6 +33,11 @@ FIXES = {}
 for _y in range(8, 14):
     FIXES[(ROAD_X - 1, _y, 0)] = "wall"
     FIXES[(ROAD_X + ROAD_W, _y, 0)] = "wall"
+# Festival lanterns where the night leaves a body in the dark: on the turf under the
+# south curtain's two bartizans, and hung in the great hall's east window embrasure.
+for _cell in ((34, 8, 92), (67, 8, 92)):
+    FIXES[_cell] = "yard/lantern"
+FIXES[(27, 31, 46)] = "gate/lantern_hung"   # hung from the embrasure's head
 # The two names the site plan owes this place, marked beside Doune's own:
 # where the party spawns (a step behind Doune's arrival, facing the castle) and
 # the place's own name (in the courtyard, beside the guide's stop).

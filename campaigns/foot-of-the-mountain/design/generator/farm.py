@@ -288,6 +288,9 @@ def goat_pen(m, W, D, d, g):
     m.part(x1 - 4, x1 - 1, z0 + 1, z0 + 2, "lean-to")
     # lamps: one on the street side, one in the pen's corner by the gate, so the pen reads at night
     lamp_post(m, 2, z0, d)
+    # the second defence line's supply chest on the street side of the fence, a hay bale for cover
+    m.set(2, d, z0 + 2, "minecraft:chest[facing=west,type=single,waterlogged=false]")
+    m.set(2, d, z0 + 3, "minecraft:hay_block[axis=y]")
     lamp_post(m, x0 + 1, z1 - 1, d)
     for x in range(x0 + 1, x1):
         for z in range(z0 + 1, z1):
@@ -467,6 +470,7 @@ def build(place):
         gz = goat_pen(m, W, D, d, g)
         # the latch: on the street before the gatepost, where a body stands to drop it
         m.mark("goat-pen-gate", 2, gz - 1, facing="east")
+        m.mark("supply-pen", 2, 3, facing="west", y=d)
         m.mark("node-goat-pen", (W + 4) // 2, gz, facing="west")
         m.finish()
         return m

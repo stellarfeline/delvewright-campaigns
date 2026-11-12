@@ -303,6 +303,9 @@ def build(a):
                 if d <= 3 and (x, z) != (22, 20) or (y == 7 and (x, z) == (22, 20)):
                     m.set(x, y, z, leaves("minecraft:oak"))
     m.set(22, 1, 21, stairs("minecraft:spruce", "north")); m.set(21, 1, 21, stairs("minecraft:spruce", "north"))
+    # a festival lantern on a post beside the bench under the oak
+    m.set(24, 1, 21, fence("minecraft:spruce")); m.set(24, 2, 21, fence("minecraft:spruce"))
+    m.set(24, 3, 21, lantern(False))
     # a hitching rail by the square, flower beds along the range's south wall
     for z in range(16, 20):
         m.set(25, 1, z, fence("minecraft:spruce"))
@@ -323,6 +326,8 @@ def build(a):
     m.set(12, 1, 22, "minecraft:lilac[half=lower]"); m.set(12, 2, 22, "minecraft:lilac[half=upper]")
     # the north eave strip behind the inn: a woodpile for the hearths
     m.box(16, 19, 1, 2, 1, 1, log("minecraft:oak_log", "x"))
+    # a torch on the inn's west wall lights the passage between the inn and the stables
+    m.set(IX0 - 1, 3, 4, wall_torch("west"))
 
     m.marks["node-inn"] = (PX - 1, 8, "west")
     return m

@@ -75,8 +75,12 @@ def build(place):
     # the east end, by the harbour: barrels of salt fish
     for (x, z) in ((X1 - 9, Z0), (X1 - 8, Z0), (X1 - 7, Z0)):
         m.set(x, 1, z, "barrel")
+    # the first defence line's supply chest beside them, a hay bale for cover
+    m.set(X1 - 6, 1, Z0, "minecraft:chest[facing=south,type=single,waterlogged=false]")
+    m.set(X1 - 5, 1, Z0, "minecraft:hay_block[axis=y]")
     m.finish()
     m.mark("node-quay", (X0 + X1) // 2, (Z0 + Z1) // 2, "south")
+    m.mark("supply-quay", X1 - 6, Z0, "south", y=1)
     return m
 
 

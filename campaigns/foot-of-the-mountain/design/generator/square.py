@@ -70,6 +70,11 @@ def build(place):
                         if not (x == tx and z == tz and y <= w + 3):
                             m.set(x, y, z, "crown")
         m.set(tx, w + 6, tz, "crown")
+        # festival lanterns hung under the crown on both sides of the trunk, so the
+        # benches in its shade read at night
+        for lx, lz in ((tx - 1, tz + (1 if bz > tz else -1)), (tx + 1, tz + (1 if bz > tz else -1))):
+            m.set(lx, w + 3, lz, chain("y"))
+            m.set(lx, w + 2, lz, lantern(True))
         # a bench under the crown, its back to the trunk side
         facing = "north" if bz > tz else "south"
         for x in range(tx - 1, tx + 2):
@@ -127,6 +132,7 @@ def build(place):
     m.set(sx0 + 2, w, sz0 - 1, "minecraft:barrel[facing=up,open=false]")
     # the third defence line's supply chest beside them, and a cart of hay bales for cover
     m.set(sx0 + 3, w, sz0 - 1, "minecraft:chest[facing=south,type=single,waterlogged=false]")
+    m.mark("supply-stage", sx0 + 3, sz0 - 1, facing="south", y=w)
     # the cake table on the deck: a trestle under a white cloth, the festival
     # cake on it (the `cake-table` mark, which the cake's theft clears)
     ct = (sx0 + 2, (sz0 + sz1) // 2)

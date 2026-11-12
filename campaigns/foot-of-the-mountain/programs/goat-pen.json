@@ -56,24 +56,27 @@
   },
   "name": "goat-pen",
   "palette": {
-    "b0": "minecraft:coarse_dirt",
-    "b1": "minecraft:dirt_path",
-    "b10": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
-    "b11": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
-    "b12": "minecraft:spruce_fence[east=true,north=false,south=true,waterlogged=false,west=true]",
-    "b13": "minecraft:spruce_fence[east=true,north=true,south=false,waterlogged=false,west=false]",
-    "b14": "minecraft:spruce_fence[east=true,north=true,south=false,waterlogged=false,west=true]",
-    "b15": "minecraft:spruce_fence_gate[facing=east,in_wall=false,open=true,powered=false]",
-    "b16": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
-    "b17": "minecraft:water_cauldron[level=3]",
-    "b2": "minecraft:hay_block[axis=x]",
-    "b3": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "b4": "minecraft:lantern[hanging=true,waterlogged=false]",
-    "b5": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b6": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=true]",
-    "b7": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
-    "b8": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=true]",
-    "b9": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
+    "b0": "minecraft:chest[facing=west,type=single,waterlogged=false]",
+    "b1": "minecraft:coarse_dirt",
+    "b10": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=true]",
+    "b11": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=false]",
+    "b12": "minecraft:spruce_fence[east=false,north=true,south=true,waterlogged=false,west=true]",
+    "b13": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
+    "b14": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=true]",
+    "b15": "minecraft:spruce_fence[east=true,north=false,south=true,waterlogged=false,west=true]",
+    "b16": "minecraft:spruce_fence[east=true,north=true,south=false,waterlogged=false,west=false]",
+    "b17": "minecraft:spruce_fence[east=true,north=true,south=false,waterlogged=false,west=true]",
+    "b18": "minecraft:spruce_fence_gate[facing=east,in_wall=false,open=true,powered=false]",
+    "b19": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
+    "b2": "minecraft:dirt_path",
+    "b20": "minecraft:water_cauldron[level=3]",
+    "b3": "minecraft:hay_block[axis=x]",
+    "b4": "minecraft:hay_block[axis=y]",
+    "b5": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "b6": "minecraft:lantern[hanging=true,waterlogged=false]",
+    "b7": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b8": "minecraft:spruce_fence[east=false,north=false,south=true,waterlogged=false,west=true]",
+    "b9": "minecraft:spruce_fence[east=false,north=true,south=false,waterlogged=false,west=false]",
     "ground-0": "minecraft:coarse_dirt",
     "ground-1": "minecraft:dirt",
     "ground-2": "minecraft:grass_block[snowy=false]"
@@ -1570,6 +1573,26 @@
               "op": "gt",
               "rhs": {
                 "expr": "int",
+                "value": 5
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/street-5-to-goat-pen/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
                 "value": 2
               }
             },
@@ -1650,7 +1673,7 @@
               "op": "gt",
               "rhs": {
                 "expr": "int",
-                "value": 2
+                "value": 5
               }
             },
             {
@@ -1953,7 +1976,7 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b5"
               },
               "op": "fill"
             },
@@ -2122,20 +2145,32 @@
             },
             {
               "material": {
+                "role": "b15"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b11"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b12"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b11"
               },
               "op": "fill"
             },
             {
               "body": {
                 "material": {
-                  "role": "b15"
+                  "role": "b18"
                 },
                 "op": "fill"
               },
@@ -2144,7 +2179,7 @@
             },
             {
               "material": {
-                "role": "b13"
+                "role": "b16"
               },
               "op": "fill"
             },
@@ -2174,6 +2209,20 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
@@ -2182,7 +2231,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 2
+                  "value": 5
                 }
               },
               "size": "absolute"
@@ -2251,7 +2300,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -2264,13 +2313,13 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b8"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b17"
               },
               "op": "fill"
             },
@@ -2375,7 +2424,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -2487,7 +2536,7 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b5"
               },
               "op": "fill"
             },
@@ -2698,7 +2747,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -2711,7 +2760,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -2894,7 +2943,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -2907,7 +2956,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -2920,7 +2969,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -3032,7 +3081,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -3151,7 +3200,7 @@
             },
             {
               "material": {
-                "role": "b16"
+                "role": "b19"
               },
               "op": "fill"
             },
@@ -3369,13 +3418,13 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b15"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b3"
               },
               "op": "fill"
             },
@@ -3395,7 +3444,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -3500,7 +3549,7 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b6"
               },
               "op": "fill"
             },
@@ -3618,7 +3667,7 @@
             },
             {
               "material": {
-                "role": "b1"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -3687,32 +3736,19 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b15"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b3"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-pen"
-            },
-            {
-              "material": {
-                "role": "b17"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -3725,7 +3761,20 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-pen"
+            },
+            {
+              "material": {
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -3853,7 +3902,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -3873,7 +3922,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -3964,19 +4013,19 @@
             },
             {
               "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b11"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -4346,7 +4395,7 @@
             },
             {
               "material": {
-                "role": "b0"
+                "role": "b1"
               },
               "op": "fill"
             },
@@ -4415,7 +4464,26 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b13"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4452,6 +4520,27 @@
             },
             {
               "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "arith",
@@ -4468,7 +4557,7 @@
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 2
+                  "value": 5
                 }
               },
               "size": "absolute"
@@ -4499,7 +4588,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b7"
               },
               "op": "fill"
             },
