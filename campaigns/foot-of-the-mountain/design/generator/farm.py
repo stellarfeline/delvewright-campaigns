@@ -671,13 +671,32 @@ def bay(m, W, D, d, g, place):
         for z in range(zc - half + 1, zc + half):
             if 1 <= z <= D and (x, z) not in shoal:
                 bar.add((x, z))
+    # each shoal and the bar is a low mound of sand, not a pillar: its crest breaks the
+    # surface (where a crate lies, and where a body climbs out), and from the crest it falls
+    # away under the water, about a block for every block or two across, unevenly, until it
+    # meets the cove's floor (the sandbar's own shape: a ridge whose flanks shelve into the water)
+    crest = shoal | bar
+    def mound(x, z):
+        best = None
+        for (cx, cz) in crest:
+            d = abs(cx - x) + abs(cz - z)
+            if d <= 6:
+                best = d if best is None else min(best, d)
+        if best is None:
+            return None
+        if best == 0:
+            return g
+        rate = 0.6 + 0.5 * n(x, z, 9.1)            # blocks of fall per block across
+        return g - max(1, int(round(best * rate)))
     for z in range(1, D + 1):
         for x in range(1, W + 1):
             t = top.get((x, z), g - 3)
-            if (x, z) in shoal or (x, z) in bar:
-                for y in range(min(t + 1, g), g):
+            h = mound(x, z)
+            if h is not None and h > t:
+                for y in range(t + 1, min(h, g) + 1):
                     m.set(x, y, z, "minecraft:sand")
-                m.set(x, g, z, "minecraft:sand")
+                for y in range(min(h, g) + 1, g + 1):
+                    m.set(x, y, z, WATER)
                 continue
             for y in range(min(t + 1, g), g + 1):
                 m.set(x, y, z, WATER)
