@@ -45,10 +45,10 @@ The night act is judged at the darkest sky the world reaches (effective 4), and 
 
 ## Build (step 8) — where it stands
 
-The documents build at `af68169c4` with task A, Oskar's hop, the mare and the supply fills held (build exit 0, 665 s, 2.8 GB peak on this Mac; the remote had no free slot). The ladder (step 10), on this build at `af68169c4`:
+The documents build at `10b9ee57f` with the grey mare (shop, trigger and the stable yard's census), the night's hanging lamps, Oskar's hop and the journal's lines in, and task A, the mare's journal steps and the supply fills held (build exit 0, 627 s, 3.6 GB peak on this Mac; the remote had no free slot): `records binding: 21 recorded objective(s), 11 record-outcome site(s) judged over 34 story world(s), 0 refused`; `hop binding: 1 hop(s) declared, 6 body arc(s) … 0 refused`; `runtime writes (DW1002): 57 block-writing line(s) … 0 not kept`; `DW0210 binding: 129185 reachable cell(s) judged, 0 dark`. The ladder (step 10), on this build, run on this Mac:
 
-- PackTest: 133 of 133 required tests passed (the limit-expiry templates included).
-- The critical-path bot: failed at step 3, the belfry shot: the harness walks a `shot` step to its target, in the tower's opening, before its stance ([132, 91, 223]), so the bot never reaches it (an engine defect, reported).
-- The written world: 6037107 cells compared; 0 in the model class (none the server's physics does not explain); 210 random-tick and 29869 re-derived cells explained.
-- Branch runs: 7 worlds, each stopping at the same belfry step (the same harness defect).
-- The staging gate: refused on 2 of 160 rows, `drill3-01` and `drill3-03` (no design record: the reference sheet waits on the image provider's credit); `isl-33` and `isl-53` are bound now that the fireworks come from the steward's chest.
+- PackTest: 176 of 177 tests passed. Red: `v10_shop_purchase` — the template seeds the purse on the party and on the player, picks the offer, and reads the player's score; the stable's pennies are the party's, so the debit lands on the party and the template reads 100 (an engine defect, reported). The 21 `guide_journal_record_*` tests and both limit-expiry templates passed.
+- The critical-path bot: reaches the belfry shot's stance ([132, 91, 223]) and fails there: no arrow of three lands on the target at [149, 108, 238], 17 blocks above the stance; the harness's aim table was measured on a level shot at 27 blocks (an engine defect, reported).
+- The world save: exit 0. The written world: 6037108 cells compared; 0 in the model class; 494 random-tick and 29869 re-derived cells explained; refused on one object (`DW1040`): the written world seats the mare at her rail at load, and the server, rightly for a `seated: by-story` mount, does not (an engine defect, reported).
+- Branch runs: 34 worlds, each stopping at a belfry shot step (27 at the first, 6 at the second, 1 at the third: arrows land now and then, never three in a row).
+- The staging gate: refused on 2 of 160 rows, `drill3-01` and `drill3-03` (no design record: the reference sheet waits on the image provider's credit).
