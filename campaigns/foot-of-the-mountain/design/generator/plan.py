@@ -1235,8 +1235,10 @@ STRATA = [
      "surface": "minecraft:mossy_stone_bricks", "below": "minecraft:mossy_stone_bricks"},
     {"when": {"area": BRICK_AREA, "steep": 3},
      "surface": "minecraft:stone_bricks", "below": "minecraft:stone_bricks"},
+    # worn ground between the houses: loose gravel, never bare dirt (bare dirt in the
+    # game greens over, so it reads as a builder's trace rather than the land)
     {"when": {"area": TOWN_AREA, "patch": P(7, 780, 12)},
-     "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
+     "surface": "minecraft:gravel", "below": "minecraft:dirt"},
     {"when": {"area": TOWN_AREA}, "surface": "minecraft:grass_block", "below": "minecraft:dirt"},
     # the wild: rock as it weathers, never one smooth face. A real cliff only
     # where it is very steep; elsewhere stone, andesite, tuff and moss broken
@@ -1268,7 +1270,9 @@ STRATA = [
      "surface": "minecraft:grass_block", "below": "minecraft:dirt",
      "trees": {"per_mille": 30, "log": "minecraft:birch_log",
                "leaves": "minecraft:birch_leaves[persistent=true]", "height": [5, 7]}},
-    {"when": {"patch": P(6, 800, 26)}, "surface": "minecraft:coarse_dirt", "below": "minecraft:dirt"},
+    # bare patches breaking the grass: sand by the shore, weathered andesite inland
+    {"when": {"y_max": 66, "patch": P(6, 800, 26)}, "surface": "minecraft:sand", "below": "minecraft:dirt"},
+    {"when": {"patch": P(6, 800, 26)}, "surface": "minecraft:andesite", "below": "minecraft:dirt"},
 ]
 
 
