@@ -38,6 +38,11 @@ for _y in range(8, 14):
 for _cell in ((34, 8, 92), (67, 8, 92)):
     FIXES[_cell] = "yard/lantern"
 FIXES[(27, 31, 46)] = "gate/lantern_hung"   # hung from the embrasure's head
+# The steward's fireworks store: a chest among the casks of the west barrel cellar, the
+# container the fireworks objective adopts (never a chest the compiler stamps beside it).
+bc.PALETTE["hall/rocket_chest"] = "minecraft:chest[facing=south,type=single,waterlogged=false]"
+FIXES[(38, 8, 35)] = "hall/rocket_chest"
+bc.ANCHORS[(38, 8, 35)] = ("rocket-store", None)
 # The two names the site plan owes this place, marked beside Doune's own:
 # where the party spawns (a step behind Doune's arrival, facing the castle) and
 # the place's own name (in the courtyard, beside the guide's stop).
