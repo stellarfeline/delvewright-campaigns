@@ -703,7 +703,7 @@ def bay(m, W, D, d, g, place):
     marks = {f"crate-{k + 1}": (x, z, None) for k, (x, z) in enumerate(CRATES)}
     # the boats ride off the foot of the quay's step, a row out from the kerb's ledge
     marks["slip-1"] = (9, 3, g)
-    marks["slip-2"] = (12, 4, g)
+    marks["slip-2"] = (12, 2, g)
     marks["node-bay"] = (CRATES[0][0], CRATES[0][1] + 1, None)
     return marks
 
