@@ -633,40 +633,60 @@ def beacon_point(m, W, D, d, g):
                 m.part(x, x, z, z, "point")
 
 
-def bay(m, W, D, d, g):
-    """The bay below the quay (task A): the quay is the north edge (z 1); clear water
-    a course deep over sand, the slip's steps at the seam, sand shoals breaking the surface,
-    a bar across the bay's mouth with a channel at its east end, and the six crates'
-    shoals, two out past the bar. Returns the marks."""
+def bay(m, W, D, d, g, place):
+    """The cove below the quay (task A), drawn as the cove itself: a place two courses
+    tall with its four sides open, its lower course the sea's surface and water through,
+    over the cove's own floor as the whole lays it (the allocation's ground columns), so
+    no rim, wall or cut shows. Where the feast's crates washed up, low shoals of sand rise
+    from that floor to break the surface in irregular blobs; a bar of sand curves across
+    the cove's mouth with a channel at its far end from the harbour (after the game's own
+    coasts, minecraft.wiki Beach and Ocean: sand in the shallows, patches of gravel; and the
+    landscaping tutorial's rule for organic work, minecraft.net: never seven in a line).
+    Returns the marks."""
+    import math
     WATER = "minecraft:water[level=0]"
-    for x in range(1, W + 1):
-        for z in range(1, D + 1):
-            m.set(x, g - 1, z, "minecraft:sand")
-            m.set(x, g, z, WATER)
-    def shoal(x0, z0, w, d_):
-        for x in range(x0, x0 + w):
-            for z in range(z0, z0 + d_):
-                if 1 <= x <= W and 1 <= z <= D:
-                    m.set(x, g - 1, z, "minecraft:sand")
-                    m.set(x, g, z, "minecraft:sand")
-    # the slip: two steps of sand from the quay's edge down to the water, at the seam
-    for x in (6, 7, 8):
-        for z in (1, 2):
-            m.set(x, g, z, "minecraft:sand")
-    # the bar across the bay's mouth, a channel at its east end
-    BAR = D - 8
-    shoal(1, BAR, W - 10, 2)
-    # the crates' shoals: four inside the bar, two beyond it
-    CRATES = [(14, 8), (30, 12), (44, 6), (22, 17), (12, BAR + 5), (38, BAR + 5)]
-    for (x, z) in CRATES:
-        shoal(x - 1, z - 1, 3, 3)
-    for x in range(1, W + 1):
-        for z in range(3, D + 1):
-            if m.get(x, g, z) == "minecraft:sand":
-                m.part(x, x, z, z, "shoals")
+    top = {}
+    gr = place.a.get("ground") or {}
+    for c in gr.get("columns", []):
+        top[(c["x"], c["z"])] = c["top"]
+
+    def n(x, z, salt):
+        v = math.sin(x * 0.37 + salt) * 0.5 + math.sin(z * 0.29 + salt * 1.7) * 0.3 + math.sin((x + z) * 0.21 + salt * 0.6) * 0.2
+        return (v + 1.0) / 2.0
+
+    CRATES = [(9, 10), (19, 7), (24, 14), (13, 18), (8, D - 2), (22, D - 1)]
+    shoal = set()
+    for k, (cx, cz) in enumerate(CRATES):
+        r = 1.5 + 0.9 * n(cx, cz, 3.3 + k)
+        for x in range(cx - 3, cx + 4):
+            for z in range(cz - 3, cz + 4):
+                if 1 <= x <= W and 1 <= z <= D and math.hypot((x - cx) * 0.9, (z - cz) * 1.15) <= r:
+                    shoal.add((x, z))
+    bar = set()
+    for x in range(6, W + 1):                      # the channel at the west end, x 1..5
+        zc = int(round(D - 6 + 1.6 * math.sin(x / 4.3) + 1.0 * n(x, 0, 2.2)))
+        half = 1 if n(x, zc, 7.7) < 0.6 else 2
+        for z in range(zc - half + 1, zc + half):
+            if 1 <= z <= D and (x, z) not in shoal:
+                bar.add((x, z))
+    for z in range(1, D + 1):
+        for x in range(1, W + 1):
+            t = top.get((x, z), g - 3)
+            if (x, z) in shoal or (x, z) in bar:
+                for y in range(min(t + 1, g), g):
+                    m.set(x, y, z, "minecraft:sand")
+                m.set(x, g, z, "minecraft:sand")
+                continue
+            for y in range(min(t + 1, g), g + 1):
+                m.set(x, y, z, WATER)
+            if t + 1 < g:
+                m.set(x, t, z, "minecraft:sand" if n(x * 3, z * 3, 5.5) < 0.8 else "minecraft:gravel")
+    for (x, z) in sorted(shoal | bar):
+        m.part(x, x, z, z, "shoals")
     marks = {f"crate-{k + 1}": (x, z, None) for k, (x, z) in enumerate(CRATES)}
-    marks["slip-1"] = (3, 6, g)
-    marks["slip-2"] = (11, 6, g)
+    marks["slip-1"] = (5, 3, g)
+    marks["slip-2"] = (12, 3, g)
+    marks["node-bay"] = (CRATES[0][0], CRATES[0][1] + 1, None)
     return marks
 
 
@@ -736,9 +756,8 @@ def build(place):
     elif stem == "beacon-point":
         beacon_point(m, W, D, d, g)
     elif stem == "bay":
-        for name, (x, z, y) in bay(m, W, D, d, g).items():
+        for name, (x, z, y) in bay(m, W, D, d, g, place).items():
             m.mark(name, x, z, facing="south", y=y)
-        m.mark("node-bay", 7, 2, facing="south")
         m.finish()
         return m
     elif stem == "goat-pen":
