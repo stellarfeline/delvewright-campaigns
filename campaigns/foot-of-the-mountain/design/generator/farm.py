@@ -529,9 +529,11 @@ def goat_pen(m, W, D, d, g):
         for z in range(z0 + 1, z0 + 3):
             m.set(x, d + 3, z, slab(WOOD, "bottom"))
     m.set(x1 - 3, d + 2, z0 + 1, lantern(hanging=True))
-    m.set(x1 - 3, d, z0 + 1, "minecraft:hay_block[axis=x]")
-    m.set(x1 - 2, d, z0 + 1, "minecraft:hay_block[axis=x]")
-    m.set(x1 - 2, d, z1 - 2, "minecraft:water_cauldron[level=3]")
+    # the hay up on the lean-to's rack under its roof, out of a goat's reach: a bale on the
+    # ground beside the fence is a step a goat climbs to jump the fence
+    m.set(x1 - 2, d + 2, z0 + 1, "minecraft:hay_block[axis=x]")
+    # the trough in the open yard, three cells clear of every fence for the same reason
+    m.set(x0 + 3, d, (z0 + z1) // 2, "minecraft:water_cauldron[level=3]")
     m.part(x1 - 4, x1 - 1, z0 + 1, z0 + 2, "lean-to")
     # lamps: one on the street side, one in the pen's corner by the gate, so the pen reads at night
     lamp_post(m, 2, z0, d)
@@ -781,6 +783,8 @@ def build(place):
         m.mark("goat-pen-gate", 2, gz - 1, facing="east")
         m.mark("supply-pen", 2, 3, facing="west", y=d)
         m.mark("node-goat-pen", (W + 4) // 2, gz, facing="west")
+        # the middle of the yard inside the fence (x 4..W-2, z 2..D-1): the goats' census box
+        m.mark("goat-pen-yard", (4 + W - 2) // 2, (2 + D - 1) // 2, facing="west")
         m.finish()
         return m
     else:
