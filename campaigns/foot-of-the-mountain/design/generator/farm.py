@@ -48,7 +48,7 @@ def ground(m, W, D, g, block):
 
 
 OLD_PLOTS = ("wheat-field", "orchard", "sheep-pen", "goat-pen", "net-green", "beacon-point", "bay")
-TRACKS = ("farm-lane", "west-track", "meadow-track", "lane-8", "cathedral")
+TRACKS = ("farm-lane", "west-track", "meadow-track", "lane-8", "cathedral", "terrace-track")
 
 
 def track_side(place):
@@ -128,13 +128,15 @@ def allotments(m, W, D, d, g, side):
                 m.set(x, d, z + 1, "minecraft:melon")
         for x in range(1, W + 1):
             m.set(x, g, z + 2, "minecraft:dirt_path")
-    m.set(2, d, 1, "minecraft:composter[level=8]")
-    m.set(W - 1, d, 1, "minecraft:composter[level=4]")
+    back = 1 if side != "north" else D       # the row away from the track's opening
+    m.set(2, d, back, "minecraft:composter[level=8]")
+    m.set(W - 1, d, back, "minecraft:composter[level=4]")
     sx, sz = W // 2, rows[0] + 1
     m.set(sx, d, sz, fence(WOOD)); m.set(sx, d + 1, sz, "minecraft:hay_block[axis=y]")
     m.set(sx, d + 2, sz, "minecraft:carved_pumpkin[facing=south]")
-    lamp_post(m, 1, 1, d)
-    lamp_post(m, W, 1, d)
+    near = 3 if side == "north" else 1
+    lamp_post(m, 1, near, d)
+    lamp_post(m, W, near, d)
     lamp_post(m, 1, D, d)
     lamp_post(m, W, D, d)
     part(m, 1, W, 2, D - 1, "beds")
@@ -687,19 +689,19 @@ def build(place):
     side = track_side(place)
     FREE_ROWS.clear()
     FREE_ROWS.update(({D} if stem in OLD_PLOTS else {D - 1, D}) if side == "south" else {1, 2})
-    if stem in ("farm-lane", "west-track", "meadow-track"):
+    if stem in ("farm-lane", "west-track", "meadow-track", "terrace-track"):
         farm_lane(m, W, D, d, g)
     elif stem == "wheat-field":
         wheat_field(m, W, D, d, g)
-    elif stem == "orchard":
+    elif stem in ("orchard", "west-orchard"):
         orchard(m, W, D, d, g)
-    elif stem == "sheep-pen":
+    elif stem in ("sheep-pen", "sheep-terrace"):
         pen(m, W, D, d, g, side, "minecraft:grass_block[snowy=false]", "fold", "shelter")
     elif stem == "cattle-pen":
         pen(m, W, D, d, g, side, "minecraft:coarse_dirt", "yard", "byre")
     elif stem == "pond":
         pond(m, W, D, d, g, side)
-    elif stem in ("barn", "croft", "dune-cottage", "lantern-yard"):
+    elif stem in ("barn", "croft", "dune-cottage", "lantern-yard", "terrace-cottage"):
         barn(m, W, D, d, g, side)
         if stem == "lantern-yard":
             # finished lanterns set out along the yard's far edge to be looked over
@@ -709,7 +711,7 @@ def build(place):
                 m.set(x, d + 1, yz, lantern())
     elif stem == "butts":
         butts(m, W, D, d, g, side)
-    elif stem == "allotments":
+    elif stem in ("allotments", "kitchen-garden"):
         allotments(m, W, D, d, g, side)
     elif stem == "fair-field":
         if D > 40:
@@ -749,7 +751,7 @@ def build(place):
         return m
     else:
         sys.exit(f"farm.py: no drawing for {stem}")
-    m.mark(f"node-{stem}", *(free_mark(m, W, D, d) if stem not in ("barn", "croft", "dune-cottage", "lantern-yard") else yard_mark(m, W, D, d, side)), facing="south")
+    m.mark(f"node-{stem}", *(free_mark(m, W, D, d) if stem not in ("barn", "croft", "dune-cottage", "lantern-yard", "terrace-cottage") else yard_mark(m, W, D, d, side)), facing="south")
     m.finish()
     return m
 
