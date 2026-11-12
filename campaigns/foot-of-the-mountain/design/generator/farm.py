@@ -47,7 +47,7 @@ def ground(m, W, D, g, block):
     m.box(1, W, g, g, 1, D, block)
 
 
-OLD_PLOTS = ("wheat-field", "orchard", "sheep-pen", "goat-pen", "net-green", "beacon-point", "bay")
+OLD_PLOTS = ("wheat-field", "orchard", "sheep-pen", "goat-pen", "net-green", "beacon-point", "bay", "shoals")
 TRACKS = ("farm-lane", "west-track", "meadow-track", "lane-8", "cathedral", "terrace-track")
 
 
@@ -635,16 +635,19 @@ def beacon_point(m, W, D, d, g):
                 m.part(x, x, z, z, "point")
 
 
-def bay(m, W, D, d, g, place):
-    """The cove below the quay (task A), drawn as the cove itself: a place two courses
-    tall with its four sides open, its lower course the sea's surface and water through,
-    over the cove's own floor as the whole lays it (the allocation's ground columns), so
-    no rim, wall or cut shows. Where the feast's crates washed up, low shoals of sand rise
-    from that floor to break the surface in irregular blobs; a bar of sand curves across
-    the cove's mouth with a channel at its far end from the harbour (after the game's own
-    coasts, minecraft.wiki Beach and Ocean: sand in the shallows, patches of gravel; and the
-    landscaping tutorial's rule for organic work, minecraft.net: never seven in a line).
-    Returns the marks."""
+def bay(m, W, D, d, g, place, field=False):
+    """The water task A is rowed on, drawn as the sea itself: a place two courses tall with
+    its sides open, its lower course the sea's surface and water through, over the seabed as
+    the whole lays it (the allocation's ground columns), so no rim, wall or cut shows.
+
+    `node/bay` is the natural cove below the quay: open water, the quay's steps down into
+    it and Sverre's two boats at their foot. `node/shoals` (field) is the wide water out
+    beyond it where the feast's crates drifted: low sandbars rise from the seabed to break
+    the surface in irregular blobs, a long bar crosses its far side with a channel at its
+    west end, and the six crates float in the open water between them, two out past the
+    bar (after the game's own coasts, minecraft.wiki Beach and Ocean: sand in the shallows,
+    patches of gravel; and the landscaping tutorial's rule for organic work, minecraft.net:
+    never seven in a line). Returns the marks."""
     import math
     WATER = "minecraft:water[level=0]"
     top = {}
@@ -656,38 +659,49 @@ def bay(m, W, D, d, g, place):
         v = math.sin(x * 0.37 + salt) * 0.5 + math.sin(z * 0.29 + salt * 1.7) * 0.3 + math.sin((x + z) * 0.21 + salt * 0.6) * 0.2
         return (v + 1.0) / 2.0
 
-    CRATES = [(9, 10), (19, 7), (24, 14), (13, 18), (8, D - 2), (22, D - 1)]
+    # the sandbars: blobs scattered over the field clear of its first rows (the way in from
+    # the cove) and of the crates' water, and a long bar across the far side
+    TARGETS = [(16, 22), (58, 14), (78, 40), (30, 52), (22, D - 4), (70, D - 3)] if field else []
+    BLOBS = [(10, 34), (26, 12), (40, 24), (46, 40), (64, 28), (82, 20), (14, 60), (38, 66),
+             (56, 56), (74, 64), (52, 74), (84, 52), (6, 46)] if field else []
     shoal = set()
-    for k, (cx, cz) in enumerate(CRATES):
-        r = 1.5 + 0.9 * n(cx, cz, 3.3 + k)
-        for x in range(cx - 3, cx + 4):
-            for z in range(cz - 3, cz + 4):
-                if 1 <= x <= W and 1 <= z <= D and math.hypot((x - cx) * 0.9, (z - cz) * 1.15) <= r:
+    for k, (cx, cz) in enumerate(BLOBS):
+        r = 2.0 + 2.2 * n(cx, cz, 3.3 + k)
+        for x in range(cx - 6, cx + 7):
+            for z in range(cz - 6, cz + 7):
+                if 1 <= x <= W and 1 <= z <= D and math.hypot((x - cx) * (0.8 + 0.4 * n(cz, cx, k)), (z - cz) * 1.15) <= r:
                     shoal.add((x, z))
     bar = set()
-    for x in range(6, W + 1):                      # the channel at the west end, x 1..5
-        zc = int(round(D - 6 + 1.6 * math.sin(x / 4.3) + 1.0 * n(x, 0, 2.2)))
-        half = 1 if n(x, zc, 7.7) < 0.6 else 2
-        for z in range(zc - half + 1, zc + half):
-            if 1 <= z <= D and (x, z) not in shoal:
-                bar.add((x, z))
-    # each shoal and the bar is a low mound of sand, not a pillar: its crest breaks the
-    # surface (where a crate lies, and where a body climbs out), and from the crest it falls
-    # away under the water, about a block for every block or two across, unevenly, until it
-    # meets the cove's floor (the sandbar's own shape: a ridge whose flanks shelve into the water)
+    if field:
+        for x in range(10, W + 1):                     # the channel at the west end, x 1..9
+            zc = int(round(D - 12 + 2.5 * math.sin(x / 7.3) + 1.5 * n(x, 0, 2.2)))
+            half = 1 if n(x, zc, 7.7) < 0.6 else 2
+            for z in range(zc - half + 1, zc + half):
+                if 1 <= z <= D and (x, z) not in shoal:
+                    bar.add((x, z))
+    # each sandbar is a low mound of sand, not a pillar: its crest breaks the surface and
+    # from the crest it falls away under the water, about a block for every block or two
+    # across, unevenly, until it meets the seabed; toward the place's sides its flank comes
+    # down to the seabed, so the bed meets the seabed beyond at the same depth (no ledge shows)
     crest = shoal | bar
+    near = {}
+    for (cx, cz) in crest:
+        for dx in range(-5, 6):
+            for dz in range(-5, 6):
+                key = (cx + dx, cz + dz)
+                d1 = math.hypot(dx, dz) * (0.8 + 0.5 * n(cx + dx, cz + dz, 4.4))
+                if d1 < near.get(key, 99):
+                    near[key] = d1
     def mound(x, z):
-        best = None
-        for (cx, cz) in crest:
-            d = abs(cx - x) + abs(cz - z)
-            if d <= 6:
-                best = d if best is None else min(best, d)
-        if best is None:
+        best = near.get((x, z))
+        if best is None or best > 5:
             return None
         if best == 0:
             return g
-        rate = 0.6 + 0.5 * n(x, z, 9.1)            # blocks of fall per block across
-        return g - max(1, int(round(best * rate)))
+        rate = 1.3 + 1.0 * n(x, z, 9.1)            # blocks of fall per block across
+        h = g - max(1, int(round(best * rate)))
+        edge = min(D - z, x - 1, W - x, z - 1)
+        return min(h, top.get((x, z), g - 3) + 2 * max(0, edge))
     for z in range(1, D + 1):
         for x in range(1, W + 1):
             t = top.get((x, z), g - 3)
@@ -698,32 +712,80 @@ def bay(m, W, D, d, g, place):
                 for y in range(min(h, g) + 1, g + 1):
                     m.set(x, y, z, WATER)
                 continue
+            # the seabed itself is the world's, its own surface block left as the whole lays
+            # it, so the bed inside reads as the bed outside
             for y in range(min(t + 1, g), g + 1):
                 m.set(x, y, z, WATER)
-            if t + 1 < g:
-                m.set(x, t, z, "minecraft:sand" if n(x * 3, z * 3, 5.5) < 0.8 else "minecraft:gravel")
-    # the quay's steps come down into the cove where the seam meets it: a flight of sandstone
-    # from under the seam's opening to the water's edge
-    for s in place.a.get("seams", []):
-        if any(ps["seam"]["edge"] == s["edge"] and ps.get("approach") and ps["approach"]["ladder"] for ps in place.seams):
-            m.climbs_to(s["edge"])
-        (x0, y0, z0), (x1, y1, z1) = s["cells"]
-        for x in range(x0, x1 + 1):
-            for k, y in enumerate(range(y0 - 1, g, -1)):
-                z = z0 + k
-                if z > D:
-                    break
-                m.set(x, y, z, "minecraft:sandstone")
-                if k:
-                    for yy in range(y + 1, y0 + 3):
-                        m.set(x, yy, z, "~air")
-    for (x, z) in sorted(shoal | bar):
+    marks = {}
+    if not field:
+        # the quay's steps come down into the cove where the seam meets it: a flight of
+        # sandstone from under the seam's opening to the water's edge
+        for s in place.a.get("seams", []):
+            if s["edge"] != "edge/quay-to-bay":
+                continue
+            if any(ps["seam"]["edge"] == s["edge"] and ps.get("approach") and ps["approach"]["ladder"] for ps in place.seams):
+                m.climbs_to(s["edge"])
+            (x0, y0, z0), (x1, y1, z1) = s["cells"]
+            for x in range(x0, x1 + 1):
+                for k, y in enumerate(range(y0 - 1, g, -1)):
+                    z = z0 + k
+                    if z > D:
+                        break
+                    m.set(x, y, z, "minecraft:sandstone")
+                    if k:
+                        for yy in range(y + 1, y0 + 3):
+                            m.set(x, yy, z, "~air")
+        # the boats ride off the foot of the quay's step, a row out from the kerb's ledge
+        marks["slip-1"] = (9, 3, g)
+        marks["slip-2"] = (12, 2, g)
+        marks["node-bay"] = (15, 15, None)
+        return marks
+    for (x, z) in sorted(crest):
         m.part(x, x, z, z, "shoals")
-    marks = {f"crate-{k + 1}": (x, z, None) for k, (x, z) in enumerate(CRATES)}
-    # the boats ride off the foot of the quay's step, a row out from the kerb's ledge
-    marks["slip-1"] = (9, 3, g)
-    marks["slip-2"] = (12, 2, g)
-    marks["node-bay"] = (CRATES[0][0], CRATES[0][1] + 1, None)
+    # the feast's six crates are barrels afloat in open water, a cell above the water and
+    # touching it, each opened from the boat: open water on every side of it
+    def open_water(x, z):
+        if not (2 <= x <= W - 1 and 2 <= z <= D - 1):
+            return False
+        for dx in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                h = mound(x + dx, z + dz)
+                if top.get((x + dx, z + dz), g - 3) >= g or (h is not None and h >= g):
+                    return False
+        return True
+    bar_z = {}
+    for (x, z) in bar:
+        bar_z[x] = max(bar_z.get(x, 0), z)
+    barrels = []
+    for k, (cx, cz) in enumerate(TARGETS):
+        past = k >= 4
+        best = None
+        for r in range(0, 12):
+            for dz in range(-r, r + 1):
+                for dx in range(-r, r + 1):
+                    if max(abs(dx), abs(dz)) != r:
+                        continue
+                    x, z = cx + dx, cz + dz
+                    if not open_water(x, z):
+                        continue
+                    if past and (x < 10 or z <= max(bar_z.get(x, 0), bar_z.get(x - 1, 0), bar_z.get(x + 1, 0))):
+                        continue
+                    if not past and any(z >= bz for xx, bz in bar_z.items() if abs(xx - x) <= 1):
+                        continue
+                    best = (x, z)
+                    break
+                if best:
+                    break
+            if best:
+                break
+        assert best is not None, f"no open water for crate {k + 1}"
+        barrels.append(best)
+        m.set(best[0], g + 1, best[1], "minecraft:barrel[facing=up,open=false]")
+        marks[f"crate-{k + 1}"] = (best[0], best[1], g + 1)
+        # where the boat lies alongside to open it: the water cell beside it toward the field's middle
+        sx = 1 if best[0] < W // 2 else -1
+        marks[f"crate-{k + 1}-alongside"] = (best[0] + sx, best[1], g)
+    marks["node-shoals"] = (W // 2, D // 2, None)
     return marks
 
 
@@ -792,8 +854,8 @@ def build(place):
         net_green(m, W, D, d, g)
     elif stem == "beacon-point":
         beacon_point(m, W, D, d, g)
-    elif stem == "bay":
-        for name, (x, z, y) in bay(m, W, D, d, g, place).items():
+    elif stem in ("bay", "shoals"):
+        for name, (x, z, y) in bay(m, W, D, d, g, place, field=(stem == "shoals")).items():
             m.mark(name, x, z, facing="south", y=y)
         m.finish()
         return m
