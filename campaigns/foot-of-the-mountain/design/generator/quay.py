@@ -41,6 +41,7 @@ PALETTE = {
 
 LAMP_X = (6, 18, 44, 56)        # lamps along the back, clear of the flight's landing
 BOLLARD_EVERY = 9               # a bollard every nine cells along the edge
+COVE_SPAN = (14, 45)            # the kerb columns the cove's north side meets (piece-local x)
 
 
 def build(place):
@@ -51,8 +52,12 @@ def build(place):
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
             m.set(x, 0, z, "kerb" if z == Z1 else "pave")
-    # bollards along the water's edge
+    # bollards along the water's edge, none over the cove: where the cove's open north side
+    # meets the quay, the kerb row is its way up onto the stones (DW1057)
+    cove = any(s.get("edge") == "edge/quay-to-bay" for s in place.a.get("seams", []))
     for x in range(X0 + 3, X1 - 1, BOLLARD_EVERY):
+        if cove and COVE_SPAN[0] <= x <= COVE_SPAN[1]:
+            continue
         m.set(x, 1, Z1, "bollard")
     # lamps on posts along the back of the quay
     for x in LAMP_X:
@@ -69,9 +74,9 @@ def build(place):
         m.set(x, 1, Z0, "rack")
         if (x - X0) % 2 == 0:
             m.set(x, 2, Z0, "net")
-    # by the edge: an anchor and a coil of rope laid on the stones
-    m.set(X0 + 42, 1, Z1, "anchor")
-    m.set(X0 + 43, 1, Z1, "rope")
+    # an anchor and a coil of rope laid on the stones at the back, clear of the cove's way up
+    m.set(X0 + 39, 1, Z0, "anchor")
+    m.set(X0 + 40, 1, Z0, "rope")
     # the east end, by the harbour: barrels of salt fish, each holding its fish
     for i, (x, z) in enumerate(((X1 - 9, Z0), (X1 - 8, Z0), (X1 - 7, Z0)), start=1):
         m.set(x, 1, z, "barrel")

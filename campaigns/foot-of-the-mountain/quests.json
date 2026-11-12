@@ -1317,6 +1317,573 @@
                 0
               ]
             },
+            "dialogue": "dlg/kettil-day",
+            "doing": "about the festival"
+          },
+          "npc/oskar": {
+            "at": {
+              "anchor": "anchor/node-bakery",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/oskar-day",
+            "doing": "about the festival"
+          },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
+          "npc/sverre": {
+            "at": {
+              "anchor": "anchor/node-quay",
+              "offset": [
+                6,
+                0,
+                -2
+              ]
+            },
+            "dialogue": "dlg/sverre-cargo",
+            "doing": "on the quay by the slip with two boats and a very wet hat"
+          },
+          "npc/vidar": {
+            "at": {
+              "anchor": "anchor/node-street-1",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/vidar-day",
+            "doing": "about the festival"
+          }
+        },
+        "happening": {
+          "subject": "npc/sverre",
+          "text": "The boatwright's cargo boat has turned over on the bar, and the feast's crates are washing about the bay.",
+          "verb": "learns"
+        },
+        "id": "quest/the-cargo",
+        "objectives": [
+          {
+            "happening": {
+              "subject": "npc/sverre",
+              "text": "Sverre shows the party his two boats and the crates in the bay.",
+              "verb": "learns"
+            },
+            "hint": "Down the main street on the quay, by the slip.",
+            "id": "obj/ask-sverre",
+            "npc": "npc/sverre",
+            "record": "Sverre the boatwright turned his cargo boat over on the bar, and the feast's six crates washed up on the shoals of the cove.",
+            "title": "Speak to the boatwright",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/ask-sverre"
+            ],
+            "anchor": "anchor/crate-1",
+            "count": 1,
+            "happening": {
+              "subject": "item/feast-crate",
+              "text": "The party haul crate 1 of the feast off its shoal.",
+              "verb": "gains"
+            },
+            "hint": "Row out from the slip below the quay: the crate on the shoal off the slip.",
+            "id": "obj/crate-1",
+            "item": "minecraft:barrel",
+            "item_name": "Feast Crate",
+            "limit": {
+              "from": {
+                "objective": "obj/ask-sverre"
+              },
+              "on_expire": [
+                {
+                  "line": "Crate 1 rolled off its shoal and sank before you reached it.",
+                  "objective": "obj/crate-1",
+                  "type": "record-outcome"
+                },
+                {
+                  "style": "actionbar",
+                  "text": "Out on the bay, crate 1 rolls off its shoal and sinks with a sad little gulp.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 12000
+            },
+            "record": "Crate 1 of the feast sat on the shoal off the slip, and would not stay there long.",
+            "ride": "vehicle/boat-1",
+            "title": "Fish out a crate",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/ask-sverre"
+            ],
+            "anchor": "anchor/crate-2",
+            "count": 1,
+            "happening": {
+              "subject": "item/feast-crate",
+              "text": "The party haul crate 2 of the feast off its shoal.",
+              "verb": "gains"
+            },
+            "hint": "Row out from the slip below the quay: the crate on the shoal in the middle of the bay.",
+            "id": "obj/crate-2",
+            "item": "minecraft:barrel",
+            "item_name": "Feast Crate",
+            "limit": {
+              "from": {
+                "objective": "obj/ask-sverre"
+              },
+              "on_expire": [
+                {
+                  "line": "Crate 2 rolled off its shoal and sank before you reached it.",
+                  "objective": "obj/crate-2",
+                  "type": "record-outcome"
+                },
+                {
+                  "style": "actionbar",
+                  "text": "Out on the bay, crate 2 rolls off its shoal and sinks with a sad little gulp.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 12000
+            },
+            "record": "Crate 2 of the feast sat on the shoal in the middle of the bay, and would not stay there long.",
+            "ride": "vehicle/boat-1",
+            "title": "Fish out a crate",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/ask-sverre"
+            ],
+            "anchor": "anchor/crate-3",
+            "count": 1,
+            "happening": {
+              "subject": "item/feast-crate",
+              "text": "The party haul crate 3 of the feast off its shoal.",
+              "verb": "gains"
+            },
+            "hint": "Row out from the slip below the quay: the crate on the shoal by the harbour wall.",
+            "id": "obj/crate-3",
+            "item": "minecraft:barrel",
+            "item_name": "Feast Crate",
+            "limit": {
+              "from": {
+                "objective": "obj/ask-sverre"
+              },
+              "on_expire": [
+                {
+                  "line": "Crate 3 rolled off its shoal and sank before you reached it.",
+                  "objective": "obj/crate-3",
+                  "type": "record-outcome"
+                },
+                {
+                  "style": "actionbar",
+                  "text": "Out on the bay, crate 3 rolls off its shoal and sinks with a sad little gulp.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 12000
+            },
+            "record": "Crate 3 of the feast sat on the shoal by the harbour wall, and would not stay there long.",
+            "ride": "vehicle/boat-1",
+            "title": "Fish out a crate",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/ask-sverre"
+            ],
+            "anchor": "anchor/crate-4",
+            "count": 1,
+            "happening": {
+              "subject": "item/feast-crate",
+              "text": "The party haul crate 4 of the feast off its shoal.",
+              "verb": "gains"
+            },
+            "hint": "Row out from the slip below the quay: the crate on the long shoal inside the bar.",
+            "id": "obj/crate-4",
+            "item": "minecraft:barrel",
+            "item_name": "Feast Crate",
+            "limit": {
+              "from": {
+                "objective": "obj/ask-sverre"
+              },
+              "on_expire": [
+                {
+                  "line": "Crate 4 rolled off its shoal and sank before you reached it.",
+                  "objective": "obj/crate-4",
+                  "type": "record-outcome"
+                },
+                {
+                  "style": "actionbar",
+                  "text": "Out on the bay, crate 4 rolls off its shoal and sinks with a sad little gulp.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 12000
+            },
+            "record": "Crate 4 of the feast sat on the long shoal inside the bar, and would not stay there long.",
+            "ride": "vehicle/boat-1",
+            "title": "Fish out a crate",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/ask-sverre"
+            ],
+            "anchor": "anchor/crate-5",
+            "count": 1,
+            "happening": {
+              "subject": "item/feast-crate",
+              "text": "The party haul crate 5 of the feast off its shoal.",
+              "verb": "gains"
+            },
+            "hint": "Row out from the slip below the quay: the crate out past the sandbar, far from the harbour.",
+            "id": "obj/crate-5",
+            "item": "minecraft:barrel",
+            "item_name": "Feast Crate",
+            "limit": {
+              "from": {
+                "objective": "obj/ask-sverre"
+              },
+              "on_expire": [
+                {
+                  "line": "Crate 5 rolled off its shoal and sank before you reached it.",
+                  "objective": "obj/crate-5",
+                  "type": "record-outcome"
+                },
+                {
+                  "style": "actionbar",
+                  "text": "Out on the bay, crate 5 rolls off its shoal and sinks with a sad little gulp.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 12000
+            },
+            "record": "Crate 5 of the feast sat out past the sandbar, far from the harbour, and would not stay there long.",
+            "ride": "vehicle/boat-1",
+            "title": "Fish out a crate",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/ask-sverre"
+            ],
+            "anchor": "anchor/crate-6",
+            "count": 1,
+            "happening": {
+              "subject": "item/feast-crate",
+              "text": "The party haul crate 6 of the feast off its shoal.",
+              "verb": "gains"
+            },
+            "hint": "Row out from the slip below the quay: the crate out past the sandbar, on the harbour side.",
+            "id": "obj/crate-6",
+            "item": "minecraft:barrel",
+            "item_name": "Feast Crate",
+            "limit": {
+              "from": {
+                "objective": "obj/ask-sverre"
+              },
+              "on_expire": [
+                {
+                  "line": "Crate 6 rolled off its shoal and sank before you reached it.",
+                  "objective": "obj/crate-6",
+                  "type": "record-outcome"
+                },
+                {
+                  "style": "actionbar",
+                  "text": "Out on the bay, crate 6 rolls off its shoal and sinks with a sad little gulp.",
+                  "type": "narrate"
+                }
+              ],
+              "ticks": 12000
+            },
+            "record": "Crate 6 of the feast sat out past the sandbar, on the harbour side, and would not stay there long.",
+            "ride": "vehicle/boat-1",
+            "title": "Fish out a crate",
+            "type": "collect"
+          },
+          {
+            "after": [
+              "obj/crate-1",
+              "obj/crate-2",
+              "obj/crate-3",
+              "obj/crate-4",
+              "obj/crate-5",
+              "obj/crate-6"
+            ],
+            "anchor": "anchor/node-harbour",
+            "happening": {
+              "subject": "npc/sverre",
+              "text": "The party bring what they saved of the feast to the harbour house.",
+              "verb": "arrives"
+            },
+            "hint": "Back up the slip and along the quay to the harbour house, where Sverre is counting.",
+            "id": "obj/land-the-cargo",
+            "radius": 3,
+            "record": "The crates saved from the bay had to be landed at the harbour house for Sverre to count.",
+            "title": "Land the cargo",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "flag": "flag/cargo-settled",
+            "type": "set-flag"
+          },
+          {
+            "amount": 2,
+            "state": "state/pennies",
+            "type": "add-state"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/crate-1": [
+            {
+              "line": "You rowed out and hauled crate 1 off its shoal.",
+              "objective": "obj/crate-1",
+              "type": "record-outcome"
+            },
+            {
+              "amount": 1,
+              "state": "state/crates-saved",
+              "type": "add-state"
+            }
+          ],
+          "obj/crate-2": [
+            {
+              "line": "You rowed out and hauled crate 2 off its shoal.",
+              "objective": "obj/crate-2",
+              "type": "record-outcome"
+            },
+            {
+              "amount": 1,
+              "state": "state/crates-saved",
+              "type": "add-state"
+            }
+          ],
+          "obj/crate-3": [
+            {
+              "line": "You rowed out and hauled crate 3 off its shoal.",
+              "objective": "obj/crate-3",
+              "type": "record-outcome"
+            },
+            {
+              "amount": 1,
+              "state": "state/crates-saved",
+              "type": "add-state"
+            }
+          ],
+          "obj/crate-4": [
+            {
+              "line": "You rowed out and hauled crate 4 off its shoal.",
+              "objective": "obj/crate-4",
+              "type": "record-outcome"
+            },
+            {
+              "amount": 1,
+              "state": "state/crates-saved",
+              "type": "add-state"
+            }
+          ],
+          "obj/crate-5": [
+            {
+              "line": "You rowed out and hauled crate 5 off its shoal.",
+              "objective": "obj/crate-5",
+              "type": "record-outcome"
+            },
+            {
+              "amount": 1,
+              "state": "state/crates-saved",
+              "type": "add-state"
+            }
+          ],
+          "obj/crate-6": [
+            {
+              "line": "You rowed out and hauled crate 6 off its shoal.",
+              "objective": "obj/crate-6",
+              "type": "record-outcome"
+            },
+            {
+              "amount": 1,
+              "state": "state/crates-saved",
+              "type": "add-state"
+            }
+          ],
+          "obj/land-the-cargo": [
+            {
+              "line": "You landed enough crates for a feast, just.",
+              "objective": "obj/land-the-cargo",
+              "type": "record-outcome",
+              "when": {
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/crates-saved",
+                    "value": 4
+                  }
+                ]
+              }
+            },
+            {
+              "line": "You landed too few crates for a feast; the tables held mostly bread.",
+              "objective": "obj/land-the-cargo",
+              "type": "record-outcome",
+              "when": {
+                "requires_state": [
+                  {
+                    "op": "at-most",
+                    "state": "state/crates-saved",
+                    "value": 3
+                  }
+                ]
+              }
+            },
+            {
+              "flag": "flag/cargo-saved",
+              "type": "set-flag",
+              "when": {
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/crates-saved",
+                    "value": 4
+                  }
+                ]
+              }
+            },
+            {
+              "style": "chat",
+              "text": "Sverre counts the crates twice. 'Enough for a feast. Just.'",
+              "type": "narrate",
+              "when": {
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/crates-saved",
+                    "value": 4
+                  }
+                ]
+              }
+            },
+            {
+              "style": "chat",
+              "text": "Sverre counts the crates, then counts them again, hoping. 'Bread, then. Lots of bread.'",
+              "type": "narrate",
+              "when": {
+                "requires_state": [
+                  {
+                    "op": "at-most",
+                    "state": "state/crates-saved",
+                    "value": 3
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/opening",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/agathe": {
+            "at": "anchor/stop-great-hall",
+            "dialogue": "dlg/agathe-day",
+            "doing": "about the festival"
+          },
+          "npc/bernt": {
+            "at": {
+              "anchor": "anchor/node-castle",
+              "offset": [
+                -3,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/bernt-day",
+            "doing": "about the festival"
+          },
+          "npc/hedda": {
+            "at": "anchor/stage",
+            "dialogue": "dlg/hedda-day",
+            "doing": "on the stage, holding the festival together by shouting"
+          },
+          "npc/inga": {
+            "at": {
+              "anchor": "anchor/node-lighthouse",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/kettil": {
+            "at": {
+              "anchor": "anchor/node-street-5",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
             "dialogue": "dlg/kettil-goats",
             "doing": "at his empty goat pen on the main street, rattling a bucket at nobody"
           },
@@ -2135,7 +2702,8 @@
               "flag/lamp-settled",
               "flag/fox-settled",
               "flag/bell-settled",
-              "flag/goats-settled"
+              "flag/goats-settled",
+              "flag/cargo-settled"
             ],
             "title": "Back to the stage",
             "type": "reach-anchor"
@@ -2355,6 +2923,19 @@
         "on_objective_complete": {
           "obj/back-to-the-stage": [
             {
+              "line": "Moss was not back by dusk; Runa spent the festival on the flank with a lantern, calling for her.",
+              "objective": "obj/take-the-mare",
+              "type": "record-outcome",
+              "when": {
+                "forbids_flags": [
+                  "flag/mare-home"
+                ],
+                "requires_flags": [
+                  "flag/mare-out"
+                ]
+              }
+            },
+            {
               "happening": {
                 "subject": "npc/runa",
                 "text": "Runa goes up the flank with a lantern to look for her mare.",
@@ -2487,15 +3068,30 @@
             },
             {
               "loot": "loot/supply-quay",
-              "type": "fill-loot"
+              "type": "fill-loot",
+              "when": {
+                "requires_flags": [
+                  "flag/cargo-saved"
+                ]
+              }
             },
             {
               "loot": "loot/supply-pen",
-              "type": "fill-loot"
+              "type": "fill-loot",
+              "when": {
+                "requires_flags": [
+                  "flag/cargo-saved"
+                ]
+              }
             },
             {
               "loot": "loot/supply-stage",
-              "type": "fill-loot"
+              "type": "fill-loot",
+              "when": {
+                "requires_flags": [
+                  "flag/cargo-saved"
+                ]
+              }
             },
             {
               "anchor": "anchor/node-inn",
@@ -2845,6 +3441,26 @@
             "when": {
               "forbids_flags": [
                 "flag/bell-fixed"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "The feast is laid out along the square: smoked fish, cheeses, honey cakes and a whole ham, all fished out of the bay this morning.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cargo-saved"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "The feast tables hold bread, a great deal of bread, and a single heroic cheese.",
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/cargo-saved"
               ]
             }
           },
@@ -10105,6 +10721,12 @@
     ],
     "state": [
       {
+        "id": "state/crates-saved",
+        "initial": 0,
+        "note": "Crates of the feast fished out of the bay.",
+        "scope": "party"
+      },
+      {
         "counts": {
           "of": {
             "wave": "wave/goat-pearl"
@@ -10534,6 +11156,40 @@
       }
     ],
     "vehicles": [
+      {
+        "at": {
+          "anchor": "anchor/slip-1"
+        },
+        "bounds": {
+          "anchor": "anchor/node-bay",
+          "extent": [
+            30,
+            3,
+            30
+          ]
+        },
+        "entity": "minecraft:oak_boat",
+        "facing": "south",
+        "id": "vehicle/boat-1",
+        "name": "The Herring"
+      },
+      {
+        "at": {
+          "anchor": "anchor/slip-2"
+        },
+        "bounds": {
+          "anchor": "anchor/node-bay",
+          "extent": [
+            30,
+            3,
+            30
+          ]
+        },
+        "entity": "minecraft:oak_boat",
+        "facing": "south",
+        "id": "vehicle/boat-2",
+        "name": "The Sprat"
+      },
       {
         "at": {
           "anchor": "anchor/node-street-1"
