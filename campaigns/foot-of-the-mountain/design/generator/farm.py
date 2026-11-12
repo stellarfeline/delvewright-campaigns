@@ -175,6 +175,62 @@ def fair(m, W, D, d, g, side):
     part(m, 1, W, 2, D - 1, "fair")
 
 
+def picnic(m, W, z0, z1, d, g):
+    """The fair's lower field toward the beach: trestle tables with benches in rows,
+    a bonfire ringed with log seats, and a dance floor of boards with lamps at its corners."""
+    for x0 in range(3, W - 3, 6):
+        for z in range(z0 + 2, z0 + 12, 5):
+            for x in (x0, x0 + 1, x0 + 2):
+                m.set(x, d, z, "minecraft:spruce_slab[type=top,waterlogged=false]")
+                m.set(x, d, z - 1, stairs(WOOD, "south"))
+                m.set(x, d, z + 1, stairs(WOOD, "north"))
+    bx, bz = W // 3, (z0 + 14 + z1) // 2
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            m.set(bx + dx, g, bz + dz, "minecraft:cobblestone")
+    m.set(bx, d, bz, "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]")
+    for x in (bx - 3, bx + 3):
+        m.set(x, d, bz, pillar("minecraft:stripped_oak_log", "z"))
+    for z in (bz - 3, bz + 3):
+        m.set(bx, d, z, pillar("minecraft:stripped_oak_log", "x"))
+    fx0, fz0 = W // 2 + 2, z0 + 14
+    for x in range(fx0, min(W, fx0 + 8)):
+        for z in range(fz0, min(z1, fz0 + 8)):
+            m.set(x, g, z, "minecraft:oak_planks")
+    for (x, z) in ((fx0 - 1, fz0 - 1), (min(W, fx0 + 8), fz0 - 1), (fx0 - 1, min(z1, fz0 + 8)), (min(W, fx0 + 8), min(z1, fz0 + 8)), (bx - 4, bz - 4)):
+        if 1 <= x <= W and z <= z1:
+            lamp_post(m, x, z, d)
+
+
+def bonfire(m, W, D, d, g, side):
+    """The bonfire green on the shore below the west track: the festival's bonfire
+    in a ring of stones with log seats, two upturned boats on trestles, lobster pots
+    and a lamp at each corner."""
+    ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
+    for x in range(1, W + 1):
+        for z in range(D - 3, D + 1):
+            m.set(x, g, z, "minecraft:sand")
+    bx, bz = W // 2, D // 2
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            m.set(bx + dx, g, bz + dz, "minecraft:cobblestone")
+    m.set(bx, d, bz, "minecraft:campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]")
+    for x in (bx - 3, bx + 3):
+        m.set(x, d, bz - 1, pillar("minecraft:stripped_oak_log", "z"))
+        m.set(x, d, bz + 1, pillar("minecraft:stripped_oak_log", "z"))
+    for z in (bz - 3, bz + 3):
+        m.set(bx - 1, d, z, pillar("minecraft:stripped_oak_log", "x"))
+        m.set(bx + 1, d, z, pillar("minecraft:stripped_oak_log", "x"))
+    for x0 in (3, W - 6):
+        for x in range(x0, x0 + 4):
+            m.set(x, d, D - 5, stairs("minecraft:dark_oak", "south", "top"))
+    for (x, z) in ((2, D - 2), (3, D - 2), (W - 2, D - 2)):
+        m.set(x, d, z, "minecraft:barrel[facing=up,open=false]")
+    for (x, z) in ((1, 3), (W, 3), (1, D - 1), (W, D - 1)):
+        lamp_post(m, x, z, d)
+    part(m, 1, W, 2, D - 1, "green")
+
+
 def bees(m, W, D, d, g, side):
     """Hives in rows among wildflowers, a honey stand on trestles, a bench."""
     ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
@@ -189,7 +245,7 @@ def bees(m, W, D, d, g, side):
             m.set(x, d, z, "minecraft:beehive[facing=south,honey_level=0]")
     stall(m, W // 2 - 1, 2 if side == "north" else D - 3, d, 3, D if side == "north" else 1)
     bench(m, 2, 3, D - 1 if side == "north" else 2, d, "north" if side == "north" else "south")
-    for (x, z) in ((1, 1), (W, 1), (1, D), (W, D), (W // 2, D // 2)):
+    for (x, z) in ((1, 3), (W, 3), (1, D), (W, D), (W // 2, D // 2)):
         lamp_post(m, x, z, d)
     part(m, 1, W, 2, D - 1, "meadow")
 
@@ -656,7 +712,17 @@ def build(place):
     elif stem == "allotments":
         allotments(m, W, D, d, g, side)
     elif stem == "fair-field":
-        fair(m, W, D, d, g, side)
+        if D > 40:
+            fair(m, W, 30, d, g, side)
+            for x in range(1, W + 1):
+                for z in range(31, D + 1):
+                    m.set(x, g, z, "minecraft:grass_block[snowy=false]")
+            picnic(m, W, 31, D - 1, d, g)
+            part(m, 1, W, 30, D - 1, "fair")
+        else:
+            fair(m, W, D, d, g, side)
+    elif stem == "bonfire-green":
+        bonfire(m, W, D, d, g, side)
     elif stem == "bee-meadow":
         bees(m, W, D, d, g, side)
     elif stem == "cathedral-garden":

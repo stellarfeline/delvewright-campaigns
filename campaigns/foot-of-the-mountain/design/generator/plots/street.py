@@ -483,20 +483,6 @@ def road(m, place, stem):
                     m.set(x, y, z, "road")
                 if h:
                     m.set(x, h, z, stairs(STEP, climb) if step else "setts")
-        # a lamp on the verge at the ramp's foot, on the first cell no opening
-        # keeps clear, so the turn below the climb is lit at night
-        for i, a in enumerate(order[:6]):
-            if i == 0:
-                continue
-            x, z = cell(a, verge)
-            if (x, z) in keep:
-                continue
-            j = i - 2
-            h = 0 if i < 2 else min(j // 2 + 1, rise)
-            if i >= 2 and j % 2 == 0:
-                continue          # a stair's tread: the lamp stands on a landing or at grade
-            lamp(m, x, z, y=h + 1)
-            break
         # a lantern in a niche at the foot of the embankment's high end, where
         # the turn below the next leg is otherwise dark at night
         if rise >= 2:
