@@ -1,6 +1,6 @@
 # The Hush Garden
 
-> **Requires delve engine 0.71.0 or newer** — last verified with delvec 1.16.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.71.0 or newer** — last verified with delvec 1.16.1 on Minecraft Java 1.21.11.
 
 ![The Hush Garden from above](media/garden-top.jpg)
 

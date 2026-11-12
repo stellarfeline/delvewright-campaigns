@@ -3,7 +3,7 @@
 ## Toolchain
 
 - Authored through `/new-delve`, every step in order, from the engine branch `feat/native-entrance` at `ffe9b58ae18cb935fba20b1db738526fd1a32b2b` (spec-0132: a body's native entrance, `outrun` and the bot's `pursuit` stage; spec-0131: every line of the plan declares its activity). The page read is that revision's `.claude/skills/delvewright/skills/new-delve/`; everything that branch carried is in the release below.
-- Engine: the release `delvec--v1.16.0` (engine commit `fcad3bc4e53a992d952058c634ef366f26f9e978`), `delvec 1.16.0, dsl 0.71.0, mc 1.21.11`, taken from the release shelf by Init I3a (`fetch-delvec.py`: the archive for the platform, its digest equal to the release's `SHA256SUMS` row, `--version` equal to the tag's) — `aarch64-apple-darwin` on the workstation, `x86_64-unknown-linux-gnu` on the build machine. No engine was built from source for the build and the ladder below. `dsl_version` 0.71.0 on every document. The pin check (`check-toolchain.py --mode creator`) exited 0.
+- Engine: the release `delvec--v1.16.1` (engine commit `fa90c09f49fd1af71590ddf15d883c973c0ae393`), `delvec 1.16.1, dsl 0.71.0, mc 1.21.11`, taken from the release shelf by Init I3a (`fetch-delvec.py` run from the engine checkout at the tag: the `aarch64-apple-darwin` archive, sha256 `28cd9f322c2d4805f96a346a842f80982d34ea2d02b2ca1b29c3b3be3f7112fc` equal to the release's `SHA256SUMS` row, `--version` equal to the tag's). No engine was built from source. The validation rig is that same checkout. `dsl_version` 0.71.0 on every document. The pin check (`check-toolchain.py --mode creator`) exited 0: binary, engine commit and `env.sh` all agree with the pin. The plugin release is `delvewright--v1.16.1`.
 - Prefabs: this content clone's own `prefabs/`; the campaign's pieces are its own.
 - Reference images: `tools/creator/refimg.py` on `gemini-native` (`gemini-3.1-flash-image`).
 - Languages: English, and Simplified Chinese as a sidecar (`zh-cn`).
@@ -289,3 +289,19 @@ The whole ladder ran from the content tree, with no override; deaths are the mea
 - **Staging gate** (with `--branch-runs`): admitted. All 159 findings carry a live, binding check or a justified exemption; 48 are INAPPLICABLE.
 
 The release pictures, `media/garden-top.jpg` and `media/garden-oblique.jpg`, were rendered in quick mode from this same tree (content `e9ee75f8`, which builds to this manifest).
+
+## The ladder on the released engine 1.16.1
+
+Run with `delvec 1.16.1` from the release archive alone, the validation rig from the checkout at `delvec--v1.16.1`, with no override on any rung, on the build with manifest `15d302669441becfaf6ddf58b9841652b7bd603bb22f856db12f0558d4ead297` (content `81c55174`, the release pictures and the five `stealth` objectives in). The build's four advisories are the standing ones. Deaths on a pursued step are the measurement:
+
+- **PackTest**: passed, 61 required tests.
+- **Bot, critical path**: passed, 8 steps, 5 advisory findings, 0 `/ERROR]` lines in the server log. `[pursuit] 3 pursued step(s) of 8, 1 pursuer(s), 95 reading(s); closest approach 14.92 block(s); 0 death(s)`. `[sculk]` darkness 0 (3 more with a warden in reach), unpredicted shrieks 0, warden spawns heard 1. `[watch]` 1 watcher asserted. Die-retry unbound: no mandatory encounter.
+- **Hatch stand**: passed; 1 shut floor gate of 3 examined, 1 stand point, held.
+- **Branch runs**, all three passed, each on the same manifest:
+  - `world/0`: 11 steps; `[pursuit] 9 pursued step(s) of 11, 384 readings; closest approach 0.40; 3 death(s)`: two on step 6 (bound 52) and one on step 8 (bound 51), every respawn at `[29, 65, 31]`. `[sculk]` darkness 0 (37 with a warden in reach).
+  - `world/1`: 8 steps; 3 pursued steps, 95 readings, closest 13.83; **0 deaths**.
+  - `world/2`: 9 steps; 4 pursued steps, 312 readings, closest 0.73; **0 deaths**. `[sculk]` darkness 0 (15 with a warden in reach).
+- **Written world**: passed (`DW0955`, 28786 cells compared, `model` 0 differing; 51 `random-tick` and 2653 `re-derived` cells are the classes the check names and excludes; 6 block entities and 6 entities as written).
+- **Staging gate** (with `--run-report`, `--written-world` and `--branch-runs`): admitted. All 159 findings carry a live, binding check or a justified exemption: `UNBOUND` 0, 84 `BOUND`, 48 `INAPPLICABLE`, 27 `DECLARED-UNCOVERABLE`.
+- **Release notes**: `tools/release-notes.py render` for `release/the-hush-garden/v1.0.0` exits 0; `check-storybook-version.py` passes against `delvec 1.16.1` (marker `0.71.0` / `delvec 1.16.1`). The campaign carries no `design/programs/`, so the zone audit is a named zero binding in `release.yml`.
+- **Re-pin**: `versions.toml` `[engine].ref` and the `engine-release` entry are `delvec--v1.16.1`; `check-pins.py` and `check-engine-pin.py` exit 0.

@@ -1,6 +1,6 @@
 # 静谧花园
 
-> **Requires delve engine 0.71.0 or newer** — last verified with delvec 1.16.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.71.0 or newer** — last verified with delvec 1.16.1 on Minecraft Java 1.21.11.
 > 需要上面标注版本或更新的 delve 引擎。
 
 ![从高处俯瞰静谧花园](media/garden-top.jpg)
