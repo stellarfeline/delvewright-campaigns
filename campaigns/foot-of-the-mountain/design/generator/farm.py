@@ -607,8 +607,8 @@ def bay(m, W, D, d, g):
             if m.get(x, g, z) == "minecraft:sand":
                 m.part(x, x, z, z, "shoals")
     marks = {f"crate-{k + 1}": (x, z, None) for k, (x, z) in enumerate(CRATES)}
-    marks["slip-1"] = (5, 3, g)
-    marks["slip-2"] = (10, 3, g)
+    marks["slip-1"] = (3, 6, g)
+    marks["slip-2"] = (11, 6, g)
     return marks
 
 
