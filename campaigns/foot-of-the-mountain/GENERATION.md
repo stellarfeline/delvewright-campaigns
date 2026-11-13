@@ -14,7 +14,7 @@
 
 ## The design record
 
-The approved pictures of the replaced story showed it at late afternoon and at sunset; this day is played at 07:00, 10:00, noon, 18:00 and midnight. A picture approves the hour it was drawn at, so the old set cannot stand as this delve's approval and is removed with its record and its showcase cameras. The festival day's own design walkthrough has not been approved: the record is empty, which validation states as a zero and the staging gate refuses. The camera poses of the old set, with the owner's keep / drop / reframe notes, are in `design/generator/shots.json` for drawing pictures to look at.
+The approved pictures of the replaced story showed it at late afternoon and at sunset, so they were removed with their record. This day is played at five clocks (daytime 1000, 4000, 6000, 12000 and 18000, all clear), and `design.json` carries one approved picture per clock, all under `design/reference/` with their sidecars and prompts: the salvage ground's reference (drawn over a path-traced picture of the built town from the sea, the style anchor) at 1000, and four views of the whole map drawn chained on its interaction under one style contract (`design/style.txt`): from the castle at 4000, the plan at noon, the harbour at dusk and the festival night. The views record look and mood; positions come from the map. `design/cameras.json` answers each row with a showcase camera. The camera poses of the old set, with the keep / drop / reframe notes, stay in `design/generator/shots.json` for drawing pictures to look at.
 
 ## Placement (step 2)
 
