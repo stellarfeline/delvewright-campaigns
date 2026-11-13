@@ -723,8 +723,7 @@ def bay(m, W, D, d, g, place, field=False):
                 for y in range(min(t + 1, g), g + 1):
                     m.set(x, y, z, WATER)
         # the quay's steps come down into the cove where the seam meets it: a flight of
-        # sandstone from under the seam's opening down to a last step flush with the
-        # water, the cove's one standing place at the sea's surface
+        # sandstone from under the seam's opening to the water's edge
         for s in place.a.get("seams", []):
             if s["edge"] != "edge/quay-to-bay":
                 continue
@@ -732,7 +731,7 @@ def bay(m, W, D, d, g, place, field=False):
                 m.climbs_to(s["edge"])
             (x0, y0, z0), (x1, y1, z1) = s["cells"]
             for x in range(x0, x1 + 1):
-                for k, y in enumerate(range(y0 - 1, g - 1, -1)):
+                for k, y in enumerate(range(y0 - 1, g, -1)):
                     z = z0 + k
                     if z > D:
                         break
