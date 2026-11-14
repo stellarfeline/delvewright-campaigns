@@ -1,8 +1,8 @@
-# Curtain Up in Kelderby
+# Festival Day in Kelderby
 
-> **Requires delve engine 0.69.0 or newer** — last verified with delvec 1.15.0 on Minecraft Java 1.21.11.
+> **Requires delve engine 0.76.0 or newer** — last verified with delvec 1.16.0 (the festival-day engine) on Minecraft Java 1.21.11.
 
-A cheerful delve for a small party: a stone-and-timber harbour town on the slope below a castle mountain, on the one afternoon of the year it puts on its play.
+A cheerful delve for a small party: a stone-and-timber harbour town on the slope below a castle mountain, on the one day of the year it holds its festival.
 
 ![Kelderby from the sea, the castle on its mountain above](media/kelderby-from-the-sea.jpg)
 
@@ -10,46 +10,30 @@ A cheerful delve for a small party: a stone-and-timber harbour town on the slope
 |---|---|
 | **Players** | 1–4 |
 | **Playtime** | about two and a half hours |
-| **Mode** | adventure, no combat |
+| **Mode** | adventure; one fight, at dusk |
 | **Languages** | English, 简体中文 (`zh-cn`) |
-| **Classes** | four — the Lead, the Prompter, the Musician, the Stagehand |
+| **Classes** | four — the Watch, the Archer, the Runner, the Cook |
 | **Licence** | CC BY-SA 4.0 |
 
-## The story so far
+## The day
 
-Kelderby is a harbour town at the foot of a mountain: one main street stepping down from the cathedral square to the quays, side streets full of workshops, a lighthouse out on the headland, and a castle at the top of a long road. Every year, on the cathedral square, the town performs the Founders' Play, the story of how the town began.
+Kelderby is a harbour town at the foot of a mountain: one main street stepping down from the cathedral square to the quays, side streets full of workshops, farms and pens out on the flank, a lighthouse on the headland, and a castle at the top of a long road.
 
-You are a small travelling company, walking into town on the afternoon of the play. The innkeeper is waiting on the square, and she is very glad to see you. She seems to think you are someone else.
-
-## Who you will meet
-
-**Hedda Brask** — keeper of The Bell, the inn on the square, and director of the play every year. Brisk, warm and short of time.
-
-**Lady Agathe Holm** — the old lady of the castle, who has played the play's Dragon for thirty years. **Bernt**, her steward, keeps the castle for her, and **Dumpling**, her happy ghast, keeps her company.
-
-**Sanna** — a young net-mender, cast this year as the Founder. **Inga**, her aunt, keeps the lighthouse.
-
-**Oskar** — the baker, who bakes the Mountain Loaf every year. **Runa** — the smith across the street, who mended his oven door.
-
-**Fenna** — keeper of the sailors' tavern and leader of the town's shanty chorus, with **Kettil** the cooper, **Mari** of the net loft and **Sverre** the boatwright.
-
-**Elin** — the weaver, who has made the play something new. **Vidar Foss** — the guildhall clerk, who knows the town's by-laws by heart.
+You wake in town on the morning of its festival. The host climbs onto the stage on the square to open the day, and at once everything goes wrong. The day is yours to put right, the dusk has to be got through, and the night is the festival — made of whatever the day managed.
 
 ![The square from the top of the main street](media/the-square.jpg)
 
 ## What kind of delve this is
 
-A day in a busy town, in adventure mode: errands that send you searching yards and castle rooms, a little puzzling, people worth overhearing, and a lot of conversations. Nothing in Kelderby is hostile, and nobody can be hurt.
+A busy day in a small town, in adventure mode: the town's troubles, big and small, each its own errand across the map, some of them against the clock. Bright and comic for most of the day; there is one fight, when the light goes.
 
-**Talking.** Right-click a townsperson to talk; choose an answer from the list. What you choose is remembered.
+**Talking.** Right-click a townsperson to talk; choose an answer from the list. What you choose is remembered, and the festival at the end is made of what you did.
 
-**Looking around.** Kelderby rewards the curious: notices, letters and odd things left about the town can be read by right-clicking them, and some of them change what people will say to you. Each find puts a penny in your purse, shown at the side of the screen, and the merchant's stall on the main street has things to spend it on.
+**The compass and the journal.** Your compass points at what you are doing next; right-click it to choose between errands. Your journal lists them all, and keeps a line for each one you finish.
 
-**The compass and the journal.** Your compass points at what you are doing next; right-click it to choose between errands. Your journal lists them all.
+**Getting about.** The main street steps down from the square to the harbour in short flights; the castle road climbs the mountain in long zig-zags; the cliff path to the lighthouse leaves the lower town by the harbour. Not every errand is done on foot.
 
-**Getting about.** The main street steps down from the square to the harbour in short flights. The castle road climbs the mountain in long zig-zags; the cliff path to the lighthouse leaves the lower town by the harbour.
-
-**Pack nothing.** Each class carries what its part needs and bread for the walk.
+**Pack nothing.** Each class carries what its part needs, and bread.
 
 ![The main street stepping down to the harbour](media/the-main-street.jpg)
 
