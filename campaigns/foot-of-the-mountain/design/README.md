@@ -17,6 +17,7 @@ The salvage ground is built to `reference/salvage-ground` with its water opened 
 ## Answers on the design
 
 - The four map views record the town's look and mood; every position comes from the map. The salvage ground is built to `reference/salvage-ground` alone: the shoals' place in `reference/from-the-castle` and the islets in `reference/plan` are not the design.
+- A timed task's clock never starts at game entry: it starts only when the player finishes talking to the person who gives the task. The salvage's clock is six minutes from the end of the talk with Sverre; the bell's is five minutes from the end of the talk with Vidar.
 - The salvage ground as built (content `dd816557`, seen from the sea at the reference's pose and from its showcase camera) is accepted as it is: its shape is not changed further.
 - The salvage ground: built to its reference, offshore past open deep water, low wide sandbars joined into one irregular shallow patch, water shading from pale turquoise to deep blue, a curving broken outer bar, barrels floating in the channels. The final establishing shot frames the town; it need not take in the whole salvage ground (the town would read too far away).
 - The salvage area is about nine times the cove's first one (about three times as wide and long), set farther from the shore, with a few drowned in it for challenge.

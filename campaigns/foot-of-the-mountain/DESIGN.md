@@ -24,7 +24,7 @@ Opening: Hedda Brask, the innkeeper who hosts the festival, announces it from th
 |---|---|---|---|---|---|
 | A | the dock and the bay | rowing | ≥4 of 6 floating crates rowed back to the delivery point beside the harbour house in time | the rest sink | food in the three defence lines' supply chests; the feast |
 | B | the main street | luring animals | Kettil's three goats in the pen on the main street by dusk, led with wheat from the field on the flank | the shepherd brings them back; failure | the pen at the street's throat; the goats charge once as the raiders pass |
-| C | the cathedral | archery | three hits on the target in the belfry from the marked shooting point on the main street (25–30 blocks) in time | — | the forecourt bell can be rung: every raider glows for 10 s, with a cooldown |
+| C | the cathedral | archery | three hits on the target in the belfry from the marked shooting point on the main street (25–30 blocks) in time (five minutes from the end of the talk with Vidar: a task's clock starts only when its giver has been talked to) | — | the forecourt bell can be rung: every raider glows for 10 s, with a cooldown |
 | D | the lighthouse | climbing | the lamp room relit after a light-parkour climb past broken stairs, in time (*authored*: the window) | the lamp stays dark | the second landing is called 30 s early, with its side |
 | E | the castle road to the castle | chasing | the fox, driven by script between four hiding places to its den by the castle gate, the key taken, the fireworks fetched in time | the fox sits in its den; half the fireworks | rockets for crossbows (area damage); the rest for the festival |
 
