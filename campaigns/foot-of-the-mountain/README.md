@@ -43,7 +43,7 @@ One command and the town is up — then, in the Minecraft Java client at the ver
 
 ```sh
 docker run -d --name delve -p 25565:25565 -v delve-data:/data \
-  -e EULA=TRUE ghcr.io/stellarfeline/delve-foot-of-the-mountain:latest
+  -e EULA=TRUE ghcr.io/stellarfeline/delve-festival-day-in-kelderby:latest
 ```
 
 That is the current delve. To hold it at one exact version, take the `:vX.Y.Z` tag from a release page instead; every release names its own. Your client will offer a resource pack when you join (the Chinese text); accept it. To start the story over, `docker rm -f delve && docker volume rm delve-data`, then run the same command again.

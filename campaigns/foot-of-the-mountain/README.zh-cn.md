@@ -4,7 +4,7 @@
 
 一场适合小队的轻松冒险：一座石木结构的海港小镇，坐落在城堡山下的山坡上，正逢它一年一度的庆典日。
 
-![Kelderby from the sea, the castle on its mountain above](media/kelderby-from-the-sea.jpg)
+![从海上望凯尔德比，城堡立在上方的山上](media/kelderby-from-the-sea.jpg)
 
 | | |
 |---|---|
@@ -21,7 +21,7 @@
 
 你在庆典日的早晨醒在镇上。主持人登上广场的舞台宣布开幕——话音未落，一切就乱了套。白天归你来收拾，黄昏得熬过去，到了夜里便是庆典：白天办成了多少，庆典就有多热闹。
 
-![The square from the top of the main street](media/the-square.jpg)
+![从主街顶上望广场](media/the-square.jpg)
 
 ## 这是一场什么样的冒险
 
@@ -35,7 +35,7 @@
 
 **什么都不用带。** 每个职业都带着自己用得上的东西，还有面包。
 
-![The main street stepping down to the harbour](media/the-main-street.jpg)
+![一级级往下通到港口的主街](media/the-main-street.jpg)
 
 ## 开玩吧
 
@@ -43,7 +43,7 @@
 
 ```sh
 docker run -d --name delve -p 25565:25565 -v delve-data:/data \
-  -e EULA=TRUE ghcr.io/stellarfeline/delve-foot-of-the-mountain:latest
+  -e EULA=TRUE ghcr.io/stellarfeline/delve-festival-day-in-kelderby:latest
 ```
 
 这就是当前的冒险地图。如果想固定在某一个确切版本，请改从发布页获取 `:vX.Y.Z` 标签；每个版本都会标明自己的标签。加入时客户端会提示你使用资源包（中文文本）；请接受。要重新开始故事，请先运行 `docker rm -f delve && docker volume rm delve-data`，然后再运行一次上面的命令。
