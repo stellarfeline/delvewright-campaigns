@@ -10,7 +10,7 @@ A cheerful delve for a small party: a stone-and-timber harbour town on the slope
 |---|---|
 | **Players** | 1–4 |
 | **Playtime** | about two and a half hours |
-| **Mode** | adventure; one fight, at dusk |
+| **Mode** | adventure; a scrape or two by day, one big fight at dusk |
 | **Languages** | English, 简体中文 (`zh-cn`) |
 | **Classes** | four — the Watch, the Archer, the Runner, the Cook |
 | **Licence** | CC BY-SA 4.0 |
@@ -25,7 +25,7 @@ You wake in town on the morning of its festival. The host climbs onto the stage 
 
 ## What kind of delve this is
 
-A busy day in a small town, in adventure mode: the town's troubles, big and small, each its own errand across the map, some of them against the clock. Bright and comic for most of the day; there is one fight, when the light goes.
+A busy day in a small town, in adventure mode: the town's troubles, big and small, each its own errand across the map, some of them against the clock. Bright and comic for most of the day, with a scrape or two along the way; the big fight comes when the light goes.
 
 **Talking.** Right-click a townsperson to talk; choose an answer from the list. What you choose is remembered, and the festival at the end is made of what you did.
 
