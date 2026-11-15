@@ -52,7 +52,6 @@ def build(place):
     for z in range(4, 7):
         for y in range(d - 1, d + 4):
             m.set(10, y, z, "vault")            # the landing, built solid down to the floor
-        m.set(11, d + 3, z, "vault")           # the sill as the survey reads it (below)
         for k, x in enumerate((9, 8, 7)):
             m.set(x, d + 2 - k, z, stairs("minecraft:stone_brick", "east"))
             for y in range(d - 1, d + 2 - k):
@@ -82,34 +81,6 @@ def build(place):
     return m
 
 
-# The door's sill, under the opening, is the castle ring's fixed ground (the whole's): solid in
-# the world, but handed as a void the survey reads as air, so a body could never be read standing
-# in the door. The survey alone is shown the sill as the ground it is; the program still leaves
-# those cells to the whole.
-import starter as _st  # noqa: E402
-_survey = _st.Plot.survey
-
-
-def _survey_with_sill(self):
-    keep = self.a.get("voids", [])
-    sill = set()
-    for sm in self.a.get("seams", []):
-        if sm["edge"] == "edge/castle-vault":
-            (x0, y0, z0), (x1, _, z1) = sm["cells"]
-            sill = {(x, y0 - 1, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1)}
-    out = []
-    for v in keep:
-        (vx0, vy0, vz0), (vx1, vy1, vz1) = v["cells"]
-        cells = {(x, y, z) for x in range(vx0, vx1 + 1) for y in range(vy0, vy1 + 1) for z in range(vz0, vz1 + 1)}
-        out += [{"cells": [list(c), list(c)], "owner": v["owner"]} for c in sorted(cells - sill)]
-    self.a["voids"] = out
-    try:
-        _survey(self)
-    finally:
-        self.a["voids"] = keep
-
-
-_st.Plot.survey = _survey_with_sill
 rc = run(build, reason="the crag's rock and the vault's wall heads: seen, never stood on")
 # the hidden way is shut by a block that hides (spec-0118): the starter binds a seam's bar to the
 # derivation's iron bars, which the eye looks through, so the program's bar is bound to the stone
