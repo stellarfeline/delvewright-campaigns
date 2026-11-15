@@ -16,6 +16,42 @@
         "facing": "north",
         "id": "actor/fox",
         "name": "The Fox"
+      },
+      {
+        "anchor": "anchor/goat-pen-yard",
+        "entity": "minecraft:goat",
+        "facing": "west",
+        "id": "actor/goat-pearl-penned",
+        "name": "Pearl",
+        "offset": [
+          -2,
+          0,
+          -2
+        ]
+      },
+      {
+        "anchor": "anchor/goat-pen-yard",
+        "entity": "minecraft:goat",
+        "facing": "west",
+        "id": "actor/goat-barley-penned",
+        "name": "Barley",
+        "offset": [
+          2,
+          0,
+          -1
+        ]
+      },
+      {
+        "anchor": "anchor/goat-pen-yard",
+        "entity": "minecraft:goat",
+        "facing": "west",
+        "id": "actor/goat-admiral-penned",
+        "name": "The Admiral",
+        "offset": [
+          1,
+          0,
+          2
+        ]
       }
     ],
     "containers": {
@@ -320,6 +356,42 @@
             "style": "chat",
             "text": "Oskar sets the festival cake on its table on the stage: four tiers and a sugar lighthouse.",
             "type": "narrate"
+          },
+          {
+            "happening": {
+              "subject": "wave/sheep-fold",
+              "text": "Sheep graze in the fold on the farm track.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/sheep-fold"
+          },
+          {
+            "happening": {
+              "subject": "wave/sheep-terrace",
+              "text": "Sheep graze in the fold on the terraces.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/sheep-terrace"
+          },
+          {
+            "happening": {
+              "subject": "wave/cattle",
+              "text": "Cows stand in the cattle pen by the barn.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/cattle"
+          },
+          {
+            "happening": {
+              "subject": "wave/bees",
+              "text": "Bees work the hives in the meadow behind the beach.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/bees"
           }
         ],
         "on_objective_complete": {},
@@ -363,18 +435,77 @@
             "dialogue": "dlg/inga-lamp",
             "doing": "at the foot of her lighthouse with a can of oil and no wish to climb"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-street-5",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-thanks",
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": "dlg/kettil-day",
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-lost",
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-gaveup",
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-day",
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-bakery",
@@ -515,28 +646,10 @@
             },
             "hint": "In the lamp room at the top of the tower: the great lamp in the middle.",
             "id": "obj/light-the-lamp",
-            "limit": {
-              "from": {
-                "objective": "obj/climb-the-tower"
-              },
-              "on_expire": [
-                {
-                  "line": "The oil went cold before you reached the lamp, and the lighthouse stayed dark.",
-                  "objective": "obj/light-the-lamp",
-                  "type": "record-outcome"
-                },
-                {
-                  "style": "chat",
-                  "text": "From far below, Inga shouts that the oil has gone cold in the can. The lamp stays dark tonight.",
-                  "type": "narrate"
-                }
-              ],
-              "ticks": 6000
-            },
             "prop": {
               "block": "minecraft:waxed_copper_bulb[lit=false,powered=false]"
             },
-            "record": "The lighthouse lamp had to be relit before the oil went cold in the can.",
+            "record": "The lighthouse lamp had to be relit for the evening boats.",
             "title": "Light the lamp",
             "type": "interact"
           }
@@ -591,10 +704,6 @@
               "anchor": "anchor/lamp-room",
               "block": "minecraft:waxed_copper_bulb[lit=true,powered=false]",
               "type": "set-block"
-            },
-            {
-              "flag": "flag/lighthouse-lit",
-              "type": "set-flag"
             },
             {
               "style": "chat",
@@ -652,18 +761,77 @@
             },
             "doing": "about the festival"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-street-5",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-thanks",
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": "dlg/kettil-day",
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-lost",
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-gaveup",
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-day",
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-bakery",
@@ -767,7 +935,7 @@
             },
             "hint": "Up the castle road from the square, to the wayside spring beside the road.",
             "id": "obj/flush-1",
-            "radius": 3,
+            "radius": 6,
             "record": "A fox ran off with the key to the castle's fireworks store, and hid at the wayside spring on the castle road.",
             "requires_flags": [
               "flag/fox-spotted"
@@ -787,7 +955,7 @@
             },
             "hint": "Further up the castle road, to the bee garden beside the road, where the fox ran.",
             "id": "obj/flush-2",
-            "radius": 3,
+            "radius": 6,
             "record": "The fox ran on up the castle road and hid at the bee garden.",
             "title": "Chase the fox",
             "type": "reach-anchor"
@@ -804,7 +972,7 @@
             },
             "hint": "Further up the castle road, to the herder's hut beside the road, where the fox ran.",
             "id": "obj/flush-3",
-            "radius": 3,
+            "radius": 5,
             "record": "The fox ran on up the castle road and hid at the herder's hut.",
             "title": "Chase the fox",
             "type": "reach-anchor"
@@ -821,7 +989,7 @@
             },
             "hint": "Further up the castle road, to the lookout beside the road, where the fox ran.",
             "id": "obj/flush-4",
-            "radius": 3,
+            "radius": 6,
             "record": "The fox ran on up the castle road and hid at the lookout.",
             "title": "Chase the fox",
             "type": "reach-anchor"
@@ -875,7 +1043,7 @@
                   "type": "narrate"
                 }
               ],
-              "ticks": 9600
+              "ticks": 18000
             },
             "record": "The castle's fireworks were locked in the storeroom under the great hall, and had to be fetched before the steward gave up on them.",
             "title": "Fetch the fireworks",
@@ -945,7 +1113,7 @@
                 "text": "The fox runs on to the next hiding place up the road.",
                 "verb": "departs"
               },
-              "speed": 1.3,
+              "speed": 0.5,
               "to": {
                 "anchor": "anchor/node-poi-bees"
               },
@@ -965,7 +1133,7 @@
                 "text": "The fox runs on to the next hiding place up the road.",
                 "verb": "departs"
               },
-              "speed": 1.3,
+              "speed": 0.5,
               "to": {
                 "anchor": "anchor/node-poi-hut"
               },
@@ -985,7 +1153,7 @@
                 "text": "The fox runs on to the next hiding place up the road.",
                 "verb": "departs"
               },
-              "speed": 1.3,
+              "speed": 0.5,
               "to": {
                 "anchor": "anchor/node-poi-lookout"
               },
@@ -1005,7 +1173,7 @@
                 "text": "The fox runs home to its den by the castle gate.",
                 "verb": "departs"
               },
-              "speed": 1.3,
+              "speed": 0.5,
               "to": {
                 "anchor": "anchor/node-gate-road",
                 "offset": [
@@ -1059,18 +1227,77 @@
             "dialogue": "unchanged",
             "doing": "unchanged"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-street-5",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-thanks",
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": "dlg/kettil-day",
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-lost",
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-gaveup",
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-day",
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-bakery",
@@ -1194,22 +1421,6 @@
             },
             "hint": "Three arrows into the target in the bell tower's opening, from the top of the main street. Then use the bell on the close.",
             "id": "obj/ring-the-bell",
-            "limit": {
-              "from": "activation",
-              "on_expire": [
-                {
-                  "line": "The bell stayed silent: Vidar had to go up with a ladder after supper.",
-                  "objective": "obj/ring-the-bell",
-                  "type": "record-outcome"
-                },
-                {
-                  "style": "chat",
-                  "text": "Vidar lowers his eyes from the tower. 'By-law fourteen will have to wait. I shall go up with a ladder after supper.' The bell stays silent for now.",
-                  "type": "narrate"
-                }
-              ],
-              "ticks": 6000
-            },
             "prop": {
               "block": "minecraft:bell[attachment=floor,facing=east,powered=false]"
             },
@@ -1308,18 +1519,77 @@
             "dialogue": "unchanged",
             "doing": "unchanged"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-street-5",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-thanks",
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": "dlg/kettil-day",
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-lost",
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-gaveup",
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-day",
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-bakery",
@@ -1885,18 +2155,98 @@
             "dialogue": "unchanged",
             "doing": "unchanged"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-street-5",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-thanks",
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": "dlg/kettil-goats",
-            "doing": "at his empty goat pen on the main street, rattling a bucket at nobody"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-lost",
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-gaveup",
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-goats",
+              "doing": "at his empty goat pen on the main street, rattling a bucket at nobody",
+              "forbids_flags": [
+                "flag/kettil-asked",
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-herding",
+              "doing": "at his goat pen on the main street, watching the slopes for goats",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/kettil-asked"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-bakery",
@@ -2030,14 +2380,14 @@
             "anchor": "anchor/goat-pen-gate",
             "answers": {
               "done": "The latch drops. Three goats look at you with deep suspicion.",
-              "not_yet": "Not yet: all three goats have to be inside the pen first."
+              "not_yet": "Not yet: all three goats have to be in the pen first."
             },
             "happening": {
               "subject": "anchor/goat-pen-gate",
-              "text": "The last goat trots into the pen and the latch drops behind it.",
+              "text": "The last goat is in the pen and the latch drops behind it.",
               "verb": "opens"
             },
-            "hint": "Hold up the wheat and lead Pearl, Barley and the Admiral into the pen on the main street. Then the latch.",
+            "hint": "Lead Kettil's three goats with the wheat into his pen halfway down the main street, one at a time or all together, then lower the latch.",
             "id": "obj/pen-the-goats",
             "limit": {
               "from": {
@@ -2062,6 +2412,36 @@
                   "wave": "wave/goat-admiral"
                 },
                 {
+                  "actor": "actor/goat-pearl-penned",
+                  "happening": {
+                    "subject": "actor/goat-pearl-penned",
+                    "text": "Kettil takes Pearl out of the pen with the others, to wherever he means to put them.",
+                    "verb": "departs"
+                  },
+                  "style": "vanish",
+                  "type": "despawn-actor"
+                },
+                {
+                  "actor": "actor/goat-barley-penned",
+                  "happening": {
+                    "subject": "actor/goat-barley-penned",
+                    "text": "Kettil takes Barley out of the pen with the others, to wherever he means to put them.",
+                    "verb": "departs"
+                  },
+                  "style": "vanish",
+                  "type": "despawn-actor"
+                },
+                {
+                  "actor": "actor/goat-admiral-penned",
+                  "happening": {
+                    "subject": "actor/goat-admiral-penned",
+                    "text": "Kettil takes The Admiral out of the pen with the others, to wherever he means to put them.",
+                    "verb": "departs"
+                  },
+                  "style": "vanish",
+                  "type": "despawn-actor"
+                },
+                {
                   "style": "chat",
                   "text": "Kettil gives up on you, takes his bucket up the slopes himself, and comes back with three goats and no temper left. Where he has put them, he will not say.",
                   "type": "narrate"
@@ -2076,18 +2456,8 @@
             "requires_state": [
               {
                 "op": "at-least",
-                "state": "state/goat-pearl-home",
-                "value": 1
-              },
-              {
-                "op": "at-least",
-                "state": "state/goat-barley-home",
-                "value": 1
-              },
-              {
-                "op": "at-least",
-                "state": "state/goat-admiral-home",
-                "value": 1
+                "state": "state/goats-in-pen",
+                "value": 3
               }
             ],
             "title": "Pen the goats",
@@ -2108,9 +2478,13 @@
         "on_objective_complete": {
           "obj/ask-kettil": [
             {
+              "flag": "flag/kettil-asked",
+              "type": "set-flag"
+            },
+            {
               "happening": {
-                "subject": "wave/goat-pearl",
-                "text": "Pearl stands up the castle road's switchbacks above the square, chewing.",
+                "subject": "anchor/node-west-orchard",
+                "text": "Pearl stands in the terrace orchard above the track behind the fishmonger's, chewing.",
                 "verb": "arrives"
               },
               "type": "spawn-wave",
@@ -2118,8 +2492,8 @@
             },
             {
               "happening": {
-                "subject": "wave/goat-barley",
-                "text": "Barley stands at the wayside spring up the castle road, chewing.",
+                "subject": "anchor/node-poi-spring",
+                "text": "Barley stands at the wayside spring a little way up the castle road, chewing.",
                 "verb": "arrives"
               },
               "type": "spawn-wave",
@@ -2127,7 +2501,7 @@
             },
             {
               "happening": {
-                "subject": "wave/goat-admiral",
+                "subject": "anchor/node-orchard",
                 "text": "The Admiral stands in the orchard out on the farm track, chewing.",
                 "verb": "arrives"
               },
@@ -2523,7 +2897,7 @@
                 "verb": "arrives"
               },
               "npc": "npc/runa",
-              "speed": 1.0,
+              "speed": 0.25,
               "to": {
                 "anchor": "anchor/stable-yard",
                 "offset": [
@@ -2591,18 +2965,77 @@
             },
             "doing": "about the festival"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-street-5",
-              "offset": [
-                2,
-                0,
-                0
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-thanks",
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": "dlg/kettil-day",
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-lost",
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-gaveup",
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-street-5",
+                "offset": [
+                  2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/kettil-day",
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-bakery",
@@ -2736,7 +3169,7 @@
           },
           {
             "after": [
-              "obj/hold-the-dock"
+              "obj/back-to-the-stage"
             ],
             "happening": {
               "subject": "wave/beach-landing",
@@ -2752,6 +3185,7 @@
           },
           {
             "after": [
+              "obj/hold-the-dock",
               "obj/hold-the-beach"
             ],
             "happening": {
@@ -2801,7 +3235,7 @@
               "verb": "arrives"
             },
             "npc": "npc/inga",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2819,7 +3253,7 @@
               "verb": "arrives"
             },
             "npc": "npc/oskar",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2837,7 +3271,7 @@
               "verb": "arrives"
             },
             "npc": "npc/agathe",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2855,7 +3289,7 @@
               "verb": "arrives"
             },
             "npc": "npc/bernt",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2873,7 +3307,7 @@
               "verb": "arrives"
             },
             "npc": "npc/sverre",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2891,7 +3325,7 @@
               "verb": "arrives"
             },
             "npc": "npc/kettil",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2909,7 +3343,7 @@
               "verb": "arrives"
             },
             "npc": "npc/vidar",
-            "speed": 1.0,
+            "speed": 0.25,
             "to": {
               "anchor": "anchor/node-square",
               "offset": [
@@ -2952,7 +3386,7 @@
                 "verb": "departs"
               },
               "npc": "npc/runa",
-              "speed": 1.0,
+              "speed": 0.25,
               "to": {
                 "anchor": "anchor/node-orchard"
               },
@@ -3122,54 +3556,26 @@
               },
               "type": "spawn-wave",
               "wave": "wave/dock-landing"
-            }
-          ],
-          "obj/hold-the-beach": [
-            {
-              "style": "chat",
-              "text": "A bigger horn. A man in a hat with a feather that could take an eye out stands up in the last boat and points at the cake.",
-              "type": "narrate"
             },
-            {
-              "happening": {
-                "subject": "wave/the-captain",
-                "text": "Captain Gull lands with his best and starts up the main street.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/the-captain"
-            }
-          ],
-          "obj/hold-the-dock": [
             {
               "steps": [
                 {
-                  "at_ticks": 0,
+                  "at_ticks": 300,
                   "effects": [
                     {
                       "style": "title",
-                      "text": "Boats on the beach!",
-                      "type": "narrate",
-                      "when": {
-                        "requires_flags": [
-                          "flag/lighthouse-lit"
-                        ]
-                      }
+                      "text": "Beach landing!",
+                      "type": "narrate"
                     },
                     {
                       "style": "chat",
-                      "text": "The lighthouse beam swings round and holds: boats running up on the beach past the harbour! Thirty breaths away.",
-                      "type": "narrate",
-                      "when": {
-                        "requires_flags": [
-                          "flag/lighthouse-lit"
-                        ]
-                      }
+                      "text": "The lighthouse beam swings round and holds: more boats running up on the beach past the harbour! Thirty breaths away.",
+                      "type": "narrate"
                     }
                   ]
                 },
                 {
-                  "at_ticks": 600,
+                  "at_ticks": 900,
                   "effects": [
                     {
                       "happening": {
@@ -3184,6 +3590,66 @@
                 }
               ],
               "type": "sequence"
+            }
+          ],
+          "obj/hold-the-beach": [
+            {
+              "flag": "flag/beach-held",
+              "type": "set-flag"
+            },
+            {
+              "style": "chat",
+              "text": "A bigger horn. A man in a hat with a feather that could take an eye out stands up in the last boat and points at the cake.",
+              "type": "narrate",
+              "when": {
+                "requires_flags": [
+                  "flag/dock-held"
+                ]
+              }
+            },
+            {
+              "happening": {
+                "subject": "wave/the-captain",
+                "text": "Captain Gull lands with his best and starts up the main street.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/the-captain",
+              "when": {
+                "requires_flags": [
+                  "flag/dock-held"
+                ]
+              }
+            }
+          ],
+          "obj/hold-the-dock": [
+            {
+              "flag": "flag/dock-held",
+              "type": "set-flag"
+            },
+            {
+              "style": "chat",
+              "text": "A bigger horn. A man in a hat with a feather that could take an eye out stands up in the last boat and points at the cake.",
+              "type": "narrate",
+              "when": {
+                "requires_flags": [
+                  "flag/beach-held"
+                ]
+              }
+            },
+            {
+              "happening": {
+                "subject": "wave/the-captain",
+                "text": "Captain Gull lands with his best and starts up the main street.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/the-captain",
+              "when": {
+                "requires_flags": [
+                  "flag/beach-held"
+                ]
+              }
             }
           ]
         },
@@ -3247,22 +3713,93 @@
             },
             "doing": "about the festival"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -10,
-                0,
-                -1
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Three goats in the pen and a festival on the square. A good day."
+                ]
+              },
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "Three goats, and one of them is the problem."
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Two goats in the pen tonight. Still two goats."
+                ]
+              },
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
               ]
             },
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Do not ask me where the goats are. You will see."
+                ]
+              },
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Three goats, and one of them is the problem."
+                ]
+              },
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-square",
@@ -3417,42 +3954,12 @@
           {
             "style": "chat",
             "text": "The lighthouse beam sweeps over the square, and every face turns up into it as it passes.",
-            "type": "narrate",
-            "when": {
-              "requires_flags": [
-                "flag/lighthouse-lit"
-              ]
-            }
-          },
-          {
-            "style": "chat",
-            "text": "The lighthouse stays dark, so Hedda reads her speech by a lantern Oskar holds up for her, and gets most of it right.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/lighthouse-lit"
-              ]
-            }
+            "type": "narrate"
           },
           {
             "style": "chat",
             "text": "On the stroke of midnight the festival bell rings the festival in.",
-            "type": "narrate",
-            "when": {
-              "requires_flags": [
-                "flag/bell-fixed"
-              ]
-            }
-          },
-          {
-            "style": "chat",
-            "text": "Halfway through Hedda's speech, Vidar finally gets the bell to ring, and the whole square cheers the interruption.",
-            "type": "narrate",
-            "when": {
-              "forbids_flags": [
-                "flag/bell-fixed"
-              ]
-            }
+            "type": "narrate"
           },
           {
             "style": "chat",
@@ -3485,6 +3992,16 @@
             }
           },
           {
+            "style": "chat",
+            "text": "Kettil's two goats watch the festival from their pen on the main street. Kettil watches them, and not the rockets.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            }
+          },
+          {
             "happening": {
               "subject": "wave/goats-on-stage",
               "text": "Three goats are discovered standing on the stage, where Kettil left them.",
@@ -3494,7 +4011,8 @@
             "wave": "wave/goats-on-stage",
             "when": {
               "forbids_flags": [
-                "flag/goats-home"
+                "flag/goats-home",
+                "flag/goat-lost"
               ]
             }
           },
@@ -3504,7 +4022,8 @@
             "type": "narrate",
             "when": {
               "forbids_flags": [
-                "flag/goats-home"
+                "flag/goats-home",
+                "flag/goat-lost"
               ]
             }
           },
@@ -10364,22 +10883,93 @@
             },
             "doing": "about the festival"
           },
-          "npc/kettil": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -10,
-                0,
-                -1
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Three goats in the pen and a festival on the square. A good day."
+                ]
+              },
+              "doing": "pleased with his goats",
+              "requires_flags": [
+                "flag/goats-home"
               ]
             },
-            "dialogue": {
-              "barks": [
-                "Three goats, and one of them is the problem."
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Two goats in the pen tonight. Still two goats."
+                ]
+              },
+              "doing": "quiet, having penned what was left of his goats himself",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
               ]
             },
-            "doing": "about the festival"
-          },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Do not ask me where the goats are. You will see."
+                ]
+              },
+              "doing": "pretending he does not know where his goats are",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": {
+                "barks": [
+                  "Three goats, and one of them is the problem."
+                ]
+              },
+              "doing": "about the festival",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
           "npc/oskar": {
             "at": {
               "anchor": "anchor/node-square",
@@ -10791,6 +11381,24 @@
         "scope": "party"
       },
       {
+        "counts": {
+          "of": {
+            "kind": "minecraft:goat"
+          },
+          "region": {
+            "anchor": "anchor/goat-pen-yard",
+            "extent": [
+              3,
+              1,
+              3
+            ]
+          }
+        },
+        "id": "state/goats-in-pen",
+        "note": "Goats standing in Kettil's pen on the main street, penned or on their own feet.",
+        "scope": "party"
+      },
+      {
         "id": "state/belfry-hits",
         "initial": 0,
         "note": "Arrows the party has put in the belfry target; three free the rope's knot.",
@@ -11042,6 +11650,126 @@
       {
         "effects": [
           {
+            "type": "despawn-wave",
+            "wave": "wave/goat-pearl"
+          },
+          {
+            "actor": "actor/goat-pearl-penned",
+            "happening": {
+              "subject": "actor/goat-pearl-penned",
+              "text": "Pearl trots into Kettil's pen and settles by the hay rack.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "style": "actionbar",
+            "text": "Pearl is in the pen, and settles by the hay rack as if she had never left.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/goat-lost"
+        ],
+        "id": "trigger/pen-pearl",
+        "on": {
+          "on": "body-enters",
+          "state": "state/goat-pearl-home"
+        },
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/goat-pearl-home",
+            "value": 1
+          }
+        ],
+        "serves": {
+          "objective": "obj/pen-the-goats"
+        }
+      },
+      {
+        "effects": [
+          {
+            "type": "despawn-wave",
+            "wave": "wave/goat-barley"
+          },
+          {
+            "actor": "actor/goat-barley-penned",
+            "happening": {
+              "subject": "actor/goat-barley-penned",
+              "text": "Barley trots into Kettil's pen and settles by the hay rack.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "style": "actionbar",
+            "text": "Barley is in the pen, and settles by the hay rack as if she had never left.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/goat-lost"
+        ],
+        "id": "trigger/pen-barley",
+        "on": {
+          "on": "body-enters",
+          "state": "state/goat-barley-home"
+        },
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/goat-barley-home",
+            "value": 1
+          }
+        ],
+        "serves": {
+          "objective": "obj/pen-the-goats"
+        }
+      },
+      {
+        "effects": [
+          {
+            "type": "despawn-wave",
+            "wave": "wave/goat-admiral"
+          },
+          {
+            "actor": "actor/goat-admiral-penned",
+            "happening": {
+              "subject": "actor/goat-admiral-penned",
+              "text": "The Admiral trots into Kettil's pen and settles by the hay rack.",
+              "verb": "arrives"
+            },
+            "type": "spawn-actor"
+          },
+          {
+            "style": "actionbar",
+            "text": "The Admiral is in the pen, and settles by the hay rack as if he had never left.",
+            "type": "narrate"
+          }
+        ],
+        "forbids_flags": [
+          "flag/goat-lost"
+        ],
+        "id": "trigger/pen-admiral",
+        "on": {
+          "on": "body-enters",
+          "state": "state/goat-admiral-home"
+        },
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/goat-admiral-home",
+            "value": 1
+          }
+        ],
+        "serves": {
+          "objective": "obj/pen-the-goats"
+        }
+      },
+      {
+        "effects": [
+          {
             "flag": "flag/cake-taken",
             "type": "set-flag"
           },
@@ -11136,7 +11864,7 @@
               "verb": "believes"
             },
             "npc": "npc/runa",
-            "speed": 1.2,
+            "speed": 0.45,
             "to": {
               "anchor": "anchor/node-barn"
             },
@@ -11346,7 +12074,7 @@
         "tier": "elite"
       },
       {
-        "anchor": "anchor/node-road-9",
+        "anchor": "anchor/node-west-orchard",
         "id": "wave/goat-pearl",
         "mobs": [
           {
@@ -11355,6 +12083,59 @@
             "name": "Pearl"
           }
         ],
+        "on_kill": {
+          "effects": [
+            {
+              "flag": "flag/goat-lost",
+              "happening": {
+                "subject": "wave/goat-pearl",
+                "text": "A goat of Kettil's is killed on festival day.",
+                "verb": "dies"
+              },
+              "type": "set-flag"
+            },
+            {
+              "line": "A goat was killed on festival day, and Kettil penned what was left himself without a word.",
+              "objective": "obj/pen-the-goats",
+              "type": "record-outcome"
+            },
+            {
+              "objective": "obj/pen-the-goats",
+              "type": "fail-objective"
+            },
+            {
+              "type": "despawn-wave",
+              "wave": "wave/goat-barley"
+            },
+            {
+              "actor": "actor/goat-barley-penned",
+              "happening": {
+                "subject": "actor/goat-barley-penned",
+                "text": "Kettil leads Barley back into the pen himself.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "type": "despawn-wave",
+              "wave": "wave/goat-admiral"
+            },
+            {
+              "actor": "actor/goat-admiral-penned",
+              "happening": {
+                "subject": "actor/goat-admiral-penned",
+                "text": "Kettil leads The Admiral back into the pen himself.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "style": "chat",
+              "text": "Word reaches Kettil, and he says nothing at all. He takes his bucket and fetches the others home himself.",
+              "type": "narrate"
+            }
+          ]
+        },
         "tier": "ordinary"
       },
       {
@@ -11367,6 +12148,59 @@
             "name": "Barley"
           }
         ],
+        "on_kill": {
+          "effects": [
+            {
+              "flag": "flag/goat-lost",
+              "happening": {
+                "subject": "wave/goat-barley",
+                "text": "A goat of Kettil's is killed on festival day.",
+                "verb": "dies"
+              },
+              "type": "set-flag"
+            },
+            {
+              "line": "A goat was killed on festival day, and Kettil penned what was left himself without a word.",
+              "objective": "obj/pen-the-goats",
+              "type": "record-outcome"
+            },
+            {
+              "objective": "obj/pen-the-goats",
+              "type": "fail-objective"
+            },
+            {
+              "type": "despawn-wave",
+              "wave": "wave/goat-pearl"
+            },
+            {
+              "actor": "actor/goat-pearl-penned",
+              "happening": {
+                "subject": "actor/goat-pearl-penned",
+                "text": "Kettil leads Pearl back into the pen himself.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "type": "despawn-wave",
+              "wave": "wave/goat-admiral"
+            },
+            {
+              "actor": "actor/goat-admiral-penned",
+              "happening": {
+                "subject": "actor/goat-admiral-penned",
+                "text": "Kettil leads The Admiral back into the pen himself.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "style": "chat",
+              "text": "Word reaches Kettil, and he says nothing at all. He takes his bucket and fetches the others home himself.",
+              "type": "narrate"
+            }
+          ]
+        },
         "tier": "ordinary"
       },
       {
@@ -11379,6 +12213,59 @@
             "name": "The Admiral"
           }
         ],
+        "on_kill": {
+          "effects": [
+            {
+              "flag": "flag/goat-lost",
+              "happening": {
+                "subject": "wave/goat-admiral",
+                "text": "A goat of Kettil's is killed on festival day.",
+                "verb": "dies"
+              },
+              "type": "set-flag"
+            },
+            {
+              "line": "A goat was killed on festival day, and Kettil penned what was left himself without a word.",
+              "objective": "obj/pen-the-goats",
+              "type": "record-outcome"
+            },
+            {
+              "objective": "obj/pen-the-goats",
+              "type": "fail-objective"
+            },
+            {
+              "type": "despawn-wave",
+              "wave": "wave/goat-pearl"
+            },
+            {
+              "actor": "actor/goat-pearl-penned",
+              "happening": {
+                "subject": "actor/goat-pearl-penned",
+                "text": "Kettil leads Pearl back into the pen himself.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "type": "despawn-wave",
+              "wave": "wave/goat-barley"
+            },
+            {
+              "actor": "actor/goat-barley-penned",
+              "happening": {
+                "subject": "actor/goat-barley-penned",
+                "text": "Kettil leads Barley back into the pen himself.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "style": "chat",
+              "text": "Word reaches Kettil, and he says nothing at all. He takes his bucket and fetches the others home himself.",
+              "type": "narrate"
+            }
+          ]
+        },
         "tier": "ordinary"
       },
       {
@@ -11401,13 +12288,60 @@
               "base": 2,
               "per_player": 1
             },
-            "entity": "minecraft:drowned"
+            "entity": "minecraft:drowned",
+            "equipment": {
+              "main_hand": "minecraft:trident"
+            }
+          }
+        ],
+        "tier": "ordinary"
+      },
+      {
+        "anchor": "anchor/node-sheep-pen",
+        "id": "wave/sheep-fold",
+        "mobs": [
+          {
+            "count": 5,
+            "entity": "minecraft:sheep"
+          }
+        ],
+        "tier": "ordinary"
+      },
+      {
+        "anchor": "anchor/node-sheep-terrace",
+        "id": "wave/sheep-terrace",
+        "mobs": [
+          {
+            "count": 4,
+            "entity": "minecraft:sheep"
+          }
+        ],
+        "tier": "ordinary"
+      },
+      {
+        "anchor": "anchor/node-cattle-pen",
+        "id": "wave/cattle",
+        "mobs": [
+          {
+            "count": 4,
+            "entity": "minecraft:cow"
+          }
+        ],
+        "tier": "ordinary"
+      },
+      {
+        "anchor": "anchor/node-bee-meadow",
+        "id": "wave/bees",
+        "mobs": [
+          {
+            "count": 6,
+            "entity": "minecraft:bee"
           }
         ],
         "tier": "ordinary"
       }
     ]
   },
-  "dsl_version": "0.76.0",
+  "dsl_version": "0.77.0",
   "stage": "quests"
 }
