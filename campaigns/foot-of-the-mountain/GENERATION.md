@@ -34,8 +34,8 @@ The approved pictures of the replaced story showed it at late afternoon and at s
 ## Content (step 5)
 
 - Every objective is bound to the place it happens in (`layout-graph.json` `beats[]`), and the authored critical path is re-derived as the walk through those places in order.
-- Windows: the lamp, 6000 ticks from reaching the lamp room's climb; the bell, 6000 ticks from its activation; the fireworks, 9600 ticks from the fox's first flight; the goats, 12000 ticks from Kettil's ask; each crate, 12000 ticks from Sverre's ask. Each is an expiry world the ladder waits out.
-- Task B is a fork the plan declares (`branch-point/goats`): the goats home or astray, both leading to the festival, because the night stages three goats on the stage when they are astray.
+- Windows, only for a task whose fiction is a race (the owner's ruling): the fireworks, 18000 ticks from the fox's first flight (raised from 9600 for the castle's fight and puzzle); the goats, 12000 ticks from the wheat; each crate, 7200 ticks from its activation. The lamp and the bell have none. Each window is an expiry world the ladder runs.
+- Task B is a fork the plan declares (`branch-point/goats`): the goats home, astray, or lost (a goat killed by a player fails the task, `fail-objective` from the goats' `on_kill`), all leading to the festival, because the night stages three goats on the stage when they are astray and two in the pen when one was lost.
 
 ## Languages
 
@@ -61,3 +61,16 @@ The whole ladder at content `dd2adfb2` and engine `5c44c06d0e` (`fix/festival-da
 - The world save: exit 0. The written world: exit 0, 6402657 of 6402657 cells compared the same in the server save.
 - Branch runs (`--jobs 8`, 18:11 to 21:10): 40 of 40 worlds run, 39 passed, 1 failed (world/11, exit 1). In world/11 the harness's census puts the three goats on one cell of the pen, [134.5, 73, 348.5], and the third suffocates in a wall; `pen-the-goats` settles expired only while all three goats are home, so it never expires and the run fails at its `expire` step. The same gate means a goat killed in play leaves the goats task unable to settle, and the dusk with it; the design is that a killed goat fails the task, which waits on an engine effect that settles an objective as failed whatever its gate. The harness's cake census also puts Captain Gull inside a block at the stage ([126.5, 82, 241.5]) in most worlds, where he suffocates; the fight is proven on his vindicators.
 - The staging gate: exit 0, all 160 findings carry a live check or a justified exemption, 34 inapplicable; admitted. The design record now binds the two `drill3` rows.
+
+## The owner's beta notes
+
+The owner played the beta solo; her notes are carried as follows, at engine `400debf92` (`dsl_version` 0.77.0).
+
+- The goats: a goat a player kills fails the task (`fail-objective` from the goats' `on_kill`, its own journal line); Kettil then pens the other two himself and the night shows two in the pen. A goat that walks into the pen's yard is taken off the slope and stood in the pen as a held body (an actor, no AI), so goats can be brought one at a time; the latch reads every goat in the yard (`state/goats-in-pen`, a census of the kind). The pen triggers serve the latch's objective, so it is open, and the compass points at the pen, while the goats are being brought. Pearl now strays to the terrace orchard (the script: the terraces and the mountain's foot), Barley stays at the wayside spring; no description gives a colour. The town's other pens hold sheep and cows. Kettil's talk follows how the task settled (home, lost, or fetched by him).
+- No window on the bell or the lamp; their night lines for a lost bell or a dark lamp are gone with the windows.
+- The salvage ground's drowned carry tridents; the bee meadow has six bees.
+- `view_distance` 30 chunks (480 blocks): the castle road from the lighthouse headland.
+- The fox bolts at a box of 6 at its first two hiding places (3 at the hut and the lookout, where a wider box is `DW0881`), at 0.5 blocks/tick; the townsfolk walk at 0.25 and run at 0.45, under twice a player's sprint (0.281).
+- The beach landing comes ashore 900 ticks after the horn, warned 600 ticks before, whatever the dock is doing; the captain lands once both landings are driven off.
+- The haunted castle: the castle program bars the barrel cellar behind an iron grate (a barred edge; `anchor/cellar-grate`) and marks four fire baskets in the yard, re-detailed with `delvec detail`. At the den the old garrison rises in the yard (zombies with spears and helmets, skeletons), a fight before the fireworks; the grate lifts when the four baskets are lit in the order the household rises, a clue scratched on the grate and kept in the journal. The fireworks window is 18000 ticks.
+- Held, each for an engine surface: the mounted spear zombie (a body riding another); the pig race's townsfolk racers (the same), one pig per player present (a ride counted per player), and a results board for players and racers (a timed result standing for players and named bodies alike).
