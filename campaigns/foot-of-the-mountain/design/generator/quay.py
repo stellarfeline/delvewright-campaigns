@@ -87,6 +87,14 @@ def build(place):
     m.finish()
     m.mark("node-quay", (X0 + X1) // 2, (Z0 + Z1) // 2, "south")
     m.mark("supply-quay", X1 - 6, Z0, "south", y=1)
+    # the pig race's finish line: a row across the foot of the last flight, one cell in from
+    # where it lands, each cell a plate the finishing rider crosses
+    for s_ in place.a.get("seams", []):
+        if s_["edge"] == "edge/flight-10-to-quay":
+            (fx0, _, fz0), (fx1, _, _) = s_["cells"]
+            for k, x in enumerate(range(fx0, fx1 + 1), start=1):
+                m.set(x, 1, fz0 + 1, "minecraft:light_weighted_pressure_plate[power=0]")
+                m.mark(f"finish-{k}", x, fz0 + 1, "south", y=1)
     return m
 
 

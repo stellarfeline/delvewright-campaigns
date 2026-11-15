@@ -174,6 +174,8 @@ def build(a):
         if m.get(x, 1, z) in (None, AIR):
             m.set(x, 0, z, "minecraft:dirt_path")
     m.marks["node-bakery"] = (17 + FRONT_DX, 7, "east")
+    # the bread basket on the shop floor before the counter, where Oskar sells his loaves
+    m.marks["bakery-counter"] = (17 + FRONT_DX, 4, "east")
     # the street edge where the shop does not stand: the yard wall
     front(m, a["extent"][0] - 2, 1, a["extent"][2] - 2, gap=set(range(6, 9)))
     return m

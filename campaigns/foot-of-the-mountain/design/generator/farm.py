@@ -77,6 +77,7 @@ def stall(m, x0, z0, d, k, facing_z):
             m.set(x, d + 2, z, a if (x + z) % 2 else b)
     m.set(x0 + 1, d, zf, "minecraft:barrel[facing=up,open=false]")
     m.set(x0 + 1, d, zb, "minecraft:spruce_slab[type=top,waterlogged=false]")
+    return x0 + 1, zf
 
 
 def target(m, x, z, d):
@@ -103,7 +104,8 @@ def butts(m, W, D, d, g, side):
             m.set(x, d, near, fence(WOOD))
     for x in range(2, W, 2):
         m.set(x, g, near + (1 if side == "north" else -1), "minecraft:dirt_path")
-    stall(m, W - 4, near - 3 if side == "south" else near + 2, d, 0, near)
+    bx, bz = stall(m, W - 4, near - 3 if side == "south" else near + 2, d, 0, near)
+    m.mark("bow-stall", bx, bz, facing="south", y=d)            # the bow stall's arrows
     lamp_post(m, 1, far, d)
     lamp_post(m, W, far, d)
     lamp_post(m, 1, near, d)
@@ -111,7 +113,7 @@ def butts(m, W, D, d, g, side):
     part(m, 1, W, 2, D - 1, "range")
 
 
-def allotments(m, W, D, d, g, side):
+def allotments(m, W, D, d, g, side, lantern_barrel=False):
     """Beds of pumpkins and melons in rows, paths between them, compost heaps, a
     scarecrow in a festival hat, a lean-to for the tools."""
     ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
@@ -130,6 +132,10 @@ def allotments(m, W, D, d, g, side):
             m.set(x, g, z + 2, "minecraft:dirt_path")
     back = 1 if side != "north" else D       # the row away from the track's opening
     m.set(2, d, back, "minecraft:composter[level=8]")
+    if lantern_barrel:
+        # the lantern cutters' barrel beside the compost: carved pumpkins for the festival lanterns
+        m.set(3, d, back, "minecraft:barrel[facing=up,open=false]")
+        m.mark("lantern-barrel", 3, back, facing="south", y=d)
     m.set(W - 1, d, back, "minecraft:composter[level=4]")
     sx, sz = W // 2, rows[0] + 1
     m.set(sx, d, sz, fence(WOOD)); m.set(sx, d + 1, sz, "minecraft:hay_block[axis=y]")
@@ -158,8 +164,9 @@ def fair(m, W, D, d, g, side):
                 m.set(x, g, z, "minecraft:dirt_path")
     k = 0
     for x0 in range(2, W - 3, 5):
-        stall(m, x0, 3, d, k, D); k += 1
-        stall(m, x0, D - 4, d, k, 1); k += 1
+        for z0, fz in ((3, D), (D - 4, 1)):
+            bx, bz = stall(m, x0, z0, d, k, fz); k += 1
+            m.mark(f"fair-stall-{k}", bx, bz, facing="south", y=d)  # each stall's wares
     # the tent: an open canopy on posts at the west end, benches under it
     for z in (cz - 2, cz + 2):
         for x in (2, 5):
@@ -244,8 +251,11 @@ def bees(m, W, D, d, g, side):
                 m.set(x, d, z, flowers[(x + z) % len(flowers)])
     for x in range(3, W - 1, 4):
         for z in range(4, D - 3, 5):
-            m.set(x, d, z, "minecraft:beehive[facing=south,honey_level=0]")
-    stall(m, W // 2 - 1, 2 if side == "north" else D - 3, d, 3, D if side == "north" else 1)
+            m.set(x, d, z, "minecraft:beehive[facing=south,honey_level=5]")   # full: a bottle takes honey
+    sz0 = 2 if side == "north" else D - 3
+    stall(m, W // 2 - 1, sz0, d, 3, D if side == "north" else 1)
+    # the honey stand's barrel holds empty bottles, so a visitor fills one at a hive
+    m.mark("honey-stand", W // 2, sz0 + 1 if side == "north" else sz0, facing="south", y=d)
     bench(m, 2, 3, D - 1 if side == "north" else 2, d, "north" if side == "north" else "south")
     for (x, z) in ((1, 3), (W, 3), (1, D), (W, D), (W // 2, D // 2)):
         lamp_post(m, x, z, d)
@@ -275,7 +285,8 @@ def garden(m, W, D, d, g, side):
     m.set(cx, d, cz, "minecraft:water_cauldron[level=3]")
     for (x, z) in ((cx - 2, cz - 2), (cx + 2, cz + 2), (1, 1), (W, D), (W, 1), (1, D)):
         lamp_post(m, x, z, d)
-    stall(m, W - 4, 2 if side == "north" else D - 3, d, 2, D if side == "north" else 1)
+    hx, hz = stall(m, W - 4, 2 if side == "north" else D - 3, d, 2, D if side == "north" else 1)
+    m.mark("herb-stall", hx, hz, facing="south", y=d)             # the herbs it sells
     bench(m, 3, 5, cz + 2, d, "north")
     part(m, 1, W, 2, D - 1, "garth")
 
@@ -290,7 +301,8 @@ def games(m, W, D, d, g, side):
                 m.set(x, g, z, "minecraft:dirt_path")
     back = D - 2 if side == "north" else 2
     for k, x0 in enumerate(range(2, W - 3, 5)):
-        stall(m, x0, back if side == "north" else back, d, k, 1 if side == "north" else D)
+        gx, gz = stall(m, x0, back if side == "north" else back, d, k, 1 if side == "north" else D)
+        m.mark(f"games-stall-{k + 1}", gx, gz, facing="south", y=d)  # each stall's prizes
     mid = D // 2
     for x in (4, 7, 10):
         m.set(x, d, mid, "minecraft:water_cauldron[level=3]")
@@ -759,8 +771,9 @@ def bay(m, W, D, d, g, place, field=False):
     for (x, z) in sorted(crest):
         if top.get((x, z), g - 8) < g:
             m.part(x, x, z, z, "shoals")
-    # the feast's six crates are barrels afloat in the channels, a cell above the water and
-    # touching it, each opened from the boat: two cells of open water on every side
+    # the feast's six crates are barrels afloat in the channels, sitting in the water at its
+    # surface course (owner: in the water, not a cell above it), each opened from the boat:
+    # two cells of open water on every side
     OX = (W - 150) // 2
 
     def open_water(x, z):
@@ -779,8 +792,8 @@ def bay(m, W, D, d, g, place, field=False):
             if best:
                 break
         assert best is not None, f"no open water for crate {k + 1}"
-        m.set(best[0], g + 1, best[1], "minecraft:barrel[facing=up,open=false]")
-        marks[f"crate-{k + 1}"] = (best[0], best[1], g + 1)
+        m.set(best[0], g, best[1], "minecraft:barrel[facing=up,open=false]")
+        marks[f"crate-{k + 1}"] = (best[0], best[1], g)
         # where the boat lies alongside to open it: the water cell beside it toward the field's middle
         sx = 1 if best[0] < W // 2 else -1
         marks[f"crate-{k + 1}-alongside"] = (best[0] + sx, best[1], g)
@@ -830,7 +843,7 @@ def build(place):
     elif stem == "butts":
         butts(m, W, D, d, g, side)
     elif stem in ("allotments", "kitchen-garden"):
-        allotments(m, W, D, d, g, side)
+        allotments(m, W, D, d, g, side, lantern_barrel=(stem == "allotments"))
     elif stem == "fair-field":
         if D > 40:
             fair(m, W, 30, d, g, side)

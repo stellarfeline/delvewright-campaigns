@@ -102,10 +102,24 @@
             "id": "dlg/bernt-day",
             "options": [
               {
+                "label": "And the castle?",
+                "next": "dlg/bernt-legend"
+              },
+              {
                 "label": "Good luck."
               }
             ],
             "text": "A fox. In MY storeroom. With MY key. And now it is off up the road with it, and the fireworks are locked in until somebody catches it."
+          },
+          {
+            "id": "dlg/bernt-legend",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/bernt-day"
+              }
+            ],
+            "text": "Ghost stories. Lady Agathe's family say there is a treasure of the old lords somewhere in it. Forty years I have swept that castle, and if there is, it is better hidden than my storeroom key."
           }
         ],
         "npc": "npc/bernt",
@@ -132,10 +146,24 @@
             "id": "dlg/agathe-day",
             "options": [
               {
+                "label": "Is the castle very old?",
+                "next": "dlg/agathe-legend"
+              },
+              {
                 "label": "Good luck."
               }
             ],
             "text": "My dear, I have watched sixty-one of these festivals and every one of them nearly did not happen. Go on. I shall be in the front row tonight."
+          },
+          {
+            "id": "dlg/agathe-legend",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/agathe-day"
+              }
+            ],
+            "text": "Older. My husband's family swore the old lords hid their finest arms somewhere in it before the last siege, and never came back for them. Sixty-one years I have lived up there and found nothing but draughts. Perhaps it is true. Nobody knows how one would get at it, if it were."
           }
         ],
         "npc": "npc/agathe",
@@ -296,9 +324,86 @@
         ],
         "npc": "npc/runa",
         "root": "dlg/runa-day"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/torvald-day",
+            "options": [
+              {
+                "forbids_flags": [
+                  "flag/golem-headed"
+                ],
+                "label": "An iron man?",
+                "next": "dlg/torvald-head"
+              },
+              {
+                "label": "How is the iron man?",
+                "next": "dlg/torvald-headed",
+                "requires_flags": [
+                  "flag/golem-headed"
+                ],
+                "requires_state": [
+                  {
+                    "op": "at-most",
+                    "state": "state/golem-paid",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "label": "How is the iron man?",
+                "next": "dlg/torvald-hired",
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/golem-paid",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "label": "Good day to you."
+              }
+            ],
+            "text": "Forge is cold. Holiday. The counter by the door sells what I made this winter, for the town's pennies. And in the back stands an iron man I have been building since the snow."
+          },
+          {
+            "id": "dlg/torvald-head",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/torvald-day"
+              }
+            ],
+            "text": "Iron, all of him, except the head. An iron man's head is a carved pumpkin, face and all, and every pumpkin in Kelderby was cut into a lantern this morning. Put one on the anvil there once the feast's crates are landed, and he will see. The lantern cutters had a barrel of them out at the allotments, past the far end of the quay."
+          },
+          {
+            "id": "dlg/torvald-headed",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/torvald-day"
+              }
+            ],
+            "text": "He has his head. He can see. Waking him is the dear part: five pennies at the counter, and he walks down to the square at dusk and stands with whoever needs standing with."
+          },
+          {
+            "id": "dlg/torvald-hired",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/torvald-day"
+              }
+            ],
+            "text": "He will be on the square when the sun goes down. Do not ask him to dance."
+          }
+        ],
+        "npc": "npc/torvald",
+        "root": "dlg/torvald-day"
       }
     ]
   },
-  "dsl_version": "0.77.0",
+  "dsl_version": "0.78.0",
   "stage": "dialogue"
 }

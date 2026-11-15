@@ -316,7 +316,10 @@ def build(place) -> Model:
 
 class Smithy(Plot):
     MODEL = staticmethod(build)
-    MARK_AT = {"node-smithy": (18, 4, "west")}    # at the anvil, facing the hearth
+    MARK_AT = {"node-smithy": (18, 4, "west"),    # at the anvil, facing the hearth
+               # the counter at the forge's open street side, where the smith's work is sold,
+               # and the second anvil before the quench, where the iron man's head is fitted
+               "forge-counter": (19, 5, "east"), "forge-anvil": (16, 5, "west")}
 
     def lay_parts(self, parts):
         if fronted(self, "east")[0]:
