@@ -23,22 +23,24 @@ Opening: Hedda Brask, the innkeeper who hosts the festival, announces it from th
 | task | landmark | verb | success | soft failure | what it gives at night |
 |---|---|---|---|---|---|
 | A | the dock and the bay | rowing | ≥4 of 6 floating crates rowed back to the delivery point beside the harbour house in time | the rest sink | food in the three defence lines' supply chests; the feast |
-| B | the main street | luring animals | Kettil's three goats in the pen on the main street by dusk, led with wheat from the field on the flank | the shepherd brings them back; failure | the pen at the street's throat; the goats charge once as the raiders pass |
-| C | the cathedral | archery | three hits on the target in the belfry from the marked shooting point on the main street (25–30 blocks) in time (five minutes from the end of the talk with Vidar: a task's clock starts only when its giver has been talked to) | — | the forecourt bell can be rung: every raider glows for 10 s, with a cooldown |
-| D | the lighthouse | climbing | the lamp room relit after a light-parkour climb past broken stairs, in time (*authored*: the window) | the lamp stays dark | the second landing is called 30 s early, with its side |
-| E | the castle road to the castle | chasing | the fox, driven by script between four hiding places to its den by the castle gate, the key taken, the fireworks fetched in time | the fox sits in its den; half the fireworks | rockets for crossbows (area damage); the rest for the festival |
+| B | the main street | luring animals | Kettil's three goats in his pen on the main street by dusk, led with wheat from the field on the flank, one at a time or together: a goat that walks into the pen stands there held (goats jump fences) | the shepherd brings them back; failure. A goat a player kills fails the task, and Kettil pens the rest himself | the pen at the street's throat; the goats charge once as the raiders pass |
+| C | the cathedral | archery | three hits on the target in the belfry from the marked shooting point on the main street (25–30 blocks) (no window: the owner ruled a timer is for a task whose fiction is a race, and this one is not) | — | the forecourt bell can be rung: every raider glows for 10 s, with a cooldown |
+| D | the lighthouse | climbing | the lamp room relit after a light-parkour climb past broken stairs (no window, as C) | — | the second landing is called 30 s early, with its side |
+| E | the castle road to the castle | chasing | the fox, driven by script between four hiding places to its den by the castle gate (it bolts while the party are still five or more blocks off, at about twice a player's sprint), the key taken; the haunted castle's old garrison driven off in the yard, the yard's four fire baskets lit in the household's order to lift the cellar grate, and the fireworks fetched in time | the fox sits in its den; half the fireworks | rockets for crossbows (area damage); the rest for the festival |
+
+*Authored*: the fire puzzle is the ordered fire-lighting lock of the dungeon tradition, held to the fair-puzzle rule (the clue can be read again, on the grate and in the journal; each basket answers; nothing resets or runs out); the clue is the order the household rises — the cook, the porter at the gate, the steward, the lord — and each basket stands at its owner's stair foot or post. The mounted spear zombie the owner asked for (a zombie with a spear on a zombie horse) waits on an engine surface for a body riding another; the garrison carries spears on foot meanwhile.
 
 The spyglass on the lighthouse's gallery shows the fox with the shining key on the castle road: that is what opens E. *Authored*: the four hiding places are the four places beside the castle road — the wayside spring, the bee garden, the herder's hut, the lookout — and the den is under the gate road's bank.
 
-Every bit of the day that rests on an animal's own behaviour has a deterministic fallback: the fox is driven by script for the whole chase; the goats are judged by whether they are inside the pen, and when time runs out the shepherd leads them home and the task is lost.
+Every bit of the day that rests on an animal's own behaviour has a deterministic fallback: the fox is driven by script for the whole chase; the goats are judged by whether they are inside the pen, and when time runs out the shepherd leads them home and the task is lost. The windows that stay are the races: the crates sinking, the fireworks before the steward gives up, the goats before the shepherd does.
 
 ## Dusk
 
 Back on the stage, the clock jumps to dusk and a horn sounds. Raiders come for the festival cake on the stage; a few slimes may be mixed in. Waves are scripted, never the game's raid; their size scales with the number of players.
 
 1. The dock landing, straight up from the quay.
-2. The flank landing on a beach to one side; the side is fixed by the author. The lighthouse only decides whether there is a warning.
-3. The captain and his vindicators push up the main street.
+2. The flank landing on a beach to one side; the side is fixed by the author. It comes ashore on its own clock, 45 seconds after the horn, while the dock is still being fought, and marches on the town by itself; the lighthouse calls it 30 seconds early.
+3. The captain and his vindicators push up the main street, once both landings are driven off.
 
 A player who dies comes back on the stage. A raider who reaches the stage takes the cake: the fight still ends, and the ending has no cake. The day's flags change only what the party holds, never the waves.
 
@@ -51,15 +53,17 @@ The clock jumps to midnight, the whole town's lamps come on, the townsfolk walk 
 | flag | done | lost |
 |---|---|---|
 | `cargo_saved` | a full feast | only bread on the table |
-| `goats_home` | in their pen | on the stage |
-| `bell_fixed` | the festival opens on the hour | the bell rings halfway through |
-| `lighthouse_lit` | the beam sweeps over the festival | the host reads her speech in the dark |
+| `goats_home` | in their pen | on the stage; two in the pen if one was killed |
+| `bell_fixed` | the festival opens on the hour | — (the bell has no window) |
+| `lighthouse_lit` | the beam sweeps over the festival | — (the lamp has no window) |
 | `fireworks_full` | a full sky | a few rockets |
 | `cake_safe` | the cake stands | the host speaks to an empty plate |
 
 The woods stay walkable at night and are hung with festival lanterns, placed as part of the woods' design, until every cell under the trees clears the light check (the owner's ruling).
 
-Optional: a pig race on the festival night, carrot on a stick, from the cathedral down the main street to the dock. For fun; not part of finishing.
+Optional: a pig race on the festival night, carrot on a stick, from the cathedral down the main street to the dock. For fun; not part of finishing. The owner's race — townsfolk racing beside the party, one pig per player, and a results board of players and racers at the end — waits on engine surfaces (a body riding another, a ride per player present, a timed results board).
+
+The town's other pens hold their own animals (sheep in both folds, cows in the cattle pen), so no empty pen reads as Kettil's, and the bee meadow has its bees. The view distance is 30 chunks, so the castle road can be followed from the lighthouse headland.
 
 ## The map this needs
 
@@ -76,7 +80,7 @@ The owner's map notes from the town's pictures are carried in the same fill: far
 - The party comes back from a death in the inn's taproom across the square, not on the stage: the stage is where every raider's lane ends, and a body brought back there is brought back into the fight (`DW0478`).
 - The fireworks storeroom does not wait on the key taken off the fox: an objective gated on the key is armed only once the party stands at the den, out of sight of the cellars, so its hint would come too late (`DW0863`, measured again with the gate on the key). The key is still taken off the fox at the den.
 - The wheat field is drawn cut, its sheaves stood in stooks of hay: a piece may not hold crops, which change after the proofs have judged them (`DW0730`). The wheat the goats follow is taken from the field's chest by the hay cart.
-- *Authored*: the goats stray to the castle road's switchbacks above the square (Pearl), the wayside spring (Barley) and the orchard on the farm track (the Admiral); the pen is on the main street's fifth stretch, opening east off it halfway down.
+- *Authored*: the goats stray as the script has it, to the terraces and the mountain's foot: the terrace orchard above the track behind the fishmonger's (Pearl), the wayside spring a little way up the castle road (Barley), and the orchard on the farm track (the Admiral); the pen is on the main street's fifth stretch, opening east off it halfway down.
 
 ## Characters
 

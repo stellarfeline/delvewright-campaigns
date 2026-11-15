@@ -735,7 +735,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the storeroom. The storeroom key is, at present, in a fox."
+                "The fireworks are in the cellar, behind the old grate. The grate lifts for the yard's fires, lit in the household's order. I have never once got it right."
               ]
             },
             "doing": "at the castle door with an empty key ring"
@@ -972,7 +972,7 @@
             },
             "hint": "Further up the castle road, to the herder's hut beside the road, where the fox ran.",
             "id": "obj/flush-3",
-            "radius": 5,
+            "radius": 4,
             "record": "The fox ran on up the castle road and hid at the herder's hut.",
             "title": "Chase the fox",
             "type": "reach-anchor"
@@ -1015,6 +1015,119 @@
             "after": [
               "obj/corner-the-fox"
             ],
+            "happening": {
+              "subject": "wave/castle-garrison",
+              "text": "The castle's old garrison is laid to rest again in its own yard.",
+              "verb": "dies"
+            },
+            "hint": "Inside the castle gate, in the yard: the castle's old garrison, dead these hundred years and still on duty.",
+            "id": "obj/clear-the-yard",
+            "record": "The castle's old garrison, dead a hundred years, still kept the yard.",
+            "title": "Drive off the old garrison",
+            "type": "kill",
+            "wave": "wave/castle-garrison"
+          },
+          {
+            "after": [
+              "obj/corner-the-fox"
+            ],
+            "anchor": "anchor/fire-kitchen",
+            "answers": {
+              "done": "The basket burns.",
+              "not_yet": "The basket will not catch: another fire in the yard comes first."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "anchor/fire-kitchen",
+              "text": "The party light the cook's fire in the castle yard.",
+              "verb": "gains"
+            },
+            "hint": "The castle wakes in its order, and the cook is up before anyone: her basket stands at the foot of her own stair.",
+            "id": "obj/fire-cook",
+            "prop": {
+              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+            },
+            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
+            "title": "Light the cook's fire",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/fire-cook"
+            ],
+            "anchor": "anchor/fire-gate",
+            "answers": {
+              "done": "The basket burns.",
+              "not_yet": "The basket will not catch: another fire in the yard comes first."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "anchor/fire-gate",
+              "text": "The party light the porter's fire in the castle yard.",
+              "verb": "gains"
+            },
+            "hint": "The porter rises next, to open the gate: his basket stands where he keeps watch.",
+            "id": "obj/fire-porter",
+            "prop": {
+              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+            },
+            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
+            "title": "Light the porter's fire",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/fire-porter"
+            ],
+            "anchor": "anchor/fire-hall",
+            "answers": {
+              "done": "The basket burns.",
+              "not_yet": "The basket will not catch: another fire in the yard comes first."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "anchor/fire-hall",
+              "text": "The party light the steward's fire in the castle yard.",
+              "verb": "gains"
+            },
+            "hint": "Then the steward, who keeps the great hall: his basket stands at the foot of his stair.",
+            "id": "obj/fire-steward",
+            "prop": {
+              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+            },
+            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
+            "title": "Light the steward's fire",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/fire-steward"
+            ],
+            "anchor": "anchor/fire-lord",
+            "answers": {
+              "done": "The basket burns.",
+              "not_yet": "The basket will not catch: another fire in the yard comes first."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "anchor/fire-lord",
+              "text": "The party light the lord's fire in the castle yard.",
+              "verb": "gains"
+            },
+            "hint": "The lord rises last of all: his basket stands at the foot of the stair to his own hall.",
+            "id": "obj/fire-lord",
+            "prop": {
+              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+            },
+            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
+            "title": "Light the lord's fire",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/fire-lord",
+              "obj/clear-the-yard"
+            ],
             "anchor": "anchor/rocket-store",
             "count": 1,
             "happening": {
@@ -1022,7 +1135,7 @@
               "text": "The party carry the castle's fireworks out of the storeroom.",
               "verb": "gains"
             },
-            "hint": "Inside the castle, down in the barrel cellars under the great hall: the steward's chest among the casks by the stair.",
+            "hint": "Through the lifted grate into the barrel cellars under the great hall: the steward's chest among the casks.",
             "holder": "anchor/rocket-store",
             "id": "obj/fetch-the-fireworks",
             "item": "minecraft:firework_rocket",
@@ -1082,6 +1195,20 @@
               "style": "chat",
               "text": "The fox sits down in front of its den with the key in its mouth and looks at you as if you were the one being unreasonable.",
               "type": "narrate"
+            },
+            {
+              "happening": {
+                "subject": "wave/castle-garrison",
+                "text": "The castle's old garrison rises in the yard, as it does whenever the castle is quiet.",
+                "verb": "arrives"
+              },
+              "type": "spawn-wave",
+              "wave": "wave/castle-garrison"
+            },
+            {
+              "style": "chat",
+              "text": "From inside the gate comes a clatter of old iron. Bernt, at your elbow: 'Ah. The garrison. They get up when the castle is quiet. Mind the spears.'",
+              "type": "narrate"
             }
           ],
           "obj/fetch-the-fireworks": [
@@ -1097,6 +1224,68 @@
             {
               "style": "chat",
               "text": "The storeroom is stacked to the rafters with rockets. Bernt, at your elbow, says 'Oh, good,' in a voice that means he had given up.",
+              "type": "narrate"
+            }
+          ],
+          "obj/fire-cook": [
+            {
+              "anchor": "anchor/fire-kitchen",
+              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+              "type": "set-block"
+            },
+            {
+              "style": "actionbar",
+              "text": "The basket catches: the cook's fire burns in the yard.",
+              "type": "narrate"
+            }
+          ],
+          "obj/fire-lord": [
+            {
+              "anchor": "anchor/fire-lord",
+              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+              "type": "set-block"
+            },
+            {
+              "style": "actionbar",
+              "text": "The basket catches: the lord's fire burns in the yard.",
+              "type": "narrate"
+            },
+            {
+              "anchor": "anchor/cellar-grate",
+              "happening": {
+                "subject": "anchor/cellar-grate",
+                "text": "With the fourth fire lit, the iron grate over the cellar door draws up.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "style": "chat",
+              "text": "With the fourth fire burning, chains rattle somewhere in the wall and the iron grate over the cellar door draws up.",
+              "type": "narrate"
+            }
+          ],
+          "obj/fire-porter": [
+            {
+              "anchor": "anchor/fire-gate",
+              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+              "type": "set-block"
+            },
+            {
+              "style": "actionbar",
+              "text": "The basket catches: the porter's fire burns in the yard.",
+              "type": "narrate"
+            }
+          ],
+          "obj/fire-steward": [
+            {
+              "anchor": "anchor/fire-hall",
+              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+              "type": "set-block"
+            },
+            {
+              "style": "actionbar",
+              "text": "The basket catches: the steward's fire burns in the yard.",
               "type": "narrate"
             }
           ],
@@ -3687,7 +3876,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the storeroom. The storeroom key is, at present, in a fox."
+                "The fireworks are in the cellar, behind the old grate. The grate lifts for the yard's fires, lit in the household's order. I have never once got it right."
               ]
             },
             "doing": "about the festival"
@@ -10857,7 +11046,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the storeroom. The storeroom key is, at present, in a fox."
+                "The fireworks are in the cellar, behind the old grate. The grate lifts for the yard's fires, lit in the household's order. I have never once got it right."
               ]
             },
             "doing": "about the festival"
@@ -11768,6 +11957,25 @@
         }
       },
       {
+        "at": "anchor/cellar-grate-leaf",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The grate will not lift. Scratched into its frame: 'The household's fires are lit as the household rises: the cook first, then the porter at the gate, then the steward, and the lord last of all.'",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/grate-shut",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "serves": {
+          "gate": "anchor/cellar-grate"
+        }
+      },
+      {
         "effects": [
           {
             "flag": "flag/cake-taken",
@@ -12072,6 +12280,34 @@
           }
         ],
         "tier": "elite"
+      },
+      {
+        "anchor": "anchor/stop-courtyard",
+        "id": "wave/castle-garrison",
+        "mobs": [
+          {
+            "count": {
+              "base": 2,
+              "per_player": 1
+            },
+            "entity": "minecraft:zombie",
+            "equipment": {
+              "head": "minecraft:iron_helmet",
+              "main_hand": "minecraft:iron_spear"
+            }
+          },
+          {
+            "count": {
+              "base": 1,
+              "per_player": 1
+            },
+            "entity": "minecraft:skeleton",
+            "equipment": {
+              "head": "minecraft:chainmail_helmet"
+            }
+          }
+        ],
+        "tier": "ordinary"
       },
       {
         "anchor": "anchor/node-west-orchard",
