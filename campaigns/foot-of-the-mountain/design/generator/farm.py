@@ -113,15 +113,12 @@ def butts(m, W, D, d, g, side):
     part(m, 1, W, 2, D - 1, "range")
 
 
-# a carved pumpkin on a scarecrow is the scarecrow's head, not a lantern's: a painted board on a
-# post beside each scarecrow says so (the owner's solo notes: the scarecrow's head misled her
-# about the carved-pumpkin task); its words are the campaign's `signs[]`
-SIGN = "minecraft:spruce_sign[rotation=0,waterlogged=false]"
-
-
-def scarecrow_sign(m, x, z, d, stem):
-    m.set(x, d, z, SIGN)
-    m.mark(f"scarecrow-sign-{stem}", x, z, facing="south", y=d)
+# a carved pumpkin on a scarecrow is the scarecrow's head, not a lantern's: the head is marked, and
+# a player who clicks it (either button) is told so (the owner's ruling on the scarecrow's head,
+# which misled her about the carved-pumpkin task); the words are the campaign's triggers'. The
+# head is the triggers' prop, set on the marked cell over the hay when the world is set up
+def scarecrow_head(m, x, z, d, stem):
+    m.mark(f"scarecrow-head-{stem}", x, z, facing="south", y=d + 2)
 
 
 def allotments(m, W, D, d, g, side, lantern_barrel=False, stem="allotments"):
@@ -150,8 +147,7 @@ def allotments(m, W, D, d, g, side, lantern_barrel=False, stem="allotments"):
     m.set(W - 1, d, back, "minecraft:composter[level=4]")
     sx, sz = W // 2, rows[0] + 1
     m.set(sx, d, sz, fence(WOOD)); m.set(sx, d + 1, sz, "minecraft:hay_block[axis=y]")
-    m.set(sx, d + 2, sz, "minecraft:carved_pumpkin[facing=south]")
-    scarecrow_sign(m, sx + 1, sz, d, stem)
+    scarecrow_head(m, sx, sz, d, stem)
     near = 3 if side == "north" else 1
     lamp_post(m, 1, near, d)
     lamp_post(m, W, near, d)
@@ -356,10 +352,9 @@ def wheat_field(m, W, D, d, g):
     sx, sz = W // 2 + (1 if (W // 2) in walks else 0), D // 2
     m.set(sx, d, sz, fence(WOOD))
     m.set(sx, d + 1, sz, "minecraft:hay_block[axis=y]")
-    m.set(sx, d + 2, sz, "minecraft:carved_pumpkin[facing=south]")
     m.set(sx - 1, d + 1, sz, fence(WOOD))
     m.set(sx + 1, d + 1, sz, fence(WOOD))
-    scarecrow_sign(m, sx, sz + 1, d, "wheat-field")
+    scarecrow_head(m, sx, sz, d, "wheat-field")
     # the hayrick and the hay cart by the track
     for (x, y, z) in ((W - 2, d, D - 2), (W - 1, d, D - 2), (W - 2, d + 1, D - 2), (W - 2, d, D - 3), (W - 1, d, D - 3)):
         m.set(x, y, z, "minecraft:hay_block[axis=x]")
@@ -466,6 +461,11 @@ def pond(m, W, D, d, g, side):
     m.set(4, d, bz, stairs(WOOD, "north" if side == "north" else "south"))
     lamp_post(m, 2, bz, d)
     lamp_post(m, W - 1, D + 1 - bz, d)
+    # the cat's place on the near bank, away from the track, with its dish beside it (the cat's
+    # errands: it asks for cod out of this pond and eats them here)
+    cz = D - 1 if side == "north" else 2
+    m.mark("cat-spot", W // 2 + 4, cz, facing="north" if side == "north" else "south", y=d)
+    m.mark("cat-dish", W // 2 + 3, cz, facing="north" if side == "north" else "south", y=d)
     part(m, 1, W, 2, D - 1, "pond-bank")
 
 

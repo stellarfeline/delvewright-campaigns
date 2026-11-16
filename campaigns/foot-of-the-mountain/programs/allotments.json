@@ -62,21 +62,19 @@
   "name": "allotments",
   "palette": {
     "b0": "minecraft:barrel[facing=up,open=false]",
-    "b1": "minecraft:carved_pumpkin[facing=south]",
-    "b10": "minecraft:podzol[snowy=false]",
-    "b11": "minecraft:pumpkin",
-    "b12": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b13": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
-    "b14": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
-    "b15": "minecraft:spruce_sign[rotation=0,waterlogged=false]",
-    "b2": "minecraft:coarse_dirt",
-    "b3": "minecraft:composter[level=4]",
-    "b4": "minecraft:composter[level=8]",
-    "b5": "minecraft:dirt_path",
-    "b6": "minecraft:grass_block[snowy=false]",
-    "b7": "minecraft:hay_block[axis=y]",
-    "b8": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "b9": "minecraft:melon",
+    "b1": "minecraft:coarse_dirt",
+    "b10": "minecraft:pumpkin",
+    "b11": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b12": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=true]",
+    "b13": "minecraft:spruce_fence[east=true,north=false,south=false,waterlogged=false,west=false]",
+    "b2": "minecraft:composter[level=4]",
+    "b3": "minecraft:composter[level=8]",
+    "b4": "minecraft:dirt_path",
+    "b5": "minecraft:grass_block[snowy=false]",
+    "b6": "minecraft:hay_block[axis=y]",
+    "b7": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "b8": "minecraft:melon",
+    "b9": "minecraft:podzol[snowy=false]",
     "ground-0": "minecraft:dirt"
   },
   "params": {
@@ -507,7 +505,7 @@
         "weight": 1
       }
     ],
-    "column_25": [
+    "column_23": [
       {
         "body": {
           "axis": "y",
@@ -523,14 +521,6 @@
             {
               "op": "call",
               "symbol": "row_22"
-            },
-            {
-              "op": "call",
-              "symbol": "row_23"
-            },
-            {
-              "op": "call",
-              "symbol": "row_24"
             },
             {
               "op": "call",
@@ -601,14 +591,48 @@
               "size": "absolute"
             },
             {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_25": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_11"
+            },
+            {
+              "op": "call",
+              "symbol": "row_24"
+            },
+            {
+              "op": "call",
+              "symbol": "row_9"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/west-track-to-allotments/y0"
+              },
+              "size": "absolute"
+            },
+            {
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
@@ -617,16 +641,14 @@
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/west-track-to-allotments/y0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -711,189 +733,11 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_11"
-            },
-            {
-              "op": "call",
-              "symbol": "row_28"
-            },
-            {
-              "op": "call",
-              "symbol": "row_9"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/west-track-to-allotments/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/west-track-to-allotments/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_3": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_0"
-            },
-            {
-              "op": "call",
-              "symbol": "row_1"
-            },
-            {
-              "op": "call",
-              "symbol": "row_2"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/west-track-to-allotments/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/west-track-to-allotments/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_31": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_11"
-            },
-            {
-              "op": "call",
-              "symbol": "row_30"
-            },
-            {
-              "op": "call",
-              "symbol": "row_9"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/west-track-to-allotments/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/west-track-to-allotments/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_33": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
               "symbol": "row_4"
             },
             {
               "op": "call",
-              "symbol": "row_32"
+              "symbol": "row_28"
             },
             {
               "op": "call",
@@ -1017,7 +861,7 @@
         "weight": 1
       }
     ],
-    "column_36": [
+    "column_3": [
       {
         "body": {
           "axis": "y",
@@ -1028,11 +872,65 @@
             },
             {
               "op": "call",
-              "symbol": "row_34"
+              "symbol": "row_1"
             },
             {
               "op": "call",
-              "symbol": "row_35"
+              "symbol": "row_2"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/west-track-to-allotments/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/west-track-to-allotments/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_32": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_0"
+            },
+            {
+              "op": "call",
+              "symbol": "row_30"
+            },
+            {
+              "op": "call",
+              "symbol": "row_31"
             }
           ],
           "op": "split",
@@ -1113,11 +1011,11 @@
                   },
                   {
                     "op": "call",
-                    "symbol": "column_25"
+                    "symbol": "column_23"
                   },
                   {
                     "op": "call",
-                    "symbol": "column_27"
+                    "symbol": "column_25"
                   },
                   {
                     "op": "call",
@@ -1129,7 +1027,7 @@
                   },
                   {
                     "op": "call",
-                    "symbol": "column_29"
+                    "symbol": "column_25"
                   },
                   {
                     "op": "call",
@@ -1141,15 +1039,15 @@
                   },
                   {
                     "op": "call",
-                    "symbol": "column_31"
+                    "symbol": "column_27"
                   },
                   {
                     "op": "call",
-                    "symbol": "column_33"
+                    "symbol": "column_29"
                   },
                   {
                     "op": "call",
-                    "symbol": "column_36"
+                    "symbol": "column_32"
                   }
                 ],
                 "op": "split",
@@ -1307,16 +1205,16 @@
                 ]
               },
               "mark": {
-                "anchor": "scarecrow-sign-allotments",
+                "anchor": "scarecrow-head-allotments",
                 "at": "offset",
                 "facing": "south",
                 "x": {
                   "expr": "int",
-                  "value": 9
+                  "value": 8
                 },
                 "y": {
                   "expr": "int",
-                  "value": 1
+                  "value": 3
                 },
                 "z": {
                   "expr": "int",
@@ -1525,6 +1423,26 @@
               "rhs": {
                 "expr": "param",
                 "name": "handed/seam/west-track-to-allotments/y0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "dim": "y",
+                "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               }
             },
             {
@@ -1742,19 +1660,25 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b5"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -1766,43 +1690,19 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b9"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -1814,43 +1714,19 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b9"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -1862,43 +1738,19 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b9"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -1910,19 +1762,19 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b9"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -1934,7 +1786,73 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b5"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b5"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b5"
               },
               "op": "fill"
             },
@@ -2219,7 +2137,7 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b3"
               },
               "op": "fill"
             },
@@ -2232,7 +2150,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2245,7 +2163,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2258,7 +2176,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2271,7 +2189,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2284,7 +2202,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2457,7 +2375,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2470,7 +2388,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2483,7 +2401,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2496,7 +2414,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2509,7 +2427,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2522,7 +2440,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2710,7 +2628,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2723,7 +2641,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2736,7 +2654,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2749,7 +2667,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2762,7 +2680,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2936,7 +2854,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2949,7 +2867,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2962,7 +2880,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -2975,7 +2893,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -2988,7 +2906,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3231,7 +3149,7 @@
             },
             {
               "material": {
-                "role": "b13"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -3244,7 +3162,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3257,7 +3175,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -3270,7 +3188,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3283,7 +3201,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -3296,7 +3214,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3484,125 +3402,7 @@
             },
             {
               "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "west-track-to-allotments-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 29
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/west-track-to-allotments/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 34
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_23": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b1"
+                "role": "b6"
               },
               "op": "fill"
             },
@@ -3719,11 +3519,75 @@
               "region": "part-beds"
             },
             {
+              "material": {
+                "role": "b10"
+              },
+              "op": "fill"
+            },
+            {
               "body": {
                 "op": "void"
               },
               "op": "claim",
-              "region": "unwalked"
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b10"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b10"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
             },
             {
               "body": {
@@ -3766,7 +3630,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3780,7 +3644,77 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 29
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 6
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3821,48 +3755,11 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "room"
             },
             {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
               "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "b15"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -3875,7 +3772,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3888,7 +3785,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -3901,7 +3798,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3914,7 +3811,33 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b10"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-beds"
+            },
+            {
+              "material": {
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -3973,14 +3896,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 3
+                "value": 4
               },
               "size": "absolute"
             },
@@ -4091,516 +4007,11 @@
                 "op": "void"
               },
               "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "west-track-to-allotments-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/west-track-to-allotments/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 34
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_30": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
               "region": "room"
             },
             {
               "material": {
-                "role": "b3"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "material": {
-                "role": "b9"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-beds"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "west-track-to-allotments-way"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/west-track-to-allotments/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 34
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_32": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b13"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -4621,7 +4032,7 @@
             {
               "body": {
                 "material": {
-                  "role": "b12"
+                  "role": "b11"
                 },
                 "op": "fill"
               },
@@ -4693,7 +4104,7 @@
         "weight": 1
       }
     ],
-    "row_34": [
+    "row_30": [
       {
         "body": {
           "axis": "z",
@@ -4784,7 +4195,7 @@
         "weight": 1
       }
     ],
-    "row_35": [
+    "row_31": [
       {
         "body": {
           "axis": "z",
@@ -4866,7 +4277,13 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b5"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4878,7 +4295,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4890,7 +4307,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4902,7 +4319,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4914,7 +4331,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4926,7 +4343,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4938,7 +4355,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
@@ -4950,19 +4367,13 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b5"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
               },
               "op": "fill"
             },
@@ -5135,7 +4546,7 @@
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b13"
               },
               "op": "fill"
             },
@@ -5156,7 +4567,7 @@
             {
               "body": {
                 "material": {
-                  "role": "b12"
+                  "role": "b11"
                 },
                 "op": "fill"
               },
@@ -5242,7 +4653,7 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -5263,7 +4674,7 @@
             {
               "body": {
                 "material": {
-                  "role": "b12"
+                  "role": "b11"
                 },
                 "op": "fill"
               },
@@ -5349,7 +4760,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -5370,7 +4781,7 @@
             {
               "body": {
                 "material": {
-                  "role": "b8"
+                  "role": "b7"
                 },
                 "op": "fill"
               },

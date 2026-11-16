@@ -335,6 +335,11 @@ def build(a):
     m.marks["stable-counter"] = (4, 12, "north")
     m.marks["stable-yard"] = (7, 13, "north")
     m.marks["mare-rail"] = (23, 17, "west")
+    # the carter's bell in the coach yard beside his cart, and the yard before it where whoever
+    # rides up to the castle gate stands: the counterpart of the bell at the gate, which brings
+    # the party down here
+    m.marks["carter-bell"] = (14, 17, "east")
+    m.marks["carter-yard"] = (18, 17, "west")
     return m
 
 

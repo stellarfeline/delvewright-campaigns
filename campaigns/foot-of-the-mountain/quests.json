@@ -1588,6 +1588,12 @@
               "answers": {
                 "not_yet": "A cold fire, laid and waiting. Somebody will light it when the gate is reached."
               },
+              "on_rest": [
+                {
+                  "flag": "flag/gate-fire-rested",
+                  "type": "set-flag"
+                }
+              ],
               "prompt": "The gate fire",
               "prop": {
                 "block": "minecraft:campfire[facing=east,lit=true,signal_fire=false,waterlogged=false]"
@@ -12781,36 +12787,6 @@
           "Net Loft"
         ],
         "id": "sign/netloft"
-      },
-      {
-        "anchor": "anchor/scarecrow-sign-kitchen-garden",
-        "front": [
-          "Scarecrow's",
-          "head: NOT a",
-          "lantern!",
-          "Leave it be."
-        ],
-        "id": "sign/scarecrow-kitchen-garden"
-      },
-      {
-        "anchor": "anchor/scarecrow-sign-allotments",
-        "front": [
-          "Scarecrow's",
-          "head: NOT a",
-          "lantern!",
-          "Leave it be."
-        ],
-        "id": "sign/scarecrow-allotments"
-      },
-      {
-        "anchor": "anchor/scarecrow-sign-wheat-field",
-        "front": [
-          "Scarecrow's",
-          "head: NOT a",
-          "lantern!",
-          "Leave it be."
-        ],
-        "id": "sign/scarecrow-wheat-field"
       }
     ],
     "state": [
@@ -13353,6 +13329,45 @@
         },
         "requires_flags": [
           "flag/fox-denned"
+        ]
+      },
+      {
+        "answers": {
+          "not_yet": "The carter's bell. He will not drive up the mountain until someone has rested by the fire at the castle gate."
+        },
+        "at": "anchor/carter-bell",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The bell clangs across the yard, and the carter whips up his horse. Whoever stands in the yard rides up the mountain to the castle gate.",
+            "type": "narrate"
+          },
+          {
+            "from": {
+              "anchor": "anchor/carter-yard",
+              "extent": [
+                2,
+                2,
+                2
+              ]
+            },
+            "to": {
+              "anchor": "anchor/stop-approach"
+            },
+            "type": "teleport"
+          }
+        ],
+        "id": "trigger/inn-bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:bell[attachment=floor,facing=east,powered=false]"
+        },
+        "requires_flags": [
+          "flag/gate-fire-rested"
         ]
       },
       {
@@ -15248,6 +15263,120 @@
         "once": true,
         "prop": {
           "block": "minecraft:lever[face=wall,facing=east,powered=false]"
+        }
+      },
+      {
+        "at": "anchor/scarecrow-head-kitchen-garden",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "That pumpkin is the scarecrow's head. He would look silly without it. Leave it be.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/scarecrow-kitchen-garden-use",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:carved_pumpkin[facing=south]"
+        }
+      },
+      {
+        "at": "anchor/scarecrow-head-kitchen-garden",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "You knock the scarecrow's head. It wobbles and stays on. It is his head: leave it be.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/scarecrow-kitchen-garden-strike",
+        "on": {
+          "on": "strike"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:carved_pumpkin[facing=south]"
+        }
+      },
+      {
+        "at": "anchor/scarecrow-head-allotments",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "That is the scarecrow's head, not a lantern pumpkin. The lantern ones are in the barrel by the compost.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/scarecrow-allotments-use",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:carved_pumpkin[facing=south]"
+        }
+      },
+      {
+        "at": "anchor/scarecrow-head-allotments",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "You knock the scarecrow's head. Hollow. It is the scarecrow's, not a lantern: leave it be.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/scarecrow-allotments-strike",
+        "on": {
+          "on": "strike"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:carved_pumpkin[facing=south]"
+        }
+      },
+      {
+        "at": "anchor/scarecrow-head-wheat-field",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "That pumpkin is the scarecrow's head, and the crows know it. Leave it be.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/scarecrow-wheat-field-use",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:carved_pumpkin[facing=south]"
+        }
+      },
+      {
+        "at": "anchor/scarecrow-head-wheat-field",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "You knock the scarecrow's head. A crow laughs somewhere. It is his head: leave it be.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/scarecrow-wheat-field-strike",
+        "on": {
+          "on": "strike"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:carved_pumpkin[facing=south]"
         }
       }
     ],
