@@ -109,7 +109,16 @@
                 "label": "Good luck."
               }
             ],
-            "text": "A fox. In MY storeroom. With MY key. And now it is off up the road with it, and the fireworks are locked in until somebody catches it."
+            "text": "A fox. In MY storeroom. With MY key. And now it is off up the road with it, and the fireworks are locked in until somebody catches it. I would go myself, but I do not go up to the castle any more. Not since the garrison started getting up again."
+          },
+          {
+            "id": "dlg/bernt-fox",
+            "options": [
+              {
+                "label": "We'll manage."
+              }
+            ],
+            "text": "So the fox has been seen. When you have the key, mind the castle: the old garrison gets up in the yard when it is quiet, and they do not know they are dead. The fireworks are in the cellar under the great hall, behind the old grate, and the grate lifts only for the watch fires on the walls, lit in the proper order. I wrote the order down and left the note in the chest in the porter's guardroom, by the gate. Light one out of turn and the lot go out."
           },
           {
             "id": "dlg/bernt-legend",
@@ -163,7 +172,7 @@
                 "next": "dlg/agathe-day"
               }
             ],
-            "text": "Older. My husband's family swore the old lords hid their finest arms somewhere in it before the last siege, and never came back for them. Sixty-one years I have lived up there and found nothing but draughts. Perhaps it is true. Nobody knows how one would get at it, if it were."
+            "text": "Older. My husband's family swore the old lords hid their finest arms somewhere in it before the last siege, and never came back for them. Forty years I lived up there, and found nothing but draughts and a garrison that would not lie down, so I came down to the town. Perhaps it is true. Nobody knows how one would get at it, if it were."
           }
         ],
         "npc": "npc/agathe",
@@ -214,6 +223,24 @@
                 ],
                 "label": "We'll bring them home.",
                 "tooltip": "Fetch wheat from the field and lead the three goats back into this pen."
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/heard-of-the-calf",
+                    "type": "set-flag"
+                  }
+                ],
+                "forbids_flags": [
+                  "flag/heard-of-the-calf"
+                ],
+                "happening": {
+                  "subject": "npc/kettil",
+                  "text": "Kettil lets drop how to get Runa away from her stable.",
+                  "verb": "learns"
+                },
+                "label": "Anything else today?",
+                "next": "dlg/kettil-tip"
               }
             ],
             "text": "My three goats are out of the pen. Pearl, the youngest of my nannies, has gone up onto the terraces behind the fishmonger's, into the orchard above the track. Barley, the best milker in Kelderby, is at the wayside spring, a little way up the castle road. And the Admiral, the old billy who undid the latch, is in the orchard out on the farm track. Each of them has a name over its head, and they'll all follow wheat anywhere. The field's out on the farm track."
@@ -222,10 +249,51 @@
             "id": "dlg/kettil-herding",
             "options": [
               {
+                "label": "Where are they again?",
+                "next": "dlg/kettil-where"
+              },
+              {
+                "effects": [
+                  {
+                    "flag": "flag/heard-of-the-calf",
+                    "type": "set-flag"
+                  }
+                ],
+                "forbids_flags": [
+                  "flag/heard-of-the-calf"
+                ],
+                "happening": {
+                  "subject": "npc/kettil",
+                  "text": "Kettil lets drop how to get Runa away from her stable.",
+                  "verb": "learns"
+                },
+                "label": "Anything else today?",
+                "next": "dlg/kettil-tip"
+              },
+              {
                 "label": "Good luck."
               }
             ],
             "text": "Hold the wheat up where they can see it and walk slowly. This pen, mind, on the main street: not the sheep's, not the cows'. Once a goat is in here it stays put, so bring them one at a time if you like. When all three are in, drop the latch on the gate."
+          },
+          {
+            "id": "dlg/kettil-where",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/kettil-herding"
+              }
+            ],
+            "text": "Pearl is in the orchard on the terraces: down the main street to the fishmonger's, through its back yard onto the terrace track, and along it to the orchard above. Barley is at the wayside spring, the first stop up the castle road from the square. And the Admiral is in the orchard out on the farm track: along lane 5 beside this pen and out past the pond."
+          },
+          {
+            "id": "dlg/kettil-tip",
+            "options": [
+              {
+                "label": "I'll remember that."
+              }
+            ],
+            "text": "Runa's grey mare? Runa will not lend her without pennies. But if you want her without paying, tell Runa her sister's cow is calving. She would leave a burning stable for that cow. You did not hear it from me."
           },
           {
             "id": "dlg/kettil-thanks",
@@ -316,7 +384,7 @@
                 "requires_flags": [
                   "flag/heard-of-the-calf"
                 ],
-                "tooltip": "Send Runa off up the farm track to her sister's calving cow, and take the mare while she is gone."
+                "tooltip": "Kettil's tip: send Runa off up the farm track to her sister's calving cow, and take the mare while she is gone."
               }
             ],
             "text": "Moss is in the back stable. She can be hired, at the barrel there, for pennies, which the town is handing out today to anyone who mends something. She is not for running down the main street with."
@@ -376,17 +444,49 @@
                 "next": "dlg/torvald-day"
               }
             ],
-            "text": "Iron, all of him, except the head. An iron man's head is a carved pumpkin, face and all, and every pumpkin in Kelderby was cut into a lantern this morning. Put one on the anvil there once the feast's crates are landed, and he will see. The lantern cutters had a barrel of them out at the allotments, past the far end of the quay."
+            "text": "Iron, all of him, except the head. An iron man's head is a carved pumpkin, face and all, and every pumpkin in Kelderby was cut into a lantern this morning; the scarecrows will not give theirs up, so do not ask them. Put one on the anvil there once the feast's crates are landed, and he will see. The lantern cutters had a barrel of them out at the allotments, past the far end of the quay."
           },
           {
             "id": "dlg/torvald-headed",
             "options": [
               {
+                "label": "Wake him (5 pennies).",
+                "next": "dlg/torvald-wake",
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/pennies",
+                    "value": 5
+                  }
+                ],
+                "tooltip": "Show Torvald 5 pennies, and his iron man walks down to the square at dusk and fights beside you. Torvald will not take the job for less than 5 pennies in your purse."
+              },
+              {
                 "label": "Back.",
                 "next": "dlg/torvald-day"
               }
             ],
-            "text": "He has his head. He can see. Waking him is the dear part: five pennies at the counter, and he walks down to the square at dusk and stands with whoever needs standing with."
+            "text": "He has his head. He can see. Waking him is the dear part: 5 pennies to me, and he walks down to the square at dusk and stands with whoever needs standing with."
+          },
+          {
+            "id": "dlg/torvald-wake",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/wake-the-iron-man",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Done.",
+                "tooltip": "Pay Torvald 5 pennies to wake his iron man for the dusk."
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/torvald-day"
+              }
+            ],
+            "text": "5 pennies. Charcoal, bellows and a week of my sleep. Done?"
           },
           {
             "id": "dlg/torvald-hired",

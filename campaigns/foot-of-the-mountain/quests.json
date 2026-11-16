@@ -63,7 +63,11 @@
           -1,
           0,
           2
-        ]
+        ],
+        "skin": {
+          "model": "slim",
+          "texture_id": "mari"
+        }
       },
       {
         "anchor": "anchor/node-square",
@@ -512,6 +516,16 @@
             "item": "minecraft:arrow"
           }
         ]
+      },
+      {
+        "anchor": "anchor/elytra-chest",
+        "id": "loot/elytra",
+        "items": [
+          {
+            "count": 1,
+            "item": "minecraft:elytra"
+          }
+        ]
       }
     ],
     "pulses": [
@@ -530,17 +544,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "dlg/bernt-day",
@@ -764,17 +785,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "dlg/bernt-day",
@@ -1094,25 +1122,28 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
-            "dialogue": {
-              "barks": [
-                "The fireworks are in the cellar, behind the old grate. The grate lifts for the yard's fires, lit in the household's order. I have never once got it right."
-              ]
-            },
-            "doing": "at the castle door with an empty key ring"
+            "dialogue": "dlg/bernt-fox",
+            "doing": "before the stage with an empty key ring, refusing to go up to the castle"
           },
           "npc/hedda": {
             "at": "anchor/stage",
@@ -1417,101 +1448,25 @@
             "after": [
               "obj/corner-the-fox"
             ],
-            "anchor": "anchor/fire-kitchen",
-            "answers": {
-              "done": "The basket burns.",
-              "not_yet": "The basket will not catch: another fire in the yard comes first."
-            },
-            "compass": "hidden",
+            "anchor": "anchor/steward-note",
+            "count": 1,
             "happening": {
-              "subject": "anchor/fire-kitchen",
-              "text": "The party light the cook's fire in the castle yard.",
-              "verb": "gains"
+              "subject": "anchor/steward-note",
+              "text": "The party read the steward's note on the order of the watch fires.",
+              "verb": "learns"
             },
-            "hint": "The castle wakes in its order, and the cook is up before anyone: her basket stands at the foot of her own stair.",
-            "id": "obj/fire-cook",
-            "prop": {
-              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
-            },
-            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
-            "title": "Light the cook's fire",
-            "type": "interact"
+            "hint": "In the porter's guardroom inside the castle gate, through the door off the gate passage on the kitchen side: the chest by the casks.",
+            "holder": "anchor/steward-note",
+            "id": "obj/find-the-note",
+            "item": "minecraft:paper",
+            "item_name": "Note in Bernt's Hand",
+            "record": "The cellar grate lifted only for the four watch fires on the castle's walls, lit in the order of the steward's note: the cook's under the kitchen tower, the porter's under the gatehouse, then the far wall's turrets, the steward's on the kitchen side and the lord's on the gatehouse side.",
+            "title": "Find the steward's note",
+            "type": "collect"
           },
           {
             "after": [
-              "obj/fire-cook"
-            ],
-            "anchor": "anchor/fire-gate",
-            "answers": {
-              "done": "The basket burns.",
-              "not_yet": "The basket will not catch: another fire in the yard comes first."
-            },
-            "compass": "hidden",
-            "happening": {
-              "subject": "anchor/fire-gate",
-              "text": "The party light the porter's fire in the castle yard.",
-              "verb": "gains"
-            },
-            "hint": "The porter rises next, to open the gate: his basket stands where he keeps watch.",
-            "id": "obj/fire-porter",
-            "prop": {
-              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
-            },
-            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
-            "title": "Light the porter's fire",
-            "type": "interact"
-          },
-          {
-            "after": [
-              "obj/fire-porter"
-            ],
-            "anchor": "anchor/fire-hall",
-            "answers": {
-              "done": "The basket burns.",
-              "not_yet": "The basket will not catch: another fire in the yard comes first."
-            },
-            "compass": "hidden",
-            "happening": {
-              "subject": "anchor/fire-hall",
-              "text": "The party light the steward's fire in the castle yard.",
-              "verb": "gains"
-            },
-            "hint": "Then the steward, who keeps the great hall: his basket stands at the foot of his stair.",
-            "id": "obj/fire-steward",
-            "prop": {
-              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
-            },
-            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
-            "title": "Light the steward's fire",
-            "type": "interact"
-          },
-          {
-            "after": [
-              "obj/fire-steward"
-            ],
-            "anchor": "anchor/fire-lord",
-            "answers": {
-              "done": "The basket burns.",
-              "not_yet": "The basket will not catch: another fire in the yard comes first."
-            },
-            "compass": "hidden",
-            "happening": {
-              "subject": "anchor/fire-lord",
-              "text": "The party light the lord's fire in the castle yard.",
-              "verb": "gains"
-            },
-            "hint": "The lord rises last of all: his basket stands at the foot of the stair to his own hall.",
-            "id": "obj/fire-lord",
-            "prop": {
-              "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
-            },
-            "record": "The cellar grate lifted only for the yard's four fires, lit in the order the household rises.",
-            "title": "Light the lord's fire",
-            "type": "interact"
-          },
-          {
-            "after": [
-              "obj/fire-lord",
+              "obj/find-the-note",
               "obj/clear-the-yard"
             ],
             "anchor": "anchor/rocket-store",
@@ -1521,7 +1476,7 @@
               "text": "The party carry the castle's fireworks out of the storeroom.",
               "verb": "gains"
             },
-            "hint": "Through the lifted grate into the barrel cellars under the great hall: the steward's chest among the casks.",
+            "hint": "Light the four watch fires on the castle's wall walk in the order the steward's note gives, and the grate over the cellar door lifts: the fireworks are in the steward's chest among the casks in the barrel cellars under the great hall. The wall walk is reached by the stair up the curtain wall beside the gatehouse.",
             "holder": "anchor/rocket-store",
             "id": "obj/fetch-the-fireworks",
             "item": "minecraft:firework_rocket",
@@ -1545,6 +1500,13 @@
               "ticks": 18000
             },
             "record": "The castle's fireworks were locked in the storeroom under the great hall, and had to be fetched before the steward gave up on them.",
+            "requires_state": [
+              {
+                "op": "at-least",
+                "state": "state/fires-lit",
+                "value": 4
+              }
+            ],
             "title": "Fetch the fireworks",
             "type": "collect"
           }
@@ -1615,7 +1577,7 @@
             },
             {
               "style": "chat",
-              "text": "From inside the gate comes a clatter of old iron. Bernt, at your elbow: 'Ah. The garrison. They get up when the castle is quiet. Mind the spears.'",
+              "text": "From inside the gate comes a clatter of old iron, and the creak of things that should not stand up: the castle's old garrison, rising in its yard as Bernt warned it would.",
               "type": "narrate"
             }
           ],
@@ -1631,69 +1593,14 @@
             },
             {
               "style": "chat",
-              "text": "The storeroom is stacked to the rafters with rockets. Bernt, at your elbow, says 'Oh, good,' in a voice that means he had given up.",
+              "text": "The storeroom is stacked to the rafters with rockets. Down on the square, Bernt will say 'Oh, good,' in a voice that means he had given up.",
               "type": "narrate"
             }
           ],
-          "obj/fire-cook": [
-            {
-              "anchor": "anchor/fire-kitchen",
-              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
-              "type": "set-block"
-            },
-            {
-              "style": "actionbar",
-              "text": "The basket catches: the cook's fire burns in the yard.",
-              "type": "narrate"
-            }
-          ],
-          "obj/fire-lord": [
-            {
-              "anchor": "anchor/fire-lord",
-              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
-              "type": "set-block"
-            },
-            {
-              "style": "actionbar",
-              "text": "The basket catches: the lord's fire burns in the yard.",
-              "type": "narrate"
-            },
-            {
-              "anchor": "anchor/cellar-grate",
-              "happening": {
-                "subject": "anchor/cellar-grate",
-                "text": "With the fourth fire lit, the iron grate over the cellar door draws up.",
-                "verb": "opens"
-              },
-              "type": "open-gate"
-            },
+          "obj/find-the-note": [
             {
               "style": "chat",
-              "text": "With the fourth fire burning, chains rattle somewhere in the wall and the iron grate over the cellar door draws up.",
-              "type": "narrate"
-            }
-          ],
-          "obj/fire-porter": [
-            {
-              "anchor": "anchor/fire-gate",
-              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
-              "type": "set-block"
-            },
-            {
-              "style": "actionbar",
-              "text": "The basket catches: the porter's fire burns in the yard.",
-              "type": "narrate"
-            }
-          ],
-          "obj/fire-steward": [
-            {
-              "anchor": "anchor/fire-hall",
-              "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
-              "type": "set-block"
-            },
-            {
-              "style": "actionbar",
-              "text": "The basket catches: the steward's fire burns in the yard.",
+              "text": "The steward's note, in a cramped hand: 'For the watch, when I am not here: the watch fires on the walls are lit as the household rises. The cook is up first: hers is at the wall walk's end under the kitchen tower. The porter rises next to open the gate: his is at the wall walk's end under the gatehouse. Then the steward: mine is in the turret on the far wall, on the kitchen side. The lord rises last of all: his is in the turret on the far wall, on the gatehouse side. Light one out of turn, and every fire on the walls goes out. B.'",
               "type": "narrate"
             }
           ],
@@ -1791,17 +1698,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "dlg/bernt-day",
@@ -2095,17 +2009,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "dlg/bernt-day",
@@ -2743,17 +2664,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "dlg/bernt-day",
@@ -3020,7 +2948,7 @@
               "text": "The last goat is in the pen and the latch drops behind it.",
               "verb": "opens"
             },
-            "hint": "Lead Kettil's three goats with the wheat into his pen halfway down the main street, one at a time or all together, then lower the latch.",
+            "hint": "Lead Kettil's three goats with the wheat into his pen halfway down the main street, one at a time or all together, then lower the latch. One is in the orchard on the terraces: down the main street to the fishmonger's, through its back yard onto the terrace track, and along it to the orchard above the track. One is at the wayside spring, the first stop up the castle road from the square. The old billy is in the orchard out on the farm track: along lane 5 beside the pen, and out the track past the pond.",
             "id": "obj/pen-the-goats",
             "limit": {
               "from": {
@@ -3140,15 +3068,6 @@
               },
               "type": "spawn-wave",
               "wave": "wave/goat-admiral"
-            },
-            {
-              "flag": "flag/heard-of-the-calf",
-              "type": "set-flag"
-            },
-            {
-              "style": "chat",
-              "text": "Kettil, over his shoulder: 'And if you want Runa's mare without paying for it, tell her her sister's cow is calving. She'd leave a burning stable for that cow.'",
-              "type": "narrate"
             }
           ],
           "obj/pen-the-goats": [
@@ -3176,17 +3095,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "unchanged",
             "doing": "unchanged"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "unchanged",
@@ -3356,17 +3282,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "unchanged",
             "doing": "unchanged"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "unchanged",
@@ -3585,17 +3518,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "unchanged",
             "doing": "unchanged"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "unchanged",
@@ -3781,6 +3721,27 @@
             "requires_item": "minecraft:carved_pumpkin",
             "takes_item": true,
             "type": "interact"
+          },
+          {
+            "after": [
+              "obj/head-the-iron-man"
+            ],
+            "announcement": "hidden",
+            "compass": "hidden",
+            "forbids_flags": [
+              "flag/dusk-begun"
+            ],
+            "happening": {
+              "subject": "npc/torvald",
+              "text": "The party pay Torvald to wake his iron man for the dusk.",
+              "verb": "gains"
+            },
+            "hint": "Torvald at his forge on the main street: 5 pennies from one purse, before dusk.",
+            "id": "obj/wake-the-iron-man",
+            "npc": "npc/torvald",
+            "record": "Torvald would wake his iron man for the dusk, for five pennies.",
+            "title": "Ask Torvald to wake the iron man",
+            "type": "talk-to"
           }
         ],
         "on_complete": [],
@@ -3797,7 +3758,38 @@
             },
             {
               "style": "chat",
-              "text": "Torvald turns the pumpkin in his hands, nods once, and carries it into the back. A long, slow clank. 'He can see. Now he only wants waking, and waking costs: five pennies at the counter, and he stands on the square with you at dusk.'",
+              "text": "Torvald turns the pumpkin in his hands, nods once, and carries it into the back. A long, slow clank. 'He can see. Now he only wants waking, and waking costs: five pennies, paid to me, and he stands on the square with you at dusk.'",
+              "type": "narrate"
+            }
+          ],
+          "obj/wake-the-iron-man": [
+            {
+              "amount": -5,
+              "state": "state/pennies",
+              "type": "add-state",
+              "when": {
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/pennies",
+                    "value": 5
+                  }
+                ]
+              }
+            },
+            {
+              "amount": 1,
+              "state": "state/golem-paid",
+              "type": "add-state"
+            },
+            {
+              "line": "You paid Torvald to wake his iron man, and it stood with you on the square at dusk.",
+              "objective": "obj/wake-the-iron-man",
+              "type": "record-outcome"
+            },
+            {
+              "style": "chat",
+              "text": "Torvald pockets the pennies without counting them. 'Charcoal. Bellows. A week of my sleep. He will be on the square when the sun goes down.'",
               "type": "narrate"
             }
           ]
@@ -3810,17 +3802,24 @@
       {
         "cast": {
           "npc/agathe": {
-            "at": "anchor/stop-great-hall",
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
             "dialogue": "dlg/agathe-day",
             "doing": "about the festival"
           },
           "npc/bernt": {
             "at": {
-              "anchor": "anchor/node-castle",
+              "anchor": "anchor/node-square",
               "offset": [
-                -3,
+                -10,
                 0,
-                0
+                2
               ]
             },
             "dialogue": "dlg/bernt-day",
@@ -4179,42 +4178,6 @@
           },
           {
             "happening": {
-              "subject": "npc/agathe",
-              "text": "Lady Agathe Holm comes to the square for the festival.",
-              "verb": "arrives"
-            },
-            "npc": "npc/agathe",
-            "speed": 0.25,
-            "to": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -8,
-                0,
-                2
-              ]
-            },
-            "type": "move-npc"
-          },
-          {
-            "happening": {
-              "subject": "npc/bernt",
-              "text": "Bernt comes to the square for the festival.",
-              "verb": "arrives"
-            },
-            "npc": "npc/bernt",
-            "speed": 0.25,
-            "to": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -10,
-                0,
-                2
-              ]
-            },
-            "type": "move-npc"
-          },
-          {
-            "happening": {
               "subject": "npc/sverre",
               "text": "Sverre comes to the square for the festival.",
               "verb": "arrives"
@@ -4268,6 +4231,24 @@
             "type": "move-npc"
           },
           {
+            "happening": {
+              "subject": "npc/torvald",
+              "text": "Torvald comes to the square for the festival.",
+              "verb": "arrives"
+            },
+            "npc": "npc/torvald",
+            "speed": 0.25,
+            "to": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -12,
+                0,
+                2
+              ]
+            },
+            "type": "move-npc"
+          },
+          {
             "batch": "batch/festival-night",
             "type": "apply-edits"
           },
@@ -4292,10 +4273,6 @@
               "verb": "arrives"
             },
             "type": "spawn-actor"
-          },
-          {
-            "board": "board/pig-race",
-            "type": "show-board"
           }
         ],
         "on_objective_complete": {
@@ -4671,7 +4648,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the cellar, behind the old grate. The grate lifts for the yard's fires, lit in the household's order. I have never once got it right."
+                "The fireworks are in the castle cellar, behind the old grate. My note is in the guardroom chest. I am not going up there again."
               ]
             },
             "doing": "about the festival"
@@ -4875,11 +4852,11 @@
           },
           "npc/torvald": {
             "at": {
-              "anchor": "anchor/node-smithy",
+              "anchor": "anchor/node-square",
               "offset": [
+                -12,
                 0,
-                0,
-                -1
+                2
               ]
             },
             "dialogue": {
@@ -11857,7 +11834,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the cellar, behind the old grate. The grate lifts for the yard's fires, lit in the household's order. I have never once got it right."
+                "The fireworks are in the castle cellar, behind the old grate. My note is in the guardroom chest. I am not going up there again."
               ]
             },
             "doing": "about the festival"
@@ -12054,11 +12031,11 @@
           },
           "npc/torvald": {
             "at": {
-              "anchor": "anchor/node-smithy",
+              "anchor": "anchor/node-square",
               "offset": [
+                -12,
                 0,
-                0,
-                -1
+                2
               ]
             },
             "dialogue": {
@@ -12637,81 +12614,6 @@
             ],
             "label": "An iron breastplate (3 pennies)",
             "tooltip": "Plate for the chest, hammered this winter."
-          },
-          {
-            "effects": [
-              {
-                "style": "chat",
-                "text": "Torvald pockets the pennies without counting them. 'Charcoal. Bellows. A week of my sleep. He will be on the square when the sun goes down.'",
-                "type": "narrate",
-                "when": {
-                  "requires_state": [
-                    {
-                      "op": "at-least",
-                      "state": "state/pennies",
-                      "value": 5
-                    }
-                  ]
-                }
-              },
-              {
-                "style": "chat",
-                "text": "Torvald shakes his head. 'Waking him costs five. Charcoal is not free, even on a holiday.'",
-                "type": "narrate",
-                "when": {
-                  "requires_state": [
-                    {
-                      "op": "at-most",
-                      "state": "state/pennies",
-                      "value": 4
-                    }
-                  ]
-                }
-              },
-              {
-                "amount": 1,
-                "state": "state/golem-paid",
-                "type": "add-state",
-                "when": {
-                  "requires_state": [
-                    {
-                      "op": "at-least",
-                      "state": "state/pennies",
-                      "value": 5
-                    }
-                  ]
-                }
-              },
-              {
-                "amount": -5,
-                "state": "state/pennies",
-                "type": "add-state",
-                "when": {
-                  "requires_state": [
-                    {
-                      "op": "at-least",
-                      "state": "state/pennies",
-                      "value": 5
-                    }
-                  ]
-                }
-              }
-            ],
-            "forbids_flags": [
-              "flag/dusk-begun"
-            ],
-            "label": "Wake the iron man for the dusk (5 pennies)",
-            "requires_flags": [
-              "flag/golem-headed"
-            ],
-            "requires_state": [
-              {
-                "op": "at-most",
-                "state": "state/golem-paid",
-                "value": 0
-              }
-            ],
-            "tooltip": "Torvald's iron man, with his new head, walks down to the square at dusk and stands with you."
           }
         ],
         "prop": {
@@ -12828,6 +12730,36 @@
           "Net Loft"
         ],
         "id": "sign/netloft"
+      },
+      {
+        "anchor": "anchor/scarecrow-sign-kitchen-garden",
+        "front": [
+          "Scarecrow's head.",
+          "NOT a lantern.",
+          "Leave it be!",
+          "- the growers"
+        ],
+        "id": "sign/scarecrow-kitchen-garden"
+      },
+      {
+        "anchor": "anchor/scarecrow-sign-allotments",
+        "front": [
+          "Scarecrow's head.",
+          "NOT a lantern.",
+          "Leave it be!",
+          "- the growers"
+        ],
+        "id": "sign/scarecrow-allotments"
+      },
+      {
+        "anchor": "anchor/scarecrow-sign-wheat-field",
+        "front": [
+          "Scarecrow's head.",
+          "NOT a lantern.",
+          "Leave it be!",
+          "- the growers"
+        ],
+        "id": "sign/scarecrow-wheat-field"
       }
     ],
     "state": [
@@ -12910,6 +12842,12 @@
         "scope": "party"
       },
       {
+        "id": "state/fires-lit",
+        "initial": 0,
+        "note": "Watch fires on the castle walls lit in turn; a fire lit out of turn puts them all out again.",
+        "scope": "party"
+      },
+      {
         "id": "state/belfry-hits",
         "initial": 0,
         "note": "Arrows the party has put in the belfry target; three free the rope's knot.",
@@ -12960,11 +12898,12 @@
         "scope": "party"
       },
       {
+        "display": "sidebar",
         "id": "state/pennies",
         "initial": 0,
         "name": "Festival Pennies",
-        "note": "The party's Festival Pennies: the town pays two for each of the day's troubles settled.",
-        "scope": "party"
+        "note": "Each player's Festival Pennies: the town pays everyone two for each of the day's troubles settled.",
+        "scope": "player"
       },
       {
         "counts": {
@@ -13314,7 +13253,7 @@
         "effects": [
           {
             "style": "actionbar",
-            "text": "The grate will not lift. Scratched into its frame: 'The household's fires are lit as the household rises: the cook first, then the porter at the gate, then the steward, and the lord last of all.'",
+            "text": "The grate will not lift. Its chains run up into the walls, toward the watch fires. Bernt's note, he said, is in the guardroom chest by the gate.",
             "type": "narrate"
           }
         ],
@@ -13325,6 +13264,719 @@
         "once": false,
         "serves": {
           "gate": "anchor/cellar-grate"
+        }
+      },
+      {
+        "answers": {
+          "done": "The grate is up: the watch fires have done their work.",
+          "not_yet": "A cold watch fire. Nobody keeps the castle's watch until the fireworks key is found."
+        },
+        "at": "anchor/fire-kitchen",
+        "audience": "presser",
+        "effects": [
+          {
+            "anchor": "anchor/fire-kitchen",
+            "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "The fire catches: the cook's watch fire burns on the wall.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "amount": 1,
+            "state": "state/fires-lit",
+            "type": "add-state",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-kitchen",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-gate",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-hall",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-lord",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/fires-lit",
+            "type": "set-state",
+            "value": 0,
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "amount": 4,
+            "audience": "actor",
+            "type": "damage",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ],
+        "forbids_flags": [
+          "flag/grate-up"
+        ],
+        "id": "trigger/fire-cook",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+        },
+        "requires_flags": [
+          "flag/fox-denned"
+        ],
+        "serves": {
+          "objective": "obj/fetch-the-fireworks"
+        }
+      },
+      {
+        "answers": {
+          "done": "The grate is up: the watch fires have done their work.",
+          "not_yet": "A cold watch fire. Nobody keeps the castle's watch until the fireworks key is found."
+        },
+        "at": "anchor/fire-gate",
+        "audience": "presser",
+        "effects": [
+          {
+            "anchor": "anchor/fire-gate",
+            "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "The fire catches: the porter's watch fire burns on the wall.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "amount": 1,
+            "state": "state/fires-lit",
+            "type": "add-state",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-kitchen",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-gate",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-hall",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-lord",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/fires-lit",
+            "type": "set-state",
+            "value": 0,
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "amount": 4,
+            "audience": "actor",
+            "type": "damage",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          }
+        ],
+        "forbids_flags": [
+          "flag/grate-up"
+        ],
+        "id": "trigger/fire-porter",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+        },
+        "requires_flags": [
+          "flag/fox-denned"
+        ],
+        "serves": {
+          "objective": "obj/fetch-the-fireworks"
+        }
+      },
+      {
+        "answers": {
+          "done": "The grate is up: the watch fires have done their work.",
+          "not_yet": "A cold watch fire. Nobody keeps the castle's watch until the fireworks key is found."
+        },
+        "at": "anchor/fire-hall",
+        "audience": "presser",
+        "effects": [
+          {
+            "anchor": "anchor/fire-hall",
+            "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "The fire catches: the steward's watch fire burns on the wall.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "amount": 1,
+            "state": "state/fires-lit",
+            "type": "add-state",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-kitchen",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-gate",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-hall",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-lord",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/fires-lit",
+            "type": "set-state",
+            "value": 0,
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "amount": 4,
+            "audience": "actor",
+            "type": "damage",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          }
+        ],
+        "forbids_flags": [
+          "flag/grate-up"
+        ],
+        "id": "trigger/fire-steward",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+        },
+        "requires_flags": [
+          "flag/fox-denned"
+        ],
+        "serves": {
+          "objective": "obj/fetch-the-fireworks"
+        }
+      },
+      {
+        "answers": {
+          "done": "The grate is up: the watch fires have done their work.",
+          "not_yet": "A cold watch fire. Nobody keeps the castle's watch until the fireworks key is found."
+        },
+        "at": "anchor/fire-lord",
+        "audience": "presser",
+        "effects": [
+          {
+            "anchor": "anchor/fire-lord",
+            "block": "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "The fire catches: the lord's watch fire burns on the wall.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "amount": 1,
+            "state": "state/fires-lit",
+            "type": "add-state",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          {
+            "flag": "flag/grate-up",
+            "type": "set-flag",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/cellar-grate",
+            "happening": {
+              "subject": "anchor/cellar-grate",
+              "text": "With the fourth watch fire lit, the iron grate over the cellar door draws up.",
+              "verb": "opens"
+            },
+            "type": "open-gate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "With the fourth watch fire burning, chains rattle down inside the walls and the iron grate over the cellar door draws up.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "at-least",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-kitchen",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-gate",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-hall",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "anchor": "anchor/fire-lord",
+            "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
+            "type": "set-block",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "state": "state/fires-lit",
+            "type": "set-state",
+            "value": 0,
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "amount": 4,
+            "audience": "actor",
+            "type": "damage",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "style": "actionbar",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "type": "narrate",
+            "when": {
+              "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 4
+                }
+              ]
+            }
+          }
+        ],
+        "forbids_flags": [
+          "flag/grate-up"
+        ],
+        "id": "trigger/fire-lord",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
+        },
+        "requires_flags": [
+          "flag/fox-denned"
+        ],
+        "serves": {
+          "objective": "obj/fetch-the-fireworks"
         }
       },
       {
@@ -13458,6 +14110,10 @@
             "style": "title",
             "text": "Ready...",
             "type": "narrate"
+          },
+          {
+            "board": "board/pig-race",
+            "type": "show-board"
           },
           {
             "flag": "flag/race-on",
@@ -13747,7 +14403,7 @@
             "anchor": "anchor/seam-castle-vault",
             "happening": {
               "subject": "anchor/seam-castle-vault",
-              "text": "The fourth lever drops, and a stretch of old stone at the crag's foot swings inward.",
+              "text": "The fourth lever drops, and a square of the castle yard's cobbles sinks and slides away.",
               "verb": "opens"
             },
             "type": "open-gate",
@@ -13769,17 +14425,17 @@
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  7,
-                  2,
-                  1
+                  -4,
+                  6,
+                  -4
                 ]
               },
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  3,
-                  1,
-                  1
+                  -2,
+                  4,
+                  -1
                 ]
               }
             ],
@@ -13800,7 +14456,7 @@
           },
           {
             "style": "chat",
-            "text": "With a grinding of old stone, a stretch of the crag swings inward at the castle grounds' edge: behind it, steps down into the old lords' vault, kept to themselves for a hundred years.",
+            "text": "With a grinding of old stone, a square of the castle yard's cobbles sinks and slides away: under it, steps run down into the old lords' vault, kept to themselves for a hundred years.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -13914,7 +14570,7 @@
             "anchor": "anchor/seam-castle-vault",
             "happening": {
               "subject": "anchor/seam-castle-vault",
-              "text": "The fourth lever drops, and a stretch of old stone at the crag's foot swings inward.",
+              "text": "The fourth lever drops, and a square of the castle yard's cobbles sinks and slides away.",
               "verb": "opens"
             },
             "type": "open-gate",
@@ -13936,17 +14592,17 @@
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  7,
-                  2,
-                  1
+                  -4,
+                  6,
+                  -4
                 ]
               },
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  3,
-                  1,
-                  1
+                  -2,
+                  4,
+                  -1
                 ]
               }
             ],
@@ -13967,7 +14623,7 @@
           },
           {
             "style": "chat",
-            "text": "With a grinding of old stone, a stretch of the crag swings inward at the castle grounds' edge: behind it, steps down into the old lords' vault, kept to themselves for a hundred years.",
+            "text": "With a grinding of old stone, a square of the castle yard's cobbles sinks and slides away: under it, steps run down into the old lords' vault, kept to themselves for a hundred years.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -14081,7 +14737,7 @@
             "anchor": "anchor/seam-castle-vault",
             "happening": {
               "subject": "anchor/seam-castle-vault",
-              "text": "The fourth lever drops, and a stretch of old stone at the crag's foot swings inward.",
+              "text": "The fourth lever drops, and a square of the castle yard's cobbles sinks and slides away.",
               "verb": "opens"
             },
             "type": "open-gate",
@@ -14103,17 +14759,17 @@
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  7,
-                  2,
-                  1
+                  -4,
+                  6,
+                  -4
                 ]
               },
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  3,
-                  1,
-                  1
+                  -2,
+                  4,
+                  -1
                 ]
               }
             ],
@@ -14134,7 +14790,7 @@
           },
           {
             "style": "chat",
-            "text": "With a grinding of old stone, a stretch of the crag swings inward at the castle grounds' edge: behind it, steps down into the old lords' vault, kept to themselves for a hundred years.",
+            "text": "With a grinding of old stone, a square of the castle yard's cobbles sinks and slides away: under it, steps run down into the old lords' vault, kept to themselves for a hundred years.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -14248,7 +14904,7 @@
             "anchor": "anchor/seam-castle-vault",
             "happening": {
               "subject": "anchor/seam-castle-vault",
-              "text": "The fourth lever drops, and a stretch of old stone at the crag's foot swings inward.",
+              "text": "The fourth lever drops, and a square of the castle yard's cobbles sinks and slides away.",
               "verb": "opens"
             },
             "type": "open-gate",
@@ -14270,17 +14926,17 @@
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  7,
-                  2,
-                  1
+                  -4,
+                  6,
+                  -4
                 ]
               },
               {
                 "anchor": "anchor/seam-castle-vault",
                 "offset": [
-                  3,
-                  1,
-                  1
+                  -2,
+                  4,
+                  -1
                 ]
               }
             ],
@@ -14301,7 +14957,7 @@
           },
           {
             "style": "chat",
-            "text": "With a grinding of old stone, a stretch of the crag swings inward at the castle grounds' edge: behind it, steps down into the old lords' vault, kept to themselves for a hundred years.",
+            "text": "With a grinding of old stone, a square of the castle yard's cobbles sinks and slides away: under it, steps run down into the old lords' vault, kept to themselves for a hundred years.",
             "type": "narrate",
             "when": {
               "requires_state": [

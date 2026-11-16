@@ -113,7 +113,18 @@ def butts(m, W, D, d, g, side):
     part(m, 1, W, 2, D - 1, "range")
 
 
-def allotments(m, W, D, d, g, side, lantern_barrel=False):
+# a carved pumpkin on a scarecrow is the scarecrow's head, not a lantern's: a painted board on a
+# post beside each scarecrow says so (the owner's solo notes: the scarecrow's head misled her
+# about the carved-pumpkin task); its words are the campaign's `signs[]`
+SIGN = "minecraft:spruce_sign[rotation=0,waterlogged=false]"
+
+
+def scarecrow_sign(m, x, z, d, stem):
+    m.set(x, d, z, SIGN)
+    m.mark(f"scarecrow-sign-{stem}", x, z, facing="south", y=d)
+
+
+def allotments(m, W, D, d, g, side, lantern_barrel=False, stem="allotments"):
     """Beds of pumpkins and melons in rows, paths between them, compost heaps, a
     scarecrow in a festival hat, a lean-to for the tools."""
     ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
@@ -140,6 +151,7 @@ def allotments(m, W, D, d, g, side, lantern_barrel=False):
     sx, sz = W // 2, rows[0] + 1
     m.set(sx, d, sz, fence(WOOD)); m.set(sx, d + 1, sz, "minecraft:hay_block[axis=y]")
     m.set(sx, d + 2, sz, "minecraft:carved_pumpkin[facing=south]")
+    scarecrow_sign(m, sx + 1, sz, d, stem)
     near = 3 if side == "north" else 1
     lamp_post(m, 1, near, d)
     lamp_post(m, W, near, d)
@@ -347,6 +359,7 @@ def wheat_field(m, W, D, d, g):
     m.set(sx, d + 2, sz, "minecraft:carved_pumpkin[facing=south]")
     m.set(sx - 1, d + 1, sz, fence(WOOD))
     m.set(sx + 1, d + 1, sz, fence(WOOD))
+    scarecrow_sign(m, sx, sz + 1, d, "wheat-field")
     # the hayrick and the hay cart by the track
     for (x, y, z) in ((W - 2, d, D - 2), (W - 1, d, D - 2), (W - 2, d + 1, D - 2), (W - 2, d, D - 3), (W - 1, d, D - 3)):
         m.set(x, y, z, "minecraft:hay_block[axis=x]")
@@ -843,7 +856,7 @@ def build(place):
     elif stem == "butts":
         butts(m, W, D, d, g, side)
     elif stem in ("allotments", "kitchen-garden"):
-        allotments(m, W, D, d, g, side, lantern_barrel=(stem == "allotments"))
+        allotments(m, W, D, d, g, side, lantern_barrel=(stem == "allotments"), stem=stem)
     elif stem == "fair-field":
         if D > 40:
             fair(m, W, 30, d, g, side)

@@ -293,7 +293,8 @@ def market(m, free, c0, c1, z0, z1):
 
 def flight(m, place, stem):
     """Two courses down in half-steps, the top landing at the opening above,
-    the foot landing at the street below."""
+    the foot landing at the street below: setts at the top, a stair on setts,
+    a stair on the paving, then the foot."""
     (x0, _, z0), (x1, _, z1) = place.space
     up = [s for s in place.seams if s["seam"].get("rise", 0) > 0]
     face = up[0]["seam"]["face"] if up else "north"
@@ -307,9 +308,10 @@ def flight(m, place, stem):
         m.set(x, 1, top, "setts"); m.set(x, 2, top, "setts")
         m.set(x, 1, half_hi, "setts"); m.set(x, 2, half_hi, stairs(STEP, climb))
         # below the opening's landing every step is a stair block, never a
-        # full block standing in the way at its walk plane (the clear width)
+        # full block standing in the way at its walk plane (the clear width);
+        # one row of them, a half-step a row from the paving at the foot: a
+        # second row at the same course climbs nothing (the owner's solo notes)
         m.set(x, 1, mid, stairs(STEP, climb))
-        m.set(x, 1, half_lo, stairs(STEP, climb))
         for r in rows[4:]:
             m.set(x, 0, r, "worn" if x in (x0, x1) else "cobble")
         for r in rows[:4]:

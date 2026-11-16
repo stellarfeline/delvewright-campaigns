@@ -1,95 +1,136 @@
 #!/usr/bin/env python3
-"""node/castle-vault — the old lords' vault, an easter egg in the crag at the castle grounds'
-west edge.
+"""node/castle-vault — the old lords' vault, an easter egg under the castle yard.
 
-    DELVEWRIGHT_SKILL=<skill> python3 castle-vault.py --allocation <delvec allocation . node/castle-vault> \\
-        --out ../../programs/castle-vault.json --delvec <delvec>
+    python3 castle-vault.py --allocation <delvec allocation . node/castle-vault> --out ../../programs/castle-vault.json
 
 After the priest hole and the secret passage (the node's `references[]`): a hiding place built
-into the fabric, its way in a stretch of stone that reads as the wall around it. A body stands
-on the castle's grounds before a face of the crag; when the four levers are down, a stretch of
-it three wide and three high swings away (the seam's bar, a block that hides) and a stone stair
-runs down four into a small vaulted strongroom: four chests of arms along the far wall, lamps
-on the piers between them, banners of the old lords over them. Piece-local: +x east (the castle), +z south, the
-walk plane at y 1.
+into the fabric, its way in a stretch of floor that reads as the floor around it. The vault lies
+under the castle yard; when the four levers are down, a square of the yard's cobbles three by
+three slides away (the castle's hatch: the seam's bar lies in the castle's own floor) over a
+stone stair that runs down seven into a small vaulted strongroom: four chests of arms along the
+far wall, lamps on the piers between them.
+
+Written cell by cell as a grammar of absolute sizes, as the castle's own program is, because
+the stair's last treads stand in the opening itself, under the hatch, as a stair through a hole
+in a floor does (the gallery's undercroft stair), and the starter keeps an opening's cells for
+the connection and surveys no body standing in its top course. Frame-local: +x toward the
+stair's head, +z south, the floor course at y 0 and the walk plane at y 1; the opening is the
+allocation's seam cells (x 8..10, y 6, z 4..6).
 """
-import os
+import json
 import sys
 
-sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, lantern, run, stairs  # noqa: E402
+A = json.load(open(sys.argv[sys.argv.index("--allocation") + 1]))
+OUT = sys.argv[sys.argv.index("--out") + 1]
+EX, EY, EZ = A["extent"]
+(LX, LY, LZ), (HX, HY, HZ) = A["space"]
+D = A["datum_y"]
+SEAM = next(s for s in A["seams"] if s["edge"] == "edge/castle-vault")
+(OX0, OY, OZ0), (OX1, _, OZ1) = SEAM["cells"]
+VOIDS = set()
+for v in A.get("voids", []):
+    (a, b, c), (d, e, f) = v["cells"]
+    VOIDS |= {(x, y, z) for x in range(a, d + 1) for y in range(b, e + 1) for z in range(c, f + 1)}
 
-CHESTS = (2, 4, 6, 8)        # the four chests along the west wall, z
-BAR = "bar-castle-vault"
-HIDES = "minecraft:stone"    # the swinging stone: a block the game draws as a full opaque cube, the crag's own
+PALETTE = {
+    "vault": [{"weight": 8, "block": "minecraft:stone_bricks"}, {"weight": 2, "block": "minecraft:cracked_stone_bricks"},
+              {"weight": 1, "block": "minecraft:mossy_stone_bricks"}],
+    "vfloor": "minecraft:polished_deepslate",
+    "tread": "minecraft:stone_brick_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]",
+    "chest": "minecraft:chest[facing=east,type=single,waterlogged=false]",
+    "lamp": "minecraft:lantern[hanging=false,waterlogged=false]",
+}
+STAIR_Z = range(OZ0, OZ1 + 1)          # the stair's width, under the hatch
+CHESTS = (2, 4, 6, 8)                  # the four chests along the far wall, z
+
+cells = {}      # (x, y, z) -> (kind, role, region): kind fill | void | skip
+for x in range(EX):
+    for y in range(EY):
+        for z in range(EZ):
+            inside = LX <= x <= HX and LZ <= z <= HZ
+            if (x, y, z) in VOIDS:
+                cells[(x, y, z)] = ("skip", None, None)
+            elif not inside:
+                cells[(x, y, z)] = ("fill", "vault", None)            # the walls
+            elif y < D:
+                cells[(x, y, z)] = ("fill", "vfloor", None)           # the floor course
+            else:
+                cells[(x, y, z)] = ("void", None, "room")
+# the stair: treads climbing toward the hatch, one course a column, flanked and built solid under
+top = HY
+first = OX0 - (top - D) + 1                                           # x of the tread at the walk plane
+for z in range(OZ0 - 1, OZ1 + 2):
+    for x in range(first, OX0 + 1):
+        y = D + (x - first)
+        for yy in range(D, y):
+            cells[(x, yy, z)] = ("fill", "vault", None)
+        cells[(x, y, z)] = ("fill", "tread", "room") if z in STAIR_Z else ("fill", "vault", None)
+    for x in range(OX0 + 1, OX1 + 1):
+        for yy in range(D, top):
+            cells[(x, yy, z)] = ("fill", "vault", None)
+        if z in STAIR_Z:
+            cells[(x, top, z)] = ("fill", "tread" if x == OX0 + 1 else "vault", "castle-vault")
+        else:
+            cells[(x, top, z)] = ("fill", "vault", None)
+for z in STAIR_Z:
+    cells[(OX0, top, z)] = ("void", None, "castle-vault")              # the opening over the tread below
+# the four chests of arms along the far wall, a lamp on each pier between them
+for z in CHESTS:
+    cells[(LX, D, z)] = ("fill", "chest", "room")
+for z in (1, 3, 5, 7, 9):
+    cells[(LX, D, z)] = ("fill", "vault", None)
+    cells[(LX, D + 1, z)] = ("fill", "lamp", "room")
+for z in (2, 8):
+    cells[(first + 1, D, z)] = ("fill", "lamp", "room")             # at the stair's foot on either side
+MARKS = {(LX, D, z): (f"vault-chest-{k}", "east") for k, z in enumerate(CHESTS, start=1)}
+MARKS[(3, D, 5)] = ("node-castle-vault", "east")
 
 
-def build(place):
-    m = Model(place)
-    m.palette["rock"] = [{"weight": 5, "block": "minecraft:stone"}, {"weight": 3, "block": "minecraft:andesite"},
-                         {"weight": 2, "block": "minecraft:tuff"}, {"weight": 1, "block": "minecraft:cobblestone"}]
-    m.palette["vault"] = [{"weight": 8, "block": "minecraft:stone_bricks"}, {"weight": 2, "block": "minecraft:cracked_stone_bricks"},
-                          {"weight": 1, "block": "minecraft:mossy_stone_bricks"}]
-    m.palette["vfloor"] = "minecraft:polished_deepslate"
-    # surveyed open: the way's reach is judged with its door swung away (a gate's open state),
-    # and the program binds the shut door after the run, below
-    m.palette[BAR] = "minecraft:air"
-    d = place.datum.value                     # the walk plane (y 1)
-    lo, hi = place.space
-    X0, X1, Z0, Z1 = lo[0], hi[0], lo[2], hi[2]
-    top = hi[1]
-    # the crag: rock through the whole play space, the room and the stair cut out of it
-    m.box(X0, X1, d - 1, top, Z0, Z1, "rock")
-    # the strongroom: x 1..6, z 1..8, its floor at the walk plane, a barrel vault over it
-    m.box(1, 6, d - 1, d - 1, 1, 8, "vfloor")
-    m.box(1, 6, d, d + 5, 1, 8, "vault")
-    m.clear(2, 6, d, d + 3, 1, 8)
-    m.clear(3, 5, d + 4, d + 4, 1, 8)
-    m.clear(1, 1, d, d + 1, 1, 8)
-    # the stair down from the door (x 11, walk y 5) to the room: a landing at x 10, treads x 9..7
-    m.climbs_to("edge/castle-vault")
-    m.clear(7, 10, d, d + 7, 4, 6)
-    for z in range(4, 7):
-        for y in range(d - 1, d + 4):
-            m.set(10, y, z, "vault")            # the landing, built solid down to the floor
-        for k, x in enumerate((9, 8, 7)):
-            m.set(x, d + 2 - k, z, stairs("minecraft:stone_brick", "east"))
-            for y in range(d - 1, d + 2 - k):
-                m.set(x, y, z, "vault")
-    for x in range(7, 11):
-        for z in (3, 7):
-            for y in range(d - 1, d + 8):
-                m.set(x, y, z, "vault")
-    # the four chests of arms along the west wall, a lantern on each, a banner over each
-    for k, z in enumerate(CHESTS, start=1):
-        m.set(1, d, z, "minecraft:chest[facing=east,type=single,waterlogged=false]")
-        m.mark(f"vault-chest-{k}", 1, z, facing="east", y=d)
-    for z in (1, 3, 5, 7):
-        m.set(1, d, z, "vault")
-        m.set(1, d + 1, z, "vault")
-        if z > 1:
-            m.set(1, d + 2, z, lantern())      # a lamp on the pier between two chests
-    m.set(6, d + 3, 1, lantern(True))
-    m.set(6, d + 3, 8, lantern(True))
-    # the crag's crown, open to the sky over the grounds: rock grown over with moss
-    m.palette["crown"] = [{"weight": 4, "block": "minecraft:stone"}, {"weight": 3, "block": "minecraft:moss_block"},
-                          {"weight": 2, "block": "minecraft:andesite"}, {"weight": 1, "block": "minecraft:mossy_cobblestone"}]
-    m.box(X0, X1, top, top, Z0, Z1, "crown")
-    m.show("up")
-    m.mark("node-castle-vault", 4, 5, facing="west")
-    m.finish()
-    return m
+def leaf(cell, xyz):
+    kind, role, region = cell
+    body = {"op": "skip"} if kind == "skip" else ({"op": "void"} if kind == "void" else {"op": "fill", "material": {"role": role}})
+    if region:
+        body = {"op": "claim", "region": region, "body": body}
+    if xyz in MARKS:
+        a, f = MARKS[xyz]
+        body = {"op": "mark", "mark": {"anchor": a, "at": "floor_center", "facing": f}, "body": body}
+    return body
 
 
-rc = run(build, reason="the crag's rock and the vault's wall heads: seen, never stood on")
-# the hidden way is shut by a block that hides (spec-0118): the starter binds a seam's bar to the
-# derivation's iron bars, which the eye looks through, so the program's bar is bound to the stone
-if rc == 0:
-    import json
-    out = sys.argv[sys.argv.index("--out") + 1]
-    doc = json.load(open(out, encoding="utf-8"))
-    assert BAR in doc["palette"], "the program binds no bar"
-    doc["palette"][BAR] = HIDES
-    with open(out, "w", encoding="utf-8") as f:
-        f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
-raise SystemExit(rc)
+def sz(n):
+    return {"size": "absolute", "blocks": {"expr": "int", "value": n}}
+
+
+def split(axis, runs):
+    if len(runs) == 1:
+        return runs[0][1]
+    return {"op": "split", "axis": axis, "sizes": [sz(n) for n, _ in runs], "children": [c for _, c in runs]}
+
+
+def merge(items):
+    out = []
+    for it in items:
+        k = json.dumps(it, sort_keys=True)
+        if out and out[-1][0] == k:
+            out[-1][1] += 1
+        else:
+            out.append([k, 1, it])
+    return [(n, it) for _, n, it in out]
+
+
+rows = []
+for z in range(EZ):
+    cols = []
+    for x in range(EX):
+        cols.append(split("y", merge([leaf(cells[(x, y, z)], (x, y, z)) for y in range(EY)])))
+    rows.append(split("x", merge(cols)))
+PROGRAM = {
+    "version": "1.9.0", "name": "castle_vault", "start": "place", "params": {}, "palette": PALETTE,
+    "rules": {"place": [{"weight": 1, "body": split("z", merge(rows))}]},
+    "contract": {"entry": "room", "spaces": {"room": {"envelope": "enclosed"}},
+                 "edges": [{"a": "room", "b": "exterior", "class": "stair", "rise": 0, "via": "castle-vault"}]},
+    "shown_faces": [],
+}
+with open(OUT, "w", encoding="utf-8") as f:
+    f.write(json.dumps(PROGRAM, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
+print(f"wrote {OUT}")

@@ -8,7 +8,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.environ["DELVEWRIGHT_SKILL"], "scripts"))
-from starter import Model, run, flight, verge_life, clear_cols, way_frame, walk_of  # noqa: E402
+from starter import Model, run, flight, verge_life, clear_cols, way_frame, walk_of, up_seam  # noqa: E402
 
 ROLES = {"kerb": "setts", "paving": "cobble", "verge": "worn"}
 
@@ -49,6 +49,17 @@ def build(place):
                 s = m.get(x, y, z)
                 if s is not None and "_stairs" in s:
                     m.set(x, y, z, "setts")
+    # The helper lays two rows of stairs at one course above the foot, a step that climbs
+    # nothing (the owner's solo notes: an extra row of stairs); the lower row comes off the
+    # clear way, so the flight climbs a half-step a row from the paving at its foot.
+    up = up_seam(place)
+    face = up["seam"]["face"] if up else "north"
+    if face in ("south", "east"):
+        rows = rows[::-1]
+    for b in cols:
+        if c0 <= b <= c1:
+            x, z = cell(rows[3], b)
+            m.clear(x, x, w, w, z, z)
     return m
 
 
