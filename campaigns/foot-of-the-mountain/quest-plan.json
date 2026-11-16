@@ -8,27 +8,36 @@
             "flags": [
               "flag/goats-home"
             ],
-            "id": "branch/goats-home",
+            "id": "branch/goats-home-raid-held",
             "leads_to": "quest/the-festival"
           },
           {
             "flags": [],
-            "id": "branch/goats-astray",
+            "id": "branch/goats-astray-raid-held",
             "leads_to": "quest/the-festival"
           },
           {
             "flags": [
               "flag/goat-lost"
             ],
-            "id": "branch/goats-lost",
+            "id": "branch/goats-lost-raid-held",
+            "leads_to": "quest/the-festival"
+          },
+          {
+            "flags": [
+              "flag/goats-home",
+              "flag/cake-taken"
+            ],
+            "id": "branch/goats-home-raid-lost",
             "leads_to": "quest/the-festival"
           }
         ],
         "forks_on": [
           "flag/goats-home",
-          "flag/goat-lost"
+          "flag/goat-lost",
+          "flag/cake-taken"
         ],
-        "id": "branch-point/goats",
+        "id": "branch-point/goats-and-raid",
         "opens_at": "quest/the-goats"
       },
       {
@@ -222,6 +231,23 @@
       {
         "act": 1,
         "activity": [
+          "talk",
+          "reach"
+        ],
+        "area": "area/site",
+        "depends_on": [
+          "quest/opening"
+        ],
+        "goal": "Race Oskar's pigs round the town: up through the woods behind the farms, through the cathedral by its side door and out by its great front door, down the main street and back along the lower lane to the line.",
+        "id": "quest/the-pig-race",
+        "mandatory": false,
+        "npcs": [
+          "npc/oskar"
+        ]
+      },
+      {
+        "act": 1,
+        "activity": [
           "use"
         ],
         "area": "area/site",
@@ -238,7 +264,7 @@
       {
         "act": 2,
         "activity": [
-          "reach",
+          "talk",
           "kill"
         ],
         "area": "area/site",
@@ -322,22 +348,6 @@
         "mandatory": false,
         "npcs": [
           "npc/cat"
-        ]
-      },
-      {
-        "act": 3,
-        "activity": [
-          "reach"
-        ],
-        "area": "area/site",
-        "depends_on": [
-          "quest/dusk"
-        ],
-        "goal": "Ride Oskar's racing pig down the main street to the quay in the festival's pig race.",
-        "id": "quest/the-pig-race",
-        "mandatory": false,
-        "npcs": [
-          "npc/oskar"
         ]
       }
     ]

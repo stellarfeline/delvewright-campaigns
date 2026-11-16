@@ -124,15 +124,15 @@
         ]
       },
       {
-        "anchor": "anchor/node-street-1",
+        "anchor": "anchor/node-meadow-track",
         "entity": "minecraft:villager",
-        "facing": "south",
+        "facing": "north",
         "id": "actor/racer-ulla",
         "name": "Ulla",
         "offset": [
-          -1,
+          14,
           0,
-          2
+          0
         ],
         "skin": {
           "model": "slim",
@@ -595,6 +595,21 @@
             "count": 1,
             "item": "minecraft:elytra"
           }
+        ]
+      }
+    ],
+    "modes": [
+      {
+        "id": "mode/pig-race",
+        "keeps": [
+          "quest/the-pig-race"
+        ]
+      },
+      {
+        "id": "mode/the-raid",
+        "keeps": [
+          "quest/dusk",
+          "quest/the-festival"
         ]
       }
     ],
@@ -3887,6 +3902,528 @@
           }
         },
         "happening": {
+          "subject": "npc/oskar",
+          "text": "Oskar's racing pigs are saddled for the festival's pig race, whenever anybody dares.",
+          "verb": "learns"
+        },
+        "id": "quest/the-pig-race",
+        "objectives": [
+          {
+            "announcement": "hidden",
+            "compass": "hidden",
+            "happening": {
+              "subject": "npc/oskar",
+              "text": "Oskar dares the party to his pig race round the town.",
+              "verb": "learns"
+            },
+            "hint": "At the bakery's door at the top of the main street: Oskar keeps the festival's racing pigs, and races them with anyone who dares.",
+            "id": "obj/take-the-dare",
+            "npc": "npc/oskar",
+            "record": "Oskar the baker keeps the festival's racing pigs, and a race round the whole town for anyone who dares.",
+            "title": "Oskar's pig race",
+            "type": "talk-to"
+          },
+          {
+            "after": [
+              "obj/take-the-dare"
+            ],
+            "anchor": "anchor/node-meadow-track",
+            "course": "race/round-the-town",
+            "happening": {
+              "subject": "anchor/node-meadow-track",
+              "text": "The party ride the pig race round the town and back over the line.",
+              "verb": "arrives"
+            },
+            "hint": "Up on a pig at the line on the meadow track by the fair field, and round the course through every checkpoint in turn: up through the woods behind the farms, through the cathedral garden and the churchyard, in at the cathedral's side door and out at its great front door onto the square, down the main street, along the lower lane past the games yard, and back over the line.",
+            "id": "obj/run-the-pig-race",
+            "radius": 3,
+            "record": "The pig race went round the whole town, through the cathedral and back, against a carter called Ulla.",
+            "ride": "vehicle/race-pig",
+            "title": "Ride the pig race",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [
+          {
+            "steps": [
+              {
+                "at_ticks": 600,
+                "effects": [
+                  {
+                    "board": "board/pig-race",
+                    "type": "hide-board"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence"
+          }
+        ],
+        "on_objective_complete": {
+          "obj/run-the-pig-race": [
+            {
+              "style": "chat",
+              "text": "Oskar chalks the places up on the board, licks the chalk, and declares the pigs the real winners.",
+              "type": "narrate"
+            }
+          ],
+          "obj/take-the-dare": [
+            {
+              "from": {
+                "anchor": "anchor/sign-bakery",
+                "extent": [
+                  1,
+                  2,
+                  3
+                ]
+              },
+              "to": {
+                "anchor": "anchor/node-meadow-track",
+                "offset": [
+                  8,
+                  0,
+                  2
+                ]
+              },
+              "type": "teleport"
+            },
+            {
+              "mode": "mode/pig-race",
+              "type": "enter-mode"
+            },
+            {
+              "type": "seat-vehicle",
+              "vehicle": "vehicle/race-pig"
+            },
+            {
+              "type": "seat-vehicle",
+              "vehicle": "vehicle/racer-ulla-pig"
+            },
+            {
+              "actor": "actor/racer-ulla",
+              "happening": {
+                "subject": "actor/racer-ulla",
+                "text": "Ulla the carter lines up her pig at the start for the race.",
+                "verb": "arrives"
+              },
+              "type": "spawn-actor"
+            },
+            {
+              "count": 1,
+              "item": "minecraft:carrot_on_a_stick",
+              "name": "Race Carrot",
+              "type": "give-item"
+            },
+            {
+              "board": "board/pig-race",
+              "type": "show-board"
+            },
+            {
+              "style": "chat",
+              "text": "Oskar's cart rattles you down the lanes to the meadow track, where the racing pigs stand saddled in a row. Ulla the carter is already up on hers, grinning. The town has turned out along the course.",
+              "type": "narrate"
+            },
+            {
+              "steps": [
+                {
+                  "at_ticks": 2,
+                  "effects": [
+                    {
+                      "shots": [
+                        {
+                          "look_at": {
+                            "anchor": "anchor/node-meadow-track",
+                            "offset": [
+                              10,
+                              0,
+                              -1
+                            ]
+                          },
+                          "path": [
+                            {
+                              "anchor": "anchor/node-meadow-track",
+                              "offset": [
+                                16,
+                                7,
+                                9
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/node-meadow-track",
+                              "offset": [
+                                8,
+                                7,
+                                9
+                              ]
+                            }
+                          ],
+                          "seconds": 3,
+                          "subject": {
+                            "anchor": "anchor/node-meadow-track",
+                            "offset": [
+                              10,
+                              0,
+                              -1
+                            ]
+                          }
+                        },
+                        {
+                          "look_at": {
+                            "anchor": "anchor/node-meadow-track",
+                            "offset": [
+                              3,
+                              10,
+                              -111
+                            ]
+                          },
+                          "path": [
+                            {
+                              "anchor": "anchor/node-meadow-track",
+                              "offset": [
+                                3,
+                                30,
+                                -84
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/node-meadow-track",
+                              "offset": [
+                                3,
+                                30,
+                                -96
+                              ]
+                            }
+                          ],
+                          "seconds": 3,
+                          "subject": {
+                            "anchor": "anchor/node-meadow-track",
+                            "offset": [
+                              3,
+                              10,
+                              -111
+                            ]
+                          }
+                        },
+                        {
+                          "look_at": {
+                            "anchor": "anchor/node-cathedral",
+                            "offset": [
+                              -15,
+                              1,
+                              11
+                            ]
+                          },
+                          "path": [
+                            {
+                              "anchor": "anchor/node-cathedral",
+                              "offset": [
+                                -15,
+                                7,
+                                21
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/node-cathedral",
+                              "offset": [
+                                -15,
+                                6,
+                                17
+                              ]
+                            }
+                          ],
+                          "seconds": 3,
+                          "subject": {
+                            "anchor": "anchor/node-cathedral",
+                            "offset": [
+                              -15,
+                              1,
+                              11
+                            ]
+                          }
+                        },
+                        {
+                          "look_at": {
+                            "anchor": "anchor/node-cathedral",
+                            "offset": [
+                              -29,
+                              2,
+                              0
+                            ]
+                          },
+                          "path": [
+                            {
+                              "anchor": "anchor/node-cathedral",
+                              "offset": [
+                                -46,
+                                7,
+                                6
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/node-cathedral",
+                              "offset": [
+                                -44,
+                                7,
+                                2
+                              ]
+                            }
+                          ],
+                          "seconds": 3,
+                          "subject": {
+                            "anchor": "anchor/node-cathedral",
+                            "offset": [
+                              -29,
+                              2,
+                              0
+                            ]
+                          }
+                        },
+                        {
+                          "look_at": {
+                            "anchor": "anchor/node-street-5"
+                          },
+                          "path": [
+                            {
+                              "anchor": "anchor/node-street-3",
+                              "offset": [
+                                0,
+                                14,
+                                -14
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/node-street-3",
+                              "offset": [
+                                0,
+                                14,
+                                -6
+                              ]
+                            }
+                          ],
+                          "seconds": 3,
+                          "subject": {
+                            "anchor": "anchor/node-street-5"
+                          }
+                        },
+                        {
+                          "look_at": {
+                            "anchor": "anchor/node-meadow-track",
+                            "offset": [
+                              -6,
+                              0,
+                              0
+                            ]
+                          },
+                          "path": [
+                            {
+                              "anchor": "anchor/node-meadow-track",
+                              "offset": [
+                                -22,
+                                9,
+                                -8
+                              ]
+                            },
+                            {
+                              "anchor": "anchor/node-meadow-track",
+                              "offset": [
+                                -14,
+                                9,
+                                -8
+                              ]
+                            }
+                          ],
+                          "seconds": 3,
+                          "subject": {
+                            "anchor": "anchor/node-meadow-track",
+                            "offset": [
+                              -6,
+                              0,
+                              0
+                            ]
+                          }
+                        }
+                      ],
+                      "type": "cutscene"
+                    }
+                  ]
+                }
+              ],
+              "type": "sequence"
+            },
+            {
+              "style": "actionbar",
+              "text": "Up on a pig, and the race begins. Hold the carrot out ahead of it to steer. Every checkpoint counts, in order: miss one and you go back for it.",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/opening",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/agathe": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/bernt": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -10,
+                0,
+                2
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/cat": {
+            "at": {
+              "anchor": "anchor/cat-spot"
+            },
+            "dialogue": "unchanged",
+            "doing": "on the bank of the duck pond, watching the water for cod"
+          },
+          "npc/hedda": {
+            "at": "anchor/stage",
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/inga": {
+            "at": {
+              "anchor": "anchor/node-lighthouse",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/kettil": {
+            "at": {
+              "anchor": "anchor/node-street-5",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/oskar": {
+            "at": {
+              "anchor": "anchor/node-bakery",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-barn"
+              },
+              "dialogue": {
+                "barks": [
+                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
+                ]
+              },
+              "doing": "up at the farm looking for a calving cow that is not calving",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/runa-fooled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "requires_flags": [
+                "flag/runa-fooled",
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "dlg/runa-day",
+              "doing": "at her stable in the inn's yard, brushing the mare's tack",
+              "forbids_flags": [
+                "flag/runa-fooled"
+              ]
+            }
+          ],
+          "npc/sverre": {
+            "at": {
+              "anchor": "anchor/node-quay",
+              "offset": [
+                6,
+                0,
+                -2
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/torvald": {
+            "at": {
+              "anchor": "anchor/node-smithy",
+              "offset": [
+                0,
+                0,
+                -1
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/vidar": {
+            "at": {
+              "anchor": "anchor/node-street-1",
+              "offset": [
+                2,
+                0,
+                0
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          }
+        },
+        "happening": {
           "subject": "npc/torvald",
           "text": "Torvald the smith has forged an iron man that wants a carved pumpkin for a head.",
           "verb": "learns"
@@ -4052,7 +4589,7 @@
           "npc/hedda": {
             "at": "anchor/stage",
             "dialogue": "dlg/hedda-dusk",
-            "doing": "on the stage, guarding the festival cake with a ladle"
+            "doing": "on the stage, guarding the festival cake with a ladle and watching the sea"
           },
           "npc/inga": {
             "at": {
@@ -4248,15 +4785,14 @@
         "id": "quest/dusk",
         "objectives": [
           {
-            "anchor": "anchor/stage",
             "happening": {
               "subject": "npc/hedda",
-              "text": "The party come back to the stage as the sun goes down.",
-              "verb": "arrives"
+              "text": "The party tell Hedda they are ready, and the raiders' horn sounds from the bay.",
+              "verb": "learns"
             },
-            "hint": "Up the main street to the square, where Hedda is calling everybody in.",
+            "hint": "Up the main street to the stage on the square, where Hedda is watching the sea. Get ready before you tell her so: buy iron at Torvald's counter, fill your bags, bring whatever the town has given you. Once the horn blows, the rest of the town waits until the raid is over.",
             "id": "obj/back-to-the-stage",
-            "radius": 5,
+            "npc": "npc/hedda",
             "record": "Hedda called the whole town back to the stage at dusk.",
             "requires_flags": [
               "flag/lamp-settled",
@@ -4265,8 +4801,8 @@
               "flag/goats-settled",
               "flag/cargo-settled"
             ],
-            "title": "Back to the stage",
-            "type": "reach-anchor"
+            "title": "Ready for the raiders",
+            "type": "talk-to"
           },
           {
             "after": [
@@ -4347,12 +4883,6 @@
                 "flag/cake-taken"
               ]
             }
-          },
-          {
-            "count": 1,
-            "item": "minecraft:carrot_on_a_stick",
-            "name": "Race Carrot",
-            "type": "give-item"
           },
           {
             "flag": "flag/raiders-gone",
@@ -4479,28 +5009,30 @@
           {
             "style": "chat",
             "text": "Night. Bunting and lanterns go up across the main street, the whole town comes up it to the square, and the festival begins.",
-            "type": "narrate"
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
-            "type": "seat-vehicle",
-            "vehicle": "vehicle/race-pig"
-          },
-          {
-            "type": "seat-vehicle",
-            "vehicle": "vehicle/racer-ulla-pig"
-          },
-          {
-            "actor": "actor/racer-ulla",
-            "happening": {
-              "subject": "actor/racer-ulla",
-              "text": "Ulla the carter lines up her pig at the top of the main street for the race.",
-              "verb": "arrives"
-            },
-            "type": "spawn-actor"
+            "style": "chat",
+            "text": "Night. The striped sails are out past the lighthouse, and the cake and the feast go with them. The town comes up the main street to the square anyway, because it always has.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken"
+              ]
+            }
           }
         ],
         "on_objective_complete": {
           "obj/back-to-the-stage": [
+            {
+              "mode": "mode/the-raid",
+              "type": "enter-mode"
+            },
             {
               "line": "Moss was not back by dusk; Runa spent the festival on the flank with a lantern, calling for her.",
               "objective": "obj/take-the-mare",
@@ -4700,12 +5232,22 @@
                     {
                       "style": "title",
                       "text": "Beach landing!",
-                      "type": "narrate"
+                      "type": "narrate",
+                      "when": {
+                        "forbids_flags": [
+                          "flag/cake-taken"
+                        ]
+                      }
                     },
                     {
                       "style": "chat",
                       "text": "The lighthouse beam swings round and holds: more boats running up on the beach past the harbour! Thirty breaths away.",
-                      "type": "narrate"
+                      "type": "narrate",
+                      "when": {
+                        "forbids_flags": [
+                          "flag/cake-taken"
+                        ]
+                      }
                     }
                   ]
                 },
@@ -4719,7 +5261,12 @@
                         "verb": "arrives"
                       },
                       "type": "spawn-wave",
-                      "wave": "wave/beach-landing"
+                      "wave": "wave/beach-landing",
+                      "when": {
+                        "forbids_flags": [
+                          "flag/cake-taken"
+                        ]
+                      }
                     }
                   ]
                 }
@@ -4779,16 +5326,21 @@
           ],
           "obj/hold-the-beach": [
             {
-              "flag": "flag/beach-held",
-              "type": "set-flag"
+              "amount": 1,
+              "state": "state/landings-held",
+              "type": "add-state"
             },
             {
               "style": "chat",
               "text": "A bigger horn. A man in a hat with a feather that could take an eye out stands up in the last boat and points at the cake.",
               "type": "narrate",
               "when": {
-                "requires_flags": [
-                  "flag/dock-held"
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/landings-held",
+                    "value": 2
+                  }
                 ]
               }
             },
@@ -4801,24 +5353,33 @@
               "type": "spawn-wave",
               "wave": "wave/the-captain",
               "when": {
-                "requires_flags": [
-                  "flag/dock-held"
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/landings-held",
+                    "value": 2
+                  }
                 ]
               }
             }
           ],
           "obj/hold-the-dock": [
             {
-              "flag": "flag/dock-held",
-              "type": "set-flag"
+              "amount": 1,
+              "state": "state/landings-held",
+              "type": "add-state"
             },
             {
               "style": "chat",
               "text": "A bigger horn. A man in a hat with a feather that could take an eye out stands up in the last boat and points at the cake.",
               "type": "narrate",
               "when": {
-                "requires_flags": [
-                  "flag/beach-held"
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/landings-held",
+                    "value": 2
+                  }
                 ]
               }
             },
@@ -4831,8 +5392,12 @@
               "type": "spawn-wave",
               "wave": "wave/the-captain",
               "when": {
-                "requires_flags": [
-                  "flag/beach-held"
+                "requires_state": [
+                  {
+                    "op": "at-least",
+                    "state": "state/landings-held",
+                    "value": 2
+                  }
                 ]
               }
             }
@@ -5141,6 +5706,9 @@
             "text": "Runa watches the show from the square, a carrot in her pocket for the mare back in her stall.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ],
               "requires_flags": [
                 "flag/mare-home"
               ]
@@ -5152,6 +5720,7 @@
             "type": "narrate",
             "when": {
               "forbids_flags": [
+                "flag/cake-taken",
                 "flag/mare-home"
               ],
               "requires_flags": [
@@ -5162,18 +5731,31 @@
           {
             "style": "chat",
             "text": "The lighthouse beam sweeps over the square, and every face turns up into it as it passes.",
-            "type": "narrate"
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "style": "chat",
             "text": "On the stroke of midnight the festival bell rings the festival in.",
-            "type": "narrate"
+            "type": "narrate",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "style": "chat",
             "text": "The feast is laid out along the square: smoked fish, cheeses, honey cakes and a whole ham, all fished out of the bay this morning.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ],
               "requires_flags": [
                 "flag/cargo-saved"
               ]
@@ -5185,6 +5767,7 @@
             "type": "narrate",
             "when": {
               "forbids_flags": [
+                "flag/cake-taken",
                 "flag/cargo-saved"
               ]
             }
@@ -5194,6 +5777,9 @@
             "text": "Kettil's three goats watch the festival from their pen on the main street, chewing in time with the music.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ],
               "requires_flags": [
                 "flag/goats-home"
               ]
@@ -5204,6 +5790,9 @@
             "text": "Kettil's two goats watch the festival from their pen on the main street. Kettil watches them, and not the rockets.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ],
               "requires_flags": [
                 "flag/goat-lost"
               ]
@@ -5219,8 +5808,9 @@
             "wave": "wave/goats-on-stage",
             "when": {
               "forbids_flags": [
-                "flag/goats-home",
-                "flag/goat-lost"
+                "flag/cake-taken",
+                "flag/goat-lost",
+                "flag/goats-home"
               ]
             }
           },
@@ -5230,8 +5820,9 @@
             "type": "narrate",
             "when": {
               "forbids_flags": [
-                "flag/goats-home",
-                "flag/goat-lost"
+                "flag/cake-taken",
+                "flag/goat-lost",
+                "flag/goats-home"
               ]
             }
           },
@@ -5241,16 +5832,6 @@
             "type": "narrate",
             "when": {
               "forbids_flags": [
-                "flag/cake-taken"
-              ]
-            }
-          },
-          {
-            "style": "chat",
-            "text": "Hedda gives the toast to the cake's empty plate, and the town toasts the plate.",
-            "type": "narrate",
-            "when": {
-              "requires_flags": [
                 "flag/cake-taken"
               ]
             }
@@ -11301,6 +11882,9 @@
             ],
             "type": "sequence",
             "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ],
               "requires_flags": [
                 "flag/fireworks-full"
               ]
@@ -11576,6 +12160,7 @@
             "type": "sequence",
             "when": {
               "forbids_flags": [
+                "flag/cake-taken",
                 "flag/fireworks-full"
               ]
             }
@@ -11688,7 +12273,12 @@
                 ]
               }
             ],
-            "type": "sequence"
+            "type": "sequence",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11727,7 +12317,12 @@
                 0
               ]
             },
-            "type": "face"
+            "type": "face",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11735,7 +12330,12 @@
             },
             "item": "minecraft:torch",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11743,7 +12343,12 @@
             },
             "item": "minecraft:lantern",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11751,7 +12356,12 @@
             },
             "item": "minecraft:cake",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11759,7 +12369,12 @@
             },
             "item": "minecraft:poppy",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11767,7 +12382,12 @@
             },
             "item": "minecraft:firework_rocket",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11775,7 +12395,12 @@
             },
             "item": "minecraft:cod",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11783,7 +12408,12 @@
             },
             "item": "minecraft:wheat",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11791,7 +12421,12 @@
             },
             "item": "minecraft:bell",
             "slot": "main_hand",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11799,7 +12434,12 @@
             },
             "item": "minecraft:sunflower",
             "slot": "head",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11807,7 +12447,12 @@
             },
             "item": "minecraft:carved_pumpkin",
             "slot": "head",
-            "type": "hold"
+            "type": "hold",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11837,7 +12482,12 @@
               "times": 40
             },
             "stagger_ticks": 3,
-            "type": "hop"
+            "type": "hop",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "audience": {
@@ -11862,7 +12512,12 @@
               "times": 80
             },
             "stagger_ticks": 2,
-            "type": "pose"
+            "type": "pose",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "steps": [
@@ -11897,7 +12552,12 @@
                 ]
               }
             ],
-            "type": "sequence"
+            "type": "sequence",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "at": {
@@ -11936,7 +12596,12 @@
               "times": 32
             },
             "stagger_ticks": 2,
-            "type": "particle"
+            "type": "particle",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "at": {
@@ -11969,7 +12634,12 @@
               "times": 20
             },
             "stagger_ticks": 4,
-            "type": "particle"
+            "type": "particle",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "at": {
@@ -12007,13 +12677,21 @@
             },
             "sound": "minecraft:entity.villager.celebrate",
             "stagger_ticks": 5,
-            "type": "play-sound"
+            "type": "play-sound",
+            "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ]
+            }
           },
           {
             "style": "chat",
             "text": "The castle's fireworks fill the whole sky over the town, and keep filling it until the dogs give up barking.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/cake-taken"
+              ],
               "requires_flags": [
                 "flag/fireworks-full"
               ]
@@ -12025,334 +12703,127 @@
             "type": "narrate",
             "when": {
               "forbids_flags": [
+                "flag/cake-taken",
                 "flag/fireworks-full"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Hedda unfolds the other speech, the one she wrote for the other kind of festival, and reads it to the empty tables.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "There is no feast. There is no cake. The raiders are eating both somewhere out at sea, and the town stands on the square with its hands in its pockets.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Sverre's crates were landed this morning for nothing: the smoked fish and the cheeses went out to sea in the raiders' boats.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken",
+                "flag/cargo-saved"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Kettil's goats chew on the empty feast tables. They are the only ones in Kelderby who eat tonight.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken",
+                "flag/goats-home"
+              ]
+            }
+          },
+          {
+            "style": "chat",
+            "text": "Bernt fires a rocket after the boats. It falls short into the bay, and nobody cheers.",
+            "type": "narrate",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken",
+                "flag/fireworks-full"
+              ]
+            }
+          },
+          {
+            "steps": [
+              {
+                "at_ticks": 0,
+                "effects": [
+                  {
+                    "shots": [
+                      {
+                        "look_at": {
+                          "anchor": "anchor/stage"
+                        },
+                        "path": [
+                          {
+                            "anchor": "anchor/node-square",
+                            "offset": [
+                              2,
+                              5,
+                              -11
+                            ]
+                          },
+                          {
+                            "anchor": "anchor/node-square",
+                            "offset": [
+                              -2,
+                              6,
+                              -11
+                            ]
+                          }
+                        ],
+                        "seconds": 8,
+                        "subject": {
+                          "place": "node/square"
+                        }
+                      }
+                    ],
+                    "type": "cutscene"
+                  }
+                ]
+              },
+              {
+                "at_ticks": 200,
+                "effects": [
+                  {
+                    "ending": "ending/the-cake-taken",
+                    "happening": {
+                      "subject": "npc/hedda",
+                      "text": "The raiders carry off the cake and the feast, and nobody in Kelderby eats at the festival.",
+                      "verb": "loses"
+                    },
+                    "type": "campaign-complete"
+                  }
+                ]
+              }
+            ],
+            "type": "sequence",
+            "when": {
+              "requires_flags": [
+                "flag/cake-taken"
               ]
             }
           }
         ],
         "on_objective_complete": {},
-        "trigger": {
-          "quest": "quest/dusk",
-          "type": "quest-complete"
-        }
-      },
-      {
-        "cast": {
-          "npc/agathe": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -8,
-                0,
-                2
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "Sixty-one festivals, and every one of them went wrong somewhere. That is how you know it is the festival."
-              ]
-            },
-            "doing": "about the festival"
-          },
-          "npc/bernt": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -10,
-                0,
-                2
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "The fireworks are in the castle cellar, behind the old grate. My note is in my chest by the well. I am not going up there again."
-              ]
-            },
-            "doing": "about the festival"
-          },
-          "npc/cat": {
-            "at": {
-              "anchor": "anchor/cave-mouth"
-            },
-            "dialogue": "unchanged",
-            "doing": "unchanged"
-          },
-          "npc/hedda": {
-            "at": "anchor/stage",
-            "dialogue": "dlg/hedda-night",
-            "doing": "on the stage at night with her speech in her hand"
-          },
-          "npc/inga": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -8,
-                0,
-                -4
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "Mind the stairs. The stairs do not mind you."
-              ]
-            },
-            "doing": "about the festival"
-          },
-          "npc/kettil": [
-            {
-              "at": {
-                "anchor": "anchor/node-square",
-                "offset": [
-                  -10,
-                  0,
-                  -1
-                ]
-              },
-              "dialogue": {
-                "barks": [
-                  "Three goats in the pen and a festival on the square. A good day."
-                ]
-              },
-              "doing": "pleased with his goats",
-              "requires_flags": [
-                "flag/goats-home"
-              ]
-            },
-            {
-              "at": {
-                "anchor": "anchor/node-square",
-                "offset": [
-                  -10,
-                  0,
-                  -1
-                ]
-              },
-              "dialogue": {
-                "barks": [
-                  "Two goats in the pen tonight. Still two goats."
-                ]
-              },
-              "doing": "quiet, having penned what was left of his goats himself",
-              "forbids_flags": [
-                "flag/goats-home"
-              ],
-              "requires_flags": [
-                "flag/goat-lost"
-              ]
-            },
-            {
-              "at": {
-                "anchor": "anchor/node-square",
-                "offset": [
-                  -10,
-                  0,
-                  -1
-                ]
-              },
-              "dialogue": {
-                "barks": [
-                  "Do not ask me where the goats are. You will see."
-                ]
-              },
-              "doing": "pretending he does not know where his goats are",
-              "forbids_flags": [
-                "flag/goats-home",
-                "flag/goat-lost"
-              ],
-              "requires_flags": [
-                "flag/goats-settled"
-              ]
-            },
-            {
-              "at": {
-                "anchor": "anchor/node-square",
-                "offset": [
-                  -10,
-                  0,
-                  -1
-                ]
-              },
-              "dialogue": {
-                "barks": [
-                  "Three goats, and one of them is the problem."
-                ]
-              },
-              "doing": "about the festival",
-              "forbids_flags": [
-                "flag/goats-settled",
-                "flag/goats-home",
-                "flag/goat-lost"
-              ]
-            }
-          ],
-          "npc/oskar": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -8,
-                0,
-                -1
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "The cake is resting. Do not slam any doors near the cake."
-              ]
-            },
-            "doing": "about the festival"
-          },
-          "npc/runa": [
-            {
-              "at": {
-                "anchor": "anchor/node-barn"
-              },
-              "dialogue": {
-                "barks": [
-                  "Not calving. Not even thinking about it. Somebody is going to hear about this."
-                ]
-              },
-              "doing": "up at the farm looking for a calving cow that is not calving",
-              "forbids_flags": [
-                "flag/mare-home"
-              ],
-              "requires_flags": [
-                "flag/runa-fooled"
-              ]
-            },
-            {
-              "at": {
-                "anchor": "anchor/stable-yard",
-                "offset": [
-                  -2,
-                  0,
-                  0
-                ]
-              },
-              "dialogue": "dlg/runa-day",
-              "doing": "at her stable in the inn's yard, brushing the mare's tack",
-              "requires_flags": [
-                "flag/runa-fooled",
-                "flag/mare-home"
-              ]
-            },
-            {
-              "at": {
-                "anchor": "anchor/stable-yard",
-                "offset": [
-                  -2,
-                  0,
-                  0
-                ]
-              },
-              "dialogue": "dlg/runa-day",
-              "doing": "at her stable in the inn's yard, brushing the mare's tack",
-              "forbids_flags": [
-                "flag/runa-fooled"
-              ]
-            }
-          ],
-          "npc/sverre": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -10,
-                0,
-                -4
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "Six crates of the feast in the bay. Row gently. Crates are shy."
-              ]
-            },
-            "doing": "about the festival"
-          },
-          "npc/torvald": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -12,
-                0,
-                2
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "A holiday. The forge is cold. I do not know what to do with my hands."
-              ]
-            },
-            "doing": "about the festival"
-          },
-          "npc/vidar": {
-            "at": {
-              "anchor": "anchor/node-square",
-              "offset": [
-                -12,
-                0,
-                -1
-              ]
-            },
-            "dialogue": {
-              "barks": [
-                "By-law fourteen: the bell rings at dusk. By-law fourteen did not foresee the rope."
-              ]
-            },
-            "doing": "about the festival"
-          }
-        },
-        "happening": {
-          "subject": "npc/oskar",
-          "text": "The festival's pig race is about to start at the top of the main street.",
-          "verb": "learns"
-        },
-        "id": "quest/the-pig-race",
-        "objectives": [
-          {
-            "anchor": "anchor/node-quay",
-            "happening": {
-              "subject": "anchor/node-quay",
-              "text": "The party ride the racing pigs down the main street to the quay.",
-              "verb": "arrives"
-            },
-            "hint": "Saddled pigs wait at the top of the main street, one each. The race starts when the first rider is up: ride down to the quay.",
-            "id": "obj/race-the-pig",
-            "radius": 4,
-            "record": "Oskar's racing pigs had to be ridden down the main street to the quay in the festival's pig race, against a carter called Ulla.",
-            "ride": "vehicle/race-pig",
-            "title": "Win the pig race",
-            "type": "reach-anchor"
-          }
-        ],
-        "on_complete": [
-          {
-            "style": "chat",
-            "text": "The first pig crosses the quay by a snout. The board on the square says who came in where; the town will argue about it until next year.",
-            "type": "narrate"
-          },
-          {
-            "steps": [
-              {
-                "at_ticks": 1200,
-                "effects": [
-                  {
-                    "board": "board/pig-race",
-                    "type": "hide-board"
-                  }
-                ]
-              }
-            ],
-            "type": "sequence"
-          }
-        ],
-        "on_objective_complete": {
-          "obj/race-the-pig": [
-            {
-              "audience": "actor",
-              "board": "board/pig-race",
-              "type": "place-on-board"
-            }
-          ]
-        },
         "trigger": {
           "quest": "quest/dusk",
           "type": "quest-complete"
@@ -12494,7 +12965,7 @@
           "npc/runa": [
             {
               "at": {
-                "anchor": "anchor/node-barn"
+                "anchor": "anchor/node-orchard"
               },
               "dialogue": "unchanged",
               "doing": "unchanged",
@@ -12502,7 +12973,7 @@
                 "flag/mare-home"
               ],
               "requires_flags": [
-                "flag/runa-fooled"
+                "flag/mare-out"
               ]
             },
             {
@@ -12517,7 +12988,6 @@
               "dialogue": "unchanged",
               "doing": "unchanged",
               "requires_flags": [
-                "flag/runa-fooled",
                 "flag/mare-home"
               ]
             },
@@ -12533,7 +13003,7 @@
               "dialogue": "unchanged",
               "doing": "unchanged",
               "forbids_flags": [
-                "flag/runa-fooled"
+                "flag/mare-out"
               ]
             }
           ],
@@ -12954,7 +13424,7 @@
           "npc/runa": [
             {
               "at": {
-                "anchor": "anchor/node-barn"
+                "anchor": "anchor/node-orchard"
               },
               "dialogue": "unchanged",
               "doing": "unchanged",
@@ -12962,7 +13432,7 @@
                 "flag/mare-home"
               ],
               "requires_flags": [
-                "flag/runa-fooled"
+                "flag/mare-out"
               ]
             },
             {
@@ -12977,7 +13447,6 @@
               "dialogue": "unchanged",
               "doing": "unchanged",
               "requires_flags": [
-                "flag/runa-fooled",
                 "flag/mare-home"
               ]
             },
@@ -12993,7 +13462,7 @@
               "dialogue": "unchanged",
               "doing": "unchanged",
               "forbids_flags": [
-                "flag/runa-fooled"
+                "flag/mare-out"
               ]
             }
           ],
@@ -13322,7 +13791,7 @@
           "npc/runa": [
             {
               "at": {
-                "anchor": "anchor/node-barn"
+                "anchor": "anchor/node-orchard"
               },
               "dialogue": "unchanged",
               "doing": "unchanged",
@@ -13330,7 +13799,7 @@
                 "flag/mare-home"
               ],
               "requires_flags": [
-                "flag/runa-fooled"
+                "flag/mare-out"
               ]
             },
             {
@@ -13345,7 +13814,6 @@
               "dialogue": "unchanged",
               "doing": "unchanged",
               "requires_flags": [
-                "flag/runa-fooled",
                 "flag/mare-home"
               ]
             },
@@ -13361,7 +13829,7 @@
               "dialogue": "unchanged",
               "doing": "unchanged",
               "forbids_flags": [
-                "flag/runa-fooled"
+                "flag/mare-out"
               ]
             }
           ],
@@ -13491,6 +13959,145 @@
           "quest": "quest/the-cat-cave",
           "type": "quest-complete"
         }
+      }
+    ],
+    "races": [
+      {
+        "board": "board/pig-race",
+        "checkpoints": [
+          {
+            "at": {
+              "anchor": "anchor/node-meadow-track",
+              "offset": [
+                3,
+                4,
+                -51
+              ]
+            },
+            "extent": [
+              5,
+              3,
+              2
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-meadow-track",
+              "offset": [
+                3,
+                10,
+                -111
+              ]
+            },
+            "extent": [
+              5,
+              3,
+              2
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-cathedral-garden",
+              "offset": [
+                34,
+                -3,
+                26
+              ]
+            },
+            "extent": [
+              4,
+              3,
+              4
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-cathedral",
+              "offset": [
+                0,
+                0,
+                23
+              ]
+            },
+            "extent": [
+              1,
+              2,
+              1
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-cathedral",
+              "offset": [
+                -15,
+                0,
+                11
+              ]
+            },
+            "extent": [
+              1,
+              2,
+              1
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-cathedral",
+              "offset": [
+                -29,
+                0,
+                0
+              ]
+            },
+            "extent": [
+              1,
+              2,
+              1
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-street-5"
+            },
+            "extent": [
+              4,
+              2,
+              2
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-lane-8"
+            },
+            "extent": [
+              2,
+              2,
+              2
+            ]
+          },
+          {
+            "at": {
+              "anchor": "anchor/node-meadow-track",
+              "offset": [
+                -6,
+                0,
+                0
+              ]
+            },
+            "extent": [
+              1,
+              3,
+              2
+            ]
+          }
+        ],
+        "grace_ticks": 600,
+        "id": "race/round-the-town",
+        "missed": "You missed a checkpoint on the course. Go back for it.",
+        "passed": "Checkpoint",
+        "racers": [
+          "actor/racer-ulla"
+        ]
       }
     ],
     "shops": [
@@ -14202,44 +14809,7 @@
         "scope": "party"
       },
       {
-        "counts": {
-          "of": {
-            "kind": "minecraft:pillager"
-          },
-          "region": {
-            "anchor": "anchor/stage",
-            "extent": [
-              3,
-              2,
-              3
-            ]
-          }
-        },
-        "id": "state/raiders-at-the-cake-pillager",
-        "initial": 0,
-        "note": "How many pillagers stand on the stage by the cake.",
-        "scope": "party"
-      },
-      {
-        "counts": {
-          "of": {
-            "kind": "minecraft:vindicator"
-          },
-          "region": {
-            "anchor": "anchor/stage",
-            "extent": [
-              3,
-              2,
-              3
-            ]
-          }
-        },
-        "id": "state/raiders-at-the-cake-vindicator",
-        "initial": 0,
-        "note": "How many vindicators stand on the stage by the cake.",
-        "scope": "party"
-      },
-      {
+        "display": "sidebar",
         "id": "state/pennies",
         "initial": 0,
         "name": "Festival Pennies",
@@ -14270,16 +14840,16 @@
             "riders": "vehicle/race-pig"
           },
           "region": {
-            "anchor": "anchor/node-street-1",
+            "anchor": "anchor/node-meadow-track",
             "extent": [
-              4,
+              16,
               2,
-              6
+              3
             ]
           }
         },
         "id": "state/racers-up",
-        "note": "Riders up on Oskar's racing pigs at the top of the main street.",
+        "note": "Riders up on Oskar's racing pigs at the start line on the meadow track.",
         "scope": "party"
       },
       {
@@ -14292,6 +14862,31 @@
         "id": "state/levers-down",
         "initial": 0,
         "note": "Levers pulled down in the castle; all four open the old lords' hidden way.",
+        "scope": "party"
+      },
+      {
+        "counts": {
+          "of": {
+            "kind": "minecraft:pillager"
+          },
+          "region": {
+            "anchor": "anchor/stage",
+            "extent": [
+              3,
+              2,
+              3
+            ]
+          }
+        },
+        "id": "state/raiders-at-the-cake",
+        "initial": 0,
+        "note": "How many pillagers stand on the stage by the cake.",
+        "scope": "party"
+      },
+      {
+        "id": "state/landings-held",
+        "initial": 0,
+        "note": "Landings of raiders driven off at dusk; the captain comes ashore at two.",
         "scope": "party"
       }
     ],
@@ -15581,84 +16176,6 @@
         }
       },
       {
-        "effects": [
-          {
-            "flag": "flag/cake-taken",
-            "type": "set-flag"
-          },
-          {
-            "line": "A raider reached the stage in the fight and ran off with Oskar's cake.",
-            "objective": "obj/stop-the-captain",
-            "type": "record-outcome"
-          },
-          {
-            "anchor": "anchor/cake-table",
-            "block": "minecraft:air",
-            "type": "set-block"
-          },
-          {
-            "style": "chat",
-            "text": "A raider bounds onto the stage, snatches Oskar's cake and is gone with it into the dusk.",
-            "type": "narrate"
-          }
-        ],
-        "forbids_flags": [
-          "flag/cake-taken",
-          "flag/raiders-gone"
-        ],
-        "id": "trigger/cake-taken-pillager",
-        "on": {
-          "on": "body-enters",
-          "state": "state/raiders-at-the-cake-pillager"
-        },
-        "requires_state": [
-          {
-            "op": "at-least",
-            "state": "state/raiders-at-the-cake-pillager",
-            "value": 1
-          }
-        ]
-      },
-      {
-        "effects": [
-          {
-            "flag": "flag/cake-taken",
-            "type": "set-flag"
-          },
-          {
-            "line": "A raider reached the stage in the fight and ran off with Oskar's cake.",
-            "objective": "obj/stop-the-captain",
-            "type": "record-outcome"
-          },
-          {
-            "anchor": "anchor/cake-table",
-            "block": "minecraft:air",
-            "type": "set-block"
-          },
-          {
-            "style": "chat",
-            "text": "A raider bounds onto the stage, snatches Oskar's cake and is gone with it into the dusk.",
-            "type": "narrate"
-          }
-        ],
-        "forbids_flags": [
-          "flag/cake-taken",
-          "flag/raiders-gone"
-        ],
-        "id": "trigger/cake-taken-vindicator",
-        "on": {
-          "on": "body-enters",
-          "state": "state/raiders-at-the-cake-vindicator"
-        },
-        "requires_state": [
-          {
-            "op": "at-least",
-            "state": "state/raiders-at-the-cake-vindicator",
-            "value": 1
-          }
-        ]
-      },
-      {
         "at": "anchor/stable-yard",
         "effects": [
           {
@@ -16068,59 +16585,37 @@
       {
         "effects": [
           {
+            "race": "race/round-the-town",
+            "type": "start-race"
+          },
+          {
             "style": "title",
-            "text": "Ready...",
+            "text": "Go!",
             "type": "narrate"
           },
           {
-            "board": "board/pig-race",
-            "type": "show-board"
+            "style": "actionbar",
+            "text": "Oskar drops his apron, and the pigs are off. Ulla whoops and goes with them.",
+            "type": "narrate"
           },
           {
-            "flag": "flag/race-on",
-            "type": "set-flag"
-          },
-          {
-            "steps": [
-              {
-                "at_ticks": 60,
-                "effects": [
-                  {
-                    "style": "title",
-                    "text": "Go!",
-                    "type": "narrate"
-                  },
-                  {
-                    "actor": "actor/racer-ulla",
-                    "happening": {
-                      "subject": "actor/racer-ulla",
-                      "text": "Ulla rides her pig down the main street to the quay.",
-                      "verb": "departs"
-                    },
-                    "on_arrive": [
-                      {
-                        "audience": {
-                          "actor": "actor/racer-ulla"
-                        },
-                        "board": "board/pig-race",
-                        "type": "place-on-board"
-                      }
-                    ],
-                    "speed": 0.14,
-                    "to": {
-                      "anchor": "anchor/node-quay",
-                      "offset": [
-                        -2,
-                        0,
-                        0
-                      ]
-                    },
-                    "type": "move-actor"
-                  }
-                ]
-              }
-            ],
-            "type": "sequence"
+            "actor": "actor/racer-ulla",
+            "along": "race/round-the-town",
+            "happening": {
+              "subject": "actor/racer-ulla",
+              "text": "Ulla rides her pig round the course.",
+              "verb": "departs"
+            },
+            "speed": 0.14,
+            "to": {
+              "anchor": "anchor/node-meadow-track",
+              "offset": [
+                1,
+                0,
+                1
+              ]
+            },
+            "type": "move-actor"
           }
         ],
         "id": "trigger/race-start",
@@ -16128,149 +16623,16 @@
           "on": "body-enters",
           "state": "state/racers-up"
         },
-        "requires_flags": [
-          "flag/raiders-gone"
-        ],
         "requires_state": [
           {
             "op": "at-least",
             "state": "state/racers-up",
             "value": 1
           }
-        ]
-      },
-      {
-        "at": "anchor/finish-1",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
         ],
-        "id": "trigger/finish-1",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
-      },
-      {
-        "at": "anchor/finish-2",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
-        ],
-        "id": "trigger/finish-2",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
-      },
-      {
-        "at": "anchor/finish-3",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
-        ],
-        "id": "trigger/finish-3",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
-      },
-      {
-        "at": "anchor/finish-4",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
-        ],
-        "id": "trigger/finish-4",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
-      },
-      {
-        "at": "anchor/finish-5",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
-        ],
-        "id": "trigger/finish-5",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
-      },
-      {
-        "at": "anchor/finish-6",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
-        ],
-        "id": "trigger/finish-6",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
-      },
-      {
-        "at": "anchor/finish-7",
-        "audience": "presser",
-        "effects": [
-          {
-            "audience": "actor",
-            "board": "board/pig-race",
-            "type": "place-on-board"
-          }
-        ],
-        "id": "trigger/finish-7",
-        "on": {
-          "on": "step"
-        },
-        "once": false,
-        "requires_flags": [
-          "flag/race-on"
-        ]
+        "serves": {
+          "objective": "obj/run-the-pig-race"
+        }
       },
       {
         "answers": {
@@ -16996,6 +17358,74 @@
         "prop": {
           "block": "minecraft:carved_pumpkin[facing=south]"
         }
+      },
+      {
+        "effects": [
+          {
+            "flag": "flag/cake-taken",
+            "type": "set-flag"
+          },
+          {
+            "line": "A raider reached the stage, and the raiders carried Oskar's cake and the whole feast off to sea.",
+            "objective": "obj/stop-the-captain",
+            "type": "record-outcome"
+          },
+          {
+            "anchor": "anchor/cake-table",
+            "block": "minecraft:air",
+            "type": "set-block"
+          },
+          {
+            "style": "chat",
+            "text": "A raider bounds onto the stage, snatches Oskar's cake off its table and is gone with it. A horn from the bay: the raiders run for their boats with the cake held high, and the feast's tables go with them.",
+            "type": "narrate"
+          },
+          {
+            "style": "title",
+            "text": "The raid is lost.",
+            "type": "narrate"
+          },
+          {
+            "objective": "obj/hold-the-dock",
+            "type": "fail-objective"
+          },
+          {
+            "objective": "obj/hold-the-beach",
+            "type": "fail-objective"
+          },
+          {
+            "objective": "obj/stop-the-captain",
+            "type": "fail-objective"
+          },
+          {
+            "type": "despawn-wave",
+            "wave": "wave/dock-landing"
+          },
+          {
+            "type": "despawn-wave",
+            "wave": "wave/beach-landing"
+          },
+          {
+            "type": "despawn-wave",
+            "wave": "wave/the-captain"
+          }
+        ],
+        "forbids_flags": [
+          "flag/cake-taken",
+          "flag/raiders-gone"
+        ],
+        "id": "trigger/cake-taken",
+        "on": {
+          "on": "body-enters",
+          "state": "state/raiders-at-the-cake"
+        },
+        "requires_state": [
+          {
+            "op": "at-least",
+            "state": "state/raiders-at-the-cake",
+            "value": 1
+          }
+        ]
       }
     ],
     "vehicles": [
@@ -17035,37 +17465,6 @@
       },
       {
         "at": {
-          "anchor": "anchor/node-street-1"
-        },
-        "bounds": {
-          "anchor": "anchor/node-street-5",
-          "extent": [
-            6,
-            12,
-            100
-          ]
-        },
-        "count": {
-          "base": 1,
-          "per_player": 1
-        },
-        "entity": "minecraft:pig",
-        "equipment": {
-          "saddle": {
-            "item": "minecraft:saddle"
-          }
-        },
-        "facing": "south",
-        "id": "vehicle/race-pig",
-        "seated": "by-story",
-        "spacing": [
-          0,
-          0,
-          -2
-        ]
-      },
-      {
-        "at": {
           "anchor": "anchor/mare-rail"
         },
         "bounds": {
@@ -17090,19 +17489,55 @@
       },
       {
         "at": {
-          "anchor": "anchor/node-street-1",
+          "anchor": "anchor/node-meadow-track",
           "offset": [
-            -1,
+            6,
             0,
-            2
+            -1
           ]
         },
         "bounds": {
-          "anchor": "anchor/node-street-5",
+          "anchor": "anchor/node-farm-lane",
           "extent": [
-            6,
-            12,
-            100
+            85,
+            16,
+            133
+          ]
+        },
+        "count": {
+          "base": 1,
+          "per_player": 1
+        },
+        "entity": "minecraft:pig",
+        "equipment": {
+          "saddle": {
+            "item": "minecraft:saddle"
+          }
+        },
+        "facing": "north",
+        "id": "vehicle/race-pig",
+        "seated": "by-story",
+        "spacing": [
+          2,
+          0,
+          0
+        ]
+      },
+      {
+        "at": {
+          "anchor": "anchor/node-meadow-track",
+          "offset": [
+            14,
+            0,
+            0
+          ]
+        },
+        "bounds": {
+          "anchor": "anchor/node-farm-lane",
+          "extent": [
+            85,
+            16,
+            133
           ]
         },
         "entity": "minecraft:pig",
@@ -17111,7 +17546,7 @@
             "item": "minecraft:saddle"
           }
         },
-        "facing": "south",
+        "facing": "north",
         "id": "vehicle/racer-ulla-pig",
         "rider": "actor/racer-ulla",
         "seated": "by-story"
@@ -17140,6 +17575,13 @@
               "per_player": 1
             },
             "entity": "minecraft:pillager"
+          },
+          {
+            "count": {
+              "base": 1,
+              "per_player": 1
+            },
+            "entity": "minecraft:vindicator"
           }
         ],
         "tier": "ordinary"
@@ -17173,6 +17615,10 @@
               "per_player": 1
             },
             "entity": "minecraft:pillager"
+          },
+          {
+            "count": 1,
+            "entity": "minecraft:evoker"
           }
         ],
         "tier": "ordinary"
@@ -17211,6 +17657,17 @@
               "per_player": 1
             },
             "entity": "minecraft:vindicator"
+          },
+          {
+            "count": 1,
+            "entity": "minecraft:ravager"
+          },
+          {
+            "count": {
+              "base": 1,
+              "per_player": 1
+            },
+            "entity": "minecraft:evoker"
           }
         ],
         "tier": "elite"

@@ -52,11 +52,29 @@
             "id": "dlg/hedda-dusk",
             "options": [
               {
-                "label": "Holding.",
-                "next": "dlg/hedda-dusk"
+                "effects": [
+                  {
+                    "objective": "obj/back-to-the-stage",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We're ready. Let them come.",
+                "tooltip": "There is no going back: the raid begins at once, and the rest of the town waits until it is over."
+              },
+              {
+                "forbids_flags": [
+                  "flag/dusk-begun"
+                ],
+                "label": "Not yet."
+              },
+              {
+                "label": "Holding the street!",
+                "requires_flags": [
+                  "flag/dusk-begun"
+                ]
               }
             ],
-            "text": "Hold the street! Nobody touches the cake!"
+            "text": "You're back! Is it all put right, the lamp and the bell, the goats, the crates, the fireworks? Then look out past the lighthouse, darlings, because I have been looking all afternoon. Striped sails. That is Captain Gull, who comes every year he hears we have a cake worth taking, and this year he has brought friends: big ones. When his horn blows there is no more running about the town: it is this stage, the main street and the cake until it is over. So get ready first. Torvald sells good iron at his counter, and whatever else the town has given you today, bring it."
           },
           {
             "id": "dlg/hedda-night",
@@ -69,7 +87,7 @@
                   }
                 ],
                 "label": "Begin.",
-                "tooltip": "Open the festival."
+                "tooltip": "Open the festival, whatever the day has made of it."
               }
             ],
             "text": "Look at them. Look at all of them. Right. Whatever happened today, that is the festival now. Shall I begin?"
@@ -82,7 +100,7 @@
                 "next": "dlg/hedda-day"
               }
             ],
-            "text": "Tonight, once the town is safe: the pig race down the main street, on Oskar's racing pigs, one rider to a pig. Before that, the fair field behind the beach has its stalls out, and every one of them is giving something away. And they do say the big grey cat by the duck pond talks, if it likes you."
+            "text": "Oskar's pig race, whenever you dare it: round the whole town on his racing pigs, one rider to a pig, and through the cathedral on the way. Ask him at the bakery's door. And the fair field behind the beach has its stalls out, and every one of them is giving something away. And they do say the big grey cat by the duck pond talks, if it likes you."
           }
         ],
         "npc": "npc/hedda",
@@ -154,6 +172,10 @@
             "id": "dlg/oskar-day",
             "options": [
               {
+                "label": "A pig race?",
+                "next": "dlg/oskar-race"
+              },
+              {
                 "label": "Anything worth seeing?",
                 "next": "dlg/oskar-sights"
               },
@@ -162,6 +184,26 @@
               }
             ],
             "text": "The cake is done. Four tiers, candied cherries, a sugar lighthouse on top. It goes on the stage at dusk and nobody breathes on it until midnight."
+          },
+          {
+            "id": "dlg/oskar-race",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/take-the-dare",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll race.",
+                "tooltip": "Everyone standing in the street before Oskar's door rides his cart down to the start line, and the race is on: the rest of the day waits until it has been run."
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/oskar-day"
+              }
+            ],
+            "text": "My racing pigs! Saddled since dawn and eating their heads off. Round the whole town: up through the woods behind the farms, through the cathedral garden and the churchyard, in at the cathedral's side door and out at its great front door, down the main street and home along the lower lane to the meadow track. Every checkpoint on the way, in order, or it does not count. A carter called Ulla has won it three years running and will not stop saying so. Race her?"
           },
           {
             "id": "dlg/oskar-sights",
@@ -390,7 +432,7 @@
                 "next": "dlg/vidar-day"
               }
             ],
-            "text": "By-law nine: the herb stall in the cathedral's garden feeds whoever is hungry. By-law twelve: the pig race runs tonight, down the main street to the quay. The by-laws are very clear on pigs. By-law three: no feeding the cat by the duck pond. Nobody has ever obeyed by-law three. The cat has seen to that."
+            "text": "By-law nine: the herb stall in the cathedral's garden feeds whoever is hungry. By-law twelve: on festival day, and on no other, a pig may be ridden through the cathedral, in at the side door and out at the front, if it is racing. Ask Oskar. The by-laws are very clear on pigs. By-law three: no feeding the cat by the duck pond. Nobody has ever obeyed by-law three. The cat has seen to that."
           }
         ],
         "npc": "npc/vidar",
