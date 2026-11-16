@@ -297,6 +297,9 @@ def garden(m, W, D, d, g, side):
     m.mark("herb-stall", hx, hz, facing="south", y=d)             # the herbs it sells
     bench(m, 3, 5, cz + 2, d, "north")
     part(m, 1, W, 2, D - 1, "garth")
+    # the row behind the garden's east gate onto the path under the hill is the plot's own ground
+    for z in range(2, 8):
+        m.unpart(W, z, "the row behind the east gate onto the path under the hill")
 
 
 def games(m, W, D, d, g, side):
@@ -462,10 +465,11 @@ def pond(m, W, D, d, g, side):
     lamp_post(m, 2, bz, d)
     lamp_post(m, W - 1, D + 1 - bz, d)
     # the cat's place on the near bank, away from the track, with its dish beside it (the cat's
-    # errands: it asks for cod out of this pond and eats them here)
+    # errands: she asks for cod out of this pond and eats them here, one dish to a cod)
     cz = D - 1 if side == "north" else 2
     m.mark("cat-spot", W // 2 + 4, cz, facing="north" if side == "north" else "south", y=d)
-    m.mark("cat-dish", W // 2 + 3, cz, facing="north" if side == "north" else "south", y=d)
+    for k in range(1, 6):      # her five dishes in a row, one for each cod
+        m.mark(f"cat-dish-{k}", W // 2 + 3 - (5 - k), cz, facing="north" if side == "north" else "south", y=d)
     part(m, 1, W, 2, D - 1, "pond-bank")
 
 
