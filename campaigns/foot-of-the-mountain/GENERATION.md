@@ -115,6 +115,6 @@ At engine `feature/festival-day` `52f124716`.
 - Torvald comes to the square for the festival with the other townsfolk. Ulla wears her own face (`skins/mari.png`).
 - Hedda, Oskar, Lady Agathe, Sverre and Vidar each answer "Anything worth seeing?" with what the town offers nearby.
 - The castle garrison's knights are hard on purpose: full iron armour and diamond spears, on zombie horses in iron horse armour (which keeps the sun off them in the open yard).
-- A fire at the castle gate, lit when the party reaches the gate, is a rest point (`bonfire`; every class's bread or pies is its flask), and beside it the carter's bell carries whoever stands by it down to the inn (`trigger/gate-bell`, a `teleport`, the graph's `edge/carter-down`): two things, declared apart.
+- A fire at the castle gate, lit when the party reaches the gate, is a rest point (`bonfire`; each class carries four festival apples, the flask a rest tops up), and beside it the carter's bell carries whoever stands by it down to the inn (`trigger/gate-bell`, a `teleport`, the graph's `edge/carter-down`): two things, declared apart.
 - Torvald's iron man stands as before; the cat's errands, the ending's changes and the race course are other rounds'.
 - Captain Gull's push comes ashore at the foot of the main street, where the dock landing does: seated on the last flight, a blow could knock his men off the quay into the cove where nobody follows (`DW0924`).
