@@ -66,6 +66,11 @@ def solid(x, y, z):
         return True
     if (x in WEST or x in EAST) and y < LEDGE:
         return True
+    # under the hut: the chasm's roof is a course of rock beneath the hut's floor wherever the hut
+    # stands over it (the hut's own courses are the allocation's voids), so the hut's yard of
+    # gravel lies on rock and not over the drop; only the shaft's cell, the ladder's, goes through
+    if y == TOP and (x, TOP + 1, z) in VOIDS and not (x == OX and z == OZ):
+        return True
     # over the ledges the chasm's walls come in close: a ledge is a shelf four wide along the rock,
     # from under the hut's shaft to the bridge on the west, and the den's shelf on the east; the
     # rest of the cliffs' tops is rock to the roof

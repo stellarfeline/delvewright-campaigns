@@ -151,6 +151,14 @@ def miners_hut(m, place):
     m.set(8, d + 1, 7, "minecraft:brown_carpet")
     m.set(7, d, 7, stairs("spruce", "east"))
     m.set(9, d, 7, lantern())
+    # the top rung of the ladder up from the chasm stands in the hole through the hut's floor: the
+    # rung in a floor's hole is the hole owner's, and the hut owns this one (the den's ladder ends
+    # under it). The starter leaves a floor hole empty (a body drops through it), so the hole's
+    # cell is taken as the drawing's, as for a stair through a hole in a lid, and holds the rung,
+    # hung on the floor's planks to its west
+    ox, oy, oz = next([b.value for b in s_["lo"]] for s_ in place.seams if s_["stem"] == "miners-hut-to-cat-den")
+    m.drawn_openings.add((ox, oy, oz))
+    m.set(ox, oy, oz, "minecraft:ladder[facing=east,waterlogged=false]")
     # the yard's lamp
     lamp_post(m, 3, 12, d)
     m.mark("node-miners-hut", 3, 10, facing="east")
