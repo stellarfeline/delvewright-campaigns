@@ -131,3 +131,12 @@ At engine `feature/festival-day` `4967f5bc8` (`dsl_version` 0.81.0). The authori
 ### Held: the chasm under the castle, and the cat's den
 
 With the hut, its track and the chasm in (`WITH_CHASM=1`), every place passes its own gates at `detail --check`, and the whole is refused before anything is written: `DW1042`, the darkness survey of `area/site` over the world before `batch/woods-lanterns` reads a reach graph whose work passes the engine's fixed budget (`metrics::REACH_BUDGET_STATES`, 200000000): 206257142 launch states simulated (208267653 before the ledges were walled in). With the chasm's air below the bridge filled with rock as a measurement (never shipped), the same survey is 200244621, still over. Without the three places the whole is under the budget and builds. So the cat's last errand stops after the fifth round: she gives in, and the way to her den waits (her fifth answer says so). The statue is stamped by `batch/the-thing` only with the chasm in.
+
+### The machine checks
+
+At content `941dbfde` and engine `feature/festival-day` `4967f5bc8`, on the remote, every output written fresh by the run (manifest `be6b252d…`):
+
+- Build: exit 0, 13:46 wall, 5.61 GB max resident.
+- PackTest: exit 0, 440 of 440 required tests passed.
+- The critical-path bot: exit 0, 49 steps, 2 scripted deaths survived, 7 advisory findings. The run before it (content `2c16ea6e`) failed on the herder's hut's and the lookout's finds playing the objective-complete cue's sound; they chime their own now.
+- The cat's errands and the corners are optional and off the exported path: the bot does not walk them; their proofs are the build's (every place's gates, the whole's battery, the reach and light surveys) and PackTest's generated tests. Branch worlds were not run this round.
