@@ -86,3 +86,15 @@ At engine `feature/festival-day` (`dsl_version` 0.78.0).
 - The salvage barrels sit in the water at its surface (note 24).
 - A rest point for the castle fight: cornering the fox at its den sets a checkpoint on the gate road outside the castle gate, the gatehouse between it and the yard where the garrison rises; when the chase is settled at noon the checkpoint comes home to the inn's taproom on the square. A checkpoint moves the respawn and nothing else.
 - Ulla's racer mark is `anchor/node-street-1 + [-1, 0, 2]`, clear of the house fronts (DW0451).
+
+## The whole ladder with the vault on
+
+At content `826da288` and engine `feature/festival-day` `8684b9d32`, on the remote, every output written fresh by the run (manifest `d232fdb9…`):
+
+- Build: exit 0, 13:44 wall, 4.86 GB max resident.
+- PackTest: exit 0, 327 of 327 required tests passed.
+- The critical-path bot: exit 0, 46 steps; die-retry took 2 scripted deaths in the castle yard, both respawned at the gate-road checkpoint and re-engaged; the dusk's three fights are not died in (a fight whose bodies may fire a story trigger).
+- The world save: exit 0. The written world: exit 0, 6402736 cells compared, verdict pass.
+- Branch runs (`--jobs 8`, 11426 s): 50 of 50 worlds run, 49 passed, 1 failed (world/17, goats astray with the mare taken and lost). While the bot waits out the goats' window beside the wheat chest, the Admiral (who follows wheat) rams it, and the harness's staged removal kills him by a blow credited to the bot; his `on_kill` fails the goats task, so it settles failed and never expires. World/24 walks the same path to that step and passes.
+- The staging gate: exit 1, refused on world/17 alone.
+
