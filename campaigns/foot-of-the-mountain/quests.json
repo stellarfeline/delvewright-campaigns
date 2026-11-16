@@ -1455,18 +1455,42 @@
               "text": "The party read the steward's note on the order of the watch fires.",
               "verb": "learns"
             },
-            "hint": "In the porter's guardroom inside the castle gate, through the door off the gate passage on the kitchen side: the chest by the casks.",
+            "hint": "In the castle yard, beside the well: the steward's chest.",
             "holder": "anchor/steward-note",
             "id": "obj/find-the-note",
             "item": "minecraft:paper",
             "item_name": "Note in Bernt's Hand",
-            "record": "The cellar grate lifted only for the four watch fires on the castle's walls, lit in the order of the steward's note: the cook's under the kitchen tower, the porter's under the gatehouse, then the far wall's turrets, the steward's on the kitchen side and the lord's on the gatehouse side.",
+            "record": "The steward's note gave the order of the yard's watch fires: the cook's under the kitchen tower, the porter's in the far corner on the kitchen side, the steward's in the far corner on the gatehouse side, and the lord's under the gatehouse.",
             "title": "Find the steward's note",
             "type": "collect"
           },
           {
             "after": [
-              "obj/find-the-note",
+              "obj/find-the-note"
+            ],
+            "anchor": "anchor/stop-courtyard",
+            "happening": {
+              "subject": "anchor/cellar-grate",
+              "text": "With the four watch fires lit, the iron grate over the cellar door draws up.",
+              "verb": "opens"
+            },
+            "hint": "Light the four watch fires at the castle yard's corners in the order the steward's note gives, then come back to the middle of the yard, before the cellar's grate.",
+            "id": "obj/lift-the-grate",
+            "radius": 5,
+            "record": "The cellar grate lifted only for the four watch fires in the castle yard, lit in the order of the steward's note.",
+            "requires_state": [
+              {
+                "op": "at-least",
+                "state": "state/fires-lit",
+                "value": 4
+              }
+            ],
+            "title": "Go back to the cellar grate",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/lift-the-grate",
               "obj/clear-the-yard"
             ],
             "anchor": "anchor/rocket-store",
@@ -1476,7 +1500,7 @@
               "text": "The party carry the castle's fireworks out of the storeroom.",
               "verb": "gains"
             },
-            "hint": "Light the four watch fires on the castle's wall walk in the order the steward's note gives, and the grate over the cellar door lifts: the fireworks are in the steward's chest among the casks in the barrel cellars under the great hall. The wall walk is reached by the stair up the curtain wall beside the gatehouse.",
+            "hint": "Through the lifted grate into the barrel cellars under the great hall: the steward's chest among the casks.",
             "holder": "anchor/rocket-store",
             "id": "obj/fetch-the-fireworks",
             "item": "minecraft:firework_rocket",
@@ -1500,13 +1524,6 @@
               "ticks": 18000
             },
             "record": "The castle's fireworks were locked in the storeroom under the great hall, and had to be fetched before the steward gave up on them.",
-            "requires_state": [
-              {
-                "op": "at-least",
-                "state": "state/fires-lit",
-                "value": 4
-              }
-            ],
             "title": "Fetch the fireworks",
             "type": "collect"
           }
@@ -1567,6 +1584,20 @@
               "type": "set-checkpoint"
             },
             {
+              "anchor": "anchor/gate-fire",
+              "answers": {
+                "not_yet": "A cold fire, laid and waiting. Somebody will light it when the gate is reached."
+              },
+              "prompt": "The gate fire",
+              "prop": {
+                "block": "minecraft:campfire[facing=east,lit=true,signal_fire=false,waterlogged=false]"
+              },
+              "rest_label": "Rest here",
+              "rest_tooltip": "Rest by the fire: if you fall at the castle, you come round here.",
+              "save_label": "Warm your hands",
+              "type": "bonfire"
+            },
+            {
               "happening": {
                 "subject": "wave/castle-garrison",
                 "text": "The castle's old garrison rises in the yard, as it does whenever the castle is quiet.",
@@ -1600,7 +1631,7 @@
           "obj/find-the-note": [
             {
               "style": "chat",
-              "text": "The steward's note, in a cramped hand: 'For the watch, when I am not here: the watch fires on the walls are lit as the household rises. The cook is up first: hers is at the wall walk's end under the kitchen tower. The porter rises next to open the gate: his is at the wall walk's end under the gatehouse. Then the steward: mine is in the turret on the far wall, on the kitchen side. The lord rises last of all: his is in the turret on the far wall, on the gatehouse side. Light one out of turn, and every fire on the walls goes out. B.'",
+              "text": "The steward's note, in a cramped hand: 'For the watch, when I am not here: the watch fires in the yard are lit as the household rises. The cook is up first: hers is under the kitchen tower. Then the porter, who walks the walls at first light: his is in the yard's far corner on the kitchen side. Then the steward: mine is in the far corner on the gatehouse side. The lord rises last of all: his is under the gatehouse. Light one out of turn, and every fire in the yard goes out. B.'",
               "type": "narrate"
             }
           ],
@@ -1687,6 +1718,22 @@
                 ]
               },
               "type": "move-actor"
+            }
+          ],
+          "obj/lift-the-grate": [
+            {
+              "anchor": "anchor/cellar-grate",
+              "happening": {
+                "subject": "anchor/cellar-grate",
+                "text": "The iron grate over the cellar door draws up.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "style": "chat",
+              "text": "As you come back into the yard, the iron grate over the cellar door draws up on its chains: the fourth fire has done it.",
+              "type": "narrate"
             }
           ]
         },
@@ -4652,7 +4699,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the castle cellar, behind the old grate. My note is in the guardroom chest. I am not going up there again."
+                "The fireworks are in the castle cellar, behind the old grate. My note is in my chest by the well. I am not going up there again."
               ]
             },
             "doing": "about the festival"
@@ -11838,7 +11885,7 @@
             },
             "dialogue": {
               "barks": [
-                "The fireworks are in the castle cellar, behind the old grate. My note is in the guardroom chest. I am not going up there again."
+                "The fireworks are in the castle cellar, behind the old grate. My note is in my chest by the well. I am not going up there again."
               ]
             },
             "doing": "about the festival"
@@ -12738,30 +12785,30 @@
       {
         "anchor": "anchor/scarecrow-sign-kitchen-garden",
         "front": [
-          "Scarecrow's head.",
-          "NOT a lantern.",
-          "Leave it be!",
-          "- the growers"
+          "Scarecrow's",
+          "head: NOT a",
+          "lantern!",
+          "Leave it be."
         ],
         "id": "sign/scarecrow-kitchen-garden"
       },
       {
         "anchor": "anchor/scarecrow-sign-allotments",
         "front": [
-          "Scarecrow's head.",
-          "NOT a lantern.",
-          "Leave it be!",
-          "- the growers"
+          "Scarecrow's",
+          "head: NOT a",
+          "lantern!",
+          "Leave it be."
         ],
         "id": "sign/scarecrow-allotments"
       },
       {
         "anchor": "anchor/scarecrow-sign-wheat-field",
         "front": [
-          "Scarecrow's head.",
-          "NOT a lantern.",
-          "Leave it be!",
-          "- the growers"
+          "Scarecrow's",
+          "head: NOT a",
+          "lantern!",
+          "Leave it be."
         ],
         "id": "sign/scarecrow-wheat-field"
       }
@@ -13256,7 +13303,7 @@
         "effects": [
           {
             "style": "actionbar",
-            "text": "The grate will not lift. Its chains run up into the walls, toward the watch fires. Bernt's note, he said, is in the guardroom chest by the gate.",
+            "text": "The grate will not lift. Its chains run into the walls, toward the watch fires in the yard. Bernt's note, he said, is in his chest by the well.",
             "type": "narrate"
           }
         ],
@@ -13268,6 +13315,45 @@
         "serves": {
           "gate": "anchor/cellar-grate"
         }
+      },
+      {
+        "answers": {
+          "not_yet": "The carter's bell. Nobody comes up for it until somebody has business at the castle."
+        },
+        "at": "anchor/gate-bell",
+        "audience": "presser",
+        "effects": [
+          {
+            "style": "actionbar",
+            "text": "The bell clangs down the mountain, and the carter's cart rattles up the road. Whoever stands on the road rides down to the square.",
+            "type": "narrate"
+          },
+          {
+            "from": {
+              "anchor": "anchor/stop-approach",
+              "extent": [
+                4,
+                2,
+                2
+              ]
+            },
+            "to": {
+              "anchor": "anchor/node-inn"
+            },
+            "type": "teleport"
+          }
+        ],
+        "id": "trigger/gate-bell",
+        "on": {
+          "on": "use"
+        },
+        "once": false,
+        "prop": {
+          "block": "minecraft:bell[attachment=floor,facing=east,powered=false]"
+        },
+        "requires_flags": [
+          "flag/fox-denned"
+        ]
       },
       {
         "answers": {
@@ -13293,7 +13379,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The fire catches: the cook's watch fire burns on the wall.",
+            "text": "The fire catches: the cook's watch fire burns in the yard.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -13324,7 +13410,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13338,7 +13432,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13352,7 +13454,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13366,7 +13476,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13380,7 +13498,15 @@
             "type": "set-state",
             "value": 0,
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13394,7 +13520,15 @@
             "audience": "actor",
             "type": "damage",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13405,10 +13539,18 @@
           },
           {
             "style": "actionbar",
-            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire in the yard gutters out.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 0
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13418,9 +13560,6 @@
             }
           }
         ],
-        "forbids_flags": [
-          "flag/grate-up"
-        ],
         "id": "trigger/fire-cook",
         "on": {
           "on": "use"
@@ -13429,11 +13568,8 @@
         "prop": {
           "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
         },
-        "requires_flags": [
-          "flag/fox-denned"
-        ],
         "serves": {
-          "objective": "obj/fetch-the-fireworks"
+          "objective": "obj/lift-the-grate"
         }
       },
       {
@@ -13460,7 +13596,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The fire catches: the porter's watch fire burns on the wall.",
+            "text": "The fire catches: the porter's watch fire burns in the yard.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -13491,7 +13627,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13505,7 +13649,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13519,7 +13671,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13533,7 +13693,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13547,7 +13715,15 @@
             "type": "set-state",
             "value": 0,
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13561,7 +13737,15 @@
             "audience": "actor",
             "type": "damage",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13572,10 +13756,18 @@
           },
           {
             "style": "actionbar",
-            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire in the yard gutters out.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 1
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13585,9 +13777,6 @@
             }
           }
         ],
-        "forbids_flags": [
-          "flag/grate-up"
-        ],
         "id": "trigger/fire-porter",
         "on": {
           "on": "use"
@@ -13596,11 +13785,8 @@
         "prop": {
           "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
         },
-        "requires_flags": [
-          "flag/fox-denned"
-        ],
         "serves": {
-          "objective": "obj/fetch-the-fireworks"
+          "objective": "obj/lift-the-grate"
         }
       },
       {
@@ -13627,7 +13813,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The fire catches: the steward's watch fire burns on the wall.",
+            "text": "The fire catches: the steward's watch fire burns in the yard.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -13658,7 +13844,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13672,7 +13866,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13686,7 +13888,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13700,7 +13910,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13714,7 +13932,15 @@
             "type": "set-state",
             "value": 0,
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13728,7 +13954,15 @@
             "audience": "actor",
             "type": "damage",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13739,10 +13973,18 @@
           },
           {
             "style": "actionbar",
-            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire in the yard gutters out.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 2
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13752,9 +13994,6 @@
             }
           }
         ],
-        "forbids_flags": [
-          "flag/grate-up"
-        ],
         "id": "trigger/fire-steward",
         "on": {
           "on": "use"
@@ -13763,11 +14002,8 @@
         "prop": {
           "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
         },
-        "requires_flags": [
-          "flag/fox-denned"
-        ],
         "serves": {
-          "objective": "obj/fetch-the-fireworks"
+          "objective": "obj/lift-the-grate"
         }
       },
       {
@@ -13794,7 +14030,7 @@
           },
           {
             "style": "actionbar",
-            "text": "The fire catches: the lord's watch fire burns on the wall.",
+            "text": "The fire catches: the lord's watch fire burns in the yard.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -13834,26 +14070,8 @@
             }
           },
           {
-            "anchor": "anchor/cellar-grate",
-            "happening": {
-              "subject": "anchor/cellar-grate",
-              "text": "With the fourth watch fire lit, the iron grate over the cellar door draws up.",
-              "verb": "opens"
-            },
-            "type": "open-gate",
-            "when": {
-              "requires_state": [
-                {
-                  "op": "at-least",
-                  "state": "state/fires-lit",
-                  "value": 4
-                }
-              ]
-            }
-          },
-          {
             "style": "chat",
-            "text": "With the fourth watch fire burning, chains rattle down inside the walls and the iron grate over the cellar door draws up.",
+            "text": "With the fourth watch fire burning, chains rattle inside the walls, toward the cellar door.",
             "type": "narrate",
             "when": {
               "requires_state": [
@@ -13870,7 +14088,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13884,7 +14110,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13898,7 +14132,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13912,7 +14154,15 @@
             "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]",
             "type": "set-block",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13926,7 +14176,15 @@
             "type": "set-state",
             "value": 0,
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13940,7 +14198,15 @@
             "audience": "actor",
             "type": "damage",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13951,10 +14217,18 @@
           },
           {
             "style": "actionbar",
-            "text": "Out of turn! The fire flares up in your face, and every watch fire on the walls gutters out.",
+            "text": "Out of turn! The fire flares up in your face, and every watch fire in the yard gutters out.",
             "type": "narrate",
             "when": {
+              "forbids_flags": [
+                "flag/grate-up"
+              ],
               "requires_state": [
+                {
+                  "op": "not-equals",
+                  "state": "state/fires-lit",
+                  "value": 3
+                },
                 {
                   "op": "not-equals",
                   "state": "state/fires-lit",
@@ -13964,9 +14238,6 @@
             }
           }
         ],
-        "forbids_flags": [
-          "flag/grate-up"
-        ],
         "id": "trigger/fire-lord",
         "on": {
           "on": "use"
@@ -13975,11 +14246,8 @@
         "prop": {
           "block": "minecraft:campfire[facing=south,lit=false,signal_fire=false,waterlogged=false]"
         },
-        "requires_flags": [
-          "flag/fox-denned"
-        ],
         "serves": {
-          "objective": "obj/fetch-the-fireworks"
+          "objective": "obj/lift-the-grate"
         }
       },
       {
@@ -15163,7 +15431,7 @@
         "tier": "ordinary"
       },
       {
-        "anchor": "anchor/node-flight-10",
+        "anchor": "anchor/node-street-9",
         "health_bar": {
           "range": 28,
           "title": "Captain Gull's Push"
@@ -15211,8 +15479,11 @@
             },
             "entity": "minecraft:zombie",
             "equipment": {
+              "chest": "minecraft:iron_chestplate",
+              "feet": "minecraft:iron_boots",
               "head": "minecraft:iron_helmet",
-              "main_hand": "minecraft:iron_spear"
+              "legs": "minecraft:iron_leggings",
+              "main_hand": "minecraft:diamond_spear"
             },
             "mount": {
               "entity": "minecraft:zombie_horse",

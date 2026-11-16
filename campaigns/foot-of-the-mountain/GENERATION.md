@@ -98,3 +98,23 @@ At content `826da288` and engine `feature/festival-day` `8684b9d32`, on the remo
 - Branch runs (`--jobs 8`, 11426 s): 50 of 50 worlds run, 49 passed, 1 failed (world/17, goats astray with the mare taken and lost). While the bot waits out the goats' window beside the wheat chest, the Admiral (who follows wheat) rams it, and the harness's staged removal kills him by a blow credited to the bot; his `on_kill` fails the goats task, so it settles failed and never expires. World/24 walks the same path to that step and passes.
 - The staging gate: exit 1, refused on world/17 alone.
 
+## The owner's solo notes
+
+At engine `feature/festival-day` `52f124716`.
+
+- The iron man's waking is offered in Torvald's own talk, once the iron man has his head: the forge's counter shows every offer whatever its gate, so the waking no longer stands there. Torvald's "Wake him (5 pennies)" opens only with five pennies in the purse; "Done." settles the hidden step `obj/wake-the-iron-man` and takes the pennies. His talk also says the scarecrows' heads are not for taking.
+- A board on a post beside each of the three scarecrows (the kitchen garden, the allotments, the wheat field) says its carved pumpkin is the scarecrow's head and not a lantern (`signs[]`).
+- The purse stays the party's own, one for friends together; it is announced when it moves, and stands nowhere: the engine stands only a per-player datum in the sidebar, and a per-player purse would pay only whoever settles each trouble. The pig race's board shows from the race's start, no longer from the night's.
+- The goats' whereabouts in words: the herding's journal hint names where each one is and how to get there, and Kettil answers "Where are they again?".
+- Kettil's tip about Runa's sister's cow opens on its own page of his talk the moment he tells it (his answer to the goats leads to it), and "Anything else today?" asks for it again; it is no longer narrated in passing.
+- One row of stairs per flight of the main street: the second row of stairs at the same course is gone (`plots/street.py`, `flight-5.py`).
+- A chest with an elytra hidden in the leads between the gatehouse's twin roofs (`anchor/elytra-chest`).
+- The haunted castle holds nobody: Bernt and Lady Agathe stand before the stage all day and tell the castle's part from there.
+- The castle's fire lock: four watch fires on the wall walk, far apart (the two ends by the kitchen tower and the gatehouse, the far wall's two turrets), lit in the order of the steward's note, a chest in the porter's guardroom (`obj/find-the-note`). A fire lit out of turn burns the one who lit it and puts every fire out (`state/fires-lit`, four `use` triggers). With the four lit, the grate lifts as the party comes back into the yard (`obj/lift-the-grate`, a reach the proofs credit; an opening behind a count in a press's own line is not credited, `DW0317`).
+- The vault lies under the castle yard (`node/castle-vault` stacked under `node/castle`, a down seam): the fourth lever slides away a three-by-three square of the yard's cobbles (the castle's hatch, `anchor/seam-castle-vault`), over a stone stair down seven. `design/generator/castle-vault.py` writes the vault cell by cell, because its last treads stand in the opening; the castle's program is edited by `castle_r14.py` from the vault-off program.
+- Torvald comes to the square for the festival with the other townsfolk. Ulla wears her own face (`skins/mari.png`).
+- Hedda, Oskar, Lady Agathe, Sverre and Vidar each answer "Anything worth seeing?" with what the town offers nearby.
+- The castle garrison's knights are hard on purpose: full iron armour and diamond spears, on zombie horses in iron horse armour (which keeps the sun off them in the open yard).
+- A fire at the castle gate, lit when the party reaches the gate, is a rest point (`bonfire`; every class's bread or pies is its flask), and beside it the carter's bell carries whoever stands by it down to the inn (`trigger/gate-bell`, a `teleport`, the graph's `edge/carter-down`): two things, declared apart.
+- Torvald's iron man stands as before; the cat's errands, the ending's changes and the race course are other rounds'.
+- Captain Gull's push comes ashore at the foot of the main street, where the dock landing does: seated on the last flight, a blow could knock his men off the quay into the cove where nobody follows (`DW0924`).
