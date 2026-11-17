@@ -10,6 +10,7 @@ One generator, dispatched on the place's stem, drawn into the skill's starter. A
 berries from the roof) and the miner's cottage (one room of rough stone, a hearth, a bunk). Piece-
 local axes: +x east, +z south; y 0 the ground course, y 1 the walk plane.
 """
+import json
 import os
 import sys
 
@@ -172,5 +173,29 @@ def build(place):
     return m
 
 
+# The hut's way down is declared `learned: hidden`: the den is a secret until it is found. The
+# starter writes a shut seam's bar from the allocation's `bar_block`, the derivation's own closed
+# iron trapdoor, which the eye looks through (docs/reference/sight-through-blocks.md), so an eye
+# in the hut saw the way (DW1054). The hut ships its own bar instead, as a bound piece may: the
+# old loom in the back corner, a full block that hides what is under it, standing over the
+# trapdoor in the gate region's cell; it opens as the trapdoor did, the open-gate taking it down.
+OWN_BARS = {"bar-miners-hut-to-cat-den": "minecraft:loom[facing=north]"}
+
+
+def own_bars(out):
+    with open(out, encoding="utf-8") as f:
+        doc = json.load(f)
+    hit = [k for k in OWN_BARS if k in doc["palette"]]
+    if not hit:
+        return
+    for k in hit:
+        doc["palette"][k] = OWN_BARS[k]
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
+
+
 if __name__ == "__main__":
-    raise SystemExit(run(build, reason="rock, roof and wall heads: seen, never stood on"))
+    rc = run(build, reason="rock, roof and wall heads: seen, never stood on")
+    if rc == 0:
+        own_bars(sys.argv[sys.argv.index("--out") + 1])
+    raise SystemExit(rc)
