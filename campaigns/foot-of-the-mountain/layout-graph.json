@@ -271,6 +271,16 @@
         "node": "node/pond",
         "objective": "obj/ask-the-cat-5",
         "quest": "quest/the-cat-rounds"
+      },
+      {
+        "node": "node/miners-hut",
+        "objective": "obj/follow-the-cat-home",
+        "quest": "quest/the-cat-den"
+      },
+      {
+        "node": "node/cat-den",
+        "objective": "obj/down-to-the-den",
+        "quest": "quest/the-cat-den"
       }
     ],
     "critical_path": [
@@ -1314,6 +1324,34 @@
         "b": "node/lush-cave",
         "class": "walk",
         "id": "edge/cave-path-to-lush-cave"
+      },
+      {
+        "a": "node/road-44",
+        "b": "node/hut-path",
+        "class": "walk",
+        "id": "edge/road-44-to-hut-path"
+      },
+      {
+        "a": "node/hut-path",
+        "b": "node/miners-hut",
+        "class": "walk",
+        "id": "edge/hut-path-to-miners-hut"
+      },
+      {
+        "a": "node/miners-hut",
+        "b": "node/cat-den",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/den-open"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "trapdoor",
+            "活板门"
+          ]
+        },
+        "id": "edge/miners-hut-to-cat-den"
       },
       {
         "a": "node/castle",
@@ -4675,6 +4713,47 @@
             "anchor": "anchor/axolotl-high",
             "kind": "point",
             "note": "in the upper pond, Pip's new home"
+          }
+        ]
+      },
+      {
+        "id": "node/hut-path",
+        "intent": "the track to the old miner's hut",
+        "note": "A worn track off the castle road's last leg, east across the high ground below the castle walls to the old miner's hut, a lamp at its far end."
+      },
+      {
+        "id": "node/miners-hut",
+        "intent": "the old miner's hut",
+        "note": "A small abandoned hut of rough stone and old planks on the high ground west of the castle, a yard of gravel round it, its door toward the track. Inside: a cold hearth, a bunk, a table, and an old loom in the back corner over the way down.",
+        "references": [
+          {
+            "shows": "A miner's hut: a small one-room dwelling of rough stone, a hearth, a bunk, tools by the door, built near the workings it served.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Miner%27s_cottage"
+          }
+        ]
+      },
+      {
+        "id": "node/cat-den",
+        "intent": "the chasm and the cat's den",
+        "note": "A huge chasm hollowed out of the mountain under the castle. A ladder comes down from the old miner's hut onto a rock ledge along its west side; from the ledge a long bridge of planks and chains, lanterns on its posts, is slung across to a ledge on the far side where the cat has her den. Far below the bridge an enormous old stone figure stands in the chasm, lit by cold blue fire, facing the bridge.",
+        "references": [
+          {
+            "shows": "An abandoned mineshaft: oak-planked corridors framed by fence posts and beams, rails, chains and lanterns.",
+            "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
+            "url": "https://minecraft.wiki/w/Mineshaft"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/den-chest",
+            "kind": "point",
+            "note": "the chest in the cat's den on the far ledge, the sword in it"
+          },
+          {
+            "anchor": "anchor/den-sign",
+            "kind": "point",
+            "note": "a board on the den's wall listing fishes, some ticked off"
           }
         ]
       }

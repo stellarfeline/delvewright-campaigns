@@ -268,6 +268,28 @@
         ]
       },
       {
+        "anchor": "anchor/den-chest",
+        "id": "loot/meow-sword",
+        "items": [
+          {
+            "count": 1,
+            "enchantments": {
+              "minecraft:looting": 5,
+              "minecraft:sharpness": 10,
+              "minecraft:sweeping_edge": 5,
+              "minecraft:unbreaking": 10
+            },
+            "item": "minecraft:netherite_sword",
+            "name": "Legendary Meow Sword"
+          },
+          {
+            "count": 1,
+            "item": "minecraft:cod",
+            "name": "A Very Old Cod"
+          }
+        ]
+      },
+      {
         "anchor": "anchor/honey-stand",
         "id": "loot/honey-stand",
         "items": [
@@ -13961,10 +13983,362 @@
         ],
         "on_complete": [],
         "on_objective_complete": {
-          "obj/ask-the-cat-5": []
+          "obj/ask-the-cat-5": [
+            {
+              "happening": {
+                "subject": "npc/cat",
+                "text": "The cat gives in and leads the way up the castle road to an old miner's hut.",
+                "verb": "arrives"
+              },
+              "npc": "npc/cat",
+              "speed": 0.25,
+              "to": {
+                "anchor": "anchor/node-miners-hut",
+                "offset": [
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "type": "move-npc"
+            }
+          ]
         },
         "trigger": {
           "quest": "quest/the-cat-cave",
+          "type": "quest-complete"
+        }
+      },
+      {
+        "cast": {
+          "npc/agathe": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                2
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/bernt": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -10,
+                0,
+                2
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/cat": {
+            "at": {
+              "anchor": "anchor/node-miners-hut",
+              "offset": [
+                1,
+                0,
+                0
+              ]
+            },
+            "dialogue": "dlg/cat-home",
+            "doing": "waiting by the old miner's hut, washing a paw"
+          },
+          "npc/hedda": {
+            "at": "anchor/stage",
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/inga": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                -4
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/kettil": [
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "requires_flags": [
+                "flag/goats-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "forbids_flags": [
+                "flag/goats-home"
+              ],
+              "requires_flags": [
+                "flag/goat-lost"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "forbids_flags": [
+                "flag/goats-home",
+                "flag/goat-lost"
+              ],
+              "requires_flags": [
+                "flag/goats-settled"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/node-square",
+                "offset": [
+                  -10,
+                  0,
+                  -1
+                ]
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "forbids_flags": [
+                "flag/goats-settled",
+                "flag/goats-home",
+                "flag/goat-lost"
+              ]
+            }
+          ],
+          "npc/oskar": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -8,
+                0,
+                -1
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/runa": [
+            {
+              "at": {
+                "anchor": "anchor/node-orchard"
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "forbids_flags": [
+                "flag/mare-home"
+              ],
+              "requires_flags": [
+                "flag/mare-out"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "requires_flags": [
+                "flag/mare-home"
+              ]
+            },
+            {
+              "at": {
+                "anchor": "anchor/stable-yard",
+                "offset": [
+                  -2,
+                  0,
+                  0
+                ]
+              },
+              "dialogue": "unchanged",
+              "doing": "unchanged",
+              "forbids_flags": [
+                "flag/mare-out"
+              ]
+            }
+          ],
+          "npc/sverre": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -10,
+                0,
+                -4
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/torvald": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -12,
+                0,
+                2
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          },
+          "npc/vidar": {
+            "at": {
+              "anchor": "anchor/node-square",
+              "offset": [
+                -12,
+                0,
+                -1
+              ]
+            },
+            "dialogue": "unchanged",
+            "doing": "unchanged"
+          }
+        },
+        "happening": {
+          "subject": "npc/cat",
+          "text": "The cat has given in, and waits by the old miner's hut.",
+          "verb": "learns"
+        },
+        "id": "quest/the-cat-den",
+        "objectives": [
+          {
+            "anchor": "anchor/node-miners-hut",
+            "happening": {
+              "subject": "anchor/node-miners-hut",
+              "text": "The party follow the cat up to the old miner's hut on the high ground west of the castle.",
+              "verb": "arrives"
+            },
+            "hint": "The cat trots all the way up the castle road: at its last bend before the castle, a track leads off across the high ground to an old miner's hut.",
+            "id": "obj/follow-the-cat-home",
+            "radius": 3,
+            "record": "The cat gave in at last, and showed the way to her den, across a chasm under the castle.",
+            "title": "Follow the cat again",
+            "type": "reach-anchor"
+          },
+          {
+            "after": [
+              "obj/follow-the-cat-home"
+            ],
+            "anchor": "anchor/node-cat-den",
+            "happening": {
+              "subject": "anchor/node-cat-den",
+              "text": "The party cross the bridge over the chasm to the cat's den on the far ledge.",
+              "verb": "arrives"
+            },
+            "hint": "In the hut's back corner: down the ladder under the trapdoor, along the ledge, and over the bridge to the far side.",
+            "id": "obj/down-to-the-den",
+            "radius": 3,
+            "title": "Across the chasm",
+            "type": "reach-anchor"
+          }
+        ],
+        "on_complete": [],
+        "on_objective_complete": {
+          "obj/down-to-the-den": [
+            {
+              "flag": "flag/seen-the-thing",
+              "type": "set-flag"
+            },
+            {
+              "style": "chat",
+              "text": "On the far ledge, out of the wind that comes up the chasm: the cat's den. A cushion worn into the shape of a cat, a grindstone, the cat's old dish, a board of fishes on the wall, and a chest. Behind you, in the cold light, the great stone thing in the chasm goes on not looking at you.",
+              "type": "narrate"
+            }
+          ],
+          "obj/follow-the-cat-home": [
+            {
+              "flag": "flag/den-open",
+              "type": "set-flag"
+            },
+            {
+              "at": {
+                "anchor": "anchor/seam-miners-hut-to-cat-den",
+                "at": "anchor"
+              },
+              "sound": "minecraft:block.wooden_trapdoor.open",
+              "type": "play-sound"
+            },
+            {
+              "anchor": "anchor/seam-miners-hut-to-cat-den",
+              "happening": {
+                "subject": "anchor/seam-miners-hut-to-cat-den",
+                "text": "The cat noses the old loom in the hut's back corner aside, and a trapdoor is under it.",
+                "verb": "opens"
+              },
+              "type": "open-gate"
+            },
+            {
+              "look_at": {
+                "anchor": "anchor/seam-miners-hut-to-cat-den"
+              },
+              "path": [
+                {
+                  "anchor": "anchor/seam-miners-hut-to-cat-den",
+                  "offset": [
+                    3,
+                    3,
+                    -2
+                  ]
+                },
+                {
+                  "anchor": "anchor/seam-miners-hut-to-cat-den",
+                  "offset": [
+                    2,
+                    2,
+                    -1
+                  ]
+                }
+              ],
+              "seconds": 4,
+              "subject": {
+                "anchor": "anchor/seam-miners-hut-to-cat-den"
+              },
+              "type": "cutscene"
+            },
+            {
+              "style": "chat",
+              "text": "The cat leans on the old loom in the hut's back corner until it slides aside. Under it is a trapdoor, and under that a ladder going down a very long way into the dark. 'The cat's. Go on. The cat will wait up here. Mind the bridge.'",
+              "type": "narrate"
+            }
+          ]
+        },
+        "trigger": {
+          "quest": "quest/the-cat-rounds",
           "type": "quest-complete"
         }
       }
@@ -14717,6 +15091,22 @@
           "Net Loft"
         ],
         "id": "sign/netloft"
+      },
+      {
+        "anchor": "anchor/den-sign",
+        "back": [
+          "STILL TO GO:",
+          "striped:",
+          "thousands",
+          "(ask Pip)"
+        ],
+        "front": [
+          "TASTED:",
+          "cod, salmon,",
+          "puffer (once)",
+          "striped: 211"
+        ],
+        "id": "sign/den-list"
       }
     ],
     "state": [
