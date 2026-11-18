@@ -193,13 +193,18 @@ def kept_clear(x, y, z):
     bridge's corridor, and the statue with two cells round it."""
     if y >= 0 and y <= 5 and (ground(x, z) or (26 <= x <= 32 and BZ0 - 1 <= z <= BZ1 + 1)):
         return True
-    if y >= -DEPTH and 0 <= x <= 27 and statue_near(x, y, z):
+    # the figure's room is cut in the den's courses only; under the den's floor the chasm keeps its
+    # own rock, and what of the figure stands in it rises out of the rock (the chasm cut wider than
+    # its own hollow lets the sea in: DW0851)
+    if y >= -1 and 0 <= x <= 27 and statue_near(x, y, z):
         return True
     return False
 
 
 def rock_at(x, y, z):
     """Rock in the den frame (y 0..LID) or in the chasm (y < 0)."""
+    if y <= -DEPTH:      # the chasm's floor course is whole rock: under it is the sea's
+        return True
     if x <= 0 or x >= EX - 1 or z <= 0 or z >= EZ - 2 or y >= LID:
         return not (y >= 1 and y <= 3 and x in BRIDGE_X and z >= EZ - 2)   # the tunnel's mouth
     if kept_clear(x, y, z):
@@ -247,6 +252,10 @@ def lichen_cells(lo_y, hi_y, solid, open_cell, salt):
                         out[(x, y, z)] = lichen(f)
                         break
     return out
+
+
+# (x, z, the lantern's course): over the figure, found clear of its body to the roof
+FIGURE_LANTERNS = ((4, 51, 3), (14, 21, 16), (13, 17, 12), (12, 9, 12), (14, 33, -3), (13, 50, -1), (16, 43, -4))
 
 
 def den_cells():
@@ -366,10 +375,13 @@ def den_cells():
         put(x, 2, 3, keep[7 + i])
     put(44, 1, 6, "minecraft:chest[facing=west,type=single,waterlogged=false]")
     put(31, 2, 1, "minecraft:spruce_wall_sign[facing=south,waterlogged=false]")
-    for (x, z) in ((25, 2), (36, 5)):
+    for (x, z) in ((25, 2), (36, 5), (8, 61)):
         put(x, 1, z, LANTERN)
+    put(49, 12, 6, LANTERN)          # the high shelf of rock over the den's back
+    put(8, 2, 23, LANTERN)           # the rock shelf by the tunnel's mouth
     # lanterns hung on chains from the roof over the den and the tunnel's ledge
-    for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (31, 12, 4), (36, 12, 4), (26, 75, 4), (33, 75, 4), (30, 74, 6)):
+    for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (31, 12, 4), (36, 12, 4), (26, 75, 4), (33, 75, 4), (30, 74, 6),
+                            (47, 60, 4), (49, 65, 4), (45, 69, 4), (54, 55, 3), (8, 61, 4), (52, 30, 4), (50, 45, 4), (54, 38, 4), (20, 74, 13)):
         y = low_y
         while y < LID and c.get((x, y, z)) == AIR:
             y += 1
@@ -377,6 +389,18 @@ def den_cells():
             continue
         put(x, low_y, z, HANGING)
         for yy in range(low_y + 1, y):
+            put(x, yy, z, CHAIN_Y)
+    # lanterns hung on long chains from the roof over the figure's shoulders and wings, behind it
+    # and in the dark between it and the bridge, clear of its body: the figure's ledges a fall can
+    # land on are lit (a lantern under the den's floor course is the chasm's, `den-chasm.py`)
+    for (x, z, low_y) in FIGURE_LANTERNS:
+        y = max(low_y, -1)
+        top = y
+        while top < LID and c.get((x, top, z)) == AIR:
+            top += 1
+        if low_y >= -1:
+            put(x, low_y, z, HANGING)
+        for yy in range(y if low_y < -1 else low_y + 1, top):
             put(x, yy, z, CHAIN_Y)
     # crystals in the walls: clusters of sea lantern set into the rock's face where it meets the
     # air of the hall, cold blue-white, glow lichen round each

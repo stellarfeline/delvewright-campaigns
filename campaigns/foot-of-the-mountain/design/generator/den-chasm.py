@@ -6,7 +6,9 @@
 
 writes `prefab/foot-of-the-mountain-den-chasm`: the chasm's rock under the den's floor course
 (`den_shape.rock_at`, u -43..-2, the cave's dark rock) with crystals of sea lantern in its walls and
-glow lichen round them. No place stands its walk plane under the sea's surface, so the chasm is not
+glow lichen round them, and the sea's water in it up to the sea's level (world y 62): the chasm
+stands below the sea, and the engine's sea model floods it, so the water is authored here and every
+proof downstream knows it (DW0851). No place stands its walk plane under the sea's surface, so the chasm is not
 a place: it is air the site plan keeps under the den (`volume/den-chasm`), and this piece is
 stamped into it by `batch/the-chasm`, unrotated, its first course at world y 28, its x and z the
 den's frame. The stone Cthulhu standing in it is its own piece (`den_thing.py`, `batch/the-thing`).
@@ -19,6 +21,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import den_shape as S  # noqa: E402
 
 D = S.DEPTH
+SEA = 62 - 28                  # the sea's level (world y 62) in the chasm's courses (its first at world y 28)
+WATER = "minecraft:water[level=0]"
 EX, EY, EZ = S.EX, S.DEPTH - 1, S.EZ - 1     # 61 x 42 x 79: the chasm, u -43..-2
 
 PALETTE = {
@@ -65,6 +69,46 @@ def cells():
                 if is_rock(k[0] + ex_, k[1] + ey_, k[2] + ez_):
                     c[k] = S.lichen(f)
                     break
+    figure = S._thing_cells()
+    # glow lichen in patches on the shelves over the water, just under the den, so a body that
+    # falls there is not left in the dark
+    for x in range(EX):
+        for z in range(EZ):
+            for yb in range(SEA + 1, EY):    # the shelves over the water, under the den
+                if c.get((x, yb, z)) is not None:
+                    continue
+                if yb == 0 or not is_rock(x, yb - 1, z):
+                    continue
+                if any((x + dx, yb - D + dy, z + dz) in figure for dx in (-1, 0, 1) for dy in (-1, 0) for dz in (-1, 0, 1)):
+                    continue                 # the figure's stone, stamped later, is no floor for it
+                if S.h(x, yb, z, 131) % 3 == 0:
+                    c[(x, yb, z)] = S.lichen("down")
+    # crystals set in the chasm's top course under the shelves a course below the ledges, where the
+    # figure's room is cut down to the chasm's rock
+    top = D - 2
+    for x in range(EX):
+        for z in range(EZ):
+            if not is_rock(x, top, z) or S.ground(x, z) or S.h(x, z, 151) % 6:
+                continue
+            if not S.rock_at(x, -1, z):
+                c[(x, top, z)] = "crystal"
+    # the lanterns `den_shape.FIGURE_LANTERNS` hangs under the den's floor course: their low end
+    for (x, z, low_y) in S.FIGURE_LANTERNS:
+        if low_y >= -1:
+            continue
+        c[(x, low_y + D, z)] = "minecraft:lantern[hanging=true,waterlogged=false]"
+        for y in range(low_y + 1, -1):
+            c[(x, y + D, z)] = "minecraft:iron_chain[axis=y,waterlogged=false]"
+    # the chasm stands below the sea, and the sea is in it: black water up to the sea's level (world
+    # y 62, the chasm's course SEA), so a body that falls in lands in water and the figure rises out
+    # of it
+    for x in range(EX):
+        for z in range(EZ):
+            for yb in range(SEA + 1):
+                if (x, yb, z) not in c:
+                    c[(x, yb, z)] = WATER
+                elif c[(x, yb, z)].startswith("minecraft:glow_lichen"):
+                    c[(x, yb, z)] = c[(x, yb, z)].replace("waterlogged=false", "waterlogged=true")
     return c
 
 
