@@ -92,7 +92,8 @@ def build(a):
     for (x, z) in ((5, HZ0), (7, HZ0), (5, HZ1), (7, HZ1), (10, HZ1), (HX0, 4), (HX0, 9), (HX1, 6), (HX1, 7)):
         m.set(x, 7, z, CLEAR)
     m.set(HX1, 2, 7, CLEAR); m.set(HX1, 3, 7, CLEAR)          # the still room over the garden
-    door2(m, HX1, 9, "minecraft:dark_oak", "west")             # out to the garden
+    for y in (1, 2):                                           # out to the garden, a bare doorway
+        m.set(HX1, y, 9, AIR)
     m.set(HX1, 3, 9, "stone")
 
     # ---- inside: the shop and, through a door, the still room
@@ -100,8 +101,8 @@ def build(a):
     for z in range(HZ0 + 1, HZ1):
         for y in range(1, 5):
             m.set(STILL_WALL, y, z, "stone" if y < 4 else BEAM_Z)
-    # the still room opens off the shop through a bare doorway: the cat goes in and out of it,
-    # and no animal opens a door
+    # the still room opens off the shop, and onto the garden, through bare doorways: the cat
+    # comes and goes by them, and no animal opens a door
     for y in (1, 2):
         m.set(STILL_WALL, y, 8, AIR)
     m.set(STILL_WALL, 3, 8, "stone")
