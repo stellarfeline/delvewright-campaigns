@@ -2,7 +2,7 @@
 """The chasm under the cat's den and the stone Cthulhu standing in it: a piece the world edits stamp.
 
     python3 den-chasm.py --out foot-of-the-mountain-den-chasm.json
-    delvec grammar expand --file foot-of-the-mountain-den-chasm.json --region 49x85x79 --out <the content prefabs directory>
+    delvec grammar expand --file foot-of-the-mountain-den-chasm.json --region 61x85x79 --out <the content prefabs directory>
 
 writes `prefab/foot-of-the-mountain-den-chasm`.
 
@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import den_shape as S  # noqa: E402
 
 D = S.DEPTH
-EX, EY, EZ = S.EX, S.DEPTH + S.LID, S.EZ - 1     # 49 x 85 x 79
+EX, EY, EZ = S.EX, S.DEPTH + S.LID, S.EZ - 1     # 61 x 85 x 79
 
 PALETTE = {
     "rock": [{"weight": 4, "block": "minecraft:stone"}, {"weight": 2, "block": "minecraft:tuff"},
@@ -35,15 +35,18 @@ PALETTE = {
              {"weight": 1, "block": "minecraft:dripstone_block"}],
     "deep": [{"weight": 3, "block": "minecraft:deepslate[axis=y]"}, {"weight": 2, "block": "minecraft:cobbled_deepslate"},
              {"weight": 1, "block": "minecraft:tuff"}],
-    "body": [{"weight": 3, "block": "minecraft:cobblestone"}, {"weight": 2, "block": "minecraft:mossy_cobblestone"},
-             {"weight": 1, "block": "minecraft:stone"}, {"weight": 1, "block": "minecraft:cobbled_deepslate"}],
-    "head": [{"weight": 4, "block": "minecraft:stone_bricks"}, {"weight": 2, "block": "minecraft:mossy_stone_bricks"},
-             {"weight": 1, "block": "minecraft:cracked_stone_bricks"}],
-    "feeler": [{"weight": 3, "block": "minecraft:mossy_stone_bricks"}, {"weight": 1, "block": "minecraft:stone_bricks"},
-               {"weight": 1, "block": "minecraft:mossy_cobblestone"}],
-    "bone": [{"weight": 3, "block": "minecraft:stone_bricks"}, {"weight": 1, "block": "minecraft:polished_andesite"}],
-    "membrane": [{"weight": 2, "block": "minecraft:cobbled_deepslate"}, {"weight": 2, "block": "minecraft:deepslate_bricks"},
-                 {"weight": 1, "block": "minecraft:tuff"}],
+    # the statue in pale stone, as the reference has it, set off from the cave's dark rock: calcite,
+    # diorite and smooth stone, with moss in its folds
+    "body": [{"weight": 3, "block": "minecraft:diorite"}, {"weight": 3, "block": "minecraft:calcite"},
+             {"weight": 2, "block": "minecraft:smooth_stone"}, {"weight": 1, "block": "minecraft:moss_block"}],
+    "head": [{"weight": 4, "block": "minecraft:calcite"}, {"weight": 3, "block": "minecraft:polished_diorite"},
+             {"weight": 2, "block": "minecraft:smooth_stone"}, {"weight": 1, "block": "minecraft:mossy_stone_bricks"}],
+    "feeler": [{"weight": 3, "block": "minecraft:polished_diorite"}, {"weight": 2, "block": "minecraft:calcite"},
+               {"weight": 1, "block": "minecraft:moss_block"}, {"weight": 1, "block": "minecraft:mossy_stone_bricks"}],
+    "bone": [{"weight": 3, "block": "minecraft:smooth_stone"}, {"weight": 2, "block": "minecraft:calcite"}],
+    "eye": "minecraft:sea_lantern",
+    "membrane": [{"weight": 3, "block": "minecraft:diorite"}, {"weight": 2, "block": "minecraft:calcite"},
+                 {"weight": 1, "block": "minecraft:andesite"}],
 }
 KIND_ORDER = ("feeler", "head", "bone", "body", "membrane")
 
@@ -53,7 +56,7 @@ def statue_kind(x, y, z):
     p = (x + 0.5, y + 0.5, z + 0.5)
     for dz in (-4.0, 4.0):
         if S._ell(p[0], p[1], p[2], (22.0, 21.0, S.STATUE_Z + dz), (2.5, 1.6, 2.0)) <= 1.0:
-            return None
+            return "eye" if p[0] < 20.5 else None
     hit = set()
     for kind, prim in S.statue_parts():
         if prim[0] == "capsule":
@@ -85,24 +88,24 @@ def cells():
                     k = statue_kind(x, y, z)
                 if k is not None:
                     c[(x, yb, z)] = k
-                elif y < 0 and S.rock_at(x, y, z):
+                elif y < -1 and S.rock_at(x, y, z):
                     c[(x, yb, z)] = "deep" if y < -20 else "rock"
     # glow lichen: in clusters on the chasm's walls, and on the statue's face, beard and claws
     def solid(x, y, z):
         return c.get((x, y + D, z)) is not None
     def open_rock(x, y, z):
-        return y < 0 and c.get((x, y + D, z)) is None and 0 <= x < EX and 0 <= z < EZ
-    lich = S.lichen_cells(-D + 1, -1, solid, open_rock, salt=53)
+        return y < -1 and c.get((x, y + D, z)) is None and 0 <= x < EX and 0 <= z < EZ
+    lich = S.lichen_cells(-D + 1, -2, solid, open_rock, salt=53)
     for (x, y, z), st in lich.items():
         c[(x, y + D, z)] = st
     Z = S.STATUE_Z
-    for x in range(12, 28):
+    for x in range(9, 28):
         for y in range(-16, 30):
-            for z in range(Z - 14, Z + 15):
+            for z in range(Z - 31, Z + 32):
                 yb = y + D
-                if c.get((x, yb, z)) is not None or c.get((x - 1, yb, z)) not in ("head", "feeler", "body"):
+                if c.get((x, yb, z)) is not None or c.get((x - 1, yb, z)) not in ("head", "feeler", "body", "bone", "membrane"):
                     continue
-                if S.h(x, y, z, 71) % 2 or S.noise(x, y, z, 3.0, 73) < 0.5:
+                if S.h(x, y, z, 71) % 2 or S.noise(x, y, z, 3.0, 73) < 0.45:
                     continue
                 c[(x, yb, z)] = S.lichen("west")
     return c

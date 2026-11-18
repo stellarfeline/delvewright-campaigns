@@ -1,11 +1,13 @@
 """The cat's den and its chasm, as one shape: read by `den.py` (the den, a place) and by
 `den-chasm.py` (the statue and the chasm under the den, a piece the world edits stamp).
 
-Den frame: x 0..48 (world 106..154), y 0..42 (world 71..113; y 0 the floor course, y 1 the walk
-plane of the ledges and the bridge, y 42 the lid), z 0..78 (world 98..176). The chasm under the den
-is the same x and z, y -43..-1 (world 28..70). The tunnel comes in at the south face (z 78),
-x 28..30; the bridge runs north from it across the chasm to the den's ledge; the statue stands
-west of the bridge, facing it, its wings spread along the bridge.
+Den frame: x 0..60 (world 107..167), z 0..78 (world 98..176). Heights are counted as courses u
+from the ledges' top course, u 0 at world y 71: the ledges and the bridge's ends are walked at u 1
+(world y 72, the tunnel's floor), the bridge sags to u 0 across its middle, the den's floor course
+is u -1 (world y 70), its lid u 42 (world y 113). The chasm under the den is the same x and z,
+u -43..-2 (world 28..69). The tunnel comes in at the south face (z 78), x 28..30; the bridge runs
+north from it across the chasm to the den's ledge; the statue stands west of the bridge, facing
+it, its wings spread along the bridge.
 
 The cave is a union of ellipsoids carved out of rock, its walls broken by a seeded value noise (the
 1.18+ noise caves' look: no straight wall, overhangs and knuckles at every height), with the
@@ -13,7 +15,7 @@ walked ledges, the bridge's corridor and the statue (and a margin round it) kept
 """
 import math
 
-EX, EY, EZ = 49, 43, 80
+EX, EY, EZ = 61, 43, 80
 LID = 42
 BRIDGE_X = (28, 29, 30)
 RAIL_X = (27, 31)
@@ -61,6 +63,7 @@ HOLLOWS = [
     ((30.0, 5.0, 74.0), (10.0, 7.0, 9.0)),       # the tunnel's ledge
     ((31.0, 8.0, 8.0), (16.0, 11.0, 10.0)),      # the den's bay
     ((19.0, -20.0, 44.0), (17.0, 25.0, 31.0)),   # the chasm under the bridge and the statue
+    ((45.0, 13.0, 42.0), (15.0, 19.0, 34.0)),    # the hall's far side, east of the bridge, where the eye stands
 ]
 
 
@@ -106,15 +109,15 @@ def statue_parts():
     # the wings: an arm from the shoulder blade to the wrist, four fingers to the tips, a membrane
     # between them, scalloped
     for s in (-1, 1):
-        root = (8.0, 12.0, Z + 7 * s)
-        wrist = (7.0, 33.0, Z + 21 * s)
-        tips = [(6.0, 38.0, Z + 27 * s), (6.0, 30.0, Z + 27 * s), (6.0, 20.0, Z + 26 * s), (6.0, 9.0, Z + 24 * s)]
-        P.append(("bone", _cap(root, wrist, 2.2, 1.4)))
+        root = (9.0, 12.0, Z + 7 * s)
+        wrist = (8.0, 35.0, Z + 22 * s)
+        low = (8.0, 3.0, Z + 19 * s)
+        tips = [(7.0, 41.0, Z + 28 * s), (7.0, 33.0, Z + 30 * s), (7.0, 23.0, Z + 30 * s), (7.0, 12.0, Z + 27 * s)]
+        P.append(("bone", _cap(root, wrist, 2.4, 1.5)))
         for t in tips:
-            P.append(("bone", _cap(wrist, t, 1.2, 0.6)))
-        P.append(("bone", _cap(root, (7.0, 2.0, Z + 18 * s), 1.6, 0.6)))
-        fan = [wrist] + tips + [(7.0, 2.0, Z + 18 * s)]
-        P.append(("membrane", ("fan", root, wrist, tips + [(7.0, 2.0, Z + 18 * s)], s)))
+            P.append(("bone", _cap(wrist, t, 1.3, 0.7)))
+        P.append(("bone", _cap(root, low, 1.6, 0.7)))
+        P.append(("membrane", ("fan", root, wrist, tips + [low], s)))
     return P
 
 
@@ -169,7 +172,7 @@ def membrane_boxes():
                 hi = b if hi is None else max(hi, b)
             if lo is None or hi - lo < 1.0:
                 continue
-            out.append(([5.5, round(lo, 2), z], [7.5, round(hi, 2), z + 1]))
+            out.append(([6.5, round(lo, 2), z], [8.5, round(hi, 2), z + 1]))
     return out
 
 
@@ -218,6 +221,18 @@ def deck(x, z):
     return x in BRIDGE_X and BZ0 <= z <= BZ1
 
 
+def sag(z):
+    """The bridge's deck at row z, as a rope bridge sags: (the deck block's course, the block, the
+    walk plane). Planks level with the ledges for six rows from each end, a half step down for
+    four, then planks a course lower across the middle. Courses are the den's: 0 the ledges' top."""
+    m = min(z - BZ0, BZ1 - z)
+    if m <= 5:
+        return 0, "minecraft:spruce_planks" if z % 2 else "minecraft:oak_planks", 1
+    if m <= 9:
+        return 0, "minecraft:spruce_slab[type=bottom,waterlogged=false]", 1
+    return -1, "minecraft:spruce_planks" if z % 2 else "minecraft:oak_planks", 0
+
+
 def ground(x, z):
     return north_ledge(x, z) or south_ledge(x, z) or deck(x, z) or (x in RAIL_X and BZ0 <= z <= BZ1)
 
@@ -225,7 +240,7 @@ def ground(x, z):
 def kept_clear(x, y, z):
     """Air the cave must have whatever the noise says: over the walked ground (four courses), the
     bridge's corridor, and the statue with two cells round it."""
-    if y >= 1 and y <= 5 and (ground(x, z) or (26 <= x <= 32 and BZ0 - 1 <= z <= BZ1 + 1)):
+    if y >= 0 and y <= 5 and (ground(x, z) or (26 <= x <= 32 and BZ0 - 1 <= z <= BZ1 + 1)):
         return True
     if y >= -DEPTH and 0 <= x <= 27 and 10 <= z <= 78 and statue_near(x, y, z):
         return True
@@ -282,21 +297,24 @@ def lichen_cells(lo_y, hi_y, solid, open_cell, salt):
     return out
 
 
-def den_cells(ex, ey, ez):
-    assert (ex, ey, ez) == (EX, EY, EZ), (ex, ey, ez)
+def den_cells():
+    """The den's cells, keyed by (x, u, z): u is the den's course, 0 the ledges' top course (world
+    y 71), -1 the den's floor course under the bridge's sagging middle (world y 70), LID its lid."""
     c = {}
     for x in range(EX):
         for z in range(EZ - 1):
-            for y in range(0, LID + 1):
-                if y == 0:
-                    if deck(x, z) or (x in RAIL_X and BZ0 <= z <= BZ1):
-                        c[(x, 0, z)] = "minecraft:spruce_planks" if z % 2 else "minecraft:oak_planks"
-                    elif north_ledge(x, z) or south_ledge(x, z):
-                        c[(x, 0, z)] = LEDGE[h(x, z, 5) % len(LEDGE)]
-                    elif rock_at(x, 0, z):
-                        c[(x, 0, z)] = rock_block(x, 0, z)
-                    else:
-                        c[(x, 0, z)] = AIR             # open over the chasm
+            for y in range(-1, LID + 1):
+                if y <= 0 and (x in BRIDGE_X or x in RAIL_X) and BZ0 <= z <= BZ1:
+                    du, blk, _ = sag(z)
+                    c[(x, y, z)] = blk if y == du else AIR
+                elif y == 0 and (north_ledge(x, z) or south_ledge(x, z)):
+                    c[(x, 0, z)] = LEDGE[h(x, z, 5) % len(LEDGE)]
+                elif y == -1 and (north_ledge(x, z) or south_ledge(x, z)):
+                    c[(x, -1, z)] = rock_block(x, -1, z)
+                elif y <= 0 and rock_at(x, y, z):
+                    c[(x, y, z)] = rock_block(x, y, z)
+                elif y <= 0:
+                    c[(x, y, z)] = AIR             # open over the chasm
                 elif rock_at(x, y, z):
                     c[(x, y, z)] = rock_block(x, y, z)
                 else:
@@ -305,15 +323,18 @@ def den_cells(ex, ey, ez):
     def solid(x, y, z):
         return c.get((x, y, z), AIR) != AIR and c.get((x, y, z)) is not None
 
-    # the rails: one fence high along the bridge and every ledge's edge over the chasm
+    # the rails: one fence high along the bridge, on its sagging deck, and along every ledge's
+    # edge over the chasm
     for z in range(BZ0, BZ1 + 1):
+        du, _, w = sag(z)
         for x in RAIL_X:
-            c[(x, 1, z)] = FENCE
+            c[(x, du + 1, z)] = FENCE
     for x in range(EX):
         for z in range(EZ - 1):
             if not (north_ledge(x, z) or south_ledge(x, z)) or c.get((x, 1, z)) != AIR:
                 continue
-            if any(c.get((x + dx, 0, z + dz)) == AIR for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+            if any(c.get((x + dx, 0, z + dz)) == AIR and not deck(x + dx, z + dz)
+                   for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                 c[(x, 1, z)] = FENCE
     # where a ledge meets the cave's rock, the rock stands three high, so no body climbs off the
     # walked ground onto the rock beyond it
@@ -334,32 +355,37 @@ def den_cells(ex, ey, ez):
         for z in (BZ0 - 1, BZ1 + 1):
             if c.get((x, 1, z)) == AIR:
                 c[(x, 1, z)] = FENCE
-    # the bridge's posts at both ends, lanterns on them; a cable of chain along each side over the
-    # rail, hangers down to it, and a lantern hung under the cable every six cells
-    for z in (BZ0, BZ1):
+    # the bridge's cable: a chain along each side two courses over the rail, sagging with the
+    # deck, a hanger down to the rail every third row and a lantern hung under it every sixth;
+    # a post at each end and every ninth row, a lantern on it over the cable
+    for z in range(BZ0, BZ1 + 1):
+        du, _, w = sag(z)
+        cable = du + 3
         for x in RAIL_X:
-            for y in (1, 2, 3):
-                c[(x, y, z)] = POST
-            c[(x, 4, z)] = LANTERN
-    for z in range(BZ0 + 1, BZ1):
-        for x in RAIL_X:
-            c[(x, 3, z)] = CHAIN_Z
             k = z - BZ0
+            if z in (BZ0, BZ1) or k % 9 == 0:
+                for y in range(du + 1, cable + 1):
+                    c[(x, y, z)] = POST
+                c[(x, cable + 1, z)] = LANTERN
+                continue
+            c[(x, cable, z)] = CHAIN_Z
             if k % 6 == 3 and (x == RAIL_X[0]) == ((k // 6) % 2 == 0):
-                c[(x, 3, z)] = CHAIN_Y          # the hanger the lantern hangs from
-                c[(x, 2, z)] = HANGING
+                c[(x, cable, z)] = CHAIN_Y
+                c[(x, cable - 1, z)] = HANGING
             elif k % 3 == 0:
-                c[(x, 2, z)] = CHAIN_Y
+                c[(x, cable - 1, z)] = CHAIN_Y
     # the den on the far ledge
     put = lambda x, y, z, b: c.__setitem__((x, y, z), b)  # noqa: E731
     put(34, 1, 5, "minecraft:red_bed[facing=north,occupied=false,part=head]")
     put(34, 1, 6, "minecraft:red_bed[facing=north,occupied=false,part=foot]")
     for (x, z) in ((33, 5), (33, 6), (35, 5), (35, 6), (33, 7), (34, 7), (35, 7)):
         put(x, 1, z, "minecraft:red_carpet")
-    # keepsakes of the End on a pedestal: an end rod on a purpur pillar (the dragon's egg the
-    # reference shows is a block the building palette refuses, DW0730)
-    put(24, 1, 4, "minecraft:purpur_pillar[axis=y]")
-    put(24, 2, 4, "minecraft:end_rod[facing=up]")
+    # the dragon's egg's place, kept for it: a pedestal under a glass case, empty (the building
+    # palette refuses `minecraft:dragon_egg`, DW0730, an engine gap)
+    put(24, 1, 4, "minecraft:chiseled_stone_bricks")
+    for (x, y, z) in ((23, 2, 4), (25, 2, 4), (24, 2, 3), (24, 2, 5), (24, 3, 4)):
+        put(x, y, z, "minecraft:glass")
+    put(24, 2, 4, AIR)
     # the dragon's head on the wall over the bed
     put(34, 3, 1, "minecraft:dragon_wall_head[facing=south,powered=false]")
     # shelves of keepsakes from every corner of the world along the back wall
@@ -370,17 +396,17 @@ def den_cells(ex, ey, ez):
            "minecraft:potted_cherry_sapling", "minecraft:sculk",
            "minecraft:potted_mangrove_propagule", "minecraft:sea_lantern", "minecraft:potted_bamboo"]
     high = ["minecraft:blue_ice", "minecraft:potted_dead_bush", "minecraft:potted_crimson_fungus",
-            "minecraft:potted_brown_mushroom", "minecraft:potted_azalea_bush", "minecraft:potted_warped_fungus",
+            "minecraft:potted_brown_mushroom", "minecraft:potted_azalea_bush", "minecraft:end_rod[facing=up]",
             "minecraft:skeleton_skull[powered=false,rotation=8]"]
     for i, x in enumerate(range(37, 44)):
         put(x, 2, 1, low[i])
         put(x, 4, 1, high[i])
     put(44, 1, 3, "minecraft:chest[facing=west,type=single,waterlogged=false]")
     put(31, 2, 1, "minecraft:spruce_wall_sign[facing=south,waterlogged=false]")
-    for (x, z) in ((22, 2), (43, 7), (27, 2)):
+    for (x, z) in ((22, 2), (43, 7), (27, 2), (36, 4), (20, 9)):
         put(x, 1, z, LANTERN)
     # lanterns hung on chains from the roof over the den and the tunnel's ledge
-    for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (26, 75, 4), (33, 75, 4)):
+    for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (26, 75, 4), (33, 75, 4), (30, 74, 6)):
         y = low_y
         while y < LID and c.get((x, y, z)) == AIR:
             y += 1
@@ -389,21 +415,49 @@ def den_cells(ex, ey, ez):
         put(x, low_y, z, HANGING)
         for yy in range(low_y + 1, y):
             put(x, yy, z, CHAIN_Y)
+    # crystals in the walls: clusters of sea lantern set into the rock's face where it meets the
+    # air of the hall, cold blue-white, glow lichen round each
+    crystals = []
+    for x in range(1, EX - 1):
+        for z in range(1, EZ - 2):
+            for y in range(2, LID - 2):
+                if c.get((x, y, z)) not in ROCKS or ground(x, z):
+                    continue
+                if not any(c.get((x + dx, y + dy, z + dz)) == AIR for _, dx, dy, dz in FACES):
+                    continue
+                if h(x, y, z, 91) % 23 or noise(x, y, z, 6.0, 93) < 0.55:
+                    continue
+                if any(abs(x - a) + abs(y - b) + abs(z - d) < 6 for a, b, d in crystals):
+                    continue
+                crystals.append((x, y, z))
+                c[(x, y, z)] = "minecraft:sea_lantern"
     # glow lichen on the rock, never on the walked ground or over it within reach
     walked = lambda x, z: ground(x, z)  # noqa: E731
+    near_crystal = lambda x, y, z: any(abs(x - a) + abs(y - b) + abs(z - d) <= 3 for a, b, d in crystals)  # noqa: E731
     lich = lichen_cells(1, LID - 1, solid,
                         lambda x, y, z: c.get((x, y, z)) == AIR and not (walked(x, z) and y <= 4), salt=51)
     for k, v in lich.items():
         c[k] = v
+    for (a, b, d) in crystals:
+        for _, dx, dy, dz in FACES:
+            k = (a + dx, b + dy, d + dz)
+            if c.get(k) != AIR or (walked(k[0], k[2]) and k[1] <= 4):
+                continue
+            for f, ex_, ey_, ez_ in FACES:
+                if solid(k[0] + ex_, k[1] + ey_, k[2] + ez_) and c.get((k[0] + ex_, k[1] + ey_, k[2] + ez_)) in ROCKS:
+                    c[k] = lichen(f)
+                    break
     # dripstone hanging from the roof
     for x in range(1, EX - 1):
         for z in range(1, EZ - 2):
             for y in range(12, LID):
                 if c.get((x, y, z)) == AIR and c.get((x, y + 1, z), AIR) in ROCKS and h(x, y, z, 61) % 13 == 0:
                     c[(x, y, z)] = "minecraft:pointed_dripstone[thickness=tip,vertical_direction=down,waterlogged=false]"
-    return {k: v for k, v in c.items()}
+    return c
 
 
 def den_marks():
+    """The den's marks, (x, z, facing, u): u the course of the cell named (the ledges' walk plane
+    is u 1)."""
     return {"cat-bed": (34, 6, "south", 1), "den-chest": (44, 3, "west", 1), "den-sign": (31, 1, "south", 2),
-            "node-cat-den": (30, 13, "north", None)}
+            "node-cat-den": (30, 13, "north", 1)}

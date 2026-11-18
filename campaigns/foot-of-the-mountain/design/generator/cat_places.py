@@ -99,6 +99,12 @@ def cave_track(m, place):
     m.show("up")
 
 
+def noise_patch(x, z):
+    """Patches of rooted dirt in the roof: two or three cells across, a seeded hash smoothed over
+    the cell's neighbours."""
+    return sum(h(x + dx, z + dz, 8) % 5 == 0 for dx in (-1, 0, 1) for dz in (-1, 0, 1)) >= 2
+
+
 def lush_cave(m, place):
     """Pip's lush cave, after `design/reference/lush-cave`. The mouth is in the east wall (x 20);
     from it the floor steps up once onto the cave's floor round the lower pond, and the mossy steps
@@ -113,14 +119,14 @@ def lush_cave(m, place):
     def walk(x, z):
         if x >= 17:
             return 1                               # the landing inside the mouth
-        if x <= 6:
-            return 6                               # the ledge at the back
-        if 7 <= x <= 9 and 4 <= z <= 7:
-            return {9: 3, 8: 4, 7: 5}[x]           # the mossy steps, two wide
+        if x <= 7:
+            return 4                               # the ledge at the back, its pond seen over the lower one
+        if 8 <= x <= 9 and 4 <= z <= 7:
+            return {9: 2, 8: 3}[x]                 # the mossy steps up to it
         if (z <= 1 or z >= 10) and 10 <= x <= 15:
             return 3                               # the mossy banks either side of the pond
-        if 7 <= x <= 9:
-            return 4 if (z <= 2 or z >= 9) else 3  # the shoulders of the steps
+        if 8 <= x <= 9:
+            return 3                               # the shoulders of the steps
         return 2                                   # the cave floor round the lower pond
     for x in range(X0, X1 + 1):
         for z in range(Z0, Z1 + 1):
@@ -135,7 +141,7 @@ def lush_cave(m, place):
                 if (x, z) in POND or (x, z) in UPPER:
                     b = None
                 elif any((x + dx, z + dz) in POND | UPPER for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
-                    b = CLAY                       # the ponds' rims
+                    b = GRASS if h(x, z, 33) % 3 == 0 else MOSS   # the ponds' lips: moss and grass
                 elif h(x, z, 31) % 7 == 0:
                     b = ROOTED
             else:
@@ -147,8 +153,8 @@ def lush_cave(m, place):
         m.set(x, 0, z, CLAY)
         m.set(x, 1, z, WATER)
     for (x, z) in UPPER:
-        m.set(x, 4, z, CLAY)
-        m.set(x, 5, z, WATER)
+        m.set(x, 2, z, CLAY)
+        m.set(x, 3, z, WATER)
     # the walls and the roof: rock all round the play space, the roof coming down a course at the
     # edges and in knuckles over the floor, rooted dirt in the roof over the ponds
     for x in range(X0, X1 + 1):
@@ -157,7 +163,7 @@ def lush_cave(m, place):
             if edge:
                 for y in range(W[(x, z)], LID):
                     m.set(x, y, z, MOSS if h(x, y, z, 5) % 4 == 0 else rock(x, y, z))
-            m.set(x, LID, z, ROOTED if (abs(x - 13) <= 3 and 2 <= z <= 9 and h(x, z, 8) % 3) else rock(x, LID, z))
+            m.set(x, LID, z, ROOTED if (3 <= x <= 17 and 1 <= z <= 10 and noise_patch(x, z)) else rock(x, LID, z))
             near = x in (X0 + 1,) or z in (Z0 + 1, Z1 - 1)
             if near and h(x, z, 6) % 3 == 0 and x < 17:
                 m.set(x, top, z, MOSS if h(x, z, 9) % 2 else rock(x, top, z))
@@ -198,12 +204,12 @@ def lush_cave(m, place):
             m.set(x, top, z, "minecraft:spore_blossom")
     for x in range(X0 + 1, X1):
         for z in range(Z0 + 1, Z1):
-            if m.get(x, LID, z) == ROOTED and m.get(x, top, z) is None and h(x, z, 12) % 2 == 0:
+            if m.get(x, LID, z) == ROOTED and m.get(x, top, z) is None and h(x, z, 12) % 3:
                 m.set(x, top, z, "minecraft:hanging_roots[waterlogged=false]")
     m.mark("cat-cave", 10, 6, facing="east", y=2)
     m.mark("axolotl-low", 13, 5, facing="east", y=1)         # in the lower pond's water
-    m.mark("upper-pond-rim", 2, 8, facing="north", y=6)
-    m.mark("axolotl-high", 2, 5, facing="east", y=5)         # in the upper pond's water
+    m.mark("upper-pond-rim", 2, 8, facing="north", y=4)
+    m.mark("axolotl-high", 2, 5, facing="east", y=3)         # in the upper pond's water
     m.mark("node-lush-cave", 18, 5, facing="west")
     m.show("up")   # the roof's rock shows where the hill over it is low, by the cutting
 

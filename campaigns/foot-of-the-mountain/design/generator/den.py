@@ -113,12 +113,13 @@ def den_tunnel(m, place):
 
 def cat_den(m, place):
     """The cave: rock where `den_shape` says rock, the ledges and the bridge, the den."""
-    ex, ey, ez = m.ex, m.ey, m.ez
-    cells = S.den_cells(ex, ey, ez)
-    for (x, y, z), b in cells.items():
-        m.set(x, y, z, b)
-    for k, (x, z, facing, y) in S.den_marks().items():
-        m.mark(k, x, z, facing=facing, y=y)
+    # the den's frame: y 0 its floor course under the bridge's sagging middle (world y 70), y 1
+    # the ledges' top course; `den_shape` counts courses from the ledges' top, so frame y = u + 1
+    assert (m.ex, m.ey, m.ez) == (S.EX, S.LID + 2, S.EZ), (m.ex, m.ey, m.ez)
+    for (x, u, z), b in S.den_cells().items():
+        m.set(x, u + 1, z, b)
+    for k, (x, z, facing, u) in S.den_marks().items():
+        m.mark(k, x, z, facing=facing, y=u + 1)
     m.show("down")   # the chasm under the bridge is seen through the den's open floor
 
 
