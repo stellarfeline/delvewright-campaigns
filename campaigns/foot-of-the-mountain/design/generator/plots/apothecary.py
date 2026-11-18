@@ -20,7 +20,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (AIR, Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -100,7 +100,10 @@ def build(a):
     for z in range(HZ0 + 1, HZ1):
         for y in range(1, 5):
             m.set(STILL_WALL, y, z, "stone" if y < 4 else BEAM_Z)
-    door2(m, STILL_WALL, 8, "minecraft:dark_oak", "east")
+    # the still room opens off the shop through a bare doorway: the cat goes in and out of it,
+    # and no animal opens a door
+    for y in (1, 2):
+        m.set(STILL_WALL, y, 8, AIR)
     m.set(STILL_WALL, 3, 8, "stone")
     # the shop: shelves of jars on the north wall, the counter, the scales
     for x in (5, 6, 7):

@@ -367,7 +367,7 @@ def den_cells(ex, ey, ez):
         put(x, 1, 1, "minecraft:bookshelf")
         put(x, 3, 1, "minecraft:dark_oak_slab[type=top,waterlogged=false]")
     low = ["minecraft:amethyst_cluster[facing=up,waterlogged=false]", "minecraft:potted_cactus",
-           "minecraft:potted_cherry_sapling", "minecraft:sculk_catalyst[bloom=false]",
+           "minecraft:potted_cherry_sapling", "minecraft:sculk",
            "minecraft:potted_mangrove_propagule", "minecraft:sea_lantern", "minecraft:potted_bamboo"]
     high = ["minecraft:blue_ice", "minecraft:potted_dead_bush", "minecraft:potted_crimson_fungus",
             "minecraft:potted_brown_mushroom", "minecraft:potted_azalea_bush", "minecraft:potted_warped_fungus",

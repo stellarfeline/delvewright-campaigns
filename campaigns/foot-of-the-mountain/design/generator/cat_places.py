@@ -205,6 +205,7 @@ def lush_cave(m, place):
     m.mark("upper-pond-rim", 2, 8, facing="north", y=6)
     m.mark("axolotl-high", 2, 5, facing="east", y=5)         # in the upper pond's water
     m.mark("node-lush-cave", 18, 5, facing="west")
+    m.show("up")   # the roof's rock shows where the hill over it is low, by the cutting
 
 
 def build(place):
