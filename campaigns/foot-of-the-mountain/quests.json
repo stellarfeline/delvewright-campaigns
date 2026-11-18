@@ -15333,6 +15333,30 @@
         "id": "quest/the-nisse",
         "objectives": [
           {
+            "anchor": "anchor/porridge-pot",
+            "announcement": "hidden",
+            "answers": {
+              "done": "The pot is scraped empty. Somebody small had it all.",
+              "not_yet": "A covered pot by the hay, still warm, smelling of porridge and butter."
+            },
+            "compass": "hidden",
+            "happening": {
+              "subject": "item/porridge",
+              "text": "Porridge is ladled out of the warm pot by the hay.",
+              "verb": "gains"
+            },
+            "id": "obj/fill-a-bowl",
+            "prop": {
+              "block": "minecraft:cauldron"
+            },
+            "record": "A covered pot by the hay in the terrace cottage held porridge with butter on it, kept warm for somebody.",
+            "title": "The porridge pot",
+            "type": "interact"
+          },
+          {
+            "after": [
+              "obj/fill-a-bowl"
+            ],
             "anchor": "anchor/nisse-bowl",
             "announcement": "hidden",
             "answers": {
@@ -15419,6 +15443,19 @@
             {
               "style": "chat",
               "text": "The porridge is hardly in the bowl before the bowl is empty. A hay bale in the bay beside the bowl rolls aside by itself, and under it is a hole in the floor with a ladder in it. From somewhere below, a small cross voice: 'Well? Come down, then. Wipe your feet.'",
+              "type": "narrate"
+            }
+          ],
+          "obj/fill-a-bowl": [
+            {
+              "count": 2,
+              "item": "minecraft:mushroom_stew",
+              "name": "A Bowl of Festival Porridge",
+              "type": "give-item"
+            },
+            {
+              "style": "chat",
+              "text": "A covered pot by the hay, still warm: porridge, a lump of butter melting on top, and a ladle. There is enough for two bowls, and you fill them.",
               "type": "narrate"
             }
           ]
@@ -19298,37 +19335,6 @@
           "range": 80
         },
         "once": true
-      },
-      {
-        "answers": {
-          "done": "The pot is scraped empty. Somebody small had it all.",
-          "not_yet": "The pot is scraped empty. Somebody small had it all."
-        },
-        "at": "anchor/porridge-pot",
-        "audience": "presser",
-        "effects": [
-          {
-            "count": 1,
-            "item": "minecraft:mushroom_stew",
-            "name": "A Bowl of Festival Porridge",
-            "type": "give-item"
-          },
-          {
-            "style": "actionbar",
-            "text": "A covered pot on the hay, still warm: porridge, a lump of butter melting on top, and a ladle. You fill a bowl.",
-            "type": "narrate"
-          }
-        ],
-        "forbids_flags": [
-          "flag/nisse-fed"
-        ],
-        "id": "trigger/porridge-pot",
-        "on": {
-          "on": "use"
-        },
-        "prop": {
-          "block": "minecraft:cauldron"
-        }
       }
     ],
     "vehicles": [

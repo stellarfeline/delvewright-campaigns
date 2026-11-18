@@ -12,6 +12,15 @@
     "generator": "crates/delvec/src/grammar"
   },
   "anchors": {
+    "anchor/nisse-bowl": {
+      "pos": [
+        5,
+        1,
+        3
+      ],
+      "facing": "west",
+      "resolves_to": "space:part-barn"
+    },
     "anchor/node-terrace-cottage": {
       "pos": [
         9,
@@ -20,6 +29,31 @@
       ],
       "facing": "south",
       "resolves_to": "space:part-barn-yard"
+    },
+    "anchor/porridge-pot": {
+      "pos": [
+        14,
+        1,
+        3
+      ],
+      "facing": "east",
+      "resolves_to": "space:part-barn"
+    },
+    "anchor/seam-terrace-cottage-to-nisse-hall": {
+      "region": {
+        "from": [
+          4,
+          1,
+          3
+        ],
+        "to": [
+          4,
+          1,
+          3
+        ]
+      },
+      "block": "minecraft:hay_block[axis=z]",
+      "resolves_to": "bar:seam-terrace-cottage-to-nisse-hall"
     }
   },
   "connectors": [],
@@ -27,17 +61,17 @@
     "profile": "lit",
     "measured_min_light": 3,
     "measured": "",
-    "method": "static light estimate (delvec prefab, the compiler's block+sky flood): min over 301 floor cell(s) reachable on foot from 88 ground-level entry cell(s), of 463 standable in the region box; the piece stands in open air, so sky light enters through its openings. Taken at effective sky 4 (a clear night, the darkest the engine models); under full daylight (sky 15) the same minimum is 8. NOT a live-server probe; dark_threshold=3. Re-probe live for borderline pieces."
+    "method": "static light estimate (delvec prefab, the compiler's block+sky flood): min over 301 floor cell(s) reachable on foot from 90 ground-level entry cell(s), of 463 standable in the region box; the piece stands in open air, so sky light enters through its openings. Taken at effective sky 4 (a clear night, the darkest the engine models); under full daylight (sky 15) the same minimum is 8. NOT a live-server probe; dark_threshold=3. Re-probe live for borderline pieces."
   },
   "license": {
     "source": "original",
     "spdx": "GPL-3.0-or-later",
     "note": "Original Delvewright project asset, derived from a grammar program in this repository. No third-party material is ingested at expansion time; the generator itself is a port credited in docs/ACKNOWLEDGEMENTS.md.",
-    "provenance": "Generated deterministically by crates/delvec/src/grammar (spec-0027) from grammar program \"terrace-cottage\" with handed/datum-y=1, handed/seam/terrace-track-to-terrace-cottage/x0=1, handed/seam/terrace-track-to-terrace-cottage/x1=18, handed/seam/terrace-track-to-terrace-cottage/y0=1, handed/seam/terrace-track-to-terrace-cottage/y1=10, handed/seam/terrace-track-to-terrace-cottage/z0=16, handed/seam/terrace-track-to-terrace-cottage/z1=16, 1 run(s) of cells the place does not own voided (sha256:5c74c051c48c49f1bf1d15b8115366437953c8c18567784e0765c32b9ea9d7b2) at seed 17901108223714781086 over a 20x17x18 region; ADR-0006: the inputs in `generated_by` regenerate this NBT byte for byte.",
+    "provenance": "Generated deterministically by crates/delvec/src/grammar (spec-0027) from grammar program \"terrace-cottage\" with handed/datum-y=1, handed/seam/terrace-cottage-to-nisse-hall/x0=4, handed/seam/terrace-cottage-to-nisse-hall/x1=4, handed/seam/terrace-cottage-to-nisse-hall/y0=0, handed/seam/terrace-cottage-to-nisse-hall/y1=0, handed/seam/terrace-cottage-to-nisse-hall/z0=3, handed/seam/terrace-cottage-to-nisse-hall/z1=3, handed/seam/terrace-track-to-terrace-cottage/x0=1, handed/seam/terrace-track-to-terrace-cottage/x1=18, handed/seam/terrace-track-to-terrace-cottage/y0=1, handed/seam/terrace-track-to-terrace-cottage/y1=10, handed/seam/terrace-track-to-terrace-cottage/z0=16, handed/seam/terrace-track-to-terrace-cottage/z1=16, 5 run(s) of cells the place does not own voided (sha256:e67b5eb7b163cb0027f1c96f32767350d2285ee800645466b6828a2d745bc62d) at seed 17901108223714781086 over a 20x17x18 region; ADR-0006: the inputs in `generated_by` regenerate this NBT byte for byte.",
     "generated_by": {
       "generator": "grammar",
       "program": "terrace-cottage",
-      "program_hash": "sha256:5c74c051c48c49f1bf1d15b8115366437953c8c18567784e0765c32b9ea9d7b2",
+      "program_hash": "sha256:e67b5eb7b163cb0027f1c96f32767350d2285ee800645466b6828a2d745bc62d",
       "seed": 17901108223714781086,
       "region": [
         20,
@@ -46,6 +80,12 @@
       ],
       "params": {
         "handed/datum-y": 1,
+        "handed/seam/terrace-cottage-to-nisse-hall/x0": 4,
+        "handed/seam/terrace-cottage-to-nisse-hall/x1": 4,
+        "handed/seam/terrace-cottage-to-nisse-hall/y0": 0,
+        "handed/seam/terrace-cottage-to-nisse-hall/y1": 0,
+        "handed/seam/terrace-cottage-to-nisse-hall/z0": 3,
+        "handed/seam/terrace-cottage-to-nisse-hall/z1": 3,
         "handed/seam/terrace-track-to-terrace-cottage/x0": 1,
         "handed/seam/terrace-track-to-terrace-cottage/x1": 18,
         "handed/seam/terrace-track-to-terrace-cottage/y0": 1,
@@ -11911,6 +11951,47 @@
         }
       },
       {
+        "a": "part-barn",
+        "b": "exterior",
+        "class": "barred",
+        "rise": 0,
+        "via": {
+          "region": "terrace-cottage-to-nisse-hall-way",
+          "boxes": [
+            {
+              "from": [
+                4,
+                0,
+                3
+              ],
+              "to": [
+                4,
+                0,
+                3
+              ]
+            }
+          ]
+        },
+        "bar": {
+          "region": "seam-terrace-cottage-to-nisse-hall",
+          "boxes": [
+            {
+              "from": [
+                4,
+                1,
+                3
+              ],
+              "to": [
+                4,
+                1,
+                3
+              ]
+            }
+          ],
+          "block": "minecraft:hay_block[axis=z]"
+        }
+      },
+      {
         "a": "part-barn-yard",
         "b": "exterior",
         "class": "walk",
@@ -15669,6 +15750,23 @@
             0,
             16,
             16
+          ]
+        }
+      },
+      {
+        "space": "part-barn",
+        "class": "barred",
+        "dir": "down",
+        "opening": {
+          "from": [
+            4,
+            0,
+            3
+          ],
+          "to": [
+            4,
+            0,
+            3
           ]
         }
       },
