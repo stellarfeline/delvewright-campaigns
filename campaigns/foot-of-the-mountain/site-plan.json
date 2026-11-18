@@ -2224,7 +2224,7 @@
           "open": 8
         },
         "extent": [
-          26,
+          113,
           5
         ],
         "floor": {
@@ -2233,6 +2233,27 @@
         "node": "node/cave-path",
         "sides": {
           "north": "wall"
+        }
+      },
+      {
+        "ceiling": {
+          "open": 8
+        },
+        "extent": [
+          5,
+          51
+        ],
+        "floor": {
+          "y": 84
+        },
+        "grade": {
+          "rise": 5,
+          "run": 1
+        },
+        "node": "node/cave-track",
+        "sides": {
+          "north": "wall",
+          "west": "wall"
         }
       },
       {
@@ -2256,43 +2277,52 @@
       },
       {
         "ceiling": {
-          "open": 6
+          "clearance": 9
         },
         "extent": [
-          20,
-          4
+          18,
+          12
         ],
         "floor": {
-          "y": 160
+          "y": 72
         },
-        "node": "node/hut-path",
+        "node": "node/den-shaft",
         "sides": {
-          "north": "sheer"
+          "east": "wall",
+          "north": "wall",
+          "south": "wall",
+          "west": "wall"
         }
       },
       {
         "ceiling": {
-          "open": 10
+          "clearance": 3
         },
         "extent": [
-          12,
-          12
+          5,
+          84
         ],
         "floor": {
-          "y": 160
+          "y": 72
         },
-        "node": "node/miners-hut"
+        "node": "node/den-tunnel",
+        "sides": {
+          "east": "wall",
+          "north": "wall",
+          "south": "wall",
+          "west": "wall"
+        }
       },
       {
         "ceiling": {
-          "clearance": 96
+          "clearance": 41
         },
         "extent": [
-          112,
-          57
+          49,
+          79
         ],
         "floor": {
-          "y": 63
+          "y": 72
         },
         "node": "node/cat-den",
         "sides": {
@@ -2839,12 +2869,12 @@
     "region": {
       "extent": [
         588,
-        176,
+        196,
         830
       ],
       "min": [
         -132,
-        40,
+        20,
         -157
       ]
     },
@@ -4047,57 +4077,66 @@
         "meets": 0
       },
       {
-        "at": 22,
-        "edge": "edge/cave-path-to-lush-cave",
+        "at": 108,
+        "contact": {
+          "extent": [
+            5,
+            4
+          ]
+        },
+        "edge": "edge/cave-path-to-cave-track",
         "face": "north",
-        "form": "a low mouth in the hill's rock face, hung with moss and vines, into a lush cave",
-        "meets": 2,
+        "form": "at the path's east end a track turns north up the island's east flank",
+        "meets": 0
+      },
+      {
+        "at": 5,
+        "edge": "edge/cave-track-to-lush-cave",
+        "face": "west",
+        "form": "a low mouth in the cutting's rock wall, hung with moss and vines, into a lush cave",
+        "meets": 4,
         "opening": {
           "height": 3,
           "width": 3
         }
       },
       {
-        "at": 8,
-        "contact": {
-          "extent": [
-            1,
-            4
-          ]
-        },
-        "edge": "edge/road-44-to-hut-path",
-        "face": "east",
-        "form": "a worn track leaves the castle road's last leg east across the high ground",
-        "meets": 3
-      },
-      {
-        "at": 0,
-        "contact": {
-          "extent": [
-            4,
-            4
-          ]
-        },
-        "edge": "edge/hut-path-to-miners-hut",
-        "face": "east",
-        "form": "the track ends at the old miner's hut and its yard",
-        "meets": 3
-      },
-      {
         "at": [
           5,
           8
         ],
-        "edge": "edge/miners-hut-to-cat-den",
+        "edge": "edge/apothecary-to-den-shaft",
         "face": "down",
-        "form": "a loom in the hut's back corner over a trapdoor, and under it a ladder down into the chasm under the castle",
+        "form": "a bale of dried herbs in the still room's corner over a trapdoor, and under it a ladder down",
         "meets": [
-          4,
-          6
+          5,
+          8
         ],
         "opening": {
           "height": 1,
           "width": 1
+        }
+      },
+      {
+        "at": 7,
+        "edge": "edge/den-shaft-to-den-tunnel",
+        "face": "north",
+        "form": "the foot of the ladder opens north into a long tunnel",
+        "meets": 1,
+        "opening": {
+          "height": 3,
+          "width": 3
+        }
+      },
+      {
+        "at": 1,
+        "edge": "edge/den-tunnel-to-cat-den",
+        "face": "north",
+        "form": "the tunnel's end opens all at once onto the bridge across the chasm",
+        "meets": 28,
+        "opening": {
+          "height": 3,
+          "width": 3
         }
       },
       {
@@ -4128,7 +4167,25 @@
       }
     ],
     "views": [],
-    "volumes": []
+    "volumes": [
+      {
+        "id": "volume/den-chasm",
+        "note": "The depth of the chasm under the cat's den: air under the bridge, down inside the island's rock, where the stone Cthulhu's body stands.",
+        "region": {
+          "extent": [
+            49,
+            43,
+            79
+          ],
+          "min": [
+            107,
+            28,
+            98
+          ]
+        },
+        "role": "clearance"
+      }
+    ]
   },
   "dsl_version": "0.88.0",
   "stage": "site-plan"
