@@ -93,6 +93,7 @@ def cave_track(m, place):
             m.set(X0, d, z, "minecraft:fern" if h(z, 22) % 2 else CARPET)
     for z in range(Z0 + 8, Z1 - 4, 12):
         lamp_post(m, X1, z, d)
+    lamp_post(m, X1, Z0, d)                    # the cutting's blind end, by the cave's mouth
     m.mark("cave-mouth", X0 + 2, (mz0 + mz1) // 2, facing="west")
     m.mark("node-cave-track", X0 + 2, Z1 - 6, facing="north")
     m.show("up")
