@@ -1757,20 +1757,6 @@
               "rest_tooltip": "Rest by the fire: if you fall at the castle, you come round here.",
               "save_label": "Warm your hands",
               "type": "bonfire"
-            },
-            {
-              "happening": {
-                "subject": "wave/castle-garrison",
-                "text": "The castle's old garrison rises in the yard, as it does whenever the castle is quiet.",
-                "verb": "arrives"
-              },
-              "type": "spawn-wave",
-              "wave": "wave/castle-garrison"
-            },
-            {
-              "style": "chat",
-              "text": "From inside the gate comes a clatter of old iron, and the creak of things that should not stand up: the castle's old garrison, rising in its yard as Bernt warned it would.",
-              "type": "narrate"
             }
           ],
           "obj/fetch-the-fireworks": [
@@ -17905,6 +17891,31 @@
             "value": 1
           }
         ]
+      },
+      {
+        "at": "anchor/stop-courtyard",
+        "effects": [
+          {
+            "happening": {
+              "subject": "wave/castle-garrison",
+              "text": "The castle's old garrison gets up in its yard as somebody comes up to the castle, and does not lie down again until it is put down.",
+              "verb": "arrives"
+            },
+            "type": "spawn-wave",
+            "wave": "wave/castle-garrison"
+          },
+          {
+            "style": "chat",
+            "text": "From inside the castle walls comes a clatter of old iron, and the creak of things that should not stand up: the castle's old garrison, getting up in its yard.",
+            "type": "narrate"
+          }
+        ],
+        "id": "trigger/garrison-wakes",
+        "on": {
+          "on": "approach",
+          "range": 80
+        },
+        "once": true
       }
     ],
     "vehicles": [
