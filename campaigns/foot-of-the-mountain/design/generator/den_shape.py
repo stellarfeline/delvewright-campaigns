@@ -1,29 +1,35 @@
 """The cat's den and its chasm, as one shape: read by `den.py` (the den, a place) and by
-`den-chasm.py` (the statue and the chasm under the den, a piece the world edits stamp).
+`den-chasm.py` (the chasm under the den, a piece the world edits stamp). The stone figure in it is
+its own piece (`den_thing.py`).
 
-Den frame: x 0..60 (world 107..167), z 0..78 (world 98..176). Heights are counted as courses u
-from the ledges' top course, u 0 at world y 71: the ledges and the bridge's ends are walked at u 1
-(world y 72, the tunnel's floor), the bridge sags to u 0 across its middle, the den's floor course
-is u -1 (world y 70), its lid u 42 (world y 113). The chasm under the den is the same x and z,
-u -43..-2 (world 28..69). The tunnel comes in at the south face (z 78), x 28..30; the bridge runs
-north from it across the chasm to the den's ledge; the statue stands west of the bridge, facing
-it, its wings spread along the bridge.
+Coordinates: x XMIN..EX-1 (world 85..178, x 0 at world 107), z ZMIN..EZ-2 (world 76..176, z 0 at
+world 98); the den's frame starts at (XMIN, ZMIN). Heights are counted as courses u from the
+ledges' top course, u 0 at world y 71: the ledges and the bridge's ends are walked at u 1 (world y
+72, the tunnel's floor), the bridge sags to u 0 across its middle, the den's floor course is u -1
+(world y 70), its lid u LID (world y 110). The chasm under the den is the same x and z, u -57..-2
+(world 14..69). The tunnel comes in at the south face (z 78), x 28..30; the bridge runs north from
+it across the chasm to the den's ledge; the figure stands west of the bridge across a dark gap,
+facing it, its wings spread along the bridge, its crown under the lid, its feet in the sea's water
+at the chasm's floor.
 
 The cave is a union of ellipsoids carved out of rock, its walls broken by a seeded value noise (the
 1.18+ noise caves' look: no straight wall, overhangs and knuckles at every height), with the
-walked ledges, the bridge's corridor and the statue (and a margin round it) kept clear.
+walked ledges, the bridge's corridor and the figure (and a margin round it) kept clear.
 """
 import math
 
-EX, EY, EZ = 61, 43, 80
-LID = 42
+EX, EY, EZ = 72, 40, 80
+LID = 39               # the frame ends at world y 110, under the mountain road over the den (its ground course y 111)
+# the frame runs west and north of the bridge's own coordinates, to hold the figure whole: x
+# XMIN..EX-1, z ZMIN..EZ-1; the coordinates below keep x 0 at world 107 and z 0 at world 98
+XMIN, ZMIN = -22, -22
 BRIDGE_X = (28, 29, 30)
 RAIL_X = (27, 31)
 BZ0, BZ1 = 17, 71               # the bridge's deck, south of the den's ledge, north of the tunnel's
 SOUTH_Z0 = 72                   # the tunnel's ledge, z 72..78
 NORTH_Z1 = 16                   # the den's ledge, z 1..16
 STATUE_Z = 41                   # the figure's middle along the bridge
-DEPTH = 43                      # the chasm's depth under the den's floor course
+DEPTH = 57                      # the chasm's depth under the den's floor course
 
 
 def h(*a):
@@ -58,12 +64,12 @@ def _ell(x, y, z, c, r):
 
 # the hollows, den frame (y may be negative: the chasm)
 HOLLOWS = [
-    ((27.0, 16.0, 41.0), (21.0, 26.0, 40.0)),    # the great hall over the bridge
-    ((13.0, 18.0, 44.0), (14.0, 26.0, 33.0)),    # the alcove the statue stands in
+    ((27.0, 14.0, 38.0), (24.0, 30.0, 44.0)),    # the great hall over the bridge
+    ((0.0, -6.0, 25.0), (24.0, 52.0, 52.0)),     # the hall the figure stands in, west of the bridge
     ((30.0, 5.0, 74.0), (10.0, 7.0, 9.0)),       # the tunnel's ledge
     ((31.0, 8.0, 8.0), (16.0, 11.0, 10.0)),      # the den's bay
     ((19.0, -20.0, 44.0), (17.0, 25.0, 31.0)),   # the chasm under the bridge and the statue
-    ((45.0, 13.0, 42.0), (15.0, 19.0, 34.0)),    # the hall's far side, east of the bridge, where the eye stands
+    ((52.0, 14.0, 40.0), (20.0, 20.0, 38.0)),    # the hall's far side, east of the bridge, where the eye stands
 ]
 
 
@@ -100,7 +106,7 @@ def _tri_z_span(root, a, b, z):
 # the stone Cthulhu: `prefab/foot-of-the-mountain-den-thing` (`den_thing.py`, the reference level's
 # figure turned to face the bridge), stamped by `batch/the-thing` with its piece's corner here, in
 # the den's frame (u the den's course): its front stands back from the bridge's rail across a dark gap
-THING_AT = (-8, -43, 6)
+THING_AT = (-18, -56, -20)
 
 
 def _thing_cells():
@@ -193,20 +199,43 @@ def kept_clear(x, y, z):
     bridge's corridor, and the statue with two cells round it."""
     if y >= 0 and y <= 5 and (ground(x, z) or (26 <= x <= 32 and BZ0 - 1 <= z <= BZ1 + 1)):
         return True
-    # the figure's room is cut in the den's courses only; under the den's floor the chasm keeps its
-    # own rock, and what of the figure stands in it rises out of the rock (the chasm cut wider than
-    # its own hollow lets the sea in: DW0851)
-    if y >= -1 and 0 <= x <= 27 and statue_near(x, y, z):
+    # a moat of air six cells either side of the bridge, from under its deck to over its lanterns:
+    # no shelf of rock within a jump of its rails, cable or post lanterns
+    if -3 <= y <= 9 and 20 <= x <= 38 and BZ0 - 1 <= z <= BZ1 + 1 and not ground(x, z):
+        return True
+    # the figure's room, two cells round it, from the chasm's floor to its crown (the chasm holds
+    # the sea's water, authored by `den-chasm.py`, so the room cut under the sea's level is water)
+    if y > -DEPTH and XMIN <= x <= 27 and statue_near(x, y, z):
         return True
     return False
 
 
+# the cells of other places over the den (the mountain road's switchbacks run over its roof), in
+# these coordinates: `den.py` reads them from the den's allocation (`set_overhead`); the rock stands
+# OVERHEAD_MARGIN thick under them, so the road keeps a floor of rock and nothing hangs from it
+OVERHEAD = set()
+OVERHEAD_MARGIN = 3
+
+
+def set_overhead(cells):
+    OVERHEAD.clear()
+    for (x, u, z) in cells:
+        for dy in range(OVERHEAD_MARGIN + 1):
+            for dx in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    OVERHEAD.add((x + dx, u - dy, z + dz))
+
+
 def rock_at(x, y, z):
     """Rock in the den frame (y 0..LID) or in the chasm (y < 0)."""
+    if (x, y, z) in OVERHEAD:
+        return True
     if y <= -DEPTH:      # the chasm's floor course is whole rock: under it is the sea's
         return True
-    if x <= 0 or x >= EX - 1 or z <= 0 or z >= EZ - 2 or y >= LID:
+    if x <= XMIN or x >= EX - 1 or z <= ZMIN or z >= EZ - 2 or y >= LID:
         return not (y >= 1 and y <= 3 and x in BRIDGE_X and z >= EZ - 2)   # the tunnel's mouth
+    if z <= 0 and x >= 18:
+        return True          # north of the den's ledge the rock is whole: no shelf to climb onto
     if kept_clear(x, y, z):
         return False
     return not hollow(x, y, z)
@@ -242,8 +271,8 @@ def lichen_cells(lo_y, hi_y, solid, open_cell, salt):
     """Glow lichen in clusters on the rock faces that air meets, the clusters where a seeded noise
     is high: {cell: state}. `solid(x, y, z)` and `open_cell(x, y, z)` read the shape."""
     out = {}
-    for x in range(1, EX - 1):
-        for z in range(1, EZ - 2):
+    for x in range(XMIN + 1, EX - 1):
+        for z in range(ZMIN + 1, EZ - 2):
             for y in range(lo_y, hi_y + 1):
                 if not open_cell(x, y, z) or noise(x, y, z, 5.0, salt) < 0.66 or h(x, y, z, salt) % 3:
                     continue
@@ -255,15 +284,15 @@ def lichen_cells(lo_y, hi_y, solid, open_cell, salt):
 
 
 # (x, z, the lantern's course): over the figure, found clear of its body to the roof
-FIGURE_LANTERNS = ((4, 51, 3), (14, 21, 16), (13, 17, 12), (12, 9, 12), (14, 33, -3), (13, 50, -1), (16, 43, -4))
+FIGURE_LANTERNS = ()
 
 
 def den_cells():
     """The den's cells, keyed by (x, u, z): u is the den's course, 0 the ledges' top course (world
     y 71), -1 the den's floor course under the bridge's sagging middle (world y 70), LID its lid."""
     c = {}
-    for x in range(EX):
-        for z in range(EZ - 1):
+    for x in range(XMIN, EX):
+        for z in range(ZMIN, EZ - 1):
             for y in range(-1, LID + 1):
                 if y <= 0 and (x in BRIDGE_X or x in RAIL_X) and BZ0 <= z <= BZ1:
                     du, blk, _ = sag(z)
@@ -286,8 +315,8 @@ def den_cells():
 
     # just off the walked ground, where the rock does not rise as a wall, the ground falls away
     # into the chasm: no shelf a course down stands beside a ledge for a body to drop onto
-    for x in range(EX):
-        for z in range(EZ - 1):
+    for x in range(XMIN, EX):
+        for z in range(ZMIN, EZ - 1):
             if ground(x, z) or c.get((x, 0, z)) != AIR:
                 continue
             if any(ground(x + dx, z + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
@@ -299,26 +328,27 @@ def den_cells():
         du, _, w = sag(z)
         for x in RAIL_X:
             c[(x, du + 1, z)] = FENCE
-    for x in range(EX):
-        for z in range(EZ - 1):
+    for x in range(XMIN, EX):
+        for z in range(ZMIN, EZ - 1):
             if not (north_ledge(x, z) or south_ledge(x, z)) or c.get((x, 1, z)) != AIR:
                 continue
+            # (a diagonal drop too: a body slips off a ledge's corner between a rail and a wall)
             if any(c.get((x + dx, 0, z + dz)) == AIR and not deck(x + dx, z + dz)
-                   for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                   for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1))):
                 c[(x, 1, z)] = FENCE
-    # where a ledge meets the cave's rock, the rock stands three high, so no body climbs off the
-    # walked ground onto the rock beyond it
-    for x in range(EX):
-        for z in range(EZ - 1):
+    # where a ledge meets the cave's rock, the rock stands eight high, so no body climbs off the
+    # walked ground onto the rock beyond it, from the floor or from anything standing on it
+    for x in range(XMIN, EX):
+        for z in range(ZMIN, EZ - 1):
             if not ground(x, z):
                 continue
             for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)):
                 nx, nz = x + dx, z + dz
-                if ground(nx, nz) or not (0 <= nx < EX and 0 <= nz < EZ - 1) or c.get((nx, 0, nz)) == AIR:
+                if ground(nx, nz) or not (XMIN <= nx < EX and ZMIN <= nz < EZ - 1) or c.get((nx, 0, nz)) == AIR:
                     continue
                 if nz >= EZ - 2 and nx in BRIDGE_X:
                     continue                       # the tunnel's mouth
-                for y in (1, 2, 3):
+                for y in range(1, 9):
                     c[(nx, y, nz)] = rock_block(nx, y, nz)
     # the rails turn the corners where the bridge leaves each ledge
     for x in RAIL_X:
@@ -347,7 +377,7 @@ def den_cells():
     # the den on the far ledge
     put = lambda x, y, z, b: c.__setitem__((x, y, z), b)  # noqa: E731
     # the den gathered at the bridge's far end, where the bridge comes onto the ledge: the red bed,
-    # the keepsakes on a run of bookshelves, the dragon's head on a pedestal, the egg's place
+    # the keepsakes on a run of bookshelves, the dragon's head, the egg in its case, the conduit
     # (a bed's top is a step: from it a body jumps onto a one-high rail, so it stands six cells
     # back from the ledge's edge)
     put(34, 1, 8, "minecraft:red_bed[facing=north,occupied=false,part=head]")
@@ -357,12 +387,11 @@ def den_cells():
     # nothing a body can stand on within reach of a rail: the rails are one fence high, and a
     # block beside one is a step over it
     put(37, 1, 9, "minecraft:dragon_head[powered=false,rotation=4]")
-    # the dragon's egg's place, kept for it: a pedestal under a glass case, empty (the building
-    # palette refuses `minecraft:dragon_egg`, DW0730, an engine gap)
+    # the dragon's egg on a pedestal under a glass case
     put(43, 1, 4, "minecraft:chiseled_stone_bricks")
     for (x, y, z) in ((42, 2, 4), (44, 2, 4), (43, 2, 3), (43, 2, 5), (43, 3, 4)):
         put(x, y, z, "minecraft:glass")
-    put(43, 2, 4, AIR)
+    put(43, 2, 4, "minecraft:dragon_egg")
     keep = ["minecraft:amethyst_cluster[facing=up,waterlogged=false]", "minecraft:potted_cactus",
             "minecraft:potted_cherry_sapling", "minecraft:sculk", "minecraft:potted_mangrove_propagule",
             "minecraft:sea_lantern", "minecraft:potted_bamboo", "minecraft:blue_ice", "minecraft:potted_dead_bush",
@@ -373,12 +402,13 @@ def den_cells():
     for i, x in enumerate(range(37, 41)):
         put(x, 1, 3, "minecraft:bookshelf")
         put(x, 2, 3, keep[7 + i])
+    # and at the shelf's end, the conduit out of the sea's drowned temple
+    put(41, 1, 3, "minecraft:bookshelf")
+    put(41, 2, 3, "minecraft:conduit[waterlogged=false]")
     put(44, 1, 6, "minecraft:chest[facing=west,type=single,waterlogged=false]")
     put(31, 2, 1, "minecraft:spruce_wall_sign[facing=south,waterlogged=false]")
-    for (x, z) in ((25, 2), (36, 5), (8, 61)):
+    for (x, z) in ((25, 2), (36, 5)):
         put(x, 1, z, LANTERN)
-    put(49, 12, 6, LANTERN)          # the high shelf of rock over the den's back
-    put(8, 2, 23, LANTERN)           # the rock shelf by the tunnel's mouth
     # lanterns hung on chains from the roof over the den and the tunnel's ledge
     for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (31, 12, 4), (36, 12, 4), (26, 75, 4), (33, 75, 4), (30, 74, 6),
                             (47, 60, 4), (49, 65, 4), (45, 69, 4), (54, 55, 3), (8, 61, 4), (52, 30, 4), (50, 45, 4), (54, 38, 4), (20, 74, 13)):
@@ -405,8 +435,8 @@ def den_cells():
     # crystals in the walls: clusters of sea lantern set into the rock's face where it meets the
     # air of the hall, cold blue-white, glow lichen round each
     crystals = []
-    for x in range(1, EX - 1):
-        for z in range(1, EZ - 2):
+    for x in range(XMIN + 1, EX - 1):
+        for z in range(ZMIN + 1, EZ - 2):
             for y in range(2, LID - 2):
                 if c.get((x, y, z)) not in ROCKS or ground(x, z):
                     continue
@@ -431,8 +461,8 @@ def den_cells():
                     c[k] = lichen(f)
                     break
     # dripstone hanging from the roof
-    for x in range(1, EX - 1):
-        for z in range(1, EZ - 2):
+    for x in range(XMIN + 1, EX - 1):
+        for z in range(ZMIN + 1, EZ - 2):
             for y in range(12, LID):
                 if c.get((x, y, z)) == AIR and c.get((x, y + 1, z), AIR) in ROCKS and h(x, y, z, 61) % 13 == 0:
                     c[(x, y, z)] = "minecraft:pointed_dripstone[thickness=tip,vertical_direction=down,waterlogged=false]"

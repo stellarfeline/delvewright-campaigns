@@ -16,10 +16,11 @@ bridge and the statue):
 - node/cat-den: the cave under the mountain, a natural irregular hollow (the 1.18+ noise caves,
   the node's `references[]`): the tunnel's mouth on a ledge, a long bridge of planks, fence rails
   and chains on posts with lanterns across the chasm, and on the far ledge the cat's den, a red
-  bed and a hoard of rare keepsakes. The stone Cthulhu that stands in the chasm behind the bridge
-  and the chasm under it are not drawn here: they are the piece
-  `prefab/foot-of-the-mountain-den-chasm` (`den-chasm.py`), stamped in by the world edits
-  (`batch/the-chasm`) into the air the den leaves for it and the volume under the den.
+  bed and a hoard of rare keepsakes. The chasm under it and the stone Cthulhu that stands in it
+  behind the bridge are not drawn here: they are the pieces `prefab/foot-of-the-mountain-den-chasm`
+  (`den-chasm.py`) and `prefab/foot-of-the-mountain-den-thing` (`den_thing.py`), stamped in by
+  the world edits (`batch/the-chasm`, `batch/the-thing`) into the volume under the den and the air
+  the den leaves for the figure.
 
 Piece-local axes: +x east, +z south; y 0 the ground course, y 1 the walk plane.
 """
@@ -114,12 +115,21 @@ def den_tunnel(m, place):
 def cat_den(m, place):
     """The cave: rock where `den_shape` says rock, the ledges and the bridge, the den."""
     # the den's frame: y 0 its floor course under the bridge's sagging middle (world y 70), y 1
-    # the ledges' top course; `den_shape` counts courses from the ledges' top, so frame y = u + 1
-    assert (m.ex, m.ey, m.ez) == (S.EX, S.LID + 2, S.EZ), (m.ex, m.ey, m.ez)
+    # the ledges' top course; `den_shape` counts courses from the ledges' top, so frame y = u + 1,
+    # and its x and z run from (XMIN, ZMIN)
+    assert (m.ex, m.ey, m.ez) == (S.EX - S.XMIN, S.LID + 2, S.EZ - S.ZMIN), (m.ex, m.ey, m.ez)
+    # the places over the den's roof (the mountain road): the rock keeps a floor under them
+    over = []
+    for v in place.a.get("voids", []):
+        if v["owner"].startswith("`node/") and v["owner"] != "`node/den-tunnel`":
+            (x0, y0, z0), (x1, y1, z1) = v["cells"]
+            over += [(x + S.XMIN, y - 1, z + S.ZMIN) for x in range(x0, x1 + 1) for y in range(y0, y1 + 1)
+                     for z in range(z0, z1 + 1)]
+    S.set_overhead(over)
     for (x, u, z), b in S.den_cells().items():
-        m.set(x, u + 1, z, b)
+        m.set(x - S.XMIN, u + 1, z - S.ZMIN, b)
     for k, (x, z, facing, u) in S.den_marks().items():
-        m.mark(k, x, z, facing=facing, y=u + 1)
+        m.mark(k, x - S.XMIN, z - S.ZMIN, facing=facing, y=u + 1)
     m.show("down")   # the chasm under the bridge is seen through the den's open floor
 
 
@@ -138,7 +148,7 @@ def build(place):
 THIN = ("minecraft:glow_lichen", "minecraft:pointed_dripstone", "minecraft:iron_chain", "minecraft:lantern",
         "minecraft:hanging_roots", "minecraft:cave_vines", "minecraft:potted_", "minecraft:spruce_wall_sign",
         "minecraft:amethyst_cluster", "minecraft:skeleton_skull", "minecraft:dragon_wall_head", "minecraft:end_rod",
-        "minecraft:red_bed", "minecraft:red_carpet")
+        "minecraft:red_bed", "minecraft:red_carpet", "minecraft:dragon_head", "minecraft:dragon_egg", "minecraft:conduit")
 
 
 def claim_thin(out):

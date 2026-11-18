@@ -2,15 +2,15 @@
 """The chasm under the cat's den: a piece the world edits stamp.
 
     python3 den-chasm.py --out foot-of-the-mountain-den-chasm.json
-    delvec grammar expand --file foot-of-the-mountain-den-chasm.json --region 61x42x79 --out <the content prefabs directory>
+    delvec grammar expand --file foot-of-the-mountain-den-chasm.json --region 94x56x101 --out <the content prefabs directory>
 
 writes `prefab/foot-of-the-mountain-den-chasm`: the chasm's rock under the den's floor course
-(`den_shape.rock_at`, u -43..-2, the cave's dark rock) with crystals of sea lantern in its walls and
+(`den_shape.rock_at`, u -57..-2, the cave's dark rock) with crystals of sea lantern in its walls and
 glow lichen round them, and the sea's water in it up to the sea's level (world y 62): the chasm
 stands below the sea, and the engine's sea model floods it, so the water is authored here and every
 proof downstream knows it (DW0851). No place stands its walk plane under the sea's surface, so the chasm is not
 a place: it is air the site plan keeps under the den (`volume/den-chasm`), and this piece is
-stamped into it by `batch/the-chasm`, unrotated, its first course at world y 28, its x and z the
+stamped into it by `batch/the-chasm`, unrotated, its first course at world y 14, its x and z the
 den's frame. The stone Cthulhu standing in it is its own piece (`den_thing.py`, `batch/the-thing`).
 """
 import json
@@ -21,9 +21,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import den_shape as S  # noqa: E402
 
 D = S.DEPTH
-SEA = 62 - 28                  # the sea's level (world y 62) in the chasm's courses (its first at world y 28)
+SEA = 62 - 14                  # the sea's level (world y 62) in the chasm's courses (its first at world y 14)
 WATER = "minecraft:water[level=0]"
-EX, EY, EZ = S.EX, S.DEPTH - 1, S.EZ - 1     # 61 x 42 x 79: the chasm, u -43..-2
+EX, EY, EZ = S.EX, S.DEPTH - 1, S.EZ - 1     # the chasm, u -57..-2, x XMIN..EX-1, z ZMIN..EZ-1
+XR, ZR = range(S.XMIN, EX), range(S.ZMIN, EZ)
+REGION = f"{EX - S.XMIN}x{EY}x{EZ - S.ZMIN}"
 
 PALETTE = {
     # the chasm's rock is the cave's dark rock
@@ -37,8 +39,8 @@ PALETTE = {
 
 def cells():
     c = {}
-    for x in range(EX):
-        for z in range(EZ):
+    for x in XR:
+        for z in ZR:
             for yb in range(D - 1):          # the chasm's rock, under the den's floor course
                 y = yb - D
                 if S.rock_at(x, y, z):
@@ -48,12 +50,12 @@ def cells():
         return c.get((x, yb, z)) in ("rock", "deep")
     # crystals in the chasm's walls: cold light on the figure's body from below, glow lichen round each
     crystals = []
-    for x in range(1, EX - 1):
-        for z in range(1, EZ - 1):
+    for x in range(S.XMIN + 1, EX - 1):
+        for z in range(S.ZMIN + 1, EZ - 1):
             for yb in range(2, D - 2):
                 if not is_rock(x, yb, z) or S.h(x, yb, z, 97) % 17:
                     continue
-                if not any(c.get((x + dx, yb + dy, z + dz)) is None and 0 <= x + dx < EX and 0 <= z + dz < EZ
+                if not any(c.get((x + dx, yb + dy, z + dz)) is None and S.XMIN <= x + dx < EX and S.ZMIN <= z + dz < EZ
                            for _, dx, dy, dz in S.FACES):
                     continue
                 if any(abs(x - a) + abs(yb - b) + abs(z - d) < 7 for a, b, d in crystals):
@@ -63,7 +65,7 @@ def cells():
     for (a, b, d) in crystals:
         for _, dx, dy, dz in S.FACES:
             k = (a + dx, b + dy, d + dz)
-            if c.get(k) is not None or not (0 <= k[0] < EX and 0 <= k[2] < EZ and 0 <= k[1] < D - 1):
+            if c.get(k) is not None or not (S.XMIN <= k[0] < EX and S.ZMIN <= k[2] < EZ and 0 <= k[1] < D - 1):
                 continue
             for f, ex_, ey_, ez_ in S.FACES:
                 if is_rock(k[0] + ex_, k[1] + ey_, k[2] + ez_):
@@ -72,8 +74,8 @@ def cells():
     figure = S._thing_cells()
     # glow lichen in patches on the shelves over the water, just under the den, so a body that
     # falls there is not left in the dark
-    for x in range(EX):
-        for z in range(EZ):
+    for x in XR:
+        for z in ZR:
             for yb in range(SEA + 1, EY):    # the shelves over the water, under the den
                 if c.get((x, yb, z)) is not None:
                     continue
@@ -86,8 +88,8 @@ def cells():
     # crystals set in the chasm's top course under the shelves a course below the ledges, where the
     # figure's room is cut down to the chasm's rock
     top = D - 2
-    for x in range(EX):
-        for z in range(EZ):
+    for x in XR:
+        for z in ZR:
             if not is_rock(x, top, z) or S.ground(x, z) or S.h(x, z, 151) % 6:
                 continue
             if not S.rock_at(x, -1, z):
@@ -102,8 +104,8 @@ def cells():
     # the chasm stands below the sea, and the sea is in it: black water up to the sea's level (world
     # y 62, the chasm's course SEA), so a body that falls in lands in water and the figure rises out
     # of it
-    for x in range(EX):
-        for z in range(EZ):
+    for x in XR:
+        for z in ZR:
             for yb in range(SEA + 1):
                 if (x, yb, z) not in c:
                     c[(x, yb, z)] = WATER
@@ -146,9 +148,9 @@ def main():
     for v in sorted({v for v in c.values() if v.startswith("minecraft:")}):
         palette[v] = v
     rows = []
-    for z in range(EZ):
+    for z in ZR:
         cols = []
-        for x in range(EX):
+        for x in XR:
             cols.append(split("y", merge([leaf(c.get((x, y, z))) for y in range(EY)])))
         rows.append(split("x", merge(cols)))
     program = {
