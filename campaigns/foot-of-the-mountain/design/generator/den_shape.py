@@ -283,8 +283,10 @@ def lichen_cells(lo_y, hi_y, solid, open_cell, salt):
     return out
 
 
-# (x, z, the lantern's course): over the figure, found clear of its body to the roof
-FIGURE_LANTERNS = ()
+# (x, z, the lantern's course): in front of each wing, over the hood and by the raised hand, each
+# clear of the figure's body to the roof: a white figure in a dark cave is lit, or it reads as rock
+FIGURE_LANTERNS = ((-11, -4, 22), (-11, 54, 22), (-11, -4, 10), (-11, 54, 10), (-11, 6, 30), (-11, 44, 30),
+                   (-5, 25, 35), (-4, 19, 33), (-4, 31, 33), (2, 12, 24), (2, 38, 24), (8, 8, 28), (8, 42, 28), (13, 0, 16), (14, 50, 10))
 
 
 def den_cells():
@@ -411,7 +413,7 @@ def den_cells():
         put(x, 1, z, LANTERN)
     # lanterns hung on chains from the roof over the den and the tunnel's ledge
     for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (31, 12, 4), (36, 12, 4), (26, 75, 4), (33, 75, 4), (30, 74, 6),
-                            (47, 60, 4), (49, 65, 4), (45, 69, 4), (54, 55, 3), (8, 61, 4), (52, 30, 4), (50, 45, 4), (54, 38, 4), (20, 74, 13)):
+                            (47, 60, 4), (49, 65, 4), (45, 69, 4), (54, 55, 3), (8, 61, 4), (52, 14, 4), (50, 45, 4), (56, 48, 4), (20, 74, 13)):
         y = low_y
         while y < LID and c.get((x, y, z)) == AIR:
             y += 1
