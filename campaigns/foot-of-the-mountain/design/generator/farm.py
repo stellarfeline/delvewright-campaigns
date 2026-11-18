@@ -501,9 +501,9 @@ def barn(m, W, D, d, g, side, stem=None):
     m.set(mid - 1, g, dz, "minecraft:cobblestone")
     m.set(mid, g, dz, "minecraft:cobblestone")
     m.set(mid + 1, g, dz, "minecraft:cobblestone")
-    # hay in the bays either side of the threshing floor, lamps on the posts; in the farmstead barn
-    # the west bay's back bale is the nisse's way down (`NISSE_BALE`), its bar the whole's to stand
-    hole = (bx0 + 1, bz1 - 1) if stem == "barn" else None
+    # hay in the bays either side of the threshing floor, lamps on the posts; in the terrace cottage
+    # the west bay's back bale is the nisse's way down (`nisse_way`), its bar the piece's own
+    hole = (bx0 + 1, bz0 + 1 if side == "south" else bz1 - 1) if stem == "terrace-cottage" else None
     for x in (bx0 + 1, bx1 - 1):
         for z in range(bz0 + 1, bz1):
             if (x, z) != hole:
@@ -515,11 +515,13 @@ def barn(m, W, D, d, g, side, stem=None):
             if (x, z) != hole:
                 m.set(x, d + 1, z, lantern())
     if hole is not None:
-        nisse_way(m, hole, d, g)
         # the little bowl on the floor beside the bay, and across the threshing floor the porridge pot
         m.mark("nisse-bowl", hole[0] + 1, hole[1], facing="west")
         m.mark("porridge-pot", bx1 - 2, hole[1], facing="east")
     part(m, bx0, bx1, bz0, bz1, "barn")
+    if hole is not None:
+        # the way down's column is the room's, the space the barred way's edge leaves from
+        nisse_way(m, hole, d, g)   # last, so nothing drawn after it covers the rung
     # the yard: cobbles before the doors, a cart and a woodpile
     yz = range(1, bz0) if side == "north" else range(bz1 + 1, D + 1)
     for z in yz:
@@ -540,21 +542,21 @@ def barn(m, W, D, d, g, side, stem=None):
                 part(m, x, x, z, z, "barn-yard")
 
 
-# The farmstead barn's way down to the nisse's hall is declared `learned: hidden`. The bar the
+# The terrace cottage's way down to the nisse's hall is declared `learned: hidden`. The bar the
 # allocation hands is the derivation's own closed iron trapdoor over the hole, which the eye looks
-# through (docs/reference/sight-through-blocks.md); the barn ships its own instead, as a bound piece
-# may: a hay bale like the bay's others, a full block that hides the hole under it (`own_bars`).
-NISSE = "barn-to-nisse-hall"
+# through (docs/reference/sight-through-blocks.md); the cottage ships its own instead, as a bound
+# piece may: a hay bale like the bay's others, a full block that hides the hole under it (`own_bars`).
+NISSE = "terrace-cottage-to-nisse-hall"
 NISSE_BARS = {f"bar-{NISSE}": "minecraft:hay_block[axis=z]"}
 RUNG = "minecraft:ladder[facing=east,waterlogged=false]"
 
 
 def nisse_way(m, hole, d, g):
-    """The top rung of the ladder up from the hall stands in the hole through the barn's floor
+    """The top rung of the ladder up from the hall stands in the hole through the cottage's floor
     course: the rung in a floor's hole is the hole owner's, hung on the floor to its west."""
     s = next((s for s in m.place.seams if s["stem"] == NISSE), None)
     if s is None:
-        sys.exit(f"farm.py: the barn has no seam {NISSE}")
+        sys.exit(f"farm.py: the terrace cottage has no seam {NISSE}")
     lo, hi = [b.value for b in s["lo"]], [b.value for b in s["hi"]]
     cells = {(x, y, z) for x in range(lo[0], hi[0]) for y in range(lo[1], hi[1]) for z in range(lo[2], hi[2])}
     m.drawn_openings |= cells
@@ -569,6 +571,11 @@ def own_bars(out):
     for k, v in NISSE_BARS.items():
         if k in doc["palette"]:
             doc["palette"][k] = v
+    # the way down leaves from the barn part's floor, which the bay round it is: the starter names
+    # every barred way's space `room`, and the cottage's bay is the part `part-barn`
+    for e in doc["contract"]["edges"]:
+        if e.get("bar", {}).get("region") == f"seam-{NISSE}":
+            e["a"] = "part-barn"
     with open(out, "w", encoding="utf-8") as f:
         f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 

@@ -12,10 +12,10 @@ One generator, dispatched on the place's stem, drawn into the skill's starter:
   walls, casks two high along the north wall, sugar sacks along the south, a cask for a card table
   with candles in the middle, a coast chart and the members' ledger, the old sea door at the east
   end bricked up inside its timber frame, and the ladder up to the store in the north-west corner.
-- node/nisse-hall: the farm nisse's hall dug under the farmstead barn, after the nisse of Nordic
-  folklore (the node's `references[]`): walls and roof of the barn's earth, rooted and hung with
+- node/nisse-hall: the terrace farm nisse's hall dug under the terrace cottage, after the nisse of Nordic
+  folklore (the node's `references[]`): walls and roof of the cottage's earth, rooted and hung with
   roots, a hearth of field stones with a small fire, a table and stool at a child's knee, a box bed,
-  shelves of the town's lost things, and the ladder up into the barn's hay bay in the north-west
+  shelves of the town's lost things, and the ladder up into the cottage's hay bay in the south-west
   corner.
 
 Each ladder comes up the place's own column to the hole in the host's floor; the host owns the hole
@@ -100,12 +100,22 @@ def ladder_up(m, place, stem):
     return lx, ly, lz
 
 
+def landing(m, lx, ly, lz, block):
+    """A stack two high beside the ladder's foot with its top open to the hole's course: a body
+    climbing down the ladder can step off onto it, and the light probe, which is walked in from
+    the standable cells round a seam's opening, finds one there."""
+    m.set(lx + 1, 1, lz, block)
+    m.set(lx + 1, 2, lz, block)
+    for y in range(3, ly + 1):
+        m.set(lx + 1, y, lz, AIR)
+
+
 def cellar(m, place):
     top = m.ey - 2                       # the walk courses are 1..top
     BRICK = ["minecraft:bricks"] * 5 + ["minecraft:mud_bricks", "minecraft:stone_bricks"]
     FLOOR = ["minecraft:stone_bricks"] * 3 + ["minecraft:cracked_stone_bricks", "minecraft:cobblestone"]
     W, D = shell(m, place, BRICK, FLOOR, ["minecraft:bricks"])
-    lx, _, lz = ladder_up(m, place, "merchant-to-free-traders-cellar")
+    lx, _ly, lz = ladder_up(m, place, "merchant-to-free-traders-cellar")
     # the vault: upside-down brick stairs along both long walls under the lid
     for x in range(1, W + 1):
         if (x, 1) != (lx, lz):
@@ -144,6 +154,7 @@ def cellar(m, place):
     # lamps: hung from the lid down the middle
     for x in (3, W - 2):
         m.set(x, top, tz, HANGING)
+    landing(m, lx, _ly, lz, "minecraft:barrel[facing=south,open=false]")
     m.mark("node-free-traders-cellar", tx - 2, tz + 1, facing="east")
 
 
@@ -152,7 +163,7 @@ def hall(m, place):
     EARTH = ["minecraft:rooted_dirt", "minecraft:dirt", "minecraft:coarse_dirt", "minecraft:rooted_dirt", "minecraft:packed_mud"]
     FLOOR = ["minecraft:packed_mud", "minecraft:coarse_dirt", "minecraft:packed_mud", "minecraft:mud_bricks"]
     W, D = shell(m, place, EARTH, FLOOR, ["minecraft:rooted_dirt"])
-    lx, _, lz = ladder_up(m, place, "barn-to-nisse-hall")
+    lx, _ly, lz = ladder_up(m, place, "terrace-cottage-to-nisse-hall")
     # roots through the roof, clear of the ladder and of the way round the room
     for (x, z) in ((3, 3), (5, 6), (7, 2), (9, 5), (2, 5), (W - 1, 3)):
         if 1 <= x <= W and 1 <= z <= D and (x, z) != (lx, lz):
@@ -193,6 +204,7 @@ def hall(m, place):
     # light: a lantern hung over the middle of the room
     m.set(W // 2, top, D // 2, HANGING)
     m.set(3, top, D // 2 - 1, HANGING)
+    landing(m, lx, _ly, lz, "minecraft:hay_block[axis=y]")
     m.mark("node-nisse-hall", W // 2, D // 2 + 1, facing="east")
 
 
