@@ -509,7 +509,8 @@ def barn(m, W, D, d, g, side, stem=None):
             if (x, z) != hole:
                 m.set(x, d, z, "minecraft:hay_block[axis=z]")
     for x in (bx0 + 1, bx1 - 1):
-        m.set(x, d + 1, bz0 + 1, "minecraft:hay_block[axis=z]")
+        if (x, bz0 + 1) != hole:      # nothing stacked over the way down: a body climbs out past it
+            m.set(x, d + 1, bz0 + 1, "minecraft:hay_block[axis=z]")
     for x in (bx0 + 1, bx1 - 1):
         for z in range(bz0 + 2, bz1, 2):
             if (x, z) != hole:
