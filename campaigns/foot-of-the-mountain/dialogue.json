@@ -233,6 +233,13 @@
                 "next": "dlg/agathe-sights"
               },
               {
+                "label": "The tide is out.",
+                "next": "dlg/agathe-tide",
+                "requires_flags": [
+                  "flag/free-traders-met"
+                ]
+              },
+              {
                 "label": "Good luck."
               }
             ],
@@ -257,6 +264,16 @@
               }
             ],
             "text": "If the hills are too much for your legs, Runa at the inn's stable hires out her grey mare. And Torvald the smith sells good iron at his counter on the main street, for the pennies the town is handing out. When I was a girl there was a cave in the hill behind the cathedral, all green and glowing. I expect it is still there."
+          },
+          {
+            "id": "dlg/agathe-tide",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/agathe-day"
+              }
+            ],
+            "text": "Lady Agathe goes very still. Then she laughs, a girl's laugh, much too loud for the front row. 'Magnhild! That impossible child. She still has the cellar? Of course she does.' She lowers her voice. 'Eleven pounds a year, for sixty-one years, and Oskar has never once asked where it came from. Good man, Oskar. Not a word to Vidar Foss, mind. He would have to look up the by-law, and it would spoil his whole night.'"
           }
         ],
         "npc": "npc/agathe",
@@ -804,6 +821,164 @@
         ],
         "npc": "npc/cat",
         "root": "dlg/cat-pond"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/magnhild-cellar",
+            "options": [
+              {
+                "label": "What is this place?",
+                "next": "dlg/magnhild-society"
+              },
+              {
+                "label": "What's in the sacks?",
+                "next": "dlg/magnhild-sugar"
+              },
+              {
+                "label": "Who founded it?",
+                "next": "dlg/magnhild-founder",
+                "requires_flags": [
+                  "flag/heard-of-the-sugar"
+                ]
+              },
+              {
+                "label": "Goodbye, Magnhild."
+              }
+            ],
+            "text": "At a card table among the casks an old woman in a sea-coat is playing patience by candlelight, and losing. She does not look up. 'Mind the ladder, shipmate, it bites. Well, well. Eleven years nobody has found the way down. Sit, if you can find a cask that isn't full.'"
+          },
+          {
+            "id": "dlg/magnhild-society",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/magnhild-cellar"
+              }
+            ],
+            "text": "'The Kelderby Free Traders. Smugglers, if you like, and you'll not like it out loud. Founded in this cellar sixty-one years ago, by a girl of nineteen with a rowing boat and no fear of anything. I was twelve. I held the lantern.' She lays a card down on the wrong pile. 'There were nine of us once. There is one. I'm Magnhild, and I'm the one.'"
+          },
+          {
+            "id": "dlg/magnhild-sugar",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "flag": "flag/heard-of-the-sugar",
+                    "type": "set-flag"
+                  }
+                ],
+                "happening": {
+                  "subject": "npc/magnhild",
+                  "text": "Magnhild tells the party the cake's sugar lighthouse is smuggled sugar, every year.",
+                  "verb": "learns"
+                },
+                "label": "Back.",
+                "next": "dlg/magnhild-cellar"
+              }
+            ],
+            "text": "'Sugar.' She says it the way other people say gold. 'By-law forty-one: no sugar is landed in Kelderby but over the guild's scale, at a penny the ounce. A sugar lighthouse on top of a festival cake takes eleven pounds of it. Do the sum, shipmate. Nobody in this town could pay it. So every year, the week before the festival, eleven pounds come in over the rocks at night in a boat with no lamp, and Oskar finds them on his back step, and he has never once asked.' She pats the nearest sack. 'This year's. The last run. My knees won't do another.'"
+          },
+          {
+            "id": "dlg/magnhild-founder",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/meet-magnhild",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "We'll keep it quiet.",
+                "tooltip": "Magnhild gives you the society's last share: a lantern with no glass, its old signal, and three pennies."
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/magnhild-cellar"
+              }
+            ],
+            "text": "'The girl with the rowing boat?' Magnhild turns over a card and smiles at it. 'She sits in the front row of the festival every year in a green coat, and the whole town calls her Lady. Go and tell her the tide is out. Watch her face when you do.' She pushes something across the table. 'And take the society's share. There's nobody else to give it to.'"
+          }
+        ],
+        "npc": "npc/magnhild",
+        "root": "dlg/magnhild-cellar"
+      },
+      {
+        "nodes": [
+          {
+            "id": "dlg/nisse-hall",
+            "options": [
+              {
+                "label": "Who are you?",
+                "next": "dlg/nisse-who"
+              },
+              {
+                "label": "Wonder about what?",
+                "next": "dlg/nisse-goats"
+              },
+              {
+                "label": "What's all this?",
+                "next": "dlg/nisse-hoard"
+              },
+              {
+                "label": "Goodbye, Nisse."
+              }
+            ],
+            "text": "In a hall of roots under the barn, at a table no higher than your knee, a little old man in a red cap is eating porridge as if somebody might take it off him. His beard is in it. 'Three festivals,' he says, not looking up. 'Three festivals, nobody. And then they wonder.'"
+          },
+          {
+            "id": "dlg/nisse-who",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/nisse-hall"
+              }
+            ],
+            "text": "'Who am I. Who am I! I am the master of this farm, is who. I was here when the first beam of that barn went up, and the beam knows it. Every calf born up there, I sat up with. Every hen, I counted. One bowl of porridge a year, on festival eve, butter on top: that was the bargain, and it was kept for three hundred years. Your great-great-grandmother kept it. She had better manners than you, and you have not even sat down.'"
+          },
+          {
+            "id": "dlg/nisse-goats",
+            "options": [
+              {
+                "effects": [
+                  {
+                    "objective": "obj/meet-the-nisse",
+                    "type": "complete-objective"
+                  }
+                ],
+                "label": "Will you stop?",
+                "next": "dlg/nisse-promise",
+                "tooltip": "Ask the nisse to leave the cooper's goats alone from now on."
+              },
+              {
+                "label": "Back.",
+                "next": "dlg/nisse-hall"
+              }
+            ],
+            "text": "He puts his spoon down. 'The goats. The cooper's goats, that get out of a shut pen every festival morning and go up the mountain as if they had been invited.' He picks the spoon up again. 'I invited them. A latch is a very simple thing, for some of us. Three years they have gone, and three years nobody thought to wonder why. Well. I have had my porridge now.'"
+          },
+          {
+            "id": "dlg/nisse-promise",
+            "options": [
+              {
+                "label": "Goodbye, Nisse."
+              }
+            ],
+            "text": "'Stop? I have stopped. A bargain is a bargain.' He wipes his beard. 'The goats sleep in their pen tonight, and the barn's cows give cream for a week. You may tell the cooper that much. Do not tell him why: he would leave out a saucer of milk, and I am not a cat.'"
+          },
+          {
+            "id": "dlg/nisse-hoard",
+            "options": [
+              {
+                "label": "Back.",
+                "next": "dlg/nisse-hall"
+              }
+            ],
+            "text": "'Things people dropped and did not come back for. Finders keepers is the oldest law there is, older than the clerk's by-laws.' A pair of spectacles with one lens. A sugar spoon. Forty-one odd socks, sorted by colour. A bell's clapper. 'That is the guildhall's. The clerk has rung his bell with a borrowed clapper for twenty years. Do not tell him: he would want it back.'"
+          }
+        ],
+        "npc": "npc/nisse",
+        "root": "dlg/nisse-hall"
       }
     ]
   },

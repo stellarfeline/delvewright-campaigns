@@ -281,6 +281,26 @@
         "node": "node/cat-den",
         "objective": "obj/down-to-the-den",
         "quest": "quest/the-cat-den"
+      },
+      {
+        "node": "node/merchant",
+        "objective": "obj/find-the-cellar",
+        "quest": "quest/the-free-traders"
+      },
+      {
+        "node": "node/free-traders-cellar",
+        "objective": "obj/meet-magnhild",
+        "quest": "quest/the-free-traders-cellar"
+      },
+      {
+        "node": "node/barn",
+        "objective": "obj/feed-the-nisse",
+        "quest": "quest/the-nisse"
+      },
+      {
+        "node": "node/nisse-hall",
+        "objective": "obj/meet-the-nisse",
+        "quest": "quest/the-nisse-hall"
       }
     ],
     "critical_path": [
@@ -1376,6 +1396,38 @@
         },
         "id": "edge/carter-up",
         "one_way": "a-to-b"
+      },
+      {
+        "a": "node/merchant",
+        "b": "node/free-traders-cellar",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/cellar-open"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "hole in the boards",
+            "方洞"
+          ]
+        },
+        "id": "edge/merchant-to-free-traders-cellar"
+      },
+      {
+        "a": "node/barn",
+        "b": "node/nisse-hall",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/nisse-fed"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "hole in the floor",
+            "地板上有个洞"
+          ]
+        },
+        "id": "edge/barn-to-nisse-hall"
       }
     ],
     "entry": "node/square",
@@ -2927,6 +2979,13 @@
             "terms": "CC BY-SA 4.0 (Wikipedia text)",
             "url": "https://en.wikipedia.org/wiki/Medieval_Merchant%27s_House"
           }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/merchant-ledger",
+            "kind": "point",
+            "note": "the ledger shelf in the counting room, one ledger pushed in further than the rest, which gives under a hand"
+          }
         ]
       },
       {
@@ -3903,6 +3962,18 @@
             "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
             "url": "https://en.wikipedia.org/wiki/Farmyard"
           }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/nisse-bowl",
+            "kind": "point",
+            "note": "a little clay bowl on the floor by the hay bay at the barn's back, empty"
+          },
+          {
+            "anchor": "anchor/porridge-pot",
+            "kind": "point",
+            "note": "a covered pot of porridge on the hay bay across the threshing floor"
+          }
         ]
       },
       {
@@ -4754,6 +4825,54 @@
             "anchor": "anchor/den-sign",
             "kind": "point",
             "note": "a board on the den's wall listing fishes, some ticked off"
+          }
+        ]
+      },
+      {
+        "id": "node/free-traders-cellar",
+        "intent": "the Free Traders' cellar",
+        "note": "A low vaulted cellar of old brick under the merchant's cloth store, kept by the town's last smuggler: casks and sugar sacks along the walls, a card table with candles in the middle, a coast chart on a table, the old sea door at the far end bricked up long ago, a ladder up to the store in one corner.",
+        "references": [
+          {
+            "shows": "Smuggling in eighteenth-century Britain: the smugglers called themselves free traders, landed goods by night on quiet shores and hid them in cellars and tunnels under ordinary houses and inns, with whole towns quietly buying.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Smuggling#History"
+          },
+          {
+            "shows": "A priest hole: a hiding place built into a house's fabric, entered through panelling, a hearth or a floor that reads as ordinary, so a searcher sees only the wall.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text)",
+            "url": "https://en.wikipedia.org/wiki/Priest_hole"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/magnhild-seat",
+            "kind": "point",
+            "note": "at the card table in the middle of the cellar, where Magnhild plays patience"
+          }
+        ]
+      },
+      {
+        "id": "node/nisse-hall",
+        "intent": "the nisse's hall under the barn",
+        "note": "A low hall dug out under the farmstead barn, its roof the barn's own earth hung with roots: a hearth of field stones with a small fire, a table and stool no higher than a child's knee, a box bed, and shelves and heaps of the town's lost things. A ladder comes down from a hole in the barn floor in one corner.",
+        "references": [
+          {
+            "shows": "The nisse or tomte of Nordic folklore: a small household spirit in grey clothes and a red cap who lives under the floorboards of a farm's barn or stable, keeps the farm and its animals, expects a bowl of porridge with butter on it once a year, and plays tricks on the animals when he is forgotten.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Nisse_(folklore)"
+          },
+          {
+            "shows": "The game's own rooted dirt and hanging roots: the underside of a tree's ground, roots dangling from it into the air below.",
+            "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
+            "url": "https://minecraft.wiki/w/Hanging_Roots"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/nisse-seat",
+            "kind": "point",
+            "note": "at the little table by the hearth, where the nisse eats his porridge"
           }
         ]
       }

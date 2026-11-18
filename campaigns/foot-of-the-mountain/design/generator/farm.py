@@ -14,6 +14,7 @@ gate onto the track. Lamps stand where a canopy or a roof shades the ground,
 so the plots read at night. Piece-local axes: +x east, +z south; the play
 space is 1..W by 1..D.
 """
+import json
 import os
 import sys
 
@@ -473,7 +474,7 @@ def pond(m, W, D, d, g, side):
     part(m, 1, W, 2, D - 1, "pond-bank")
 
 
-def barn(m, W, D, d, g, side):
+def barn(m, W, D, d, g, side, stem=None):
     ground(m, W, D, g, "minecraft:grass_block[snowy=false]")
     # the barn on the far half of the plot, its doors toward the track
     bx0, bx1 = 3, W - 2
@@ -500,15 +501,24 @@ def barn(m, W, D, d, g, side):
     m.set(mid - 1, g, dz, "minecraft:cobblestone")
     m.set(mid, g, dz, "minecraft:cobblestone")
     m.set(mid + 1, g, dz, "minecraft:cobblestone")
-    # hay in the bays either side of the threshing floor, lamps on the posts
+    # hay in the bays either side of the threshing floor, lamps on the posts; in the farmstead barn
+    # the west bay's back bale is the nisse's way down (`NISSE_BALE`), its bar the whole's to stand
+    hole = (bx0 + 1, bz1 - 1) if stem == "barn" else None
     for x in (bx0 + 1, bx1 - 1):
         for z in range(bz0 + 1, bz1):
-            m.set(x, d, z, "minecraft:hay_block[axis=z]")
+            if (x, z) != hole:
+                m.set(x, d, z, "minecraft:hay_block[axis=z]")
     for x in (bx0 + 1, bx1 - 1):
         m.set(x, d + 1, bz0 + 1, "minecraft:hay_block[axis=z]")
     for x in (bx0 + 1, bx1 - 1):
         for z in range(bz0 + 2, bz1, 2):
-            m.set(x, d + 1, z, lantern())
+            if (x, z) != hole:
+                m.set(x, d + 1, z, lantern())
+    if hole is not None:
+        nisse_way(m, hole, d, g)
+        # the little bowl on the floor beside the bay, and across the threshing floor the porridge pot
+        m.mark("nisse-bowl", hole[0] + 1, hole[1], facing="west")
+        m.mark("porridge-pot", bx1 - 2, hole[1], facing="east")
     part(m, bx0, bx1, bz0, bz1, "barn")
     # the yard: cobbles before the doors, a cart and a woodpile
     yz = range(1, bz0) if side == "north" else range(bz1 + 1, D + 1)
@@ -528,6 +538,39 @@ def barn(m, W, D, d, g, side):
         for x in (1, 2, W - 1, W):
             if bz0 <= z <= bz1 and 1 < z < D:
                 part(m, x, x, z, z, "barn-yard")
+
+
+# The farmstead barn's way down to the nisse's hall is declared `learned: hidden`. The bar the
+# allocation hands is the derivation's own closed iron trapdoor over the hole, which the eye looks
+# through (docs/reference/sight-through-blocks.md); the barn ships its own instead, as a bound piece
+# may: a hay bale like the bay's others, a full block that hides the hole under it (`own_bars`).
+NISSE = "barn-to-nisse-hall"
+NISSE_BARS = {f"bar-{NISSE}": "minecraft:hay_block[axis=z]"}
+RUNG = "minecraft:ladder[facing=east,waterlogged=false]"
+
+
+def nisse_way(m, hole, d, g):
+    """The top rung of the ladder up from the hall stands in the hole through the barn's floor
+    course: the rung in a floor's hole is the hole owner's, hung on the floor to its west."""
+    s = next((s for s in m.place.seams if s["stem"] == NISSE), None)
+    if s is None:
+        sys.exit(f"farm.py: the barn has no seam {NISSE}")
+    lo, hi = [b.value for b in s["lo"]], [b.value for b in s["hi"]]
+    cells = {(x, y, z) for x in range(lo[0], hi[0]) for y in range(lo[1], hi[1]) for z in range(lo[2], hi[2])}
+    m.drawn_openings |= cells
+    m.palette.update(NISSE_BARS)
+    for (x, y, z) in sorted(cells):
+        m.v[(x, y, z)] = RUNG
+
+
+def own_bars(out):
+    with open(out, encoding="utf-8") as f:
+        doc = json.load(f)
+    for k, v in NISSE_BARS.items():
+        if k in doc["palette"]:
+            doc["palette"][k] = v
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
 
 def goat_pen(m, W, D, d, g):
@@ -850,7 +893,7 @@ def build(place):
     elif stem == "pond":
         pond(m, W, D, d, g, side)
     elif stem in ("barn", "croft", "dune-cottage", "lantern-yard", "terrace-cottage"):
-        barn(m, W, D, d, g, side)
+        barn(m, W, D, d, g, side, stem)
         if stem == "lantern-yard":
             # finished lanterns set out along the yard's far edge to be looked over
             yz = D if side == "north" else 1
@@ -923,4 +966,7 @@ def free_mark(m, W, D, d):
     sys.exit("farm.py: no free cell for the node's mark")
 
 
-raise SystemExit(run(build, reason="the barn's and the shelters' roofs, the hay stacks and the fence tops: seen, never stood on"))
+rc = run(build, reason="the barn's and the shelters' roofs, the hay stacks and the fence tops: seen, never stood on")
+if rc == 0:
+    own_bars(sys.argv[sys.argv.index("--out") + 1])
+raise SystemExit(rc)
