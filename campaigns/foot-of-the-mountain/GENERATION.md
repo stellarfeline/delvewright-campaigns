@@ -153,8 +153,8 @@ At engine `feature/festival-day` `9ac5da91c` (`dsl_version` 0.89.0). The design 
 
 ### The machine checks
 
-At content `db53a76a` and engine `feature/festival-day` `9ac5da91c`, on the remote, every output written fresh by the run (manifest `712a9df3…`):
+At content `f8ce70c0` (after the dressing pass) and engine `feature/festival-day` `9ac5da91c`, on the remote, every output written fresh by the run (manifest `a83ecd0e…`):
 
-- `delvec validate`: exit 0. Build: exit 0, 18:07 wall, 7.16 GB max resident; `detail binding: 136 of 136 place(s) bound`; `DW0210 binding: 135732 reachable cell(s) judged, 0 dark`; `shut ways (DW1053/DW1054): 4 gated connection(s) … 18 declared (… 18 hidden), 0 undeclared`.
+- `delvec validate`: exit 0. Build: exit 0, 22:18 wall, 7.22 GB max resident; `detail binding: 136 of 136 place(s) bound`; `DW0210 binding: 135721 reachable cell(s) judged, 0 dark`; `shut ways (DW1053/DW1054): 4 gated connection(s) … 18 declared (… 18 hidden), 0 undeclared`. `delvec detail` of both dressed places: exit 0 each, the whole's battery green.
 - The critical-path bot, solo: exit 0, 49 steps, 8 scripted deaths survived, 5 advisory findings. The eggs are off the exported path.
-- Story world `world/0` (one bot), which plays both eggs: the bot pressed the ledger shelf (the opening's shot played), climbed down the cellar's ladder and arrived (`obj/find-the-cellar`, `obj/meet-magnhild`), and later filled a bowl at the pot, put it in the nisse's bowl (the shot played), climbed down and arrived and climbed back out (`obj/fill-a-bowl`, `obj/feed-the-nisse`, `obj/meet-the-nisse`); the run then failed at step 45, `obj/run-the-pig-race`, which did not complete in its window. On the way out of the merchant's house the bot was stuck at the counting room's doorway for a while before it went on.
+- Story world `world/0` (one bot), which plays both eggs: the bot pressed the ledger shelf (the opening's shot played), climbed down the cellar's ladder and arrived (`obj/find-the-cellar`, `obj/meet-magnhild`), and later filled a bowl at the pot, put it in the nisse's bowl (the shot played), climbed down, arrived and climbed back out (`obj/fill-a-bowl`, `obj/feed-the-nisse`, `obj/meet-the-nisse`); the run then failed at step 45, `obj/run-the-pig-race`, which did not complete in its window (the same at content `db53a76a`).
