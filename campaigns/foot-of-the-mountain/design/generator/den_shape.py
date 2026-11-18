@@ -22,7 +22,7 @@ RAIL_X = (27, 31)
 BZ0, BZ1 = 17, 71               # the bridge's deck, south of the den's ledge, north of the tunnel's
 SOUTH_Z0 = 72                   # the tunnel's ledge, z 72..78
 NORTH_Z1 = 16                   # the den's ledge, z 1..16
-STATUE_Z = 44                   # the statue's middle, level with the bridge's middle
+STATUE_Z = 41                   # the figure's middle along the bridge
 DEPTH = 43                      # the chasm's depth under the den's floor course
 
 
@@ -74,53 +74,6 @@ def hollow(x, y, z):
     return best + 0.55 * n < 1.0
 
 
-# ---- the statue, in the den frame ----
-def _cap(a, b, ra, rb):
-    return ("capsule", a, b, ra, rb)
-
-
-def statue_parts():
-    """The statue as (kind, ...) primitives in den-frame coordinates: a cephalopod head bent
-    forward with no neck, a beard of feelers, clawed arms, long bat wings spread along the bridge,
-    the body falling away into the chasm (after Lovecraft's description as `references/the-thing-
-    beyond-the-fog/HOW-IT-IS-BUILT.md` cites it, drawn to `design/reference/cat-den`)."""
-    Z = STATUE_Z
-    P = []
-    # the body, sinking into the chasm
-    P.append(("body", _cap((12, -43, Z), (13, -8, Z), 8.5, 8.0)))
-    P.append(("body", _cap((13, -8, Z), (13, 8, Z), 8.0, 7.5)))
-    for dz, dx in ((-6, 3), (6, 3), (-3, 5), (3, 5), (0, 6)):
-        P.append(("body", _cap((12 + dx, -43, Z + dz), (13 + dx // 2, 4, Z + dz), 2.2, 1.6)))   # folds of the robe
-    # shoulders and the mantle of the head, bent forward
-    P.append(("head", ("ellipsoid", (13, 8, Z), (7.0, 6.0, 13.0))))
-    P.append(("head", ("ellipsoid", (15, 24, Z), (8.0, 13.0, 10.0))))
-    P.append(("head", ("ellipsoid", (19, 22, Z), (3.5, 4.0, 8.0))))     # the brow
-    # the beard of feelers, alternate ones forward, the middle ones longest
-    for i, dz in enumerate((-8, -6, -4, -2, 0, 2, 4, 6, 8)):
-        fwd = 1.5 if i % 2 else 0.0
-        drop = 14 - abs(dz)
-        P.append(("feeler", _cap((20.0, 18.0, Z + dz * 0.8), (21.5 + fwd, 18.0 - drop, Z + dz * 1.15), 1.7, 0.7)))
-    # the arms, clawed hands held before the chest under the beard
-    for s in (-1, 1):
-        P.append(("body", _cap((13, 8, Z + 12 * s), (19, -2, Z + 13 * s), 3.2, 2.6)))
-        P.append(("body", _cap((19, -2, Z + 13 * s), (22, -10, Z + 8 * s), 2.6, 2.2)))
-        for f in (-2, 0, 2):
-            P.append(("feeler", _cap((22, -10, Z + 8 * s + f), (24, -14, Z + 7 * s + f), 1.0, 0.5)))
-    # the wings: an arm from the shoulder blade to the wrist, four fingers to the tips, a membrane
-    # between them, scalloped
-    for s in (-1, 1):
-        root = (9.0, 12.0, Z + 7 * s)
-        wrist = (8.0, 35.0, Z + 22 * s)
-        low = (8.0, 3.0, Z + 19 * s)
-        tips = [(7.0, 41.0, Z + 28 * s), (7.0, 33.0, Z + 30 * s), (7.0, 23.0, Z + 30 * s), (7.0, 12.0, Z + 27 * s)]
-        P.append(("bone", _cap(root, wrist, 2.4, 1.5)))
-        for t in tips:
-            P.append(("bone", _cap(wrist, t, 1.3, 0.7)))
-        P.append(("bone", _cap(root, low, 1.6, 0.7)))
-        P.append(("membrane", ("fan", root, wrist, tips + [low], s)))
-    return P
-
-
 def _seg_dist(p, a, b):
     ab = [b[i] - a[i] for i in range(3)]
     ap = [p[i] - a[i] for i in range(3)]
@@ -144,65 +97,63 @@ def _tri_z_span(root, a, b, z):
     return min(ys), max(ys)
 
 
-def membrane_boxes():
-    """The wings' membranes as thin boxes, one per column of z: the fan of triangles from the
-    shoulder blade over the wrist and between the fingers, its lower edge scalloped between the
-    tips. Den frame, box corners [x0, y0, z0], [x1, y1, z1]."""
-    out = []
-    for kind, prim in statue_parts():
-        if kind != "membrane":
-            continue
-        _, root, wrist, tips, s = prim
-        ring = [wrist] + tips
-        zs = [p[2] for p in ring] + [root[2]]
-        for z in range(int(min(zs)), int(max(zs)) + 1):
-            zc = z + 0.5
-            lo, hi = None, None
-            for i in range(len(ring) - 1):
-                sp = _tri_z_span(root, ring[i], ring[i + 1], zc)
-                if sp is None:
-                    continue
-                a, b = sp
-                # the scallop: the edge between two tips sags toward the root
-                if i >= 1:
-                    mid = (ring[i][2] + ring[i + 1][2]) / 2.0
-                    w = abs(ring[i][2] - ring[i + 1][2]) / 2.0 + 0.01
-                    a = a + 2.0 * max(0.0, 1.0 - abs(zc - mid) / w)
-                lo = a if lo is None else min(lo, a)
-                hi = b if hi is None else max(hi, b)
-            if lo is None or hi - lo < 1.0:
-                continue
-            out.append(([6.5, round(lo, 2), z], [8.5, round(hi, 2), z + 1]))
-    return out
+# the stone Cthulhu: `prefab/foot-of-the-mountain-den-thing` (`den_thing.py`, the reference level's
+# figure turned to face the bridge), stamped by `batch/the-thing` with its piece's corner here, in
+# the den's frame (u the den's course): its front stands back from the bridge's rail across a dark gap
+THING_AT = (-8, -43, 6)
 
 
-def statue_occupied(x, y, z, margin=0.0):
-    """Whether a cell's centre lies in the statue grown by `margin` (den frame)."""
-    p = (x + 0.5, y + 0.5, z + 0.5)
-    for kind, prim in statue_parts():
-        if prim[0] == "capsule":
-            _, a, b, ra, rb = prim
-            d, t = _seg_dist(p, a, b)
-            if d <= ra + (rb - ra) * t + margin:
-                return True
-        elif prim[0] == "ellipsoid":
-            _, c, r = prim
-            if _ell(p[0], p[1], p[2], c, (r[0] + margin, r[1] + margin, r[2] + margin)) <= 1.0:
-                return True
-    for (a, b) in membrane_boxes():
-        if a[0] - margin <= p[0] <= b[0] + margin and a[1] - margin <= p[1] <= b[1] + margin and a[2] - margin <= p[2] <= b[2] + margin:
-            return True
-    return False
+def _thing_cells():
+    import json as _json
+    import os as _os
+    form = _json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "../../forms/den-thing.json")))
+    cells = set()
+    for sd in form["solids"]:
+        if sd["shape"] == "box":
+            lo, hi = sd["from"], sd["to"]
+            test = lambda p, lo=lo, hi=hi: all(lo[i] <= p[i] <= hi[i] for i in range(3))  # noqa: E731
+            r = 0.0
+        elif sd["shape"] == "capsule":
+            a, b, ra, rb = sd["from"], sd["to"], sd["radius_from"], sd["radius_to"]
+            def test(p, a=a, b=b, ra=ra, rb=rb):
+                d, t = _seg_dist(p, a, b)
+                return d <= ra + (rb - ra) * t
+            lo = [min(a[i], b[i]) - max(ra, rb) for i in range(3)]
+            hi = [max(a[i], b[i]) + max(ra, rb) for i in range(3)]
+        else:
+            c, rr = sd["centre"], sd["radii"]
+            test = lambda p, c=c, rr=rr: _ell(p[0], p[1], p[2], c, rr) <= 1.0  # noqa: E731
+            lo = [c[i] - rr[i] for i in range(3)]
+            hi = [c[i] + rr[i] for i in range(3)]
+        hit = set()
+        for bx in range(int(math.floor(lo[0])) - 1, int(math.ceil(hi[0])) + 1):
+            for by in range(int(math.floor(lo[1])) - 1, int(math.ceil(hi[1])) + 1):
+                for bz in range(int(math.floor(lo[2])) - 1, int(math.ceil(hi[2])) + 1):
+                    if test((bx + 0.5, by + 0.5, bz + 0.5)):
+                        hit.add((bx, by, bz))
+        if sd["op"] == "add":
+            cells |= hit
+        else:
+            cells -= hit
+    x0, u0, z0 = THING_AT
+    # piece y = body y + 1 (the apron is the piece's first course), so body y 0 is u -42
+    return {(x0 + bx, u0 + 1 + by, z0 + bz) for (bx, by, bz) in cells}
 
 
-_STATUE_CACHE = {}
+_NEAR = None
 
 
 def statue_near(x, y, z):
-    k = (x, y, z)
-    if k not in _STATUE_CACHE:
-        _STATUE_CACHE[k] = statue_occupied(x, y, z, margin=2.0)
-    return _STATUE_CACHE[k]
+    """Within two cells of the figure: the air the cave keeps round it."""
+    global _NEAR
+    if _NEAR is None:
+        _NEAR = set()
+        for (a, b, c) in _thing_cells():
+            for dx in range(-2, 3):
+                for dy in range(-2, 3):
+                    for dz in range(-2, 3):
+                        _NEAR.add((a + dx, b + dy, c + dz))
+    return (x, y, z) in _NEAR
 
 
 # ---- the walked ground ----
@@ -242,7 +193,7 @@ def kept_clear(x, y, z):
     bridge's corridor, and the statue with two cells round it."""
     if y >= 0 and y <= 5 and (ground(x, z) or (26 <= x <= 32 and BZ0 - 1 <= z <= BZ1 + 1)):
         return True
-    if y >= -DEPTH and 0 <= x <= 27 and 10 <= z <= 78 and statue_near(x, y, z):
+    if y >= -DEPTH and 0 <= x <= 27 and statue_near(x, y, z):
         return True
     return False
 
@@ -257,9 +208,10 @@ def rock_at(x, y, z):
 
 
 # ---- the den as cells ----
-ROCKS = ["minecraft:stone", "minecraft:stone", "minecraft:tuff", "minecraft:andesite",
-         "minecraft:deepslate[axis=y]", "minecraft:cobbled_deepslate", "minecraft:dripstone_block"]
-LEDGE = ["minecraft:stone", "minecraft:cobblestone", "minecraft:tuff", "minecraft:andesite"]
+# the cave is dark rock, so the figure is the one pale thing in it
+ROCKS = ["minecraft:deepslate[axis=y]", "minecraft:deepslate[axis=y]", "minecraft:cobbled_deepslate",
+         "minecraft:tuff", "minecraft:cobbled_deepslate", "minecraft:deepslate_bricks"]
+LEDGE = ["minecraft:polished_deepslate", "minecraft:tuff", "minecraft:cobbled_deepslate", "minecraft:deepslate_tiles"]
 AIR = "~air"
 FENCE = "minecraft:oak_fence"
 POST = "minecraft:spruce_fence"
@@ -323,6 +275,15 @@ def den_cells():
     def solid(x, y, z):
         return c.get((x, y, z), AIR) != AIR and c.get((x, y, z)) is not None
 
+    # just off the walked ground, where the rock does not rise as a wall, the ground falls away
+    # into the chasm: no shelf a course down stands beside a ledge for a body to drop onto
+    for x in range(EX):
+        for z in range(EZ - 1):
+            if ground(x, z) or c.get((x, 0, z)) != AIR:
+                continue
+            if any(ground(x + dx, z + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
+                c[(x, -1, z)] = AIR
+
     # the rails: one fence high along the bridge, on its sagging deck, and along every ledge's
     # edge over the chasm
     for z in range(BZ0, BZ1 + 1):
@@ -376,37 +337,39 @@ def den_cells():
                 c[(x, cable - 1, z)] = CHAIN_Y
     # the den on the far ledge
     put = lambda x, y, z, b: c.__setitem__((x, y, z), b)  # noqa: E731
-    put(34, 1, 5, "minecraft:red_bed[facing=north,occupied=false,part=head]")
-    put(34, 1, 6, "minecraft:red_bed[facing=north,occupied=false,part=foot]")
-    for (x, z) in ((33, 5), (33, 6), (35, 5), (35, 6), (33, 7), (34, 7), (35, 7)):
+    # the den gathered at the bridge's far end, where the bridge comes onto the ledge: the red bed,
+    # the keepsakes on a run of bookshelves, the dragon's head on a pedestal, the egg's place
+    # (a bed's top is a step: from it a body jumps onto a one-high rail, so it stands six cells
+    # back from the ledge's edge)
+    put(34, 1, 8, "minecraft:red_bed[facing=north,occupied=false,part=head]")
+    put(34, 1, 9, "minecraft:red_bed[facing=north,occupied=false,part=foot]")
+    for (x, z) in ((33, 8), (33, 9), (35, 8), (35, 9), (33, 10), (34, 10), (35, 10)):
         put(x, 1, z, "minecraft:red_carpet")
+    # nothing a body can stand on within reach of a rail: the rails are one fence high, and a
+    # block beside one is a step over it
+    put(37, 1, 9, "minecraft:dragon_head[powered=false,rotation=4]")
     # the dragon's egg's place, kept for it: a pedestal under a glass case, empty (the building
     # palette refuses `minecraft:dragon_egg`, DW0730, an engine gap)
-    put(24, 1, 4, "minecraft:chiseled_stone_bricks")
-    for (x, y, z) in ((23, 2, 4), (25, 2, 4), (24, 2, 3), (24, 2, 5), (24, 3, 4)):
+    put(43, 1, 4, "minecraft:chiseled_stone_bricks")
+    for (x, y, z) in ((42, 2, 4), (44, 2, 4), (43, 2, 3), (43, 2, 5), (43, 3, 4)):
         put(x, y, z, "minecraft:glass")
-    put(24, 2, 4, AIR)
-    # the dragon's head on the wall over the bed
-    put(34, 3, 1, "minecraft:dragon_wall_head[facing=south,powered=false]")
-    # shelves of keepsakes from every corner of the world along the back wall
-    for x in range(37, 44):
-        put(x, 1, 1, "minecraft:bookshelf")
-        put(x, 3, 1, "minecraft:dark_oak_slab[type=top,waterlogged=false]")
-    low = ["minecraft:amethyst_cluster[facing=up,waterlogged=false]", "minecraft:potted_cactus",
-           "minecraft:potted_cherry_sapling", "minecraft:sculk",
-           "minecraft:potted_mangrove_propagule", "minecraft:sea_lantern", "minecraft:potted_bamboo"]
-    high = ["minecraft:blue_ice", "minecraft:potted_dead_bush", "minecraft:potted_crimson_fungus",
-            "minecraft:potted_brown_mushroom", "minecraft:potted_azalea_bush", "minecraft:end_rod[facing=up]",
-            "minecraft:skeleton_skull[powered=false,rotation=8]"]
+    put(43, 2, 4, AIR)
+    keep = ["minecraft:amethyst_cluster[facing=up,waterlogged=false]", "minecraft:potted_cactus",
+            "minecraft:potted_cherry_sapling", "minecraft:sculk", "minecraft:potted_mangrove_propagule",
+            "minecraft:sea_lantern", "minecraft:potted_bamboo", "minecraft:blue_ice", "minecraft:potted_dead_bush",
+            "minecraft:potted_crimson_fungus", "minecraft:end_rod[facing=up]"]
     for i, x in enumerate(range(37, 44)):
-        put(x, 2, 1, low[i])
-        put(x, 4, 1, high[i])
-    put(44, 1, 3, "minecraft:chest[facing=west,type=single,waterlogged=false]")
+        put(x, 1, 7, "minecraft:bookshelf")
+        put(x, 2, 7, keep[i])
+    for i, x in enumerate(range(37, 41)):
+        put(x, 1, 3, "minecraft:bookshelf")
+        put(x, 2, 3, keep[7 + i])
+    put(44, 1, 6, "minecraft:chest[facing=west,type=single,waterlogged=false]")
     put(31, 2, 1, "minecraft:spruce_wall_sign[facing=south,waterlogged=false]")
-    for (x, z) in ((22, 2), (43, 7), (27, 2), (36, 4), (20, 9)):
+    for (x, z) in ((25, 2), (36, 5)):
         put(x, 1, z, LANTERN)
     # lanterns hung on chains from the roof over the den and the tunnel's ledge
-    for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (26, 75, 4), (33, 75, 4), (30, 74, 6)):
+    for (x, z, low_y) in ((29, 9, 5), (39, 10, 5), (21, 11, 5), (33, 4, 5), (31, 12, 4), (36, 12, 4), (26, 75, 4), (33, 75, 4), (30, 74, 6)):
         y = low_y
         while y < LID and c.get((x, y, z)) == AIR:
             y += 1
@@ -434,10 +397,6 @@ def den_cells():
     # glow lichen on the rock, never on the walked ground or over it within reach
     walked = lambda x, z: ground(x, z)  # noqa: E731
     near_crystal = lambda x, y, z: any(abs(x - a) + abs(y - b) + abs(z - d) <= 3 for a, b, d in crystals)  # noqa: E731
-    lich = lichen_cells(1, LID - 1, solid,
-                        lambda x, y, z: c.get((x, y, z)) == AIR and not (walked(x, z) and y <= 4), salt=51)
-    for k, v in lich.items():
-        c[k] = v
     for (a, b, d) in crystals:
         for _, dx, dy, dz in FACES:
             k = (a + dx, b + dy, d + dz)
@@ -459,5 +418,5 @@ def den_cells():
 def den_marks():
     """The den's marks, (x, z, facing, u): u the course of the cell named (the ledges' walk plane
     is u 1)."""
-    return {"cat-bed": (34, 6, "south", 1), "den-chest": (44, 3, "west", 1), "den-sign": (31, 1, "south", 2),
+    return {"cat-bed": (34, 9, "south", 1), "den-chest": (44, 6, "west", 1), "den-sign": (31, 1, "south", 2),
             "node-cat-den": (30, 13, "north", 1)}
