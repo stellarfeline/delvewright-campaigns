@@ -19,22 +19,28 @@
   "palette": {
     "b0": "minecraft:barrel[facing=south,open=false]",
     "b1": "minecraft:barrel[facing=up,open=false]",
-    "b10": "minecraft:lectern[facing=north,has_book=false,powered=false]",
-    "b11": "minecraft:mud_bricks",
-    "b12": "minecraft:spruce_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
-    "b13": "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]",
-    "b14": "minecraft:stone_bricks",
-    "b15": "minecraft:stripped_dark_oak_log[axis=y]",
-    "b16": "minecraft:stripped_dark_oak_log[axis=z]",
-    "b17": "minecraft:white_wool",
+    "b10": "minecraft:iron_chain[axis=x,waterlogged=false]",
+    "b11": "minecraft:iron_chain[axis=y,waterlogged=false]",
+    "b12": "minecraft:iron_chain[axis=z,waterlogged=false]",
+    "b13": "minecraft:ladder[facing=east,waterlogged=false]",
+    "b14": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "b15": "minecraft:lantern[hanging=true,waterlogged=false]",
+    "b16": "minecraft:lectern[facing=north,has_book=true,powered=false]",
+    "b17": "minecraft:mossy_stone_bricks",
+    "b18": "minecraft:mud_bricks",
+    "b19": "minecraft:spruce_slab[type=bottom,waterlogged=false]",
     "b2": "minecraft:brick_stairs[facing=north,half=top,shape=straight,waterlogged=false]",
+    "b20": "minecraft:stone_bricks",
+    "b21": "minecraft:stripped_dark_oak_log[axis=y]",
+    "b22": "minecraft:white_carpet",
+    "b23": "minecraft:white_wool",
     "b3": "minecraft:brick_stairs[facing=south,half=top,shape=straight,waterlogged=false]",
     "b4": "minecraft:bricks",
-    "b5": "minecraft:candle[candles=3,lit=true,waterlogged=false]",
-    "b6": "minecraft:cobblestone",
-    "b7": "minecraft:cracked_stone_bricks",
-    "b8": "minecraft:ladder[facing=east,waterlogged=false]",
-    "b9": "minecraft:lantern[hanging=true,waterlogged=false]"
+    "b5": "minecraft:candle[candles=2,lit=true,waterlogged=false]",
+    "b6": "minecraft:cartography_table",
+    "b7": "minecraft:cobblestone",
+    "b8": "minecraft:cracked_stone_bricks",
+    "b9": "minecraft:dark_oak_log[axis=z]"
   },
   "params": {
     "handed/datum-y": 1,
@@ -46,7 +52,7 @@
     "handed/seam/merchant-to-free-traders-cellar/z1": 1
   },
   "rules": {
-    "column_10": [
+    "column_11": [
       {
         "body": {
           "axis": "y",
@@ -66,6 +72,10 @@
             {
               "op": "call",
               "symbol": "row_9"
+            },
+            {
+              "op": "call",
+              "symbol": "row_10"
             }
           ],
           "op": "split",
@@ -89,13 +99,44 @@
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -135,15 +176,11 @@
         "weight": 1
       }
     ],
-    "column_16": [
+    "column_17": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_11"
-            },
             {
               "op": "call",
               "symbol": "row_12"
@@ -159,6 +196,10 @@
             {
               "op": "call",
               "symbol": "row_15"
+            },
+            {
+              "op": "call",
+              "symbol": "row_16"
             }
           ],
           "op": "split",
@@ -259,19 +300,11 @@
         "weight": 1
       }
     ],
-    "column_20": [
+    "column_21": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_17"
-            },
-            {
-              "op": "call",
-              "symbol": "row_13"
-            },
             {
               "op": "call",
               "symbol": "row_18"
@@ -282,6 +315,10 @@
             },
             {
               "op": "call",
+              "symbol": "row_20"
+            },
+            {
+              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -306,44 +343,13 @@
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 1
+                    "value": 2
                   }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/datum-y"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
                 }
               },
               "size": "absolute"
@@ -383,22 +389,14 @@
         "weight": 1
       }
     ],
-    "column_24": [
+    "column_26": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_21"
-            },
-            {
-              "op": "call",
               "symbol": "row_22"
-            },
-            {
-              "op": "call",
-              "symbol": "row_13"
             },
             {
               "op": "call",
@@ -406,6 +404,14 @@
             },
             {
               "op": "call",
+              "symbol": "row_24"
+            },
+            {
+              "op": "call",
+              "symbol": "row_25"
+            },
+            {
+              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -507,19 +513,11 @@
         "weight": 1
       }
     ],
-    "column_29": [
+    "column_30": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_25"
-            },
-            {
-              "op": "call",
-              "symbol": "row_26"
-            },
             {
               "op": "call",
               "symbol": "row_27"
@@ -530,6 +528,14 @@
             },
             {
               "op": "call",
+              "symbol": "row_29"
+            },
+            {
+              "op": "call",
+              "symbol": "row_25"
+            },
+            {
+              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -631,19 +637,11 @@
         "weight": 1
       }
     ],
-    "column_33": [
+    "column_34": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_30"
-            },
-            {
-              "op": "call",
-              "symbol": "row_13"
-            },
             {
               "op": "call",
               "symbol": "row_31"
@@ -654,6 +652,14 @@
             },
             {
               "op": "call",
+              "symbol": "row_33"
+            },
+            {
+              "op": "call",
+              "symbol": "row_25"
+            },
+            {
+              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -755,146 +761,26 @@
         "weight": 1
       }
     ],
-    "column_36": [
+    "column_38": [
       {
         "body": {
           "axis": "y",
           "children": [
-            {
-              "op": "call",
-              "symbol": "row_30"
-            },
-            {
-              "op": "call",
-              "symbol": "row_31"
-            },
-            {
-              "op": "call",
-              "symbol": "row_34"
-            },
             {
               "op": "call",
               "symbol": "row_35"
             },
             {
               "op": "call",
-              "symbol": "row_4"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/datum-y"
-              },
-              "size": "absolute"
+              "symbol": "row_36"
             },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/datum-y"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/y0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 2
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_40": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
             {
               "op": "call",
               "symbol": "row_37"
             },
             {
               "op": "call",
-              "symbol": "row_38"
-            },
-            {
-              "op": "call",
-              "symbol": "row_39"
+              "symbol": "row_25"
             },
             {
               "op": "call",
@@ -922,13 +808,44 @@
                   "op": "add",
                   "rhs": {
                     "expr": "int",
-                    "value": 2
+                    "value": 1
                   }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -968,11 +885,19 @@
         "weight": 1
       }
     ],
-    "column_44": [
+    "column_43": [
       {
         "body": {
           "axis": "y",
           "children": [
+            {
+              "op": "call",
+              "symbol": "row_39"
+            },
+            {
+              "op": "call",
+              "symbol": "row_40"
+            },
             {
               "op": "call",
               "symbol": "row_41"
@@ -983,14 +908,6 @@
             },
             {
               "op": "call",
-              "symbol": "row_43"
-            },
-            {
-              "op": "call",
-              "symbol": "row_23"
-            },
-            {
-              "op": "call",
               "symbol": "row_4"
             }
           ],
@@ -1092,11 +1009,15 @@
         "weight": 1
       }
     ],
-    "column_49": [
+    "column_48": [
       {
         "body": {
           "axis": "y",
           "children": [
+            {
+              "op": "call",
+              "symbol": "row_44"
+            },
             {
               "op": "call",
               "symbol": "row_45"
@@ -1108,10 +1029,6 @@
             {
               "op": "call",
               "symbol": "row_47"
-            },
-            {
-              "op": "call",
-              "symbol": "row_48"
             },
             {
               "op": "call",
@@ -1340,11 +1257,15 @@
         "weight": 1
       }
     ],
-    "column_54": [
+    "column_53": [
       {
         "body": {
           "axis": "y",
           "children": [
+            {
+              "op": "call",
+              "symbol": "row_49"
+            },
             {
               "op": "call",
               "symbol": "row_50"
@@ -1359,7 +1280,127 @@
             },
             {
               "op": "call",
-              "symbol": "row_53"
+              "symbol": "row_4"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/datum-y"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/y0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 2
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_58": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
+              "symbol": "row_54"
+            },
+            {
+              "op": "call",
+              "symbol": "row_55"
+            },
+            {
+              "op": "call",
+              "symbol": "row_56"
+            },
+            {
+              "op": "call",
+              "symbol": "row_57"
             },
             {
               "op": "call",
@@ -1477,47 +1518,47 @@
                 },
                 {
                   "op": "call",
-                  "symbol": "column_10"
+                  "symbol": "column_11"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_16"
+                  "symbol": "column_17"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_20"
+                  "symbol": "column_21"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_24"
+                  "symbol": "column_26"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_29"
+                  "symbol": "column_30"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_33"
+                  "symbol": "column_34"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_36"
+                  "symbol": "column_38"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_40"
+                  "symbol": "column_43"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_44"
+                  "symbol": "column_48"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_49"
+                  "symbol": "column_53"
                 },
                 {
                   "op": "call",
-                  "symbol": "column_54"
+                  "symbol": "column_58"
                 }
               ],
               "op": "split",
@@ -1665,7 +1706,7 @@
             "facing": "west",
             "x": {
               "expr": "int",
-              "value": 6
+              "value": 7
             },
             "y": {
               "expr": "param",
@@ -1747,6 +1788,38 @@
                   "expr": "int",
                   "value": 1
                 }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 6
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 6
               },
               "op": "gt",
               "rhs": {
@@ -1850,39 +1923,7 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "int",
-                "value": 7
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 7
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 6
+                "value": 5
               },
               "op": "gt",
               "rhs": {
@@ -1903,6 +1944,26 @@
               "lhs": {
                 "dim": "z",
                 "expr": "dim"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 7
               },
               "op": "gt",
               "rhs": {
@@ -1942,51 +2003,7 @@
               "cond": "cmp",
               "lhs": {
                 "expr": "int",
-                "value": 6
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 3
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 5
-              },
-              "op": "gt",
-              "rhs": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              }
-            },
-            {
-              "cond": "cmp",
-              "lhs": {
-                "expr": "int",
-                "value": 4
+                "value": 7
               },
               "op": "gt",
               "rhs": {
@@ -2077,7 +2094,7 @@
           "children": [
             {
               "material": {
-                "role": "b14"
+                "role": "b20"
               },
               "op": "fill"
             },
@@ -2089,13 +2106,31 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
               },
               "op": "fill"
             }
@@ -2143,7 +2178,28 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -2166,227 +2222,25 @@
           "children": [
             {
               "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b4"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 4
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_11": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 3
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_12": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b17"
+                "role": "b18"
               },
               "op": "fill"
             },
@@ -2471,7 +2325,7 @@
         "weight": 1
       }
     ],
-    "row_13": [
+    "row_10": [
       {
         "body": {
           "axis": "z",
@@ -2479,6 +2333,89 @@
             {
               "material": {
                 "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b13"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "merchant-to-free-traders-cellar-way"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_12": [
+      {
+        "body": {
+          "material": {
+            "role": "b20"
+          },
+          "op": "fill"
+        },
+        "weight": 1
+      }
+    ],
+    "row_13": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b18"
               },
               "op": "fill"
             },
@@ -2497,13 +2434,13 @@
             },
             {
               "material": {
-                "role": "b17"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -2594,6 +2531,12 @@
               "op": "fill"
             },
             {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
               "body": {
                 "op": "void"
               },
@@ -2602,13 +2545,7 @@
             },
             {
               "material": {
-                "role": "b3"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b4"
+                "role": "b8"
               },
               "op": "fill"
             }
@@ -2626,8 +2563,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 6
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -2639,8 +2584,24 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -2663,272 +2624,9 @@
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b8"
               },
               "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_17": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 6
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_18": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 7
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_19": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "b9"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "room"
             },
             {
               "body": {
@@ -2963,6 +2661,201 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_16": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_18": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 4
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_19": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
                   "expr": "arith",
                   "lhs": {
                     "expr": "param",
@@ -2987,7 +2880,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 3
+                  "value": 7
                 },
                 "op": "sub",
                 "rhs": {
@@ -3002,27 +2895,6 @@
                     "value": 1
                   }
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -3051,19 +2923,19 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b18"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b20"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -3093,7 +2965,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3116,32 +2988,66 @@
         "weight": 1
       }
     ],
-    "row_21": [
+    "row_20": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "b7"
+                "role": "b20"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b11"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b15"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b7"
+                "role": "b18"
               },
               "op": "fill"
             }
@@ -3159,8 +3065,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -3172,8 +3086,52 @@
             },
             {
               "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3196,35 +3154,9 @@
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b7"
               },
               "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b13"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
             },
             {
               "material": {
@@ -3234,7 +3166,37 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
               },
               "op": "fill"
             }
@@ -3304,7 +3266,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3340,6 +3309,219 @@
             },
             {
               "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b10"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_24": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b18"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_25": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b2"
               },
               "op": "fill"
@@ -3438,20 +3620,14 @@
         "weight": 1
       }
     ],
-    "row_25": [
+    "row_27": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
+                "role": "b17"
               },
               "op": "fill"
             },
@@ -3463,7 +3639,37 @@
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -3481,8 +3687,16 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
@@ -3494,8 +3708,52 @@
             },
             {
               "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -3511,14 +3769,14 @@
         "weight": 1
       }
     ],
-    "row_26": [
+    "row_28": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b20"
               },
               "op": "fill"
             },
@@ -3530,7 +3788,7 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b19"
               },
               "op": "fill"
             },
@@ -3549,13 +3807,13 @@
             },
             {
               "material": {
-                "role": "b17"
+                "role": "b23"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b18"
               },
               "op": "fill"
             }
@@ -3648,7 +3906,7 @@
         "weight": 1
       }
     ],
-    "row_27": [
+    "row_29": [
       {
         "body": {
           "axis": "z",
@@ -3675,7 +3933,7 @@
             {
               "body": {
                 "material": {
-                  "role": "b5"
+                  "role": "b14"
                 },
                 "op": "fill"
               },
@@ -3691,7 +3949,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b4"
               },
               "op": "fill"
             }
@@ -3777,11 +4035,17 @@
         "weight": 1
       }
     ],
-    "row_28": [
+    "row_3": [
       {
         "body": {
           "axis": "z",
           "children": [
+            {
+              "material": {
+                "role": "b18"
+              },
+              "op": "fill"
+            },
             {
               "material": {
                 "role": "b4"
@@ -3790,26 +4054,13 @@
             },
             {
               "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b3"
+                "role": "b8"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -3820,29 +4071,6 @@
               "blocks": {
                 "expr": "param",
                 "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
               },
               "size": "absolute"
             },
@@ -3855,242 +4083,9 @@
                 },
                 "op": "sub",
                 "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_3": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 3
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_30": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                },
-                "op": "add",
-                "rhs": {
-                  "expr": "int",
-                  "value": 1
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 3
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
               },
               "size": "absolute"
             },
@@ -4120,16 +4115,9 @@
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b7"
               },
               "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
             },
             {
               "material": {
@@ -4139,7 +4127,19 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -4157,13 +4157,44 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 6
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 }
               },
               "size": "absolute"
@@ -4194,13 +4225,13 @@
           "children": [
             {
               "material": {
-                "role": "b14"
+                "role": "b4"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b0"
               },
               "op": "fill"
             },
@@ -4213,13 +4244,26 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b23"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b4"
               },
               "op": "fill"
             }
@@ -4261,7 +4305,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 6
+                  "value": 3
                 },
                 "op": "sub",
                 "rhs": {
@@ -4276,6 +4320,20 @@
                     "value": 1
                   }
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
@@ -4298,7 +4356,7 @@
         "weight": 1
       }
     ],
-    "row_34": [
+    "row_33": [
       {
         "body": {
           "axis": "z",
@@ -4308,6 +4366,33 @@
                 "role": "b4"
               },
               "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b14"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b22"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
             },
             {
               "body": {
@@ -4336,14 +4421,59 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 7
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 3
               },
               "size": "absolute"
             },
@@ -4366,13 +4496,162 @@
           "children": [
             {
               "material": {
-                "role": "b11"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_36": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
               },
               "op": "fill"
             },
@@ -4385,13 +4664,13 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b23"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b8"
               },
               "op": "fill"
             }
@@ -4477,104 +4756,7 @@
           "children": [
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 3
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_38": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "b4"
+                "role": "b18"
               },
               "op": "fill"
             },
@@ -4593,7 +4775,13 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b23"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -4635,7 +4823,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 7
+                  "value": 6
                 },
                 "op": "sub",
                 "rhs": {
@@ -4650,6 +4838,13 @@
                     "value": 1
                   }
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -4672,49 +4867,49 @@
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b7"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "material": {
-                  "role": "b9"
-                },
-                "op": "fill"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b3"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
               },
               "op": "fill"
             }
@@ -4784,7 +4979,14 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -4818,11 +5020,30 @@
         "weight": 1
       }
     ],
-    "row_41": [
+    "row_40": [
       {
         "body": {
           "axis": "z",
           "children": [
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
             {
               "material": {
                 "role": "b6"
@@ -4831,13 +5052,7 @@
             },
             {
               "material": {
-                "role": "b7"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
+                "role": "b4"
               },
               "op": "fill"
             }
@@ -4855,14 +5070,52 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 3
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -4878,7 +5131,7 @@
         "weight": 1
       }
     ],
-    "row_42": [
+    "row_41": [
       {
         "body": {
           "axis": "z",
@@ -4903,14 +5156,11 @@
               "region": "room"
             },
             {
-              "material": {
-                "role": "b10"
-              },
-              "op": "fill"
-            },
-            {
               "body": {
-                "op": "void"
+                "material": {
+                  "role": "b5"
+                },
+                "op": "fill"
               },
               "op": "claim",
               "region": "room"
@@ -4959,7 +5209,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 6
                 },
                 "op": "sub",
                 "rhs": {
@@ -4974,6 +5224,144 @@
                     "value": 1
                   }
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_42": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b18"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b15"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b11"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
@@ -5003,27 +5391,56 @@
         "weight": 1
       }
     ],
-    "row_43": [
+    "row_44": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
-              "body": {
-                "op": "void"
+              "material": {
+                "role": "b7"
               },
-              "op": "claim",
-              "region": "room"
+              "op": "fill"
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -5041,14 +5458,73 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 7
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5071,25 +5547,26 @@
           "children": [
             {
               "material": {
-                "role": "b6"
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b16"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b14"
+                "role": "b4"
               },
               "op": "fill"
             }
@@ -5108,7 +5585,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 3
+                  "value": 6
                 },
                 "op": "sub",
                 "rhs": {
@@ -5144,25 +5621,7 @@
           "children": [
             {
               "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b15"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b15"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -5193,59 +5652,14 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "int",
+                  "value": 7
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 5
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -5268,25 +5682,13 @@
           "children": [
             {
               "material": {
-                "role": "b14"
+                "role": "b4"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b15"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b15"
+                "role": "b2"
               },
               "op": "fill"
             },
@@ -5299,7 +5701,13 @@
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
               },
               "op": "fill"
             }
@@ -5341,7 +5749,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 6
                 },
                 "op": "sub",
                 "rhs": {
@@ -5356,13 +5764,6 @@
                     "value": 1
                   }
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
               },
               "size": "absolute"
             },
@@ -5385,45 +5786,56 @@
         "weight": 1
       }
     ],
-    "row_48": [
+    "row_49": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "b11"
+                "role": "b7"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b2"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b16"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b3"
+                "role": "b20"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
               },
               "op": "fill"
             }
@@ -5465,7 +5877,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 5
+                  "value": 3
                 },
                 "op": "sub",
                 "rhs": {
@@ -5480,6 +5892,20 @@
                     "value": 1
                   }
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5516,25 +5942,45 @@
           "children": [
             {
               "material": {
-                "role": "b14"
+                "role": "b18"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b21"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b21"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b7"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b6"
+                "role": "b20"
               },
               "op": "fill"
             }
@@ -5543,8 +5989,61 @@
           "sizes": [
             {
               "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 2
               },
               "size": "absolute"
             },
@@ -5558,7 +6057,7 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 2
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5581,25 +6080,48 @@
           "children": [
             {
               "material": {
-                "role": "b14"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
                 "role": "b4"
               },
               "op": "fill"
             },
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "b11"
+                "role": "b21"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "material": {
+                  "role": "b12"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b21"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
               },
               "op": "fill"
             }
@@ -5617,14 +6139,59 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "int",
-                  "value": 4
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5654,19 +6221,25 @@
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b8"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b2"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b3"
               },
               "op": "fill"
             },
@@ -5681,15 +6254,54 @@
           "sizes": [
             {
               "blocks": {
-                "expr": "int",
-                "value": 5
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -5712,7 +6324,143 @@
         "weight": 1
       }
     ],
-    "row_53": [
+    "row_54": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_55": [
       {
         "body": {
           "axis": "z",
@@ -5725,19 +6473,25 @@
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b18"
               },
               "op": "fill"
             },
             {
               "material": {
                 "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b11"
               },
               "op": "fill"
             }
@@ -5785,7 +6539,213 @@
             {
               "blocks": {
                 "expr": "int",
-                "value": 4
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_56": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b18"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 3
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_57": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b18"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 7
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -5808,19 +6768,31 @@
           "children": [
             {
               "material": {
+                "role": "b20"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b17"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b7"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b14"
+                "role": "b17"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b7"
               },
               "op": "fill"
             }
@@ -5829,23 +6801,29 @@
           "sizes": [
             {
               "blocks": {
-                "expr": "param",
-                "name": "handed/seam/merchant-to-free-traders-cellar/z0"
+                "expr": "int",
+                "value": 4
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 7
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/merchant-to-free-traders-cellar/z0"
-                }
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },
@@ -5875,7 +6853,7 @@
             {
               "body": {
                 "material": {
-                  "role": "b8"
+                  "role": "b13"
                 },
                 "op": "fill"
               },
@@ -5888,6 +6866,12 @@
               },
               "op": "claim",
               "region": "room"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
             },
             {
               "material": {
@@ -5933,7 +6917,7 @@
                 "expr": "arith",
                 "lhs": {
                   "expr": "int",
-                  "value": 7
+                  "value": 5
                 },
                 "op": "sub",
                 "rhs": {
@@ -5948,6 +6932,13 @@
                     "value": 1
                   }
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
               },
               "size": "absolute"
             },
@@ -5970,14 +6961,14 @@
           "children": [
             {
               "material": {
-                "role": "b4"
+                "role": "b8"
               },
               "op": "fill"
             },
             {
               "body": {
                 "material": {
-                  "role": "b8"
+                  "role": "b13"
                 },
                 "op": "fill"
               },
@@ -5993,13 +6984,13 @@
             },
             {
               "material": {
-                "role": "b3"
+                "role": "b1"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b4"
               },
               "op": "fill"
             }
@@ -6092,16 +7083,29 @@
             {
               "body": {
                 "material": {
-                  "role": "b8"
+                  "role": "b13"
                 },
                 "op": "fill"
               },
               "op": "claim",
-              "region": "merchant-to-free-traders-cellar-way"
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
             },
             {
               "material": {
-                "role": "b4"
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b8"
               },
               "op": "fill"
             }
@@ -6135,6 +7139,36 @@
                   "expr": "param",
                   "name": "handed/seam/merchant-to-free-traders-cellar/z0"
                 }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 6
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/merchant-to-free-traders-cellar/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
               },
               "size": "absolute"
             },

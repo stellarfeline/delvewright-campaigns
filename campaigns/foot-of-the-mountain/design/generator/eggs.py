@@ -110,101 +110,154 @@ def landing(m, lx, ly, lz, block):
 
 
 def cellar(m, place):
+    """The Free Traders' working store: casks stacked along the north wall, this year's sugar
+    sacks on the south, a lantern-lit table of papers in the middle, the coast chart and the
+    members' ledger in the south-east corner, rope and chain hung from the vault, and the old sea
+    door at the east end, its timber frame standing proud of the brick that fills it."""
     top = m.ey - 2                       # the walk courses are 1..top
-    BRICK = ["minecraft:bricks"] * 5 + ["minecraft:mud_bricks", "minecraft:stone_bricks"]
-    FLOOR = ["minecraft:stone_bricks"] * 3 + ["minecraft:cracked_stone_bricks", "minecraft:cobblestone"]
+    BRICK = ["minecraft:bricks"] * 5 + ["minecraft:mud_bricks", "minecraft:stone_bricks", "minecraft:cracked_stone_bricks"]
+    FLOOR = ["minecraft:stone_bricks"] * 3 + ["minecraft:cracked_stone_bricks", "minecraft:cobblestone", "minecraft:mossy_stone_bricks"]
     W, D = shell(m, place, BRICK, FLOOR, ["minecraft:bricks"])
     lx, _ly, lz = ladder_up(m, place, "merchant-to-free-traders-cellar")
-    # the vault: upside-down brick stairs along both long walls under the lid
+    # the vault: upside-down brick stairs along both long walls under the lid, a dark-oak rib
+    # across it at every third bay
     for x in range(1, W + 1):
-        if (x, 1) != (lx, lz):
+        if x not in (lx, lx + 1):
             m.set(x, top, 1, "minecraft:brick_stairs[facing=north,half=top,shape=straight,waterlogged=false]")
         m.set(x, top, D, "minecraft:brick_stairs[facing=south,half=top,shape=straight,waterlogged=false]")
-    # casks two high along the north wall, past the ladder
-    for x in range(lx + 2, W + 1):
-        if x == W - 3:
-            continue
+    # casks stacked two and three high along the north wall, a gap where a stack was broached
+    for x in range(lx + 2, W - 1):
         m.set(x, 1, 1, "minecraft:barrel[facing=south,open=false]")
-        if x % 3 != 0:
+        if x != 6:
             m.set(x, 2, 1, "minecraft:barrel[facing=south,open=false]")
-    # the sugar: sacks along the south wall, this year's eleven pounds in a heap by the table
-    for x in range(2, W - 2):
+    m.set(6, 2, 1, "minecraft:lantern[hanging=false,waterlogged=false]")
+    # this year's sugar: sacks in a heap along the south wall, a coil of chain on the floor by them
+    for x in range(5, W - 2):
         m.set(x, 1, D, "minecraft:white_wool")
-        if x % 2 == 0:
-            m.set(x, 2, D, "minecraft:white_wool")
-    # the card table: a cask on end, candles, two casks for stools
-    tx, tz = W // 2, D // 2
-    m.set(tx, 1, tz, "minecraft:barrel[facing=up,open=false]")
-    m.set(tx, 2, tz, "minecraft:candle[candles=3,lit=true,waterlogged=false]")
-    m.set(tx - 1, 1, tz, "minecraft:spruce_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]")
-    m.set(tx, 1, tz - 1, "minecraft:spruce_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]")
-    m.mark("magnhild-seat", tx + 1, tz, facing="west")
-    # the chart and the members' ledger in the south-east corner
-    m.set(W, 1, D - 1, "minecraft:cartography_table")
-    m.set(W - 1, 1, D - 1, "minecraft:lectern[facing=north,has_book=false,powered=false]")
-    # the old sea door: bricked up inside its timber frame in the east wall
-    for z in range(tz - 1, tz + 2):
-        for y in range(1, 3):
-            m.set(W, y, z, "minecraft:mud_bricks")
-        m.set(W, 3, z, "minecraft:stripped_dark_oak_log[axis=z]")
-    for y in range(1, 3):
-        m.set(W, y, tz - 2, "minecraft:stripped_dark_oak_log[axis=y]")
-        m.set(W, y, tz + 2, "minecraft:stripped_dark_oak_log[axis=y]")
-    # lamps: hung from the lid down the middle
-    for x in (3, W - 2):
-        m.set(x, top, tz, HANGING)
+    m.set(7, 2, D, "minecraft:white_wool")
+    m.set(4, 1, D, "minecraft:iron_chain[axis=x,waterlogged=false]")
+    # crates and casks heaped in the south-west corner
+    for (x, y, z) in ((1, 1, D), (1, 2, D), (2, 1, D), (1, 1, D - 1)):
+        m.set(x, y, z, "minecraft:barrel[facing=up,open=false]")
+    # the table of papers: two casks on end, the papers spread on one, a lantern on the other;
+    # a stool on its north side, Magnhild at its east end
+    tz = 3
+    m.set(5, 1, tz, "minecraft:barrel[facing=up,open=false]")
+    m.set(6, 1, tz, "minecraft:barrel[facing=up,open=false]")
+    m.set(5, 2, tz, "minecraft:lantern[hanging=false,waterlogged=false]")
+    m.set(6, 2, tz, "minecraft:white_carpet")
+    m.set(5, 1, tz - 1, "minecraft:spruce_slab[type=bottom,waterlogged=false]")
+    m.mark("magnhild-seat", 7, tz, facing="west")
+    # the coast chart, lit, and the members' ledger open on its stand, in the south-east corner
+    m.set(W - 2, 1, D, "minecraft:cartography_table")
+    m.set(W - 2, 2, D, "minecraft:candle[candles=2,lit=true,waterlogged=false]")
+    m.set(W - 1, 1, D, "minecraft:lectern[facing=north,has_book=true,powered=false]")
+    m.set(W, 1, D, "minecraft:barrel[facing=up,open=false]")
+    m.set(W, 2, D, "minecraft:barrel[facing=up,open=false]")
+    # the old sea door in the east wall: a dark-oak frame standing a course proud of the wall,
+    # its opening bricked up with odd old bricks, a chain still hung across it
+    sz0, sz1 = 2, 5
+    for y in range(1, top):
+        m.set(W, y, sz0, "minecraft:stripped_dark_oak_log[axis=y]")
+        m.set(W, y, sz1, "minecraft:stripped_dark_oak_log[axis=y]")
+    for z in range(sz0, sz1 + 1):
+        m.set(W, top, z, "minecraft:dark_oak_log[axis=z]")
+    for z in range(sz0 + 1, sz1):
+        for y in range(1, top):
+            m.set(W + 1, y, z, "minecraft:mud_bricks" if (y + z) % 2 else "minecraft:cracked_stone_bricks")
+            m.set(W, y, z, AIR)
+    m.set(W, 2, sz0 + 1, "minecraft:iron_chain[axis=z,waterlogged=false]")
+    m.set(W, 2, sz0 + 2, "minecraft:iron_chain[axis=z,waterlogged=false]")
+    # rope and chain hung from the vault, lamps down the middle
+    for (x, z) in ((3, 2), (8, 5)):
+        m.set(x, top, z, "minecraft:iron_chain[axis=y,waterlogged=false]")
+    for (x, z) in ((3, 4), (8, 2)):
+        m.set(x, top, z, HANGING)
     landing(m, lx, _ly, lz, "minecraft:barrel[facing=south,open=false]")
-    m.mark("node-free-traders-cellar", tx - 2, tz + 1, facing="east")
+    m.mark("node-free-traders-cellar", 3, 4, facing="east")
 
 
 def hall(m, place):
+    """A folk creature's home dug under a cottage: walls of packed earth, field stone and mud
+    brick between timber posts, roots coming through, a low ceiling crossed by two beams, the
+    hearth in the east wall with its fire lit, a table and stools at a child's knee, a box bed,
+    and shelves and heaps of the town's lost things along the far wall."""
     top = m.ey - 2
-    EARTH = ["minecraft:rooted_dirt", "minecraft:dirt", "minecraft:coarse_dirt", "minecraft:rooted_dirt", "minecraft:packed_mud"]
-    FLOOR = ["minecraft:packed_mud", "minecraft:coarse_dirt", "minecraft:packed_mud", "minecraft:mud_bricks"]
-    W, D = shell(m, place, EARTH, FLOOR, ["minecraft:rooted_dirt"])
+    EARTH = ["minecraft:packed_mud", "minecraft:mud_bricks", "minecraft:cobblestone", "minecraft:coarse_dirt",
+             "minecraft:rooted_dirt", "minecraft:packed_mud", "minecraft:mossy_cobblestone", "minecraft:mud"]
+    FLOOR = ["minecraft:packed_mud", "minecraft:coarse_dirt", "minecraft:packed_mud", "minecraft:mud_bricks", "minecraft:spruce_planks"]
+    W, D = shell(m, place, EARTH, FLOOR, ["minecraft:rooted_dirt", "minecraft:dirt", "minecraft:rooted_dirt"])
     lx, _ly, lz = ladder_up(m, place, "terrace-cottage-to-nisse-hall")
-    # roots through the roof, clear of the ladder and of the way round the room
-    for (x, z) in ((3, 3), (5, 6), (7, 2), (9, 5), (2, 5), (W - 1, 3)):
-        if 1 <= x <= W and 1 <= z <= D and (x, z) != (lx, lz):
+    far = 1 if lz == D else D          # the wall across from the ladder
+    near = lz
+    face_in_far = "south" if far == 1 else "north"
+    # timber: posts in the long walls and a beam across the ceiling over each pair
+    for x in (3, 6):
+        for z in (0, D + 1):
+            for y in range(1, top + 1):
+                m.set(x, y, z, "minecraft:stripped_spruce_log[axis=y]")
+        for z in range(1, D + 1):
+            if (x, z) != (lx, lz):
+                m.set(x, top, z, "minecraft:spruce_log[axis=z]")
+    # an uneven ceiling: lumps of earth hanging into the top course along the walls, roots
+    for (x, z) in ((1, far), (2, far), (5, far), (8, far), (9, 2), (2, 3), (8, near), (9, near)):
+        if 1 <= x <= W and 1 <= z <= D and m.get(x, top, z) in (None, AIR):
+            m.set(x, top, z, "minecraft:rooted_dirt")
+    for (x, z) in ((4, 2), (5, 5), (7, 4), (2, 4), (8, 3)):
+        if m.get(x, top, z) in (None, AIR):
             m.set(x, top, z, "minecraft:hanging_roots[waterlogged=false]")
-    # the hearth of field stones against the east wall, a small fire in it
-    hz = D // 2
-    m.set(W, 1, hz, "minecraft:campfire[facing=west,lit=true,signal_fire=false,waterlogged=false]")
-    m.set(W, 1, hz - 1, "minecraft:mossy_cobblestone")
-    m.set(W, 1, hz + 1, "minecraft:mossy_cobblestone")
-    for z in (hz - 1, hz, hz + 1):
+    # the hearth in the east wall: field stones round a fire, a hood over it, a pot on the hob
+    hz = (D + 1) // 2
+    for z in (hz - 1, hz + 1):
+        m.set(W, 1, z, "minecraft:mossy_cobblestone")
         m.set(W, 2, z, "minecraft:cobblestone")
-    # the table at a child's knee and its stool, a bowl on the table
-    tx = W - 3
-    m.set(tx, 1, hz, "minecraft:spruce_slab[type=bottom,waterlogged=false]")
-    m.set(tx, 1, hz - 1, "minecraft:spruce_trapdoor[facing=south,half=bottom,open=false,powered=false,waterlogged=false]")
-    m.mark("nisse-seat", tx, hz + 1, facing="north")
-    # the far end from the ladder (`fz`) and the ladder's own end (`nz`)
-    nz = lz
-    fz = 1 if lz == D else D
-    face_far = "north" if fz == 1 else "south"
-    face_near = "south" if fz == 1 else "north"
-    # the box bed in the far west corner, boxed in planks
-    m.set(2, 1, fz, "minecraft:red_bed[facing=east,occupied=false,part=foot]")
-    m.set(3, 1, fz, "minecraft:red_bed[facing=east,occupied=false,part=head]")
-    m.set(4, 1, fz, "minecraft:spruce_planks")
-    m.set(1, 1, fz, "minecraft:spruce_planks")
-    # the lost things of the town along the ladder's end: odd socks sorted by colour, the bell's
-    # clapper (a bell), a pot, a candle on a cask, a shelf of odd books
-    socks = ["minecraft:white_wool", "minecraft:red_wool", "minecraft:yellow_wool", "minecraft:blue_wool", "minecraft:green_wool",
-             "minecraft:light_gray_wool", "minecraft:brown_wool"]
-    for i, x in enumerate(range(lx + 2, min(lx + 2 + len(socks), W - 1))):
-        m.set(x, 1, nz, socks[i])
-    m.set(W - 1, 1, nz, f"minecraft:bell[attachment=floor,facing={face_far},powered=false]")
-    m.set(W, 1, nz, f"minecraft:decorated_pot[cracked=false,facing={face_far},waterlogged=false]")
-    m.set(W, 1, fz, "minecraft:barrel[facing=up,open=false]")
-    m.set(W, 2, fz, "minecraft:candle[candles=4,lit=true,waterlogged=false]")
-    m.set(W - 1, 1, fz, f"minecraft:chiseled_bookshelf[facing={face_near},slot_0_occupied=true,slot_1_occupied=false,slot_2_occupied=true,slot_3_occupied=true,slot_4_occupied=false,slot_5_occupied=false]")
-    # light: a lantern hung over the middle of the room
-    m.set(W // 2, top, D // 2, HANGING)
-    m.set(3, top, D // 2 - 1, HANGING)
+    m.set(W, 1, hz, "minecraft:campfire[facing=west,lit=true,signal_fire=false,waterlogged=false]")
+    m.set(W, 2, hz, AIR)
+    for z in (hz - 1, hz, hz + 1):
+        m.set(W, top, z, "minecraft:cobblestone_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]" if z == hz else "minecraft:cobblestone")
+    m.set(W, 2, hz + 1, "minecraft:cauldron")
+    # the table at a child's knee, its top a board on trestles, a stool either side, a candle
+    tx, tz = W - 2, hz
+    m.set(tx, 1, tz, "minecraft:spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]")
+    m.set(tx - 1, 1, tz, "minecraft:spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]")
+    m.set(tx, 2, tz, "minecraft:candle[candles=1,lit=true,waterlogged=false]")
+    m.set(tx - 1, 2, tz, "minecraft:flower_pot")
+    m.set(tx - 1, 1, tz - 1, "minecraft:spruce_slab[type=bottom,waterlogged=false]")
+    m.mark("nisse-seat", tx, tz + 1, facing="north")
+    for x in (tx - 1, tx + 1):
+        if m.get(x, 1, tz + 1) in (None, AIR):
+            m.set(x, 1, tz + 1, "minecraft:brown_carpet")
+    # the box bed on the near wall past the ladder's landing, boarded at both ends
+    m.set(lx + 3, 1, near, "minecraft:red_bed[facing=east,occupied=false,part=foot]")
+    m.set(lx + 4, 1, near, "minecraft:red_bed[facing=east,occupied=false,part=head]")
+    m.set(lx + 2, 1, near, "minecraft:spruce_planks")
+    m.set(lx + 5, 1, near, "minecraft:spruce_planks")
+    m.set(lx + 5, 2, near, "minecraft:candle[candles=3,lit=true,waterlogged=false]")
+    # the lost things of the town along the far wall, each its own thing: a shelf of odd books with
+    # a potted flower on it, a painted pot, a festival lantern on a cask, the clerk's book of
+    # by-laws open on its stand, the guildhall bell's clapper (a bell), the lady's red scarf hung
+    # on the wall, a jack-o'-lantern from the harvest, a slice of the baker's last cake
+    things = [
+        (1, f"minecraft:chiseled_bookshelf[facing={face_in_far},slot_0_occupied=true,slot_1_occupied=false,slot_2_occupied=true,slot_3_occupied=true,slot_4_occupied=false,slot_5_occupied=true]"),
+        (2, f"minecraft:decorated_pot[cracked=false,facing={face_in_far},waterlogged=false]"),
+        (3, "minecraft:barrel[facing=up,open=false]"),
+        (4, f"minecraft:lectern[facing={face_in_far},has_book=true,powered=false]"),
+        (5, f"minecraft:bell[attachment=floor,facing=east,powered=false]"),
+        (7, f"minecraft:jack_o_lantern[facing={face_in_far}]"),
+        (8, "minecraft:cake[bites=3]"),
+    ]
+    for x, b in things:
+        m.set(x, 1, far, b)
+    m.set(1, 2, far, "minecraft:potted_cornflower")
+    m.set(3, 2, far, "minecraft:lantern[hanging=false,waterlogged=false]")
+    m.set(6, 2, far, f"minecraft:red_wall_banner[facing={face_in_far}]")
+    # the odd socks, sorted by colour, laid out along the west wall
+    socks = ["minecraft:white_carpet", "minecraft:red_carpet", "minecraft:yellow_carpet", "minecraft:light_blue_carpet"]
+    zs = [z for z in range(1, D + 1) if z not in (far, near)]
+    for i, z in enumerate(zs[:len(socks)]):
+        m.set(1, 1, z, socks[i])
     landing(m, lx, _ly, lz, "minecraft:hay_block[axis=y]")
-    m.mark("node-nisse-hall", W // 2, D // 2 + 1, facing="east")
+    m.mark("node-nisse-hall", 4, (D + 1) // 2, facing="east")
 
 
 def build(place):
@@ -218,7 +271,8 @@ def build(place):
 # Thin blocks hung in the room's own air where no body stands are the room's air with something in
 # it; the starter writes such a block unclaimed where no body reaches it, which an enclosed room's
 # closure reads as open air on its boundary. They are claimed the room's (as `den.py` does).
-THIN = ("minecraft:lantern", "minecraft:hanging_roots", "minecraft:candle")
+THIN = ("minecraft:lantern", "minecraft:hanging_roots", "minecraft:candle", "minecraft:iron_chain", "minecraft:flower_pot",
+        "minecraft:potted_", "minecraft:red_wall_banner", "minecraft:white_carpet")
 
 
 def claim_thin(out):
