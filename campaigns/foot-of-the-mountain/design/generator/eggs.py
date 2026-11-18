@@ -94,9 +94,8 @@ def ladder_up(m, place, stem):
     m.climbs_to(f"edge/{stem}")
     FOOT_SEEDS.extend([[lx + dx, 1, lz + dz] for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))])
     lx, lz = lx - m.dx, lz - m.dz
-    for y in range(1, ly):
+    for y in range(1, ly + 1):   # up through the hole's own cell, to the host's top rung in its floor course
         m.set(lx, y, lz, LADDER)
-    m.set(lx, ly, lz, AIR)      # the hole's own cell: the host's top rung stands in its floor course above
     return lx, ly, lz
 
 
