@@ -228,7 +228,7 @@
         "quest": "quest/the-cat"
       },
       {
-        "node": "node/cave-path",
+        "node": "node/cave-track",
         "objective": "obj/follow-the-cat",
         "quest": "quest/the-cat-cave"
       },
@@ -273,7 +273,7 @@
         "quest": "quest/the-cat-rounds"
       },
       {
-        "node": "node/miners-hut",
+        "node": "node/apothecary",
         "objective": "obj/follow-the-cat-home",
         "quest": "quest/the-cat-den"
       },
@@ -281,6 +281,11 @@
         "node": "node/cat-den",
         "objective": "obj/down-to-the-den",
         "quest": "quest/the-cat-den"
+      },
+      {
+        "node": "node/pond",
+        "objective": "obj/thank-the-cat",
+        "quest": "quest/the-cat-at-home"
       }
     ],
     "critical_path": [
@@ -1321,25 +1326,19 @@
       },
       {
         "a": "node/cave-path",
+        "b": "node/cave-track",
+        "class": "walk",
+        "id": "edge/cave-path-to-cave-track"
+      },
+      {
+        "a": "node/cave-track",
         "b": "node/lush-cave",
         "class": "walk",
-        "id": "edge/cave-path-to-lush-cave"
+        "id": "edge/cave-track-to-lush-cave"
       },
       {
-        "a": "node/road-44",
-        "b": "node/hut-path",
-        "class": "walk",
-        "id": "edge/road-44-to-hut-path"
-      },
-      {
-        "a": "node/hut-path",
-        "b": "node/miners-hut",
-        "class": "walk",
-        "id": "edge/hut-path-to-miners-hut"
-      },
-      {
-        "a": "node/miners-hut",
-        "b": "node/cat-den",
+        "a": "node/apothecary",
+        "b": "node/den-shaft",
         "class": "climb",
         "gating": {
           "flags": [
@@ -1351,7 +1350,19 @@
             "活板门"
           ]
         },
-        "id": "edge/miners-hut-to-cat-den"
+        "id": "edge/apothecary-to-den-shaft"
+      },
+      {
+        "a": "node/den-shaft",
+        "b": "node/den-tunnel",
+        "class": "walk",
+        "id": "edge/den-shaft-to-den-tunnel"
+      },
+      {
+        "a": "node/den-tunnel",
+        "b": "node/cat-den",
+        "class": "walk",
+        "id": "edge/den-tunnel-to-cat-den"
       },
       {
         "a": "node/castle",
@@ -2860,6 +2871,13 @@
             "shows": "A Minecraft medieval apothecary, its potion shop fully furnished with a brewing tower at the back (read from its listing; the page refuses an automated fetch).",
             "terms": "not read (the page refuses an automated fetch); ideas only",
             "url": "https://www.planetminecraft.com/project/medieval-apothecary/"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/still-room",
+            "kind": "point",
+            "note": "in the still room at the back, beside the bale of dried herbs in its corner, where the cat waits"
           }
         ]
       },
@@ -4673,19 +4691,25 @@
       {
         "id": "node/cave-path",
         "intent": "the path under the hill",
-        "note": "A path from the cathedral garden's east gate along the foot of the hill behind the cathedral, the hill's mossy rock face on its north side, the lush cave's mouth low in the rock, lamps along the way.",
+        "note": "A path from the cathedral garden's east gate east along the foot of the hill, the hill's mossy rock face on its north side, lamps along the way, to the island's east flank.",
+        "stations": []
+      },
+      {
+        "id": "node/cave-track",
+        "intent": "the track up the east flank",
+        "note": "A track from the end of the path under the hill north up the island's east flank over the sea, cut into the hill where it climbs, the lush cave's mouth low in the cutting's rock wall, hung with moss and vines.",
         "stations": [
           {
             "anchor": "anchor/cave-mouth",
             "kind": "point",
-            "note": "before the lush cave's mouth in the rock face, where the cat sits in the sun after its errand"
+            "note": "before the lush cave's mouth in the cutting's wall, where the cat sits in the sun after its errand"
           }
         ]
       },
       {
         "id": "node/lush-cave",
         "intent": "the lush cave",
-        "note": "A lush cave in the hill's flank: moss and azalea, dripleaf over a lower pond where an axolotl lives, glow berries hanging from the roof, and mossy steps up to an upper pond in the light at the back.",
+        "note": "A small lush cave in the island's east flank, closed overhead: moss, azalea and clay, a lower pond with big dripleaf standing in it where an axolotl lives, cave vines with glow berries, spore blossoms and hanging roots from the roof, and mossy steps up to a ledge with an upper pond at the back.",
         "references": [
           {
             "shows": "A lush cave: moss, azaleas, hanging vines with glowing berries, dripleaf and clay round still pools, where axolotls are found.",
@@ -4702,7 +4726,7 @@
           {
             "anchor": "anchor/axolotl-low",
             "kind": "point",
-            "note": "in the lower pond, where Pip the axolotl paddles"
+            "note": "in the lower pond's water, where Pip the axolotl sits"
           },
           {
             "anchor": "anchor/upper-pond-rim",
@@ -4712,36 +4736,43 @@
           {
             "anchor": "anchor/axolotl-high",
             "kind": "point",
-            "note": "in the upper pond, Pip's new home"
+            "note": "in the upper pond's water, Pip's new home"
           }
         ]
       },
       {
-        "id": "node/hut-path",
-        "intent": "the track to the old miner's hut",
-        "note": "A worn track off the castle road's last leg, east across the high ground below the castle walls to the old miner's hut, a lamp at its far end."
+        "id": "node/den-shaft",
+        "intent": "the shaft under the still room",
+        "note": "A narrow shaft of old stone under the corner of the apothecary's still room: a ladder down from a trapdoor in the floor, a lantern at its foot, and the tunnel opening north.",
+        "stations": [
+          {
+            "anchor": "anchor/shaft-foot",
+            "kind": "point",
+            "note": "at the foot of the ladder, where the cat is set down to go on ahead"
+          }
+        ]
       },
       {
-        "id": "node/miners-hut",
-        "intent": "the old miner's hut",
-        "note": "A small abandoned hut of rough stone and old planks on the high ground west of the castle, a yard of gravel round it, its door toward the track. Inside: a cold hearth, a bunk, a table, and an old loom in the back corner over the way down.",
+        "id": "node/den-tunnel",
+        "intent": "the long tunnel",
+        "note": "A long, level, narrow tunnel of rough rock under the town, timbered every few steps like an old mine, lanterns hung from its frames, running north from the foot of the ladder to the foot of the mountain.",
         "references": [
           {
-            "shows": "A miner's hut: a small one-room dwelling of rough stone, a hearth, a bunk, tools by the door, built near the workings it served.",
-            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
-            "url": "https://en.wikipedia.org/wiki/Miner%27s_cottage"
+            "shows": "An abandoned mineshaft: oak-planked corridors framed by fence posts and beams, rails, chains and lanterns.",
+            "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
+            "url": "https://minecraft.wiki/w/Mineshaft"
           }
         ]
       },
       {
         "id": "node/cat-den",
         "intent": "the chasm and the cat's den",
-        "note": "A huge chasm hollowed out of the mountain under the castle. A ladder comes down from the old miner's hut onto a rock ledge along its west side; from the ledge a long bridge of planks and chains, lanterns on its posts, is slung across to a ledge on the far side where the cat has her den. Far below the bridge an enormous old stone figure stands in the chasm, lit by cold blue fire, facing the bridge.",
+        "note": "A vast, natural, irregular cave under the mountain, the tunnel opening all at once onto it: a long suspension bridge of planks on chains, lanterns on its posts, runs north across a chasm to a ledge where the cat has her den, a red bed and a hoard of rare keepsakes. Behind the bridge stands a colossal stone Cthulhu, its wings spread as wide as the bridge is long, its head over the deck, its body sinking into the dark below. Lanterns and glow lichen light it; no daylight reaches it.",
         "references": [
           {
-            "shows": "An abandoned mineshaft: oak-planked corridors framed by fence posts and beams, rails, chains and lanterns.",
+            "shows": "The 1.18+ cave generation's large noise caves: irregular chambers with pillars, overhangs and ledges at many heights.",
             "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
-            "url": "https://minecraft.wiki/w/Mineshaft"
+            "url": "https://minecraft.wiki/w/Cave"
           }
         ],
         "stations": [
@@ -4754,6 +4785,11 @@
             "anchor": "anchor/den-sign",
             "kind": "point",
             "note": "a board on the den's wall listing fishes, some ticked off"
+          },
+          {
+            "anchor": "anchor/cat-bed",
+            "kind": "point",
+            "note": "beside the cat's red bed in her den"
           }
         ]
       }
