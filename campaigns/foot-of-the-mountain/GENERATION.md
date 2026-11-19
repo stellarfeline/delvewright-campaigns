@@ -150,7 +150,7 @@ At engine `feature/festival-day` `90da71d3f` (`dsl_version` 0.88.0). The authori
 - **The way to the den** starts in the corner of the apothecary's still room, below the square: a bale of dried herbs (the way's bar, a full block that hides it) over a trapdoor, a ladder down (`node/den-shaft`, under the whole lot), and a level tunnel 84 cells long north to the foot of the mountain (`node/den-tunnel`). The old miner's hut and its track are removed; `road-44` is the piece it was before the track.
 - **The den** (`node/cat-den`, floor y 72) is a cave of ellipsoids broken by a seeded value noise, the tunnel's ledge, a 55-cell bridge railed one fence high with chains and lanterns, and the den's ledge: a red bed, a dragon's head, shelves of keepsakes, the chest and the board of fishes. No place may stand its walk plane under the sea (`DW0886`), so the chasm under the bridge is the clearance volume `volume/den-chasm` (y 28..70) and the piece `prefab/foot-of-the-mountain-den-chasm` is stamped into it by `batch/the-chasm`: the chasm's rock, glow lichen, and the stone Cthulhu whose body stands 44 blocks under the deck and whose head and wings rise over it. The site plan's region reaches down to y 20.
 - **The cat** is `npc/kelda`, Kelda, in every line, hint and record (her own speech keeps "the cat"); a fifth quest, `quest/the-cat-at-home`, opens with her on her bed. She leads the party into the still room; the trapdoor opens under a cutscene, and the tick the camera returns she is set down at the ladder's foot (a `teleport` in a `sequence` step) and walks on ahead to her bed. The host's morning line welcomes the party to Kelderby. In zh-cn every person, place and animal name is written in English.
-- Open: the building palette refuses `minecraft:dragon_egg` (`DW0730`), so the den holds no dragon's egg; the End's keepsake is an end rod on a purpur pillar.
+- The den holds a dragon's egg, on a pedestal under a glass case beside the keepsakes' shelf.
 
 ### The machine checks
 
@@ -187,3 +187,19 @@ At content `32e1c807` and engine `feature/festival-day` `8220de2f8`, on the remo
 - The critical-path bot, solo: PASSED, 49 steps, 6 advisory findings.
 - The branch plan exports a path for 54 of 56 story worlds; `world/28` and `world/55` export none (their witness needs a credited kill of `wave/goat-barley`, which the harness can neither drive nor mock).
 - Story worlds `world/0` and `world/2`: each walked past all five egg steps (the cellar's ledger and arrival, the porridge pot, the nisse's bowl and the hall's arrival) and the pig race, then failed carrying Pip to the upper pond in the lush cave (`anchor/upper-pond-rim`, waypoint 2 of 14: the jump [286, 86, 213] → [283, 85, 213] with the bot at y 84, two below its run-up). Kelda's den lies after that step in every world, so no world reached it. The same failure, at the same cell, reproduces on the town with the cat line alone (content `28ab5724`, manifest `dcd395f3…`): it is the cat line's, not the assembly's.
+
+## Pip goes home anywhere in the upper pond
+
+At engine `fix/festival-day-pip-cave-93` `1d530727e` (on `feature/festival-day` `8220de2f8`; `dsl_version` 0.89.0). The places' program is written by `design/generator/cat_places.py`.
+
+- **Carrying Pip up** (`obj/carry-pip`) is an `interact` over an area: the upper pond's top course, `anchor/upper-pond` ± (2, 0, 2). The moss block that stood on the rim, and its mark, are gone. The upper pond is five by five with its corners rounded, so the area is the pond's water, and two courses deep: Pip at home (`actor/pip-home`) sits on its bed, under the course the bucket is tipped into, so no body stands in the area's tiles (`DW0359`).
+- **The jump that failed** (story worlds 0 and 2, waypoint 2 of 14 of the carry) was a stand on a big dripleaf's leaf in the lower pond, which the engine read as a floor. In the game a body on the leaf tips it and falls through within a second; the bot that jumped onto it was standing on the pond's bed before its next move. The engine now proves no stand and no landing on a leaf (`Collision::Tips`), and the route round the lower pond keeps to its rim.
+
+### The machine checks
+
+At content `5431a047`, delvec built from `1d530727e` (sha256 `436bdf0e…`), on the remote (manifest `fa80df5a…`):
+
+- `delvec validate`: exit 0. `delvec detail --all`: exit 0, the tree unchanged by it. Build: exit 0, 26:54 wall, 7.45 GB max resident; `detail binding: 137 of 137 place(s) bound`; `DW0210 binding: 138145 reachable cell(s) judged, 0 dark`; `area binding (DW1143): 1 area interact(s) judged: obj/carry-pip over [274, 86, 209]..[278, 86, 213]`.
+- The critical-path bot, solo: PASSED, 49 steps, 6 advisory findings.
+- The branch plan exports a path for 54 of 56 story worlds; `world/28` and `world/55` export none (as before).
+- Story worlds `world/0` and `world/2`: each PASSED, 84 steps: the five egg steps, the scoop in the lower pond, the bucket tipped into the upper pond from the ledge, the ladder down to Kelda's den and the talk on her bed, and on to the festival.

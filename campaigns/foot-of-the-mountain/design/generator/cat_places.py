@@ -9,7 +9,8 @@ One generator, dispatched on the place's stem, drawn into the skill's starter. T
 built to the approved reference `design/reference/lush-cave` and after the vanilla lush cave (the
 node's `references[]`): small, closed overhead, a natural hollow of stone, tuff and moss; a lower
 pond sunk in a clay rim with big dripleaf standing in its water and small dripleaf on the rim,
-where Pip sits; mossy steps up the back to a ledge holding an upper pond; azalea on the banks,
+where Pip sits; mossy steps up the back to a ledge holding an upper pond, the area Pip's bucket is
+tipped into; azalea on the banks,
 cave vines with glow berries, spore blossoms and hanging roots from the roof. Piece-local axes:
 +x east, +z south; y 0 the ground course, y 1 the walk plane at the mouth.
 """
@@ -132,7 +133,9 @@ def lush_cave(m, place):
         for z in range(Z0, Z1 + 1):
             W[(x, z)] = walk(x, z)
     POND = {(x, z) for x in range(11, 16) for z in range(3, 9)} - {(11, 3), (15, 3), (11, 8), (15, 8), (12, 8)}
-    UPPER = {(x, z) for x in range(1, 5) for z in range(3, 8)} - {(1, 3), (1, 7), (4, 7)}
+    # the upper pond, five by five with its corners rounded: the area Pip's bucket is tipped into
+    # is `anchor/upper-pond` +- (2, 0, 2), the pond's whole water, so it is odd on both sides
+    UPPER = {(x, z) for x in range(1, 6) for z in range(3, 8)} - {(1, 3), (1, 7), (5, 3), (5, 7)}
 
     for (x, z), w in W.items():
         for y in range(0, w):
@@ -152,8 +155,11 @@ def lush_cave(m, place):
     for (x, z) in POND:
         m.set(x, 0, z, CLAY)
         m.set(x, 1, z, WATER)
+    # the upper pond two courses deep: Pip sits on its bed, under the course the bucket is tipped
+    # into, so Pip's body is never in front of that course
     for (x, z) in UPPER:
-        m.set(x, 2, z, CLAY)
+        m.set(x, 1, z, CLAY)
+        m.set(x, 2, z, WATER)
         m.set(x, 3, z, WATER)
     # the walls and the roof: rock all round the play space, the roof coming down a course at the
     # edges and in knuckles over the floor, rooted dirt in the roof over the ponds
@@ -208,8 +214,8 @@ def lush_cave(m, place):
                 m.set(x, top, z, "minecraft:hanging_roots[waterlogged=false]")
     m.mark("cat-cave", 10, 6, facing="east", y=2)
     m.mark("axolotl-low", 13, 5, facing="east", y=1)         # in the lower pond's water
-    m.mark("upper-pond-rim", 2, 8, facing="north", y=4)
-    m.mark("axolotl-high", 2, 5, facing="east", y=3)         # in the upper pond's water
+    m.mark("upper-pond", 3, 5, facing="east", y=3)           # the upper pond's middle, its top course
+    m.mark("axolotl-high", 2, 5, facing="east", y=2)         # on the upper pond's bed, under its top course
     m.mark("node-lush-cave", 18, 5, facing="west")
     m.show("up")   # the roof's rock shows where the hill over it is low, by the cutting
 
