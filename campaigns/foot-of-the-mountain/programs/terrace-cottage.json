@@ -8,6 +8,16 @@
         "via": "terrace-track-to-terrace-cottage-way"
       },
       {
+        "a": "part-barn",
+        "b": "exterior",
+        "bar": {
+          "block": "bar-terrace-cottage-to-nisse-hall",
+          "region": "seam-terrace-cottage-to-nisse-hall"
+        },
+        "class": "barred",
+        "via": "terrace-cottage-to-nisse-hall-way"
+      },
+      {
         "a": "part-barn-yard",
         "b": "exterior",
         "class": "walk",
@@ -78,23 +88,31 @@
   "palette": {
     "b0": "minecraft:air",
     "b1": "minecraft:cobblestone",
-    "b10": "minecraft:spruce_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
-    "b11": "minecraft:spruce_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
-    "b12": "minecraft:spruce_stairs[facing=west,half=top,shape=straight,waterlogged=false]",
-    "b13": "minecraft:stripped_spruce_log[axis=y]",
+    "b10": "minecraft:spruce_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
+    "b11": "minecraft:spruce_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]",
+    "b12": "minecraft:spruce_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]",
+    "b13": "minecraft:spruce_stairs[facing=west,half=top,shape=straight,waterlogged=false]",
+    "b14": "minecraft:stripped_spruce_log[axis=y]",
     "b2": "minecraft:grass_block[snowy=false]",
     "b3": "minecraft:gravel",
     "b4": "minecraft:hay_block[axis=z]",
-    "b5": "minecraft:lantern[hanging=false,waterlogged=false]",
-    "b6": "minecraft:oak_log[axis=z]",
-    "b7": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
-    "b8": "minecraft:spruce_planks",
-    "b9": "minecraft:spruce_stairs[facing=east,half=top,shape=straight,waterlogged=false]",
-    "ground-1": "minecraft:dirt",
-    "ground-2": "minecraft:grass_block[snowy=false]"
+    "b5": "minecraft:ladder[facing=east,waterlogged=false]",
+    "b6": "minecraft:lantern[hanging=false,waterlogged=false]",
+    "b7": "minecraft:oak_log[axis=z]",
+    "b8": "minecraft:spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]",
+    "b9": "minecraft:spruce_planks",
+    "bar-terrace-cottage-to-nisse-hall": "minecraft:hay_block[axis=z]",
+    "ground-0": "minecraft:dirt",
+    "ground-1": "minecraft:grass_block[snowy=false]"
   },
   "params": {
     "handed/datum-y": 1,
+    "handed/seam/terrace-cottage-to-nisse-hall/x0": 4,
+    "handed/seam/terrace-cottage-to-nisse-hall/x1": 4,
+    "handed/seam/terrace-cottage-to-nisse-hall/y0": 0,
+    "handed/seam/terrace-cottage-to-nisse-hall/y1": 0,
+    "handed/seam/terrace-cottage-to-nisse-hall/z0": 3,
+    "handed/seam/terrace-cottage-to-nisse-hall/z1": 3,
     "handed/seam/terrace-track-to-terrace-cottage/x0": 1,
     "handed/seam/terrace-track-to-terrace-cottage/x1": 18,
     "handed/seam/terrace-track-to-terrace-cottage/y0": 1,
@@ -1174,14 +1192,14 @@
         "weight": 1
       }
     ],
-    "column_47": [
+    "column_48": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_33"
+              "symbol": "row_47"
             },
             {
               "op": "call",
@@ -1345,7 +1363,7 @@
         "weight": 1
       }
     ],
-    "column_50": [
+    "column_51": [
       {
         "body": {
           "axis": "y",
@@ -1356,193 +1374,11 @@
             },
             {
               "op": "call",
-              "symbol": "row_48"
-            },
-            {
-              "op": "call",
               "symbol": "row_49"
             },
             {
               "op": "call",
-              "symbol": "row_36"
-            },
-            {
-              "op": "call",
-              "symbol": "row_37"
-            },
-            {
-              "op": "call",
-              "symbol": "row_38"
-            },
-            {
-              "op": "call",
-              "symbol": "row_39"
-            },
-            {
-              "op": "call",
-              "symbol": "row_40"
-            },
-            {
-              "op": "call",
-              "symbol": "row_29"
-            },
-            {
-              "op": "call",
-              "symbol": "row_30"
-            },
-            {
-              "op": "call",
-              "symbol": "row_31"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "param",
-                "name": "handed/seam/terrace-track-to-terrace-cottage/y0"
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/y0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "int",
-                  "value": 4
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/datum-y"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/terrace-track-to-terrace-cottage/y1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 10
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "column_51": [
-      {
-        "body": {
-          "axis": "y",
-          "children": [
-            {
-              "op": "call",
-              "symbol": "row_45"
-            },
-            {
-              "op": "call",
-              "symbol": "row_48"
-            },
-            {
-              "op": "call",
-              "symbol": "row_49"
+              "symbol": "row_50"
             },
             {
               "op": "call",
@@ -1716,15 +1552,15 @@
           "children": [
             {
               "op": "call",
-              "symbol": "row_33"
-            },
-            {
-              "op": "call",
-              "symbol": "row_48"
+              "symbol": "row_45"
             },
             {
               "op": "call",
               "symbol": "row_49"
+            },
+            {
+              "op": "call",
+              "symbol": "row_50"
             },
             {
               "op": "call",
@@ -1898,15 +1734,197 @@
           "children": [
             {
               "op": "call",
+              "symbol": "row_47"
+            },
+            {
+              "op": "call",
+              "symbol": "row_49"
+            },
+            {
+              "op": "call",
+              "symbol": "row_50"
+            },
+            {
+              "op": "call",
+              "symbol": "row_36"
+            },
+            {
+              "op": "call",
+              "symbol": "row_37"
+            },
+            {
+              "op": "call",
+              "symbol": "row_38"
+            },
+            {
+              "op": "call",
+              "symbol": "row_39"
+            },
+            {
+              "op": "call",
+              "symbol": "row_40"
+            },
+            {
+              "op": "call",
+              "symbol": "row_29"
+            },
+            {
+              "op": "call",
+              "symbol": "row_30"
+            },
+            {
+              "op": "call",
+              "symbol": "row_31"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "param",
+                "name": "handed/seam/terrace-track-to-terrace-cottage/y0"
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/y0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 4
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/datum-y"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/y1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 10
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "column_56": [
+      {
+        "body": {
+          "axis": "y",
+          "children": [
+            {
+              "op": "call",
               "symbol": "row_45"
             },
             {
               "op": "call",
-              "symbol": "row_34"
+              "symbol": "row_54"
             },
             {
               "op": "call",
-              "symbol": "row_35"
+              "symbol": "row_55"
             },
             {
               "op": "call",
@@ -2097,18 +2115,18 @@
         "weight": 1
       }
     ],
-    "column_56": [
+    "column_59": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_54"
+              "symbol": "row_57"
             },
             {
               "op": "call",
-              "symbol": "row_55"
+              "symbol": "row_58"
             },
             {
               "op": "call",
@@ -2268,18 +2286,18 @@
         "weight": 1
       }
     ],
-    "column_59": [
+    "column_62": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_57"
+              "symbol": "row_60"
             },
             {
               "op": "call",
-              "symbol": "row_58"
+              "symbol": "row_61"
             },
             {
               "op": "call",
@@ -2439,14 +2457,14 @@
         "weight": 1
       }
     ],
-    "column_61": [
+    "column_64": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_60"
+              "symbol": "row_63"
             },
             {
               "op": "call",
@@ -2566,22 +2584,22 @@
         "weight": 1
       }
     ],
-    "column_65": [
+    "column_68": [
       {
         "body": {
           "axis": "y",
           "children": [
             {
               "op": "call",
-              "symbol": "row_62"
+              "symbol": "row_65"
             },
             {
               "op": "call",
-              "symbol": "row_63"
+              "symbol": "row_66"
             },
             {
               "op": "call",
-              "symbol": "row_64"
+              "symbol": "row_67"
             }
           ],
           "op": "split",
@@ -2624,264 +2642,344 @@
       {
         "body": {
           "body": {
-            "axis": "x",
-            "children": [
-              {
-                "op": "call",
-                "symbol": "column_3"
-              },
-              {
-                "op": "call",
-                "symbol": "column_10"
-              },
-              {
-                "op": "call",
-                "symbol": "column_21"
-              },
-              {
-                "op": "call",
-                "symbol": "column_32"
-              },
-              {
-                "op": "call",
-                "symbol": "column_41"
-              },
-              {
-                "op": "call",
-                "symbol": "column_44"
-              },
-              {
-                "op": "call",
-                "symbol": "column_46"
-              },
-              {
-                "op": "call",
-                "symbol": "column_47"
-              },
-              {
-                "op": "call",
-                "symbol": "column_50"
-              },
-              {
-                "op": "call",
-                "symbol": "column_51"
-              },
-              {
-                "op": "call",
-                "symbol": "column_52"
-              },
-              {
-                "op": "call",
-                "symbol": "column_44"
-              },
-              {
-                "op": "call",
-                "symbol": "column_46"
-              },
-              {
-                "op": "call",
-                "symbol": "column_47"
-              },
-              {
-                "op": "call",
-                "symbol": "column_44"
-              },
-              {
-                "op": "call",
-                "symbol": "column_53"
-              },
-              {
-                "op": "call",
-                "symbol": "column_56"
-              },
-              {
-                "op": "call",
-                "symbol": "column_59"
-              },
-              {
-                "op": "call",
-                "symbol": "column_61"
-              },
-              {
-                "op": "call",
-                "symbol": "column_65"
-              }
-            ],
-            "op": "split",
-            "sizes": [
-              {
-                "blocks": {
-                  "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/x0"
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "int",
-                    "value": 2
+            "body": {
+              "body": {
+                "axis": "x",
+                "children": [
+                  {
+                    "op": "call",
+                    "symbol": "column_3"
                   },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "param",
-                    "name": "handed/seam/terrace-track-to-terrace-cottage/x0"
+                  {
+                    "op": "call",
+                    "symbol": "column_10"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_21"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_32"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_41"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_44"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_46"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_48"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_51"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_52"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_53"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_44"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_46"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_48"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_44"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_56"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_59"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_62"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_64"
+                  },
+                  {
+                    "op": "call",
+                    "symbol": "column_68"
                   }
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "int",
-                  "value": 1
-                },
-                "size": "absolute"
-              },
-              {
-                "blocks": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "arith",
-                    "lhs": {
+                ],
+                "op": "split",
+                "sizes": [
+                  {
+                    "blocks": {
                       "expr": "param",
-                      "name": "handed/seam/terrace-track-to-terrace-cottage/x1"
+                      "name": "handed/seam/terrace-track-to-terrace-cottage/x0"
                     },
-                    "op": "add",
-                    "rhs": {
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "int",
+                        "value": 2
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/terrace-track-to-terrace-cottage/x0"
+                      }
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "param",
+                        "name": "handed/seam/terrace-cottage-to-nisse-hall/x0"
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 3
+                      }
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "param",
+                          "name": "handed/seam/terrace-cottage-to-nisse-hall/x1"
+                        },
+                        "op": "add",
+                        "rhs": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "param",
+                        "name": "handed/seam/terrace-cottage-to-nisse-hall/x0"
+                      }
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "int",
+                        "value": 6
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "param",
+                          "name": "handed/seam/terrace-cottage-to-nisse-hall/x1"
+                        },
+                        "op": "add",
+                        "rhs": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      }
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "int",
+                      "value": 1
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "blocks": {
+                      "expr": "arith",
+                      "lhs": {
+                        "expr": "arith",
+                        "lhs": {
+                          "expr": "param",
+                          "name": "handed/seam/terrace-track-to-terrace-cottage/x1"
+                        },
+                        "op": "add",
+                        "rhs": {
+                          "expr": "int",
+                          "value": 1
+                        }
+                      },
+                      "op": "sub",
+                      "rhs": {
+                        "expr": "int",
+                        "value": 18
+                      }
+                    },
+                    "size": "absolute"
+                  },
+                  {
+                    "size": "relative",
+                    "weight": {
                       "expr": "int",
                       "value": 1
                     }
-                  },
-                  "op": "sub",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 18
                   }
-                },
-                "size": "absolute"
+                ]
               },
-              {
-                "size": "relative",
-                "weight": {
+              "mark": {
+                "anchor": "porridge-pot",
+                "at": "offset",
+                "facing": "east",
+                "x": {
                   "expr": "int",
-                  "value": 1
+                  "value": 14
+                },
+                "y": {
+                  "expr": "param",
+                  "name": "handed/datum-y"
+                },
+                "z": {
+                  "expr": "int",
+                  "value": 3
                 }
+              },
+              "op": "mark"
+            },
+            "mark": {
+              "anchor": "node-terrace-cottage",
+              "at": "offset",
+              "facing": "south",
+              "x": {
+                "expr": "int",
+                "value": 9
+              },
+              "y": {
+                "expr": "param",
+                "name": "handed/datum-y"
+              },
+              "z": {
+                "expr": "int",
+                "value": 14
               }
-            ]
+            },
+            "op": "mark"
           },
           "mark": {
-            "anchor": "node-terrace-cottage",
+            "anchor": "nisse-bowl",
             "at": "offset",
-            "facing": "south",
+            "facing": "west",
             "x": {
               "expr": "int",
-              "value": 9
+              "value": 5
             },
             "y": {
               "expr": "param",
@@ -2889,7 +2987,7 @@
             },
             "z": {
               "expr": "int",
-              "value": 14
+              "value": 3
             }
           },
           "op": "mark"
@@ -3089,6 +3187,110 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 9
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 8
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 5
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 2
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
@@ -3144,6 +3346,26 @@
               "rhs": {
                 "expr": "int",
                 "value": 10
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 9
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
               }
             },
             {
@@ -3241,6 +3463,58 @@
             {
               "cond": "cmp",
               "lhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-cottage-to-nisse-hall/x0"
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "int",
+                "value": 3
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-cottage-to-nisse-hall/x0"
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "int",
+                "value": 6
+              },
+              "op": "gt",
+              "rhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/x1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
@@ -3276,6 +3550,38 @@
                   "expr": "int",
                   "value": 1
                 }
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-cottage-to-nisse-hall/y0"
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "int",
+                "value": 0
+              }
+            },
+            {
+              "cond": "cmp",
+              "lhs": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/y1"
+                },
+                "op": "add",
+                "rhs": {
+                  "expr": "int",
+                  "value": 1
+                }
+              },
+              "op": "eq",
+              "rhs": {
+                "expr": "param",
+                "name": "handed/seam/terrace-track-to-terrace-cottage/y0"
               }
             },
             {
@@ -3318,7 +3624,7 @@
       {
         "body": {
           "material": {
-            "role": "ground-1"
+            "role": "ground-0"
           },
           "op": "fill"
         },
@@ -3459,7 +3765,7 @@
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -3501,7 +3807,7 @@
             },
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             }
@@ -3621,7 +3927,7 @@
             },
             {
               "material": {
-                "role": "b9"
+                "role": "b10"
               },
               "op": "fill"
             },
@@ -3876,7 +4182,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -3889,7 +4195,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -4030,7 +4336,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -4043,7 +4349,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -4101,15 +4407,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -4212,7 +4534,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -4225,7 +4547,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -4283,22 +4605,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 4
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 8
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -4408,7 +4770,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -4421,7 +4783,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -4479,22 +4841,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -4611,13 +5013,13 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -4675,15 +5077,47 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 2
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -5147,7 +5581,7 @@
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -5189,7 +5623,7 @@
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -5315,7 +5749,7 @@
             },
             {
               "material": {
-                "role": "b12"
+                "role": "b13"
               },
               "op": "fill"
             },
@@ -5463,19 +5897,19 @@
             },
             {
               "material": {
-                "role": "b13"
+                "role": "b14"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b13"
+                "role": "b14"
               },
               "op": "fill"
             },
@@ -5526,15 +5960,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -5616,19 +6066,19 @@
             },
             {
               "material": {
+                "role": "b12"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b8"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
               },
               "op": "fill"
             },
@@ -5769,19 +6219,19 @@
             },
             {
               "material": {
+                "role": "b12"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b8"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
               },
               "op": "fill"
             },
@@ -5839,15 +6289,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -5950,19 +6416,19 @@
             },
             {
               "material": {
+                "role": "b12"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b8"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
               },
               "op": "fill"
             },
@@ -6020,22 +6486,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 4
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 8
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -6145,19 +6651,19 @@
             },
             {
               "material": {
+                "role": "b12"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "b11"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b8"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b10"
               },
               "op": "fill"
             },
@@ -6222,22 +6728,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -6361,13 +6907,13 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -6432,15 +6978,47 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 2
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -6812,7 +7390,7 @@
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -6829,8 +7407,18 @@
               "op": "fill"
             },
             {
+              "body": {
+                "material": {
+                  "role": "b5"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "terrace-cottage-to-nisse-hall-way"
+            },
+            {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -6866,7 +7454,7 @@
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -6889,15 +7477,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -6990,6 +7625,16 @@
               "op": "fill"
             },
             {
+              "body": {
+                "material": {
+                  "role": "bar-terrace-cottage-to-nisse-hall"
+                },
+                "op": "fill"
+              },
+              "op": "claim",
+              "region": "seam-terrace-cottage-to-nisse-hall"
+            },
+            {
               "material": {
                 "role": "b4"
               },
@@ -7048,15 +7693,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -7145,19 +7837,7 @@
             },
             {
               "material": {
-                "role": "b8"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b4"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b5"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -7170,7 +7850,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b6"
               },
               "op": "fill"
             },
@@ -7183,13 +7863,26 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn"
+            },
+            {
+              "material": {
+                "role": "b6"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -7240,22 +7933,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -7372,7 +8105,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -7385,7 +8118,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -7436,15 +8169,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -7526,13 +8275,13 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -7545,13 +8294,13 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -7602,15 +8351,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -7706,7 +8471,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -7719,7 +8484,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -7777,15 +8542,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -7888,7 +8669,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -7901,7 +8682,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -7959,22 +8740,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 4
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 8
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -8056,7 +8877,7 @@
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -8098,7 +8919,7 @@
             },
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             }
@@ -8217,7 +9038,7 @@
             },
             {
               "material": {
-                "role": "b11"
+                "role": "b12"
               },
               "op": "fill"
             },
@@ -8230,7 +9051,7 @@
             },
             {
               "material": {
-                "role": "b10"
+                "role": "b11"
               },
               "op": "fill"
             },
@@ -8295,22 +9116,62 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
               },
               "size": "absolute"
             },
@@ -8406,7 +9267,7 @@
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -8424,7 +9285,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -8466,7 +9327,7 @@
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -8489,15 +9350,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -8664,15 +9541,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -8747,7 +9640,7 @@
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -8765,7 +9658,7 @@
             },
             {
               "material": {
-                "role": "b8"
+                "role": "b9"
               },
               "op": "fill"
             },
@@ -8801,7 +9694,7 @@
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -8824,15 +9717,31 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
               },
               "size": "absolute"
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 6
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
               },
               "size": "absolute"
             },
@@ -8907,7 +9816,182 @@
         "weight": 1
       }
     ],
-    "row_48": [
+    "row_47": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-0"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "ground-1"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 15
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_49": [
       {
         "body": {
           "axis": "z",
@@ -8996,43 +10080,15 @@
             },
             {
               "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 5
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
                 "expr": "arith",
                 "lhs": {
                   "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "int",
-                  "value": 15
+                  "value": 2
                 }
               },
               "size": "absolute"
@@ -9041,131 +10097,14 @@
               "blocks": {
                 "expr": "arith",
                 "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
+                  "expr": "int",
+                  "value": 9
                 },
                 "op": "sub",
                 "rhs": {
                   "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
                 }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_49": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "material": {
-                "role": "b8"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-barn"
-            },
-            {
-              "material": {
-                "role": "b0"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-barn-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "terrace-track-to-terrace-cottage-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 6
               },
               "size": "absolute"
             },
@@ -9261,7 +10200,7 @@
             },
             {
               "material": {
-                "role": "b7"
+                "role": "b8"
               },
               "op": "fill"
             },
@@ -9381,14 +10320,634 @@
         "weight": 1
       }
     ],
+    "row_50": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn"
+            },
+            {
+              "material": {
+                "role": "b0"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "terrace-track-to-terrace-cottage-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 15
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
     "row_54": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
               "material": {
-                "role": "ground-1"
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "terrace-track-to-terrace-cottage-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 9
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 15
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_55": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b4"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn"
+            },
+            {
+              "material": {
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn"
+            },
+            {
+              "material": {
+                "role": "b6"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b9"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "terrace-track-to-terrace-cottage-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 2
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-cottage-to-nisse-hall/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "int",
+                  "value": 5
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-cottage-to-nisse-hall/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 5
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 15
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_57": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -9430,7 +10989,7 @@
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -9514,7 +11073,7 @@
         "weight": 1
       }
     ],
-    "row_55": [
+    "row_58": [
       {
         "body": {
           "axis": "z",
@@ -9548,7 +11107,7 @@
             },
             {
               "material": {
-                "role": "b6"
+                "role": "b7"
               },
               "op": "fill"
             },
@@ -9675,295 +11234,6 @@
         "weight": 1
       }
     ],
-    "row_57": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "material": {
-                "role": "ground-1"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b2"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b3"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b3"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b1"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "b3"
-              },
-              "op": "fill"
-            },
-            {
-              "material": {
-                "role": "ground-2"
-              },
-              "op": "fill"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 9
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 2
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 14
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
-    "row_58": [
-      {
-        "body": {
-          "axis": "z",
-          "children": [
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-north"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-barn-yard"
-            },
-            {
-              "material": {
-                "role": "b6"
-              },
-              "op": "fill"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "part-barn-yard"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "room"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "terrace-track-to-terrace-cottage-way"
-            },
-            {
-              "body": {
-                "op": "void"
-              },
-              "op": "claim",
-              "region": "side-south"
-            }
-          ],
-          "op": "split",
-          "sizes": [
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 11
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "int",
-                "value": 1
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "int",
-                  "value": 15
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "blocks": {
-                "expr": "arith",
-                "lhs": {
-                  "expr": "arith",
-                  "lhs": {
-                    "expr": "param",
-                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
-                  },
-                  "op": "add",
-                  "rhs": {
-                    "expr": "int",
-                    "value": 1
-                  }
-                },
-                "op": "sub",
-                "rhs": {
-                  "expr": "param",
-                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
-                }
-              },
-              "size": "absolute"
-            },
-            {
-              "size": "relative",
-              "weight": {
-                "expr": "int",
-                "value": 1
-              }
-            }
-          ]
-        },
-        "weight": 1
-      }
-    ],
     "row_6": [
       {
         "body": {
@@ -9992,7 +11262,7 @@
             },
             {
               "material": {
-                "role": "b5"
+                "role": "b6"
               },
               "op": "fill"
             },
@@ -10119,7 +11389,296 @@
           "children": [
             {
               "material": {
+                "role": "ground-0"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b2"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b1"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
+                "role": "b3"
+              },
+              "op": "fill"
+            },
+            {
+              "material": {
                 "role": "ground-1"
+              },
+              "op": "fill"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 9
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 2
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 14
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_61": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-north"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn-yard"
+            },
+            {
+              "material": {
+                "role": "b7"
+              },
+              "op": "fill"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "part-barn-yard"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "room"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "terrace-track-to-terrace-cottage-way"
+            },
+            {
+              "body": {
+                "op": "void"
+              },
+              "op": "claim",
+              "region": "side-south"
+            }
+          ],
+          "op": "split",
+          "sizes": [
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 11
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "int",
+                "value": 1
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "int",
+                  "value": 15
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "blocks": {
+                "expr": "arith",
+                "lhs": {
+                  "expr": "arith",
+                  "lhs": {
+                    "expr": "param",
+                    "name": "handed/seam/terrace-track-to-terrace-cottage/z1"
+                  },
+                  "op": "add",
+                  "rhs": {
+                    "expr": "int",
+                    "value": 1
+                  }
+                },
+                "op": "sub",
+                "rhs": {
+                  "expr": "param",
+                  "name": "handed/seam/terrace-track-to-terrace-cottage/z0"
+                }
+              },
+              "size": "absolute"
+            },
+            {
+              "size": "relative",
+              "weight": {
+                "expr": "int",
+                "value": 1
+              }
+            }
+          ]
+        },
+        "weight": 1
+      }
+    ],
+    "row_63": [
+      {
+        "body": {
+          "axis": "z",
+          "children": [
+            {
+              "material": {
+                "role": "ground-0"
               },
               "op": "fill"
             },
@@ -10161,7 +11720,7 @@
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -10253,20 +11812,20 @@
         "weight": 1
       }
     ],
-    "row_62": [
+    "row_65": [
       {
         "body": {
           "axis": "z",
           "children": [
             {
               "material": {
-                "role": "ground-1"
+                "role": "ground-0"
               },
               "op": "fill"
             },
             {
               "material": {
-                "role": "ground-2"
+                "role": "ground-1"
               },
               "op": "fill"
             }
@@ -10292,7 +11851,7 @@
         "weight": 1
       }
     ],
-    "row_63": [
+    "row_66": [
       {
         "body": {
           "axis": "z",
@@ -10419,7 +11978,7 @@
         "weight": 1
       }
     ],
-    "row_64": [
+    "row_67": [
       {
         "body": {
           "axis": "z",

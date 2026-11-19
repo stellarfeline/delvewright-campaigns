@@ -1223,6 +1223,8 @@ def plot_marks(p, inner):
     out = inner
     for name in reversed(p.a["owed_anchors"]):
         stem = name.removeprefix("anchor/")
+        if stem.startswith("seam-"):
+            continue  # a gate region is answered by a barred edge's region, never a mark
         x, z, facing = p.model.marks[stem]
         if not p.walkable(p.cell(x, p.datum.value, z)):
             sys.exit(f"plot: the mark {stem} at ({x}, {z}) is not on walked floor: {p.cell(x, p.datum.value, z)}")

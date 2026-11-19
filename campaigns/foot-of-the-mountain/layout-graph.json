@@ -228,7 +228,7 @@
         "quest": "quest/the-cat"
       },
       {
-        "node": "node/cave-path",
+        "node": "node/cave-track",
         "objective": "obj/follow-the-cat",
         "quest": "quest/the-cat-cave"
       },
@@ -273,7 +273,7 @@
         "quest": "quest/the-cat-rounds"
       },
       {
-        "node": "node/miners-hut",
+        "node": "node/apothecary",
         "objective": "obj/follow-the-cat-home",
         "quest": "quest/the-cat-den"
       },
@@ -281,6 +281,36 @@
         "node": "node/cat-den",
         "objective": "obj/down-to-the-den",
         "quest": "quest/the-cat-den"
+      },
+      {
+        "node": "node/pond",
+        "objective": "obj/thank-the-cat",
+        "quest": "quest/the-cat-at-home"
+      },
+      {
+        "node": "node/merchant",
+        "objective": "obj/find-the-cellar",
+        "quest": "quest/the-free-traders"
+      },
+      {
+        "node": "node/free-traders-cellar",
+        "objective": "obj/meet-magnhild",
+        "quest": "quest/the-free-traders"
+      },
+      {
+        "node": "node/terrace-cottage",
+        "objective": "obj/fill-a-bowl",
+        "quest": "quest/the-nisse"
+      },
+      {
+        "node": "node/terrace-cottage",
+        "objective": "obj/feed-the-nisse",
+        "quest": "quest/the-nisse"
+      },
+      {
+        "node": "node/nisse-hall",
+        "objective": "obj/meet-the-nisse",
+        "quest": "quest/the-nisse"
       }
     ],
     "critical_path": [
@@ -1321,25 +1351,19 @@
       },
       {
         "a": "node/cave-path",
+        "b": "node/cave-track",
+        "class": "walk",
+        "id": "edge/cave-path-to-cave-track"
+      },
+      {
+        "a": "node/cave-track",
         "b": "node/lush-cave",
         "class": "walk",
-        "id": "edge/cave-path-to-lush-cave"
+        "id": "edge/cave-track-to-lush-cave"
       },
       {
-        "a": "node/road-44",
-        "b": "node/hut-path",
-        "class": "walk",
-        "id": "edge/road-44-to-hut-path"
-      },
-      {
-        "a": "node/hut-path",
-        "b": "node/miners-hut",
-        "class": "walk",
-        "id": "edge/hut-path-to-miners-hut"
-      },
-      {
-        "a": "node/miners-hut",
-        "b": "node/cat-den",
+        "a": "node/apothecary",
+        "b": "node/den-shaft",
         "class": "climb",
         "gating": {
           "flags": [
@@ -1351,7 +1375,19 @@
             "活板门"
           ]
         },
-        "id": "edge/miners-hut-to-cat-den"
+        "id": "edge/apothecary-to-den-shaft"
+      },
+      {
+        "a": "node/den-shaft",
+        "b": "node/den-tunnel",
+        "class": "walk",
+        "id": "edge/den-shaft-to-den-tunnel"
+      },
+      {
+        "a": "node/den-tunnel",
+        "b": "node/cat-den",
+        "class": "walk",
+        "id": "edge/den-tunnel-to-cat-den"
       },
       {
         "a": "node/castle",
@@ -1376,6 +1412,38 @@
         },
         "id": "edge/carter-up",
         "one_way": "a-to-b"
+      },
+      {
+        "a": "node/merchant",
+        "b": "node/free-traders-cellar",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/cellar-open"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "hole in the boards",
+            "方洞"
+          ]
+        },
+        "id": "edge/merchant-to-free-traders-cellar"
+      },
+      {
+        "a": "node/terrace-cottage",
+        "b": "node/nisse-hall",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/nisse-fed"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "hole in the floor",
+            "地板上有个洞"
+          ]
+        },
+        "id": "edge/terrace-cottage-to-nisse-hall"
       }
     ],
     "entry": "node/square",
@@ -2861,6 +2929,13 @@
             "terms": "not read (the page refuses an automated fetch); ideas only",
             "url": "https://www.planetminecraft.com/project/medieval-apothecary/"
           }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/still-room",
+            "kind": "point",
+            "note": "in the still room at the back, beside the bale of dried herbs in its corner, where the cat waits"
+          }
         ]
       },
       {
@@ -2926,6 +3001,13 @@
             "shows": "Southampton's merchant's house: a shop front on the street, the hall behind it with a side passage, a private inner room at the rear, a wine undercroft, chambers over; stone walls with a timber frontage.",
             "terms": "CC BY-SA 4.0 (Wikipedia text)",
             "url": "https://en.wikipedia.org/wiki/Medieval_Merchant%27s_House"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/merchant-ledger",
+            "kind": "point",
+            "note": "the ledger shelf in the counting room, one ledger pushed in further than the rest, which gives under a hand"
           }
         ]
       },
@@ -4454,6 +4536,18 @@
             "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
             "url": "https://en.wikipedia.org/wiki/Longhouse"
           }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/nisse-bowl",
+            "kind": "point",
+            "note": "a little clay bowl on the floor by the hay bay at the cottage's back, empty"
+          },
+          {
+            "anchor": "anchor/porridge-pot",
+            "kind": "point",
+            "note": "a covered pot of porridge by the hay bay across the floor"
+          }
         ]
       },
       {
@@ -4673,19 +4767,25 @@
       {
         "id": "node/cave-path",
         "intent": "the path under the hill",
-        "note": "A path from the cathedral garden's east gate along the foot of the hill behind the cathedral, the hill's mossy rock face on its north side, the lush cave's mouth low in the rock, lamps along the way.",
+        "note": "A path from the cathedral garden's east gate east along the foot of the hill, the hill's mossy rock face on its north side, lamps along the way, to the island's east flank.",
+        "stations": []
+      },
+      {
+        "id": "node/cave-track",
+        "intent": "the track up the east flank",
+        "note": "A track from the end of the path under the hill north up the island's east flank over the sea, cut into the hill where it climbs, the lush cave's mouth low in the cutting's rock wall, hung with moss and vines.",
         "stations": [
           {
             "anchor": "anchor/cave-mouth",
             "kind": "point",
-            "note": "before the lush cave's mouth in the rock face, where the cat sits in the sun after its errand"
+            "note": "before the lush cave's mouth in the cutting's wall, where the cat sits in the sun after its errand"
           }
         ]
       },
       {
         "id": "node/lush-cave",
         "intent": "the lush cave",
-        "note": "A lush cave in the hill's flank: moss and azalea, dripleaf over a lower pond where an axolotl lives, glow berries hanging from the roof, and mossy steps up to an upper pond in the light at the back.",
+        "note": "A small lush cave in the island's east flank, closed overhead: moss, azalea and clay, a lower pond with big dripleaf standing in it where an axolotl lives, cave vines with glow berries, spore blossoms and hanging roots from the roof, and mossy steps up to a ledge with an upper pond at the back.",
         "references": [
           {
             "shows": "A lush cave: moss, azaleas, hanging vines with glowing berries, dripleaf and clay round still pools, where axolotls are found.",
@@ -4702,7 +4802,7 @@
           {
             "anchor": "anchor/axolotl-low",
             "kind": "point",
-            "note": "in the lower pond, where Pip the axolotl paddles"
+            "note": "in the lower pond's water, where Pip the axolotl sits"
           },
           {
             "anchor": "anchor/upper-pond-rim",
@@ -4712,36 +4812,43 @@
           {
             "anchor": "anchor/axolotl-high",
             "kind": "point",
-            "note": "in the upper pond, Pip's new home"
+            "note": "in the upper pond's water, Pip's new home"
           }
         ]
       },
       {
-        "id": "node/hut-path",
-        "intent": "the track to the old miner's hut",
-        "note": "A worn track off the castle road's last leg, east across the high ground below the castle walls to the old miner's hut, a lamp at its far end."
+        "id": "node/den-shaft",
+        "intent": "the shaft under the still room",
+        "note": "A narrow shaft of old stone under the corner of the apothecary's still room: a ladder down from a trapdoor in the floor, a lantern at its foot, and the tunnel opening north.",
+        "stations": [
+          {
+            "anchor": "anchor/shaft-foot",
+            "kind": "point",
+            "note": "at the foot of the ladder, where the cat is set down to go on ahead"
+          }
+        ]
       },
       {
-        "id": "node/miners-hut",
-        "intent": "the old miner's hut",
-        "note": "A small abandoned hut of rough stone and old planks on the high ground west of the castle, a yard of gravel round it, its door toward the track. Inside: a cold hearth, a bunk, a table, and an old loom in the back corner over the way down.",
+        "id": "node/den-tunnel",
+        "intent": "the long tunnel",
+        "note": "A long, level, narrow tunnel of rough rock under the town, timbered every few steps like an old mine, lanterns hung from its frames, running north from the foot of the ladder to the foot of the mountain.",
         "references": [
           {
-            "shows": "A miner's hut: a small one-room dwelling of rough stone, a hearth, a bunk, tools by the door, built near the workings it served.",
-            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
-            "url": "https://en.wikipedia.org/wiki/Miner%27s_cottage"
+            "shows": "An abandoned mineshaft: oak-planked corridors framed by fence posts and beams, rails, chains and lanterns.",
+            "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
+            "url": "https://minecraft.wiki/w/Mineshaft"
           }
         ]
       },
       {
         "id": "node/cat-den",
         "intent": "the chasm and the cat's den",
-        "note": "A huge chasm hollowed out of the mountain under the castle. A ladder comes down from the old miner's hut onto a rock ledge along its west side; from the ledge a long bridge of planks and chains, lanterns on its posts, is slung across to a ledge on the far side where the cat has her den. Far below the bridge an enormous old stone figure stands in the chasm, lit by cold blue fire, facing the bridge.",
+        "note": "A vast, natural, irregular cave under the mountain, the tunnel opening all at once onto it: a long suspension bridge of planks on chains, lanterns on its posts, runs north across a chasm to a ledge where the cat has her den, a red bed and a hoard of rare keepsakes. Behind the bridge stands a colossal stone Cthulhu, its wings spread as wide as the bridge is long, its head over the deck, its body sinking into the dark below. Lanterns and glow lichen light it; no daylight reaches it.",
         "references": [
           {
-            "shows": "An abandoned mineshaft: oak-planked corridors framed by fence posts and beams, rails, chains and lanterns.",
+            "shows": "The 1.18+ cave generation's large noise caves: irregular chambers with pillars, overhangs and ledges at many heights.",
             "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
-            "url": "https://minecraft.wiki/w/Mineshaft"
+            "url": "https://minecraft.wiki/w/Cave"
           }
         ],
         "stations": [
@@ -4754,6 +4861,59 @@
             "anchor": "anchor/den-sign",
             "kind": "point",
             "note": "a board on the den's wall listing fishes, some ticked off"
+          },
+          {
+            "anchor": "anchor/cat-bed",
+            "kind": "point",
+            "note": "beside the cat's red bed in her den"
+          }
+        ]
+      },
+      {
+        "id": "node/free-traders-cellar",
+        "intent": "the Free Traders' cellar",
+        "note": "A low vaulted cellar of old brick under the merchant's cloth store, kept by the town's last smuggler as a working store: casks stacked two high along the north wall, this year's sugar sacks heaped on the south with a coil of chain, crates and casks in the corner, a lantern-lit table of papers in the middle, the coast chart and the members' ledger in the south-east corner, rope and chain hung from the vault, and the old sea door at the east end, its dark-oak frame standing proud of the brick that fills it. A ladder comes down from the store in one corner.",
+        "references": [
+          {
+            "shows": "Smuggling in eighteenth-century Britain: the smugglers called themselves free traders, landed goods by night on quiet shores and hid them in cellars and tunnels under ordinary houses and inns, with whole towns quietly buying.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Smuggling#History"
+          },
+          {
+            "shows": "A priest hole: a hiding place built into a house's fabric, entered through panelling, a hearth or a floor that reads as ordinary, so a searcher sees only the wall.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text)",
+            "url": "https://en.wikipedia.org/wiki/Priest_hole"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/magnhild-seat",
+            "kind": "point",
+            "note": "at the card table in the middle of the cellar, where Magnhild plays patience"
+          }
+        ]
+      },
+      {
+        "id": "node/nisse-hall",
+        "intent": "the nisse's hall under the terrace cottage",
+        "note": "A low hall dug out under the terrace cottage, a folk creature's home: walls of packed earth, field stone and mud brick between timber posts, roots coming through a low uneven ceiling crossed by two beams, a hearth of field stones in the east wall with its fire lit and a pot on the hob, a table and stools at a child's knee, a box bed, and along the far wall the town's lost things: a shelf of odd books with a potted flower, a painted pot, a festival lantern on a cask, the clerk's book of by-laws on its stand, a bell, a red scarf hung on the wall, a jack-o'-lantern and a slice of cake, and odd socks laid out by colour. A ladder comes down from a hole in the cottage floor in one corner.",
+        "references": [
+          {
+            "shows": "The nisse or tomte of Nordic folklore: a small household spirit in grey clothes and a red cap who lives under the floorboards of a farm's house, stable or barn, keeps the farm and its animals, expects a bowl of porridge with butter on it once a year, and plays tricks on the animals when he is forgotten.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Nisse_(folklore)"
+          },
+          {
+            "shows": "The game's own rooted dirt and hanging roots: the underside of a tree's ground, roots dangling from it into the air below.",
+            "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
+            "url": "https://minecraft.wiki/w/Hanging_Roots"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/nisse-seat",
+            "kind": "point",
+            "note": "at the little table by the hearth, where the nisse eats his porridge"
           }
         ]
       }

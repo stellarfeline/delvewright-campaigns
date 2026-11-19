@@ -16,6 +16,7 @@ paved, a fountain at its middle, and an arch spans its mouth on the street.
 Piece-local axes: +x east, +z south; the street's opening is the play space's
 first column (x 1), kept clear with the verge beside it (x 2).
 """
+import json
 import os
 import sys
 
@@ -126,7 +127,8 @@ def build(a):
         m.set(x, 1, z, slab("minecraft:tuff_brick"))
     # the counting room: a desk, the ledger, the scales, money on the table
     m.box(5, 9, 0, 0, 3, 5, BOARDS)
-    m.set(5, 1, 3, "minecraft:lectern[facing=east,has_book=false,powered=false]")
+    # the ledger shelf (5, 3) is the quest's prop, stood by the engine at `anchor/merchant-ledger`:
+    # one ledger in it gives under a hand and opens the way down in the cloth store
     m.set(8, 1, 3, slab("minecraft:dark_oak", "top"))
     m.set(9, 1, 3, slab("minecraft:dark_oak", "top"))
     m.set(8, 2, 3, candle(3))
@@ -265,6 +267,7 @@ def build(a):
     # the house's street face: a bench under the counting room's window
 
     m.marks["node-merchant"] = (8 + FRONT_DX, 8, "east")
+    m.marks["merchant-ledger"] = (5 + FRONT_DX, 3, "east")
     # the hall's garden behind it, in the back of the lot the house's coming
     # forward freed: a pear tree, a bench under it, beds along the hall wall
     gx = HX1 + 2                      # one cell clear of the hall's back wall
@@ -283,10 +286,41 @@ def build(a):
     return m
 
 
+# The way down from the cloth store's south-west corner (store 11, 5) to the Free Traders' cellar is
+# declared `learned: hidden`. The bar the allocation hands is the derivation's own closed iron
+# trapdoor, which the eye looks through (docs/reference/sight-through-blocks.md); the lot ships its
+# own bar instead, as a bound piece may: a bolt of brown cloth standing on end, a full block that
+# hides what is under it, in the gate region's one cell over the hole. The open-gate takes it down
+# as it would the trapdoor.
+OWN_BARS = {"bar-merchant-to-free-traders-cellar": "minecraft:brown_wool"}
+# the top rung of the ladder up from the cellar stands in the hole through the store's floor: the
+# rung in a floor's hole is the hole owner's, and the lot owns this one, hung on the boards to its west
+RUNG = "minecraft:ladder[facing=east,waterlogged=false]"
+
+
 class Merchant(Plot):
-    VARIANTS = VARIANTS
+    VARIANTS = dict(VARIANTS, **{"hatch-rung": RUNG}, **OWN_BARS)
+
+    def base_cell(self, x, y, z):
+        for s in self.seams:
+            if s["stem"] == "merchant-to-free-traders-cellar" and all(s["lo"][i].value <= v < s["hi"][i].value for i, v in enumerate((x, y, z))):
+                return ("claim", f"{s['stem']}-way", "hatch-rung")
+        return Plot.base_cell(self, x, y, z)
+
+
+def own_bars(out):
+    with open(out, encoding="utf-8") as f:
+        doc = json.load(f)
+    for k, v in OWN_BARS.items():
+        if k in doc["palette"]:
+            doc["palette"][k] = v
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
 
 if __name__ == "__main__":
-    raise SystemExit(plot_main(build, Merchant, PALETTE,
-                               "the roof slopes, the wall heads and the sealed upper storeys: seen, never stood on"))
+    rc = plot_main(build, Merchant, PALETTE,
+                   "the roof slopes, the wall heads and the sealed upper storeys: seen, never stood on")
+    if rc == 0:
+        own_bars(sys.argv[sys.argv.index("--out") + 1])
+    raise SystemExit(rc)

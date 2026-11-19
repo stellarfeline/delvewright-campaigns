@@ -15,11 +15,12 @@ between them, an arbour seat at its far end, a hedge round it.
 Piece-local axes: +x east, +z south; the street's opening is the play space's
 first column (x 1), kept clear with the verge beside it (x 2).
 """
+import json
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from plotlib import (Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
+from plotlib import (AIR, Model, Plot, bed_of, candle, door2, fence, front, guard_seams, lantern, leaves, log,  # noqa: E402
                      pane, plot_main, ring, slab, stairs, trapdoor, wall_torch, window)
 
 GRASS = "minecraft:grass_block[snowy=false]"
@@ -91,7 +92,8 @@ def build(a):
     for (x, z) in ((5, HZ0), (7, HZ0), (5, HZ1), (7, HZ1), (10, HZ1), (HX0, 4), (HX0, 9), (HX1, 6), (HX1, 7)):
         m.set(x, 7, z, CLEAR)
     m.set(HX1, 2, 7, CLEAR); m.set(HX1, 3, 7, CLEAR)          # the still room over the garden
-    door2(m, HX1, 9, "minecraft:dark_oak", "west")             # out to the garden
+    for y in (1, 2):                                           # out to the garden, a bare doorway
+        m.set(HX1, y, 9, AIR)
     m.set(HX1, 3, 9, "stone")
 
     # ---- inside: the shop and, through a door, the still room
@@ -99,7 +101,10 @@ def build(a):
     for z in range(HZ0 + 1, HZ1):
         for y in range(1, 5):
             m.set(STILL_WALL, y, z, "stone" if y < 4 else BEAM_Z)
-    door2(m, STILL_WALL, 8, "minecraft:dark_oak", "east")
+    # the still room opens off the shop, and onto the garden, through bare doorways: the cat
+    # comes and goes by them, and no animal opens a door
+    for y in (1, 2):
+        m.set(STILL_WALL, y, 8, AIR)
     m.set(STILL_WALL, 3, 8, "stone")
     # the shop: shelves of jars on the north wall, the counter, the scales
     for x in (5, 6, 7):
@@ -117,7 +122,7 @@ def build(a):
     m.set(10, 1, 4, "minecraft:campfire[facing=south,lit=true,signal_fire=false,waterlogged=false]")
     m.set(10, 2, 4, "minecraft:water_cauldron[level=3]")
     m.set(10, 1, 5, "minecraft:barrel[facing=up,open=false]")
-    m.set(9, 1, 9, "minecraft:lectern[facing=north,has_book=false,powered=false]")
+    m.set(9, 1, 5, "minecraft:lectern[facing=east,has_book=false,powered=false]")
     m.set(9, 1, 4, "minecraft:crafting_table")
     m.set(10, 1, 7, "minecraft:cauldron")
     for (x, z) in ((9, 6), (10, 6), (9, 7)):
@@ -153,15 +158,50 @@ def build(a):
     # the street face: a bench, a bush
 
     m.marks["node-apothecary"] = (6 + FRONT_DX, 8, "east")
+    # the still room's corner by the shop's door (9, 9) is the cat's way down: a bale of dried
+    # herbs over a trapdoor, the bar the whole hands this lot (`OWN_BARS`), and under it a
+    # ladder; the cat waits by the work table, out of the way between the two doors
+    m.marks["still-room"] = (9 + FRONT_DX, 7, "south")
     # the street edge where the house does not stand: the yard wall
     front(m, 1, 1, a["extent"][2] - 2, gap=set(range(7, 10)))
     return m
 
 
+# The way down from the still room is declared `learned: hidden`: the den is a secret until it is
+# found. The bar the allocation hands is the derivation's own closed iron trapdoor, which the eye
+# looks through (docs/reference/sight-through-blocks.md); the lot ships its own bar instead, as a
+# bound piece may: a bale of dried herbs, a full block that hides what is under it, standing over
+# the trapdoor in the gate region's one cell. The open-gate takes it down as it would the trapdoor.
+OWN_BARS = {"bar-apothecary-to-den-shaft": "minecraft:dried_kelp_block"}
+# the top rung of the ladder up from the shaft stands in the hole through the still room's floor:
+# the rung in a floor's hole is the hole owner's, and the lot owns this one (the shaft's ladder
+# ends under it), hung on the floor's boards to its west
+RUNG = "minecraft:ladder[facing=east,waterlogged=false]"
+
+
 class Apothecary(Plot):
-    VARIANTS = VARIANTS
+    VARIANTS = dict(VARIANTS, **{"hatch-rung": RUNG}, **OWN_BARS)
+
+    def base_cell(self, x, y, z):
+        for s in self.seams:
+            if s["stem"] == "apothecary-to-den-shaft" and all(s["lo"][i].value <= v < s["hi"][i].value for i, v in enumerate((x, y, z))):
+                return ("claim", f"{s['stem']}-way", "hatch-rung")
+        return Plot.base_cell(self, x, y, z)
+
+
+def own_bars(out):
+    with open(out, encoding="utf-8") as f:
+        doc = json.load(f)
+    for k, v in OWN_BARS.items():
+        if k in doc["palette"]:
+            doc["palette"][k] = v
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(json.dumps(doc, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
 
 if __name__ == "__main__":
-    raise SystemExit(plot_main(build, Apothecary, PALETTE,
-                               "the roof slopes, the wall heads, the hedge tops and the sealed upper storey: seen, never stood on"))
+    rc = plot_main(build, Apothecary, PALETTE,
+                   "the roof slopes, the wall heads, the hedge tops and the sealed upper storey: seen, never stood on")
+    if rc == 0:
+        own_bars(sys.argv[sys.argv.index("--out") + 1])
+    raise SystemExit(rc)
