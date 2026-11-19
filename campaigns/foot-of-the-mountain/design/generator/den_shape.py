@@ -283,10 +283,14 @@ def lichen_cells(lo_y, hi_y, solid, open_cell, salt):
     return out
 
 
-# (x, z, the lantern's course): in front of each wing, over the hood and by the raised hand, each
-# clear of the figure's body to the roof: a white figure in a dark cave is lit, or it reads as rock
-FIGURE_LANTERNS = ((-11, -4, 22), (-11, 54, 22), (-11, -4, 10), (-11, 54, 10), (-11, 6, 30), (-11, 44, 30),
-                   (-5, 25, 35), (-4, 19, 33), (-4, 31, 33), (2, 12, 24), (2, 38, 24), (8, 8, 28), (8, 42, 28), (13, 0, 16), (14, 50, 10))
+# (x, z, the lantern's course): over the face and hood, before the chest and the beard, before the
+# south wing, and close before the raised hand and not behind it (so the hand stands lit against the
+# darker wing at its back), each clear of the figure's body to the roof: a figure of one dark stone
+# in a dark cave reads only where it is lit
+FIGURE_LANTERNS = ((-11, 54, 22), (-11, 54, 10), (-11, 51, 4), (-10, 60, 12), (-11, 6, 30), (-11, 44, 30),
+                   (-5, 25, 35), (-4, 19, 33), (-4, 31, 33), (0, 24, 28), (2, 12, 24), (2, 38, 24), (8, 8, 28),
+                   (8, 42, 28), (3, 15, 12), (6, 33, 12), (6, 33, 20), (-6, 42, 12), (14, 50, 10),
+                   (13, 0, 16), (13, -8, 8), (13, -3, 4), (12, -12, 12))
 
 
 def den_cells():
@@ -338,8 +342,10 @@ def den_cells():
             if any(c.get((x + dx, 0, z + dz)) == AIR and not deck(x + dx, z + dz)
                    for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1))):
                 c[(x, 1, z)] = FENCE
-    # where a ledge meets the cave's rock, the rock stands eight high, so no body climbs off the
-    # walked ground onto the rock beyond it, from the floor or from anything standing on it
+    # where a ledge meets the cave's rock, the rock stands three high with two fences on its top, so no
+    # body climbs off the walked ground onto the rock beyond it, from the floor or from anything
+    # standing on it (a keepsake on a shelf is a step to a three-high wall's top), and the den's
+    # corner stays open to the eye
     for x in range(XMIN, EX):
         for z in range(ZMIN, EZ - 1):
             if not ground(x, z):
@@ -350,8 +356,11 @@ def den_cells():
                     continue
                 if nz >= EZ - 2 and nx in BRIDGE_X:
                     continue                       # the tunnel's mouth
-                for y in range(1, 9):
+                for y in (1, 2, 3):
                     c[(nx, y, nz)] = rock_block(nx, y, nz)
+                for y in (4, 5):
+                    if c.get((nx, y, nz)) == AIR:
+                        c[(nx, y, nz)] = FENCE
     # the rails turn the corners where the bridge leaves each ledge
     for x in RAIL_X:
         for z in (BZ0 - 1, BZ1 + 1):
