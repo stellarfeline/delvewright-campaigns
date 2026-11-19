@@ -174,3 +174,16 @@ At content `f8ce70c0` (after the dressing pass) and engine `feature/festival-day
 - `delvec validate`: exit 0. Build: exit 0, 22:18 wall, 7.22 GB max resident; `detail binding: 136 of 136 place(s) bound`; `DW0210 binding: 135721 reachable cell(s) judged, 0 dark`; `shut ways (DW1053/DW1054): 4 gated connection(s) … 18 declared (… 18 hidden), 0 undeclared`. `delvec detail` of both dressed places: exit 0 each, the whole's battery green.
 - The critical-path bot, solo: exit 0, 49 steps, 8 scripted deaths survived, 5 advisory findings. The eggs are off the exported path.
 - Story world `world/0` (one bot), which plays both eggs: the bot pressed the ledger shelf (the opening's shot played), climbed down the cellar's ladder and arrived (`obj/find-the-cellar`, `obj/meet-magnhild`), and later filled a bowl at the pot, put it in the nisse's bowl (the shot played), climbed down, arrived and climbed back out (`obj/fill-a-bowl`, `obj/feed-the-nisse`, `obj/meet-the-nisse`); the run then failed at step 45, `obj/run-the-pig-race`, which did not complete in its window (the same at content `db53a76a`).
+
+## The cat line and the side stories assembled
+
+The cat line and the side stories, each proven on its own, are merged onto the town. Every reference the side stories carried to the cat follows her rename to `npc/kelda`; in their two quests she stands where the cat line last leaves her, on her bed (`anchor/cat-bed`). `quest/the-cat-at-home`, which only the cat line has, gains the cellar's and the hall's keepers in its cast (`DW0460` refused the tree without them). Lady Agathe's sights keep the cave on the seaward flank and gain the side stories' "The tide is out." branch.
+
+### The machine checks
+
+At content `32e1c807` and engine `feature/festival-day` `8220de2f8`, on the remote (manifest `517e9b72…`):
+
+- `delvec validate`: exit 0. `delvec detail --all`: exit 0, 137 of 137 places, the tree unchanged by it. Build: exit 0; `detail binding: 137 of 137 place(s) bound`; `DW0210 binding: 138153 reachable cell(s) judged, 0 dark`.
+- The critical-path bot, solo: PASSED, 49 steps, 6 advisory findings.
+- The branch plan exports a path for 54 of 56 story worlds; `world/28` and `world/55` export none (their witness needs a credited kill of `wave/goat-barley`, which the harness can neither drive nor mock).
+- Story worlds `world/0` and `world/2`: each walked past all five egg steps (the cellar's ledger and arrival, the porridge pot, the nisse's bowl and the hall's arrival) and the pig race, then failed carrying Pip to the upper pond in the lush cave (`anchor/upper-pond-rim`, waypoint 2 of 14: the jump [286, 86, 213] → [283, 85, 213] with the bot at y 84, two below its run-up). Kelda's den lies after that step in every world, so no world reached it. The same failure, at the same cell, reproduces on the town with the cat line alone (content `28ab5724`, manifest `dcd395f3…`): it is the cat line's, not the assembly's.
