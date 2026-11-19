@@ -286,6 +286,31 @@
         "node": "node/pond",
         "objective": "obj/thank-the-cat",
         "quest": "quest/the-cat-at-home"
+      },
+      {
+        "node": "node/merchant",
+        "objective": "obj/find-the-cellar",
+        "quest": "quest/the-free-traders"
+      },
+      {
+        "node": "node/free-traders-cellar",
+        "objective": "obj/meet-magnhild",
+        "quest": "quest/the-free-traders"
+      },
+      {
+        "node": "node/terrace-cottage",
+        "objective": "obj/fill-a-bowl",
+        "quest": "quest/the-nisse"
+      },
+      {
+        "node": "node/terrace-cottage",
+        "objective": "obj/feed-the-nisse",
+        "quest": "quest/the-nisse"
+      },
+      {
+        "node": "node/nisse-hall",
+        "objective": "obj/meet-the-nisse",
+        "quest": "quest/the-nisse"
       }
     ],
     "critical_path": [
@@ -1387,6 +1412,38 @@
         },
         "id": "edge/carter-up",
         "one_way": "a-to-b"
+      },
+      {
+        "a": "node/merchant",
+        "b": "node/free-traders-cellar",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/cellar-open"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "hole in the boards",
+            "方洞"
+          ]
+        },
+        "id": "edge/merchant-to-free-traders-cellar"
+      },
+      {
+        "a": "node/terrace-cottage",
+        "b": "node/nisse-hall",
+        "class": "climb",
+        "gating": {
+          "flags": [
+            "flag/nisse-fed"
+          ],
+          "learned": "hidden",
+          "secret": [
+            "hole in the floor",
+            "地板上有个洞"
+          ]
+        },
+        "id": "edge/terrace-cottage-to-nisse-hall"
       }
     ],
     "entry": "node/square",
@@ -2945,6 +3002,13 @@
             "terms": "CC BY-SA 4.0 (Wikipedia text)",
             "url": "https://en.wikipedia.org/wiki/Medieval_Merchant%27s_House"
           }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/merchant-ledger",
+            "kind": "point",
+            "note": "the ledger shelf in the counting room, one ledger pushed in further than the rest, which gives under a hand"
+          }
         ]
       },
       {
@@ -4472,6 +4536,18 @@
             "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
             "url": "https://en.wikipedia.org/wiki/Longhouse"
           }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/nisse-bowl",
+            "kind": "point",
+            "note": "a little clay bowl on the floor by the hay bay at the cottage's back, empty"
+          },
+          {
+            "anchor": "anchor/porridge-pot",
+            "kind": "point",
+            "note": "a covered pot of porridge by the hay bay across the floor"
+          }
         ]
       },
       {
@@ -4790,6 +4866,54 @@
             "anchor": "anchor/cat-bed",
             "kind": "point",
             "note": "beside the cat's red bed in her den"
+          }
+        ]
+      },
+      {
+        "id": "node/free-traders-cellar",
+        "intent": "the Free Traders' cellar",
+        "note": "A low vaulted cellar of old brick under the merchant's cloth store, kept by the town's last smuggler as a working store: casks stacked two high along the north wall, this year's sugar sacks heaped on the south with a coil of chain, crates and casks in the corner, a lantern-lit table of papers in the middle, the coast chart and the members' ledger in the south-east corner, rope and chain hung from the vault, and the old sea door at the east end, its dark-oak frame standing proud of the brick that fills it. A ladder comes down from the store in one corner.",
+        "references": [
+          {
+            "shows": "Smuggling in eighteenth-century Britain: the smugglers called themselves free traders, landed goods by night on quiet shores and hid them in cellars and tunnels under ordinary houses and inns, with whole towns quietly buying.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Smuggling#History"
+          },
+          {
+            "shows": "A priest hole: a hiding place built into a house's fabric, entered through panelling, a hearth or a floor that reads as ordinary, so a searcher sees only the wall.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text)",
+            "url": "https://en.wikipedia.org/wiki/Priest_hole"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/magnhild-seat",
+            "kind": "point",
+            "note": "at the card table in the middle of the cellar, where Magnhild plays patience"
+          }
+        ]
+      },
+      {
+        "id": "node/nisse-hall",
+        "intent": "the nisse's hall under the terrace cottage",
+        "note": "A low hall dug out under the terrace cottage, a folk creature's home: walls of packed earth, field stone and mud brick between timber posts, roots coming through a low uneven ceiling crossed by two beams, a hearth of field stones in the east wall with its fire lit and a pot on the hob, a table and stools at a child's knee, a box bed, and along the far wall the town's lost things: a shelf of odd books with a potted flower, a painted pot, a festival lantern on a cask, the clerk's book of by-laws on its stand, a bell, a red scarf hung on the wall, a jack-o'-lantern and a slice of cake, and odd socks laid out by colour. A ladder comes down from a hole in the cottage floor in one corner.",
+        "references": [
+          {
+            "shows": "The nisse or tomte of Nordic folklore: a small household spirit in grey clothes and a red cap who lives under the floorboards of a farm's house, stable or barn, keeps the farm and its animals, expects a bowl of porridge with butter on it once a year, and plays tricks on the animals when he is forgotten.",
+            "terms": "CC BY-SA 4.0 (Wikipedia text; ideas only)",
+            "url": "https://en.wikipedia.org/wiki/Nisse_(folklore)"
+          },
+          {
+            "shows": "The game's own rooted dirt and hanging roots: the underside of a tree's ground, roots dangling from it into the air below.",
+            "terms": "CC BY-NC-SA 3.0 (Minecraft Wiki text; ideas only)",
+            "url": "https://minecraft.wiki/w/Hanging_Roots"
+          }
+        ],
+        "stations": [
+          {
+            "anchor": "anchor/nisse-seat",
+            "kind": "point",
+            "note": "at the little table by the hearth, where the nisse eats his porridge"
           }
         ]
       }
